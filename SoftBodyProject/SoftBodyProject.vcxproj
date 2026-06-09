@@ -17,7 +17,6 @@
       <Configuration>Release</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
-
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>18.0</VCProjectVersion>
@@ -53,27 +52,24 @@
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
-
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
   </ImportGroup>
-  <ImportGroup Label="Shared" >
+  <ImportGroup Label="Shared">
   </ImportGroup>
-    <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-      <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    </ImportGroup>
-    <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-      <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    </ImportGroup>
-    <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-      <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    </ImportGroup>
-    <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-      <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    </ImportGroup>
-
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -81,13 +77,15 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
+      <AdditionalIncludeDirectories>C:\DxLib_VC3_24f\DxLib_VC\プロジェクトに追加すべきファイル_VC用;$(ProjectDir)Source\;$(ProjectDir)Source\Common;$(ProjectDir)Source\Objects;$(ProjectDir)Source\System;$(ProjectDir)Source\Common\Math;$(ProjectDir)Source\Common\BaseClass;$(ProjectDir)Source\Common\Constants;$(ProjectDir)Source\Common\ECS;$(ProjectDir)Source\Common\Interface;$(ProjectDir)Source\Common\BaseClass\SceneBase;$(ProjectDir)Source\System\Adapter;$(ProjectDir)Source\System\Components;$(ProjectDir)Source\System\ComponentStorages;$(ProjectDir)Source\System\ComponentSystems;$(ProjectDir)Source\System\Scenes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
-       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>C:\DxLib_VC3_24f\DxLib_VC\プロジェクトに追加すべきファイル_VC用;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <Manifest>
-       <EnableSegmentHeap>true</EnableSegmentHeap>
+      <EnableSegmentHeap>true</EnableSegmentHeap>
     </Manifest>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -99,13 +97,15 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
+      <AdditionalIncludeDirectories>C:\DxLib_VC3_24f\DxLib_VC\プロジェクトに追加すべきファイル_VC用;$(ProjectDir)Source\;$(ProjectDir)Source\Common;$(ProjectDir)Source\Objects;$(ProjectDir)Source\System;$(ProjectDir)Source\Common\Math;$(ProjectDir)Source\Common\BaseClass;$(ProjectDir)Source\Common\Constants;$(ProjectDir)Source\Common\ECS;$(ProjectDir)Source\Common\Interface;$(ProjectDir)Source\Common\BaseClass\SceneBase;$(ProjectDir)Source\System\Adapter;$(ProjectDir)Source\System\Components;$(ProjectDir)Source\System\ComponentStorages;$(ProjectDir)Source\System\ComponentSystems;$(ProjectDir)Source\System\Scenes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
-       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>C:\DxLib_VC3_24f\DxLib_VC\プロジェクトに追加すべきファイル_VC用;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <Manifest>
-       <EnableSegmentHeap>true</EnableSegmentHeap>
+      <EnableSegmentHeap>true</EnableSegmentHeap>
     </Manifest>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -115,13 +115,15 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
+      <AdditionalIncludeDirectories>C:\DxLib_VC3_24f\DxLib_VC\プロジェクトに追加すべきファイル_VC用;$(ProjectDir)Source\;$(ProjectDir)Source\Common;$(ProjectDir)Source\Objects;$(ProjectDir)Source\System;$(ProjectDir)Source\Common\Math;$(ProjectDir)Source\Common\BaseClass;$(ProjectDir)Source\Common\Constants;$(ProjectDir)Source\Common\ECS;$(ProjectDir)Source\Common\Interface;$(ProjectDir)Source\Common\BaseClass\SceneBase;$(ProjectDir)Source\System\Adapter;$(ProjectDir)Source\System\Components;$(ProjectDir)Source\System\ComponentStorages;$(ProjectDir)Source\System\ComponentSystems;$(ProjectDir)Source\System\Scenes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
-       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>C:\DxLib_VC3_24f\DxLib_VC\プロジェクトに追加すべきファイル_VC用;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <Manifest>
-       <EnableSegmentHeap>true</EnableSegmentHeap>
+      <EnableSegmentHeap>true</EnableSegmentHeap>
     </Manifest>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -133,17 +135,87 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
+      <AdditionalIncludeDirectories>C:\DxLib_VC3_24f\DxLib_VC\プロジェクトに追加すべきファイル_VC用;$(ProjectDir)Source\;$(ProjectDir)Source\Common;$(ProjectDir)Source\Objects;$(ProjectDir)Source\System;$(ProjectDir)Source\Common\Math;$(ProjectDir)Source\Common\BaseClass;$(ProjectDir)Source\Common\Constants;$(ProjectDir)Source\Common\ECS;$(ProjectDir)Source\Common\Interface;$(ProjectDir)Source\Common\BaseClass\SceneBase;$(ProjectDir)Source\System\Adapter;$(ProjectDir)Source\System\Components;$(ProjectDir)Source\System\ComponentStorages;$(ProjectDir)Source\System\ComponentSystems;$(ProjectDir)Source\System\Scenes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
-       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>C:\DxLib_VC3_24f\DxLib_VC\プロジェクトに追加すべきファイル_VC用;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <Manifest>
-       <EnableSegmentHeap>true</EnableSegmentHeap>
+      <EnableSegmentHeap>true</EnableSegmentHeap>
     </Manifest>
   </ItemDefinitionGroup>
-
-  <ItemGroup></ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Source\Common\BaseClass\ComponentBase.h" />
+    <ClInclude Include="Source\Common\BaseClass\ObjectBase.h" />
+    <ClInclude Include="Source\Common\BaseClass\RenderingSystem.h" />
+    <ClInclude Include="Source\Common\BaseClass\SceneBase\SceneBase.h" />
+    <ClInclude Include="Source\Common\BaseClass\StorageBase.h" />
+    <ClInclude Include="Source\Common\BaseClass\SystemBase.h" />
+    <ClInclude Include="Source\Common\BaseClass\UpdateSystem.h" />
+    <ClInclude Include="Source\Common\Constants\BaseConstants.h" />
+    <ClInclude Include="Source\Common\Constants\KeyConstants.h" />
+    <ClInclude Include="Source\Common\Constants\SceneConstants.h" />
+    <ClInclude Include="Source\Common\ECS\SparseSet.h" />
+    <ClInclude Include="Source\Common\ECS\SparseSetStorageBase.h" />
+    <ClInclude Include="Source\Common\Interface\IInput.h" />
+    <ClInclude Include="Source\Common\Interface\IRenderer.h" />
+    <ClInclude Include="Source\Common\Interface\ISystem.h" />
+    <ClInclude Include="Source\Common\Interface\IWorld.h" />
+    <ClInclude Include="Source\Common\Math\Matrix\MatGenerateFunc.h" />
+    <ClInclude Include="Source\Common\Math\Matrix\Matrix.h" />
+    <ClInclude Include="Source\Common\Math\MDMath.h" />
+    <ClInclude Include="Source\Common\Math\Quaternion\Quaternion.h" />
+    <ClInclude Include="Source\Common\Math\Transform\Transform.h" />
+    <ClInclude Include="Source\Common\Math\Vector\SIMD\SIMDVector.h" />
+    <ClInclude Include="Source\Common\Math\Vector\SIMD\SIMDVectorMath.h" />
+    <ClInclude Include="Source\Common\Math\Vector\Vector2\Vector2.h" />
+    <ClInclude Include="Source\Common\Math\Vector\Vector2\Vector2Int.h" />
+    <ClInclude Include="Source\Common\Math\Vector\Vector3\Vector3.h" />
+    <ClInclude Include="Source\Common\Math\Vector\Vector3\Vector3Int.h" />
+    <ClInclude Include="Source\Objects\Camera.h" />
+    <ClInclude Include="Source\System\Adapter\Dxlib\DxlibConstants.h" />
+    <ClInclude Include="Source\System\Adapter\Dxlib\DxlibConvert.h" />
+    <ClInclude Include="Source\System\Adapter\Dxlib\DxlibInput.h" />
+    <ClInclude Include="Source\System\Adapter\Dxlib\DxlibRenderer.h" />
+    <ClInclude Include="Source\System\Adapter\Dxlib\DxlibSystem.h" />
+    <ClInclude Include="Source\System\ApplicationManager.h" />
+    <ClInclude Include="Source\System\ComponentStorage\RendererComponentStorage.h" />
+    <ClInclude Include="Source\System\ComponentStorage\TransformComponentStorage.h" />
+    <ClInclude Include="Source\System\ComponentSystems\ModelRenderingSystem.h" />
+    <ClInclude Include="Source\System\Components\RendererComponent.h" />
+    <ClInclude Include="Source\System\Components\TransformComponent.h" />
+    <ClInclude Include="Source\System\ObjectManager.h" />
+    <ClInclude Include="Source\System\ResourceManager.h" />
+    <ClInclude Include="Source\System\SceneManager.h" />
+    <ClInclude Include="Source\System\Scenes\DebugScene.h" />
+    <ClInclude Include="Source\System\ServiceLocator.h" />
+    <ClInclude Include="Source\System\TimeManager.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Source\Common\BaseClass\SceneBase\SceneBase.cpp" />
+    <ClCompile Include="Source\Common\Math\Matrix\MatGenerateFunc.cpp" />
+    <ClCompile Include="Source\Common\Math\Matrix\Matrix.cpp" />
+    <ClCompile Include="Source\Common\Math\Quaternion\Quaternion.cpp" />
+    <ClCompile Include="Source\Common\Math\Transform\Transform.cpp" />
+    <ClCompile Include="Source\Common\Math\Vector\SIMD\SIMDVectorMath.cpp" />
+    <ClCompile Include="Source\Common\Math\Vector\Vector2\Vector2.cpp" />
+    <ClCompile Include="Source\Common\Math\Vector\Vector2\Vector2Int.cpp" />
+    <ClCompile Include="Source\Common\Math\Vector\Vector3\Vector3.cpp" />
+    <ClCompile Include="Source\Common\Math\Vector\Vector3\Vector3Int.cpp" />
+    <ClCompile Include="Source\Main.cpp" />
+    <ClCompile Include="Source\System\Adapter\Dxlib\DxlibInput.cpp" />
+    <ClCompile Include="Source\System\Adapter\Dxlib\DxlibRenderer.cpp" />
+    <ClCompile Include="Source\System\Adapter\Dxlib\DxlibSystem.cpp" />
+    <ClCompile Include="Source\System\ApplicationManager.cpp" />
+    <ClCompile Include="Source\System\ComponentSystems\ModelRenderingSystem.cpp" />
+    <ClCompile Include="Source\System\ObjectManager.cpp" />
+    <ClCompile Include="Source\System\ResourceManager.cpp" />
+    <ClCompile Include="Source\System\SceneManager.cpp" />
+    <ClCompile Include="Source\System\Scenes\DebugScene.cpp" />
+    <ClCompile Include="Source\System\TimeManager.cpp" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
