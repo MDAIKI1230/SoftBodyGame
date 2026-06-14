@@ -1,6 +1,8 @@
 #pragma once
 
-struct SphereColliderComponent
+#include "ColliderComponent.h"
+
+struct SphereColliderComponent :public ColliderComponent
 {
 public:
 	// コンストラクタ
