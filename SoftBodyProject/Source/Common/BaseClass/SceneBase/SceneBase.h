@@ -9,6 +9,7 @@
 #include "IWorld.h"
 
 #include "UpdateSystem.h"
+#include "FixedUpdateSystem.h"
 #include "RenderingSystem.h"
 #include "SparseSetStorageBase.h"
 
@@ -34,6 +35,11 @@ protected:
 	/// <param name="system">入れたいシステム</param>
 	void AddSystem(std::unique_ptr<RenderingSystem> _system);
 	/// <summary>
+	/// システムの追加(moveされる)
+	/// </summary>
+	/// <param name="_system">入れたいシステム</param>
+	void AddSystem(std::unique_ptr<FixedUpdateSystem> _system);
+	/// <summary>
 	/// ストレージの追加(moveされる)
 	/// </summary>
 	/// <param name="storage">入れたいストレージ</param>
@@ -56,6 +62,8 @@ protected:
 	SceneState state{ SceneState::INITIALIZE };
 	// 更新系システム
 	std::vector<std::unique_ptr<UpdateSystem>> updateSystems;
+	// 物理ステップ更新系システム
+	std::vector<std::unique_ptr<FixedUpdateSystem>> fixedUpdateSystems;
 	// 描画系システム
 	std::vector<std::unique_ptr<RenderingSystem>> renderingSystems;
 };

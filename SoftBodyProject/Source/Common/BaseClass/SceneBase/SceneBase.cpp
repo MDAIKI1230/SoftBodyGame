@@ -73,6 +73,26 @@ void SceneBase::AddSystem(std::unique_ptr<UpdateSystem> _system)
 /// システムの追加(moveされる)
 /// </summary>
 /// <param name="system">入れたいシステム</param>
+void SceneBase::AddSystem(std::unique_ptr<FixedUpdateSystem> _system)
+{
+	// 入れる位置を探す
+	auto it = std::lower_bound(
+		fixedUpdateSystems.begin(),
+		fixedUpdateSystems.end(),
+		_system,
+		[](const std::unique_ptr<FixedUpdateSystem>& a, const std::unique_ptr<FixedUpdateSystem>& b)
+		{
+			return a->GetPriority() > b->GetPriority();
+		});
+
+	// その位置に挿入
+	fixedUpdateSystems.insert(it, std::move(_system));
+}
+
+/// <summary>
+/// システムの追加(moveされる)
+/// </summary>
+/// <param name="system">入れたいシステム</param>
 void SceneBase::AddSystem(std::unique_ptr<RenderingSystem> _system)
 {
 	// 入れる位置を探す

@@ -71,6 +71,15 @@
     <Filter Include="ソース ファイル\Common\Math\Transform">
       <UniqueIdentifier>{ce40d2c3-28bd-420d-bd3d-772c94199fa7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\System\Components\Physics">
+      <UniqueIdentifier>{a33cd08c-1cad-4124-a57f-3844202d91b4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\System\Components\Physics\Collider">
+      <UniqueIdentifier>{771a9e27-b53c-4c97-a278-47c284259e09}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\System\Components\Physics\Body">
+      <UniqueIdentifier>{909593b0-2b49-4555-8022-7327eb684c21}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Objects\Camera.h">
@@ -145,12 +154,6 @@
     <ClInclude Include="Source\Common\ECS\SparseSetStorageBase.h">
       <Filter>ソース ファイル\Common\ECS</Filter>
     </ClInclude>
-    <ClInclude Include="Source\System\ComponentStorage\TransformComponentStorage.h">
-      <Filter>ソース ファイル\System\ComponentStorages</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\System\ComponentStorage\RendererComponentStorage.h">
-      <Filter>ソース ファイル\System\ComponentStorages</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Common\BaseClass\RenderingSystem.h">
       <Filter>ソース ファイル\Common\BaseClass</Filter>
     </ClInclude>
@@ -207,6 +210,33 @@
     </ClInclude>
     <ClInclude Include="Source\System\ServiceLocator.h">
       <Filter>ソース ファイル\System</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\System\Components\Physics\Collider\SphereColliderComponent.h">
+      <Filter>ソース ファイル\System\Components\Physics\Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\System\Components\Physics\Collider\ColliderComponent.h">
+      <Filter>ソース ファイル\System\Components\Physics\Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\System\Components\Physics\Body\RigidBodyComponent.h">
+      <Filter>ソース ファイル\System\Components\Physics\Body</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\System\ComponentStorages\ColliderComponentStorage.h">
+      <Filter>ソース ファイル\System\ComponentStorages</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\System\ComponentStorages\RendererComponentStorage.h">
+      <Filter>ソース ファイル\System\ComponentStorages</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\System\ComponentStorages\TransformComponentStorage.h">
+      <Filter>ソース ファイル\System\ComponentStorages</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\System\ComponentSystems\CollisionSystem.h">
+      <Filter>ソース ファイル\System\ComponentSystems</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Common\BaseClass\FixedUpdateSystem.h">
+      <Filter>ソース ファイル\Common\BaseClass</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\System\ComponentStorages\RigidBodyComponentStorage.h">
+      <Filter>ソース ファイル\System\ComponentStorages</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -272,6 +302,9 @@
     </ClCompile>
     <ClCompile Include="Source\System\Manager\TimeManager.cpp">
       <Filter>ソース ファイル\System\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\System\ComponentSystems\CollisionSystem.cpp">
+      <Filter>ソース ファイル\System\ComponentSystems</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
