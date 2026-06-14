@@ -41,35 +41,38 @@
     <Filter Include="ソース ファイル\System\ComponentSystems">
       <UniqueIdentifier>{f9e055f9-0fb7-41a3-953d-d2161467ffdd}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\Common\Math\Manager">
-      <UniqueIdentifier>{2bc2453a-7a50-4f15-bfe0-bb3c7e6c3088}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ソース ファイル\System\ComponentStorages">
       <UniqueIdentifier>{f7948fe6-49b5-42df-9b08-3413dc1eafb5}</UniqueIdentifier>
     </Filter>
     <Filter Include="ソース ファイル\Common\BaseClass\SceneBase">
       <UniqueIdentifier>{86ff63f9-26ca-47b7-bccd-267468a07b21}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\System\Manager">
+      <UniqueIdentifier>{2bc2453a-7a50-4f15-bfe0-bb3c7e6c3088}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Common\Math\Matrix">
+      <UniqueIdentifier>{5177946c-5739-4022-af50-230705bcc3ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Common\Math\Quaternion">
+      <UniqueIdentifier>{ef5a4f01-a985-4ad2-a761-263aabc7ceeb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Common\Math\Vector">
+      <UniqueIdentifier>{d9c73365-0929-4e41-95f1-eab339f88b6f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Common\Math\Vector\SIMD">
+      <UniqueIdentifier>{ba8185b1-ab38-4a20-af7b-1be19f6f84a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Common\Math\Vector\Vector2">
+      <UniqueIdentifier>{b5c05615-ff8b-4d14-8d15-784b24ac5309}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Common\Math\Vector\Vector3">
+      <UniqueIdentifier>{0249a9d7-fb9a-4dda-a0d1-bc9d1f9b24a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Common\Math\Transform">
+      <UniqueIdentifier>{ce40d2c3-28bd-420d-bd3d-772c94199fa7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Source\Common\Math\Quaternion\Quaternion.h">
-      <Filter>ソース ファイル\Common\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Common\Math\Matrix\Matrix.h">
-      <Filter>ソース ファイル\Common\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Common\Math\Vector\Vector2\Vector2.h">
-      <Filter>ソース ファイル\Common\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Common\Math\Vector\Vector2\Vector2Int.h">
-      <Filter>ソース ファイル\Common\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Common\Math\Vector\Vector3\Vector3.h">
-      <Filter>ソース ファイル\Common\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Common\Math\Vector\Vector3\Vector3Int.h">
-      <Filter>ソース ファイル\Common\Math</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Objects\Camera.h">
       <Filter>ソース ファイル\GameObject</Filter>
     </ClInclude>
@@ -93,9 +96,6 @@
     </ClInclude>
     <ClInclude Include="Source\System\Components\RendererComponent.h">
       <Filter>ソース ファイル\System\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\System\ApplicationManager.h">
-      <Filter>ソース ファイル\Common\Math\Manager</Filter>
     </ClInclude>
     <ClInclude Include="Source\Common\Constants\BaseConstants.h">
       <Filter>ソース ファイル\Common\Constants</Filter>
@@ -121,41 +121,14 @@
     <ClInclude Include="Source\Common\Constants\KeyConstants.h">
       <Filter>ソース ファイル\Common\Constants</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Common\Math\Matrix\MatGenerateFunc.h">
-      <Filter>ソース ファイル\Common\Math</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Common\Math\MDMath.h">
       <Filter>ソース ファイル\Common\Math</Filter>
     </ClInclude>
     <ClInclude Include="Source\Common\BaseClass\ObjectBase.h">
       <Filter>ソース ファイル\Common\BaseClass</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Common\Math\Vector\SIMD\SIMDVector.h">
-      <Filter>ソース ファイル\Common\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Common\Math\Vector\SIMD\SIMDVectorMath.h">
-      <Filter>ソース ファイル\Common\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\System\ObjectManager.h">
-      <Filter>ソース ファイル\Common\Math\Manager</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\System\SceneManager.h">
-      <Filter>ソース ファイル\Common\Math\Manager</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\System\ServiceLocator.h">
-      <Filter>ソース ファイル\Common\Math\Manager</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\System\ResourceManager.h">
-      <Filter>ソース ファイル\Common\Math\Manager</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Common\Constants\SceneConstants.h">
       <Filter>ソース ファイル\Common\Constants</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\System\TimeManager.h">
-      <Filter>ソース ファイル\Common\Math\Manager</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Common\Math\Transform\Transform.h">
-      <Filter>ソース ファイル\Common\Math</Filter>
     </ClInclude>
     <ClInclude Include="Source\Common\BaseClass\UpdateSystem.h">
       <Filter>ソース ファイル\Common\BaseClass</Filter>
@@ -187,28 +160,58 @@
     <ClInclude Include="Source\Common\BaseClass\SceneBase\SceneBase.h">
       <Filter>ソース ファイル\Common\BaseClass\SceneBase</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Common\Math\Matrix\MatGenerateFunc.h">
+      <Filter>ソース ファイル\Common\Math\Matrix</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Common\Math\Matrix\Matrix.h">
+      <Filter>ソース ファイル\Common\Math\Matrix</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Common\Math\Quaternion\Quaternion.h">
+      <Filter>ソース ファイル\Common\Math\Quaternion</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Common\Math\Vector\SIMD\SIMDVector.h">
+      <Filter>ソース ファイル\Common\Math\Vector\SIMD</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Common\Math\Vector\SIMD\SIMDVectorMath.h">
+      <Filter>ソース ファイル\Common\Math\Vector\SIMD</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Common\Math\Vector\Vector2\Vector2.h">
+      <Filter>ソース ファイル\Common\Math\Vector\Vector2</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Common\Math\Vector\Vector2\Vector2Int.h">
+      <Filter>ソース ファイル\Common\Math\Vector\Vector2</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Common\Math\Vector\Vector3\Vector3.h">
+      <Filter>ソース ファイル\Common\Math\Vector\Vector3</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Common\Math\Vector\Vector3\Vector3Int.h">
+      <Filter>ソース ファイル\Common\Math\Vector\Vector3</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Common\Math\Transform\Transform.h">
+      <Filter>ソース ファイル\Common\Math\Transform</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\System\Manager\ApplicationManager.h">
+      <Filter>ソース ファイル\System\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\System\Manager\ObjectManager.h">
+      <Filter>ソース ファイル\System\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\System\Manager\ResourceManager.h">
+      <Filter>ソース ファイル\System\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\System\Manager\SceneManager.h">
+      <Filter>ソース ファイル\System\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\System\Manager\TimeManager.h">
+      <Filter>ソース ファイル\System\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\System\ServiceLocator.h">
+      <Filter>ソース ファイル\System</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp">
       <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Common\Math\Quaternion\Quaternion.cpp">
-      <Filter>ソース ファイル\Common\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Common\Math\Matrix\Matrix.cpp">
-      <Filter>ソース ファイル\Common\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Common\Math\Vector\Vector2\Vector2.cpp">
-      <Filter>ソース ファイル\Common\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Common\Math\Vector\Vector2\Vector2Int.cpp">
-      <Filter>ソース ファイル\Common\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Common\Math\Vector\Vector3\Vector3.cpp">
-      <Filter>ソース ファイル\Common\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Common\Math\Vector\Vector3\Vector3Int.cpp">
-      <Filter>ソース ファイル\Common\Math</Filter>
     </ClCompile>
     <ClCompile Include="Source\System\Adapter\Dxlib\DxlibInput.cpp">
       <Filter>ソース ファイル\System\Adapter</Filter>
@@ -219,38 +222,56 @@
     <ClCompile Include="Source\System\Adapter\Dxlib\DxlibSystem.cpp">
       <Filter>ソース ファイル\System\Adapter</Filter>
     </ClCompile>
-    <ClCompile Include="Source\System\ApplicationManager.cpp">
-      <Filter>ソース ファイル\Common\Math\Manager</Filter>
-    </ClCompile>
     <ClCompile Include="Source\System\Scenes\DebugScene.cpp">
       <Filter>ソース ファイル\System\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Common\Math\Matrix\MatGenerateFunc.cpp">
-      <Filter>ソース ファイル\Common\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\System\ObjectManager.cpp">
-      <Filter>ソース ファイル\Common\Math\Manager</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Common\Math\Vector\SIMD\SIMDVectorMath.cpp">
-      <Filter>ソース ファイル\Common\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\System\ResourceManager.cpp">
-      <Filter>ソース ファイル\Common\Math\Manager</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\System\SceneManager.cpp">
-      <Filter>ソース ファイル\Common\Math\Manager</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\System\TimeManager.cpp">
-      <Filter>ソース ファイル\Common\Math\Manager</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Common\Math\Transform\Transform.cpp">
-      <Filter>ソース ファイル\Common\Math</Filter>
     </ClCompile>
     <ClCompile Include="Source\System\ComponentSystems\ModelRenderingSystem.cpp">
       <Filter>ソース ファイル\System\ComponentSystems</Filter>
     </ClCompile>
     <ClCompile Include="Source\Common\BaseClass\SceneBase\SceneBase.cpp">
       <Filter>ソース ファイル\Common\BaseClass\SceneBase</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Common\Math\Matrix\MatGenerateFunc.cpp">
+      <Filter>ソース ファイル\Common\Math\Matrix</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Common\Math\Matrix\Matrix.cpp">
+      <Filter>ソース ファイル\Common\Math\Matrix</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Common\Math\Quaternion\Quaternion.cpp">
+      <Filter>ソース ファイル\Common\Math\Quaternion</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Common\Math\Vector\SIMD\SIMDVectorMath.cpp">
+      <Filter>ソース ファイル\Common\Math\Vector\SIMD</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Common\Math\Vector\Vector2\Vector2.cpp">
+      <Filter>ソース ファイル\Common\Math\Vector\Vector2</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Common\Math\Vector\Vector2\Vector2Int.cpp">
+      <Filter>ソース ファイル\Common\Math\Vector\Vector2</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Common\Math\Vector\Vector3\Vector3.cpp">
+      <Filter>ソース ファイル\Common\Math\Vector\Vector3</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Common\Math\Vector\Vector3\Vector3Int.cpp">
+      <Filter>ソース ファイル\Common\Math\Vector\Vector3</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Common\Math\Transform\Transform.cpp">
+      <Filter>ソース ファイル\Common\Math\Transform</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\System\Manager\ApplicationManager.cpp">
+      <Filter>ソース ファイル\System\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\System\Manager\ObjectManager.cpp">
+      <Filter>ソース ファイル\System\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\System\Manager\ResourceManager.cpp">
+      <Filter>ソース ファイル\System\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\System\Manager\SceneManager.cpp">
+      <Filter>ソース ファイル\System\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\System\Manager\TimeManager.cpp">
+      <Filter>ソース ファイル\System\Manager</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
