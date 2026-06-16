@@ -26,6 +26,13 @@ private:
 	/// <param name="projectionAxisValues">判定する軸のコンテナ</param>
 	/// <param name="actives">結果を入れる</param>
 	void CheckProjectionAxisValueCross(const std::vector<ColliderProjection>& projectionAxisValues);
+	/// <summary>
+	/// GJKアルゴリズム
+	/// </summary>
+	/// <param name="collider01">コライダー01</param>
+	/// <param name="collider02">コライダー02</param>
+	/// <returns>衝突判定(当たったらture)</returns>
+	bool GJK(const ColliderComponent& collider01, const ColliderComponent& collider02);
 private:
 	// ブロードフェーズ用コンテナ
 	// X軸射影

@@ -253,6 +253,9 @@
     <ClInclude Include="Source\Physics\Struct\ColliderProjection.h">
       <Filter>ソース ファイル\Physics\Struct</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Physics\Struct\CollPair.h">
+      <Filter>ソース ファイル\Physics\Struct</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\System\Adapter\Dxlib\DxlibInput.cpp">

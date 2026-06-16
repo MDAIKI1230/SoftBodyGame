@@ -154,3 +154,8 @@ void CollisionSystem::CheckProjectionAxisValueCross(const std::vector<ColliderPr
 		}
 	}
 }
+
+bool CollisionSystem::GJK(const ColliderComponent& collider01, const ColliderComponent& collider02)
+{
+	return false;
+}
