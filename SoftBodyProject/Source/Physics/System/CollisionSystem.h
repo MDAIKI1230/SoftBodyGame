@@ -32,7 +32,9 @@ private:
 	/// <param name="collider01">コライダー01</param>
 	/// <param name="collider02">コライダー02</param>
 	/// <returns>衝突判定(当たったらture)</returns>
-	bool GJK(const ColliderComponent& collider01, const ColliderComponent& collider02);
+	bool GJK(
+		const ColliderComponent& collider01, const TransformComponent& transform01,
+		const ColliderComponent& collider02, const TransformComponent& transform02);
 private:
 	// ブロードフェーズ用コンテナ
 	// X軸射影

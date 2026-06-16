@@ -19,7 +19,7 @@ public:
 	}
 
 	// サポート関数
-	Vector3 Support(const Vector3& dir) override;
+	Vector3 Support(const Vector3& dir) const override;
 
 	// ---半径ゲッターセッター---
 

@@ -155,7 +155,52 @@ void CollisionSystem::CheckProjectionAxisValueCross(const std::vector<ColliderPr
 	}
 }
 
-bool CollisionSystem::GJK(const ColliderComponent& collider01, const ColliderComponent& collider02)
+bool CollisionSystem::GJK(
+	const ColliderComponent& collider01, const TransformComponent& transform01,
+	const ColliderComponent& collider02, const TransformComponent& transform02)
 {
+	/*
+		コライダー01の中心を原点として考えるものとしよう。
+	*/
+	// 上方向の支点を最初の支点とする
+	Vector3 dir{ Vector3::UP };
+	// ミンコフスキー差の支点(上方向)
+	Vector3 fulcrums[3]
+	{ 
+		// 初期の点以外はゼロで初期化
+		collider01.Support(dir) - collider02.Support(-dir) + (transform02.GetPosition() - transform01.GetPosition())
+		,Vector3::ZERO,Vector3::ZERO
+	};
+	// 線分,原点に最も近い点(While内で使うが毎回生成するのはめんどいのでここで作っておく)
+	Vector3 segment,originNearestPoint;
+
+	// 上の支点を最初の点として方向を生成
+	dir = -fulcrums[0];
+	// 生成した方向で第二の支点を計算
+	fulcrums[1] = collider01.Support(dir) - collider02.Support(-dir) + (transform02.GetPosition() - transform01.GetPosition());
+	// 判定用の内積(上で生成された支点と方向の内積を入れている)
+	float dot{ Vector3::Dot(fulcrums[1],dir) };
+
+	// どのインデックスに点を入れるのか(今、0,1には初期点とその点から生成した方向とその時の支点が入っているので最後の2の要素がスタート)
+	char index{ 2 };
+	// 新しく出した支点とその時の方向の内積が0以下なら原点にこれ以上向かう事が出来ないとして終了
+	while (dot <= 0.0f)
+	{
+		// 点の生成
+		// 既存の2つの点から線分を生成(インデックスは決めるインデックスの次とその次)
+		char startIndex{ (index + 1) % 3 };
+		//        スタート地点           終点地点
+		segment = fulcrums[startIndex] - fulcrums[(index + 2) % 3];
+		// 線と原点の最近点を計算
+		originNearestPoint = fulcrums[startIndex] + segment * Vector3::Dot(segment.Normalize(), Vector3::ZERO);
+		// 方向計算
+		dir = -originNearestPoint;
+		// この新しい方向から新たな点を計算
+		fulcrums[index] = collider01.Support(dir) - collider02.Support(-dir) + (transform02.GetPosition() - transform01.GetPosition());
+
+		// 4面体内に原点が含まれているか判定
+
+	}
+
 	return false;
 }
