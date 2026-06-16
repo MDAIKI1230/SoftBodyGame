@@ -1,9 +1,11 @@
 #pragma once
 
+#include "MDMath.h"
+
 struct AABBBroadPhaseCollider
 {
-	// 横幅
-	float width;
-	// 縦幅
-	float height;
+	// 最小
+	Vector3 min;
+	// 最大
+	Vector3 max;
 };

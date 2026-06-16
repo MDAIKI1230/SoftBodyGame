@@ -6,4 +6,6 @@ struct ColliderProjection
 	float projection;
 	// エンティティ
 	int entity;
+	// 最大値フラグ
+	bool isMax;
 };

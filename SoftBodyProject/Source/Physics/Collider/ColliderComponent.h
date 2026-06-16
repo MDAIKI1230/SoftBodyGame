@@ -5,8 +5,8 @@
 class ColliderComponent
 {
 public:
-	float GetBroadWidth() { return aabb.width; }
-	float GetBroadHeight() { return aabb.height; }
+	const Vector3& GetBroadMin() { return aabb.min; }
+	const Vector3& GetBroadMax() { return aabb.max; }
 protected:
 	AABBBroadPhaseCollider aabb;
 };
