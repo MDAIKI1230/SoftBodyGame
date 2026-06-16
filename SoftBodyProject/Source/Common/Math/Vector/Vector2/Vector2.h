@@ -99,7 +99,7 @@ public:
 	static Vector2& Normalize(Vector2& _vec);
 
 	// 正規化(値の変化無)(実数のみ)
-	Vector2 Normalized();
+	Vector2 Normalized() const;
 	// 正規化(値の変化無)(実数のみ)
 	static Vector2 Normalized(const Vector2& _vec);
 

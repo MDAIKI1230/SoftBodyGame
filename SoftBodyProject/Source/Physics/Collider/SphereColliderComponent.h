@@ -5,9 +5,10 @@
 struct SphereColliderComponent :public ColliderComponent
 {
 public:
-	// コンストラクタ
-	SphereColliderComponent() = default;
+	// ---コンストラクタ---
 
+	// デフォルトコンストラクタ
+	SphereColliderComponent() = default;
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
@@ -17,17 +18,15 @@ public:
 	{
 	}
 
-	// 半径セット
-	void SetRadius(float _r)
-	{
-		r = _r;
-	}
+	// サポート関数
+	Vector3 Support(const Vector3& dir) override;
 
+	// ---半径ゲッターセッター---
+
+	// 半径セット
+	void SetRadius(float _r) { r = _r; }
 	// 半径取得
-	float GetRadius()
-	{
-		return r;
-	}
+	float GetRadius() { return r; }
 private:
 	// 半径
 	float r{ 0 };

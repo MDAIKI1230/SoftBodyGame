@@ -143,7 +143,7 @@ Vector3& Vector3::Normalize(Vector3& _vec)
 }
 
 // 正規化(値の変化無)(実数のみ)
-Vector3 Vector3::Normalized()
+Vector3 Vector3::Normalized() const
 {
 	return SIMDVectorMath::Normalize(simd);
 }
