@@ -71,14 +71,23 @@
     <Filter Include="ソース ファイル\Common\Math\Transform">
       <UniqueIdentifier>{ce40d2c3-28bd-420d-bd3d-772c94199fa7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\System\Components\Physics">
-      <UniqueIdentifier>{a33cd08c-1cad-4124-a57f-3844202d91b4}</UniqueIdentifier>
+    <Filter Include="ソース ファイル\Physics">
+      <UniqueIdentifier>{74951b05-2a6e-4b22-9c1a-073ee81bee8a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\System\Components\Physics\Collider">
-      <UniqueIdentifier>{771a9e27-b53c-4c97-a278-47c284259e09}</UniqueIdentifier>
+    <Filter Include="ソース ファイル\Physics\Body">
+      <UniqueIdentifier>{3ddd4e94-7bf3-43ff-9413-8303062a4433}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\System\Components\Physics\Body">
-      <UniqueIdentifier>{909593b0-2b49-4555-8022-7327eb684c21}</UniqueIdentifier>
+    <Filter Include="ソース ファイル\Physics\Collider">
+      <UniqueIdentifier>{bb12b480-c532-4805-b2e4-dce5f42e3d00}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Physics\System">
+      <UniqueIdentifier>{cb2d5064-7b89-435a-9757-5e2513279225}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Physics\Storage">
+      <UniqueIdentifier>{17985e89-cb6d-479a-9895-c6e7115113fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Physics\Struct">
+      <UniqueIdentifier>{893e4b80-687b-4e31-bf97-04bd8616466d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -211,38 +220,41 @@
     <ClInclude Include="Source\System\ServiceLocator.h">
       <Filter>ソース ファイル\System</Filter>
     </ClInclude>
-    <ClInclude Include="Source\System\Components\Physics\Collider\SphereColliderComponent.h">
-      <Filter>ソース ファイル\System\Components\Physics\Collider</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\System\Components\Physics\Collider\ColliderComponent.h">
-      <Filter>ソース ファイル\System\Components\Physics\Collider</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\System\Components\Physics\Body\RigidBodyComponent.h">
-      <Filter>ソース ファイル\System\Components\Physics\Body</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\System\ComponentStorages\ColliderComponentStorage.h">
-      <Filter>ソース ファイル\System\ComponentStorages</Filter>
-    </ClInclude>
     <ClInclude Include="Source\System\ComponentStorages\RendererComponentStorage.h">
       <Filter>ソース ファイル\System\ComponentStorages</Filter>
     </ClInclude>
     <ClInclude Include="Source\System\ComponentStorages\TransformComponentStorage.h">
       <Filter>ソース ファイル\System\ComponentStorages</Filter>
     </ClInclude>
-    <ClInclude Include="Source\System\ComponentSystems\CollisionSystem.h">
-      <Filter>ソース ファイル\System\ComponentSystems</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Common\BaseClass\FixedUpdateSystem.h">
       <Filter>ソース ファイル\Common\BaseClass</Filter>
     </ClInclude>
-    <ClInclude Include="Source\System\ComponentStorages\RigidBodyComponentStorage.h">
-      <Filter>ソース ファイル\System\ComponentStorages</Filter>
+    <ClInclude Include="Source\Physics\Body\RigidBodyComponent.h">
+      <Filter>ソース ファイル\Physics\Body</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Collider\AABBBroadPhaseCollider.h">
+      <Filter>ソース ファイル\Physics\Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Collider\SphereColliderComponent.h">
+      <Filter>ソース ファイル\Physics\Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Collider\ColliderComponent.h">
+      <Filter>ソース ファイル\Physics\Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Storage\ColliderComponentStorage.h">
+      <Filter>ソース ファイル\Physics\Storage</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Storage\RigidBodyComponentStorage.h">
+      <Filter>ソース ファイル\Physics\Storage</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\System\CollisionSystem.h">
+      <Filter>ソース ファイル\Physics\System</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Struct\ColliderProjection.h">
+      <Filter>ソース ファイル\Physics\Struct</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Source\Main.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="Source\System\Adapter\Dxlib\DxlibInput.cpp">
       <Filter>ソース ファイル\System\Adapter</Filter>
     </ClCompile>
@@ -303,8 +315,11 @@
     <ClCompile Include="Source\System\Manager\TimeManager.cpp">
       <Filter>ソース ファイル\System\Manager</Filter>
     </ClCompile>
-    <ClCompile Include="Source\System\ComponentSystems\CollisionSystem.cpp">
-      <Filter>ソース ファイル\System\ComponentSystems</Filter>
+    <ClCompile Include="Source\Main.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Physics\System\CollisionSystem.cpp">
+      <Filter>ソース ファイル\Physics\System</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

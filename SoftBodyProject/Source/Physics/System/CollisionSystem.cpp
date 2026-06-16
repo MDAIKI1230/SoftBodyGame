@@ -11,18 +11,24 @@ void CollisionSystem::FixedUpdate(IWorld* world)
 	SparseSetStorageBase<TransformComponent>* transformStorage{ world->GetStorage<TransformComponent>() };
 }
 
-void CollisionSystem::BroadPhase(TransformComponentStorage* transformStorage, std::vector<int>* colliderEntities)
+void CollisionSystem::BroadPhase(TransformComponentStorage* transformStorage, ColliderComponentStorage* colliderStorage)
 {
 	// 参照用
 	TransformComponent trans{};
 
-	for (int entity : *colliderEntities)
+	for (int entity : *colliderStorage->GetEntities())
 	{
+		// Transformがあるかチェックないなら飛ばす
+		if (!transformStorage->TryGet(entity, trans))
+		{
+			continue;
+		}
 
+		// 各軸に射影し、
 	}
 }
 
-void CollisionSystem::NarrowPhase(TransformComponentStorage* transformStorage, std::vector<int>* colliderEntities)
+void CollisionSystem::NarrowPhase(TransformComponentStorage* transformStorage, ColliderComponentStorage* colliderStorage)
 {
 
 }
