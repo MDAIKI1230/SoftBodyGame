@@ -103,7 +103,31 @@ void CollisionSystem::BroadPhase(TransformComponentStorage* transformStorage, Co
 
 void CollisionSystem::NarrowPhase(TransformComponentStorage* transformStorage, ColliderComponentStorage* colliderStorage)
 {
+	// 参照用
+	TransformComponent transA{}, transB{};
 
+	// 
+	for (auto& pair : narrowPairs)
+	{
+		// Transformがあるかチェックないなら飛ばす
+		if (!transformStorage->TryGet(pair.a, transA))
+		{
+			continue;
+		}
+		if (!transformStorage->TryGet(pair.b, transB))
+		{
+			continue;
+		}
+
+		// 各コライダー取得
+		ColliderComponent* collA{ colliderStorage->Get(pair.a) };
+		ColliderComponent* collB{ colliderStorage->Get(pair.a) };
+
+		if (GJK(*collA, transA, *collB, transB))
+		{
+
+		}
+	}
 }
 
 void CollisionSystem::CheckProjectionAxisValueCross(const std::vector<ColliderProjection>& projectionAxisValues)
@@ -162,6 +186,30 @@ bool CollisionSystem::GJK(
 	/*
 		コライダー01の中心を原点として考えるものとしよう。
 	*/
+
+	Simplex simplex{};
+	Vector3 dir{ Vector3::UP };
+
+	while (true)
+	{
+		// ミンコフスキー差の支点計算
+		Vector3 vec{ collider01.Support(dir) - collider02.Support(-dir) + (transform02.GetPosition() - transform01.GetPosition()) };
+
+		// 支点をSimplexに追加
+		simplex.Add(vec);
+
+		// 内積から当たる可能性があるのか見てみる
+		if (Vector3::Dot(vec, dir) < 0)
+		{
+			return false;
+		}
+
+		if(SimplexSolve(simplex,dir))
+		{
+			return true;
+		}
+	}
+
 	//// 上方向の支点を最初の支点とする
 	//Vector3 dir{ Vector3::UP };
 	//// ミンコフスキー差の支点(上方向)
@@ -190,7 +238,7 @@ bool CollisionSystem::GJK(
 	return false;
 }
 
-bool CollisionSystem::Solve(Simplex& _simplex, Vector3& _output)
+bool CollisionSystem::SimplexSolve(Simplex& _simplex, Vector3& _output)
 {
 	switch (_simplex.GetSize())
 	{

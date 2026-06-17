@@ -1,6 +1,6 @@
 #include "Simplex.h"
 
-void Simplex::Add(Vector3& _vec)
+void Simplex::Add(const Vector3& _vec)
 {
 	vertices[size] = _vec;
 

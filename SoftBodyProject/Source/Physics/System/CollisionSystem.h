@@ -43,7 +43,7 @@ private:
 	/// </summary>
 	/// <param name="_output">アウトプットするところ</param>
 	/// <returns>衝突したかどうか</returns>
-	bool Solve(Simplex& _simplex, Vector3& _output);
+	bool SimplexSolve(Simplex& _simplex, Vector3& _output);
 	// 一点の時の計算
 	bool SolvePoint(Simplex& _simplex, Vector3& _output);
 	// 二点の時(線分)の計算
