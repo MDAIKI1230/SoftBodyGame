@@ -35,6 +35,18 @@ private:
 	bool GJK(
 		const ColliderComponent& collider01, const TransformComponent& transform01,
 		const ColliderComponent& collider02, const TransformComponent& transform02);
+
+	// --- SimplexSolve ---
+	/// <summary>
+	/// 今のSimlpexから適切な方向を計算する
+	/// </summary>
+	/// <param name="_output">アウトプットするところ</param>
+	/// <returns>衝突したかどうか</returns>
+	bool Solve(Vector3& _output);
+	bool SolvePoint();
+	bool SolveLine();
+	bool SolveTriangle();
+	bool SolveTetrahedron();
 private:
 	// ブロードフェーズ用コンテナ
 	// X軸射影
