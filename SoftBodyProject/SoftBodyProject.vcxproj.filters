@@ -256,6 +256,9 @@
     <ClInclude Include="Source\Physics\Struct\CollPair.h">
       <Filter>ソース ファイル\Physics\Struct</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Physics\System\Simplex.h">
+      <Filter>ソース ファイル\Physics\System</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\System\Adapter\Dxlib\DxlibInput.cpp">
@@ -326,6 +329,9 @@
     </ClCompile>
     <ClCompile Include="Source\Physics\Collider\SphereColliderComponent.cpp">
       <Filter>ソース ファイル\Physics\Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Physics\System\Simplex.cpp">
+      <Filter>ソース ファイル\Physics\System</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

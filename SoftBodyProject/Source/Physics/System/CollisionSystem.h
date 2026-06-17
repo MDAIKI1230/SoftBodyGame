@@ -7,6 +7,7 @@
 #include "ColliderComponentStorage.h"
 #include "ColliderProjection.h"
 #include "CollPair.h"
+#include "Simplex.h"
 
 #include "FixedUpdateSystem.h"
 
@@ -42,11 +43,15 @@ private:
 	/// </summary>
 	/// <param name="_output">アウトプットするところ</param>
 	/// <returns>衝突したかどうか</returns>
-	bool Solve(Vector3& _output);
-	bool SolvePoint();
-	bool SolveLine();
-	bool SolveTriangle();
-	bool SolveTetrahedron();
+	bool Solve(Simplex& _simplex, Vector3& _output);
+	// 一点の時の計算
+	bool SolvePoint(Simplex& _simplex, Vector3& _output);
+	// 二点の時(線分)の計算
+	bool SolveLine(Simplex& _simplex, Vector3& _output);
+	// 三点の時(三角形)の計算
+	bool SolveTriangle(Simplex& _simplex, Vector3& _output);
+	// 四点の時(四面体)の計算
+	bool SolveTetrahedron(Simplex& _simplex, Vector3& _output);
 private:
 	// ブロードフェーズ用コンテナ
 	// X軸射影

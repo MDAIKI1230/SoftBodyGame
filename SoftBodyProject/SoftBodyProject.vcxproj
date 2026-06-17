@@ -185,6 +185,7 @@
     <ClInclude Include="Source\Physics\Struct\ColliderProjection.h" />
     <ClInclude Include="Source\Physics\Struct\CollPair.h" />
     <ClInclude Include="Source\Physics\System\CollisionSystem.h" />
+    <ClInclude Include="Source\Physics\System\Simplex.h" />
     <ClInclude Include="Source\System\Adapter\Dxlib\DxlibConstants.h" />
     <ClInclude Include="Source\System\Adapter\Dxlib\DxlibConvert.h" />
     <ClInclude Include="Source\System\Adapter\Dxlib\DxlibInput.h" />
@@ -217,6 +218,7 @@
     <ClCompile Include="Source\Main.cpp" />
     <ClCompile Include="Source\Physics\Collider\SphereColliderComponent.cpp" />
     <ClCompile Include="Source\Physics\System\CollisionSystem.cpp" />
+    <ClCompile Include="Source\Physics\System\Simplex.cpp" />
     <ClCompile Include="Source\System\Adapter\Dxlib\DxlibInput.cpp" />
     <ClCompile Include="Source\System\Adapter\Dxlib\DxlibRenderer.cpp" />
     <ClCompile Include="Source\System\Adapter\Dxlib\DxlibSystem.cpp" />
