@@ -4,6 +4,7 @@
 #include <memory>
 
 #include "SparseSetStorageBase.h"
+#include "ObjectManager.h"
 
 class IWorld
 {
@@ -25,6 +26,9 @@ public:
 
 		return static_cast<SparseSetStorageBase<T>*>(storages[it->second].get());
 	}
+
+	// オブジェクトマネージャー取得
+	virtual ObjectManager* GetObjectManager() { return nullptr; };
 
 	// 仮想デストラクタ
 	virtual ~IWorld() = default;

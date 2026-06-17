@@ -51,6 +51,8 @@ protected:
 		// 対応付け
 		storageMap[typeid(T)] = storages.size() - 1;
 	}
+	// オブジェクトマネージャー取得
+	ObjectManager* GetObjectManager() override;
 
 	void FadeIn();
 	void FadeOut();
@@ -66,4 +68,6 @@ protected:
 	std::vector<std::unique_ptr<FixedUpdateSystem>> fixedUpdateSystems;
 	// 描画系システム
 	std::vector<std::unique_ptr<RenderingSystem>> renderingSystems;
+	// オブジェクトマネージャー
+	std::unique_ptr<ObjectManager> objectManager;
 };

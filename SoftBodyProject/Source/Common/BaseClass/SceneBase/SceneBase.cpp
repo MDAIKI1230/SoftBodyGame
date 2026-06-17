@@ -15,6 +15,8 @@ SceneBase::SceneBase()
 	AddStorage<RendererComponent>(std::make_unique<RendererComponentStorage>());
 	// Transformも同様
 	AddStorage<TransformComponent>(std::make_unique<TransformComponentStorage>());
+	// オブジェクトマネージャー
+	objectManager = std::make_unique<ObjectManager>();
 }
 
 void SceneBase::Execute()
@@ -107,6 +109,12 @@ void SceneBase::AddSystem(std::unique_ptr<RenderingSystem> _system)
 
 	// その位置に挿入
 	renderingSystems.insert(it, std::move(_system));
+}
+
+// オブジェクトマネージャー取得
+ObjectManager* SceneBase::GetObjectManager()
+{
+	return objectManager.get();
 }
 
 void SceneBase::FadeIn()
