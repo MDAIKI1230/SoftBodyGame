@@ -1,16 +1,22 @@
 #include <algorithm>
 
-#include "TransformComponent.h"
-#include "ColliderComponentStorage.h"
-
 #include "CollisionSystem.h"
 
 void CollisionSystem::FixedUpdate(IWorld* world)
 {
 	// コライダーストレージ
-	SparseSetStorageBase<ColliderComponent>* colliderStorage{ world->GetStorage<ColliderComponent>() };
+	ColliderComponentStorage* colliderStorage { static_cast<ColliderComponentStorage*>(world->GetStorage<ColliderComponent>()) };
 	// Transformストレージ
-	SparseSetStorageBase<TransformComponent>* transformStorage{ world->GetStorage<TransformComponent>() };
+	TransformComponentStorage* transformStorage { static_cast<TransformComponentStorage*>(world->GetStorage<TransformComponent>()) };
+	// オブジェクトマネージャー
+	ObjectManager* objectManager{ world->GetObjectManager() };
+
+	// --- 衝突処理 --- 
+	BroadPhase(transformStorage, colliderStorage);
+	NarrowPhase(transformStorage, colliderStorage, objectManager);
+
+	// 終了
+	End();
 }
 
 void CollisionSystem::BroadPhase(TransformComponentStorage* transformStorage, ColliderComponentStorage* colliderStorage)
@@ -101,12 +107,12 @@ void CollisionSystem::BroadPhase(TransformComponentStorage* transformStorage, Co
 	}
 }
 
-void CollisionSystem::NarrowPhase(TransformComponentStorage* transformStorage, ColliderComponentStorage* colliderStorage)
+void CollisionSystem::NarrowPhase(TransformComponentStorage* transformStorage, ColliderComponentStorage* colliderStorage, ObjectManager* objectManager)
 {
 	// 参照用
 	TransformComponent transA{}, transB{};
 
-	// 
+	// ナローフェーズに行けたペアの衝突判定をしていく
 	for (auto& pair : narrowPairs)
 	{
 		// Transformがあるかチェックないなら飛ばす
@@ -125,9 +131,20 @@ void CollisionSystem::NarrowPhase(TransformComponentStorage* transformStorage, C
 
 		if (GJK(*collA, transA, *collB, transB))
 		{
-
+			objectManager->Get(pair.a)->OnCollision();
+			objectManager->Get(pair.a)->OnCollision();
 		}
 	}
+}
+
+void CollisionSystem::End()
+{
+	// 全リセット
+	colliderProjectionXValues.clear();
+	colliderProjectionYValues.clear();
+	colliderProjectionZValues.clear();
+	crossCountMap.clear();
+	narrowPairs.clear();
 }
 
 void CollisionSystem::CheckProjectionAxisValueCross(const std::vector<ColliderProjection>& projectionAxisValues)

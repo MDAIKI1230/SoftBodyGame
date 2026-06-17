@@ -5,6 +5,8 @@
 
 #include "TransformComponentStorage.h"
 #include "ColliderComponentStorage.h"
+#include "ObjectManager.h"
+
 #include "ColliderProjection.h"
 #include "CollPair.h"
 #include "Simplex.h"
@@ -20,7 +22,9 @@ private:
 	// ブロードフェーズ
 	void BroadPhase(TransformComponentStorage* transformStorage, ColliderComponentStorage* colliderStorage);
 	// ナローフェーズ
-	void NarrowPhase(TransformComponentStorage* transformStorage, ColliderComponentStorage* colliderStorage);
+	void NarrowPhase(TransformComponentStorage* transformStorage, ColliderComponentStorage* colliderStorage, ObjectManager* objectManager);
+	// 終了処理
+	void End();
 	/// <summary>
 	/// 軸射影重なり判定
 	/// </summary>
@@ -62,7 +66,7 @@ private:
 	std::vector<ColliderProjection> colliderProjectionZValues;
 
 	// AABBの衝突判定用のカウンター
-	std::unordered_map<CollPair, int> crossCountMap;
+	std::unordered_map<CollPair, int> crossCountMap{};
 
 	// ナローフェーズをするペア
 	std::vector<CollPair> narrowPairs;
