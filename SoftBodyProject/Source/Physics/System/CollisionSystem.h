@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <unordered_map>
+#include <unordered_set>
 
 #include "TransformComponentStorage.h"
 #include "ColliderComponentStorage.h"
@@ -57,7 +58,7 @@ private:
 	// 四点の時(四面体)の計算
 	bool SolveTetrahedron(Simplex& _simplex, Vector3& _output);
 private:
-	// ブロードフェーズ用コンテナ
+	// --- ブロードフェーズ用コンテナ ---
 	// X軸射影
 	std::vector<ColliderProjection> colliderProjectionXValues;
 	// y軸射影
@@ -70,4 +71,10 @@ private:
 
 	// ナローフェーズをするペア
 	std::vector<CollPair> narrowPairs;
+
+	// --- 衝突管理 ---
+	// 今回当たってたやつ
+	std::unordered_set<CollPair> currentFramePair;
+	// 前回当たってたやつ
+	std::unordered_set<CollPair> prevFramePair;
 };

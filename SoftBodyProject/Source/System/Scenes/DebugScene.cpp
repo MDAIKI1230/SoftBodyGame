@@ -4,12 +4,17 @@
 
 #include "TransformComponent.h"
 
+#include "ColliderComponent.h"
+#include "ColliderComponentStorage.h"
+#include "CollisionSystem.h"
+
 #include "DebugScene.h"
 
 // コンストラクタ
 DebugScene::DebugScene()
 {
-
+	AddSystem(std::make_unique<CollisionSystem>());
+	AddStorage<ColliderComponent>(std::make_unique<ColliderComponentStorage>());
 }
 // 初期化
 void DebugScene::Initialize()

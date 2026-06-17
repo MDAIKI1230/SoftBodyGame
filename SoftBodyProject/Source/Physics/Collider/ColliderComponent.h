@@ -18,5 +18,6 @@ public:
 	// 仮想デストラクタ
 	virtual ~ColliderComponent() = default;
 protected:
+	// ブロードフェーズ
 	AABBBroadPhaseCollider aabb;
 };

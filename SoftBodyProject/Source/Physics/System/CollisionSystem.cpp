@@ -131,8 +131,35 @@ void CollisionSystem::NarrowPhase(TransformComponentStorage* transformStorage, C
 
 		if (GJK(*collA, transA, *collB, transB))
 		{
-			objectManager->Get(pair.a)->OnCollision();
-			objectManager->Get(pair.a)->OnCollision();
+			// 今回のペア追加
+			currentFramePair.insert(pair);
+
+			ObjectBase* objA{ objectManager->Get(pair.a) };
+			ObjectBase* objB{ objectManager->Get(pair.b) };
+			// 当たっているのでとりあえずよべる
+			objA->OnCollision();
+			objB->OnCollision();
+
+			// 前回のフレーム当たってなくて今回当たってるため衝突開始のイベントを呼ぶ
+			if (!prevFramePair.contains(pair))
+			{
+				objA->OnCollisionEnter();
+				objB->OnCollisionEnter();
+			}
+		}
+	}
+
+	// OnCollisionExit呼び出し
+	for (auto& pair : prevFramePair)
+	{
+		// 前フレーム当たってて今回の衝突ペアにいないから衝突しなくなった
+		if (!currentFramePair.contains(pair))
+		{
+			ObjectBase* objA{ objectManager->Get(pair.a) };
+			ObjectBase* objB{ objectManager->Get(pair.b) };
+			// イベント呼び出し
+			objA->OnCollisionExit();
+			objB->OnCollisionExit();
 		}
 	}
 }
