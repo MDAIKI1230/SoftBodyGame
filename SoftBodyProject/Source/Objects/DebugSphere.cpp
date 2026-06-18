@@ -1,8 +1,14 @@
+#include "TransformComponent.h"
+
+#include "SphereColliderComponent.h"
+
 #include "DebugSphere.h"
 
 DebugSphere::DebugSphere(IWorld* world, int handle) :
 	ObjectBase{ world,handle }
 {
+	AddComponent<TransformComponent>();
+	AddComponent<SphereColliderComponent>();
 }
 
 // --- 更新系 ---
