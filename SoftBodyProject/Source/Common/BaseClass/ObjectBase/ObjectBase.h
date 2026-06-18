@@ -1,8 +1,17 @@
 #pragma once
 
+#include "IWorld.h"
+
 class ObjectBase
 {
 public:
+	// コンストラクタ
+	ObjectBase(IWorld* _world, int _handle) :
+		world{ _world },
+		handle{ _handle }
+	{
+	}
+
 	// --- 更新系 ---
 
 	// 更新処理
@@ -31,4 +40,5 @@ public:
 	virtual ~ObjectBase() = default;
 private:
 	int handle;
+	IWorld* world;
 };

@@ -5,6 +5,11 @@
 class DebugSphere:public ObjectBase
 {
 public:
+	// コンストラクタ
+	DebugSphere(IWorld* world, int handle) :
+		ObjectBase{ world,handle }
+	{
+	}
 	// --- 更新系 ---
 
 	void Update() override;
