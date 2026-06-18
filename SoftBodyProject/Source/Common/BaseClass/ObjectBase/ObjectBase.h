@@ -19,6 +19,12 @@ public:
 	// 衝突終わり
 	virtual void OnCollisionExit() = 0;
 
+	// --- コンポーネント ---
+
+	// 追加
+	template<typename T,typename ... Args>
+	void AddComponent(Args&&... args);
+
 	// --- ゲッター　---
 	int GetHandle() { return handle; }
 	// 仮想デストラクタ
