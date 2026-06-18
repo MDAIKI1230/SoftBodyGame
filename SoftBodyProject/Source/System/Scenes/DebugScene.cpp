@@ -27,6 +27,15 @@ void DebugScene::Initialize()
 
 	objectManager->Add(std::make_unique<DebugSphere>(this, 0));
 
+	SphereColliderComponent scc{ 30.0f };
+	GetStorage<SphereColliderComponent>()->Add(1, scc)->SetColor(Color{ 255,255,255 });
+
+	TransformComponent trans01{};
+
+	trans01.SetPosition(Vector3{ 0,0,-300 });
+
+	GetStorage<TransformComponent>()->Add(1, trans01);
+
 	/*RendererComponent renderer{ ServiceLocator::GetRenderer()->LoadModel(std::string{"Res/Model/M_001_player_073_01.mv1"}) };
 	
 	GetStorage<RendererComponent>()->Add(0,renderer);

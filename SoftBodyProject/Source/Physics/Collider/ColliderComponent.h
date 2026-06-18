@@ -18,7 +18,7 @@ public:
 	// 色取得
 	const Color& GetColor() { return color; }
 	// 色セット
-	void SetColor(Color& _color) { color = _color; }
+	void SetColor(const Color& _color) { color = _color; }
 	/// <summary>
 	/// サポート関数
 	/// </summary>
