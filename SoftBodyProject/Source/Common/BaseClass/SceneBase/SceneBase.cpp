@@ -4,6 +4,7 @@
 
 #include "ModelRenderingSystem.h"
 #include "RendererComponentStorage.h"
+#include "DebugRenderingSystem.h"
 
 #include "TransformComponentStorage.h"
 
@@ -17,6 +18,10 @@ SceneBase::SceneBase()
 	AddStorage<TransformComponent>(std::make_unique<TransformComponentStorage>());
 	// オブジェクトマネージャー
 	objectManager = std::make_unique<ObjectManager>();
+
+#ifdef _DEBUG
+	AddSystem(std::make_unique<DebugRenderingSystem>());
+#endif // _DEBUG
 }
 
 void SceneBase::Execute()

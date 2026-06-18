@@ -265,6 +265,9 @@
     <ClInclude Include="Source\Common\BaseClass\ObjectBase\ObjectBase.h">
       <Filter>ソース ファイル\Common\BaseClass\ObjectBase</Filter>
     </ClInclude>
+    <ClInclude Include="Source\System\ComponentSystems\DebugRenderingSystem.h">
+      <Filter>ソース ファイル\System\ComponentSystems</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\System\Adapter\Dxlib\DxlibInput.cpp">
@@ -341,6 +344,9 @@
     </ClCompile>
     <ClCompile Include="Source\Common\BaseClass\ObjectBase\ObjectBase.cpp">
       <Filter>ソース ファイル\Common\BaseClass\ObjectBase</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\System\ComponentSystems\DebugRenderingSystem.cpp">
+      <Filter>ソース ファイル\System\ComponentSystems</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

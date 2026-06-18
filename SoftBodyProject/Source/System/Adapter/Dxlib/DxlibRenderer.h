@@ -14,6 +14,13 @@ public:
 	int ClearDrawScreen() override;
 	// ダブルバッファリングの反転
 	int ScreenFlip() override;
+	// --- 設定 ---
+
+	// ZDepth使う
+	int SetUseZDepth(bool _flag) override;
+	// ZDepth書き込み
+	int SetWriteZDepth(bool _flag) override;
+
 	// ---読み込み関数---
 	
 	// モデルの読み込み

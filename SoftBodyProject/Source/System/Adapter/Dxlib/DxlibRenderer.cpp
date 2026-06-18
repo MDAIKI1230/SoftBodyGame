@@ -20,6 +20,18 @@ int DxlibRenderer::ScreenFlip()
 	return DxLib::ScreenFlip();
 }
 
+// ZDepth使う
+int DxlibRenderer::SetUseZDepth(bool _flag)
+{
+	return DxLib::SetUseZBuffer3D(_flag);
+}
+
+// ZDepth書き込み
+int DxlibRenderer::SetWriteZDepth(bool _flag)
+{
+	return DxLib::SetWriteZBuffer3D(_flag);
+}
+
 // モデルの読み込み
 int DxlibRenderer::LoadModel(const std::string& _fileName)
 {
@@ -58,6 +70,9 @@ void DxlibRenderer::ModelSetMatrix(int _handle, const Matrix4x4& _mat)
 // モデル描画
 void DxlibRenderer::DrawModel(int _handle)
 {
+	MV1SetUseZBuffer(_handle, true);
+	MV1SetWriteZBuffer(_handle, true);
+
 	DxLib::MV1DrawModel(_handle);
 }
 

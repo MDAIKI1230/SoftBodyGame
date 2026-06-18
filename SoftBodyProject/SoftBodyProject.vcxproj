@@ -194,6 +194,7 @@
     <ClInclude Include="Source\System\Adapter\Dxlib\DxlibSystem.h" />
     <ClInclude Include="Source\System\ComponentStorages\RendererComponentStorage.h" />
     <ClInclude Include="Source\System\ComponentStorages\TransformComponentStorage.h" />
+    <ClInclude Include="Source\System\ComponentSystems\DebugRenderingSystem.h" />
     <ClInclude Include="Source\System\ComponentSystems\ModelRenderingSystem.h" />
     <ClInclude Include="Source\System\Components\RendererComponent.h" />
     <ClInclude Include="Source\System\Components\TransformComponent.h" />
@@ -224,6 +225,7 @@
     <ClCompile Include="Source\System\Adapter\Dxlib\DxlibInput.cpp" />
     <ClCompile Include="Source\System\Adapter\Dxlib\DxlibRenderer.cpp" />
     <ClCompile Include="Source\System\Adapter\Dxlib\DxlibSystem.cpp" />
+    <ClCompile Include="Source\System\ComponentSystems\DebugRenderingSystem.cpp" />
     <ClCompile Include="Source\System\ComponentSystems\ModelRenderingSystem.cpp" />
     <ClCompile Include="Source\System\Manager\ApplicationManager.cpp" />
     <ClCompile Include="Source\System\Manager\ObjectManager.cpp" />

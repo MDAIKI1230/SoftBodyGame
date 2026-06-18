@@ -17,6 +17,13 @@ public:
 	virtual int ClearDrawScreen() = 0;
 	// ダブルバッファリングの反転
 	virtual int ScreenFlip() = 0;
+	// --- 設定 ---
+
+	// ZDepth使う
+	virtual int SetUseZDepth(bool _flag) = 0;
+	// ZDepth書き込み
+	virtual int SetWriteZDepth(bool _flag) = 0;
+
 	// ---読み込み関数---
 	
 	// モデルの読み込み

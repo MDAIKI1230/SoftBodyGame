@@ -2,6 +2,8 @@
 
 #include "MDMath.h"
 
+#include "Dxlib.h"
+
 // 行列変換
 MATRIX ToDxlib(const Matrix4x4& _mat)
 {

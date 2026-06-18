@@ -20,7 +20,7 @@ DebugScene::DebugScene()
 // 初期化
 void DebugScene::Initialize()
 {
-	Camera camera{ Vector3{0,0,-100},Vector3{0,0,0} };
+	Camera camera{ Vector3{0,0,-500},Vector3{0,0,0} };
 	ServiceLocator::GetRenderer()->SetCamera(camera);
 
 	RendererComponent renderer{ ServiceLocator::GetRenderer()->LoadModel(std::string{"Res/Model/M_001_player_073_01.mv1"}) };
@@ -28,11 +28,24 @@ void DebugScene::Initialize()
 	GetStorage<RendererComponent>()->Add(0,renderer);
 
 	TransformComponent trans{};
+	trans.SetPosition(Vector3{ 0,0,0 });
 
 	GetStorage<TransformComponent>()->Add(0, trans);
 
-	SphereColliderComponent scc{ 100.0f };
-	GetStorage<SphereColliderComponent>()->Add(0, scc);
+	GetStorage<RendererComponent>()->Add(1, renderer);
+
+	trans.SetPosition(Vector3{ 0,0,-300 });
+
+	GetStorage<TransformComponent>()->Add(1, trans);
+
+	SphereColliderComponent scc{ 30.0f };
+	GetStorage<SphereColliderComponent>()->Add(1, scc);
+
+	TransformComponent trans01{};
+
+	trans01.SetPosition(Vector3{ 0,0,-300 });
+
+	GetStorage<TransformComponent>()->Add(1, trans01);
 
 	state = SceneState::UPDATE;
 }

@@ -35,6 +35,9 @@ int ApplicationManager::ApplicationMain()
 		return -1;			// エラーが起きたら直ちに終了
 	}
 
+	renderer->SetUseZDepth(true);
+	renderer->SetWriteZDepth(true);
+
 	while (system->ProcessMessage() == 0 && input->GetKeyPress(KeyConstants::ESCAPE) == 0)
 	{
 		input->Update();
