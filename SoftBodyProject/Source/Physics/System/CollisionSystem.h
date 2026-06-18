@@ -5,7 +5,7 @@
 #include <unordered_set>
 
 #include "TransformComponentStorage.h"
-#include "ColliderComponentStorage.h"
+#include "SphereColliderComponentStorage.h"
 #include "ObjectManager.h"
 
 #include "ColliderProjection.h"
@@ -21,9 +21,9 @@ public:
 	void FixedUpdate(IWorld* world) override;
 private:
 	// ブロードフェーズ
-	void BroadPhase(TransformComponentStorage* transformStorage, ColliderComponentStorage* colliderStorage);
+	void BroadPhase(TransformComponentStorage* transformStorage, SphereColliderComponentStorage* sphereStorage);
 	// ナローフェーズ
-	void NarrowPhase(TransformComponentStorage* transformStorage, ColliderComponentStorage* colliderStorage, ObjectManager* objectManager);
+	void NarrowPhase(TransformComponentStorage* transformStorage, SphereColliderComponentStorage* sphereStorage, ObjectManager* objectManager);
 	// 終了処理
 	void End();
 	/// <summary>

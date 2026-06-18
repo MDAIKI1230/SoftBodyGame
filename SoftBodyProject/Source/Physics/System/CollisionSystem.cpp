@@ -5,21 +5,21 @@
 void CollisionSystem::FixedUpdate(IWorld* world)
 {
 	// コライダーストレージ
-	ColliderComponentStorage* colliderStorage { static_cast<ColliderComponentStorage*>(world->GetStorage<ColliderComponent>()) };
+	SphereColliderComponentStorage* sphereStorage{ static_cast<SphereColliderComponentStorage*>(world->GetStorage<SphereColliderComponent>()) };
 	// Transformストレージ
 	TransformComponentStorage* transformStorage { static_cast<TransformComponentStorage*>(world->GetStorage<TransformComponent>()) };
 	// オブジェクトマネージャー
 	ObjectManager* objectManager{ world->GetObjectManager() };
 
 	// --- 衝突処理 --- 
-	BroadPhase(transformStorage, colliderStorage);
-	NarrowPhase(transformStorage, colliderStorage, objectManager);
+	BroadPhase(transformStorage, sphereStorage);
+	NarrowPhase(transformStorage, sphereStorage, objectManager);
 
 	// 終了
 	End();
 }
 
-void CollisionSystem::BroadPhase(TransformComponentStorage* transformStorage, ColliderComponentStorage* colliderStorage)
+void CollisionSystem::BroadPhase(TransformComponentStorage* transformStorage, SphereColliderComponentStorage* sphereStorage)
 {
 	/*
 		後から、インサートソートに変更するがGJKアルゴリズムが動くまで(すべての形)は追加ー＞ソートで対応。
@@ -28,7 +28,7 @@ void CollisionSystem::BroadPhase(TransformComponentStorage* transformStorage, Co
 	TransformComponent trans{};
 
 	// すべてのコライダーのAABBの各軸の射影を保存する。
-	for (int entity : *colliderStorage->GetEntities())
+	for (int entity : *sphereStorage->GetEntities())
 	{
 		// Transformがあるかチェックないなら飛ばす
 		if (!transformStorage->TryGet(entity, trans))
@@ -37,7 +37,7 @@ void CollisionSystem::BroadPhase(TransformComponentStorage* transformStorage, Co
 		}
 
 		// 各軸に射影して値を保存
-		ColliderComponent* col{ colliderStorage->Get(entity) };
+		ColliderComponent* col{ sphereStorage->Get(entity) };
 
 		const Vector3& min{ col->GetBroadMin() + trans.GetPosition() };
 		const Vector3& max{ col->GetBroadMax() + trans.GetPosition() };
@@ -107,7 +107,7 @@ void CollisionSystem::BroadPhase(TransformComponentStorage* transformStorage, Co
 	}
 }
 
-void CollisionSystem::NarrowPhase(TransformComponentStorage* transformStorage, ColliderComponentStorage* colliderStorage, ObjectManager* objectManager)
+void CollisionSystem::NarrowPhase(TransformComponentStorage* transformStorage, SphereColliderComponentStorage* sphereStorage, ObjectManager* objectManager)
 {
 	// 参照用
 	TransformComponent transA{}, transB{};
@@ -126,8 +126,8 @@ void CollisionSystem::NarrowPhase(TransformComponentStorage* transformStorage, C
 		}
 
 		// 各コライダー取得
-		ColliderComponent* collA{ colliderStorage->Get(pair.a) };
-		ColliderComponent* collB{ colliderStorage->Get(pair.a) };
+		ColliderComponent* collA{ sphereStorage->Get(pair.a) };
+		ColliderComponent* collB{ sphereStorage->Get(pair.a) };
 
 		if (GJK(*collA, transA, *collB, transB))
 		{

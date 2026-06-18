@@ -5,6 +5,8 @@
 struct ColliderComponent
 {
 public:
+	// コンストラクタ
+	ColliderComponent() = default;
 	// ブロードフェーズ用AABBの(XYZ軸ごとの)最小値
 	const Vector3& GetBroadMin() { return aabb.min; }
 	// ブロードフェーズ用AABBの(XYZ軸ごとの)最大値

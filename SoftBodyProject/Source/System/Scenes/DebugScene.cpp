@@ -5,7 +5,8 @@
 #include "TransformComponent.h"
 
 #include "ColliderComponent.h"
-#include "ColliderComponentStorage.h"
+#include "SphereColliderComponent.h"
+#include "SphereColliderComponentStorage.h"
 #include "CollisionSystem.h"
 
 #include "DebugScene.h"
@@ -14,7 +15,7 @@
 DebugScene::DebugScene()
 {
 	AddSystem(std::make_unique<CollisionSystem>());
-	AddStorage<ColliderComponent>(std::make_unique<ColliderComponentStorage>());
+	AddStorage<SphereColliderComponent>(std::make_unique<SphereColliderComponentStorage>());
 }
 // 初期化
 void DebugScene::Initialize()
@@ -29,6 +30,9 @@ void DebugScene::Initialize()
 	TransformComponent trans{};
 
 	GetStorage<TransformComponent>()->Add(0, trans);
+
+	SphereColliderComponent scc{ 100.0f };
+	GetStorage<SphereColliderComponent>()->Add(0, scc);
 
 	state = SceneState::UPDATE;
 }
