@@ -127,7 +127,7 @@ void CollisionSystem::NarrowPhase(TransformComponentStorage* transformStorage, S
 
 		// 各コライダー取得
 		ColliderComponent* collA{ sphereStorage->Get(pair.a) };
-		ColliderComponent* collB{ sphereStorage->Get(pair.a) };
+		ColliderComponent* collB{ sphereStorage->Get(pair.b) };
 
 		if (GJK(*collA, transA, *collB, transB))
 		{
@@ -137,17 +137,32 @@ void CollisionSystem::NarrowPhase(TransformComponentStorage* transformStorage, S
 			ObjectBase* objA{ objectManager->Get(pair.a) };
 			ObjectBase* objB{ objectManager->Get(pair.b) };
 			// 当たっているのでとりあえずよべる
-			objA->OnCollision();
-			objB->OnCollision();
+			if (objA != nullptr)
+			{
+				objA->OnCollision();
+			}
+			if (objB != nullptr)
+			{
+				objB->OnCollision();
+			}
 
 			// 前回のフレーム当たってなくて今回当たってるため衝突開始のイベントを呼ぶ
 			if (!prevFramePair.contains(pair))
 			{
-				objA->OnCollisionEnter();
-				objB->OnCollisionEnter();
+				if (objA != nullptr)
+				{
+					objA->OnCollisionEnter();
+				}
+
+				if (objB != nullptr)
+				{
+					objB->OnCollisionEnter();
+				}
 			}
 		}
 	}
+
+	std::unordered_set<CollPair> erasePair;
 
 	// OnCollisionExit呼び出し
 	for (auto& pair : prevFramePair)
@@ -155,12 +170,27 @@ void CollisionSystem::NarrowPhase(TransformComponentStorage* transformStorage, S
 		// 前フレーム当たってて今回の衝突ペアにいないから衝突しなくなった
 		if (!currentFramePair.contains(pair))
 		{
+			// 取得
 			ObjectBase* objA{ objectManager->Get(pair.a) };
 			ObjectBase* objB{ objectManager->Get(pair.b) };
 			// イベント呼び出し
-			objA->OnCollisionExit();
-			objB->OnCollisionExit();
+			if (objA != nullptr)
+			{
+				objA->OnCollisionExit();
+			}
+			if (objB != nullptr)
+			{
+				objB->OnCollisionExit();
+			}
+
+			erasePair.insert(pair);
 		}
+	}
+
+	// 削除
+	for (auto& pair : erasePair)
+	{
+		prevFramePair.erase(pair);
 	}
 }
 
@@ -172,6 +202,18 @@ void CollisionSystem::End()
 	colliderProjectionZValues.clear();
 	crossCountMap.clear();
 	narrowPairs.clear();
+
+	// 前回フレーム衝突に追加
+	for (auto& pair : currentFramePair)
+	{
+		if (!prevFramePair.contains(pair))
+		{
+			prevFramePair.insert(pair);
+		}
+	}
+
+	// 追加後にリセット
+	currentFramePair.clear();
 }
 
 void CollisionSystem::CheckProjectionAxisValueCross(const std::vector<ColliderProjection>& projectionAxisValues)
@@ -253,31 +295,6 @@ bool CollisionSystem::GJK(
 			return true;
 		}
 	}
-
-	//// 上方向の支点を最初の支点とする
-	//Vector3 dir{ Vector3::UP };
-	//// ミンコフスキー差の支点(上方向)
-	//Vector3 fulcrums[3]
-	//{
-	//	// 初期の点以外はゼロで初期化
-	//	collider01.Support(dir) - collider02.Support(-dir) + (transform02.GetPosition() - transform01.GetPosition())
-	//	,Vector3::ZERO,Vector3::ZERO
-	//};
-
-	//// どのインデックスに点を入れるのか(今、0,1には初期点とその点から生成した方向とその時の支点が入っているので最後の2の要素がスタート)
-	//char index{ 2 };
-	//// 新しく出した支点とその時の方向の内積が0以下なら原点にこれ以上向かう事が出来ないとして終了
-	//while (dot <= 0.0f)
-	//{
-	//	// 点の生成
-	//	// 既存の2つの点から線分を生成(インデックスは決めるインデックスの次とその次)
-	//	
-	//	// この新しい方向から新たな点を計算
-	//	fulcrums[index] = collider01.Support(dir) - collider02.Support(-dir) + (transform02.GetPosition() - transform01.GetPosition());
-
-	//	// 4面体内に原点が含まれているか判定
-
-	//}
 
 	return false;
 }

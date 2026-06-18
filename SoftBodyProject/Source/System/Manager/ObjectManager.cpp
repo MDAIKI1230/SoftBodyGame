@@ -24,5 +24,11 @@ void ObjectManager::FixedUpdate()
 
 ObjectBase* ObjectManager::Get(int _index)
 {
+	// サイズチェック
+	if (_index >= objects.size())
+	{
+		return nullptr;
+	}
+
 	return objects[_index].get();
 }
