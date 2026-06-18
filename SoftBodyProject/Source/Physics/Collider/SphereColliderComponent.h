@@ -16,6 +16,8 @@ public:
 	SphereColliderComponent(float _r) :
 		r{ _r }
 	{
+		aabb.min = { -r,-r,-r };
+		aabb.max = { r,r,r };
 	}
 
 	// サポート関数

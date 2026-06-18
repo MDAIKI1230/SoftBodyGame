@@ -15,5 +15,5 @@ private:
 	// 頂点
 	Vector3 vertices[4];
 	// 頂点数
-	int size;
+	int size{ 0 };
 };

@@ -147,7 +147,7 @@ void SceneBase::Update()
 	// 物理更新
 	while (ServiceLocator::GetTimeManager()->IsFixedUpdateTime())
 	{
-		for (int i{ 0 }; i < updateSystems.size(); i++)
+		for (int i{ 0 }; i < fixedUpdateSystems.size(); i++)
 		{
 			fixedUpdateSystems[i]->FixedUpdate(this);
 		}
