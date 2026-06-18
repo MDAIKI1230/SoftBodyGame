@@ -1,6 +1,7 @@
 #pragma once
 
 #include "MDMath.h"
+#include "Color.h"
 
 #include "Dxlib.h"
 
@@ -36,5 +37,11 @@ MATRIX ToDxlib(const Matrix4x4& _mat)
 // ベクトル変換
 VECTOR ToDxlib(const Vector3& _vec)
 {
-	return VGet(_vec.x, _vec.y, _vec.z);
+	return DxLib::VGet(_vec.x, _vec.y, _vec.z);
+}
+
+// 色
+unsigned int ToDxlib(const Color& _color)
+{
+	return DxLib::GetColor(_color.r, _color.g, _color.b);
 }

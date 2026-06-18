@@ -1,14 +1,14 @@
 #include "ObjectManager.h"
 
 
-void ObjectManager::Add(ObjectBase* _object)
+void ObjectManager::Add(std::unique_ptr<ObjectBase> _object)
 {
-	objects.push_back(_object);
+	objects.push_back(std::move(_object));
 }
 
 void ObjectManager::Update()
 {
-	for (auto obj : objects)
+	for (auto& obj : objects)
 	{
 		obj->Update();
 	}
@@ -16,7 +16,7 @@ void ObjectManager::Update()
 
 void ObjectManager::FixedUpdate()
 {
-	for (auto obj : objects)
+	for (auto& obj : objects)
 	{
 		obj->FixedUpdate();
 	}
@@ -24,5 +24,5 @@ void ObjectManager::FixedUpdate()
 
 ObjectBase* ObjectManager::Get(int _index)
 {
-	return objects[_index];
+	return objects[_index].get();
 }

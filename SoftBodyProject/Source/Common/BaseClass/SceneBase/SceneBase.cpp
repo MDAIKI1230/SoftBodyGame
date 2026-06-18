@@ -1,12 +1,14 @@
 #include <algorithm>
 
-#include "SceneBase.h"
+#include "ServiceLocator.h"
 
 #include "ModelRenderingSystem.h"
 #include "RendererComponentStorage.h"
 #include "DebugRenderingSystem.h"
 
 #include "TransformComponentStorage.h"
+
+#include "SceneBase.h"
 
 SceneBase::SceneBase()
 {
@@ -138,6 +140,19 @@ void SceneBase::Update()
 	for (int i{ 0 }; i < updateSystems.size(); i++)
 	{
 		updateSystems[i]->Update(this);
+	}
+	// オブジェクトマネージャー更新
+	objectManager->Update();
+
+	// 物理更新
+	while (ServiceLocator::GetTimeManager()->IsFixedUpdateTime())
+	{
+		for (int i{ 0 }; i < updateSystems.size(); i++)
+		{
+			fixedUpdateSystems[i]->FixedUpdate(this);
+		}
+
+		objectManager->FixedUpdate();
 	}
 }
 

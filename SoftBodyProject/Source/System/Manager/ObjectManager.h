@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <memory>
 
 #include "ObjectBase.h"
 
@@ -10,7 +11,7 @@ public:
 	// --- 追加・削除系 ---
 
 	// 追加
-	void Add(ObjectBase* _object);
+	void Add(std::unique_ptr<ObjectBase> _object);
 
 	// --- 更新系 ---
 
@@ -20,5 +21,5 @@ public:
 	// オブジェクト取得
 	ObjectBase* Get(int _index);
 private:
-	std::vector<ObjectBase*> objects;
+	std::vector<std::unique_ptr<ObjectBase>> objects;
 };

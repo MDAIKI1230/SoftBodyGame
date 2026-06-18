@@ -17,7 +17,4 @@ public:
 	void OnCollisionEnter() override;
 	void OnCollision() override;
 	void OnCollisionExit() override;
-
-private:
-	bool isCollision{ false };
 };

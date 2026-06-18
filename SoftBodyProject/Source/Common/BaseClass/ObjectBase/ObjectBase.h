@@ -1,6 +1,8 @@
 #pragma once
 
-class IWorld;
+#include <utility>
+
+#include "IWorld.h"
 
 class ObjectBase
 {
@@ -32,7 +34,31 @@ public:
 
 	// 追加
 	template<typename T,typename ... Args>
-	void AddComponent(Args&&... args);
+	T* AddComponent(Args&&... args)
+	{
+		SparseSetStorageBase<T>* storage{ world->GetStorage<T>() };
+
+		if(storage != nullptr)
+		{
+			return storage->Add(handle, T{ std::forward<Args>(args)... });
+		}
+
+		return nullptr;
+	}
+
+	// 取得
+	template<typename T>
+	T* GetComponent()
+	{
+		SparseSetStorageBase<T>* storage{ world->GetStorage<T>() };
+
+		if (storage != nullptr)
+		{
+			return storage->Get(handle);
+		}
+
+		return nullptr;
+	}
 
 	// --- ゲッター　---
 	int GetHandle() { return handle; }

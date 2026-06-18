@@ -2,6 +2,10 @@
 
 #include "AABBBroadPhaseCollider.h"
 
+#ifdef _DEBUG
+#include "Color.h"
+#endif // DEBUG
+
 struct ColliderComponent
 {
 public:
@@ -11,6 +15,10 @@ public:
 	const Vector3& GetBroadMin() { return aabb.min; }
 	// ブロードフェーズ用AABBの(XYZ軸ごとの)最大値
 	const Vector3& GetBroadMax() { return aabb.max; }
+	// 色取得
+	const Color& GetColor() { return color; }
+	// 色セット
+	void SetColor(Color& _color) { color = _color; }
 	/// <summary>
 	/// サポート関数
 	/// </summary>
@@ -22,4 +30,8 @@ public:
 protected:
 	// ブロードフェーズ
 	AABBBroadPhaseCollider aabb;
+	// デバッグの色
+#ifdef _DEBUG
+	Color color;
+#endif // _DEBUG
 };

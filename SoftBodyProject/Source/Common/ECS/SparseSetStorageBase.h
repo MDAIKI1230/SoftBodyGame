@@ -20,7 +20,7 @@ public:
 	/// </summary>
 	/// <param name="entity">エンティティID</param>
 	/// <param name="component">追加コンポーネント</param>
-	void Add(int _entity, const T& _obj) { sparseSet.Add(_entity, _obj); }
+	T* Add(int _entity, const T& _obj) { return sparseSet.Add(_entity, _obj); }
 	/// <summary>
 	/// 除外
 	/// </summary>

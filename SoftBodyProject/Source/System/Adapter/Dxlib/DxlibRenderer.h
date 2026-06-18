@@ -48,7 +48,7 @@ public:
 	// 画像描画
 	void DrawGraph(const Vector2& _pos, int _handle, bool _transFlag) override;
 	// 球描画
-	void DrawSphere(const Vector3& _pos, float _radius) override;
+	void DrawSphere(const Vector3& _pos, float _radius, const Color& _color) override;
 	// ---リソース削除関数---
 	
 	// モデル素材削除

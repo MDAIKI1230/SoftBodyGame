@@ -4,7 +4,8 @@
 #include <memory>
 
 #include "SparseSetStorageBase.h"
-#include "ObjectManager.h"
+
+class ObjectManager;
 
 class IWorld
 {

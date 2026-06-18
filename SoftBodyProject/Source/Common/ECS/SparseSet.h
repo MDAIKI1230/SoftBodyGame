@@ -24,7 +24,7 @@ public:
 	/// </summary>
 	/// <param name="entity">エンティティID</param>
 	/// <param name="component">追加オブジェクト</param>
-	void Add(int _entity, const T& _obj)
+	T* Add(int _entity, const T& _obj)
 	{
 		// コンポーネント追加
 		dense.push_back(_obj);
@@ -32,6 +32,8 @@ public:
 		entities.push_back(_entity);
 		// 対応付け
 		sparse[_entity] = dense.size() - 1;
+
+		return &dense.back();
 	}
 	/// <summary>
 	/// 除外

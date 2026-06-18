@@ -89,8 +89,8 @@
     <Filter Include="ソース ファイル\Physics\Struct">
       <UniqueIdentifier>{893e4b80-687b-4e31-bf97-04bd8616466d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\Common\BaseClass\ObjectBase">
-      <UniqueIdentifier>{c0cd04f6-6c1a-4749-99c9-347c82b761a9}</UniqueIdentifier>
+    <Filter Include="ソース ファイル\Common\Color">
+      <UniqueIdentifier>{a0b6f81f-c9ff-44a9-924c-bf0da1c95d26}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -262,11 +262,14 @@
     <ClInclude Include="Source\Objects\DebugSphere.h">
       <Filter>ソース ファイル\GameObject</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Common\BaseClass\ObjectBase\ObjectBase.h">
-      <Filter>ソース ファイル\Common\BaseClass\ObjectBase</Filter>
-    </ClInclude>
     <ClInclude Include="Source\System\ComponentSystems\DebugRenderingSystem.h">
       <Filter>ソース ファイル\System\ComponentSystems</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Common\Color\Color.h">
+      <Filter>ソース ファイル\Common\Color</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Common\BaseClass\ObjectBase\ObjectBase.h">
+      <Filter>ソース ファイル\Common\BaseClass</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -341,9 +344,6 @@
     </ClCompile>
     <ClCompile Include="Source\Physics\System\Simplex.cpp">
       <Filter>ソース ファイル\Physics\System</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Common\BaseClass\ObjectBase\ObjectBase.cpp">
-      <Filter>ソース ファイル\Common\BaseClass\ObjectBase</Filter>
     </ClCompile>
     <ClCompile Include="Source\System\ComponentSystems\DebugRenderingSystem.cpp">
       <Filter>ソース ファイル\System\ComponentSystems</Filter>

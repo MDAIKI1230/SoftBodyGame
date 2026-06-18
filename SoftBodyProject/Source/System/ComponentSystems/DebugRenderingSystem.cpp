@@ -26,6 +26,6 @@ void DebugRenderingSystem::Draw(IWorld* world)
 
 		SphereColliderComponent* col{ sphereStorage->Get(entity) };
 
-		ServiceLocator::GetRenderer()->DrawSphere(trans.GetPosition(), col->GetRadius());
+		ServiceLocator::GetRenderer()->DrawSphere(trans.GetPosition(), col->GetRadius(),col->GetColor());
 	}
 }

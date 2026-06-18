@@ -9,6 +9,8 @@
 #include "SphereColliderComponentStorage.h"
 #include "CollisionSystem.h"
 
+#include "DebugSphere.h"
+
 #include "DebugScene.h"
 
 // コンストラクタ
@@ -23,7 +25,9 @@ void DebugScene::Initialize()
 	Camera camera{ Vector3{0,0,-500},Vector3{0,0,0} };
 	ServiceLocator::GetRenderer()->SetCamera(camera);
 
-	RendererComponent renderer{ ServiceLocator::GetRenderer()->LoadModel(std::string{"Res/Model/M_001_player_073_01.mv1"}) };
+	objectManager->Add(std::make_unique<DebugSphere>(this, 0));
+
+	/*RendererComponent renderer{ ServiceLocator::GetRenderer()->LoadModel(std::string{"Res/Model/M_001_player_073_01.mv1"}) };
 	
 	GetStorage<RendererComponent>()->Add(0,renderer);
 
@@ -45,7 +49,7 @@ void DebugScene::Initialize()
 
 	trans01.SetPosition(Vector3{ 0,0,-300 });
 
-	GetStorage<TransformComponent>()->Add(1, trans01);
+	GetStorage<TransformComponent>()->Add(1, trans01);*/
 
 	state = SceneState::UPDATE;
 }

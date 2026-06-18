@@ -3,6 +3,7 @@
 #include <string>
 
 #include "MDMath.h"
+#include "Color.h"
 #include "Camera.h"
 
 class IRenderer
@@ -51,7 +52,7 @@ public:
 	// 画像描画
 	virtual void DrawGraph(const Vector2& _pos, int _handle, bool _transFlag) = 0;
 	// 球描画
-	virtual void DrawSphere(const Vector3& _pos, float _radius) = 0;
+	virtual void DrawSphere(const Vector3& _pos, float _radius, const Color& _color) = 0;
 	// ---リソース削除関数---
 
 	// モデル素材削除

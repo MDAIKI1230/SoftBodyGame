@@ -8,6 +8,8 @@
 
 #include "IWorld.h"
 
+#include "ObjectManager.h"
+
 #include "UpdateSystem.h"
 #include "FixedUpdateSystem.h"
 #include "RenderingSystem.h"

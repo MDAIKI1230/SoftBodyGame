@@ -83,12 +83,12 @@ void DxlibRenderer::DrawGraph(const Vector2& _pos, int _handle, bool _transFlag)
 }
 
 // 球描画
-void DxlibRenderer::DrawSphere(const Vector3& _pos, float _radius)
+void DxlibRenderer::DrawSphere(const Vector3& _pos, float _radius, const Color& _color)
 {
 	DxLib::DrawSphere3D(
 		ToDxlib(_pos), _radius, 32,
-		GetColor(255, 255, 255), GetColor(255, 255, 255),
-		true);
+		ToDxlib(_color), ToDxlib(_color),
+		false);
 }
 
 // ---リソース削除関数---
