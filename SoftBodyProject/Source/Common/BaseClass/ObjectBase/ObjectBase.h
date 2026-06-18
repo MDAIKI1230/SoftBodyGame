@@ -1,6 +1,6 @@
 #pragma once
 
-#include "IWorld.h"
+class IWorld;
 
 class ObjectBase
 {

@@ -2,14 +2,11 @@
 
 #include "ObjectBase.h"
 
-class DebugSphere:public ObjectBase
+class DebugSphere :public ObjectBase
 {
 public:
 	// コンストラクタ
-	DebugSphere(IWorld* world, int handle) :
-		ObjectBase{ world,handle }
-	{
-	}
+	DebugSphere(IWorld* world, int handle);
 	// --- 更新系 ---
 
 	void Update() override;
@@ -20,4 +17,7 @@ public:
 	void OnCollisionEnter() override;
 	void OnCollision() override;
 	void OnCollisionExit() override;
+
+private:
+	bool isCollision{ false };
 };

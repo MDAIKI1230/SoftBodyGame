@@ -348,5 +348,8 @@
     <ClCompile Include="Source\System\ComponentSystems\DebugRenderingSystem.cpp">
       <Filter>ソース ファイル\System\ComponentSystems</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Objects\DebugSphere.cpp">
+      <Filter>ソース ファイル\GameObject</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
