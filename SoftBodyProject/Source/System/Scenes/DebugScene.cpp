@@ -1,4 +1,4 @@
-#include "ServiceLocator.h"
+﻿#include "ServiceLocator.h"
 
 #include "RendererComponent.h"
 
@@ -28,7 +28,9 @@ void DebugScene::Initialize()
 	objectManager->Add(std::make_unique<DebugSphere>(this, 0));
 
 	SphereColliderComponent scc{ 30.0f };
+#ifdef _DEBUG
 	GetStorage<SphereColliderComponent>()->Add(1, scc)->SetColor(Color{ 255,255,255 });
+#endif // DEBUG
 
 	TransformComponent trans01{};
 

@@ -15,10 +15,12 @@ public:
 	const Vector3& GetBroadMin() { return aabb.min; }
 	// ブロードフェーズ用AABBの(XYZ軸ごとの)最大値
 	const Vector3& GetBroadMax() { return aabb.max; }
+#ifdef _DEBUG
 	// 色取得
 	const Color& GetColor() { return color; }
 	// 色セット
 	void SetColor(const Color& _color) { color = _color; }
+#endif // DEBUG
 	/// <summary>
 	/// サポート関数
 	/// </summary>

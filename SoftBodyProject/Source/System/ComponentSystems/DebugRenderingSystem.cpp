@@ -5,6 +5,7 @@
 
 #include "DebugRenderingSystem.h"
 
+#ifdef _DEBUG
 void DebugRenderingSystem::Draw(IWorld* world)
 {
 	// コライダーストレージ
@@ -26,6 +27,7 @@ void DebugRenderingSystem::Draw(IWorld* world)
 
 		SphereColliderComponent* col{ sphereStorage->Get(entity) };
 
-		ServiceLocator::GetRenderer()->DrawSphere(trans.GetPosition(), col->GetRadius(),col->GetColor());
+		ServiceLocator::GetRenderer()->DrawSphere(trans.GetPosition(), col->GetRadius(), col->GetColor());
 	}
 }
+#endif // DEBUG
