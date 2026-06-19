@@ -52,7 +52,8 @@ private:
 		TransformComponentStorage* _transformStorage);
 
 	// --- 各形状ごとの引数の当り判定 ---
-	bool Solve(SphereColliderComponentStorage* _strageA, SphereColliderComponentStorage* _strageB, SphereSpherePair& pair);
+
+	bool Solve(SphereColliderComponentStorage* _strageA, SphereColliderComponentStorage* _strageB, SphereSpherePair& pair, TransformComponentStorage* _transformStorage);
 
 	// --- SimplexSolve ---
 	/// <summary>

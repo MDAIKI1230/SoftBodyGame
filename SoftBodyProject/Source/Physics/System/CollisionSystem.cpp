@@ -131,7 +131,7 @@ void CollisionSystem::NarrowPhase(TransformComponentStorage* _transformStorage, 
 		ColliderComponent* collA{ _sphereStorage->Get(pair.a) };
 		ColliderComponent* collB{ _sphereStorage->Get(pair.b) };
 
-		if (GJK<ColliderTag::SphereTag, ColliderTag::SphereTag>(_sphereStorage,pair.a,_sphereStorage,pair.b,_transformStorage))
+		if (Solve(_sphereStorage, _sphereStorage, pair, _transformStorage))
 		{
 			// 今回のペア追加
 			currentFramePair.insert(pair);
@@ -305,6 +305,11 @@ bool CollisionSystem::GJK(
 	}
 
 	return false;
+}
+
+bool CollisionSystem::Solve(SphereColliderComponentStorage* _strageA, SphereColliderComponentStorage* _strageB, SphereSpherePair& pair,TransformComponentStorage* _transformStorage)
+{
+	return GJK<ColliderTag::SphereTag, ColliderTag::SphereTag>(_strageA, pair.a, _strageB, pair.b, _transformStorage);
 }
 
 bool CollisionSystem::SimplexSolve(Simplex& _simplex, Vector3& _output)
