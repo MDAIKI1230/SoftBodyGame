@@ -18,12 +18,12 @@ class CollisionSystem :public FixedUpdateSystem
 {
 public:
 	// 更新
-	void FixedUpdate(IWorld* world) override;
+	void FixedUpdate(IWorld* _world) override;
 private:
 	// ブロードフェーズ
-	void BroadPhase(TransformComponentStorage* transformStorage, SphereColliderComponentStorage* sphereStorage);
+	void BroadPhase(TransformComponentStorage* _transformStorage, SphereColliderComponentStorage* _sphereStorage);
 	// ナローフェーズ
-	void NarrowPhase(TransformComponentStorage* transformStorage, SphereColliderComponentStorage* sphereStorage, ObjectManager* objectManager);
+	void NarrowPhase(TransformComponentStorage* _transformStorage, SphereColliderComponentStorage* _sphereStorage, ObjectManager* _objectManager);
 	// 終了処理
 	void End();
 	/// <summary>
@@ -31,16 +31,28 @@ private:
 	/// </summary>
 	/// <param name="projectionAxisValues">判定する軸のコンテナ</param>
 	/// <param name="actives">結果を入れる</param>
-	void CheckProjectionAxisValueCross(const std::vector<ColliderProjection>& projectionAxisValues);
+	void CheckProjectionAxisValueCross(const std::vector<ColliderProjection>& _projectionAxisValues);
 	/// <summary>
-	/// GJKアルゴリズム
+	/// GJKアルゴリズムによる当り判定
 	/// </summary>
-	/// <param name="collider01">コライダー01</param>
-	/// <param name="collider02">コライダー02</param>
-	/// <returns>衝突判定(当たったらture)</returns>
+	/// <typeparam name="A">Aの形状タグ</typeparam>
+	/// <typeparam name="B">Bの形状タグ</typeparam>
+	/// <typeparam name="AS">Aの形状のストレージクラス</typeparam>
+	/// <typeparam name="BS">Bの形状のストレージクラス</typeparam>
+	/// <param name="_storageA">Aの形状のストレージ</param>
+	/// <param name="_handleA">Aのエンティティハンドル</param>
+	/// <param name="_storageB">Bの形状のストレージ</param>
+	/// <param name="_handleB">Bのエンティティハンドル</param>
+	/// <param name="_transformStorage">トランスフォームストレージ</param>
+	/// <returns>当たったか</returns>
+	template<class A,class B,class AS,class BS>
 	bool GJK(
-		const ColliderComponent& collider01, const TransformComponent& transform01,
-		const ColliderComponent& collider02, const TransformComponent& transform02);
+		AS* _storageA,int _handleA,
+		BS* _storageB,int _handleB,
+		TransformComponentStorage* _transformStorage);
+
+	// --- 各形状ごとの引数の当り判定 ---
+	bool Solve(SphereColliderComponentStorage* _strageA, SphereColliderComponentStorage* _strageB, SphereSpherePair& pair);
 
 	// --- SimplexSolve ---
 	/// <summary>
@@ -67,14 +79,14 @@ private:
 	std::vector<ColliderProjection> colliderProjectionZValues;
 
 	// AABBの衝突判定用のカウンター
-	std::unordered_map<CollPair, int> crossCountMap{};
+	std::unordered_map<SphereSpherePair, int> crossCountMap{};
 
 	// ナローフェーズをするペア
-	std::vector<CollPair> narrowPairs;
+	std::vector<SphereSpherePair> narrowPairs;
 
 	// --- 衝突管理 ---
 	// 今回当たってたやつ
-	std::unordered_set<CollPair> currentFramePair;
+	std::unordered_set<SphereSpherePair> currentFramePair;
 	// 前回当たってたやつ
-	std::unordered_set<CollPair> prevFramePair;
+	std::unordered_set<SphereSpherePair> prevFramePair;
 };

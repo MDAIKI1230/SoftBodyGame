@@ -463,3 +463,122 @@ CapsuleStorage
 
 ```
 ```
+■ ■ 全体構造
+BroadPhase (SIMD)
+   ↓
+BoxPairs / SpherePairs / CapsulePairs
+   ↓
+テンプレGJK呼び出し（switchなし）
+■ ■ ① データ構造（SoA）
+struct BoxStorage
+{
+    Vec3* center;
+    Vec3* halfExtent;
+};
+
+struct SphereStorage
+{
+    Vec3* center;
+    float* radius;
+};
+■ ■ ② Support（形状ごと・SIMD非対象）
+inline Vec3 BoxSupport(const BoxStorage& b, int i, Vec3 d)
+{
+    return {
+        b.center[i].x + (d.x >= 0 ? b.halfExtent[i].x : -b.halfExtent[i].x),
+        b.center[i].y + (d.y >= 0 ? b.halfExtent[i].y : -b.halfExtent[i].y),
+        b.center[i].z + (d.z >= 0 ? b.halfExtent[i].z : -b.halfExtent[i].z),
+    };
+}
+
+inline Vec3 SphereSupport(const SphereStorage& s, int i, Vec3 d)
+{
+    return s.center[i] + normalize(d) * s.radius[i];
+}
+■ ■ ③ GJK本体（完全テンプレ・switchなし）
+template<class A, class B, class SA, class SB>
+bool GJK(
+    const SA& aStorage, int aIdx,
+    const SB& bStorage, int bIdx)
+{
+    Vec3 dir = {1,0,0};
+
+    auto SupportA = [&](Vec3 d)
+    {
+        return A::Support(aStorage, aIdx, d);
+    };
+
+    auto SupportB = [&](Vec3 d)
+    {
+        return B::Support(bStorage, bIdx, d);
+    };
+
+    Vec3 p = SupportA(dir) - SupportB(-dir);
+
+    // ここから通常GJK（分岐なし）
+    dir = -p;
+
+    for(int i=0;i<32;i++)
+    {
+        Vec3 a = SupportA(dir) - SupportB(-dir);
+
+        if (dot(a, dir) < 0)
+            return false;
+
+        // simplex処理（省略）
+        dir = -a;
+    }
+
+    return true;
+}
+■ ■ ④ Shapeごとのタグ（重要）
+struct BoxTag
+{
+    static Vec3 Support(const BoxStorage& s, int i, Vec3 d)
+    {
+        return BoxSupport(s, i, d);
+    }
+};
+
+struct SphereTag
+{
+    static Vec3 Support(const SphereStorage& s, int i, Vec3 d)
+    {
+        return SphereSupport(s, i, d);
+    }
+};
+■ ■ ⑤ Pair（switch完全廃止）
+struct BoxBoxPair { int a, b; };
+struct BoxSpherePair { int a, b; };
+struct SphereSpherePair { int a, b; };
+
+👉 型で分かれてるので runtime typeなし
+
+■ ■ ⑥ 呼び出し（ここがswitch消える場所）
+bool Solve(const BoxBoxPair& p,
+           const BoxStorage& a,
+           const BoxStorage& b)
+{
+    return GJK<BoxTag, BoxTag>(a, p.a, b, p.b);
+}
+
+bool Solve(const BoxSpherePair& p,
+           const BoxStorage& a,
+           const SphereStorage& b)
+{
+    return GJK<BoxTag, SphereTag>(a, p.a, b, p.b);
+}
+■ ■ ⑦ BroadPhase（SIMD側）
+void BroadPhase(const BoxStorage& boxes, const SphereStorage& spheres)
+{
+    // SIMDでAABB overlapとかやる
+    // 結果を型ごとに分けて出す
+
+    std::vector<BoxBoxPair> bbPairs;
+    std::vector<BoxSpherePair> bsPairs;
+}
+■ ■ ⑧ 最終実行
+for (auto& p : bsPairs)
+{
+    Solve(p, boxStorage, sphereStorage);
+}

@@ -186,6 +186,7 @@
     <ClInclude Include="Source\Physics\Storage\RigidBodyComponentStorage.h" />
     <ClInclude Include="Source\Physics\Struct\ColliderProjection.h" />
     <ClInclude Include="Source\Physics\Struct\CollPair.h" />
+    <ClInclude Include="Source\Physics\Struct\ColliderTags.h" />
     <ClInclude Include="Source\Physics\System\CollisionSystem.h" />
     <ClInclude Include="Source\Physics\System\Simplex.h" />
     <ClInclude Include="Source\System\Adapter\Dxlib\DxlibConstants.h" />

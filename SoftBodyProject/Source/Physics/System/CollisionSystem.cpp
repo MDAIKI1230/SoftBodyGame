@@ -1,15 +1,17 @@
 ﻿#include <algorithm>
 
+#include "ColliderTags.h"
+
 #include "CollisionSystem.h"
 
-void CollisionSystem::FixedUpdate(IWorld* world)
+void CollisionSystem::FixedUpdate(IWorld* _world)
 {
 	// コライダーストレージ
-	SphereColliderComponentStorage* sphereStorage{ static_cast<SphereColliderComponentStorage*>(world->GetStorage<SphereColliderComponent>()) };
+	SphereColliderComponentStorage* sphereStorage{ static_cast<SphereColliderComponentStorage*>(_world->GetStorage<SphereColliderComponent>()) };
 	// Transformストレージ
-	TransformComponentStorage* transformStorage { static_cast<TransformComponentStorage*>(world->GetStorage<TransformComponent>()) };
+	TransformComponentStorage* transformStorage { static_cast<TransformComponentStorage*>(_world->GetStorage<TransformComponent>()) };
 	// オブジェクトマネージャー
-	ObjectManager* objectManager{ world->GetObjectManager() };
+	ObjectManager* objectManager{ _world->GetObjectManager() };
 
 	// --- 衝突処理 --- 
 	BroadPhase(transformStorage, sphereStorage);
@@ -19,7 +21,7 @@ void CollisionSystem::FixedUpdate(IWorld* world)
 	End();
 }
 
-void CollisionSystem::BroadPhase(TransformComponentStorage* transformStorage, SphereColliderComponentStorage* sphereStorage)
+void CollisionSystem::BroadPhase(TransformComponentStorage* _transformStorage, SphereColliderComponentStorage* _sphereStorage)
 {
 	/*
 		後から、インサートソートに変更するがGJKアルゴリズムが動くまで(すべての形)は追加ー＞ソートで対応。
@@ -28,16 +30,16 @@ void CollisionSystem::BroadPhase(TransformComponentStorage* transformStorage, Sp
 	TransformComponent trans{};
 
 	// すべてのコライダーのAABBの各軸の射影を保存する。
-	for (int entity : *sphereStorage->GetEntities())
+	for (int entity : *_sphereStorage->GetEntities())
 	{
 		// Transformがあるかチェックないなら飛ばす
-		if (!transformStorage->TryGet(entity, trans))
+		if (!_transformStorage->TryGet(entity, trans))
 		{
 			continue;
 		}
 
 		// 各軸に射影して値を保存
-		ColliderComponent* col{ sphereStorage->Get(entity) };
+		ColliderComponent* col{ _sphereStorage->Get(entity) };
 
 		const Vector3& min{ col->GetBroadMin() + trans.GetPosition() };
 		const Vector3& max{ col->GetBroadMax() + trans.GetPosition() };
@@ -107,7 +109,7 @@ void CollisionSystem::BroadPhase(TransformComponentStorage* transformStorage, Sp
 	}
 }
 
-void CollisionSystem::NarrowPhase(TransformComponentStorage* transformStorage, SphereColliderComponentStorage* sphereStorage, ObjectManager* objectManager)
+void CollisionSystem::NarrowPhase(TransformComponentStorage* _transformStorage, SphereColliderComponentStorage* _sphereStorage, ObjectManager* _objectManager)
 {
 	// 参照用
 	TransformComponent transA{}, transB{};
@@ -116,26 +118,26 @@ void CollisionSystem::NarrowPhase(TransformComponentStorage* transformStorage, S
 	for (auto& pair : narrowPairs)
 	{
 		// Transformがあるかチェックないなら飛ばす
-		if (!transformStorage->TryGet(pair.a, transA))
+		if (!_transformStorage->TryGet(pair.a, transA))
 		{
 			continue;
 		}
-		if (!transformStorage->TryGet(pair.b, transB))
+		if (!_transformStorage->TryGet(pair.b, transB))
 		{
 			continue;
 		}
 
 		// 各コライダー取得
-		ColliderComponent* collA{ sphereStorage->Get(pair.a) };
-		ColliderComponent* collB{ sphereStorage->Get(pair.b) };
+		ColliderComponent* collA{ _sphereStorage->Get(pair.a) };
+		ColliderComponent* collB{ _sphereStorage->Get(pair.b) };
 
-		if (GJK(*collA, transA, *collB, transB))
+		if (GJK<ColliderTag::SphereTag, ColliderTag::SphereTag>(_sphereStorage,pair.a,_sphereStorage,pair.b,_transformStorage))
 		{
 			// 今回のペア追加
 			currentFramePair.insert(pair);
 
-			ObjectBase* objA{ objectManager->Get(pair.a) };
-			ObjectBase* objB{ objectManager->Get(pair.b) };
+			ObjectBase* objA{ _objectManager->Get(pair.a) };
+			ObjectBase* objB{ _objectManager->Get(pair.b) };
 			// 当たっているのでとりあえずよべる
 			if (objA != nullptr)
 			{
@@ -162,7 +164,7 @@ void CollisionSystem::NarrowPhase(TransformComponentStorage* transformStorage, S
 		}
 	}
 
-	std::unordered_set<CollPair> erasePair;
+	std::unordered_set<SphereSpherePair> erasePair;
 
 	// OnCollisionExit呼び出し
 	for (auto& pair : prevFramePair)
@@ -171,8 +173,8 @@ void CollisionSystem::NarrowPhase(TransformComponentStorage* transformStorage, S
 		if (!currentFramePair.contains(pair))
 		{
 			// 取得
-			ObjectBase* objA{ objectManager->Get(pair.a) };
-			ObjectBase* objB{ objectManager->Get(pair.b) };
+			ObjectBase* objA{ _objectManager->Get(pair.a) };
+			ObjectBase* objB{ _objectManager->Get(pair.b) };
 			// イベント呼び出し
 			if (objA != nullptr)
 			{
@@ -216,13 +218,13 @@ void CollisionSystem::End()
 	currentFramePair.clear();
 }
 
-void CollisionSystem::CheckProjectionAxisValueCross(const std::vector<ColliderProjection>& projectionAxisValues)
+void CollisionSystem::CheckProjectionAxisValueCross(const std::vector<ColliderProjection>& _projectionAxisValues)
 {
 	// 値がminだった時ここに追加してmaxが来たら消す(つまりminの値しか入らない)
 	std::vector<int> actives;
 
 	// 軸の判定
-	for (auto& check : projectionAxisValues)
+	for (auto& check : _projectionAxisValues)
 	{
 		// 最小値
 		if (check.isMax == false)
@@ -232,7 +234,7 @@ void CollisionSystem::CheckProjectionAxisValueCross(const std::vector<ColliderPr
 			{
 				// 軸で交差しているので交差カウント増加
 				crossCountMap[
-					CollPair(
+					SphereSpherePair(
 						// 同ペア対策
 						std::min(check.entity, active),
 						std::max(check.entity, active))]
@@ -265,9 +267,11 @@ void CollisionSystem::CheckProjectionAxisValueCross(const std::vector<ColliderPr
 	}
 }
 
+template<class A, class B, class AS, class BS>
 bool CollisionSystem::GJK(
-	const ColliderComponent& collider01, const TransformComponent& transform01,
-	const ColliderComponent& collider02, const TransformComponent& transform02)
+	AS* _storageA, int _handleA,
+	BS* _storageB, int _handleB,
+	TransformComponentStorage* _transformStorage)
 {
 	/*
 		コライダー01の中心を原点として考えるものとしよう。
@@ -276,10 +280,14 @@ bool CollisionSystem::GJK(
 	Simplex simplex{};
 	Vector3 dir{ Vector3::UP };
 
+	// トランスフォーム取得
+	TransformComponent* transformA{ _transformStorage->Get(_handleA) };
+	TransformComponent* transformB{ _transformStorage->Get(_handleB) };
+
 	while (true)
 	{
 		// ミンコフスキー差の支点計算
-		Vector3 vec{ collider01.Support(dir) - collider02.Support(-dir) + (transform02.GetPosition() - transform01.GetPosition()) };
+		Vector3 vec{ A::Support(_storageA,_handleA,dir) - B::Support(_storageB,_handleB,-dir) + (transformB->GetPosition() - transformA->GetPosition()) };
 
 		// 支点をSimplexに追加
 		simplex.Add(vec);
