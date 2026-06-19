@@ -1,4 +1,4 @@
-#include <math.h>
+﻿#include <math.h>
 #include "../Vector/SIMD/SIMDVectorMath.h"
 #include "../Matrix/MatGenerateFunc.h"
 #include "Quaternion.h"

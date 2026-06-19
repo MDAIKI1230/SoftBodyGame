@@ -1,4 +1,4 @@
-#include <bit>
+﻿#include <bit>
 #include "../Vector/SIMD/SIMDVectorMath.h"
 #include "MatGenerateFunc.h"
 

@@ -1,4 +1,4 @@
-#include "Simplex.h"
+﻿#include "Simplex.h"
 
 void Simplex::Add(const Vector3& _vec)
 {

@@ -1,4 +1,4 @@
-#include <thread>
+﻿#include <thread>
 #include "BaseConstants.h"
 
 #include "TimeManager.h"

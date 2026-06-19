@@ -1,4 +1,4 @@
-#include <smmintrin.h>
+﻿#include <smmintrin.h>
 #include <math.h>
 #include "SIMDVectorMath.h"
 

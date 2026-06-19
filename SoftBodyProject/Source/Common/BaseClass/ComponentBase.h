@@ -1,8 +1,8 @@
-#pragma once
+﻿#pragma once
 
 class ComponentBase
 {
 public:
 	// 仮想デストラクタ
-	virtual ~ComponentBase();
+	virtual ~ComponentBase() = default;
 };

@@ -1,4 +1,4 @@
-#include "Matrix.h"
+﻿#include "Matrix.h"
 #include "../Vector/SIMD/SIMDVectorMath.h"
 
 // 単位行列

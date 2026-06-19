@@ -1,4 +1,4 @@
-#include <math.h>
+﻿#include <math.h>
 #include "../SIMD/SIMDVectorMath.h"
 #include "Vector3.h"
 

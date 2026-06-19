@@ -1,4 +1,4 @@
-#include "ServiceLocator.h"
+﻿#include "ServiceLocator.h"
 
 #include "TransformComponentStorage.h"
 #include "SphereColliderComponentStorage.h"

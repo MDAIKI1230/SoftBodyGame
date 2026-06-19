@@ -1,4 +1,4 @@
-#include "../Vector/SIMD/SIMDVectorMath.h"
+﻿#include "../Vector/SIMD/SIMDVectorMath.h"
 #include "../Matrix/MatGenerateFunc.h"
 #include "Transform.h"
 

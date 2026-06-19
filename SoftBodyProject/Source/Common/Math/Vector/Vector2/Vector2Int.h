@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "../SIMD/SIMDVector.h"
 

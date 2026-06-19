@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "IRenderer.h"
 #include "IInput.h"
