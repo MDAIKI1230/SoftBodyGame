@@ -274,6 +274,9 @@
     <ClInclude Include="Source\Physics\Struct\ColliderTags.h">
       <Filter>ソース ファイル\Physics\Struct</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Physics\Storage\AABBBroadPhaseColliderStorage.h">
+      <Filter>ソース ファイル\Physics\Storage</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\System\Adapter\Dxlib\DxlibInput.cpp">

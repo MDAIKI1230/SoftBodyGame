@@ -182,6 +182,7 @@
     <ClInclude Include="Source\Physics\Collider\AABBBroadPhaseCollider.h" />
     <ClInclude Include="Source\Physics\Collider\ColliderComponent.h" />
     <ClInclude Include="Source\Physics\Collider\SphereColliderComponent.h" />
+    <ClInclude Include="Source\Physics\Storage\AABBBroadPhaseColliderStorage.h" />
     <ClInclude Include="Source\Physics\Storage\SphereColliderComponentStorage.h" />
     <ClInclude Include="Source\Physics\Storage\RigidBodyComponentStorage.h" />
     <ClInclude Include="Source\Physics\Struct\ColliderProjection.h" />
