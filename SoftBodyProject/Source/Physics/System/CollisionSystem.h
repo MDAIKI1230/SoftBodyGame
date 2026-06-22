@@ -4,6 +4,8 @@
 #include <unordered_map>
 #include <unordered_set>
 
+#include "BaseConstants.h"
+
 #include "TransformComponentStorage.h"
 #include "SphereColliderComponentStorage.h"
 #include "ProjectionStorage.h"
@@ -72,8 +74,15 @@ private:
 	// 四点の時(四面体)の計算
 	bool SolveTetrahedron(Simplex& _simplex, Vector3& _output);
 
-	// --- インサートソート ---
-	void InsertionSort(std::vector<ColliderProjection> _projectionValues);
+	// --- ソート ---
+	void InsertionSort(std::vector<ColliderProjection>& _projectionValues);
+	/// <summary>
+	/// スワップ
+	/// </summary>
+	/// <param name="_projectionValues">射影コンテナ</param>
+	/// <param name="a">スワップするインデックス一つ目</param>
+	/// <param name="b">スワップするインデックス二つ目</param>
+	void Swap(std::vector<ColliderProjection>& _projectionValues, int _a, int _b);
 private:
 	// --- ブロードフェーズ用コンテナ ---
 	// X軸射影

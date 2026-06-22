@@ -92,6 +92,9 @@
     <Filter Include="ソース ファイル\Common\Color">
       <UniqueIdentifier>{a0b6f81f-c9ff-44a9-924c-bf0da1c95d26}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Physics\Constants">
+      <UniqueIdentifier>{d4cb68c5-ecdd-4f65-a9f4-22f3e5809258}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Objects\Camera.h">
@@ -282,6 +285,9 @@
     </ClInclude>
     <ClInclude Include="Source\Physics\Struct\ColliderProjectionData.h">
       <Filter>ソース ファイル\Physics\Struct</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Constants\CollisionConstants.h">
+      <Filter>ソース ファイル\Physics\Constants</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

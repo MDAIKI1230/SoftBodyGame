@@ -23,10 +23,6 @@ void CollisionSystem::FixedUpdate(IWorld* _world)
 
 void CollisionSystem::BroadPhase(TransformComponentStorage* _transformStorage, SphereColliderComponentStorage* _sphereStorage)
 {
-	/*
-		後から、インサートソートに変更するがGJKアルゴリズムが動くまで(すべての形)は追加ー＞ソートで対応。
-	*/
-
 	size_t count = _sphereStorage->GetSize();
 
 	colliderProjectionXValues.reserve(count * 2);
@@ -48,9 +44,6 @@ void CollisionSystem::BroadPhase(TransformComponentStorage* _transformStorage, S
 		// 各軸に射影して値を保存
 		ColliderComponent* col{ _sphereStorage->Get(entity) };
 
-		const Vector3& min{  };
-		const Vector3& max{  };
-
 		ColliderProjectionData data;
 
 		data.min = col->GetBroadMin() + trans.GetPosition();
@@ -58,71 +51,41 @@ void CollisionSystem::BroadPhase(TransformComponentStorage* _transformStorage, S
 
 		if (projectionStorage.TryGet(entity,data))
 		{
-			colliderProjectionXValues[data.endpointIndex[0]].projection = min.x;
-			colliderProjectionXValues[data.endpointIndex[1]].projection = max.x;
+			colliderProjectionXValues[data.endpointIndex[ProjectionAxisType::MIN_X]].projection = data.min.x;
+			colliderProjectionXValues[data.endpointIndex[ProjectionAxisType::MAX_X]].projection = data.max.x;
 
-			colliderProjectionYValues[data.endpointIndex[2]].projection = min.y;
-			colliderProjectionYValues[data.endpointIndex[3]].projection = max.y;
+			colliderProjectionYValues[data.endpointIndex[ProjectionAxisType::MIN_Y]].projection = data.min.y;
+			colliderProjectionYValues[data.endpointIndex[ProjectionAxisType::MAX_Y]].projection = data.max.y;
 
-			colliderProjectionZValues[data.endpointIndex[4]].projection = min.z;
-			colliderProjectionZValues[data.endpointIndex[5]].projection = max.z;
+			colliderProjectionZValues[data.endpointIndex[ProjectionAxisType::MIN_Z]].projection = data.min.z;
+			colliderProjectionZValues[data.endpointIndex[ProjectionAxisType::MAX_Z]].projection = data.max.z;
 		}
 		else
 		{
 			// 最小値と最大値をそれぞれ追加する。(ColliderProjectionは値/エンティティID/最大値フラグ)
-			data.endpointIndex[0] = colliderProjectionXValues.size();
-			colliderProjectionXValues.push_back(ColliderProjection(min.x, entity, false));
-			data.endpointIndex[1] = colliderProjectionXValues.size();
-			colliderProjectionXValues.push_back(ColliderProjection(max.x, entity, true));
+			data.endpointIndex[ProjectionAxisType::MIN_X] = colliderProjectionXValues.size();
+			colliderProjectionXValues.push_back(ColliderProjection(data.min.x, entity, false, ProjectionAxisType::MIN_X));
+			data.endpointIndex[ProjectionAxisType::MAX_X] = colliderProjectionXValues.size();
+			colliderProjectionXValues.push_back(ColliderProjection(data.max.x, entity, true, ProjectionAxisType::MAX_X));
 
-			data.endpointIndex[2] = colliderProjectionXValues.size();
-			colliderProjectionYValues.push_back(ColliderProjection(min.y, entity, false));
-			data.endpointIndex[3] = colliderProjectionXValues.size();
-			colliderProjectionYValues.push_back(ColliderProjection(max.y, entity, true));
+			data.endpointIndex[ProjectionAxisType::MIN_Y] = colliderProjectionYValues.size();
+			colliderProjectionYValues.push_back(ColliderProjection(data.min.y, entity, false, ProjectionAxisType::MIN_Y));
+			data.endpointIndex[ProjectionAxisType::MAX_Y] = colliderProjectionYValues.size();
+			colliderProjectionYValues.push_back(ColliderProjection(data.max.y, entity, true, ProjectionAxisType::MAX_Y));
 
-			data.endpointIndex[4] = colliderProjectionXValues.size();
-			colliderProjectionZValues.push_back(ColliderProjection(min.z, entity, false));
-			data.endpointIndex[5] = colliderProjectionXValues.size();
-			colliderProjectionZValues.push_back(ColliderProjection(max.z, entity, true));
+			data.endpointIndex[ProjectionAxisType::MIN_Z] = colliderProjectionZValues.size();
+			colliderProjectionZValues.push_back(ColliderProjection(data.min.z, entity, false, ProjectionAxisType::MIN_Z));
+			data.endpointIndex[ProjectionAxisType::MAX_Z] = colliderProjectionZValues.size();
+			colliderProjectionZValues.push_back(ColliderProjection(data.max.z, entity, true, ProjectionAxisType::MAX_Z));
+
+			projectionStorage.Add(entity, data);
 		}
 	}
 
 	// 射影の値でソートしていく(X,Y,Z全部)
-	std::sort(colliderProjectionXValues.begin(), colliderProjectionXValues.end(),
-		[](const ColliderProjection& a, const ColliderProjection& b)
-		{
-			// 値が等しくないなら比較
-			if (a.projection != b.projection)
-			{
-				return a.projection < b.projection;
-			}
-			// 同じならMinを先に置きたいのでtrueが後になるように
-			return a.isMax < b.isMax;
-		});
-
-	std::sort(colliderProjectionYValues.begin(), colliderProjectionYValues.end(),
-		[](const ColliderProjection& a, const ColliderProjection& b)
-		{
-			// 値が等しくないなら比較
-			if (a.projection != b.projection)
-			{
-				return a.projection < b.projection;
-			}
-			// 同じならMinを先に置きたいのでtrueが後になるように
-			return a.isMax < b.isMax;
-		});
-
-	std::sort(colliderProjectionZValues.begin(), colliderProjectionZValues.end(),
-		[](const ColliderProjection& a, const ColliderProjection& b)
-		{
-			// 値が等しくないなら比較
-			if (a.projection != b.projection)
-			{
-				return a.projection < b.projection;
-			}
-			// 同じならMinを先に置きたいのでtrueが後になるように
-			return a.isMax < b.isMax;
-		});
+	InsertionSort(colliderProjectionXValues);
+	InsertionSort(colliderProjectionYValues);
+	InsertionSort(colliderProjectionZValues);
  
 	// 各軸で交差しているかの判定を行う
 	CheckProjectionAxisValueCross(colliderProjectionXValues);
@@ -488,7 +451,7 @@ bool CollisionSystem::SolveTetrahedron(Simplex& _simplex, Vector3& _output)
 	}
 }
 
-void CollisionSystem::InsertionSort(std::vector<ColliderProjection> _projectionValues)
+void CollisionSystem::InsertionSort(std::vector<ColliderProjection>& _projectionValues)
 {
 	// ProjectionDataのストレージの変更も入れる事。
 	size_t size{ _projectionValues.size() };
@@ -498,11 +461,19 @@ void CollisionSystem::InsertionSort(std::vector<ColliderProjection> _projectionV
 
 		while (j > 0 && _projectionValues[j - 1].projection > _projectionValues[j].projection)
 		{
+			// 入れ替え
+			Swap(_projectionValues, j - 1, j);
 
-			std::swap(_projectionValues[j - 1], _projectionValues[j]);
-
-			--j;
-
+			j--;
 		}
 	}
+}
+
+void CollisionSystem::Swap(std::vector<ColliderProjection>& _projectionValues, int _a, int _b)
+{
+	// 元の要素を入れ替えてその後の値を見て値を変える。
+	std::swap(_projectionValues[_a], _projectionValues[_b]);
+
+	projectionStorage.Get(_projectionValues[_a].entity)->endpointIndex[_projectionValues[_a].axisType] = _a;
+	projectionStorage.Get(_projectionValues[_b].entity)->endpointIndex[_projectionValues[_b].axisType] = _b;
 }
