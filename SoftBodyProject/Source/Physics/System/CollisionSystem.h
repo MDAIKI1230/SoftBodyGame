@@ -6,6 +6,7 @@
 
 #include "TransformComponentStorage.h"
 #include "SphereColliderComponentStorage.h"
+#include "ProjectionStorage.h"
 #include "ObjectManager.h"
 
 #include "ColliderProjection.h"
@@ -70,6 +71,9 @@ private:
 	bool SolveTriangle(Simplex& _simplex, Vector3& _output);
 	// 四点の時(四面体)の計算
 	bool SolveTetrahedron(Simplex& _simplex, Vector3& _output);
+
+	// --- インサートソート ---
+	void InsertionSort(std::vector<ColliderProjection> _projectionValues);
 private:
 	// --- ブロードフェーズ用コンテナ ---
 	// X軸射影
@@ -90,4 +94,7 @@ private:
 	std::unordered_set<SphereSpherePair> currentFramePair;
 	// 前回当たってたやつ
 	std::unordered_set<SphereSpherePair> prevFramePair;
+
+	// 一旦置く
+	ProjectionStorage projectionStorage;
 };

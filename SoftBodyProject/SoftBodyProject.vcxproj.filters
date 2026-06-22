@@ -277,6 +277,12 @@
     <ClInclude Include="Source\Physics\Storage\AABBBroadPhaseColliderStorage.h">
       <Filter>ソース ファイル\Physics\Storage</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Physics\Storage\ProjectionStorage.h">
+      <Filter>ソース ファイル\Physics\Storage</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Struct\ColliderProjectionData.h">
+      <Filter>ソース ファイル\Physics\Struct</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\System\Adapter\Dxlib\DxlibInput.cpp">

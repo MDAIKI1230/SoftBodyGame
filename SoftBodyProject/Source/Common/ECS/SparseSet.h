@@ -92,6 +92,15 @@ public:
 		return false;
 	}
 	/// <summary>
+	/// IDがあるかどうか
+	/// </summary>
+	/// <param name="_entity">ID</param>
+	/// <returns></returns>
+	bool TryGet(int _entity)
+	{
+		return sparse.contains(_entity);
+	}
+	/// <summary>
 	/// 持っているか
 	/// </summary>
 	/// <param name="target">対象</param>

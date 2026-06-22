@@ -37,6 +37,10 @@ public:
 	/// <returns>取得できたか</returns>
 	bool TryGet(int _entity, T& _output) { return sparseSet.TryGet(_entity, _output); }
 	/// <summary>
+	/// IDがあるかどうか
+	/// </summary>
+	bool TryGet(int _entity) { return sparseSet.TryGet(_entity); }
+	/// <summary>
 	/// 持っているか
 	/// </summary>
 	/// <param name="target">対象</param>

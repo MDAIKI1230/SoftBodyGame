@@ -26,6 +26,13 @@ void CollisionSystem::BroadPhase(TransformComponentStorage* _transformStorage, S
 	/*
 		後から、インサートソートに変更するがGJKアルゴリズムが動くまで(すべての形)は追加ー＞ソートで対応。
 	*/
+
+	size_t count = _sphereStorage->GetSize();
+
+	colliderProjectionXValues.reserve(count * 2);
+	colliderProjectionYValues.reserve(count * 2);
+	colliderProjectionZValues.reserve(count * 2);
+
 	// 参照用
 	TransformComponent trans{};
 
@@ -41,18 +48,43 @@ void CollisionSystem::BroadPhase(TransformComponentStorage* _transformStorage, S
 		// 各軸に射影して値を保存
 		ColliderComponent* col{ _sphereStorage->Get(entity) };
 
-		const Vector3& min{ col->GetBroadMin() + trans.GetPosition() };
-		const Vector3& max{ col->GetBroadMax() + trans.GetPosition() };
+		const Vector3& min{  };
+		const Vector3& max{  };
 
-		// 最小値と最大値をそれぞれ追加する。(ColliderProjectionは値/エンティティID/最大値フラグ)
-		colliderProjectionXValues.push_back(ColliderProjection(min.x, entity, false));
-		colliderProjectionXValues.push_back(ColliderProjection(max.x, entity, true));
+		ColliderProjectionData data;
 
-		colliderProjectionYValues.push_back(ColliderProjection(min.y, entity, false));
-		colliderProjectionYValues.push_back(ColliderProjection(max.y, entity, true));
+		data.min = col->GetBroadMin() + trans.GetPosition();
+		data.max = col->GetBroadMax() + trans.GetPosition();
 
-		colliderProjectionZValues.push_back(ColliderProjection(min.z, entity, false));
-		colliderProjectionZValues.push_back(ColliderProjection(max.z, entity, true));
+		if (projectionStorage.TryGet(entity,data))
+		{
+			colliderProjectionXValues[data.endpointIndex[0]].projection = min.x;
+			colliderProjectionXValues[data.endpointIndex[1]].projection = max.x;
+
+			colliderProjectionYValues[data.endpointIndex[2]].projection = min.y;
+			colliderProjectionYValues[data.endpointIndex[3]].projection = max.y;
+
+			colliderProjectionZValues[data.endpointIndex[4]].projection = min.z;
+			colliderProjectionZValues[data.endpointIndex[5]].projection = max.z;
+		}
+		else
+		{
+			// 最小値と最大値をそれぞれ追加する。(ColliderProjectionは値/エンティティID/最大値フラグ)
+			data.endpointIndex[0] = colliderProjectionXValues.size();
+			colliderProjectionXValues.push_back(ColliderProjection(min.x, entity, false));
+			data.endpointIndex[1] = colliderProjectionXValues.size();
+			colliderProjectionXValues.push_back(ColliderProjection(max.x, entity, true));
+
+			data.endpointIndex[2] = colliderProjectionXValues.size();
+			colliderProjectionYValues.push_back(ColliderProjection(min.y, entity, false));
+			data.endpointIndex[3] = colliderProjectionXValues.size();
+			colliderProjectionYValues.push_back(ColliderProjection(max.y, entity, true));
+
+			data.endpointIndex[4] = colliderProjectionXValues.size();
+			colliderProjectionZValues.push_back(ColliderProjection(min.z, entity, false));
+			data.endpointIndex[5] = colliderProjectionXValues.size();
+			colliderProjectionZValues.push_back(ColliderProjection(max.z, entity, true));
+		}
 	}
 
 	// 射影の値でソートしていく(X,Y,Z全部)
@@ -199,9 +231,6 @@ void CollisionSystem::NarrowPhase(TransformComponentStorage* _transformStorage, 
 void CollisionSystem::End()
 {
 	// 全リセット
-	colliderProjectionXValues.clear();
-	colliderProjectionYValues.clear();
-	colliderProjectionZValues.clear();
 	crossCountMap.clear();
 	narrowPairs.clear();
 
@@ -456,5 +485,24 @@ bool CollisionSystem::SolveTetrahedron(Simplex& _simplex, Vector3& _output)
 	else
 	{
 		return false;
+	}
+}
+
+void CollisionSystem::InsertionSort(std::vector<ColliderProjection> _projectionValues)
+{
+	// ProjectionDataのストレージの変更も入れる事。
+	size_t size{ _projectionValues.size() };
+	for (int i{ 1 }; i < size; ++i)
+	{
+		int j{ i };
+
+		while (j > 0 && _projectionValues[j - 1].projection > _projectionValues[j].projection)
+		{
+
+			std::swap(_projectionValues[j - 1], _projectionValues[j]);
+
+			--j;
+
+		}
 	}
 }
