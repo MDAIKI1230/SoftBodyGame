@@ -20,9 +20,6 @@ public:
 		aabb.max = { r,r,r };
 	}
 
-	// サポート関数
-	Vector3 Support(const Vector3& dir) const override;
-
 	// ---半径ゲッターセッター---
 
 	// 半径セット

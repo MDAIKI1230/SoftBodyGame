@@ -225,7 +225,6 @@
     <ClCompile Include="Source\Common\Math\Vector\Vector3\Vector3Int.cpp" />
     <ClCompile Include="Source\Main.cpp" />
     <ClCompile Include="Source\Objects\DebugSphere.cpp" />
-    <ClCompile Include="Source\Physics\Collider\SphereColliderComponent.cpp" />
     <ClCompile Include="Source\Physics\System\CollisionSystem.cpp" />
     <ClCompile Include="Source\Physics\System\Simplex.cpp" />
     <ClCompile Include="Source\System\Adapter\Dxlib\DxlibInput.cpp" />

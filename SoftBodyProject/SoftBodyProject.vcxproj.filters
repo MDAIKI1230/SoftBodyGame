@@ -357,9 +357,6 @@
     <ClCompile Include="Source\Physics\System\CollisionSystem.cpp">
       <Filter>ソース ファイル\Physics\System</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Physics\Collider\SphereColliderComponent.cpp">
-      <Filter>ソース ファイル\Physics\Collider</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Physics\System\Simplex.cpp">
       <Filter>ソース ファイル\Physics\System</Filter>
     </ClCompile>
