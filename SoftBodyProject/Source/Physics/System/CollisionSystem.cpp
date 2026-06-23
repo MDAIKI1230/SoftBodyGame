@@ -78,7 +78,7 @@ void CollisionSystem::BroadPhase(TransformComponentStorage* _transformStorage, S
 			data.endpointIndex[ProjectionAxisType::MAX_Z] = colliderProjectionZValues.size();
 			colliderProjectionZValues.push_back(ColliderProjection(data.max.z, entity, true, ProjectionAxisType::MAX_Z));
 
-			projectionStorage.Add(entity, data);
+			projectionStorage.Add(entity, std::move(data));
 		}
 	}
 

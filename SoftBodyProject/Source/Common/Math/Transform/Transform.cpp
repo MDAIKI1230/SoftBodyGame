@@ -163,7 +163,7 @@ void Transform::SetParent(Transform* _parent, bool keepLocal)
 		if (parent)
 		{
 			// 逆行列を生成
-			invParent = MatGenerateFunc::InverseTRS(parent->GetPosition(), parent->GetRotate(), parent->GetScale());
+			invParent = MatGenerateFunc::InverseTRS(parent->GetPosition(), parent->GetRotation(), parent->GetScale());
 		}
 		else
 		{

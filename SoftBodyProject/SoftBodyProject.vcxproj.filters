@@ -289,6 +289,9 @@
     <ClInclude Include="Source\Physics\Constants\CollisionConstants.h">
       <Filter>ソース ファイル\Physics\Constants</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Physics\System\RigidBodySystem.h">
+      <Filter>ソース ファイル\Physics\System</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\System\Adapter\Dxlib\DxlibInput.cpp">
@@ -365,6 +368,12 @@
     </ClCompile>
     <ClCompile Include="Source\Objects\DebugSphere.cpp">
       <Filter>ソース ファイル\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Physics\System\RigidBodySystem.cpp">
+      <Filter>ソース ファイル\Physics\System</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Physics\Storage\RigidBodyComponentStorage.cpp">
+      <Filter>ソース ファイル\Physics\Storage</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

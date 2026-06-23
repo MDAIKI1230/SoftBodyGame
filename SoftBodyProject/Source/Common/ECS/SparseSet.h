@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <unordered_map>
+#include <algorithm>
 
 template<typename T>
 class SparseSet
@@ -24,10 +25,10 @@ public:
 	/// </summary>
 	/// <param name="entity">エンティティID</param>
 	/// <param name="component">追加オブジェクト</param>
-	T* Add(int _entity, const T& _obj)
+	T* Add(int _entity, T&& _obj)
 	{
 		// コンポーネント追加
-		dense.push_back(_obj);
+		dense.emplace_back(std::move(_obj));
 		// エンティティ追加
 		entities.push_back(_entity);
 		// 対応付け

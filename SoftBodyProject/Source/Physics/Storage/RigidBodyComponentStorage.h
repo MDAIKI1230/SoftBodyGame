@@ -9,6 +9,8 @@
 class RigidBodyComponentStorage :public SparseSetStorageBase<RigidBodyComponent>
 {
 public:
+	RigidBodyComponent* Add(int _entity, RigidBodyComponent&& _obj) override;
+
 	/*
 		すべてのコンテナが、SparseSetのIDと一致していることに気を付ける
 		例：

@@ -2,6 +2,8 @@
 
 #include "TransformComponent.h"
 
+#include "RigidBodyComponent.h"
+
 #include "SphereColliderComponent.h"
 
 #include "Color.h"
@@ -14,6 +16,7 @@ DebugSphere::DebugSphere(IWorld* world, int handle) :
 	AddComponent<TransformComponent>();
 	SphereColliderComponent* collider{ AddComponent<SphereColliderComponent>(30.0f) };
 	Color c{ 255, 255, 255 };
+	AddComponent<RigidBodyComponent>();
 #ifdef _DEBUG
 	collider->SetColor(c);
 #endif // _DEBUG
