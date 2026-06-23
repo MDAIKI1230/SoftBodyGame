@@ -30,7 +30,7 @@ RigidBodyComponent* RigidBodyComponentStorage::Add(int _entity, RigidBodyCompone
 	// 重力フラグ
 	isGravity.emplace_back(true);
 	// 重力加速度
-	garavity.emplace_back(0.0, -980.0f, 0.0f);
+	gravity.emplace_back(0.0, -980.0f, 0.0f);
 
 	// --- 質量系 ---
 

@@ -304,6 +304,9 @@
     <ClInclude Include="Source\Physics\System\Update\RigidBodySystem.h">
       <Filter>ソース ファイル\Physics\System\Update</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Physics\System\PhysicsAPI.h">
+      <Filter>ソース ファイル\Physics\System</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\System\Adapter\Dxlib\DxlibInput.cpp">
@@ -389,6 +392,12 @@
     </ClCompile>
     <ClCompile Include="Source\Physics\System\Update\RigidBodySystem.cpp">
       <Filter>ソース ファイル\Physics\System\Update</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Physics\Body\RigidBodyComponent.cpp">
+      <Filter>ソース ファイル\Physics\Body</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Physics\System\PhysicsAPI.cpp">
+      <Filter>ソース ファイル\Physics\System</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -27,7 +27,7 @@ void RigidBodySystem::UpdateGravity(RigidBodyComponentStorage* _storage)
 		if (_storage->isGravity[i])
 		{
 			// 質量×重力加速度(Δtに離散化)を力に加算
-			_storage->force[i] += _storage->garavity[i] * ServiceLocator::GetTimeManager()->GetDeltaTime() * _storage->mass[i];
+			_storage->force[i] += _storage->gravity[i] * ServiceLocator::GetTimeManager()->GetDeltaTime() * _storage->mass[i];
 		}
 	}
 }

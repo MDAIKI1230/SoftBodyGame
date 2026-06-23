@@ -193,6 +193,7 @@
     <ClInclude Include="Source\Physics\Struct\ColliderTags.h" />
     <ClInclude Include="Source\Physics\System\Collision\CollisionSystem.h" />
     <ClInclude Include="Source\Physics\System\Commit\PhysicsCommitSystem.h" />
+    <ClInclude Include="Source\Physics\System\PhysicsAPI.h" />
     <ClInclude Include="Source\Physics\System\Simplex.h" />
     <ClInclude Include="Source\Physics\System\Update\RigidBodySystem.h" />
     <ClInclude Include="Source\System\Adapter\Dxlib\DxlibConstants.h" />
@@ -227,9 +228,11 @@
     <ClCompile Include="Source\Common\Math\Vector\Vector3\Vector3Int.cpp" />
     <ClCompile Include="Source\Main.cpp" />
     <ClCompile Include="Source\Objects\DebugSphere.cpp" />
+    <ClCompile Include="Source\Physics\Body\RigidBodyComponent.cpp" />
     <ClCompile Include="Source\Physics\Storage\RigidBodyComponentStorage.cpp" />
     <ClCompile Include="Source\Physics\System\Collision\CollisionSystem.cpp" />
     <ClCompile Include="Source\Physics\System\Commit\PhysicsCommitSystem.cpp" />
+    <ClCompile Include="Source\Physics\System\PhysicsAPI.cpp" />
     <ClCompile Include="Source\Physics\System\Simplex.cpp" />
     <ClCompile Include="Source\Physics\System\Update\RigidBodySystem.cpp" />
     <ClCompile Include="Source\System\Adapter\Dxlib\DxlibInput.cpp" />

@@ -209,25 +209,25 @@ Matrix4x4& Matrix4x4::Transpose(Matrix4x4& _value)
 // 逆行列(変化しない)
 Matrix4x4 Matrix4x4::Inversed() const
 {
-
+	return *this;
 }
 
 // 逆行列
 Matrix4x4& Matrix4x4::Inverse()
 {
-
+	return *this;
 }
 
 // 逆行列(変化しない)
 Matrix4x4 Matrix4x4::Inversed(Matrix4x4& _value)
 {
-
+	return _value;
 }
 
 // 逆行列
 Matrix4x4& Matrix4x4::Inverse(Matrix4x4& _value)
 {
-
+	return _value;
 }
 
 // 一次変換

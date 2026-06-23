@@ -64,7 +64,7 @@ void RigidBodyComponent::SetIsGravity(bool _isGravity)
 
 const Vector3& RigidBodyComponent::GetGravity() const
 {
-	PhysicsAPI::GetGravity(handle);
+	return PhysicsAPI::GetGravity(handle);
 }
 
 void RigidBodyComponent::SetGravity(const Vector3& _gravity)
