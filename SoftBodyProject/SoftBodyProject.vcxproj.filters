@@ -95,6 +95,15 @@
     <Filter Include="ソース ファイル\Physics\Constants">
       <UniqueIdentifier>{d4cb68c5-ecdd-4f65-a9f4-22f3e5809258}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Physics\System\Collision">
+      <UniqueIdentifier>{5a3b05af-c2cc-4108-b928-98bfe76990c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Physics\System\Update">
+      <UniqueIdentifier>{31a7a09b-a7fb-43b9-9044-1e4f936befd2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Physics\System\Commit">
+      <UniqueIdentifier>{03d50d9b-6ad1-4a7d-9de5-0b3043694bb3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Objects\Camera.h">
@@ -250,9 +259,6 @@
     <ClInclude Include="Source\Physics\Storage\RigidBodyComponentStorage.h">
       <Filter>ソース ファイル\Physics\Storage</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Physics\System\CollisionSystem.h">
-      <Filter>ソース ファイル\Physics\System</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Physics\Struct\ColliderProjection.h">
       <Filter>ソース ファイル\Physics\Struct</Filter>
     </ClInclude>
@@ -289,8 +295,14 @@
     <ClInclude Include="Source\Physics\Constants\CollisionConstants.h">
       <Filter>ソース ファイル\Physics\Constants</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Physics\System\RigidBodySystem.h">
-      <Filter>ソース ファイル\Physics\System</Filter>
+    <ClInclude Include="Source\Physics\System\Collision\CollisionSystem.h">
+      <Filter>ソース ファイル\Physics\System\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\System\Commit\PhysicsCommitSystem.h">
+      <Filter>ソース ファイル\Physics\System\Commit</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\System\Update\RigidBodySystem.h">
+      <Filter>ソース ファイル\Physics\System\Update</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -357,9 +369,6 @@
     <ClCompile Include="Source\Main.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Physics\System\CollisionSystem.cpp">
-      <Filter>ソース ファイル\Physics\System</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Physics\System\Simplex.cpp">
       <Filter>ソース ファイル\Physics\System</Filter>
     </ClCompile>
@@ -369,11 +378,17 @@
     <ClCompile Include="Source\Objects\DebugSphere.cpp">
       <Filter>ソース ファイル\GameObject</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Physics\System\RigidBodySystem.cpp">
-      <Filter>ソース ファイル\Physics\System</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Physics\Storage\RigidBodyComponentStorage.cpp">
       <Filter>ソース ファイル\Physics\Storage</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Physics\System\Collision\CollisionSystem.cpp">
+      <Filter>ソース ファイル\Physics\System\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Physics\System\Commit\PhysicsCommitSystem.cpp">
+      <Filter>ソース ファイル\Physics\System\Commit</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Physics\System\Update\RigidBodySystem.cpp">
+      <Filter>ソース ファイル\Physics\System\Update</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

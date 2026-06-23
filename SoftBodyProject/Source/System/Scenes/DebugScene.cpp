@@ -4,12 +4,8 @@
 
 #include "TransformComponent.h"
 
-#include "ColliderComponent.h"
 #include "SphereColliderComponent.h"
-#include "SphereColliderComponentStorage.h"
-#include "RigidBodyComponentStorage.h"
-#include "RigidBodySystem.h"
-#include "CollisionSystem.h"
+
 
 #include "DebugSphere.h"
 
@@ -18,10 +14,7 @@
 // コンストラクタ
 DebugScene::DebugScene()
 {
-	AddSystem(std::make_unique<CollisionSystem>());
-	AddStorage<SphereColliderComponent>(std::make_unique<SphereColliderComponentStorage>());
-	AddSystem(std::make_unique<RigidBodySystem>());
-	AddStorage<RigidBodyComponent>(std::make_unique<RigidBodyComponentStorage>());
+	
 }
 // 初期化
 void DebugScene::Initialize()

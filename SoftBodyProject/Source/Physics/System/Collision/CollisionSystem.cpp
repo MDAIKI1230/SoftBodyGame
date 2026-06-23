@@ -4,8 +4,6 @@
 
 #include "CollisionSystem.h"
 
-#include "RigidBodyComponentStorage.h"
-
 void CollisionSystem::FixedUpdate(IWorld* _world)
 {
 	// コライダーストレージ
@@ -18,17 +16,6 @@ void CollisionSystem::FixedUpdate(IWorld* _world)
 	// --- 衝突処理 --- 
 	BroadPhase(transformStorage, sphereStorage);
 	NarrowPhase(transformStorage, sphereStorage, objectManager);
-
-	RigidBodyComponentStorage* bodyStorage{ static_cast<RigidBodyComponentStorage*>(_world->GetStorage<RigidBodyComponent>()) };
-
-	/*for (int entity : *bodyStorage->GetEntities())
-	{
-		RigidBodyComponent* component{ bodyStorage->Get(entity) };
-		int handle{ component->GetHnadle() };
-
-		transformStorage->Get(handle)->SetPosition(bodyStorage->expectedPos[handle]);
-		transformStorage->Get(handle)->SetRotation(bodyStorage->expectedRot[handle]);
-	}*/
 
 	// 終了
 	End();

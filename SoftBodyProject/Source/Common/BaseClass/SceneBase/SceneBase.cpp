@@ -2,11 +2,22 @@
 
 #include "ServiceLocator.h"
 
+// 描画系
 #include "ModelRenderingSystem.h"
 #include "RendererComponentStorage.h"
 #include "DebugRenderingSystem.h"
 
+// Transform
 #include "TransformComponentStorage.h"
+
+
+// 物理系
+#include "SphereColliderComponentStorage.h"
+#include "RigidBodyComponentStorage.h"
+
+#include "RigidBodySystem.h"
+#include "CollisionSystem.h"
+#include "PhysicsCommitSystem.h"
 
 #include "SceneBase.h"
 
@@ -18,6 +29,11 @@ SceneBase::SceneBase()
 	AddStorage<RendererComponent>(std::make_unique<RendererComponentStorage>());
 	// Transformも同様
 	AddStorage<TransformComponent>(std::make_unique<TransformComponentStorage>());
+	AddSystem(std::make_unique<CollisionSystem>());
+	AddStorage<SphereColliderComponent>(std::make_unique<SphereColliderComponentStorage>());
+	AddSystem(std::make_unique<RigidBodySystem>());
+	AddStorage<RigidBodyComponent>(std::make_unique<RigidBodyComponentStorage>());
+	AddSystem(std::make_unique<PhysicsCommitSystem>());
 	// オブジェクトマネージャー
 	objectManager = std::make_unique<ObjectManager>();
 
