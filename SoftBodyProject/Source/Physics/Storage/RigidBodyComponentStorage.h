@@ -9,6 +9,7 @@
 class RigidBodyComponentStorage :public SparseSetStorageBase<RigidBodyComponent>
 {
 public:
+	// ストレージ追加をストレージに合わせて変更。
 	RigidBodyComponent* Add(int _entity, RigidBodyComponent&& _obj) override;
 
 	/*
