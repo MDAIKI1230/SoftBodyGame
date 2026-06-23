@@ -8,7 +8,23 @@
 
 class RigidBodyComponentStorage :public SparseSetStorageBase<RigidBodyComponent>
 {
-private:
+public:
+	/*
+		すべてのコンテナが、SparseSetのIDと一致していることに気を付ける
+		例：
+		　Entity]IDからのコンポーネント取得関数
+
+		　int id{ sparse[_entity] };
+		  return &dense[id];
+
+		  この時のIDは他のコンテナにも対応している
+
+		  Velocityならこれ、
+		  velocity[id];
+
+		  よって、コンポーネント内のハンドルは、idになる。
+	*/
+
 	// --- 速度系 ---
 
 	// 力
