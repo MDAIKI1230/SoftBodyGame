@@ -41,7 +41,7 @@ public:
 	// 角速度
 	std::vector<float>angularVelocity;
 	// 推定回転角度
-	std::vector<Quaternion> expectedQuat;
+	std::vector<Quaternion> expectedRot;
 
 	// --- 重力系 ---
 
