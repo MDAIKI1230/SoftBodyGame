@@ -9,6 +9,8 @@ public:
 	int GetSize() { return size; }
 	// 頂点追加
 	void Add(const Vector3& _vec);
+	// 頂点削除
+	void Erase(int _index);
 	// 値直
 	Vector3& operator[](size_t _index);
 private:

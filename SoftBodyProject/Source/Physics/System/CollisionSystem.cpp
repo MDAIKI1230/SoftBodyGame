@@ -4,6 +4,8 @@
 
 #include "CollisionSystem.h"
 
+#include "RigidBodyComponentStorage.h"
+
 void CollisionSystem::FixedUpdate(IWorld* _world)
 {
 	// コライダーストレージ
@@ -16,6 +18,17 @@ void CollisionSystem::FixedUpdate(IWorld* _world)
 	// --- 衝突処理 --- 
 	BroadPhase(transformStorage, sphereStorage);
 	NarrowPhase(transformStorage, sphereStorage, objectManager);
+
+	RigidBodyComponentStorage* bodyStorage{ static_cast<RigidBodyComponentStorage*>(_world->GetStorage<RigidBodyComponent>()) };
+
+	/*for (int entity : *bodyStorage->GetEntities())
+	{
+		RigidBodyComponent* component{ bodyStorage->Get(entity) };
+		int handle{ component->GetHnadle() };
+
+		transformStorage->Get(handle)->SetPosition(bodyStorage->expectedPos[handle]);
+		transformStorage->Get(handle)->SetRotation(bodyStorage->expectedRot[handle]);
+	}*/
 
 	// 終了
 	End();
@@ -447,6 +460,20 @@ bool CollisionSystem::SolveTetrahedron(Simplex& _simplex, Vector3& _output)
 	}
 	else
 	{
+		// 最も原点から遠い点を削除する
+		bestScore = FLT_MIN;
+		int bestIndex{ 0 };
+		for (int i{ 0 }; i < size; i++)
+		{
+			float len{ _simplex[i].LengthSqr() };
+			if (len > bestScore)
+			{
+				bestScore = len;
+				bestIndex = i;
+			}
+		}
+
+		_simplex.Erase(bestIndex);
 		return false;
 	}
 }
