@@ -14,7 +14,7 @@ void RigidBodyComponent::AddTorque(const Vector3& _torque)
 
 const Vector3& RigidBodyComponent::GetVelocity() const
 {
-	return PhysicsAPI::GetVelocity((handle);
+	return PhysicsAPI::GetVelocity(handle);
 }
 
 void RigidBodyComponent::SetVelocity(const Vector3& _velocity)
@@ -24,7 +24,7 @@ void RigidBodyComponent::SetVelocity(const Vector3& _velocity)
 
 const Vector3& RigidBodyComponent::GetAngularVelocity() const
 {
-	return PhysicsAPI::SetVelocity(handle);
+	return PhysicsAPI::GetAngularVelocity(handle);
 }
 
 void RigidBodyComponent::SetAngularVelocity(const Vector3& _omega)

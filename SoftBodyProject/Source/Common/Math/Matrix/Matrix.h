@@ -94,6 +94,16 @@ public:
 	// 転置
 	static Matrix4x4& Transpose(Matrix4x4& _value);
 
+	// 逆行列(変化しない)
+	Matrix4x4 Inversed() const;
+	// 逆行列
+	Matrix4x4& Inverse();
+
+	// 逆行列(変化しない)
+	static Matrix4x4 Inversed(Matrix4x4& _value);
+	// 逆行列
+	static Matrix4x4& Inverse(Matrix4x4& _value);
+
 	// 一次変換
 	Vector3 operator *(const Vector3& _other) const;
 };

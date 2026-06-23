@@ -51,7 +51,7 @@ public:
 	// 重力フラグ
 	std::vector<bool> isGravity;
 	// 重力加速度
-	std::vector<Vector3> garavity;
+	std::vector<Vector3> gravity;
 
 	// --- 質量系 ---
 
@@ -59,6 +59,8 @@ public:
 	std::vector<float> mass;
 	// 質量の逆数
 	std::vector<float> inverseMass;
+	// 慣性テンソル
+	std::vector<Matrix4x4> inertiaTensor;
 	// 慣性テンソルの逆数
 	std::vector<Matrix4x4> inverseInertiaTensor;
 
