@@ -39,7 +39,7 @@ public:
 	// トルク
 	std::vector<Vector3> torque;
 	// 角速度
-	std::vector<float>angularVelocity;
+	std::vector<Vector3>angularVelocity;
 	// 推定回転角度
 	std::vector<Quaternion> expectedRot;
 
@@ -47,7 +47,7 @@ public:
 
 	// 重力フラグ
 	std::vector<bool> isGravity;
-	// 重力の強さと方向
+	// 重力加速度
 	std::vector<Vector3> garavity;
 
 	// --- 質量系 ---

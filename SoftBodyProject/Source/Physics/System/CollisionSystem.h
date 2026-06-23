@@ -4,8 +4,6 @@
 #include <unordered_map>
 #include <unordered_set>
 
-#include "BaseConstants.h"
-
 #include "TransformComponentStorage.h"
 #include "SphereColliderComponentStorage.h"
 #include "ProjectionStorage.h"

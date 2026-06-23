@@ -64,7 +64,7 @@ public:
     // 位置
     const Vector3& GetPosition()const { return trans.GetPosition(); }
     // 回転
-    const Quaternion& GetRotate()const { return trans.GetRotate(); }
+    const Quaternion& GetRotation()const { return trans.GetRotation(); }
     // 大きさ
     const Vector3& GetScale()const { return trans.GetScale(); }
     // ローカル行列
