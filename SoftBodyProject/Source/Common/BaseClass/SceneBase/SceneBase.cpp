@@ -19,6 +19,9 @@
 #include "CollisionSystem.h"
 #include "PhysicsCommitSystem.h"
 
+// API
+#include "PhysicsAPI.h"
+
 #include "SceneBase.h"
 
 SceneBase::SceneBase()
@@ -36,6 +39,8 @@ SceneBase::SceneBase()
 	AddSystem(std::make_unique<PhysicsCommitSystem>());
 	// オブジェクトマネージャー
 	objectManager = std::make_unique<ObjectManager>();
+
+	PhysicsAPI::SetWorld(this);
 
 #ifdef _DEBUG
 	AddSystem(std::make_unique<DebugRenderingSystem>());
