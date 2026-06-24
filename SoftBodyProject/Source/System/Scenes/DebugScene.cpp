@@ -35,6 +35,15 @@ void DebugScene::Initialize()
 
 	GetStorage<TransformComponent>()->Add(1, std::move(trans01));
 
+	Matrix4x4 m{
+		1, 0, 0, 0,
+		0, 1, 0, 0,
+		0, 0, 3, 0,
+		0, 0, 0, 1,
+	};
+
+	Matrix4x4 result{ m * m.Inversed()};
+
 	/*RendererComponent renderer{ ServiceLocator::GetRenderer()->LoadModel(std::string{"Res/Model/M_001_player_073_01.mv1"}) };
 	
 	GetStorage<RendererComponent>()->Add(0,renderer);

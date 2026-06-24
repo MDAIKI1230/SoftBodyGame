@@ -209,13 +209,14 @@ Matrix4x4& Matrix4x4::Transpose(Matrix4x4& _value)
 // 逆行列(変化しない)
 Matrix4x4 Matrix4x4::Inversed() const
 {
-	return *this;
+	Matrix4x4 result{ *this };
+	return Inverse(result);
 }
 
 // 逆行列
 Matrix4x4& Matrix4x4::Inverse()
 {
-	return *this;
+	return Inverse(*this);
 }
 
 // 逆行列(変化しない)
@@ -227,6 +228,76 @@ Matrix4x4 Matrix4x4::Inversed(Matrix4x4& _value)
 // 逆行列
 Matrix4x4& Matrix4x4::Inverse(Matrix4x4& _value)
 {
+	/*
+		元の行列 =　｜a, b, c, d｜
+					｜e, f, g, h｜
+					｜i, j, k, l｜
+					｜m, n, o, p｜
+
+	*/
+
+	/*
+		転置行列 =  |a, e, i, m|
+					|b, f, j, n|
+					|c, g, k, o|
+					|d, h, l, p|
+	*/  
+	// --- 2×2行列式の計算を一気にやる ---
+	// 列を(0, 1)と(2, 3)に固定して重複を除くすべてのパターンの計算をする
+	// 行は(0, 1)(0, 2)(0, 3)(1, 2)(1, 3)(2, 3)がすべてのパターン
+
+	// {a, a, b, b}
+	SIMDVectorFloat vec00{ SIMDVectorFloat::Shuffle<0, 0, 1, 1>(_value.row[0]) };
+	// {g, h, g, h}
+	SIMDVectorFloat vec01{ SIMDVectorFloat::Shuffle<2, 3, 2, 3>(_value.row[1]) };
+
+	// {i, i, j, j}
+	SIMDVectorFloat vec10{ SIMDVectorFloat::Shuffle<0, 0, 1, 1>(_value.row[2]) };
+	// {o, p, o, p}
+	SIMDVectorFloat vec11{ SIMDVectorFloat::Shuffle<2, 3, 2, 3>(_value.row[3]) };
+	
+	// {a, c, i, k}
+	SIMDVectorFloat vec20{ SIMDVectorFloat::Shuffle<0, 2, 0, 2>(_value.row[0],_value.row[2]) };
+	// {f, h, n, p}
+	SIMDVectorFloat vec21{ SIMDVectorFloat::Shuffle<1, 3, 1, 3>(_value.row[1],_value.row[3]) };
+	
+	// {ag, ah, bg, bh}
+	SIMDVectorFloat det0{ SIMDVectorMath::Mul(vec00,vec01) };
+	// {io, ip, jo, jp}
+	SIMDVectorFloat det1{ SIMDVectorMath::Mul(vec10,vec11) };
+	// {af, ch, in, kp}
+	SIMDVectorFloat det2{ SIMDVectorMath::Mul(vec20,vec21) };
+
+	// {e, e, f, f}
+	vec00 = SIMDVectorFloat::Shuffle<0, 0, 1, 1>(_value.row[1]);
+	// {c, d, c, d}
+	vec01 = SIMDVectorFloat::Shuffle<2, 3, 2, 3>(_value.row[0]);
+
+	// {m, m, n, n}
+	vec10 = SIMDVectorFloat::Shuffle<0, 0, 1, 1>(_value.row[3]);
+	// {k, l, k, l}
+	vec11 = SIMDVectorFloat::Shuffle<2, 3, 2, 3>(_value.row[2]);
+
+	// {e, g, m, o}
+	vec20 = SIMDVectorFloat::Shuffle<0, 2, 0, 2>(_value.row[1], _value.row[3]);
+	// {b, d, j, l}
+	vec21 = SIMDVectorFloat::Shuffle<1, 3, 1, 3>(_value.row[0], _value.row[2]);
+
+	// {ag - ec, ah - ed, bg - fc, bh - fd}列(0, 1)固定行(0, 2)(0, 3)(1, 2)(1, 3)
+	det0 = SIMDVectorMath::Sub(
+		// {ec, ed, fc, fd}
+		det0, SIMDVectorMath::Mul(vec00, vec01));
+	// {io - mk, ip - ml, jo - nk, jp - nl}列(2, 3)固定(0, 2)(0, 3)(1, 2)(1, 3)
+	det1 = SIMDVectorMath::Sub(
+		// {mk, ml, nk, nl}
+		det1, SIMDVectorMath::Mul(vec10, vec11));
+	// {af - eb, ch - gd, in - mj, kp - ol}対角に接する奴ら
+	det2 = SIMDVectorMath::Sub(
+		// {eb, gd, mj, ol}
+		det2, SIMDVectorMath::Mul(vec20, vec21));
+
+	// 
+	
 	return _value;
 }
 
