@@ -191,6 +191,7 @@
     <ClInclude Include="Source\Physics\Struct\ColliderProjectionData.h" />
     <ClInclude Include="Source\Physics\Struct\CollPair.h" />
     <ClInclude Include="Source\Physics\Struct\ColliderTags.h" />
+    <ClInclude Include="Source\Physics\System\Collision\CollisionSolverSystem.h" />
     <ClInclude Include="Source\Physics\System\Collision\CollisionSystem.h" />
     <ClInclude Include="Source\Physics\System\Commit\PhysicsCommitSystem.h" />
     <ClInclude Include="Source\Physics\System\PhysicsAPI.h" />
@@ -230,6 +231,7 @@
     <ClCompile Include="Source\Objects\DebugSphere.cpp" />
     <ClCompile Include="Source\Physics\Body\RigidBodyComponent.cpp" />
     <ClCompile Include="Source\Physics\Storage\RigidBodyComponentStorage.cpp" />
+    <ClCompile Include="Source\Physics\System\Collision\CollisionSolverSystem.cpp" />
     <ClCompile Include="Source\Physics\System\Collision\CollisionSystem.cpp" />
     <ClCompile Include="Source\Physics\System\Commit\PhysicsCommitSystem.cpp" />
     <ClCompile Include="Source\Physics\System\PhysicsAPI.cpp" />
