@@ -222,7 +222,8 @@ Matrix4x4& Matrix4x4::Inverse()
 // 逆行列(変化しない)
 Matrix4x4 Matrix4x4::Inversed(Matrix4x4& _value)
 {
-	return _value;
+	Matrix4x4 result{ _value };
+	return Inverse(result);
 }
 
 // 逆行列
@@ -233,7 +234,6 @@ Matrix4x4& Matrix4x4::Inverse(Matrix4x4& _value)
 					｜e, f, g, h｜
 					｜i, j, k, l｜
 					｜m, n, o, p｜
-
 	*/
 
 	/*
@@ -296,7 +296,45 @@ Matrix4x4& Matrix4x4::Inverse(Matrix4x4& _value)
 		// {eb, gd, mj, ol}
 		det2, SIMDVectorMath::Mul(vec20, vec21));
 
-	// 
+	/*
+	元の行列 =　｜a, b, c, d｜
+				｜e, f, g, h｜
+				｜i, j, k, l｜
+				｜m, n, o, p｜
+	転置行列 =  |a, e, i, m|
+				|b, f, j, n|
+				|c, g, k, o|
+				|d, h, l, p|
+	*/
+
+	// {f, e, e, e}
+	vec00 = SIMDVectorFloat::Shuffle<1, 0, 0, 0>(_value.row[1]);
+	// {b, a, a, a}
+	vec01 = SIMDVectorFloat::Shuffle<1, 0, 0, 0>(_value.row[0]);
+
+	// {(kp - ol), (kp - ol), (jp - nl), (jo - nk)}
+	vec10 = SIMDVectorFloat::Shuffle<3, 3, 3, 2>(det2, det1);
+	// {(gp - oh), (gp - oh), (fp - nh), (fo - ng)}
+
+	// f(kp - ol), e(kp - ol), e(jp - nl), e(jo - nk)
+	// b(kp - ol), a(kp - ol), a(jp - nl), a(jo - nk)
+	// b(gp - oh), a(gp - oh), a(fp - nh), a(fo - ng)
+	// b(gl - kh), a(gl - kh), a(fl - jh), a(fk - jg)
+
+	// j(gp - oh), i(gp - oh), i(fp - hn), i(fo - ng)
+	// j(cp - od), i(cp - od), i(bp - nd), i(bo - nc)
+	// f(cp - od), e(cp - od), e(bp - nd), e(bo - nc)
+	// f(cl - kd), e(cl - kd), e(bl - jd), e(bk - jc)
+
+	// n(gl - hk), m(gl - kh), m(fl - jh), m(fk - jg)
+	// n(cl - kd), m(cl - kd), m(bl - jd), m(bk - jc)
+	// n(ch - gd), m(ch - gd), m(bh - fd), m(bg - fc)
+	// j(ch - gd), i(ch - gd), i(bh - fd), i(bg - fc)
+
+	// {f(kp - ol) - j(gp - oh) + n(gl - hk), e(kp - ol) - i(gp - oh) + m(gl - kh), e(jp - nl) - i(fp - hn) + m(fl - jh), e(jo - nk) - i(fo - ng) + m(fk - jg)}列(1, 2, 3)固定:行(1, 2, 3)(0, 2, 3)(0, 1, 3)(0, 1, 2)
+	// {b(kp - ol) - j(cp - od) + n(cl - kd), a(kp - ol) - i(cp - od) + m(cl - kd), a(jp - nl) - i(bp - nd) + m(bl - jd), a(jo - nk) - i(bo - nc) + m(bk - jc)}列(0, 2, 3)固定:行(1, 2, 3)(0, 2, 3)(0, 1, 3)(0, 1, 2)
+	// {b(gp - oh) - f(cp - od) + n(ch - gd), a(gp - oh) - e(cp - od) + m(ch - gd), a(fp - nh) - e(bp - nd) + m(bh - fd), a(fo - ng) - e(bo - nc) + m(bg - fc)}列(0, 1, 3)固定:行(1, 2, 3)(0, 2, 3)(0, 1, 3)(0, 1, 2)
+	// {b(gl - kh) - f(cl - kd) + j(ch - gd), a(gl - kh) - e(cl - kd) + i(ch - gd), a(fl - jh) - e(bl - jd) + i(bh - fd), a(fk - jg) - e(bk - jc) + i(bg - fc)}列(0, 1, 2)固定:行(1, 2, 3)(0, 2, 3)(0, 1, 3)(0, 1, 2)
 	
 	return _value;
 }
