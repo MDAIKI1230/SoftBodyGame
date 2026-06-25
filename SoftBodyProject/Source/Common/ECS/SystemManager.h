@@ -1,12 +1,13 @@
 ﻿#pragma once
 
 #include "WorldStorage.h"
+#include "IWorld.h"
 
 #include "UpdateSystem.h"
 #include "FixedUpdateSystem.h"
 #include "RenderingSystem.h"
 
-class SystemManager
+class SystemManager:public IWorld
 {
 public:
 	// 更新
@@ -24,13 +25,13 @@ public:
 	/// <summary>
 	/// システムの追加(moveされる)
 	/// </summary>
-	/// <param name="system">入れたいシステム</param>
-	void AddSystem(std::unique_ptr<RenderingSystem> _system);
+	/// <param name="_system">入れたいシステム</param>
+	void AddSystem(std::unique_ptr<FixedUpdateSystem> _system);
 	/// <summary>
 	/// システムの追加(moveされる)
 	/// </summary>
-	/// <param name="_system">入れたいシステム</param>
-	void AddSystem(std::unique_ptr<FixedUpdateSystem> _system);
+	/// <param name="system">入れたいシステム</param>
+	void AddSystem(std::unique_ptr<RenderingSystem> _system);
 private:
 	// 更新系システム
 	std::vector<std::unique_ptr<UpdateSystem>> updateSystems;
