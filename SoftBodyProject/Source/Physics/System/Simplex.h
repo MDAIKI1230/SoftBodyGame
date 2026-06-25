@@ -14,8 +14,9 @@ public:
 	// 値直
 	Vector3& operator[](size_t _index);
 private:
+	static constexpr int MAX_SIZE{ 4 };
 	// 頂点
-	Vector3 vertices[4];
+	Vector3 vertices[MAX_SIZE];
 	// 頂点数
 	int size{ 0 };
 };

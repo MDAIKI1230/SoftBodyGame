@@ -110,6 +110,9 @@
     <Filter Include="ソース ファイル\Common\Events\Physics">
       <UniqueIdentifier>{efd2c8b0-1091-4205-ad0c-41bbf3fa541f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Common\Math\Constants">
+      <UniqueIdentifier>{4e1f64dc-d6db-4818-9365-2e73beec1b1e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Objects\Camera.h">
@@ -345,6 +348,12 @@
     </ClInclude>
     <ClInclude Include="Source\Physics\PhysicsWorld.h">
       <Filter>ソース ファイル\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Struct\Face.h">
+      <Filter>ソース ファイル\Physics\Struct</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Common\Math\Constants\MathConstants.h">
+      <Filter>ソース ファイル\Common\Math\Constants</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

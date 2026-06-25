@@ -12,7 +12,7 @@ void CollisionSolverSystem::FixedUpdate(WorldStorage* _worldStorage, CollisionMa
 
 void CollisionSolverSystem::PositionSolver(RigidBodyComponentStorage* _bodyStorage, CollisionManifoldBuffer* _manifoldBuffer)
 {
-	int size{ _manifoldBuffer->manifolds.size() };
+	int size{ (int)_manifoldBuffer->manifolds.size() };
 
 	for (int i{ size }; i < size; i++)
 	{
@@ -26,7 +26,7 @@ void CollisionSolverSystem::PositionSolver(RigidBodyComponentStorage* _bodyStora
 
 void CollisionSolverSystem::VelocitySolver(RigidBodyComponentStorage* _bodyStorage, CollisionManifoldBuffer* _manifoldBuffer)
 {
-	int size{ _manifoldBuffer->manifolds.size() };
+	int size{ (int)_manifoldBuffer->manifolds.size() };
 
 	for (int i{ size }; i < size; i++)
 	{
@@ -34,8 +34,7 @@ void CollisionSolverSystem::VelocitySolver(RigidBodyComponentStorage* _bodyStora
 		int a{ manifold.handleA };
 		int b{ manifold.handleB };
 
-		// どちらかRigidBodyがないならaが-1になる。
-		if(a != -1)
+		if(_bodyStorage->TryGet(a) && _bodyStorage->TryGet(b))
 		{
 			Vector3 relativeVec{ _bodyStorage->velocity[b] - _bodyStorage->velocity[a] };
 			float massCoefficient{ (_bodyStorage->mass[a] * _bodyStorage->mass[b]) / (_bodyStorage->mass[a] + _bodyStorage->mass[b]) };
@@ -43,12 +42,19 @@ void CollisionSolverSystem::VelocitySolver(RigidBodyComponentStorage* _bodyStora
 			_bodyStorage->velocity[a] + (manifold.normal * j) / _bodyStorage->mass[a];
 			_bodyStorage->velocity[b] - (manifold.normal * j) / _bodyStorage->mass[b];
 		}
-		else
+		else if(_bodyStorage->TryGet(b))
 		{
 			// 質量は1と仮定
 			float massCoefficient{ (_bodyStorage->mass[b]) / (_bodyStorage->mass[b] + 1) };
 			float j{ massCoefficient * Vector3::Dot(_bodyStorage->velocity[b], manifold.normal) };
 			_bodyStorage->velocity[b] + (manifold.normal * j) / _bodyStorage->mass[b];
+		}
+		else
+		{
+			// 質量は1と仮定
+			float massCoefficient{ (_bodyStorage->mass[a]) / (_bodyStorage->mass[a] + 1) };
+			float j{ massCoefficient * Vector3::Dot(_bodyStorage->velocity[a], manifold.normal) };
+			_bodyStorage->velocity[a] + (manifold.normal * j) / _bodyStorage->mass[a];
 		}
 	}
 }

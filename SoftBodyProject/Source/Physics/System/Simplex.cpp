@@ -4,7 +4,7 @@ void Simplex::Add(const Vector3& _vec)
 {
 	vertices[size] = _vec;
 
-	if (size <= 4)
+	if (size <= MAX_SIZE)
 	{
 		size++;
 	}

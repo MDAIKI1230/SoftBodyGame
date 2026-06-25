@@ -171,6 +171,7 @@
     <ClInclude Include="Source\Common\Interface\IInput.h" />
     <ClInclude Include="Source\Common\Interface\IRenderer.h" />
     <ClInclude Include="Source\Common\Interface\ISystem.h" />
+    <ClInclude Include="Source\Common\Math\Constants\MathConstants.h" />
     <ClInclude Include="Source\Common\Math\Matrix\MatGenerateFunc.h" />
     <ClInclude Include="Source\Common\Math\Matrix\Matrix.h" />
     <ClInclude Include="Source\Common\Math\MDMath.h" />
@@ -200,6 +201,7 @@
     <ClInclude Include="Source\Physics\Struct\ColliderProjectionData.h" />
     <ClInclude Include="Source\Physics\Struct\CollPair.h" />
     <ClInclude Include="Source\Physics\Struct\ColliderTags.h" />
+    <ClInclude Include="Source\Physics\Struct\Face.h" />
     <ClInclude Include="Source\Physics\Struct\Manifold.h" />
     <ClInclude Include="Source\Physics\System\Collision\CollisionSolverSystem.h" />
     <ClInclude Include="Source\Physics\System\Collision\CollisionSystem.h" />

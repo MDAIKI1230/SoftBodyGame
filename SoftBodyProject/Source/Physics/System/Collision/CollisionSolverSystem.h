@@ -11,11 +11,11 @@ public:
 	void FixedUpdate(WorldStorage* _worldStorage, CollisionManifoldBuffer* _manifoldBuffer);
 private:
 	// 位置解決
-	void PositionSolver(RigidBodyComponentStorage* _bodyStorage);
+	void PositionSolver(RigidBodyComponentStorage* _bodyStorage, CollisionManifoldBuffer* _manifoldBuffer);
 	// 速度解決
-	void VelocitySolver(RigidBodyComponentStorage* _bodyStorage);
+	void VelocitySolver(RigidBodyComponentStorage* _bodyStorage, CollisionManifoldBuffer* _manifoldBuffer);
 	// 姿勢解決
-	void OrientationSolver(RigidBodyComponentStorage* _bodyStorage);
+	void OrientationSolver(RigidBodyComponentStorage* _bodyStorage, CollisionManifoldBuffer* _manifoldBuffer);
 	// 回転速度解決
-	void RotationSolver(RigidBodyComponentStorage* _bodyStorage);
+	void RotationSolver(RigidBodyComponentStorage* _bodyStorage, CollisionManifoldBuffer* _manifoldBuffer);
 };

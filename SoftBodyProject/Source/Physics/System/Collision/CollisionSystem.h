@@ -12,6 +12,7 @@
 #include "ColliderProjection.h"
 #include "CollPair.h"
 #include "Simplex.h"
+#include "Face.h"
 
 #include "FixedUpdateSystem.h"
 
@@ -24,7 +25,7 @@ private:
 	// ブロードフェーズ
 	void BroadPhase(TransformComponentStorage* _transformStorage, SphereColliderComponentStorage* _sphereStorage);
 	// ナローフェーズ
-	void NarrowPhase(TransformComponentStorage* _transformStorage, SphereColliderComponentStorage* _sphereStorage, EventManager* _eventManager);
+	void NarrowPhase(TransformComponentStorage* _transformStorage, SphereColliderComponentStorage* _sphereStorage, EventManager* _eventManager, CollisionManifoldBuffer* _manifoldBuffer);
 	// 終了処理
 	void End();
 	/// <summary>
@@ -50,11 +51,13 @@ private:
 	bool GJK(
 		AS* _storageA,int _handleA,
 		BS* _storageB,int _handleB,
-		TransformComponentStorage* _transformStorage);
+		TransformComponentStorage* _transformStorage,
+		CollisionManifoldBuffer* _manifoldBuffer);
 
 	// --- 各形状ごとの引数の当り判定 ---
 
-	bool Solve(SphereColliderComponentStorage* _strageA, SphereColliderComponentStorage* _strageB, SphereSpherePair& pair, TransformComponentStorage* _transformStorage);
+	bool Solve(SphereColliderComponentStorage* _strageA, SphereColliderComponentStorage* _strageB, SphereSpherePair& pair,
+		TransformComponentStorage* _transformStorage, CollisionManifoldBuffer* _manifoldBuffer);
 
 	// --- SimplexSolve ---
 	/// <summary>
@@ -71,6 +74,15 @@ private:
 	bool SolveTriangle(Simplex& _simplex, Vector3& _output);
 	// 四点の時(四面体)の計算
 	bool SolveTetrahedron(Simplex& _simplex, Vector3& _output);
+
+	template<class A, class B, class AS, class BS>
+	void EPA(
+		AS* _storageA, int _handleA,
+		BS* _storageB, int _handleB,
+		TransformComponentStorage* _transformStorage,
+		CollisionManifoldBuffer* _manifoldBuffer, Simplex& _simplex);
+
+	void ComputeFace(Face& _face, std::vector<Vector3>& _vertices);
 
 	// --- ソート ---
 	void InsertionSort(std::vector<ColliderProjection>& _projectionValues);

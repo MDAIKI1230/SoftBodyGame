@@ -14,7 +14,7 @@ void CollisionSystem::FixedUpdate(WorldStorage* _worldStorage, EventManager* _ev
 
 	// --- 衝突処理 --- 
 	BroadPhase(transformStorage, sphereStorage);
-	NarrowPhase(transformStorage, sphereStorage, _eventManager);
+	NarrowPhase(transformStorage, sphereStorage, _eventManager, _manifoldBuffer);
 
 	// 終了
 	End();
@@ -103,7 +103,7 @@ void CollisionSystem::BroadPhase(TransformComponentStorage* _transformStorage, S
 	}
 }
 
-void CollisionSystem::NarrowPhase(TransformComponentStorage* _transformStorage, SphereColliderComponentStorage* _sphereStorage, EventManager* _eventManager)
+void CollisionSystem::NarrowPhase(TransformComponentStorage* _transformStorage, SphereColliderComponentStorage* _sphereStorage, EventManager* _eventManager, CollisionManifoldBuffer* _manifoldBuffer)
 {
 	// 参照用
 	TransformComponent transA{}, transB{};
@@ -125,7 +125,7 @@ void CollisionSystem::NarrowPhase(TransformComponentStorage* _transformStorage, 
 		ColliderComponent* collA{ _sphereStorage->Get(pair.a) };
 		ColliderComponent* collB{ _sphereStorage->Get(pair.b) };
 
-		if (Solve(_sphereStorage, _sphereStorage, pair, _transformStorage))
+		if (Solve(_sphereStorage, _sphereStorage, pair, _transformStorage, _manifoldBuffer))
 		{
 			// 今回のペア追加
 			currentFramePair.insert(pair);
@@ -235,7 +235,8 @@ template<class A, class B, class AS, class BS>
 bool CollisionSystem::GJK(
 	AS* _storageA, int _handleA,
 	BS* _storageB, int _handleB,
-	TransformComponentStorage* _transformStorage)
+	TransformComponentStorage* _transformStorage,
+	CollisionManifoldBuffer* _manifoldBuffer)
 {
 	/*
 		コライダー01の中心を原点として考えるものとしよう。
@@ -264,6 +265,7 @@ bool CollisionSystem::GJK(
 
 		if(SimplexSolve(simplex,dir))
 		{
+			EPA<A, B, AS, BS>(_storageA, _handleA, _storageB, _handleB, _transformStorage, _manifoldBuffer, simplex);
 			return true;
 		}
 	}
@@ -271,9 +273,10 @@ bool CollisionSystem::GJK(
 	return false;
 }
 
-bool CollisionSystem::Solve(SphereColliderComponentStorage* _strageA, SphereColliderComponentStorage* _strageB, SphereSpherePair& pair,TransformComponentStorage* _transformStorage)
+bool CollisionSystem::Solve(SphereColliderComponentStorage* _strageA, SphereColliderComponentStorage* _strageB, SphereSpherePair& pair,
+	TransformComponentStorage* _transformStorage, CollisionManifoldBuffer* _manifoldBuffer)
 {
-	return GJK<ColliderTag::SphereTag, ColliderTag::SphereTag>(_strageA, pair.a, _strageB, pair.b, _transformStorage);
+	return GJK<ColliderTag::SphereTag, ColliderTag::SphereTag>(_strageA, pair.a, _strageB, pair.b, _transformStorage, _manifoldBuffer);
 }
 
 bool CollisionSystem::SimplexSolve(Simplex& _simplex, Vector3& _output)
@@ -435,6 +438,40 @@ bool CollisionSystem::SolveTetrahedron(Simplex& _simplex, Vector3& _output)
 		_simplex.Erase(bestIndex);
 		return false;
 	}
+}
+
+template<class A, class B, class AS, class BS>
+void CollisionSystem::EPA(
+	AS* _storageA, int _handleA,
+	BS* _storageB, int _handleB,
+	TransformComponentStorage* _transformStorage,
+	CollisionManifoldBuffer* _manifoldBuffer, Simplex& _simplex)
+{
+	
+}
+
+void CollisionSystem::ComputeFace(Face& _face, std::vector<Vector3>& _vertices)
+{
+	// 頂点の検出
+	Vector3 a{ _vertices[_face.pointIndex[0]] };
+	Vector3 b{ _vertices[_face.pointIndex[1]] };
+	Vector3 c{ _vertices[_face.pointIndex[2]] };
+
+	// 外積計算から
+	Vector3 cross{ Vector3::Cross(b - a, c - a) };
+	_face.normal = Vector3::Normalize(cross);
+
+	// 外側向ける
+	if (Vector3::Dot(_face.normal, a) < 0.0f)
+	{
+		std::swap(_face.pointIndex[1], _face.pointIndex[2]);
+
+		_face.normal = -_face.normal;
+	}
+
+	// 距離計算
+	_face.distance =
+		Vector3::Dot(_face.normal, a);
 }
 
 void CollisionSystem::InsertionSort(std::vector<ColliderProjection>& _projectionValues)
