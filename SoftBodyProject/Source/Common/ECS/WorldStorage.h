@@ -26,6 +26,19 @@ public:
 		return static_cast<SparseSetStorageBase<T>*>(storages[it->second].get());
 	}
 
+	/// <summary>
+	/// ストレージの追加(moveされる)
+	/// </summary>
+	/// <param name="storage">入れたいストレージ</param>
+	template<typename T>
+	void AddStorage(std::unique_ptr<SparseSetStorageBase<T>> _storage)
+	{
+		// コンテナに追加
+		storages.push_back(std::move(_storage));
+		// 対応付け
+		storageMap[typeid(T)] = storages.size() - 1;
+	}
+
 	// デストラクタ
 	~WorldStorage() = default;
 protected:

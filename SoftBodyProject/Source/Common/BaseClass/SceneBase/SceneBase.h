@@ -7,6 +7,7 @@
 #include "SceneConstants.h"
 
 #include "WorldStorage.h"
+#include "SystemManager.h"
 #include "IWorld.h"
 
 #include "ObjectManager.h"
@@ -65,6 +66,8 @@ protected:
 protected:
 	// ワールドストレージ
 	WorldStorage* worldStorage;
+	// システムマネージャー
+	SystemManager* systemManager;
 	// シーンの状態
 	SceneState state{ SceneState::INITIALIZE };
 	// 更新系システム
