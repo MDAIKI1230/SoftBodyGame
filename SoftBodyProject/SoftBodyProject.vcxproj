@@ -161,6 +161,7 @@
     <ClInclude Include="Source\Common\Constants\SceneConstants.h" />
     <ClInclude Include="Source\Common\ECS\EventManager.h" />
     <ClInclude Include="Source\Common\ECS\EventQueue.h" />
+    <ClInclude Include="Source\Common\ECS\EventSystem.h" />
     <ClInclude Include="Source\Common\ECS\SparseSet.h" />
     <ClInclude Include="Source\Common\ECS\SparseSetStorageBase.h" />
     <ClInclude Include="Source\Common\ECS\SystemManager.h" />
@@ -222,6 +223,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Common\BaseClass\SceneBase\SceneBase.cpp" />
+    <ClCompile Include="Source\Common\ECS\EventSystem.cpp" />
     <ClCompile Include="Source\Common\ECS\SystemManager.cpp" />
     <ClCompile Include="Source\Common\Math\Matrix\MatGenerateFunc.cpp" />
     <ClCompile Include="Source\Common\Math\Matrix\Matrix.cpp" />

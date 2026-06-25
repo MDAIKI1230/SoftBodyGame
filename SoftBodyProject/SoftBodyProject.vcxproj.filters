@@ -328,6 +328,9 @@
     <ClInclude Include="Source\Common\ECS\EventManager.h">
       <Filter>ソース ファイル\Common\ECS</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Common\ECS\EventSystem.h">
+      <Filter>ソース ファイル\Common\ECS</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\System\Adapter\Dxlib\DxlibInput.cpp">
@@ -424,6 +427,9 @@
       <Filter>ソース ファイル\Physics\System\Collision</Filter>
     </ClCompile>
     <ClCompile Include="Source\Common\ECS\SystemManager.cpp">
+      <Filter>ソース ファイル\Common\ECS</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Common\ECS\EventSystem.cpp">
       <Filter>ソース ファイル\Common\ECS</Filter>
     </ClCompile>
   </ItemGroup>
