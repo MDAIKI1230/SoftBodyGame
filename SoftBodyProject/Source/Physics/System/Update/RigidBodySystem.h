@@ -5,13 +5,13 @@
 #include "RigidBodyComponentStorage.h"
 #include "TransformComponentStorage.h"
 
-class RigidBodySystem:public FixedUpdateSystem
+class RigidBodySystem
 {
 public:
 	// コンストラクタ
-	RigidBodySystem();
+	RigidBodySystem() = default;
 	// 更新
-	void FixedUpdate(WorldStorage* _worldStorage, EventManager* _eventManager)override;
+	void FixedUpdate(WorldStorage* _worldStorage);
 private:
 	// 重力適応
 	void UpdateGravity(RigidBodyComponentStorage* _storage);

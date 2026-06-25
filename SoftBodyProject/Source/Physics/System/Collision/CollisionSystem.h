@@ -7,6 +7,7 @@
 #include "TransformComponentStorage.h"
 #include "SphereColliderComponentStorage.h"
 #include "ProjectionStorage.h"
+#include "CollisionManifoldBuffer.h"
 
 #include "ColliderProjection.h"
 #include "CollPair.h"
@@ -14,11 +15,11 @@
 
 #include "FixedUpdateSystem.h"
 
-class CollisionSystem :public FixedUpdateSystem
+class CollisionSystem
 {
 public:
 	// 更新
-	void FixedUpdate(WorldStorage* _worldStorage, EventManager* _eventManager) override;
+	void FixedUpdate(WorldStorage* _worldStorage, EventManager* _eventManager, CollisionManifoldBuffer* _manifoldBuffer);
 private:
 	// ブロードフェーズ
 	void BroadPhase(TransformComponentStorage* _transformStorage, SphereColliderComponentStorage* _sphereStorage);

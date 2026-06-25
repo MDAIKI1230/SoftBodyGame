@@ -2,12 +2,8 @@
 
 #include "RigidBodySystem.h"
 
-RigidBodySystem::RigidBodySystem()
-{
-	priority = INT_MAX;
-}
 
-void RigidBodySystem::FixedUpdate(WorldStorage* _worldStorage, EventManager* _eventManager)
+void RigidBodySystem::FixedUpdate(WorldStorage* _worldStorage)
 {
 	// ストレージ取得
 	RigidBodyComponentStorage* bodyStorage{ static_cast<RigidBodyComponentStorage*>(_worldStorage->GetStorage<RigidBodyComponent>()) };

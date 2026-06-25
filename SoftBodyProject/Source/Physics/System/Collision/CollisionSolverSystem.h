@@ -1,11 +1,12 @@
 ﻿#pragma once
 
-#include "FixedUpdateSystem.h"
+#include "WorldStorage.h"
+#include "CollisionManifoldBuffer.h"
 
-class CollisionSolverSystem :public FixedUpdateSystem
+class CollisionSolverSystem
 {
 public:
-	void FixedUpdate(WorldStorage* _worldStorage, EventManager* _eventManager) override;
+	void FixedUpdate(WorldStorage* _worldStorage, CollisionManifoldBuffer* _manifoldBuffer);
 private:
 	// 位置解決
 	void PositionSolver();

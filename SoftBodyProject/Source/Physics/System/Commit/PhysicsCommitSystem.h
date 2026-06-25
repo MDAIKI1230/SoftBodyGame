@@ -2,11 +2,11 @@
 
 #include "FixedUpdateSystem.h"
 
-class PhysicsCommitSystem :public FixedUpdateSystem
+class PhysicsCommitSystem
 {
 public:
 	// コンストラクタ
-	PhysicsCommitSystem();
+	PhysicsCommitSystem() = default;
 	// 更新
-	void FixedUpdate(WorldStorage* _worldStorage, EventManager* _eventManager) override;
+	void FixedUpdate(WorldStorage* _worldStorage);
 };

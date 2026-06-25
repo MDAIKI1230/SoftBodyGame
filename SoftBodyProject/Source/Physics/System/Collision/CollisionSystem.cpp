@@ -5,7 +5,7 @@
 
 #include "CollisionSystem.h"
 
-void CollisionSystem::FixedUpdate(WorldStorage* _worldStorage, EventManager* _eventManager)
+void CollisionSystem::FixedUpdate(WorldStorage* _worldStorage, EventManager* _eventManager, CollisionManifoldBuffer* _manifoldBuffer)
 {
 	// コライダーストレージ
 	SphereColliderComponentStorage* sphereStorage{ static_cast<SphereColliderComponentStorage*>(_worldStorage->GetStorage<SphereColliderComponent>()) };

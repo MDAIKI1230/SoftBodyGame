@@ -3,12 +3,8 @@
 
 #include "PhysicsCommitSystem.h"
 
-PhysicsCommitSystem::PhysicsCommitSystem()
-{
-	priority = INT_MIN;
-}
 
-void PhysicsCommitSystem::FixedUpdate(WorldStorage* _worldStorage, EventManager* _eventManager)
+void PhysicsCommitSystem::FixedUpdate(WorldStorage* _worldStorage)
 {
 	// RigidBodyストレージ
 	RigidBodyComponentStorage* bodyStorage{ static_cast<RigidBodyComponentStorage*>(_worldStorage->GetStorage<RigidBodyComponent>()) };

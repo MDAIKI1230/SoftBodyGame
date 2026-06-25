@@ -11,8 +11,8 @@ PhysicsWorld::PhysicsWorld()
 
 void PhysicsWorld::FixedUpdate(WorldStorage* _worldStorage, EventManager* _eventManager)
 {
-	rigidBodySystem->FixedUpdate(_worldStorage, _eventManager);
-	collisionSystem->FixedUpdate(_worldStorage, _eventManager);
-	collisionSolverSystem->FixedUpdate(_worldStorage, _eventManager);
-	physicsCommitSystem->FixedUpdate(_worldStorage, _eventManager);
+	rigidBodySystem->FixedUpdate(_worldStorage);
+	collisionSystem->FixedUpdate(_worldStorage, _eventManager, manifoldBuffer.get());
+	collisionSolverSystem->FixedUpdate(_worldStorage, manifoldBuffer.get());
+	physicsCommitSystem->FixedUpdate(_worldStorage);
 }
