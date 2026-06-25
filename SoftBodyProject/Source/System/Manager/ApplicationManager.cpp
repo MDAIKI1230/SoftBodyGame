@@ -21,6 +21,8 @@ ApplicationManager::ApplicationManager()
 	input = std::make_unique<DxlibInput>();
 	sceneManager = std::make_unique<SceneManager>();
 	timeManager = std::make_unique<TimeManager>();
+	worldStorage = std::make_unique<WorldStorage>();
+	systemManager = std::make_unique<SystemManager>();
 
 	// サービスロケータに登録
 	ServiceLocator::SetRenderer(renderer.get());
@@ -42,10 +44,18 @@ int ApplicationManager::ApplicationMain()
 	{
 		input->Update();
 		timeManager->Update();
+
+		systemManager->Update(worldStorage.get());
+
+		while (timeManager->IsFixedUpdateTime())
+		{
+			systemManager->FixedUpdate(worldStorage.get());
+		}
 		sceneManager->Update();
 
 		renderer->ClearDrawScreen();
 
+		systemManager->Render(worldStorage.get());
 		sceneManager->Draw();
 
 		renderer->ScreenFlip();
