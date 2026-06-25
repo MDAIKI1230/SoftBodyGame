@@ -29,7 +29,7 @@ void SystemManager::Render(WorldStorage* _worldStorage)
 	}
 }
 
-void SystemManager::AddSystem(std::unique_ptr<UpdateSystem> _system)
+void SystemManager::AddSystem(std::unique_ptr<UpdateSystem>&& _system)
 {
 	// 入れる位置を探す
 	auto it = std::lower_bound(
@@ -45,7 +45,7 @@ void SystemManager::AddSystem(std::unique_ptr<UpdateSystem> _system)
 	updateSystems.insert(it, std::move(_system));
 }
 
-void SystemManager::AddSystem(std::unique_ptr<FixedUpdateSystem> _system)
+void SystemManager::AddSystem(std::unique_ptr<FixedUpdateSystem>&& _system)
 {
 	// 入れる位置を探す
 	auto it = std::lower_bound(
@@ -61,7 +61,7 @@ void SystemManager::AddSystem(std::unique_ptr<FixedUpdateSystem> _system)
 	fixedUpdateSystems.insert(it, std::move(_system));
 }
 
-void SystemManager::AddSystem(std::unique_ptr<RenderingSystem> _system)
+void SystemManager::AddSystem(std::unique_ptr<RenderingSystem>&& _system)
 {
 	// 入れる位置を探す
 	auto it = std::lower_bound(

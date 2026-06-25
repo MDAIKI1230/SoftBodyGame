@@ -6,13 +6,13 @@
 
 #include "SphereColliderComponent.h"
 
-
 #include "DebugSphere.h"
 
 #include "DebugScene.h"
 
 // コンストラクタ
-DebugScene::DebugScene()
+DebugScene::DebugScene(WorldStorage* _worldStorage, SystemManager* _systemManager) :
+	SceneBase{ _worldStorage,_systemManager }
 {
 	
 }

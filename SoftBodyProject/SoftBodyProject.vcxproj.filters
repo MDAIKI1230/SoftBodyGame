@@ -310,6 +310,12 @@
     <ClInclude Include="Source\Physics\System\Collision\CollisionSolverSystem.h">
       <Filter>ソース ファイル\Physics\System\Collision</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Common\ECS\WorldStorage.h">
+      <Filter>ソース ファイル\Common\ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Common\ECS\SystemManager.h">
+      <Filter>ソース ファイル\Common\ECS</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\System\Adapter\Dxlib\DxlibInput.cpp">
@@ -404,6 +410,9 @@
     </ClCompile>
     <ClCompile Include="Source\Physics\System\Collision\CollisionSolverSystem.cpp">
       <Filter>ソース ファイル\Physics\System\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Common\ECS\SystemManager.cpp">
+      <Filter>ソース ファイル\Common\ECS</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

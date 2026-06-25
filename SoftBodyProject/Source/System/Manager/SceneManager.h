@@ -8,7 +8,7 @@ class SceneManager
 {
 public:
 	// コンストラクタ
-	SceneManager();
+	SceneManager(WorldStorage* _worldStorage, SystemManager* _systemManager);
 	// 更新
 	void Update();
 	// 描画
@@ -16,4 +16,9 @@ public:
 private:
 	std::unique_ptr<SceneBase> currentScene;
 	std::unique_ptr<SceneBase> nextScene;
+
+	// ワールドストレージ
+	WorldStorage* worldStorage;
+	// システムマネージャー
+	SystemManager* systemManager;
 };

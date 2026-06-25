@@ -19,10 +19,10 @@ ApplicationManager::ApplicationManager()
 	// 生成
 	renderer = std::make_unique<DxlibRenderer>();
 	input = std::make_unique<DxlibInput>();
-	sceneManager = std::make_unique<SceneManager>();
 	timeManager = std::make_unique<TimeManager>();
 	worldStorage = std::make_unique<WorldStorage>();
 	systemManager = std::make_unique<SystemManager>();
+	sceneManager = std::make_unique<SceneManager>(worldStorage.get(), systemManager.get());
 
 	// サービスロケータに登録
 	ServiceLocator::SetRenderer(renderer.get());

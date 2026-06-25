@@ -31,7 +31,7 @@ public:
 	/// </summary>
 	/// <param name="storage">入れたいストレージ</param>
 	template<typename T>
-	void AddStorage(std::unique_ptr<SparseSetStorageBase<T>> _storage)
+	void AddStorage(std::unique_ptr<SparseSetStorageBase<T>>&& _storage)
 	{
 		// コンテナに追加
 		storages.push_back(std::move(_storage));

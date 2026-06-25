@@ -21,17 +21,17 @@ public:
 	/// システムの追加(moveされる)
 	/// </summary>
 	/// <param name="system">入れたいシステム</param>
-	void AddSystem(std::unique_ptr<UpdateSystem> _system);
+	void AddSystem(std::unique_ptr<UpdateSystem>&& _system);
 	/// <summary>
 	/// システムの追加(moveされる)
 	/// </summary>
 	/// <param name="_system">入れたいシステム</param>
-	void AddSystem(std::unique_ptr<FixedUpdateSystem> _system);
+	void AddSystem(std::unique_ptr<FixedUpdateSystem>&& _system);
 	/// <summary>
 	/// システムの追加(moveされる)
 	/// </summary>
 	/// <param name="system">入れたいシステム</param>
-	void AddSystem(std::unique_ptr<RenderingSystem> _system);
+	void AddSystem(std::unique_ptr<RenderingSystem>&& _system);
 private:
 	// 更新系システム
 	std::vector<std::unique_ptr<UpdateSystem>> updateSystems;

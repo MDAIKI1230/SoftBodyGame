@@ -20,7 +20,8 @@
 class SceneBase:public IWorld
 {
 public:
-	SceneBase();
+	// ワールドストレージとシステムマネージャーを入れないと作れない。
+	SceneBase(WorldStorage* _worldStorage, SystemManager* _systemManager);
 	// 更新
 	void Execute();
 	// 描画
@@ -32,28 +33,25 @@ protected:
 	/// システムの追加(moveされる)
 	/// </summary>
 	/// <param name="system">入れたいシステム</param>
-	void AddSystem(std::unique_ptr<UpdateSystem> _system);
+	void AddSystem(std::unique_ptr<UpdateSystem>&& _system);
 	/// <summary>
 	/// システムの追加(moveされる)
 	/// </summary>
 	/// <param name="system">入れたいシステム</param>
-	void AddSystem(std::unique_ptr<RenderingSystem> _system);
+	void AddSystem(std::unique_ptr<RenderingSystem>&& _system);
 	/// <summary>
 	/// システムの追加(moveされる)
 	/// </summary>
 	/// <param name="_system">入れたいシステム</param>
-	void AddSystem(std::unique_ptr<FixedUpdateSystem> _system);
+	void AddSystem(std::unique_ptr<FixedUpdateSystem>&& _system);
 	/// <summary>
 	/// ストレージの追加(moveされる)
 	/// </summary>
 	/// <param name="storage">入れたいストレージ</param>
 	template<typename T>
-	void AddStorage(std::unique_ptr<SparseSetStorageBase<T>> _storage)
+	void AddStorage(std::unique_ptr<SparseSetStorageBase<T>>&& _storage)
 	{
-		// コンテナに追加
-		storages.push_back(std::move(_storage));
-		// 対応付け
-		storageMap[typeid(T)] = storages.size() - 1;
+		worldStorage->AddStorage<T>(std::move(_storage));
 	}
 	// オブジェクトマネージャー取得
 	ObjectManager* GetObjectManager() override;

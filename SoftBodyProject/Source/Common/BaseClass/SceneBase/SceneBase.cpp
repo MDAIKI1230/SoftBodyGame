@@ -24,7 +24,9 @@
 
 #include "SceneBase.h"
 
-SceneBase::SceneBase()
+SceneBase::SceneBase(WorldStorage* _worldStorage, SystemManager* _systemManager) :
+	worldStorage{ _worldStorage },
+	systemManager{ _systemManager }
 {
 	// レンダリングシステム追加
 	AddSystem(std::make_unique<ModelRenderingSystem>());
@@ -83,60 +85,27 @@ void SceneBase::Execute()
 /// システムの追加(moveされる)
 /// </summary>
 /// <param name="system">入れたいシステム</param>
-void SceneBase::AddSystem(std::unique_ptr<UpdateSystem> _system)
+void SceneBase::AddSystem(std::unique_ptr<UpdateSystem>&& _system)
 {
-	// 入れる位置を探す
-	auto it = std::lower_bound(
-		updateSystems.begin(),
-		updateSystems.end(),
-		_system,
-		[](const std::unique_ptr<UpdateSystem>& a, const std::unique_ptr<UpdateSystem>& b)
-		{
-			return a->GetPriority() > b->GetPriority();
-		});
-
-	// その位置に挿入
-	updateSystems.insert(it, std::move(_system));
+	systemManager->AddSystem(std::move(_system));
 }
 
 /// <summary>
 /// システムの追加(moveされる)
 /// </summary>
 /// <param name="system">入れたいシステム</param>
-void SceneBase::AddSystem(std::unique_ptr<FixedUpdateSystem> _system)
+void SceneBase::AddSystem(std::unique_ptr<FixedUpdateSystem>&& _system)
 {
-	// 入れる位置を探す
-	auto it = std::lower_bound(
-		fixedUpdateSystems.begin(),
-		fixedUpdateSystems.end(),
-		_system,
-		[](const std::unique_ptr<FixedUpdateSystem>& a, const std::unique_ptr<FixedUpdateSystem>& b)
-		{
-			return a->GetPriority() > b->GetPriority();
-		});
-
-	// その位置に挿入
-	fixedUpdateSystems.insert(it, std::move(_system));
+	systemManager->AddSystem(std::move(_system));
 }
 
 /// <summary>
 /// システムの追加(moveされる)
 /// </summary>
 /// <param name="system">入れたいシステム</param>
-void SceneBase::AddSystem(std::unique_ptr<RenderingSystem> _system)
+void SceneBase::AddSystem(std::unique_ptr<RenderingSystem>&& _system)
 {
-	// 入れる位置を探す
-	auto it = std::lower_bound(
-		renderingSystems.begin(),
-		renderingSystems.end(),
-		_system,
-		[](const std::unique_ptr<RenderingSystem>& a, const std::unique_ptr<RenderingSystem>& b)
-		{
-			return a->GetPriority() > b->GetPriority();
-		});
-
-	// その位置に挿入
-	renderingSystems.insert(it, std::move(_system));
+	systemManager->AddSystem(std::move(_system));
 }
 
 // オブジェクトマネージャー取得

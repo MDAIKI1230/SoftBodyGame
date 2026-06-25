@@ -161,6 +161,8 @@
     <ClInclude Include="Source\Common\Constants\SceneConstants.h" />
     <ClInclude Include="Source\Common\ECS\SparseSet.h" />
     <ClInclude Include="Source\Common\ECS\SparseSetStorageBase.h" />
+    <ClInclude Include="Source\Common\ECS\SystemManager.h" />
+    <ClInclude Include="Source\Common\ECS\WorldStorage.h" />
     <ClInclude Include="Source\Common\Interface\IInput.h" />
     <ClInclude Include="Source\Common\Interface\IRenderer.h" />
     <ClInclude Include="Source\Common\Interface\ISystem.h" />
@@ -218,6 +220,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Common\BaseClass\SceneBase\SceneBase.cpp" />
+    <ClCompile Include="Source\Common\ECS\SystemManager.cpp" />
     <ClCompile Include="Source\Common\Math\Matrix\MatGenerateFunc.cpp" />
     <ClCompile Include="Source\Common\Math\Matrix\Matrix.cpp" />
     <ClCompile Include="Source\Common\Math\Quaternion\Quaternion.cpp" />

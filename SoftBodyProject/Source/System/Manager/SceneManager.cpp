@@ -2,9 +2,11 @@
 
 #include "SceneManager.h"
 
-SceneManager::SceneManager()
+SceneManager::SceneManager(WorldStorage* _worldStorage, SystemManager* _systemManager) :
+	worldStorage{ _worldStorage },
+	systemManager{ _systemManager }
 {
-	currentScene = std::make_unique<DebugScene>();
+	currentScene = std::make_unique<DebugScene>(worldStorage, systemManager);
 }
 
 void SceneManager::Update()

@@ -6,7 +6,7 @@ class DebugScene :public SceneBase
 {
 public:
 	// コンストラクタ
-	DebugScene();
+	DebugScene(WorldStorage* _worldStorage, SystemManager* _systemManager);
 	// 初期化
 	void Initialize();
 	// 終了
