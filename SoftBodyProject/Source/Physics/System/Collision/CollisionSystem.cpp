@@ -1,6 +1,7 @@
 ﻿#include <algorithm>
 
 #include "ColliderTags.h"
+#include "PhysicsEvent.h"
 
 #include "CollisionSystem.h"
 
@@ -10,12 +11,10 @@ void CollisionSystem::FixedUpdate(WorldStorage* _worldStorage, EventManager* _ev
 	SphereColliderComponentStorage* sphereStorage{ static_cast<SphereColliderComponentStorage*>(_worldStorage->GetStorage<SphereColliderComponent>()) };
 	// Transformストレージ
 	TransformComponentStorage* transformStorage { static_cast<TransformComponentStorage*>(_worldStorage->GetStorage<TransformComponent>()) };
-	// オブジェクトマネージャー
-	ObjectManager* objectManager{  };
 
 	// --- 衝突処理 --- 
 	BroadPhase(transformStorage, sphereStorage);
-	NarrowPhase(transformStorage, sphereStorage, objectManager);
+	NarrowPhase(transformStorage, sphereStorage, _eventManager);
 
 	// 終了
 	End();
@@ -104,7 +103,7 @@ void CollisionSystem::BroadPhase(TransformComponentStorage* _transformStorage, S
 	}
 }
 
-void CollisionSystem::NarrowPhase(TransformComponentStorage* _transformStorage, SphereColliderComponentStorage* _sphereStorage, ObjectManager* _objectManager)
+void CollisionSystem::NarrowPhase(TransformComponentStorage* _transformStorage, SphereColliderComponentStorage* _sphereStorage, EventManager* _eventManager)
 {
 	// 参照用
 	TransformComponent transA{}, transB{};
@@ -131,30 +130,13 @@ void CollisionSystem::NarrowPhase(TransformComponentStorage* _transformStorage, 
 			// 今回のペア追加
 			currentFramePair.insert(pair);
 
-			ObjectBase* objA{ _objectManager->Get(pair.a) };
-			ObjectBase* objB{ _objectManager->Get(pair.b) };
 			// 当たっているのでとりあえずよべる
-			if (objA != nullptr)
-			{
-				objA->OnCollision();
-			}
-			if (objB != nullptr)
-			{
-				objB->OnCollision();
-			}
+			_eventManager->Push<OnCollisionEvent>({ pair.a,pair.b });
 
 			// 前回のフレーム当たってなくて今回当たってるため衝突開始のイベントを呼ぶ
 			if (!prevFramePair.contains(pair))
 			{
-				if (objA != nullptr)
-				{
-					objA->OnCollisionEnter();
-				}
-
-				if (objB != nullptr)
-				{
-					objB->OnCollisionEnter();
-				}
+				_eventManager->Push<OnCollisionEnterEvent>({ pair.a,pair.b });
 			}
 		}
 	}
@@ -167,18 +149,8 @@ void CollisionSystem::NarrowPhase(TransformComponentStorage* _transformStorage, 
 		// 前フレーム当たってて今回の衝突ペアにいないから衝突しなくなった
 		if (!currentFramePair.contains(pair))
 		{
-			// 取得
-			ObjectBase* objA{ _objectManager->Get(pair.a) };
-			ObjectBase* objB{ _objectManager->Get(pair.b) };
 			// イベント呼び出し
-			if (objA != nullptr)
-			{
-				objA->OnCollisionExit();
-			}
-			if (objB != nullptr)
-			{
-				objB->OnCollisionExit();
-			}
+			_eventManager->Push<OnCollisionExitEvent>({ pair.a,pair.b });
 
 			erasePair.insert(pair);
 		}

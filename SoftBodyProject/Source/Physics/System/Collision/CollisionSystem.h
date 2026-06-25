@@ -7,7 +7,6 @@
 #include "TransformComponentStorage.h"
 #include "SphereColliderComponentStorage.h"
 #include "ProjectionStorage.h"
-#include "ObjectManager.h"
 
 #include "ColliderProjection.h"
 #include "CollPair.h"
@@ -24,7 +23,7 @@ private:
 	// ブロードフェーズ
 	void BroadPhase(TransformComponentStorage* _transformStorage, SphereColliderComponentStorage* _sphereStorage);
 	// ナローフェーズ
-	void NarrowPhase(TransformComponentStorage* _transformStorage, SphereColliderComponentStorage* _sphereStorage, ObjectManager* _objectManager);
+	void NarrowPhase(TransformComponentStorage* _transformStorage, SphereColliderComponentStorage* _sphereStorage, EventManager* _eventManager);
 	// 終了処理
 	void End();
 	/// <summary>

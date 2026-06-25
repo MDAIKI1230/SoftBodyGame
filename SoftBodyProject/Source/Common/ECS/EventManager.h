@@ -13,20 +13,20 @@ class EventManager
 public:
     // 追加
     template<typename T>
-    T Push(const T& _event)
+    void Push(const T& _event)
     {
         EventQueue<T>& queue{ GetQueue<T>() };
 
-        return queue.Push();
+        queue.Push(_event);
     }
 
     // 取得
     template<typename T>
-    T Pop(const T& _event)
+    bool Pop(T& _out)
     {
         EventQueue<T>& queue{ GetQueue<T>() };
 
-        return queue.Pop();
+        return queue.Pop(_out);
     }
 
     void Swap()
@@ -38,15 +38,9 @@ public:
 #undef X
     }
 private:
-    // キュー関数生成マクロ
-#define X(type) \
-    template<> \
-    inline EventQueue<type>&  GetQueue<type>() \
-    {\
-        return type##Queue; \
-    }\
-    EVENT_LIST
-#undef X
+    // キュー取得関数
+    template<typename T>
+    EventQueue<T>& GetQueue();
 
 private:
     // キュー生成マクロ
@@ -54,3 +48,14 @@ private:
     EVENT_LIST
 #undef X
 };
+
+// キュー関数生成マクロ
+#define X(type) \
+    template<> \
+    inline EventQueue<type>&  EventManager::GetQueue<type>() \
+    {\
+        return type##Queue; \
+    }
+
+    EVENT_LIST
+#undef X
