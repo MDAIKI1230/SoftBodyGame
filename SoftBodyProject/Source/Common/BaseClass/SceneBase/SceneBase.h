@@ -6,6 +6,7 @@
 
 #include "SceneConstants.h"
 
+#include "WorldStorage.h"
 #include "IWorld.h"
 
 #include "ObjectManager.h"
@@ -62,6 +63,8 @@ protected:
 	virtual void Update();
 	virtual void Terminate() = 0;
 protected:
+	// ワールドストレージ
+	WorldStorage* worldStorage;
 	// シーンの状態
 	SceneState state{ SceneState::INITIALIZE };
 	// 更新系システム
