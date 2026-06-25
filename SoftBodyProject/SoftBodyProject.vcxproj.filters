@@ -104,6 +104,12 @@
     <Filter Include="ソース ファイル\Physics\System\Commit">
       <UniqueIdentifier>{03d50d9b-6ad1-4a7d-9de5-0b3043694bb3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Common\Events">
+      <UniqueIdentifier>{b9bff928-5b7e-4c6b-8a3a-f6eb65471602}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Common\Events\Physics">
+      <UniqueIdentifier>{efd2c8b0-1091-4205-ad0c-41bbf3fa541f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Objects\Camera.h">
@@ -312,6 +318,12 @@
     </ClInclude>
     <ClInclude Include="Source\Common\ECS\SystemManager.h">
       <Filter>ソース ファイル\Common\ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Common\ECS\EventQueue.h">
+      <Filter>ソース ファイル\Common\ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Common\Events\Physics\PhysicsEvent.h">
+      <Filter>ソース ファイル\Common\Events\Physics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
