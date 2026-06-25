@@ -21,6 +21,8 @@ public:
 	SceneBase(WorldStorage* _worldStorage, SystemManager* _systemManager);
 	// 更新
 	void Execute();
+	// オブジェクトマネージャー取得
+	ObjectManager* GetObjectManager();
 	// 仮想デストラクタ
 	virtual ~SceneBase() = default;
 protected:
@@ -48,8 +50,6 @@ protected:
 	{
 		worldStorage->AddStorage<T>(std::move(_storage));
 	}
-	// オブジェクトマネージャー取得
-	ObjectManager* GetObjectManager() ;
 
 	void FadeIn();
 	void FadeOut();

@@ -8,6 +8,7 @@
 #include "WorldStorage.h"
 #include "SystemManager.h"
 #include "EventManager.h"
+#include "EventSystem.h"
 
 class ApplicationManager
 {
@@ -23,4 +24,5 @@ private:
 	std::unique_ptr<WorldStorage> worldStorage;
 	std::unique_ptr<SystemManager> systemManager;
 	std::unique_ptr<EventManager> eventManager;
+	std::unique_ptr<EventSystem> eventSystem;
 };

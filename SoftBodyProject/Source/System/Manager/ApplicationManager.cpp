@@ -24,6 +24,7 @@ ApplicationManager::ApplicationManager()
 	systemManager = std::make_unique<SystemManager>();
 	sceneManager = std::make_unique<SceneManager>(worldStorage.get(), systemManager.get());
 	eventManager = std::make_unique<EventManager>();
+	eventSystem = std::make_unique<EventSystem>();
 
 	// サービスロケータに登録
 	ServiceLocator::SetRenderer(renderer.get());
@@ -53,6 +54,10 @@ int ApplicationManager::ApplicationMain()
 			systemManager->FixedUpdate(worldStorage.get(), eventManager.get());
 		}
 		sceneManager->Update();
+
+		eventManager->Swap();
+
+		eventSystem->Update(eventManager.get(), sceneManager->GetObjectManager());
 
 		renderer->ClearDrawScreen();
 
