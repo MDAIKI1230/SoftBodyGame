@@ -6,6 +6,8 @@
 
 #include "WorldStorage.h"
 #include "SystemManager.h"
+#include "EventManager.h"
+#include "EventSystem.h"
 
 #include "ObjectManager.h"
 
@@ -18,11 +20,10 @@ class SceneBase
 {
 public:
 	// ワールドストレージとシステムマネージャーを入れないと作れない。
-	SceneBase(WorldStorage* _worldStorage, SystemManager* _systemManager);
+	SceneBase();
 	// 更新
 	void Execute();
-	// オブジェクトマネージャー取得
-	ObjectManager* GetObjectManager();
+	void Render();
 	// 仮想デストラクタ
 	virtual ~SceneBase() = default;
 protected:
@@ -57,10 +58,10 @@ protected:
 	virtual void Update();
 	virtual void Terminate() = 0;
 protected:
-	// ワールドストレージ
-	WorldStorage* worldStorage;
-	// システムマネージャー
-	SystemManager* systemManager;
+	std::unique_ptr<WorldStorage> worldStorage;
+	std::unique_ptr<SystemManager> systemManager;
+	std::unique_ptr<EventManager> eventManager;
+	std::unique_ptr<EventSystem> eventSystem;
 	// シーンの状態
 	SceneState state{ SceneState::INITIALIZE };
 	// オブジェクトマネージャー

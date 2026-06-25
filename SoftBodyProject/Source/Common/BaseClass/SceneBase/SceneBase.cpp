@@ -24,10 +24,13 @@
 
 #include "SceneBase.h"
 
-SceneBase::SceneBase(WorldStorage* _worldStorage, SystemManager* _systemManager) :
-	worldStorage{ _worldStorage },
-	systemManager{ _systemManager }
+SceneBase::SceneBase()
 {
+	worldStorage = std::make_unique<WorldStorage>();
+	systemManager = std::make_unique<SystemManager>();
+	eventManager = std::make_unique<EventManager>();
+	eventSystem = std::make_unique<EventSystem>();
+
 	// レンダリングシステム追加
 	AddSystem(std::make_unique<ModelRenderingSystem>());
 	// レンダラーストレージ追加
@@ -42,7 +45,7 @@ SceneBase::SceneBase(WorldStorage* _worldStorage, SystemManager* _systemManager)
 	// オブジェクトマネージャー
 	objectManager = std::make_unique<ObjectManager>();
 
-	PhysicsAPI::SetWorld(_worldStorage);
+	PhysicsAPI::SetWorld(worldStorage.get());
 
 #ifdef _DEBUG
 	AddSystem(std::make_unique<DebugRenderingSystem>());
@@ -108,12 +111,6 @@ void SceneBase::AddSystem(std::unique_ptr<RenderingSystem>&& _system)
 	systemManager->AddSystem(std::move(_system));
 }
 
-// オブジェクトマネージャー取得
-ObjectManager* SceneBase::GetObjectManager()
-{
-	return objectManager.get();
-}
-
 void SceneBase::FadeIn()
 {
 	
@@ -128,10 +125,23 @@ void SceneBase::Update()
 {
 	// オブジェクトマネージャー更新
 	objectManager->Update();
+	// システムマネージャー更新
+	systemManager->Update(worldStorage.get(), eventManager.get());
+
+	eventManager->Swap();
+
+	eventSystem->Update(eventManager.get(), objectManager.get());
 
 	// 物理更新
 	while (ServiceLocator::GetTimeManager()->IsFixedUpdateTime())
 	{
 		objectManager->FixedUpdate();
+
+		systemManager->FixedUpdate(worldStorage.get(), eventManager.get());
 	}
+}
+
+void SceneBase::Render()
+{
+	systemManager->Render(worldStorage.get(), eventManager.get());
 }

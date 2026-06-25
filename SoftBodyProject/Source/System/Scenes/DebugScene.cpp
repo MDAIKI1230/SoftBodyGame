@@ -11,8 +11,7 @@
 #include "DebugScene.h"
 
 // コンストラクタ
-DebugScene::DebugScene(WorldStorage* _worldStorage, SystemManager* _systemManager) :
-	SceneBase{ _worldStorage,_systemManager }
+DebugScene::DebugScene()
 {
 	
 }
@@ -22,7 +21,7 @@ void DebugScene::Initialize()
 	Camera camera{ Vector3{0,250,-500},Vector3{0,0,0} };
 	ServiceLocator::GetRenderer()->SetCamera(camera);
 
-	objectManager->Add(std::make_unique<DebugSphere>(worldStorage, 0));
+	objectManager->Add(std::make_unique<DebugSphere>(worldStorage.get(), 0));
 
 	SphereColliderComponent scc{ 30.0f };
 #ifdef _DEBUG

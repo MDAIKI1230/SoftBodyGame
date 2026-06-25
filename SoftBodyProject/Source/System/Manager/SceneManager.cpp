@@ -2,14 +2,17 @@
 
 #include "SceneManager.h"
 
-SceneManager::SceneManager(WorldStorage* _worldStorage, SystemManager* _systemManager) :
-	worldStorage{ _worldStorage },
-	systemManager{ _systemManager }
+SceneManager::SceneManager()
 {
-	currentScene = std::make_unique<DebugScene>(worldStorage, systemManager);
+	currentScene = std::make_unique<DebugScene>();
 }
 
 void SceneManager::Update()
 {
 	currentScene->Execute();
+}
+
+void SceneManager::Render()
+{
+	currentScene->Render();
 }
