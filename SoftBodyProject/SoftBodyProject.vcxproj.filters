@@ -325,6 +325,9 @@
     <ClInclude Include="Source\Common\Events\Physics\PhysicsEvent.h">
       <Filter>ソース ファイル\Common\Events\Physics</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Common\ECS\EventManager.h">
+      <Filter>ソース ファイル\Common\ECS</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\System\Adapter\Dxlib\DxlibInput.cpp">

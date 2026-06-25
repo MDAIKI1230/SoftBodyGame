@@ -159,6 +159,7 @@
     <ClInclude Include="Source\Common\Constants\BaseConstants.h" />
     <ClInclude Include="Source\Common\Constants\KeyConstants.h" />
     <ClInclude Include="Source\Common\Constants\SceneConstants.h" />
+    <ClInclude Include="Source\Common\ECS\EventManager.h" />
     <ClInclude Include="Source\Common\ECS\EventQueue.h" />
     <ClInclude Include="Source\Common\ECS\SparseSet.h" />
     <ClInclude Include="Source\Common\ECS\SparseSetStorageBase.h" />
