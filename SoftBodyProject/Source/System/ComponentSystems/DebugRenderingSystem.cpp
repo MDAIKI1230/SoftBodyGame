@@ -6,7 +6,7 @@
 #include "DebugRenderingSystem.h"
 
 #ifdef _DEBUG
-void DebugRenderingSystem::Draw(IWorld* world)
+void DebugRenderingSystem::Draw(WorldStorage* world)
 {
 	// コライダーストレージ
 	SphereColliderComponentStorage* sphereStorage{ static_cast<SphereColliderComponentStorage*>(world->GetStorage<SphereColliderComponent>()) };

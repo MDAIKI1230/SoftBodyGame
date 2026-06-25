@@ -1,12 +1,13 @@
 ﻿#pragma once
 
 #include "ObjectBase.h"
+#include "WorldStorage.h"
 
 class DebugSphere :public ObjectBase
 {
 public:
 	// コンストラクタ
-	DebugSphere(IWorld* world, int handle);
+	DebugSphere(WorldStorage* world, int handle);
 	// --- 更新系 ---
 
 	void Update() override;

@@ -5,7 +5,7 @@
 class CollisionSolverSystem :public FixedUpdateSystem
 {
 public:
-	void FixedUpdate(IWorld* world) override;
+	void FixedUpdate(WorldStorage* world) override;
 private:
 	// 位置解決
 	void PositionSolver();

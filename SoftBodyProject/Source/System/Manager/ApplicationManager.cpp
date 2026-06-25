@@ -56,7 +56,6 @@ int ApplicationManager::ApplicationMain()
 		renderer->ClearDrawScreen();
 
 		systemManager->Render(worldStorage.get());
-		sceneManager->Draw();
 
 		renderer->ScreenFlip();
 

@@ -122,4 +122,4 @@ void PhysicsAPI::SetGravity(int _handle, const Vector3& _gravity)
 	bodyStorage->gravity[_handle] = _gravity;
 }
 
-IWorld* PhysicsAPI::world{ nullptr };
+WorldStorage* PhysicsAPI::world{ nullptr };

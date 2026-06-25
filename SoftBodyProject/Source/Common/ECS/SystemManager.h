@@ -1,13 +1,12 @@
 ﻿#pragma once
 
 #include "WorldStorage.h"
-#include "IWorld.h"
 
 #include "UpdateSystem.h"
 #include "FixedUpdateSystem.h"
 #include "RenderingSystem.h"
 
-class SystemManager:public IWorld
+class SystemManager
 {
 public:
 	// 更新

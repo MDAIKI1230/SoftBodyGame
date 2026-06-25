@@ -7,7 +7,7 @@ RigidBodySystem::RigidBodySystem()
 	priority = INT_MAX;
 }
 
-void RigidBodySystem::FixedUpdate(IWorld* _world)
+void RigidBodySystem::FixedUpdate(WorldStorage* _world)
 {
 	// ストレージ取得
 	RigidBodyComponentStorage* bodyStorage{ static_cast<RigidBodyComponentStorage*>(_world->GetStorage<RigidBodyComponent>()) };

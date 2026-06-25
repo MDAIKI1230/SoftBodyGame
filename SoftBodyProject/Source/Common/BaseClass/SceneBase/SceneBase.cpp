@@ -42,7 +42,7 @@ SceneBase::SceneBase(WorldStorage* _worldStorage, SystemManager* _systemManager)
 	// オブジェクトマネージャー
 	objectManager = std::make_unique<ObjectManager>();
 
-	PhysicsAPI::SetWorld(this);
+	PhysicsAPI::SetWorld(_worldStorage);
 
 #ifdef _DEBUG
 	AddSystem(std::make_unique<DebugRenderingSystem>());
@@ -126,32 +126,12 @@ void SceneBase::FadeOut()
 
 void SceneBase::Update()
 {
-	// 更新
-	for (int i{ 0 }; i < updateSystems.size(); i++)
-	{
-		updateSystems[i]->Update(this);
-	}
 	// オブジェクトマネージャー更新
 	objectManager->Update();
 
 	// 物理更新
 	while (ServiceLocator::GetTimeManager()->IsFixedUpdateTime())
 	{
-		for (int i{ 0 }; i < fixedUpdateSystems.size(); i++)
-		{
-			fixedUpdateSystems[i]->FixedUpdate(this);
-		}
-
 		objectManager->FixedUpdate();
-	}
-}
-
-// 描画
-void SceneBase::Draw()
-{
-	// 更新
-	for (int i{ 0 }; i < renderingSystems.size(); i++)
-	{
-		renderingSystems[i]->Draw(this);
 	}
 }

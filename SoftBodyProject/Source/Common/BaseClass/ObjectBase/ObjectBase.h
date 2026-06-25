@@ -2,13 +2,13 @@
 
 #include <utility>
 
-#include "IWorld.h"
+#include "WorldStorage.h"
 
 class ObjectBase
 {
 public:
 	// コンストラクタ
-	ObjectBase(IWorld* _world, int _handle) :
+	ObjectBase(WorldStorage* _world, int _handle) :
 		world{ _world },
 		handle{ _handle }
 	{
@@ -66,5 +66,5 @@ public:
 	virtual ~ObjectBase() = default;
 private:
 	int handle;
-	IWorld* world;
+	WorldStorage* world;
 };

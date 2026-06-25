@@ -5,5 +5,5 @@
 class ModelRenderingSystem:public RenderingSystem
 {
 public:
-	void Draw(IWorld* world) override;
+	void Draw(WorldStorage* world) override;
 };

@@ -142,9 +142,6 @@
     <ClInclude Include="Source\Common\Interface\IInput.h">
       <Filter>ソース ファイル\Common\Interface</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Common\Interface\IWorld.h">
-      <Filter>ソース ファイル\Common\Interface</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Common\Interface\ISystem.h">
       <Filter>ソース ファイル\Common\Interface</Filter>
     </ClInclude>

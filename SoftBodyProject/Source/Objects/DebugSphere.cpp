@@ -10,7 +10,7 @@
 
 #include "DebugSphere.h"
 
-DebugSphere::DebugSphere(IWorld* world, int handle) :
+DebugSphere::DebugSphere(WorldStorage* world, int handle) :
 	ObjectBase{ world,handle }
 {
 	AddComponent<TransformComponent>();

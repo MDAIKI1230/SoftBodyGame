@@ -5,7 +5,7 @@
 
 #include "ModelRenderingSystem.h"
 
-void ModelRenderingSystem::Draw(IWorld* world)
+void ModelRenderingSystem::Draw(WorldStorage* world)
 {
 	// レンダラーコンポーネントストレージ
 	SparseSetStorageBase<RendererComponent>* rendererStorage{ world->GetStorage<RendererComponent>() };

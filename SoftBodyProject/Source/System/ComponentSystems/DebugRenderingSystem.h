@@ -6,6 +6,6 @@
 class DebugRenderingSystem :public RenderingSystem
 {
 public:
-	void Draw(IWorld* world) override;
+	void Draw(WorldStorage* world) override;
 };
 #endif // DEBUG

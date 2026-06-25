@@ -5,7 +5,7 @@
 class UpdateSystem :public SystemBase
 {
 public:
-	virtual void Update(IWorld* world) = 0;
+	virtual void Update(WorldStorage* world) = 0;
 	// 仮想デストラクタ
 	virtual ~UpdateSystem() = default;
 };

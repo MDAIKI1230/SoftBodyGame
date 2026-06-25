@@ -4,14 +4,14 @@
 
 #include "CollisionSystem.h"
 
-void CollisionSystem::FixedUpdate(IWorld* _world)
+void CollisionSystem::FixedUpdate(WorldStorage* _world)
 {
 	// コライダーストレージ
 	SphereColliderComponentStorage* sphereStorage{ static_cast<SphereColliderComponentStorage*>(_world->GetStorage<SphereColliderComponent>()) };
 	// Transformストレージ
 	TransformComponentStorage* transformStorage { static_cast<TransformComponentStorage*>(_world->GetStorage<TransformComponent>()) };
 	// オブジェクトマネージャー
-	ObjectManager* objectManager{ _world->GetObjectManager() };
+	ObjectManager* objectManager{  };
 
 	// --- 衝突処理 --- 
 	BroadPhase(transformStorage, sphereStorage);

@@ -8,7 +8,7 @@ PhysicsCommitSystem::PhysicsCommitSystem()
 	priority = INT_MIN;
 }
 
-void PhysicsCommitSystem::FixedUpdate(IWorld* _world)
+void PhysicsCommitSystem::FixedUpdate(WorldStorage* _world)
 {
 	// RigidBodyストレージ
 	RigidBodyComponentStorage* bodyStorage{ static_cast<RigidBodyComponentStorage*>(_world->GetStorage<RigidBodyComponent>()) };

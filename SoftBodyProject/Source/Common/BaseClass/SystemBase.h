@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "IWorld.h"
+#include "WorldStorage.h"
 
 class SystemBase
 {

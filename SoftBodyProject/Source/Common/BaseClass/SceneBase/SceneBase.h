@@ -8,7 +8,6 @@
 
 #include "WorldStorage.h"
 #include "SystemManager.h"
-#include "IWorld.h"
 
 #include "ObjectManager.h"
 
@@ -17,15 +16,13 @@
 #include "RenderingSystem.h"
 #include "SparseSetStorageBase.h"
 
-class SceneBase:public IWorld
+class SceneBase
 {
 public:
 	// ワールドストレージとシステムマネージャーを入れないと作れない。
 	SceneBase(WorldStorage* _worldStorage, SystemManager* _systemManager);
 	// 更新
 	void Execute();
-	// 描画
-	void Draw();
 	// 仮想デストラクタ
 	virtual ~SceneBase() = default;
 protected:
@@ -54,7 +51,7 @@ protected:
 		worldStorage->AddStorage<T>(std::move(_storage));
 	}
 	// オブジェクトマネージャー取得
-	ObjectManager* GetObjectManager() override;
+	ObjectManager* GetObjectManager() ;
 
 	void FadeIn();
 	void FadeOut();
@@ -68,12 +65,6 @@ protected:
 	SystemManager* systemManager;
 	// シーンの状態
 	SceneState state{ SceneState::INITIALIZE };
-	// 更新系システム
-	std::vector<std::unique_ptr<UpdateSystem>> updateSystems;
-	// 物理ステップ更新系システム
-	std::vector<std::unique_ptr<FixedUpdateSystem>> fixedUpdateSystems;
-	// 描画系システム
-	std::vector<std::unique_ptr<RenderingSystem>> renderingSystems;
 	// オブジェクトマネージャー
 	std::unique_ptr<ObjectManager> objectManager;
 };

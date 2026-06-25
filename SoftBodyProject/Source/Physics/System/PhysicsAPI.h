@@ -2,7 +2,7 @@
 
 #include "MDMath.h"
 
-#include "IWorld.h"
+#include "WorldStorage.h"
 
 class PhysicsAPI
 {
@@ -41,7 +41,7 @@ public:
 	// 重力加速度変更
 	static void SetGravity(int _handle, const Vector3& _gravity);
 
-	static void SetWorld(IWorld* _world) { world = _world; }
+	static void SetWorld(WorldStorage* _world) { world = _world; }
 private:
-	static IWorld* world;
+	static WorldStorage* world;
 };

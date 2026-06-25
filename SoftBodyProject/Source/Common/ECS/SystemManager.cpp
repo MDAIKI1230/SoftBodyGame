@@ -6,7 +6,7 @@ void SystemManager::Update(WorldStorage* _worldStorage)
 	// 更新
 	for (int i{ 0 }; i < updateSystems.size(); i++)
 	{
-		updateSystems[i]->Update(this);
+		updateSystems[i]->Update(_worldStorage);
 	}
 }
 
@@ -15,7 +15,7 @@ void SystemManager::FixedUpdate(WorldStorage* _worldStorage)
 {
 	for (int i{ 0 }; i < fixedUpdateSystems.size(); i++)
 	{
-		fixedUpdateSystems[i]->FixedUpdate(this);
+		fixedUpdateSystems[i]->FixedUpdate(_worldStorage);
 	}
 }
 
@@ -25,7 +25,7 @@ void SystemManager::Render(WorldStorage* _worldStorage)
 	// 更新
 	for (int i{ 0 }; i < renderingSystems.size(); i++)
 	{
-		renderingSystems[i]->Draw(this);
+		renderingSystems[i]->Draw(_worldStorage);
 	}
 }
 
