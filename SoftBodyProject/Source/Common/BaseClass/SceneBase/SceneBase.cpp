@@ -30,6 +30,7 @@ SceneBase::SceneBase()
 	systemManager = std::make_unique<SystemManager>();
 	eventManager = std::make_unique<EventManager>();
 	eventSystem = std::make_unique<EventSystem>();
+	physicsWorld = std::make_unique<PhysicsWorld>();
 
 	// レンダリングシステム追加
 	AddSystem(std::make_unique<ModelRenderingSystem>());
@@ -37,11 +38,8 @@ SceneBase::SceneBase()
 	AddStorage<RendererComponent>(std::make_unique<RendererComponentStorage>());
 	// Transformも同様
 	AddStorage<TransformComponent>(std::make_unique<TransformComponentStorage>());
-	AddSystem(std::make_unique<CollisionSystem>());
 	AddStorage<SphereColliderComponent>(std::make_unique<SphereColliderComponentStorage>());
-	AddSystem(std::make_unique<RigidBodySystem>());
 	AddStorage<RigidBodyComponent>(std::make_unique<RigidBodyComponentStorage>());
-	AddSystem(std::make_unique<PhysicsCommitSystem>());
 	// オブジェクトマネージャー
 	objectManager = std::make_unique<ObjectManager>();
 
@@ -138,6 +136,8 @@ void SceneBase::Update()
 		objectManager->FixedUpdate();
 
 		systemManager->FixedUpdate(worldStorage.get(), eventManager.get());
+
+		physicsWorld->FixedUpdate(worldStorage.get(), eventManager.get());
 	}
 }
 

@@ -8,6 +8,7 @@
 #include "SystemManager.h"
 #include "EventManager.h"
 #include "EventSystem.h"
+#include "PhysicsWorld.h"
 
 #include "ObjectManager.h"
 
@@ -59,6 +60,7 @@ protected:
 	virtual void Terminate() = 0;
 protected:
 	std::unique_ptr<WorldStorage> worldStorage;
+	std::unique_ptr<PhysicsWorld> physicsWorld;
 	std::unique_ptr<SystemManager> systemManager;
 	std::unique_ptr<EventManager> eventManager;
 	std::unique_ptr<EventSystem> eventSystem;
