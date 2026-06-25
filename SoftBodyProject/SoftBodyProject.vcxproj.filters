@@ -331,6 +331,15 @@
     <ClInclude Include="Source\Common\ECS\EventSystem.h">
       <Filter>ソース ファイル\Common\ECS</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Physics\Storage\CollisionContactStorage.h">
+      <Filter>ソース ファイル\Physics\Storage</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Common\BaseClass\BufferBase.h">
+      <Filter>ソース ファイル\Common\BaseClass</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Storage\CollisionManifoldBuffer.h">
+      <Filter>ソース ファイル\Physics\Storage</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\System\Adapter\Dxlib\DxlibInput.cpp">

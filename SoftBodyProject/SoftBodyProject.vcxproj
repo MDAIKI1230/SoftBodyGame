@@ -147,6 +147,7 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Common\BaseClass\BufferBase.h" />
     <ClInclude Include="Source\Common\BaseClass\ComponentBase.h" />
     <ClInclude Include="Source\Common\BaseClass\FixedUpdateSystem.h" />
     <ClInclude Include="Source\Common\BaseClass\ObjectBase\ObjectBase.h" />
@@ -189,6 +190,8 @@
     <ClInclude Include="Source\Physics\Collider\SphereColliderComponent.h" />
     <ClInclude Include="Source\Physics\Constants\CollisionConstants.h" />
     <ClInclude Include="Source\Physics\Storage\AABBBroadPhaseColliderStorage.h" />
+    <ClInclude Include="Source\Physics\Storage\CollisionContactStorage.h" />
+    <ClInclude Include="Source\Physics\Storage\CollisionManifoldBuffer.h" />
     <ClInclude Include="Source\Physics\Storage\ProjectionStorage.h" />
     <ClInclude Include="Source\Physics\Storage\SphereColliderComponentStorage.h" />
     <ClInclude Include="Source\Physics\Storage\RigidBodyComponentStorage.h" />
