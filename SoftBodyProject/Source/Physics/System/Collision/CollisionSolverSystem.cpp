@@ -1,6 +1,6 @@
 ﻿#include "CollisionSolverSystem.h"
 
-void CollisionSolverSystem::FixedUpdate(WorldStorage* world)
+void CollisionSolverSystem::FixedUpdate(WorldStorage* _worldStorage, EventManager* _eventManager)
 {
 
 }

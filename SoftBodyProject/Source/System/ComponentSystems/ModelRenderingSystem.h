@@ -5,5 +5,5 @@
 class ModelRenderingSystem:public RenderingSystem
 {
 public:
-	void Draw(WorldStorage* world) override;
+	void Draw(WorldStorage* _worldStorage, EventManager* _eventManager) override;
 };

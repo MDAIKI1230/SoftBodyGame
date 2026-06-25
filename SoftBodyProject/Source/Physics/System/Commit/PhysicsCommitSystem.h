@@ -8,5 +8,5 @@ public:
 	// コンストラクタ
 	PhysicsCommitSystem();
 	// 更新
-	void FixedUpdate(WorldStorage* _world) override;
+	void FixedUpdate(WorldStorage* _worldStorage, EventManager* _eventManager) override;
 };

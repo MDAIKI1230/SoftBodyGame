@@ -7,11 +7,11 @@ RigidBodySystem::RigidBodySystem()
 	priority = INT_MAX;
 }
 
-void RigidBodySystem::FixedUpdate(WorldStorage* _world)
+void RigidBodySystem::FixedUpdate(WorldStorage* _worldStorage, EventManager* _eventManager)
 {
 	// ストレージ取得
-	RigidBodyComponentStorage* bodyStorage{ static_cast<RigidBodyComponentStorage*>(_world->GetStorage<RigidBodyComponent>()) };
-	TransformComponentStorage* transformStorage{ static_cast<TransformComponentStorage*>(_world->GetStorage<TransformComponent>()) };
+	RigidBodyComponentStorage* bodyStorage{ static_cast<RigidBodyComponentStorage*>(_worldStorage->GetStorage<RigidBodyComponent>()) };
+	TransformComponentStorage* transformStorage{ static_cast<TransformComponentStorage*>(_worldStorage->GetStorage<TransformComponent>()) };
 
 	// 各処理実行
 	UpdateGravity(bodyStorage);

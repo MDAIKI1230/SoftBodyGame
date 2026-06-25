@@ -8,12 +8,12 @@ PhysicsCommitSystem::PhysicsCommitSystem()
 	priority = INT_MIN;
 }
 
-void PhysicsCommitSystem::FixedUpdate(WorldStorage* _world)
+void PhysicsCommitSystem::FixedUpdate(WorldStorage* _worldStorage, EventManager* _eventManager)
 {
 	// RigidBodyストレージ
-	RigidBodyComponentStorage* bodyStorage{ static_cast<RigidBodyComponentStorage*>(_world->GetStorage<RigidBodyComponent>()) };
+	RigidBodyComponentStorage* bodyStorage{ static_cast<RigidBodyComponentStorage*>(_worldStorage->GetStorage<RigidBodyComponent>()) };
 	// Transformストレージ
-	TransformComponentStorage* transformStorage{ static_cast<TransformComponentStorage*>(_world->GetStorage<TransformComponent>()) };
+	TransformComponentStorage* transformStorage{ static_cast<TransformComponentStorage*>(_worldStorage->GetStorage<TransformComponent>()) };
 
 	for (int entity : *bodyStorage->GetEntities())
 	{

@@ -7,6 +7,7 @@
 #include "TimeManager.h"
 #include "WorldStorage.h"
 #include "SystemManager.h"
+#include "EventManager.h"
 
 class ApplicationManager
 {
@@ -21,4 +22,5 @@ private:
 	std::unique_ptr<TimeManager> timeManager;
 	std::unique_ptr<WorldStorage> worldStorage;
 	std::unique_ptr<SystemManager> systemManager;
+	std::unique_ptr<EventManager> eventManager;
 };

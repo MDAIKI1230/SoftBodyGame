@@ -19,7 +19,7 @@ class CollisionSystem :public FixedUpdateSystem
 {
 public:
 	// 更新
-	void FixedUpdate(WorldStorage* _world) override;
+	void FixedUpdate(WorldStorage* _worldStorage, EventManager* _eventManager) override;
 private:
 	// ブロードフェーズ
 	void BroadPhase(TransformComponentStorage* _transformStorage, SphereColliderComponentStorage* _sphereStorage);

@@ -5,12 +5,12 @@
 
 #include "ModelRenderingSystem.h"
 
-void ModelRenderingSystem::Draw(WorldStorage* world)
+void ModelRenderingSystem::Draw(WorldStorage* _worldStorage, EventManager* _eventManager)
 {
 	// レンダラーコンポーネントストレージ
-	SparseSetStorageBase<RendererComponent>* rendererStorage{ world->GetStorage<RendererComponent>() };
+	SparseSetStorageBase<RendererComponent>* rendererStorage{ _worldStorage->GetStorage<RendererComponent>() };
 	// Transformストレージ
-	SparseSetStorageBase<TransformComponent>* transformStorage{ world->GetStorage<TransformComponent>() };
+	SparseSetStorageBase<TransformComponent>* transformStorage{ _worldStorage->GetStorage<TransformComponent>() };
 	// エンティティ
 	std::vector<int>* entities{ rendererStorage->GetEntities() };
 	// トランスフォーム

@@ -1,7 +1,5 @@
 ﻿#pragma once
 
-#include "WorldStorage.h"
-
 class SystemBase
 {
 public:

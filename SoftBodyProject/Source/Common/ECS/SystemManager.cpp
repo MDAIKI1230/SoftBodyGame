@@ -1,31 +1,31 @@
 ﻿#include "SystemManager.h"
 
 
-void SystemManager::Update(WorldStorage* _worldStorage)
+void SystemManager::Update(WorldStorage* _worldStorage, EventManager* _eventManager)
 {
 	// 更新
 	for (int i{ 0 }; i < updateSystems.size(); i++)
 	{
-		updateSystems[i]->Update(_worldStorage);
+		updateSystems[i]->Update(_worldStorage, _eventManager);
 	}
 }
 
 
-void SystemManager::FixedUpdate(WorldStorage* _worldStorage)
+void SystemManager::FixedUpdate(WorldStorage* _worldStorage, EventManager* _eventManager)
 {
 	for (int i{ 0 }; i < fixedUpdateSystems.size(); i++)
 	{
-		fixedUpdateSystems[i]->FixedUpdate(_worldStorage);
+		fixedUpdateSystems[i]->FixedUpdate(_worldStorage, _eventManager);
 	}
 }
 
 
-void SystemManager::Render(WorldStorage* _worldStorage)
+void SystemManager::Render(WorldStorage* _worldStorage, EventManager* _eventManager)
 {
 	// 更新
 	for (int i{ 0 }; i < renderingSystems.size(); i++)
 	{
-		renderingSystems[i]->Draw(_worldStorage);
+		renderingSystems[i]->Draw(_worldStorage, _eventManager);
 	}
 }
 

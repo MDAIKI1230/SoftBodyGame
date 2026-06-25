@@ -10,11 +10,11 @@ class SystemManager
 {
 public:
 	// 更新
-	void Update(WorldStorage* _worldStorage);
+	void Update(WorldStorage* _worldStorage, EventManager* _eventManager);
 	// 物理更新
-	void FixedUpdate(WorldStorage* _worldStorage);
+	void FixedUpdate(WorldStorage* _worldStorage, EventManager* _eventManager);
 	// 描画
-	void Render(WorldStorage* _worldStorage);
+	void Render(WorldStorage* _worldStorage, EventManager* _eventManager);
 
 	/// <summary>
 	/// システムの追加(moveされる)

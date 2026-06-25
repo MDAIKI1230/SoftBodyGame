@@ -11,7 +11,7 @@ public:
 	// コンストラクタ
 	RigidBodySystem();
 	// 更新
-	void FixedUpdate(WorldStorage* _world)override;
+	void FixedUpdate(WorldStorage* _worldStorage, EventManager* _eventManager)override;
 private:
 	// 重力適応
 	void UpdateGravity(RigidBodyComponentStorage* _storage);

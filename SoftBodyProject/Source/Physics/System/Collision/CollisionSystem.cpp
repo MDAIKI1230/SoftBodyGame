@@ -4,12 +4,12 @@
 
 #include "CollisionSystem.h"
 
-void CollisionSystem::FixedUpdate(WorldStorage* _world)
+void CollisionSystem::FixedUpdate(WorldStorage* _worldStorage, EventManager* _eventManager)
 {
 	// コライダーストレージ
-	SphereColliderComponentStorage* sphereStorage{ static_cast<SphereColliderComponentStorage*>(_world->GetStorage<SphereColliderComponent>()) };
+	SphereColliderComponentStorage* sphereStorage{ static_cast<SphereColliderComponentStorage*>(_worldStorage->GetStorage<SphereColliderComponent>()) };
 	// Transformストレージ
-	TransformComponentStorage* transformStorage { static_cast<TransformComponentStorage*>(_world->GetStorage<TransformComponent>()) };
+	TransformComponentStorage* transformStorage { static_cast<TransformComponentStorage*>(_worldStorage->GetStorage<TransformComponent>()) };
 	// オブジェクトマネージャー
 	ObjectManager* objectManager{  };
 
