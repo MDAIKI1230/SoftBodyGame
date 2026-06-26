@@ -52,6 +52,8 @@ public:
 	virtual std::vector<T>* GetDense() { return sparseSet.GetDense(); }
 	// エンティティコンテナ取得
 	virtual std::vector<int>* GetEntities() { return sparseSet.GetEntities(); }
+	// ハンドル取得
+	virtual int GetHandle() { return sparseSet.GetSize(); }
 
 	// 仮想デストラクタ
 	virtual ~SparseSetStorageBase() = default;
