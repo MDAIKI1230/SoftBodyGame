@@ -23,7 +23,7 @@ void DebugScene::Initialize()
 
 	objectManager->Add(std::make_unique<DebugSphere>(worldStorage.get(), 0));
 
-	SphereColliderComponent scc{ 30.0f };
+	SphereColliderComponent scc{ 1, 30.0f };
 #ifdef _DEBUG
 	worldStorage->GetStorage<SphereColliderComponent>()->Add(1, std::move(scc))->SetColor(Color{ 255,255,255 });
 #endif // DEBUG

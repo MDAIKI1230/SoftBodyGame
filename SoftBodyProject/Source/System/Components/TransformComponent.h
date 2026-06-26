@@ -1,14 +1,23 @@
 ﻿#pragma once
 
 #include "MDMath.h"
+#include "ComponentBase.h"
 
-struct TransformComponent
+struct TransformComponent :public ComponentBase
 {
-// ラッパー関数のためヘッダに直書きしてる
-// のちにECS化する際に使うためComponentに入れてる
+    // ラッパー関数のためヘッダに直書きしてる
+    // のちにECS化する際に使うためComponentに入れてる
 public:
-	TransformComponent() = default;
-	
+    // デフォルトコンストラクタ(ストレージに追加できない)
+    TransformComponent():
+        ComponentBase{-1}
+    {}
+
+    TransformComponent(int _handle) :
+        ComponentBase{ _handle }
+    {
+    }
+
     // ローカル座標の前(z+方向)
     Vector3 Forward() const { trans.Forward(); }
     // ローカル座標の右(x+方向)
@@ -74,6 +83,6 @@ public:
     // 親
     const Transform* GetParent()const { return trans.GetParent(); }
 private:
-	// トランスフォーム
-	Transform trans{};
+    // トランスフォーム
+    Transform trans{};
 };

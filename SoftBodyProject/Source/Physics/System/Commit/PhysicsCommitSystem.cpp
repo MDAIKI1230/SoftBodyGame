@@ -14,7 +14,7 @@ void PhysicsCommitSystem::FixedUpdate(WorldStorage* _worldStorage)
 	for (int entity : *bodyStorage->GetEntities())
 	{
 		RigidBodyComponent* component{ bodyStorage->Get(entity) };
-		int handle{ component->GetHnadle() };
+		int handle{ component->GetHandle() };
 
 		transformStorage->Get(handle)->SetPosition(bodyStorage->expectedPos[handle]);
 		transformStorage->Get(handle)->SetRotation(bodyStorage->expectedRot[handle]);

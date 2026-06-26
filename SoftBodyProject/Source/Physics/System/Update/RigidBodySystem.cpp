@@ -33,7 +33,7 @@ void RigidBodySystem::UpdatePosition(RigidBodyComponentStorage* _bodyStorage, Tr
 	for (int entity : *_bodyStorage->GetEntities())
 	{
 		RigidBodyComponent* component{ _bodyStorage->Get(entity) };
-		int handle{ component->GetHnadle() };
+		int handle{ component->GetHandle() };
 
 		// 速度 + 加速度(力(Δt) * 質量の逆数)
 		_bodyStorage->velocity[handle] += _bodyStorage->force[handle] * ServiceLocator::GetTimeManager()->GetDeltaTime() * _bodyStorage->inverseMass[handle];
@@ -49,7 +49,7 @@ void RigidBodySystem::UpdateRotation(RigidBodyComponentStorage* _bodyStorage, Tr
 	for (int entity : *_bodyStorage->GetEntities())
 	{
 		RigidBodyComponent* component{ _bodyStorage->Get(entity) };
-		int handle{ component->GetHnadle() };
+		int handle{ component->GetHandle() };
 
 		// 角速度＋ 角加速度(トルク×慣性テンソルの逆数)
 		_bodyStorage->angularVelocity[handle] += _bodyStorage->inverseInertiaTensor[handle] * _bodyStorage->torque[handle] * ServiceLocator::GetTimeManager()->GetDeltaTime();

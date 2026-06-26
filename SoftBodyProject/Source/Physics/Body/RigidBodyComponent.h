@@ -1,8 +1,23 @@
 ﻿#pragma once
 
-struct RigidBodyComponent
+#include "ComponentBase.h"
+
+struct RigidBodyComponent:public ComponentBase
 {
 public:
+	// --- コンストラクタ ---
+	
+	// デフォルトコンストラクタ(ストレージに追加できないよ)
+	RigidBodyComponent() :
+		ComponentBase{ -1 }
+	{
+	}
+
+	RigidBodyComponent(int _handle) :
+		ComponentBase{ _handle }
+	{
+	}
+
 	// --- 力加算系 ---
 
 	// 力加算
@@ -48,11 +63,4 @@ public:
 	const Vector3& GetGravity() const;
 	// 重力加速度変更
 	void SetGravity(const Vector3& _gravity);
-
-	// --- ハンドル関係 ---
-
-	int GetHnadle() { return handle; }
-	void SetHandle(int _handle) { handle = _handle; }
-private:
-	int handle;
 };

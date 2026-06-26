@@ -7,13 +7,17 @@ struct SphereColliderComponent :public ColliderComponent
 public:
 	// ---コンストラクタ---
 
-	// デフォルトコンストラクタ
-	SphereColliderComponent() = default;
+	// コンストラクタ
+	SphereColliderComponent(int _handle) :
+		ColliderComponent{ _handle }
+	{
+	}
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
 	/// <param name="_r">半径</param>
-	SphereColliderComponent(float _r) :
+	SphereColliderComponent(int _handle, float _r) :
+		ColliderComponent{ _handle },
 		r{ _r }
 	{
 		aabb.min = { -r,-r,-r };

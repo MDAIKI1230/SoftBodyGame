@@ -1,16 +1,12 @@
 ﻿#pragma once
 
-struct RendererComponent
+#include "ComponentBase.h"
+
+struct RendererComponent : public ComponentBase
 {
 public:
-	RendererComponent() = default;
-
 	RendererComponent(int _handle) :
-		handle(_handle)
+		ComponentBase(_handle)
 	{
 	}
-
-	int GetHandle() { return handle; }
-private:
-	int handle{ -1 };
 };

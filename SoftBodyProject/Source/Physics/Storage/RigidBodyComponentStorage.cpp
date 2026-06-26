@@ -2,10 +2,7 @@
 
 RigidBodyComponent* RigidBodyComponentStorage::Add(int _entity, RigidBodyComponent&& _obj)
 {
-	// ハンドルを与える
-	_obj.SetHandle(GetSize());
-
-	// 値を確保
+	// --- 値を確保 ---
 
 	// --- 速度系 ---
 

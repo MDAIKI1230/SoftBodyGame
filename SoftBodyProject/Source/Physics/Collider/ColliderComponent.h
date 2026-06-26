@@ -1,16 +1,21 @@
 ﻿#pragma once
 
+#include "ComponentBase.h"
+
 #include "AABBBroadPhaseCollider.h"
 
 #ifdef _DEBUG
 #include "Color.h"
 #endif // DEBUG
 
-struct ColliderComponent
+struct ColliderComponent : public ComponentBase
 {
 public:
 	// コンストラクタ
-	ColliderComponent() = default;
+	ColliderComponent(int _handle) :
+		ComponentBase{ _handle }
+	{
+	}
 	// ブロードフェーズ用AABBの(XYZ軸ごとの)最小値
 	const Vector3& GetBroadMin() { return aabb.min; }
 	// ブロードフェーズ用AABBの(XYZ軸ごとの)最大値
