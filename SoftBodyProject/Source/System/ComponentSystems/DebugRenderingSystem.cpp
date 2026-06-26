@@ -12,6 +12,7 @@ void DebugRenderingSystem::Draw(WorldStorage* _worldStorage, EventManager* _even
 	TransformComponentStorage* transformStorage{ static_cast<TransformComponentStorage*>(_worldStorage->GetStorage<TransformComponent>()) };
 
 	DrawSphera(sphereStorage, transformStorage);
+	DrawBox(boxStorage, transformStorage);
 }
 
 void DebugRenderingSystem::DrawSphera(SphereColliderComponentStorage* _sphereStorage, TransformComponentStorage* _transformStorage)

@@ -13,6 +13,7 @@
 
 // 物理系
 #include "SphereColliderComponentStorage.h"
+#include "BoxColliderComponentStorage.h"
 #include "RigidBodyComponentStorage.h"
 
 #include "RigidBodySystem.h"
@@ -39,6 +40,7 @@ SceneBase::SceneBase()
 	// Transformも同様
 	AddStorage<TransformComponent>(std::make_unique<TransformComponentStorage>());
 	AddStorage<SphereColliderComponent>(std::make_unique<SphereColliderComponentStorage>());
+	AddStorage<BoxColliderComponent>(std::make_unique<BoxColliderComponentStorage>());
 	AddStorage<RigidBodyComponent>(std::make_unique<RigidBodyComponentStorage>());
 	// オブジェクトマネージャー
 	objectManager = std::make_unique<ObjectManager>();
