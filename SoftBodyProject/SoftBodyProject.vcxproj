@@ -193,7 +193,7 @@
     <ClInclude Include="Source\Physics\Constants\CollisionConstants.h" />
     <ClInclude Include="Source\Physics\PhysicsWorld.h" />
     <ClInclude Include="Source\Physics\Storage\AABBBroadPhaseColliderStorage.h" />
-    <ClInclude Include="Source\Physics\Storage\BoxColliderComponent.h" />
+    <ClInclude Include="Source\Physics\Storage\BoxColliderComponentStorage.h" />
     <ClInclude Include="Source\Physics\Storage\CollisionContactBuffer.h" />
     <ClInclude Include="Source\Physics\Storage\CollisionManifoldBuffer.h" />
     <ClInclude Include="Source\Physics\Storage\ProjectionStorage.h" />

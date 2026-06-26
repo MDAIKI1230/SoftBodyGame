@@ -1,13 +1,15 @@
 ﻿#pragma once
 
+#include <vector>
+
 class AABBBroadPhaseStorage
 {
 public:
-	float* minX;
-	float* minY;
-	float* minZ;
+	std::vector<float> minX;
+	std::vector<float> minY;
+	std::vector<float> minZ;
 
-	float* maxX;
-	float* maxY;
-	float* maxZ;
+	std::vector<float> maxX;
+	std::vector<float> maxY;
+	std::vector<float> maxZ;
 };
