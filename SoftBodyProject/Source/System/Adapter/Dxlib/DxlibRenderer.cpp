@@ -91,6 +91,12 @@ void DxlibRenderer::DrawSphere(const Vector3& _pos, float _radius, const Color& 
 		false);
 }
 
+// Box描画
+void DxlibRenderer::DrawBox(const Vector3& _pos0, const Vector3& _pos1, const Color& _color)
+{
+	DxLib::DrawCube3D(ToDxlib(_pos0), ToDxlib(_pos1), ToDxlib(_color), ToDxlib(_color), false);
+}
+
 // ---リソース削除関数---
 // モデル素材削除
 void DxlibRenderer::DeleteModel(int _handle)
