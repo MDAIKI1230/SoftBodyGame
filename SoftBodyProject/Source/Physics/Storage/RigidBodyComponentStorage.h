@@ -8,9 +8,9 @@
 
 class RigidBodyComponentStorage :public SparseSetStorageBase<RigidBodyComponent>
 {
-public:
+private:
 	// ストレージ追加をストレージに合わせて変更。
-	RigidBodyComponent* Add(int _entity, RigidBodyComponent&& _obj) override;
+	void OnAdded() override;
 
 	/*
 		すべてのコンテナが、SparseSetのIDと一致していることに気を付ける
@@ -27,6 +27,7 @@ public:
 
 		  よって、コンポーネント内のハンドルは、idになる。
 	*/
+public:
 
 	// --- 速度系 ---
 

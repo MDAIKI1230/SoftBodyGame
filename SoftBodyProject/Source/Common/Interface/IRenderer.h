@@ -54,7 +54,7 @@ public:
 	// 球描画
 	virtual void DrawSphere(const Vector3& _pos, float _radius, const Color& _color) = 0;
 	// Box描画
-	virtual void DrawBox(const Vector3& _pos0, const Vector3& _pos1, const Color& _color) = 0;
+	virtual void DrawBox(const Matrix4x4& _mat, const Vector3& _size, const Color& _color) = 0;
 	// ---リソース削除関数---
 
 	// モデル素材削除

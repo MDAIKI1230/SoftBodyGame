@@ -53,14 +53,9 @@ void DebugRenderingSystem::DrawBox(BoxColliderComponentStorage* _boxStorage, Tra
 
 		int handle{ box->GetHandle() };
 
-		Vector3 scale{ _boxStorage->width[handle],_boxStorage->height[handle],_boxStorage->depth[handle] };
+		Vector3 scale{ box->GetWidth(),box->GetHeight(),box->GetDepth() };
 
-		scale = SIMDVectorMath::Mul(scale, trans.GetScale());
-
-		Vector3 pos0{ trans.GetRotation().Rotate(trans.GetPosition() - scale / 2.0f) };
-		Vector3 pos1{ trans.GetRotation().Rotate(trans.GetPosition() + scale / 2.0f) };
-
-		ServiceLocator::GetRenderer()->DrawBox(pos0, pos1, Color(255, 255, 255));
+		ServiceLocator::GetRenderer()->DrawBox(trans.GetWorldMatrix(), scale, box->GetColor());
 	}
 }
 

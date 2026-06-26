@@ -19,11 +19,11 @@ public:
     }
 
     // ローカル座標の前(z+方向)
-    Vector3 Forward() const { trans.Forward(); }
+    Vector3 Forward() const { return trans.Forward(); }
     // ローカル座標の右(x+方向)
-    Vector3 Right() const { trans.Right(); }
+    Vector3 Right() const { return trans.Right(); }
     // ローカル座標の上(y+方向)
-    Vector3 Up() const { trans.Up(); }
+    Vector3 Up() const { return trans.Up(); }
 
     // 位置更新系
     // ローカル座標の移動

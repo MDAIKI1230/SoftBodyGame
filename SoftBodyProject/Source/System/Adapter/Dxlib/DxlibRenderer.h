@@ -50,7 +50,7 @@ public:
 	// 球描画
 	void DrawSphere(const Vector3& _pos, float _radius, const Color& _color) override;
 	// Box描画
-	void DrawBox(const Vector3& _pos0, const Vector3& _pos1, const Color& _color)  override;
+	void DrawBox(const Matrix4x4& _mat, const Vector3& _size, const Color& _color)  override;
 	// ---リソース削除関数---
 	
 	// モデル素材削除

@@ -1,6 +1,6 @@
 ﻿#include "RigidBodyComponentStorage.h"
 
-RigidBodyComponent* RigidBodyComponentStorage::Add(int _entity, RigidBodyComponent&& _obj)
+void RigidBodyComponentStorage::OnAdded()
 {
 	// --- 値を確保 ---
 
@@ -40,6 +40,4 @@ RigidBodyComponent* RigidBodyComponentStorage::Add(int _entity, RigidBodyCompone
 
 	// マテリアルID(一旦なし)
 	physicsMatrialID.emplace_back(-1);
-
-	return sparseSet.Add(_entity, std::move(_obj));
 }

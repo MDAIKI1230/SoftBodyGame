@@ -40,7 +40,7 @@ public:
 
 		if(storage != nullptr)
 		{
-			return storage->Add(handle, T{ storage->GetHandle(), std::forward<Args>(args)... });
+			return storage->Add(handle, storage->GetHandle(), std::forward<Args>(args)...);
 		}
 
 		return nullptr;

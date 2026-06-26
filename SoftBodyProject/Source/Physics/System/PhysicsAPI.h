@@ -43,22 +43,6 @@ public:
 	// 重力加速度変更
 	static void SetGravity(int _handle, const Vector3& _gravity);
 
-	// --- Collider ---
-	// --- BOX
-
-	// X方向の長さ取得
-	static float GetWidth(int _handle);
-	// X方向の長さ変更
-	static void SetWidth(int _handle, float _width);
-	// Y方向の長さ取得
-	static float GetHeight(int _handle);
-	// Y方向の長さ変更
-	static void SetHeight(int _handle, float _heibht);
-	// Z方向の長さ取得
-	static float GetDepth(int _handle);
-	// Z方向の長さ変更
-	static void SetDepth(int _handle, float _depth);
-
 	static void SetWorld(WorldStorage* _world) { world = _world; }
 private:
 	static WorldStorage* world;

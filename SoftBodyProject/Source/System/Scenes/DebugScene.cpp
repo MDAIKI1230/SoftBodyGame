@@ -7,6 +7,7 @@
 #include "SphereColliderComponent.h"
 
 #include "DebugSphere.h"
+#include "DebugBox.h"
 
 #include "DebugScene.h"
 
@@ -23,16 +24,7 @@ void DebugScene::Initialize()
 
 	objectManager->Add(std::make_unique<DebugSphere>(worldStorage.get(), 0));
 
-	SphereColliderComponent scc{ 1, 30.0f };
-#ifdef _DEBUG
-	worldStorage->GetStorage<SphereColliderComponent>()->Add(1, std::move(scc))->SetColor(Color{ 255,255,255 });
-#endif // DEBUG
-
-	TransformComponent trans01{};
-
-	trans01.SetPosition(Vector3{ 0,0,0 });
-
-	worldStorage->GetStorage<TransformComponent>()->Add(1, std::move(trans01));
+	objectManager->Add(std::make_unique<DebugBox>(worldStorage.get(), 1, 300.0f));
 
 	/*RendererComponent renderer{ ServiceLocator::GetRenderer()->LoadModel(std::string{"Res/Model/M_001_player_073_01.mv1"}) };
 	

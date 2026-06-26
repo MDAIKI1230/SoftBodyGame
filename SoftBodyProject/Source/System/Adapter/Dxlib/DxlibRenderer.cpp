@@ -92,9 +92,46 @@ void DxlibRenderer::DrawSphere(const Vector3& _pos, float _radius, const Color& 
 }
 
 // Box描画
-void DxlibRenderer::DrawBox(const Vector3& _pos0, const Vector3& _pos1, const Color& _color)
+void DxlibRenderer::DrawBox(const Matrix4x4& _mat, const Vector3& _size, const Color& _color)
 {
-	DxLib::DrawCube3D(ToDxlib(_pos0), ToDxlib(_pos1), ToDxlib(_color), ToDxlib(_color), false);
+    Vector3 halfSize = _size * 0.5f;
+
+    // ローカル8頂点
+    Vector3 point[8] = {
+        {-halfSize.x, -halfSize.y, -halfSize.z},
+        { halfSize.x, -halfSize.y, -halfSize.z},
+        { halfSize.x,  halfSize.y, -halfSize.z},
+        {-halfSize.x,  halfSize.y, -halfSize.z},
+
+        {-halfSize.x, -halfSize.y,  halfSize.z},
+        { halfSize.x, -halfSize.y,  halfSize.z},
+        { halfSize.x,  halfSize.y,  halfSize.z},
+        {-halfSize.x,  halfSize.y,  halfSize.z},
+    };
+
+    // ワールド変換
+    for (int i = 0; i < 8; i++)
+    {
+        point[i] = _mat * point[i];
+    }
+
+    // エッジ12本
+    auto L = [&](int a, int b)
+        {
+            DrawLine3D(ToDxlib(point[a]), ToDxlib(point[b]), ToDxlib(_color));
+        };
+
+    // 下
+    L(0, 1); L(1, 2); L(2, 3); L(3, 0);
+
+    // 上
+    L(4, 5); L(5, 6); L(6, 7); L(7, 4);
+
+    // 横の線
+    L(0, 4);
+    L(1, 5);
+    L(2, 6);
+    L(3, 7);
 }
 
 // ---リソース削除関数---

@@ -19,8 +19,13 @@ public:
 	/// 追加
 	/// </summary>
 	/// <param name="entity">エンティティID</param>
-	/// <param name="component">追加コンポーネント</param>
-	virtual T* Add(int _entity, T&& _obj) { return sparseSet.Add(_entity, std::move(_obj)); }
+	template<class... Args>
+		T* Add(int _entity, Args&&... _args) 
+		{
+			T* result{ sparseSet.Add(_entity, std::forward<Args>(_args)...) };
+			OnAdded();
+			return result;
+		}
 	/// <summary>
 	/// 除外
 	/// </summary>
@@ -57,6 +62,8 @@ public:
 
 	// 仮想デストラクタ
 	virtual ~SparseSetStorageBase() = default;
+protected:
+	virtual void OnAdded() {};
 protected:
 	SparseSet<T> sparseSet{};
 };

@@ -160,6 +160,7 @@
     <ClInclude Include="Source\Common\Constants\BaseConstants.h" />
     <ClInclude Include="Source\Common\Constants\KeyConstants.h" />
     <ClInclude Include="Source\Common\Constants\SceneConstants.h" />
+    <ClInclude Include="Source\Common\ECS\EventBus.h" />
     <ClInclude Include="Source\Common\ECS\EventManager.h" />
     <ClInclude Include="Source\Common\ECS\EventQueue.h" />
     <ClInclude Include="Source\Common\ECS\EventSystem.h" />
@@ -184,6 +185,7 @@
     <ClInclude Include="Source\Common\Math\Vector\Vector3\Vector3.h" />
     <ClInclude Include="Source\Common\Math\Vector\Vector3\Vector3Int.h" />
     <ClInclude Include="Source\Objects\Camera.h" />
+    <ClInclude Include="Source\Objects\DebugBox.h" />
     <ClInclude Include="Source\Objects\DebugSphere.h" />
     <ClInclude Include="Source\Physics\Body\RigidBodyComponent.h" />
     <ClInclude Include="Source\Physics\Collider\AABBBroadPhaseCollider.h" />
@@ -245,9 +247,9 @@
     <ClCompile Include="Source\Common\Math\Vector\Vector3\Vector3.cpp" />
     <ClCompile Include="Source\Common\Math\Vector\Vector3\Vector3Int.cpp" />
     <ClCompile Include="Source\Main.cpp" />
+    <ClCompile Include="Source\Objects\DebugBox.cpp" />
     <ClCompile Include="Source\Objects\DebugSphere.cpp" />
     <ClCompile Include="Source\Physics\Body\RigidBodyComponent.cpp" />
-    <ClCompile Include="Source\Physics\Collider\BoxColliderComponent.cpp" />
     <ClCompile Include="Source\Physics\PhysicsWorld.cpp" />
     <ClCompile Include="Source\Physics\Storage\RigidBodyComponentStorage.cpp" />
     <ClCompile Include="Source\Physics\System\Collision\CollisionSolverSystem.cpp" />

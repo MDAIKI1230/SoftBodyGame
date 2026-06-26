@@ -108,9 +108,11 @@ Quaternion Quaternion::Conjugate()const
 	return { -x,-y,-z,w };
 }
 
-// 軸と角とで回転
+// 軸と角度で回転
 Quaternion Quaternion::AngleAxis(float _rad, const Vector3& _axis)
 {
+	Vector3 normal = Vector3::Normalized(_axis);
+
 	float angleHalf{ _rad / 2.0f };
 
 	float sin{ sinf(angleHalf) };
@@ -118,9 +120,9 @@ Quaternion Quaternion::AngleAxis(float _rad, const Vector3& _axis)
 
 	return
 	{
-		_axis.x * sin,
-		_axis.y * sin,
-		_axis.z * sin,
+		normal.x * sin,
+		normal.y * sin,
+		normal.z * sin,
 		cos
 	};
 }

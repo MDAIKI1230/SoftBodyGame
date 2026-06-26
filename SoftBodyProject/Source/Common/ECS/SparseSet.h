@@ -24,11 +24,11 @@ public:
 	/// 追加
 	/// </summary>
 	/// <param name="entity">エンティティID</param>
-	/// <param name="component">追加オブジェクト</param>
-	T* Add(int _entity, T&& _obj)
+	template<class... Args>
+	T* Add(int _entity, Args&&... _args)
 	{
 		// コンポーネント追加
-		dense.emplace_back(std::move(_obj));
+		dense.emplace_back(std::forward<Args>(_args)...);
 		// エンティティ追加
 		entities.push_back(_entity);
 		// 対応付け
@@ -53,13 +53,21 @@ public:
 		// MAPから除外
 		sparse.erase(_entity);
 	}
-	// サイズ生成
+	// メモリ確保
 	void Reserve(size_t _size)
 	{
 		// コンテナのreserve関数を呼ぶ
 		dense.reserve(_size);
 		entities.reserve(_size);
 	}
+	// サイズ分生成
+	void Resize(size_t _size)
+	{
+		// コンテナのreserve関数を呼ぶ
+		dense.resize(_size);
+		entities.resize(_size);
+	}
+
 	// 全削除
 	void Clear()
 	{
@@ -129,6 +137,12 @@ public:
 	{
 		// 代表してdenseのサイズを返す(すべて同じ値になっている)
 		return dense.size();
+	}
+	// キャパ
+	size_t GetCapacity()
+	{
+		// 代表してdenseのキャパを返す(すべて同じ値になっている)
+		return dense.capacity();
 	}
 	// 実データコンテナ取得
 	std::vector<T>* GetDense()
