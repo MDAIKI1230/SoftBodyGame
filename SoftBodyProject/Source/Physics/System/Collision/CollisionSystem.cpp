@@ -265,7 +265,7 @@ bool CollisionSystem::GJK(
 
 		if(SimplexSolve(simplex,dir))
 		{
-			EPA<A, B, AS, BS>(_storageA, _handleA, _storageB, _handleB, _transformStorage, _manifoldBuffer, simplex);
+			EPA<A, B, AS, BS>(_storageA, _handleA, transformA, _storageB, _handleB, transformB, _manifoldBuffer, simplex);
 			return true;
 		}
 	}
@@ -442,12 +442,120 @@ bool CollisionSystem::SolveTetrahedron(Simplex& _simplex, Vector3& _output)
 
 template<class A, class B, class AS, class BS>
 void CollisionSystem::EPA(
-	AS* _storageA, int _handleA,
-	BS* _storageB, int _handleB,
-	TransformComponentStorage* _transformStorage,
+	AS* _storageA, int _handleA,TransformComponent* _transA,
+	BS* _storageB, int _handleB, TransformComponent* _transB,
 	CollisionManifoldBuffer* _manifoldBuffer, Simplex& _simplex)
 {
+	std::vector<Vector3> vertices{ _simplex[0],_simplex[1], _simplex[2], _simplex[3] };
+	std::vector<Face> faces;
+	std::vector<Edge> edges;
+
+	// --- 今の各面のSimplexのFace計算 ---
+
+	// Indexを埋めてFaceを作る
+	for (int i{ 0 }; i < _simplex.GetSize(); i++)
+	{
+		unsigned char aIndex{ (unsigned char)i };
+		unsigned char bIndex{ (unsigned char)((i + 1) % _simplex.GetSize()) };
+		unsigned char cIndex{ (unsigned char)((i + 2) % _simplex.GetSize()) };
+
+		faces.push_back(Face({ aIndex, bIndex, cIndex }));
+	}
+
+	// 最短探索用
+	int minIndex{ 0 };
+	float minDist{ FLT_MAX };
+
+	// 法線、距離計算かつ最短を探す
+	for (int i{ 0 }; i < _simplex.GetSize(); i++)
+	{
+		ComputeFace(faces[i], vertices);
+
+		if (minDist > faces[i].distance)
+		{
+			minDist = faces[i].distance;
+			minIndex = i;
+		}
+	}
+
+	int count{ 0 };
+	// EPAのループ
+	while (true)
+	{
+		edges.clear();
+
+		// サポート関数を使って新たな点を計算
+		Vector3 support{ A::Support(_storageA, _handleA, faces[minIndex].normal) - B::Support(_storageB, _handleB, -faces[minIndex].normal) + (_transB->GetPosition() - _transA->GetPosition()) };
+		
+		// 収束判定
+		if (std::abs(Vector3::Dot(faces[minIndex].normal, support) - faces[minIndex].distance) < MathConstants::EPSILON)
+		{
+			Manifold manifold;
+			manifold.handleA = _handleA;
+			manifold.handleB = _handleB;
+			manifold.normal = faces[minIndex].normal;
+			manifold.points[0].penetration = faces[minIndex].distance;
+
+			_manifoldBuffer->manifolds.push_back(manifold);
+
+			return;
+		}
+
+		vertices.push_back(support);
+
+		// エッジを追加
+		for (int i{ (int)faces.size() - 1 }; i >= 0; i--)
+		{
+			// 内積で、新たな点を向いてる面を出す。
+			if (Vector3::Dot(faces[i].normal, support - vertices[faces[i].pointIndex[0]]) > 0)
+			{
+				// 新しいエッジ追加
+				for (int j{ 0 }; j < 3;j++)
+				{
+					Edge edge{ (unsigned char)faces[i].pointIndex[j], (unsigned char)faces[i].pointIndex[(j + 1) % 3] };
+					// エッジ追加
+					AddEdge(edge, edges);
+				}
+
+				// 面の削除
+				faces.erase(faces.begin() + i);
+			}
+		}
 	
+		// エッジから新たな面生成
+		for (int j{ 0 }; j < edges.size(); j++)
+		{
+			faces.push_back(Face({ (unsigned char)(vertices.size() - 1), edges[j].a, edges[j].b }));
+			ComputeFace(faces.back(), vertices);
+		}
+
+		// 最小判定
+		minDist = FLT_MAX;
+		minIndex = 0;
+		for (int i{ 0 }; i < faces.size(); i++)
+		{
+			if (minDist > faces[i].distance)
+			{
+				minDist = faces[i].distance;
+				minIndex = i;
+			}
+		}
+
+		count++;
+
+		if (count > 20)
+		{
+			Manifold manifold;
+			manifold.handleA = _handleA;
+			manifold.handleB = _handleB;
+			manifold.normal = faces[minIndex].normal;
+			manifold.points[0].penetration = faces[minIndex].distance;
+
+			_manifoldBuffer->manifolds.push_back(manifold);
+
+			return;
+		}
+	}
 }
 
 void CollisionSystem::ComputeFace(Face& _face, std::vector<Vector3>& _vertices)
@@ -470,8 +578,22 @@ void CollisionSystem::ComputeFace(Face& _face, std::vector<Vector3>& _vertices)
 	}
 
 	// 距離計算
-	_face.distance =
-		Vector3::Dot(_face.normal, a);
+	_face.distance = Vector3::Dot(_face.normal, a);
+}
+
+void CollisionSystem::AddEdge(Edge& _edge, std::vector<Edge>& _edges)
+{
+	for (auto it = _edges.begin(); it != _edges.end(); ++it)
+	{
+		if (it->a == _edge.b &&
+			it->b == _edge.a)
+		{
+			_edges.erase(it);
+			return;
+		}
+	}
+
+	_edges.push_back(_edge);
 }
 
 void CollisionSystem::InsertionSort(std::vector<ColliderProjection>& _projectionValues)

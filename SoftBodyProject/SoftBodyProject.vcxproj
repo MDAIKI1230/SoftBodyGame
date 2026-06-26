@@ -187,11 +187,13 @@
     <ClInclude Include="Source\Objects\DebugSphere.h" />
     <ClInclude Include="Source\Physics\Body\RigidBodyComponent.h" />
     <ClInclude Include="Source\Physics\Collider\AABBBroadPhaseCollider.h" />
+    <ClInclude Include="Source\Physics\Collider\BoxColliderComponent.h" />
     <ClInclude Include="Source\Physics\Collider\ColliderComponent.h" />
     <ClInclude Include="Source\Physics\Collider\SphereColliderComponent.h" />
     <ClInclude Include="Source\Physics\Constants\CollisionConstants.h" />
     <ClInclude Include="Source\Physics\PhysicsWorld.h" />
     <ClInclude Include="Source\Physics\Storage\AABBBroadPhaseColliderStorage.h" />
+    <ClInclude Include="Source\Physics\Storage\BoxColliderComponent.h" />
     <ClInclude Include="Source\Physics\Storage\CollisionContactBuffer.h" />
     <ClInclude Include="Source\Physics\Storage\CollisionManifoldBuffer.h" />
     <ClInclude Include="Source\Physics\Storage\ProjectionStorage.h" />
@@ -201,6 +203,7 @@
     <ClInclude Include="Source\Physics\Struct\ColliderProjectionData.h" />
     <ClInclude Include="Source\Physics\Struct\CollPair.h" />
     <ClInclude Include="Source\Physics\Struct\ColliderTags.h" />
+    <ClInclude Include="Source\Physics\Struct\Edge.h" />
     <ClInclude Include="Source\Physics\Struct\Face.h" />
     <ClInclude Include="Source\Physics\Struct\Manifold.h" />
     <ClInclude Include="Source\Physics\System\Collision\CollisionSolverSystem.h" />

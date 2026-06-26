@@ -19,8 +19,8 @@ void CollisionSolverSystem::PositionSolver(RigidBodyComponentStorage* _bodyStora
 		Manifold& manifold{ _manifoldBuffer->manifolds[i] };
 		Vector3 vec{ manifold.normal * manifold.points[0].penetration };
 
-		_bodyStorage->expectedPos[manifold.handleA] -= vec;
-		_bodyStorage->expectedPos[manifold.handleB] -= -vec;
+		_bodyStorage->expectedPos[manifold.handleA] -= vec * 0.5f;
+		_bodyStorage->expectedPos[manifold.handleB] -= -vec * 0.5f;
 	}
 }
 

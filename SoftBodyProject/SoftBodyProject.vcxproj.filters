@@ -355,6 +355,15 @@
     <ClInclude Include="Source\Common\Math\Constants\MathConstants.h">
       <Filter>ソース ファイル\Common\Math\Constants</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Physics\Collider\BoxColliderComponent.h">
+      <Filter>ソース ファイル\Physics\Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Storage\BoxColliderComponent.h">
+      <Filter>ソース ファイル\Physics\Storage</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Struct\Edge.h">
+      <Filter>ソース ファイル\Physics\Struct</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\System\Adapter\Dxlib\DxlibInput.cpp">

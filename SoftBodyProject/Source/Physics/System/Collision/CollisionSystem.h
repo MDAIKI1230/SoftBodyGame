@@ -13,8 +13,10 @@
 #include "CollPair.h"
 #include "Simplex.h"
 #include "Face.h"
+#include "Edge.h"
 
-#include "FixedUpdateSystem.h"
+#include "WorldStorage.h"
+#include "EventManager.h"
 
 class CollisionSystem
 {
@@ -77,12 +79,12 @@ private:
 
 	template<class A, class B, class AS, class BS>
 	void EPA(
-		AS* _storageA, int _handleA,
-		BS* _storageB, int _handleB,
-		TransformComponentStorage* _transformStorage,
+		AS* _storageA, int _handleA, TransformComponent* _transA,
+		BS* _storageB, int _handleB, TransformComponent* _transB,
 		CollisionManifoldBuffer* _manifoldBuffer, Simplex& _simplex);
 
 	void ComputeFace(Face& _face, std::vector<Vector3>& _vertices);
+	void AddEdge(Edge& _edge, std::vector<Edge>& _edges);
 
 	// --- ソート ---
 	void InsertionSort(std::vector<ColliderProjection>& _projectionValues);
