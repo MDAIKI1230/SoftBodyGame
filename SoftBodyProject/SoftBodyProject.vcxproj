@@ -247,6 +247,7 @@
     <ClCompile Include="Source\Main.cpp" />
     <ClCompile Include="Source\Objects\DebugSphere.cpp" />
     <ClCompile Include="Source\Physics\Body\RigidBodyComponent.cpp" />
+    <ClCompile Include="Source\Physics\Collider\BoxColliderComponent.cpp" />
     <ClCompile Include="Source\Physics\PhysicsWorld.cpp" />
     <ClCompile Include="Source\Physics\Storage\RigidBodyComponentStorage.cpp" />
     <ClCompile Include="Source\Physics\System\Collision\CollisionSolverSystem.cpp" />

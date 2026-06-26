@@ -468,5 +468,8 @@
     <ClCompile Include="Source\Physics\PhysicsWorld.cpp">
       <Filter>ソース ファイル\Physics</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Physics\Collider\BoxColliderComponent.cpp">
+      <Filter>ソース ファイル\Physics\Collider</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
