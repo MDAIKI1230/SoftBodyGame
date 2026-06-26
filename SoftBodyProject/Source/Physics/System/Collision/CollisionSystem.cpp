@@ -9,6 +9,7 @@ void CollisionSystem::FixedUpdate(WorldStorage* _worldStorage, EventManager* _ev
 {
 	// コライダーストレージ
 	SphereColliderComponentStorage* sphereStorage{ static_cast<SphereColliderComponentStorage*>(_worldStorage->GetStorage<SphereColliderComponent>()) };
+	BoxColliderComponentStorage* boxStorage{ static_cast<BoxColliderComponentStorage*>(_worldStorage->GetStorage<BoxColliderComponent>()) };
 	// Transformストレージ
 	TransformComponentStorage* transformStorage { static_cast<TransformComponentStorage*>(_worldStorage->GetStorage<TransformComponent>()) };
 

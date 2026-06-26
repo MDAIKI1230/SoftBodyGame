@@ -6,6 +6,7 @@
 
 #include "TransformComponentStorage.h"
 #include "SphereColliderComponentStorage.h"
+#include "BoxColliderComponentStorage.h"
 #include "ProjectionStorage.h"
 #include "CollisionManifoldBuffer.h"
 

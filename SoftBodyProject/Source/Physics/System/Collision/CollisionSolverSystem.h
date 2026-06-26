@@ -8,6 +8,7 @@
 class CollisionSolverSystem
 {
 public:
+	// 更新
 	void FixedUpdate(WorldStorage* _worldStorage, CollisionManifoldBuffer* _manifoldBuffer);
 private:
 	// 位置解決
