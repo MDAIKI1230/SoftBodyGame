@@ -8,9 +8,12 @@ public:
 	// ---コンストラクタ---
 
 	// デフォルトコンストラクタ
-	BoxColliderComponent() = default;
+	BoxColliderComponent(int _handle) :
+		handle{ _handle }
+	{
+	}
 	
-	// 
+	BoxColliderComponent(float width, float height, float depth);
 private:
 	int handle;
 };
