@@ -7,7 +7,7 @@ static const Vector3 ZERO{ 0.0f,0.0f,0.0f };
 // 1
 static const Vector3 ONE{ 1.0f,1.0f,1.0f };
 // 前(z)
-const Vector3 Vector3::FORWARD{ 0.0f,0.0f,1.0f };
+const Vector3 Vector3::FORWARD{ 0.0f,0.0f,-1.0f };
 // 右(x)
 const Vector3 Vector3::RIGHT{ 1.0f,0.0f,0.0f };
 // 上(y)

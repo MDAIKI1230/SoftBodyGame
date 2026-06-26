@@ -50,9 +50,8 @@ DebugBox::DebugBox(WorldStorage* _world, int _handle, float _width, float _heigh
 void DebugBox::Update()
 {
 	TransformComponent* trans{ GetComponent<TransformComponent>() };
-	Quaternion rot{ Quaternion::AngleAxis(-0.91f , Vector3::UP) };
-
-	trans->RotateEuler(Vector3(0, 1, 0));
+	Quaternion rot{ Quaternion::AngleAxis(0.1f , Vector3::UP) };
+	trans->Rotate(rot);
 }
 void DebugBox::FixedUpdate()
 {

@@ -56,15 +56,21 @@ Matrix4x4 MatGenerateFunc::Rotate(const Quaternion& _rot)
 	// x,x,y,w
 	v0 = SIMDVectorFloat::Shuffle<0, 0, 1, 3>(_rot.simd);
 
+	SIMDVectorFloat lhFix{ +1.0f,-1.0f,-1.0f,+1.0f };
+
 	// 2y,2z,2z,2w
 	v1 = SIMDVectorFloat::Shuffle<1, 2, 2, 3>(rot2);
 
 	// 2xy,2xz,2yz,2w^2
 	SIMDVectorFloat termXyz{ SIMDVectorMath::Mul(v0,v1) };
+	// 2xy,-2xz,-2yz,2w^2　　左手系に修正
+	termXyz = SIMDVectorMath::Mul(termXyz, lhFix);
 
 	// wの項を作る
 	// 2xw,2yw,2zw,2w^2
 	SIMDVectorFloat termW{ SIMDVectorMath::MulScalar(rot2,_rot.w) };
+	// 2xw,-2yw,-2zw,2w^2  　左手系に修正
+	termW = SIMDVectorMath::Mul(termW, lhFix);
 	// 2zw,2yw,2xw,2w^2
 	termW = SIMDVectorFloat::Shuffle<2, 1, 0, 3>(termW);
 
