@@ -9,3 +9,4 @@
 #include "Transform/Transform.h"
 #include "Matrix/MatGenerateFunc.h"
 #include "Constants/MathConstants.h"
+#include "Vector/SIMD/SIMDVectorMath.h"

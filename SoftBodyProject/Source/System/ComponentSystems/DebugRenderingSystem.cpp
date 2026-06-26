@@ -36,7 +36,31 @@ void DebugRenderingSystem::DrawSphera(SphereColliderComponentStorage* _sphereSto
 
 void DebugRenderingSystem::DrawBox(BoxColliderComponentStorage* _boxStorage, TransformComponentStorage* _transformStorage)
 {
+	// 参照用
+	TransformComponent trans{};
 
+	// すべての球を描画していく
+	for (int entity : *_boxStorage->GetEntities())
+	{
+		// Transformがあるかチェックないなら飛ばす
+		if (!_transformStorage->TryGet(entity, trans))
+		{
+			continue;
+		}
+
+		BoxColliderComponent* box{ _boxStorage->Get(entity) };
+
+		int handle{ box->GetHandle() };
+
+		Vector3 scale{ _boxStorage->width[handle],_boxStorage->height[handle],_boxStorage->depth[handle] };
+
+		scale = SIMDVectorMath::Mul(scale, trans.GetScale());
+
+		Vector3 pos0{ trans.GetRotation().Rotate(trans.GetPosition() - scale / 2.0f) };
+		Vector3 pos1{ trans.GetRotation().Rotate(trans.GetPosition() + scale / 2.0f) };
+
+		ServiceLocator::GetRenderer()->DrawBox(pos0, pos1, Color(255, 255, 255));
+	}
 }
 
 #endif // DEBUG
