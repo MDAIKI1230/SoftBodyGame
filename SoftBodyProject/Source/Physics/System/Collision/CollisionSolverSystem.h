@@ -3,20 +3,20 @@
 #include "WorldStorage.h"
 #include "CollisionManifoldBuffer.h"
 
-#include "RigidBodyComponentStorage.h"
+#include "RigidBodyStorage.h"
 
 class CollisionSolverSystem
 {
 public:
 	// 更新
-	void FixedUpdate(WorldStorage* _worldStorage, CollisionManifoldBuffer* _manifoldBuffer);
+	void FixedUpdate(RigidBodyStorage* _bodyStorage, CollisionManifoldBuffer* _manifoldBuffer);
 private:
 	// 位置解決
-	void PositionSolver(RigidBodyComponentStorage* _bodyStorage, CollisionManifoldBuffer* _manifoldBuffer);
+	void PositionSolver(RigidBodyStorage* _bodyStorage, CollisionManifoldBuffer* _manifoldBuffer);
 	// 速度解決
-	void VelocitySolver(RigidBodyComponentStorage* _bodyStorage, CollisionManifoldBuffer* _manifoldBuffer);
+	void VelocitySolver(RigidBodyStorage* _bodyStorage, CollisionManifoldBuffer* _manifoldBuffer);
 	// 姿勢解決
-	void OrientationSolver(RigidBodyComponentStorage* _bodyStorage, CollisionManifoldBuffer* _manifoldBuffer);
+	void OrientationSolver(RigidBodyStorage* _bodyStorage, CollisionManifoldBuffer* _manifoldBuffer);
 	// 回転速度解決
-	void RotationSolver(RigidBodyComponentStorage* _bodyStorage, CollisionManifoldBuffer* _manifoldBuffer);
+	void RotationSolver(RigidBodyStorage* _bodyStorage, CollisionManifoldBuffer* _manifoldBuffer);
 };

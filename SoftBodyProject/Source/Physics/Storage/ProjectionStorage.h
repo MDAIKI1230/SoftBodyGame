@@ -1,10 +1,13 @@
 ﻿#pragma once
 
-#include "SparseSetStorageBase.h"
+#include <vector>
+
+#include "ColliderID.h"
 
 #include "ColliderProjectionData.h"
 
-class ProjectionStorage :public SparseSetStorageBase<ColliderProjectionData>
+class ProjectionStorage
 {
-
+	// コライダーIDのindexに対応させる。
+	std::vector<ColliderProjectionData> data;
 };

@@ -19,7 +19,7 @@ public:
 	void FixedUpdate();
 
 	// オブジェクト取得
-	ObjectBase* Get(int _index);
+	ObjectBase* Get(EntityID _index);
 private:
 	std::vector<std::unique_ptr<ObjectBase>> objects;
 };

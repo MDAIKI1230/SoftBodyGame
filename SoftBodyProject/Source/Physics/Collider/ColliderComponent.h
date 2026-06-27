@@ -1,8 +1,8 @@
 ﻿#pragma once
 
 #include "ComponentBase.h"
-
-#include "AABBBroadPhaseCollider.h"
+#include "ColliderID.h"
+#include "EntityID.h"
 
 #ifdef _DEBUG
 #include "Color.h"
@@ -16,21 +16,18 @@ public:
 		ComponentBase{ _handle }
 	{
 	}
-	// ブロードフェーズ用AABBの(XYZ軸ごとの)最小値
-	const Vector3& GetBroadMin() { return aabb.min; }
-	// ブロードフェーズ用AABBの(XYZ軸ごとの)最大値
-	const Vector3& GetBroadMax() { return aabb.max; }
+
 #ifdef _DEBUG
 	// 色取得
 	const Color& GetColor() { return color; }
 	// 色セット
 	void SetColor(const Color& _color) { color = _color; }
 #endif // DEBUG
+
 	// 仮想デストラクタ
 	virtual ~ColliderComponent() = default;
 protected:
-	// ブロードフェーズ
-	AABBBroadPhaseCollider aabb;
+	ColliderID colliderID{};
 	// デバッグの色
 #ifdef _DEBUG
 	Color color;

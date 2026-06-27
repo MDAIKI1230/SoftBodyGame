@@ -2,21 +2,18 @@
 
 #include "ComponentBase.h"
 
+#include "EntityID.h"
+#include "BodyID.h"
+
 struct RigidBodyComponent:public ComponentBase
 {
 public:
 	// --- コンストラクタ ---
 	
 	// デフォルトコンストラクタ(ストレージに追加できないよ)
-	RigidBodyComponent() :
-		ComponentBase{ -1 }
-	{
-	}
+	RigidBodyComponent();
 
-	RigidBodyComponent(int _handle) :
-		ComponentBase{ _handle }
-	{
-	}
+	RigidBodyComponent(EntityID _entity, int _handle);
 
 	// --- 力加算系 ---
 
@@ -63,4 +60,6 @@ public:
 	const Vector3& GetGravity() const;
 	// 重力加速度変更
 	void SetGravity(const Vector3& _gravity);
+private:
+	BodyID bodyId{};
 };

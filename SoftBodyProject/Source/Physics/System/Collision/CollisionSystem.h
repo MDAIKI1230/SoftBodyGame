@@ -5,13 +5,13 @@
 #include <unordered_set>
 
 #include "TransformComponentStorage.h"
-#include "SphereColliderComponentStorage.h"
-#include "BoxColliderComponentStorage.h"
+#include "ColliderStorage.h"
 #include "ProjectionStorage.h"
 #include "CollisionManifoldBuffer.h"
+#include "NarrowPhasePairBuilder.h"
 
 #include "ColliderProjection.h"
-#include "CollPair.h"
+#include "CollisionPair.h"
 #include "Simplex.h"
 #include "Face.h"
 #include "Edge.h"
@@ -23,12 +23,14 @@ class CollisionSystem
 {
 public:
 	// 更新
-	void FixedUpdate(WorldStorage* _worldStorage, EventManager* _eventManager, CollisionManifoldBuffer* _manifoldBuffer);
+	void FixedUpdate(WorldStorage* _worldStorage, EventManager* _eventManager, CollisionManifoldBuffer* _manifoldBuffer, ColliderStorage* _colliderStorage);
 private:
 	// ブロードフェーズ
-	void BroadPhase(TransformComponentStorage* _transformStorage, SphereColliderComponentStorage* _sphereStorage);
+	void BroadPhase(TransformComponentStorage* _transformStorage, ColliderStorage* _colliderStorage);
+	// ペアの対応付け処理
+	void Dispatch(ColliderStorage* _colliderStorage);
 	// ナローフェーズ
-	void NarrowPhase(TransformComponentStorage* _transformStorage, SphereColliderComponentStorage* _sphereStorage, EventManager* _eventManager, CollisionManifoldBuffer* _manifoldBuffer);
+	void NarrowPhase(TransformComponentStorage* _transformStorage, ColliderStorage* _colliderStorage, EventManager* _eventManager, CollisionManifoldBuffer* _manifoldBuffer);
 	// 終了処理
 	void End();
 	/// <summary>
@@ -36,7 +38,18 @@ private:
 	/// </summary>
 	/// <param name="projectionAxisValues">判定する軸のコンテナ</param>
 	/// <param name="actives">結果を入れる</param>
-	void CheckProjectionAxisValueCross(const std::vector<ColliderProjection>& _projectionAxisValues);
+	void CheckProjectionAxisValueCross(std::vector<ColliderProjection>& _projectionAxisValues);
+
+	// --- 各形状ごとの引数の当り判定 ---
+	template<class A, class B, class AS, class BS, class PairList>
+	void Solve(
+		AS* _strageA, BS* _strageB,
+		const std::vector<PairList>& pairList,
+		TransformComponentStorage* _transformStorage,
+		ColliderStorage* _colliderStorage,
+		EventManager* _eventManager,
+		CollisionManifoldBuffer* _manifoldBuffer);
+
 	/// <summary>
 	/// GJKアルゴリズムによる当り判定
 	/// </summary>
@@ -52,15 +65,19 @@ private:
 	/// <returns>当たったか</returns>
 	template<class A,class B,class AS,class BS>
 	bool GJK(
-		AS* _storageA,int _handleA,
-		BS* _storageB,int _handleB,
+		AS* _storageA, ColliderID _handleA,
+		BS* _storageB, ColliderID _handleB,
+		ColliderStorage* _colliderStorage,
 		TransformComponentStorage* _transformStorage,
 		CollisionManifoldBuffer* _manifoldBuffer);
 
-	// --- 各形状ごとの引数の当り判定 ---
+	void RegisterEvent(
+		ColliderID _a,
+		ColliderID _b,
+		ColliderStorage* _colliderStorage,
+		EventManager* _eventManager);
 
-	bool Solve(SphereColliderComponentStorage* _strageA, SphereColliderComponentStorage* _strageB, SphereSpherePair& pair,
-		TransformComponentStorage* _transformStorage, CollisionManifoldBuffer* _manifoldBuffer);
+	void RegisterExitEvent(ColliderStorage* _colliderStorage, EventManager* _eventManager);
 
 	// --- SimplexSolve ---
 	/// <summary>
@@ -80,8 +97,9 @@ private:
 
 	template<class A, class B, class AS, class BS>
 	void EPA(
-		AS* _storageA, int _handleA, TransformComponent* _transA,
-		BS* _storageB, int _handleB, TransformComponent* _transB,
+		AS* _storageA, ColliderID _handleA, TransformComponent* _transA,
+		BS* _storageB, ColliderID _handleB, TransformComponent* _transB,
+		ColliderStorage* _colliderStorage,
 		CollisionManifoldBuffer* _manifoldBuffer, Simplex& _simplex);
 
 	void ComputeFace(Face& _face, std::vector<Vector3>& _vertices);
@@ -97,6 +115,21 @@ private:
 	/// <param name="b">スワップするインデックス二つ目</param>
 	void Swap(std::vector<ColliderProjection>& _projectionValues, int _a, int _b);
 private:
+	NarrowPhasePairBuilder narrowPhasePairBuilder;
+	// Pairの追加用Dipatchテーブル
+	using AddPairFunc = void (NarrowPhasePairBuilder::*)(ColliderID, ColliderID);
+
+	AddPairFunc AddPairTable[(int)ColliderType::COUNT][(int)ColliderType::COUNT]
+	{
+		// 　　　             球　　　               |　             　 箱
+		{
+			&NarrowPhasePairBuilder::AddSphereSphere , &NarrowPhasePairBuilder::AddSphereBox // 球
+		},
+		{
+			&NarrowPhasePairBuilder::AddSphereBox,     &NarrowPhasePairBuilder::AddBoxBox    // 箱
+		}
+	};
+
 	// --- ブロードフェーズ用コンテナ ---
 	// X軸射影
 	std::vector<ColliderProjection> colliderProjectionXValues;
@@ -106,17 +139,17 @@ private:
 	std::vector<ColliderProjection> colliderProjectionZValues;
 
 	// AABBの衝突判定用のカウンター
-	std::unordered_map<SphereSpherePair, int> crossCountMap{};
+	std::unordered_map<CollisionPair::BroadPhasePair, int> crossCountMap{};
 
-	// ナローフェーズをするペア
-	std::vector<SphereSpherePair> narrowPairs;
+	// ナローフェーズへ移行できるペア(Dispatch処理でペアの形状を判定する)
+	std::vector<CollisionPair::BroadPhasePair> broadClearPairs;
 
 	// --- 衝突管理 ---
 	// 今回当たってたやつ
-	std::unordered_set<SphereSpherePair> currentFramePair;
+	std::unordered_set<CollisionPair::BroadPhasePair> currentFramePair;
 	// 前回当たってたやつ
-	std::unordered_set<SphereSpherePair> prevFramePair;
+	std::unordered_set<CollisionPair::BroadPhasePair> prevFramePair;
 
-	// 一旦置く
-	ProjectionStorage projectionStorage;
+	// コライダーIDのindexに対応させる。
+	std::vector<ColliderProjectionData> projectionDatas;
 };

@@ -1,16 +1,18 @@
 ﻿#pragma once
 
+#include "EntityID.h"
+
 struct OnCollisionEnterEvent
 {
-	int a, b;
+	EntityID a, b;
 };
 
 struct OnCollisionEvent
 {
-	int a, b;
+	EntityID a, b;
 };
 
 struct OnCollisionExitEvent
 {
-	int a, b;
+	EntityID a, b;
 };

@@ -2,8 +2,7 @@
 
 #include "FixedUpdateSystem.h"
 
-#include "RigidBodyComponentStorage.h"
-#include "TransformComponentStorage.h"
+#include "RigidBodyStorage.h"
 
 class RigidBodySystem
 {
@@ -11,12 +10,12 @@ public:
 	// コンストラクタ
 	RigidBodySystem() = default;
 	// 更新
-	void FixedUpdate(WorldStorage* _worldStorage);
+	void FixedUpdate(RigidBodyStorage* _bodyStorage);
 private:
 	// 重力適応
-	void UpdateGravity(RigidBodyComponentStorage* _storage);
+	void UpdateGravity(RigidBodyStorage* _bodyStorage);
 	// 位置更新
-	void UpdatePosition(RigidBodyComponentStorage* _bodyStorage, TransformComponentStorage* _transformStorage);
+	void UpdatePosition(RigidBodyStorage* _bodyStorage);
 	// 回転更新
-	void UpdateRotation(RigidBodyComponentStorage* _bodyStorage, TransformComponentStorage* _transformStorage);
+	void UpdateRotation(RigidBodyStorage* _bodyStorage);
 };

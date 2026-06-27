@@ -1,16 +1,14 @@
 ﻿#include "CollisionSolverSystem.h"
 
-void CollisionSolverSystem::FixedUpdate(WorldStorage* _worldStorage, CollisionManifoldBuffer* _manifoldBuffer)
+void CollisionSolverSystem::FixedUpdate(RigidBodyStorage* _bodyStorage, CollisionManifoldBuffer* _manifoldBuffer)
 {
-	RigidBodyComponentStorage* bodyStorage{ static_cast<RigidBodyComponentStorage*>(_worldStorage->GetStorage<RigidBodyComponent>()) };
-
-	PositionSolver(bodyStorage, _manifoldBuffer);
-	VelocitySolver(bodyStorage, _manifoldBuffer);
-	OrientationSolver(bodyStorage, _manifoldBuffer);
-	RotationSolver(bodyStorage, _manifoldBuffer);
+	PositionSolver(_bodyStorage, _manifoldBuffer);
+	VelocitySolver(_bodyStorage, _manifoldBuffer);
+	OrientationSolver(_bodyStorage, _manifoldBuffer);
+	RotationSolver(_bodyStorage, _manifoldBuffer);
 }
 
-void CollisionSolverSystem::PositionSolver(RigidBodyComponentStorage* _bodyStorage, CollisionManifoldBuffer* _manifoldBuffer)
+void CollisionSolverSystem::PositionSolver(RigidBodyStorage* _bodyStorage, CollisionManifoldBuffer* _manifoldBuffer)
 {
 	int size{ (int)_manifoldBuffer->manifolds.size() };
 
@@ -19,52 +17,52 @@ void CollisionSolverSystem::PositionSolver(RigidBodyComponentStorage* _bodyStora
 		Manifold& manifold{ _manifoldBuffer->manifolds[i] };
 		Vector3 vec{ manifold.normal * manifold.points[0].penetration };
 
-		_bodyStorage->expectedPos[manifold.handleA] -= vec * 0.5f;
-		_bodyStorage->expectedPos[manifold.handleB] -= -vec * 0.5f;
+		_bodyStorage->position[manifold.handleA.id] -= vec * 0.5f;
+		_bodyStorage->position[manifold.handleB.id] -= -vec * 0.5f;
 	}
 }
 
-void CollisionSolverSystem::VelocitySolver(RigidBodyComponentStorage* _bodyStorage, CollisionManifoldBuffer* _manifoldBuffer)
+void CollisionSolverSystem::VelocitySolver(RigidBodyStorage* _bodyStorage, CollisionManifoldBuffer* _manifoldBuffer)
 {
 	int size{ (int)_manifoldBuffer->manifolds.size() };
 
 	for (int i{ size }; i < size; i++)
 	{
 		Manifold& manifold{ _manifoldBuffer->manifolds[i] };
-		int a{ manifold.handleA };
-		int b{ manifold.handleB };
+		EntityID a{ manifold.handleA };
+		EntityID b{ manifold.handleB };
 
-		if(_bodyStorage->TryGet(a) && _bodyStorage->TryGet(b))
+		if(_bodyStorage->velocity.size() >= a.id && _bodyStorage->velocity.size() >= b.id)
 		{
-			Vector3 relativeVec{ _bodyStorage->velocity[b] - _bodyStorage->velocity[a] };
-			float massCoefficient{ (_bodyStorage->mass[a] * _bodyStorage->mass[b]) / (_bodyStorage->mass[a] + _bodyStorage->mass[b]) };
+			Vector3 relativeVec{ _bodyStorage->velocity[b.id] - _bodyStorage->velocity[a.id] };
+			float massCoefficient{ (_bodyStorage->mass[a.id] * _bodyStorage->mass[b.id]) / (_bodyStorage->mass[a.id] + _bodyStorage->mass[b.id]) };
 			float j{ massCoefficient * Vector3::Dot(relativeVec, manifold.normal) };
-			_bodyStorage->velocity[a] + (manifold.normal * j) / _bodyStorage->mass[a];
-			_bodyStorage->velocity[b] - (manifold.normal * j) / _bodyStorage->mass[b];
+			_bodyStorage->velocity[a.id] + (manifold.normal * j) / _bodyStorage->mass[a.id];
+			_bodyStorage->velocity[b.id] - (manifold.normal * j) / _bodyStorage->mass[b.id];
 		}
-		else if(_bodyStorage->TryGet(b))
+		else if(_bodyStorage->velocity.size() >= b.id)
 		{
 			// 質量は1と仮定
-			float massCoefficient{ (_bodyStorage->mass[b]) / (_bodyStorage->mass[b] + 1) };
-			float j{ massCoefficient * Vector3::Dot(_bodyStorage->velocity[b], manifold.normal) };
-			_bodyStorage->velocity[b] + (manifold.normal * j) / _bodyStorage->mass[b];
+			float massCoefficient{ (_bodyStorage->mass[b.id]) / (_bodyStorage->mass[b.id] + 1) };
+			float j{ massCoefficient * Vector3::Dot(_bodyStorage->velocity[b.id], manifold.normal) };
+			_bodyStorage->velocity[b.id] + (manifold.normal * j) / _bodyStorage->mass[b.id];
 		}
 		else
 		{
 			// 質量は1と仮定
-			float massCoefficient{ (_bodyStorage->mass[a]) / (_bodyStorage->mass[a] + 1) };
-			float j{ massCoefficient * Vector3::Dot(_bodyStorage->velocity[a], manifold.normal) };
-			_bodyStorage->velocity[a] + (manifold.normal * j) / _bodyStorage->mass[a];
+			float massCoefficient{ (_bodyStorage->mass[a.id]) / (_bodyStorage->mass[a.id] + 1) };
+			float j{ massCoefficient * Vector3::Dot(_bodyStorage->velocity[a.id], manifold.normal) };
+			_bodyStorage->velocity[a.id] + (manifold.normal * j) / _bodyStorage->mass[a.id];
 		}
 	}
 }
 
-void CollisionSolverSystem::OrientationSolver(RigidBodyComponentStorage* _bodyStorage, CollisionManifoldBuffer* _manifoldBuffer)
+void CollisionSolverSystem::OrientationSolver(RigidBodyStorage* _bodyStorage, CollisionManifoldBuffer* _manifoldBuffer)
 {
 
 }
 
-void CollisionSolverSystem::RotationSolver(RigidBodyComponentStorage* _bodyStorage, CollisionManifoldBuffer* _manifoldBuffer)
+void CollisionSolverSystem::RotationSolver(RigidBodyStorage* _bodyStorage, CollisionManifoldBuffer* _manifoldBuffer)
 {
 
 }

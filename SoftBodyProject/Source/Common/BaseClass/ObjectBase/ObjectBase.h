@@ -2,15 +2,17 @@
 
 #include <utility>
 
+#include "EntityID.h"
+
 #include "WorldStorage.h"
 
 class ObjectBase
 {
 public:
 	// コンストラクタ
-	ObjectBase(WorldStorage* _world, int _handle) :
+	ObjectBase(WorldStorage* _world, uint32_t _entity) :
 		world{ _world },
-		handle{ _handle }
+		entity{ _entity }
 	{
 	}
 
@@ -40,7 +42,7 @@ public:
 
 		if(storage != nullptr)
 		{
-			return storage->Add(handle, storage->GetHandle(), std::forward<Args>(args)...);
+			return storage->Add(entity, storage->GetHandle(), std::forward<Args>(args)...);
 		}
 
 		return nullptr;
@@ -54,17 +56,17 @@ public:
 
 		if (storage != nullptr)
 		{
-			return storage->Get(handle);
+			return storage->Get(entity);
 		}
 
 		return nullptr;
 	}
 
 	// --- ゲッター　---
-	int GetHandle() { return handle; }
+	EntityID GetHandle() { return entity; }
 	// 仮想デストラクタ
 	virtual ~ObjectBase() = default;
 private:
-	int handle;
+	EntityID entity;
 	WorldStorage* world;
 };

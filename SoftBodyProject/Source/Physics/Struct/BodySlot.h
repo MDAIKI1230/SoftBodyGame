@@ -1,0 +1,27 @@
+﻿#pragma once
+
+#include <stdint.h>
+
+#include "EntityID.h"
+
+struct BodySlot
+{
+public:
+    // コンストラクタ
+    BodySlot(size_t _denseIndex, EntityID _ownerEntity) :
+        denseIndex{ _denseIndex },
+        ownerEntity{ _ownerEntity }
+    {
+    }
+
+public:
+    // 世代
+    unsigned char generation{ 1 };
+    // 生存フラグ
+    bool alive{ true };
+
+    // 実データ上のインデックス
+    size_t denseIndex;
+    // オブジェクトエンティティ
+    EntityID ownerEntity;
+};

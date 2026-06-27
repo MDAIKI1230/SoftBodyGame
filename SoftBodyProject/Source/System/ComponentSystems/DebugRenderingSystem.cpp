@@ -21,7 +21,7 @@ void DebugRenderingSystem::DrawSphera(SphereColliderComponentStorage* _sphereSto
 	TransformComponent trans{};
 
 	// すべての球を描画していく
-	for (int entity : *_sphereStorage->GetEntities())
+	for (EntityID entity : *_sphereStorage->GetEntities())
 	{
 		// Transformがあるかチェックないなら飛ばす
 		if (!_transformStorage->TryGet(entity, trans))
@@ -41,7 +41,7 @@ void DebugRenderingSystem::DrawBox(BoxColliderComponentStorage* _boxStorage, Tra
 	TransformComponent trans{};
 
 	// すべての球を描画していく
-	for (int entity : *_boxStorage->GetEntities())
+	for (EntityID entity : *_boxStorage->GetEntities())
 	{
 		// Transformがあるかチェックないなら飛ばす
 		if (!_transformStorage->TryGet(entity, trans))

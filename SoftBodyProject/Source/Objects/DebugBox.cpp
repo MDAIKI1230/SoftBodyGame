@@ -10,8 +10,8 @@
 
 #include "DebugBox.h"
 
-DebugBox::DebugBox(WorldStorage* _world, int _handle) :
-	ObjectBase{ _world,_handle }
+DebugBox::DebugBox(WorldStorage* _world, uint32_t _entity) :
+	ObjectBase{ _world,_entity }
 {
 	AddComponent<TransformComponent>();
 	BoxColliderComponent* collider{ AddComponent<BoxColliderComponent>(30.0f) };
@@ -22,8 +22,8 @@ DebugBox::DebugBox(WorldStorage* _world, int _handle) :
 }
 
 // コンストラクタ
-DebugBox::DebugBox(WorldStorage* _world, int _handle, float _size) :
-	ObjectBase{ _world,_handle }
+DebugBox::DebugBox(WorldStorage* _world, uint32_t _entity, float _size) :
+	ObjectBase{ _world,_entity }
 {
 	AddComponent<TransformComponent>();
 	BoxColliderComponent* collider{ AddComponent<BoxColliderComponent>(_size) };
@@ -34,8 +34,8 @@ DebugBox::DebugBox(WorldStorage* _world, int _handle, float _size) :
 }
 
 // コンストラクタ
-DebugBox::DebugBox(WorldStorage* _world, int _handle, float _width, float _height, float _depth) :
-	ObjectBase{ _world,_handle }
+DebugBox::DebugBox(WorldStorage* _world, uint32_t _entity, float _width, float _height, float _depth) :
+	ObjectBase{ _world,_entity }
 {
 	AddComponent<TransformComponent>();
 	BoxColliderComponent* collider{ AddComponent<BoxColliderComponent>(_width,_height,_depth) };

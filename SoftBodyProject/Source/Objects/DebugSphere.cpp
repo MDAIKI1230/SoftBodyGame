@@ -10,8 +10,8 @@
 
 #include "DebugSphere.h"
 
-DebugSphere::DebugSphere(WorldStorage* world, int handle) :
-	ObjectBase{ world,handle }
+DebugSphere::DebugSphere(WorldStorage* world, uint32_t _entity) :
+	ObjectBase{ world,_entity }
 {
 	AddComponent<TransformComponent>();
 	SphereColliderComponent* collider{ AddComponent<SphereColliderComponent>(30.0f) };

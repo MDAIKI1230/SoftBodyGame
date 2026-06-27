@@ -22,13 +22,13 @@ void ObjectManager::FixedUpdate()
 	}
 }
 
-ObjectBase* ObjectManager::Get(int _index)
+ObjectBase* ObjectManager::Get(EntityID _index)
 {
 	// サイズチェック
-	if (_index >= objects.size())
+	if (_index.id >= objects.size())
 	{
 		return nullptr;
 	}
 
-	return objects[_index].get();
+	return objects[_index.id].get();
 }

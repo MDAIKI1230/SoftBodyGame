@@ -15,9 +15,9 @@ public:
 	/// </summary>
 	/// <param name="entity">エンティティID</param>
 	/// <returns></returns>
-	T* Get(int _entity)
+	T* Get(EntityID _entity)
 	{
-		int id{ sparse[_entity] };
+		size_t id{ sparse[_entity] };
 		return &dense[id];
 	}
 	/// <summary>
@@ -25,14 +25,16 @@ public:
 	/// </summary>
 	/// <param name="entity">エンティティID</param>
 	template<class... Args>
-	T* Add(int _entity, Args&&... _args)
+	T* Add(EntityID _entity, Args&&... _args)
 	{
+		// 追加インデックスを作成
+		size_t index{ dense.size() };
 		// コンポーネント追加
 		dense.emplace_back(std::forward<Args>(_args)...);
 		// エンティティ追加
 		entities.push_back(_entity);
 		// 対応付け
-		sparse[_entity] = dense.size() - 1;
+		sparse[_entity] = index;
 
 		return &dense.back();
 	}
@@ -40,16 +42,19 @@ public:
 	/// 除外
 	/// </summary>
 	/// <param name="entity">エンティティID</param>
-	void Remove(int _entity)
+	void Remove(EntityID _entity)
 	{
 		// 除外コンポーネントインデックス
-		int denseIndex{ sparse[_entity] };
+		size_t denseIndex{ sparse[_entity] };
 		// コンポーネントを除外
 		dense[denseIndex] = std::move(dense.back());
 		dense.pop_back();
 		// ID削除
+		EntityID movedEntity{ entities.back() };
 		entities[denseIndex] = std::move(entities.back());
 		entities.pop_back();
+		// MAP対応更新
+		sparse[movedEntity] = denseIndex;
 		// MAPから除外
 		sparse.erase(_entity);
 	}
@@ -81,7 +86,7 @@ public:
 	/// </summary>
 	/// <param name="output">取得したコンポーネント</param>
 	/// <returns>取得できたか</returns>
-	bool TryGet(int _entity, T& _output)
+	bool TryGet(EntityID _entity, T& _output)
 	{
 		// 空チェック
 		if (sparse.empty())
@@ -105,7 +110,7 @@ public:
 	/// </summary>
 	/// <param name="_entity">ID</param>
 	/// <returns></returns>
-	bool TryGet(int _entity)
+	bool TryGet(EntityID _entity)
 	{
 		return sparse.contains(_entity);
 	}
@@ -114,7 +119,7 @@ public:
 	/// </summary>
 	/// <param name="target">対象</param>
 	/// <returns>持っているか</returns>
-	bool Has(int _entity)
+	bool Has(EntityID _entity)
 	{
 		// 空チェック
 		if (sparse.empty())
@@ -150,7 +155,7 @@ public:
 		return &dense;
 	}
 	// エンティティコンテナ取得
-	std::vector<int>* GetEntities()
+	std::vector<EntityID>* GetEntities()
 	{
 		return &entities;
 	}
@@ -160,7 +165,7 @@ private:
 	// 実データ
 	std::vector<T> dense{};
 	// エンティティ
-	std::vector<int> entities{};
+	std::vector<EntityID> entities{};
 	// 対応マップ
-	std::unordered_map<int, int> sparse{};
+	std::unordered_map<EntityID, size_t> sparse{};
 };

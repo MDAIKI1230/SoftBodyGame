@@ -12,11 +12,11 @@ void ModelRenderingSystem::Draw(WorldStorage* _worldStorage, EventManager* _even
 	// Transformストレージ
 	SparseSetStorageBase<TransformComponent>* transformStorage{ _worldStorage->GetStorage<TransformComponent>() };
 	// エンティティ
-	std::vector<int>* entities{ rendererStorage->GetEntities() };
+	std::vector<EntityID>* entities{ rendererStorage->GetEntities() };
 	// トランスフォーム
 	TransformComponent trans{};
 	// 全コンポーネントを描画
-	for (auto id : *entities)
+	for (EntityID id : *entities)
 	{
 		// 取得&チェック
 		if (!transformStorage->TryGet(id, trans))

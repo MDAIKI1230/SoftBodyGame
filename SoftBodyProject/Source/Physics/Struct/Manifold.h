@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "CollPair.h"
+#include "MDMath.h"
 
 struct ContactPoint
 {
@@ -12,8 +12,8 @@ struct ContactPoint
 
 struct Manifold
 {
-	int handleA;
-	int handleB;
+	EntityID handleA;
+	EntityID handleB;
 
 	Vector3 normal;
 

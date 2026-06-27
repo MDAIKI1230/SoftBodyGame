@@ -4,19 +4,16 @@
 #include "PhysicsCommitSystem.h"
 
 
-void PhysicsCommitSystem::FixedUpdate(WorldStorage* _worldStorage)
+void PhysicsCommitSystem::FixedUpdate(RigidBodyStorage* _bodyStorage, WorldStorage* _worldStorage)
 {
-	// RigidBodyストレージ
-	RigidBodyComponentStorage* bodyStorage{ static_cast<RigidBodyComponentStorage*>(_worldStorage->GetStorage<RigidBodyComponent>()) };
 	// Transformストレージ
 	TransformComponentStorage* transformStorage{ static_cast<TransformComponentStorage*>(_worldStorage->GetStorage<TransformComponent>()) };
 
-	for (int entity : *bodyStorage->GetEntities())
+	for (auto& id : _bodyStorage->id)
 	{
-		RigidBodyComponent* component{ bodyStorage->Get(entity) };
-		int handle{ component->GetHandle() };
+		EntityID entity{ _bodyStorage->GetOwnerEntity(id) };
 
-		transformStorage->Get(handle)->SetPosition(bodyStorage->expectedPos[handle]);
-		transformStorage->Get(handle)->SetRotation(bodyStorage->expectedRot[handle]);
+		transformStorage->Get(entity)->SetPosition(_bodyStorage->position[id.index]);
+		transformStorage->Get(entity)->SetRotation(_bodyStorage->rotation[id.index]);
 	}
 }
