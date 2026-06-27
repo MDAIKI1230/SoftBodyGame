@@ -17,10 +17,10 @@ void AABBUpdateSystem::FixedUpdate(ColliderStorage* _colliderStorage, WorldStora
 			switch (_colliderStorage->GetType(id))
 			{
 			case ColliderType::SPHERE:
-				ComputeSphere(_colliderStorage->aabbStorage->aabb[i], _colliderStorage->sphereStorage.get(), id.index);
+				ComputeSphere(_colliderStorage->aabbStorage->aabb[i], _colliderStorage->sphereStorage.get(), _colliderStorage->slots[id.index].denseIndex);
 				break;
 			case ColliderType::BOX:
-				ComputeBox(_colliderStorage->aabbStorage->aabb[i], _colliderStorage, id.index, _worldStorage);
+				ComputeBox(_colliderStorage->aabbStorage->aabb[i], _colliderStorage, _colliderStorage->slots[id.index].denseIndex, _worldStorage);
 				break;
 			default:
 				break;

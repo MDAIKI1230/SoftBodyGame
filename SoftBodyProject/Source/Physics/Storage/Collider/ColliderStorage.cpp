@@ -19,6 +19,7 @@ ColliderID ColliderStorage::CreateSphere(EntityID _entity, float _radius)
 
 	// aabbを作成フラグを追加しておく(後からシステムが作ってくれる)
 	aabbStorage->dirty.emplace_back(AABBChangeDirtyFlag::MAKE);
+	aabbStorage->aabb.emplace_back(id);
 
 	// IDを返してあげる
 	return id;
@@ -35,6 +36,7 @@ ColliderID ColliderStorage::CreateBox(EntityID _entity, const Vector3& _scale)
 
 	// aabbを作成フラグを追加しておく(後からシステムが作ってくれる)
 	aabbStorage->dirty.emplace_back(AABBChangeDirtyFlag::MAKE);
+	aabbStorage->aabb.emplace_back(id);
 
 	return id;
 }

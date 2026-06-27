@@ -12,7 +12,7 @@ void CollisionSolverSystem::PositionSolver(RigidBodyStorage* _bodyStorage, Colli
 {
 	int size{ (int)_manifoldBuffer->manifolds.size() };
 
-	for (int i{ size }; i < size; i++)
+	for (int i{ 0 }; i < size; i++)
 	{
 		Manifold& manifold{ _manifoldBuffer->manifolds[i] };
 		Vector3 vec{ manifold.normal * manifold.points[0].penetration };
@@ -26,7 +26,7 @@ void CollisionSolverSystem::VelocitySolver(RigidBodyStorage* _bodyStorage, Colli
 {
 	int size{ (int)_manifoldBuffer->manifolds.size() };
 
-	for (int i{ size }; i < size; i++)
+	for (int i{ 0 }; i < size; i++)
 	{
 		Manifold& manifold{ _manifoldBuffer->manifolds[i] };
 		EntityID a{ manifold.handleA };

@@ -49,16 +49,16 @@ void CollisionSystem::BroadPhase(TransformComponentStorage* _transformStorage, C
 		// コライダーハンドルのindex
 		size_t colliderIndex{ aabbStorage->aabb[i].colliderID.index };
 
-		if (projectionDatas.size() >= colliderIndex)
+		if (projectionDatas.size() > colliderIndex)
 		{
-			colliderProjectionXValues[data.endpointIndex[ProjectionAxisType::MIN_X]].projection = projectionDatas[colliderIndex].min.x;
-			colliderProjectionXValues[data.endpointIndex[ProjectionAxisType::MAX_X]].projection = projectionDatas[colliderIndex].max.x;
+			colliderProjectionXValues[projectionDatas[colliderIndex].endpointIndex[ProjectionAxisType::MIN_X]].projection = data.min.x;
+			colliderProjectionXValues[projectionDatas[colliderIndex].endpointIndex[ProjectionAxisType::MAX_X]].projection = data.max.x;
 
-			colliderProjectionYValues[data.endpointIndex[ProjectionAxisType::MIN_Y]].projection = projectionDatas[colliderIndex].min.y;
-			colliderProjectionYValues[data.endpointIndex[ProjectionAxisType::MAX_Y]].projection = projectionDatas[colliderIndex].max.y;
+			colliderProjectionYValues[projectionDatas[colliderIndex].endpointIndex[ProjectionAxisType::MIN_Y]].projection = data.min.y;
+			colliderProjectionYValues[projectionDatas[colliderIndex].endpointIndex[ProjectionAxisType::MAX_Y]].projection = data.max.y;
 
-			colliderProjectionZValues[data.endpointIndex[ProjectionAxisType::MIN_Z]].projection = projectionDatas[colliderIndex].min.z;
-			colliderProjectionZValues[data.endpointIndex[ProjectionAxisType::MAX_Z]].projection = projectionDatas[colliderIndex].max.z;
+			colliderProjectionZValues[projectionDatas[colliderIndex].endpointIndex[ProjectionAxisType::MIN_Z]].projection = data.min.z;
+			colliderProjectionZValues[projectionDatas[colliderIndex].endpointIndex[ProjectionAxisType::MAX_Z]].projection = data.max.z;
 		}
 		else
 		{

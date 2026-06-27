@@ -5,6 +5,15 @@
 
 struct AABBBroadPhaseCollider
 {
+public:
+	// コンストラクタ
+	AABBBroadPhaseCollider() = default;
+	// コンストラクタ
+	AABBBroadPhaseCollider(ColliderID _colliderID) :
+		colliderID{ _colliderID }
+	{
+	}
+public:
 	// 最小
 	Vector3 min;
 	// 最大

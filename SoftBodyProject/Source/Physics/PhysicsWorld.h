@@ -9,6 +9,7 @@
 #include "ColliderStorage.h"
 #include "RigidBodyStorage.h"
 
+#include "AABBUpdateSystem.h"
 #include "CollisionSystem.h"
 #include "CollisionSolverSystem.h"
 #include "PhysicsCommitSystem.h"
@@ -32,6 +33,7 @@ private:
 	std::unique_ptr<CollisionManifoldBuffer> manifoldBuffer;
 	std::unique_ptr<ColliderStorage> colliderStorage;
 	std::unique_ptr<RigidBodyStorage> rigidBodyStorage;
+	std::unique_ptr<AABBUpdateSystem> aabbUpdateSystem;
 	std::unique_ptr<CollisionSystem> collisionSystem;
 	std::unique_ptr<CollisionSolverSystem> collisionSolverSystem;
 	std::unique_ptr<PhysicsCommitSystem> physicsCommitSystem;

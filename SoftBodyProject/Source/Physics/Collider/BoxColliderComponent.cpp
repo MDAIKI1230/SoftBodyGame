@@ -5,19 +5,19 @@
 BoxColliderComponent::BoxColliderComponent(EntityID _entity, int _handle) :
 	ColliderComponent{ _handle }
 {
-	PhysicsAPI::CreateBox(_entity, Vector3::ONE);
+	colliderID = PhysicsAPI::CreateBox(_entity, Vector3::ONE);
 }
 
 BoxColliderComponent::BoxColliderComponent(EntityID _entity, int _handle, float _width, float _height, float _depth) :
 	ColliderComponent{ _handle }
 {
-	PhysicsAPI::CreateBox(_entity, Vector3{ _width,_height,_depth });
+	colliderID = PhysicsAPI::CreateBox(_entity, Vector3{ _width,_height,_depth });
 }
 
 BoxColliderComponent::BoxColliderComponent(EntityID _entity, int _handle, float _size) :
 	ColliderComponent{ _handle }
 {
-	PhysicsAPI::CreateBox(_entity, Vector3{ _size });
+	colliderID = PhysicsAPI::CreateBox(_entity, Vector3{ _size });
 }
 
 

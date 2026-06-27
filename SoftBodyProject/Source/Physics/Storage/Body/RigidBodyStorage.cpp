@@ -45,8 +45,7 @@ BodyID RigidBodyStorage::CreateRigidBody(EntityID _entity)
 	physicsMatrialID.emplace_back(-1);
 
 	// ID
-	GenerateBodyID(id.size(), _entity);
-	id.emplace_back();
+	id.emplace_back(GenerateBodyID(id.size(), _entity));
 
 	return id.back();
 }
