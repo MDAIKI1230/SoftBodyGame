@@ -101,9 +101,6 @@
     <Filter Include="ソース ファイル\Physics\System\Update">
       <UniqueIdentifier>{31a7a09b-a7fb-43b9-9044-1e4f936befd2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\Physics\System\Commit">
-      <UniqueIdentifier>{03d50d9b-6ad1-4a7d-9de5-0b3043694bb3}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ソース ファイル\Common\Events">
       <UniqueIdentifier>{b9bff928-5b7e-4c6b-8a3a-f6eb65471602}</UniqueIdentifier>
     </Filter>
@@ -124,6 +121,9 @@
     </Filter>
     <Filter Include="ソース ファイル\Physics\Storage\Body">
       <UniqueIdentifier>{6c679349-e30e-4eb0-95ba-0f1ec82f89a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Physics\System\Sync">
+      <UniqueIdentifier>{03d50d9b-6ad1-4a7d-9de5-0b3043694bb3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -301,9 +301,6 @@
     <ClInclude Include="Source\Physics\System\Collision\CollisionSystem.h">
       <Filter>ソース ファイル\Physics\System\Collision</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Physics\System\Commit\PhysicsCommitSystem.h">
-      <Filter>ソース ファイル\Physics\System\Commit</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Physics\System\Update\RigidBodySystem.h">
       <Filter>ソース ファイル\Physics\System\Update</Filter>
     </ClInclude>
@@ -415,6 +412,12 @@
     <ClInclude Include="Source\Physics\System\Collision\NarrowPhasePairBuilder.h">
       <Filter>ソース ファイル\Physics\System\Collision</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Physics\System\Sync\PhysicsCommitSystem.h">
+      <Filter>ソース ファイル\Physics\System\Sync</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\System\Sync\SynchronizationSystem.h">
+      <Filter>ソース ファイル\Physics\System\Sync</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\System\Adapter\Dxlib\DxlibInput.cpp">
@@ -492,9 +495,6 @@
     <ClCompile Include="Source\Physics\System\Collision\CollisionSystem.cpp">
       <Filter>ソース ファイル\Physics\System\Collision</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Physics\System\Commit\PhysicsCommitSystem.cpp">
-      <Filter>ソース ファイル\Physics\System\Commit</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Physics\System\Update\RigidBodySystem.cpp">
       <Filter>ソース ファイル\Physics\System\Update</Filter>
     </ClCompile>
@@ -536,6 +536,12 @@
     </ClCompile>
     <ClCompile Include="Source\Physics\System\Collision\NarrowPhasePairBuilder.cpp">
       <Filter>ソース ファイル\Physics\System\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Physics\System\Sync\PhysicsCommitSystem.cpp">
+      <Filter>ソース ファイル\Physics\System\Sync</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Physics\System\Sync\SynchronizationSystem.cpp">
+      <Filter>ソース ファイル\Physics\System\Sync</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -256,7 +256,7 @@ void CollisionSystem::Solve(
 			continue;
 		}
 
-		if (GJK<A, B>(_strageA, pair.a, _strageB, pair.b, _colliderStorage, _transformStorage, _manifoldBuffer))
+		if (GJK<A, B, AS, BS>(_strageA, pair.a, _strageB, pair.b, _colliderStorage, _transformStorage, _manifoldBuffer))
 		{
 			RegisterEvent(pair.a, pair.b, _colliderStorage, _eventManager);
 		}

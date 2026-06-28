@@ -13,6 +13,7 @@
 #include "CollisionSystem.h"
 #include "CollisionSolverSystem.h"
 #include "PhysicsCommitSystem.h"
+#include "SynchronizationSystem.h"
 #include "RigidBodySystem.h"
 
 class PhysicsWorld
@@ -37,5 +38,6 @@ private:
 	std::unique_ptr<CollisionSystem> collisionSystem;
 	std::unique_ptr<CollisionSolverSystem> collisionSolverSystem;
 	std::unique_ptr<PhysicsCommitSystem> physicsCommitSystem;
+	std::unique_ptr<SynchronizationSystem> synchronizationSystem;
 	std::unique_ptr<RigidBodySystem> rigidBodySystem;
 };

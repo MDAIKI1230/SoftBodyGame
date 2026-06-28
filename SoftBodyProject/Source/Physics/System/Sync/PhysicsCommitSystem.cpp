@@ -1,5 +1,4 @@
 ﻿#include "TransformComponentStorage.h"
-#include "RigidBodyComponentStorage.h"
 
 #include "PhysicsCommitSystem.h"
 
@@ -13,7 +12,9 @@ void PhysicsCommitSystem::FixedUpdate(RigidBodyStorage* _bodyStorage, WorldStora
 	{
 		EntityID entity{ _bodyStorage->GetOwnerEntity(id) };
 
-		transformStorage->Get(entity)->SetPosition(_bodyStorage->position[id.index]);
-		transformStorage->Get(entity)->SetRotation(_bodyStorage->rotation[id.index]);
+		size_t denseIndex{ _bodyStorage->GetDenseIndex(id) };
+
+		transformStorage->Get(entity)->SetPosition(_bodyStorage->position[denseIndex]);
+		transformStorage->Get(entity)->SetRotation(_bodyStorage->rotation[denseIndex]);
 	}
 }

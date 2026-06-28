@@ -51,6 +51,6 @@ void RigidBodySystem::UpdateRotation(RigidBodyStorage* _bodyStorage)
 		Quaternion rotOmega{ Quaternion::AngleAxis(deltaAngularVelocity.Length(),deltaAngularVelocity.Normalized()) };
 
 		// 今の回転＋トルク(Δtに離散化)×慣性テンソルの逆行列
-		_bodyStorage->rotation[i] *= rotOmega;
+		// _bodyStorage->rotation[i] *= rotOmega;
 	}
 }
