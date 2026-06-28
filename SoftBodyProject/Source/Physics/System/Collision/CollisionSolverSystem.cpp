@@ -17,8 +17,8 @@ void CollisionSolverSystem::PositionSolver(PhysicsTransformStorage* _transformSt
 		Manifold& manifold{ _manifoldBuffer->manifolds[i] };
 		Vector3 vec{ manifold.normal * manifold.points[0].penetration };
 
-		_bodyStorage->position[i] -= vec * 0.5f;
-		_bodyStorage->position[i] -= -vec * 0.5f;
+		_transformStorage->position[i] -= vec * 0.5f;
+		_transformStorage->position[i] -= -vec * 0.5f;
 	}*/
 }
 
