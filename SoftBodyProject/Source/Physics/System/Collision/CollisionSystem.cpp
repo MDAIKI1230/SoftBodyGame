@@ -168,6 +168,8 @@ void CollisionSystem::End()
 	crossCountMap.clear();
 	broadClearPairs.clear();
 
+	narrowPhasePairBuilder.Clear();
+
 	// 前回フレーム衝突に追加
 	for (auto& pair : currentFramePair)
 	{
@@ -283,7 +285,7 @@ bool CollisionSystem::GJK(
 	while (true)
 	{
 		// ミンコフスキー差の支点計算
-		Vector3 vec{ A::Support(_storageA,_colliderStorage->GetDenseIndex(_handleA),dir) - B::Support(_storageB,_colliderStorage->GetDenseIndex(_handleB),-dir) + (transformB->GetPosition() - transformA->GetPosition()) };
+		Vector3 vec{ A::Support(_storageA,_colliderStorage->GetDenseIndex(_handleA), transformA,dir) - B::Support(_storageB,_colliderStorage->GetDenseIndex(_handleB),transformB ,-dir) };
 
 		// 支点をSimplexに追加
 		simplex.Add(vec);
@@ -554,7 +556,7 @@ void CollisionSystem::EPA(
 		edges.clear();
 
 		// サポート関数を使って新たな点を計算
-		Vector3 support{ A::Support(_storageA,_colliderStorage->GetDenseIndex(_handleA), faces[minIndex].normal) - B::Support(_storageB, _colliderStorage->GetDenseIndex(_handleB), -faces[minIndex].normal) + (_transB->GetPosition() - _transA->GetPosition()) };
+		Vector3 support{ A::Support(_storageA,_colliderStorage->GetDenseIndex(_handleA), _transA,faces[minIndex].normal) - B::Support(_storageB,_colliderStorage->GetDenseIndex(_handleB),_transB ,-faces[minIndex].normal) };
 		
 		// 収束判定
 		if (std::abs(Vector3::Dot(faces[minIndex].normal, support) - faces[minIndex].distance) < MathConstants::EPSILON)

@@ -5,6 +5,7 @@ void NarrowPhasePairBuilder::Clear()
 {
 	sphereSpherePair.clear();
 	sphereBoxPair.clear();
+	boxSpherePair.clear();
 	boxBoxPair.clear();
 }
 
