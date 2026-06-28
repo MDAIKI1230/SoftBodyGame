@@ -208,7 +208,6 @@ void CollisionSystem::CheckProjectionAxisValueCross(std::vector<ColliderProjecti
 				}
 
 			}
-
 			// 最小値なのでactiveリストに追加。
 			_projectionAxisValues[i].activeIndex = actives.size();
 			actives.push_back(i);
@@ -220,6 +219,10 @@ void CollisionSystem::CheckProjectionAxisValueCross(std::vector<ColliderProjecti
 			ProjectionAxisType minAxis{ static_cast<ProjectionAxisType>(_projectionAxisValues[i].axisType - 1) };
 			// プロジェクションデータとColliderIDのIndexは紐づいているためこれで取得できる
 			uint32_t minAxisIndex{ projectionDatas[_projectionAxisValues[i].colliderID.index].endpointIndex[minAxis] };
+
+			// 移動した奴のIndexの更新
+			_projectionAxisValues[actives.back()].activeIndex = _projectionAxisValues[minAxisIndex].activeIndex;
+
 			actives[_projectionAxisValues[minAxisIndex].activeIndex] = actives.back();
 			actives.pop_back();
 		}
@@ -551,14 +554,14 @@ void CollisionSystem::EPA(
 		edges.clear();
 
 		// サポート関数を使って新たな点を計算
-		Vector3 support{ A::Support(_storageA, _handleA.index, faces[minIndex].normal) - B::Support(_storageB, _handleB.index, -faces[minIndex].normal) + (_transB->GetPosition() - _transA->GetPosition()) };
+		Vector3 support{ A::Support(_storageA,_colliderStorage->GetDenseIndex(_handleA), faces[minIndex].normal) - B::Support(_storageB, _colliderStorage->GetDenseIndex(_handleB), -faces[minIndex].normal) + (_transB->GetPosition() - _transA->GetPosition()) };
 		
 		// 収束判定
 		if (std::abs(Vector3::Dot(faces[minIndex].normal, support) - faces[minIndex].distance) < MathConstants::EPSILON)
 		{
 			Manifold manifold;
-			manifold.handleA = _colliderStorage->GetOwnerEntity(_handleA);
-			manifold.handleB = _colliderStorage->GetOwnerEntity(_handleB);
+			/*manifold.handleA = _colliderStorage->GetOwnerEntity(_handleA);
+			manifold.handleB = _colliderStorage->GetOwnerEntity(_handleB);*/
 			manifold.normal = faces[minIndex].normal;
 			manifold.points[0].penetration = faces[minIndex].distance;
 
@@ -612,8 +615,8 @@ void CollisionSystem::EPA(
 		if (count > 20)
 		{
 			Manifold manifold;
-			manifold.handleA = _colliderStorage->GetOwnerEntity(_handleA);
-			manifold.handleB = _colliderStorage->GetOwnerEntity(_handleB);
+			/*manifold.handleA = _colliderStorage->GetOwnerEntity(_handleA);
+			manifold.handleB = _colliderStorage->GetOwnerEntity(_handleB);*/
 			manifold.normal = faces[minIndex].normal;
 			manifold.points[0].penetration = faces[minIndex].distance;
 

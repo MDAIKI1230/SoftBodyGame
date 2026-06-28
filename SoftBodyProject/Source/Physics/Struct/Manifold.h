@@ -2,6 +2,8 @@
 
 #include "MDMath.h"
 
+#include "BodyID.h"
+
 struct ContactPoint
 {
 	Vector3 position;
@@ -12,8 +14,8 @@ struct ContactPoint
 
 struct Manifold
 {
-	EntityID handleA;
-	EntityID handleB;
+	BodyID bodyA;
+	BodyID bodyB;
 
 	Vector3 normal;
 
