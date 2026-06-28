@@ -12,7 +12,7 @@ void Simplex::Add(const Vector3& _vec)
 
 void Simplex::Erase(int _index)
 {
-	if (_index < size)
+	if (_index >= size)
 	{
 		return;
 	}

@@ -654,13 +654,23 @@ void CollisionSystem::ComputeFace(Face& _face, std::vector<Vector3>& _vertices)
 
 void CollisionSystem::AddEdge(Edge& _edge, std::vector<Edge>& _edges)
 {
-	for (auto it = _edges.begin(); it != _edges.end(); ++it)
+	for (int i{ 0 }; i < _edges.size(); i++)
 	{
-		if (it->a == _edge.b &&
-			it->b == _edge.a)
+		if (_edges[i].a == _edge.b &&
+			_edges[i].b == _edge.a)
 		{
-			_edges.erase(it);
-			return;
+			_edges[i] = _edges.back();
+			_edges.pop_back();
+
+			break;
+		}
+		else if (_edges[i].a == _edge.a &&
+			_edges[i].b == _edge.b)
+		{
+			_edges[i] = _edges.back();
+			_edges.pop_back();
+
+			break;
 		}
 	}
 

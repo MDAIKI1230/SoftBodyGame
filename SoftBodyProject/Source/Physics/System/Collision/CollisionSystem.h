@@ -126,7 +126,7 @@ private:
 			&NarrowPhasePairBuilder::AddSphereSphere , &NarrowPhasePairBuilder::AddSphereBox // 球
 		},
 		{
-			&NarrowPhasePairBuilder::AddSphereBox,     &NarrowPhasePairBuilder::AddBoxBox    // 箱
+			&NarrowPhasePairBuilder::AddBoxSphere,     &NarrowPhasePairBuilder::AddBoxBox    // 箱
 		}
 	};
 
