@@ -144,3 +144,4 @@ void PhysicsAPI::SetDepth(ColliderID _id, float _depth)
 PhysicsWorld* PhysicsAPI::physicsWorld{ nullptr };
 ColliderStorage* PhysicsAPI::colliderStorage{ nullptr };
 RigidBodyStorage* PhysicsAPI::rigidBodyStorage{ nullptr };
+PhysicsTransformStorage* PhysicsAPI::transformStorage{ nullptr };

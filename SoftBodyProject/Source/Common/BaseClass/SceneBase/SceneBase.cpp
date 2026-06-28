@@ -45,7 +45,6 @@ SceneBase::SceneBase()
 	// オブジェクトマネージャー
 	objectManager = std::make_unique<ObjectManager>();
 
-	PhysicsAPI::SetWorld(worldStorage.get());
 	PhysicsAPI::SetWorld(physicsWorld.get());
 
 #ifdef _DEBUG
