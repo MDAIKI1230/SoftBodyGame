@@ -1,7 +1,7 @@
 ﻿#include "RigidBodyStorage.h"
 
 
-BodyID RigidBodyStorage::CreateRigidBody(EntityID _entity)
+BodyID RigidBodyStorage::CreateRigidBody(EntityID _entity, PhysicsTransformID _transformID)
 {
 	// --- 値を確保 ---
 
@@ -11,8 +11,6 @@ BodyID RigidBodyStorage::CreateRigidBody(EntityID _entity)
 	force.emplace_back();
 	// 速度
 	velocity.emplace_back();
-	// 推定移動位置
-	position.emplace_back();
 
 	// --- 角速度系 ---
 
@@ -20,8 +18,6 @@ BodyID RigidBodyStorage::CreateRigidBody(EntityID _entity)
 	torque.emplace_back();
 	// 角速度
 	angularVelocity.emplace_back();
-	// 推定回転角度
-	rotation.emplace_back();
 
 	// --- 重力系 ---
 
@@ -29,8 +25,6 @@ BodyID RigidBodyStorage::CreateRigidBody(EntityID _entity)
 	isGravity.emplace_back(true);
 	// 重力加速度
 	gravity.emplace_back(0.0, -980.0f, 0.0f);
-	// スケール
-	scale.emplace_back(Vector3::ONE);
 
 	// --- 質量系 ---
 
@@ -43,6 +37,9 @@ BodyID RigidBodyStorage::CreateRigidBody(EntityID _entity)
 
 	// マテリアルID(一旦なし)
 	physicsMatrialID.emplace_back(-1);
+
+	// TransformID
+	transformID.push_back(_transformID);
 
 	// ID
 	id.emplace_back(GenerateBodyID(id.size(), _entity));
@@ -61,9 +58,7 @@ void RigidBodyStorage::Destroy(BodyID _id)
 	// 速度
 	velocity[index] = std::move(velocity.back());
 	velocity.pop_back();
-	// 推定移動位置
-	position[index] = std::move(position.back());
-	position.pop_back();
+
 	// --- 角速度系 ---
 
 	// トルク
@@ -72,9 +67,6 @@ void RigidBodyStorage::Destroy(BodyID _id)
 	// 角速度
 	angularVelocity[index] = std::move(angularVelocity.back());
 	angularVelocity.pop_back();
-	// 推定回転角度
-	rotation[index] = std::move(rotation.back());
-	rotation.pop_back();
 
 	// --- 重力系 ---
 
@@ -84,9 +76,6 @@ void RigidBodyStorage::Destroy(BodyID _id)
 	// 重力加速度
 	gravity[index] = std::move(gravity.back());
 	gravity.pop_back();
-	// スケール
-	scale[index] = std::move(scale.back());
-	scale.pop_back();
 
 	// --- 質量系 ---
 
@@ -105,6 +94,10 @@ void RigidBodyStorage::Destroy(BodyID _id)
 	physicsMatrialID[index] = std::move(physicsMatrialID.back());
 	physicsMatrialID.pop_back();
 
+	// TransformID
+	transformID[index] = std::move(transformID.back());
+	transformID.pop_back();
+
 	// swap-removeしたときの移動したID
 	BodyID movedId{ id[index] };
 
@@ -121,7 +114,7 @@ bool RigidBodyStorage::IsAlive(BodyID _id) const
 	return slots[_id.index].alive && slots[_id.index].generation == _id.generation;
 }
 
-size_t RigidBodyStorage::GetDenseIndex(BodyID _id) const
+uint32_t RigidBodyStorage::GetDenseIndex(BodyID _id) const
 {
 	return slots[_id.index].denseIndex;
 }

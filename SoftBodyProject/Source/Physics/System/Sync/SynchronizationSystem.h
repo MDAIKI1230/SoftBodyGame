@@ -1,10 +1,10 @@
 ﻿#pragma once
 
 #include "WorldStorage.h"
-#include "RigidBodyStorage.h"
+#include "PhysicsTransformStorage.h"
 
 class SynchronizationSystem
 {
 public:
-	void Sync(WorldStorage* _worldStorage, RigidBodyStorage* _bodyStorage);
+	void Sync(WorldStorage* _worldStorage, PhysicsTransformStorage* _physicsTransformStorage);
 };

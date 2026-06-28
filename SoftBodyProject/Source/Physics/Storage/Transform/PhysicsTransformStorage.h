@@ -23,12 +23,12 @@ public:
 	// 生存確認
 	bool IsAlive(PhysicsTransformID _id) const;
 	// 実データのインデックス
-	size_t GetDenseIndex(PhysicsTransformID _id) const;
+	uint32_t GetDenseIndex(PhysicsTransformID _id) const;
 	// 持ってるEntity
 	EntityID GetOwnerEntity(PhysicsTransformID _id) const;
 public:
 	std::vector<PhysicsTransformSlot> slots;
-	std::vector<size_t> freeSlots;
+	std::vector<uint32_t> freeSlots;
 
 	// 位置
 	std::vector<Vector3> position;

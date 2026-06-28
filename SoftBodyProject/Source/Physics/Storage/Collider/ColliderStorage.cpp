@@ -8,7 +8,7 @@ ColliderStorage::ColliderStorage()
 	boxStorage = std::make_unique<BoxColliderStorage>();
 }
 
-ColliderID ColliderStorage::CreateSphere(EntityID _entity, float _radius)
+ColliderID ColliderStorage::CreateSphere(EntityID _entity, PhysicsTransformID _transformID, float _radius)
 {
 	// ColliderIDの作成(denseIndexに関しては、どの配列も同じサイズのためIDを使う)
 	ColliderID id{ GenerateColliderID(ColliderType::SPHERE, sphereStorage->id.size(), _entity) };
@@ -16,6 +16,7 @@ ColliderID ColliderStorage::CreateSphere(EntityID _entity, float _radius)
 	// 実際のデータを追加
 	sphereStorage->radius.push_back(_radius);
 	sphereStorage->id.push_back(id);
+	sphereStorage->transformID.push_back(_transformID);
 
 	// aabbを作成フラグを追加しておく(後からシステムが作ってくれる)
 	aabbStorage->dirty.emplace_back(AABBChangeDirtyFlag::MAKE);
@@ -25,7 +26,7 @@ ColliderID ColliderStorage::CreateSphere(EntityID _entity, float _radius)
 	return id;
 }
 
-ColliderID ColliderStorage::CreateBox(EntityID _entity, const Vector3& _scale)
+ColliderID ColliderStorage::CreateBox(EntityID _entity, PhysicsTransformID _transformID, const Vector3& _scale)
 {
 	// ColliderIDの作成(denseIndexに関しては、どの配列も同じサイズのためIDを使う)
 	ColliderID id{ GenerateColliderID(ColliderType::BOX, boxStorage->id.size(), _entity) };
@@ -33,6 +34,7 @@ ColliderID ColliderStorage::CreateBox(EntityID _entity, const Vector3& _scale)
 	// 実際のデータを追加
 	boxStorage->scale.push_back(_scale);
 	boxStorage->id.push_back(id);
+	boxStorage->transformID.push_back(_transformID);
 
 	// aabbを作成フラグを追加しておく(後からシステムが作ってくれる)
 	aabbStorage->dirty.emplace_back(AABBChangeDirtyFlag::MAKE);

@@ -39,7 +39,7 @@ bool PhysicsTransformStorage::IsAlive(PhysicsTransformID _id) const
 	return slots[_id.index].alive && slots[_id.index].generation == _id.generation;
 }
 
-size_t PhysicsTransformStorage::GetDenseIndex(PhysicsTransformID _id) const
+uint32_t PhysicsTransformStorage::GetDenseIndex(PhysicsTransformID _id) const
 {
 	return slots[_id.index].denseIndex;
 }

@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "ColliderID.h"
+#include "PhysicsTransformID.h"
 
 class BoxColliderStorage
 {
@@ -16,10 +17,13 @@ public:
 		scale.pop_back();
 		id[_index] = id.back();
 		id.pop_back();
+		transformID[_index] = transformID.back();
+		transformID.pop_back();
 
 		return id[_index];
 	}
 public:
 	std::vector<Vector3> scale;
 	std::vector<ColliderID> id;
+	std::vector<PhysicsTransformID> transformID;
 };

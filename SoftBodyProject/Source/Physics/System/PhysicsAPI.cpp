@@ -3,14 +3,9 @@
 
 #include "PhysicsAPI.h"
 
-PhysicsTransformID  PhysicsAPI::CreatePhysicsTransform(EntityID _entity)
-{
-	return transformStorage->CreateTransform(_entity);
-}
-
 BodyID PhysicsAPI::CreateRigidBody(EntityID _entity)
 {
-	return rigidBodyStorage->CreateRigidBody(_entity);
+	return rigidBodyStorage->CreateRigidBody(_entity, transformStorage->CreateTransform(_entity));
 }
 
 void PhysicsAPI::AddForce(BodyID _id, const Vector3& _force)
@@ -93,12 +88,12 @@ void PhysicsAPI::SetGravity(BodyID _id, const Vector3& _gravity)
 
 ColliderID PhysicsAPI::CreateSphere(EntityID _entity, float _radius)
 {
-	return colliderStorage->CreateSphere(_entity,_radius);
+	return colliderStorage->CreateSphere(_entity, transformStorage->CreateTransform(_entity), _radius);
 }
 
 ColliderID PhysicsAPI::CreateBox(EntityID _entity, const Vector3& _scale)
 {
-	return colliderStorage->CreateBox(_entity, _scale);
+	return colliderStorage->CreateBox(_entity, transformStorage->CreateTransform(_entity), _scale);
 }
 
 float PhysicsAPI::GetRadius(ColliderID _id)

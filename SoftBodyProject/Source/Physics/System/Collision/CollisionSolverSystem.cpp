@@ -10,7 +10,7 @@ void CollisionSolverSystem::FixedUpdate(RigidBodyStorage* _bodyStorage, Collisio
 
 void CollisionSolverSystem::PositionSolver(RigidBodyStorage* _bodyStorage, CollisionManifoldBuffer* _manifoldBuffer)
 {
-	int size{ (int)_manifoldBuffer->manifolds.size() };
+	/*int size{ (int)_manifoldBuffer->manifolds.size() };
 
 	for (int i{ 0 }; i < size; i++)
 	{
@@ -19,7 +19,7 @@ void CollisionSolverSystem::PositionSolver(RigidBodyStorage* _bodyStorage, Colli
 
 		_bodyStorage->position[i] -= vec * 0.5f;
 		_bodyStorage->position[i] -= -vec * 0.5f;
-	}
+	}*/
 }
 
 void CollisionSolverSystem::VelocitySolver(RigidBodyStorage* _bodyStorage, CollisionManifoldBuffer* _manifoldBuffer)

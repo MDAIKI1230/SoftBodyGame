@@ -7,10 +7,6 @@
 class PhysicsAPI
 {
 public:
-	// --- 物理用Transform ---
-	
-	// 生成
-	static PhysicsTransformID CreatePhysicsTransform(EntityID _entity);
 	// --- RigidBody ---
 
 	// 作成

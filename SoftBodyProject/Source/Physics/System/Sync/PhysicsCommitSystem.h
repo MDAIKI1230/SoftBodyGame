@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #include "WorldStorage.h"
-#include "RigidBodyStorage.h"
+#include "PhysicsTransformStorage.h"
 
 class PhysicsCommitSystem
 {
@@ -9,5 +9,5 @@ public:
 	// コンストラクタ
 	PhysicsCommitSystem() = default;
 	// 更新
-	void FixedUpdate(RigidBodyStorage* _bodyStorage, WorldStorage* _worldStorage);
+	void FixedUpdate(PhysicsTransformStorage* _physicsTransformStorage, WorldStorage* _worldStorage);
 };

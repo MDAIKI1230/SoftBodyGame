@@ -3,12 +3,12 @@
 #include "RigidBodySystem.h"
 
 
-void RigidBodySystem::FixedUpdate(RigidBodyStorage* _bodyStorage)
+void RigidBodySystem::FixedUpdate(RigidBodyStorage* _bodyStorage, PhysicsTransformStorage* _transformStorage)
 {
 	// 各処理実行
 	UpdateGravity(_bodyStorage);
-	UpdatePosition(_bodyStorage);
-	UpdateRotation(_bodyStorage);
+	UpdatePosition(_bodyStorage, _transformStorage);
+	UpdateRotation(_bodyStorage, _transformStorage);
 }
 
 void RigidBodySystem::UpdateGravity(RigidBodyStorage* _bodyStorage)
@@ -24,7 +24,7 @@ void RigidBodySystem::UpdateGravity(RigidBodyStorage* _bodyStorage)
 	}
 }
 
-void RigidBodySystem::UpdatePosition(RigidBodyStorage* _bodyStorage)
+void RigidBodySystem::UpdatePosition(RigidBodyStorage* _bodyStorage, PhysicsTransformStorage* _transformStorage)
 {
 	for (int i{ 0 }; i < _bodyStorage->id.size(); i++)
 	{
@@ -33,11 +33,11 @@ void RigidBodySystem::UpdatePosition(RigidBodyStorage* _bodyStorage)
 
 
 		// 今の位置 + 速度
-		_bodyStorage->position[i] += _bodyStorage->velocity[i] * ServiceLocator::GetTimeManager()->GetDeltaTime();
+		_transformStorage->position[_transformStorage->GetDenseIndex(_bodyStorage->transformID[i])] += _bodyStorage->velocity[i] * ServiceLocator::GetTimeManager()->GetDeltaTime();
 	}
 }
 
-void RigidBodySystem::UpdateRotation(RigidBodyStorage* _bodyStorage)
+void RigidBodySystem::UpdateRotation(RigidBodyStorage* _bodyStorage, PhysicsTransformStorage* _transformStorage)
 {
 	for (int i{ 0 }; i < _bodyStorage->id.size(); i++)
 	{
@@ -51,6 +51,6 @@ void RigidBodySystem::UpdateRotation(RigidBodyStorage* _bodyStorage)
 		Quaternion rotOmega{ Quaternion::AngleAxis(deltaAngularVelocity.Length(),deltaAngularVelocity.Normalized()) };
 
 		// 今の回転＋トルク(Δtに離散化)×慣性テンソルの逆行列
-		// _bodyStorage->rotation[i] *= rotOmega;
+		//_transformStorage->rotation[_transformStorage->GetDenseIndex(_bodyStorage->transformID[i])] *= rotOmega;
 	}
 }

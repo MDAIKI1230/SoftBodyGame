@@ -17,9 +17,9 @@ public:
     ColliderStorage();
 
     // 球作成
-    ColliderID CreateSphere(EntityID _entity, float _radius);
+    ColliderID CreateSphere(EntityID _entity, PhysicsTransformID _transformID, float _radius);
     // Box作成
-    ColliderID CreateBox(EntityID _entity, const Vector3& _scale);
+    ColliderID CreateBox(EntityID _entity, PhysicsTransformID _transformID, const Vector3& _scale);
 
     // 破棄
     void Destroy(ColliderID _id);

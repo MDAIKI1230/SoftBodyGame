@@ -6,6 +6,7 @@
 
 #include "BodySlot.h"
 #include "BodyID.h"
+#include "PhysicsTransformID.h"
 
 class RigidBodyStorage
 {
@@ -14,7 +15,7 @@ public:
 	RigidBodyStorage() = default;
 
 	// RigidBody作成
-	BodyID CreateRigidBody(EntityID _entity);
+	BodyID CreateRigidBody(EntityID _entity, PhysicsTransformID _transformID);
 
 	// 破棄
 	void Destroy(BodyID _id);
@@ -22,12 +23,12 @@ public:
 	// 生存確認
 	bool IsAlive(BodyID _id) const;
 	// 実データのインデックス
-	size_t GetDenseIndex(BodyID _id) const;
+	uint32_t GetDenseIndex(BodyID _id) const;
 	// 持ってるEntity
 	EntityID GetOwnerEntity(BodyID _id) const;
 public:
 	std::vector<BodySlot> slots;
-	std::vector<size_t> freeSlots;
+	std::vector<uint32_t> freeSlots;
 
 	// --- 速度系 ---
 
@@ -35,8 +36,6 @@ public:
 	std::vector<Vector3> force;
 	// 速度
 	std::vector<Vector3> velocity;
-	// 推定移動位置
-	std::vector<Vector3> position;
 
 	// --- 角速度系 ---
 
@@ -44,8 +43,6 @@ public:
 	std::vector<Vector3> torque;
 	// 角速度
 	std::vector<Vector3>angularVelocity;
-	// 推定回転角度
-	std::vector<Quaternion> rotation;
 
 	// --- 重力系 ---
 
@@ -53,8 +50,6 @@ public:
 	std::vector<bool> isGravity;
 	// 重力加速度
 	std::vector<Vector3> gravity;
-	// サイズも質量に関連付けしとく
-	std::vector<Vector3> scale;
 
 	// --- 質量系 ---
 
@@ -70,6 +65,8 @@ public:
 	// マテリアルID
 	std::vector<int> physicsMatrialID;
 
+	// TransformID
+	std::vector< PhysicsTransformID> transformID;
 	// ID
 	std::vector<BodyID> id;
 private:

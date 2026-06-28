@@ -3,6 +3,7 @@
 #include <vector>
 
 #include "ColliderID.h"
+#include "PhysicsTransformID.h"
 
 class SphereColliderStorage
 {
@@ -14,10 +15,13 @@ public:
 		radius.pop_back();
 		id[_index] = id.back();
 		id.pop_back();
+		transformID[_index] = transformID.back();
+		transformID.pop_back();
 
 		return id[_index];
 	}
 public:
 	std::vector<float> radius;
 	std::vector<ColliderID> id;
+	std::vector<PhysicsTransformID> transformID;
 };
