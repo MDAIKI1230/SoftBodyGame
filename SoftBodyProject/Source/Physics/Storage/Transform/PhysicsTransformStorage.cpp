@@ -2,6 +2,11 @@
 
 PhysicsTransformID PhysicsTransformStorage::CreateTransform(EntityID _entity)
 {
+	if (entityMap.contains(_entity))
+	{
+		return entityMap[_entity];
+	}
+
 	// --- 実際のデータを追加 ---
 
 	// 位置
@@ -18,7 +23,8 @@ PhysicsTransformID PhysicsTransformStorage::CreateTransform(EntityID _entity)
 	parentID.emplace_back();
 	// ID
 	id.emplace_back(GeneratePhysicsTransformID(id.size(), _entity));
-
+	// mapに追加
+	entityMap[_entity] = id.back();
 	// IDを返してあげる
 	return id.back();
 }

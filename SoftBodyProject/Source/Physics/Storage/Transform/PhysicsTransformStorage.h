@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include <vector>
+#include <unordered_map>
 
 #include "MDMath.h"
 
@@ -48,4 +49,6 @@ public:
 	std::vector<PhysicsTransformID> id;
 private:
 	PhysicsTransformID GeneratePhysicsTransformID(size_t _denseIndex, EntityID _ownerEntity);
+private:
+	std::unordered_map<EntityID, PhysicsTransformID> entityMap;
 };
