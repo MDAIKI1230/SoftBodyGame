@@ -77,6 +77,6 @@ void AABBUpdateSystem::ComputeBox(AABBBroadPhaseCollider& aabb, ColliderStorage*
 		std::abs(up.z) * halfScale.y +
 		std::abs(forward.z) * halfScale.z;
 
-	aabb.min = aabbScale;
+	aabb.min = -aabbScale;
 	aabb.max = aabbScale;
 }

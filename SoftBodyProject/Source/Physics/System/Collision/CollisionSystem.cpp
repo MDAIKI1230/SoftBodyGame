@@ -280,7 +280,7 @@ bool CollisionSystem::GJK(
 	while (true)
 	{
 		// ミンコフスキー差の支点計算
-		Vector3 vec{ A::Support(_storageA,_handleA.index,dir) - B::Support(_storageB,_handleB.index,-dir) + (transformB->GetPosition() - transformA->GetPosition()) };
+		Vector3 vec{ A::Support(_storageA,_colliderStorage->GetDenseIndex(_handleA),dir) - B::Support(_storageB,_colliderStorage->GetDenseIndex(_handleB),-dir) + (transformB->GetPosition() - transformA->GetPosition()) };
 
 		// 支点をSimplexに追加
 		simplex.Add(vec);
