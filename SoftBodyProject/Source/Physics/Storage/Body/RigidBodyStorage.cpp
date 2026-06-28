@@ -38,11 +38,9 @@ BodyID RigidBodyStorage::CreateRigidBody(EntityID _entity, PhysicsTransformID _t
 	// マテリアルID(一旦なし)
 	physicsMatrialID.emplace_back(-1);
 
-	// TransformID
-	transformID.push_back(_transformID);
 
 	// ID
-	id.emplace_back(GenerateBodyID(id.size(), _entity));
+	id.emplace_back(GenerateBodyID(id.size(), _entity, _transformID));
 
 	return id.back();
 }
@@ -94,10 +92,6 @@ void RigidBodyStorage::Destroy(BodyID _id)
 	physicsMatrialID[index] = std::move(physicsMatrialID.back());
 	physicsMatrialID.pop_back();
 
-	// TransformID
-	transformID[index] = std::move(transformID.back());
-	transformID.pop_back();
-
 	// swap-removeしたときの移動したID
 	BodyID movedId{ id[index] };
 
@@ -124,12 +118,23 @@ EntityID RigidBodyStorage::GetOwnerEntity(BodyID _id) const
 	return slots[_id.index].ownerEntity;
 }
 
-PhysicsTransformID  RigidBodyStorage::GetTransform(BodyID _id) const
+PhysicsTransformID  RigidBodyStorage::GetTransformID(BodyID _id) const
 {
-	return slots[_id.index].tra
+	return slots[_id.index].transformID;
 }
 
-BodyID RigidBodyStorage::GenerateBodyID(size_t _denseIndex, EntityID _ownerEntity)
+bool RigidBodyStorage::TryGet(PhysicsTransformID _transformID, BodyID& _output)
+{
+	if (transformMap.contains(_transformID))
+	{
+		_output = transformMap[_transformID];
+		return true;
+	}
+
+	return false;
+}
+
+BodyID RigidBodyStorage::GenerateBodyID(size_t _denseIndex, EntityID _ownerEntity, PhysicsTransformID _transformID)
 {
 	if (freeSlots.empty())
 	{
@@ -138,7 +143,7 @@ BodyID RigidBodyStorage::GenerateBodyID(size_t _denseIndex, EntityID _ownerEntit
 		// IDを作成(初代判定で1)
 		BodyID result{ slots.size(),1 };
 		// Slotを増設
-		slots.emplace_back(_denseIndex, _ownerEntity);
+		slots.emplace_back(_denseIndex, _ownerEntity, _transformID);
 
 		return result;
 	}
@@ -147,13 +152,14 @@ BodyID RigidBodyStorage::GenerateBodyID(size_t _denseIndex, EntityID _ownerEntit
 		// フリーのスロットがあるためそれを使用
 
 		// 最後を取る
-		size_t index{ freeSlots.back() };
+		uint32_t index{ freeSlots.back() };
 		freeSlots.pop_back();
 
 		// 世代は削除時に加算済み
 		slots[index].alive = true;
 		slots[index].denseIndex = _denseIndex;
 		slots[index].ownerEntity = _ownerEntity;
+		slots[index].transformID = _transformID;
 
 		// IDを作成(初代判定で1)
 		return BodyID{ (uint32_t)(index),slots[index].generation };

@@ -10,16 +10,18 @@ ColliderStorage::ColliderStorage()
 ColliderID ColliderStorage::CreateSphere(EntityID _entity, PhysicsTransformID _transformID, float _radius)
 {
 	// ColliderIDの作成(denseIndexに関しては、どの配列も同じサイズのためIDを使う)
-	ColliderID id{ GenerateColliderID(ColliderType::SPHERE, sphereStorage->id.size(), _entity) };
+	ColliderID id{ GenerateColliderID(ColliderType::SPHERE, sphereStorage->id.size(), _entity, _transformID) };
 
 	// 実際のデータを追加
 	sphereStorage->radius.push_back(_radius);
 	sphereStorage->id.push_back(id);
-	sphereStorage->transformID.push_back(_transformID);
 
 	// aabbを作成フラグを追加しておく(後からシステムが作ってくれる)
 	aabbStorage->dirty.emplace_back(AABBChangeDirtyFlag::MAKE);
 	aabbStorage->aabb.emplace_back(id, _transformID);
+
+	// mapに追加
+	transformMap[_transformID].push_back(id);
 
 	// IDを返してあげる
 	return id;
@@ -28,48 +30,77 @@ ColliderID ColliderStorage::CreateSphere(EntityID _entity, PhysicsTransformID _t
 ColliderID ColliderStorage::CreateBox(EntityID _entity, PhysicsTransformID _transformID, const Vector3& _scale)
 {
 	// ColliderIDの作成(denseIndexに関しては、どの配列も同じサイズのためIDを使う)
-	ColliderID id{ GenerateColliderID(ColliderType::BOX, boxStorage->id.size(), _entity) };
+	ColliderID id{ GenerateColliderID(ColliderType::BOX, boxStorage->id.size(), _entity, _transformID) };
 
 	// 実際のデータを追加
 	boxStorage->scale.push_back(_scale);
 	boxStorage->id.push_back(id);
-	boxStorage->transformID.push_back(_transformID);
 
 	// aabbを作成フラグを追加しておく(後からシステムが作ってくれる)
 	aabbStorage->dirty.emplace_back(AABBChangeDirtyFlag::MAKE);
 	aabbStorage->aabb.emplace_back(id, _transformID);
+
+	// mapに追加
+	transformMap[_transformID].push_back(id);
 
 	return id;
 }
 
 void ColliderStorage::AttachBody(PhysicsTransformID _transformID, BodyID _bodyID)
 {
-	
+	for (auto& colliderID : transformMap[_transformID])
+	{
+		slots[colliderID.index].bodyID = _bodyID;
+	}
 }
 
 void ColliderStorage::Destroy(ColliderID _id)
 {
-	// swap-removeしたときの移動したID
-	ColliderID movedId;
-	// データの削除
+	if (!IsAlive(_id))
+	{
+		return;
+	}
+
+	// Mapから削除
+	auto it = transformMap.find(slots[_id.index].transformID);
+	if (it != transformMap.end())
+	{
+		auto& list = it->second;
+
+		std::erase_if(list, [_id](const ColliderID& x)
+			{
+				return x.index == _id.index && x.generation == _id.generation;
+			});
+
+		if (list.empty())
+		{
+			transformMap.erase(it);
+		}
+	}
+
+	// 移動インデックス
+	ColliderID movedId{};
+
 	switch (slots[_id.index].type)
 	{
 	case ColliderType::SPHERE:
 		movedId = sphereStorage->Remove(slots[_id.index].denseIndex);
-		// 移動後のIDの修正
-		slots[movedId.index].denseIndex = slots[_id.index].denseIndex;
 		break;
+
 	case ColliderType::BOX:
 		movedId = boxStorage->Remove(slots[_id.index].denseIndex);
-		// 移動後のIDの修正
-		slots[movedId.index].denseIndex = slots[_id.index].denseIndex;
-		break;
-	default:
 		break;
 	}
-	// フリーに追加
-	freeSlots.push_back(_id.index);
+
+	if (!(movedId.index == _id.index && movedId.generation == _id.generation))
+	{
+		slots[movedId.index].denseIndex = slots[_id.index].denseIndex;
+	}
+
+	// 削除
+	slots[_id.index].alive = false;
 	slots[_id.index].generation++;
+	freeSlots.push_back(_id.index);
 }
 
 bool ColliderStorage::IsAlive(ColliderID _id) const
@@ -92,7 +123,17 @@ EntityID ColliderStorage::GetOwnerEntity(ColliderID _id) const
 	return slots[_id.index].ownerEntity;
 }
 
-ColliderID ColliderStorage::GenerateColliderID(ColliderType _type, size_t _denseIndex, EntityID _ownerEntity)
+BodyID ColliderStorage::GetBodyID(ColliderID _id) const
+{
+	return slots[_id.index].bodyID;
+}
+
+PhysicsTransformID ColliderStorage::GetTransformID(ColliderID _id) const
+{
+	return slots[_id.index].transformID;
+}
+
+ColliderID ColliderStorage::GenerateColliderID(ColliderType _type, size_t _denseIndex, EntityID _ownerEntity, PhysicsTransformID _transformID)
 {
 	if (freeSlots.empty())
 	{
@@ -101,7 +142,7 @@ ColliderID ColliderStorage::GenerateColliderID(ColliderType _type, size_t _dense
 		// IDを作成(初代判定で1)
 		ColliderID result{ slots.size(),1 };
 		// Slotを増設
-		slots.emplace_back(_type, _denseIndex, _ownerEntity);
+		slots.emplace_back(_type, _denseIndex, _ownerEntity, _transformID);
 
 		return result;
 	}

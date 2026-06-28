@@ -3,15 +3,16 @@
 #include <stdint.h>
 
 #include "EntityID.h"
-#include "BodyID.h"
+#include "PhysicsTransformID.h"
 
 struct BodySlot
 {
 public:
     // コンストラクタ
-    BodySlot(uint32_t _denseIndex, EntityID _ownerEntity) :
+    BodySlot(uint32_t _denseIndex, EntityID _ownerEntity,PhysicsTransformID _transformID) :
         denseIndex{ _denseIndex },
-        ownerEntity{ _ownerEntity }
+        ownerEntity{ _ownerEntity },
+        transformID{ _transformID }
     {
     }
 

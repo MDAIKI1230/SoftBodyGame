@@ -8,6 +8,6 @@ class AABBUpdateSystem
 public:
 	void FixedUpdate(PhysicsTransformStorage* _transformStorage, ColliderStorage* _colliderStorage);
 private:
-	void ComputeSphere(AABBBroadPhaseCollider& aabb, SphereColliderStorage* _sphereStorage, size_t _index, PhysicsTransformStorage* _transformStorage);
-	void ComputeBox(AABBBroadPhaseCollider& aabb, BoxColliderStorage* _boxStorage, size_t _index, PhysicsTransformStorage* _transformStorage);
+	void ComputeSphere(AABBBroadPhaseCollider& aabb, ColliderStorage* _colliderStorage, ColliderID _id, PhysicsTransformStorage* _transformStorage);
+	void ComputeBox(AABBBroadPhaseCollider& aabb, ColliderStorage* _colliderStorage, ColliderID _id, PhysicsTransformStorage* _transformStorage);
 };

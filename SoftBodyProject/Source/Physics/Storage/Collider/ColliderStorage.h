@@ -36,6 +36,10 @@ public:
     size_t GetDenseIndex(ColliderID _id) const;
     // 持ってるEntity
     EntityID GetOwnerEntity(ColliderID _id) const;
+    // BodyID
+    BodyID GetBodyID(ColliderID _id) const;
+    // TransformID
+    PhysicsTransformID GetTransformID(ColliderID _id) const;
 public:
     std::vector<ColliderSlot> slots;
     std::vector<size_t> freeSlots;
@@ -47,7 +51,7 @@ public:
     // 箱Storage
     std::unique_ptr<BoxColliderStorage> boxStorage;
 private:
-    ColliderID GenerateColliderID(ColliderType _type, size_t _denseIndex, EntityID _ownerEntity);
+    ColliderID GenerateColliderID(ColliderType _type, size_t _denseIndex, EntityID _ownerEntity, PhysicsTransformID _transformID);
 private:
     std::unordered_map<PhysicsTransformID, std::vector<ColliderID>> transformMap;
 };

@@ -6,7 +6,9 @@
 BodyID PhysicsAPI::CreateRigidBody(EntityID _entity)
 {
 	PhysicsTransformID transformID{ transformStorage->CreateTransform(_entity) };
-	return rigidBodyStorage->CreateRigidBody(_entity, transformID);
+	BodyID bodyID{ rigidBodyStorage->CreateRigidBody(_entity, transformID) };
+	colliderStorage->AttachBody(transformID, bodyID);
+	return bodyID;
 }
 
 void PhysicsAPI::AddForce(BodyID _id, const Vector3& _force)
@@ -89,7 +91,13 @@ void PhysicsAPI::SetGravity(BodyID _id, const Vector3& _gravity)
 
 ColliderID PhysicsAPI::CreateSphere(EntityID _entity, float _radius)
 {
-	return colliderStorage->CreateSphere(_entity, transformStorage->CreateTransform(_entity), _radius);
+	PhysicsTransformID transformID{ transformStorage->CreateTransform(_entity) };
+	BodyID bodyID;
+	if (rigidBodyStorage->TryGet(transformID, bodyID))
+	{
+		colliderStorage->AttachBody(transformID, bodyID);
+	}
+	return colliderStorage->CreateSphere(_entity, transformID, _radius);
 }
 
 ColliderID PhysicsAPI::CreateBox(EntityID _entity, const Vector3& _scale)

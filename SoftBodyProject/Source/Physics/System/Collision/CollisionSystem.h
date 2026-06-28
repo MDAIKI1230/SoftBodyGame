@@ -54,19 +54,15 @@ private:
 	/// </summary>
 	/// <typeparam name="A">Aの形状タグ</typeparam>
 	/// <typeparam name="B">Bの形状タグ</typeparam>
-	/// <typeparam name="AS">Aの形状のストレージクラス</typeparam>
-	/// <typeparam name="BS">Bの形状のストレージクラス</typeparam>
-	/// <param name="_storageA">Aの形状のストレージ</param>
 	/// <param name="_handleA">Aのエンティティハンドル</param>
-	/// <param name="_storageB">Bの形状のストレージ</param>
 	/// <param name="_handleB">Bのエンティティハンドル</param>
+	/// <param name="_colliderStorage">コライダーストレージ</param>
 	/// <param name="_transformStorage">トランスフォームストレージ</param>
 	/// <param name="_manifoldBuffer">結果を入れる</param>
 	/// <returns>当たったか</returns>
-	template<class A,class B,class AS,class BS>
+	template<class A,class B>
 	bool GJK(
-		AS* _storageA, ColliderID _handleA,
-		BS* _storageB, ColliderID _handleB,
+		ColliderID _handleA,ColliderID _handleB,
 		ColliderStorage* _colliderStorage,
 		PhysicsTransformStorage* _transformStorage,
 		CollisionManifoldBuffer* _manifoldBuffer);
@@ -95,10 +91,9 @@ private:
 	// 四点の時(四面体)の計算
 	bool SolveTetrahedron(Simplex& _simplex, Vector3& _output);
 
-	template<class A, class B, class AS, class BS>
+	template<class A, class B>
 	void EPA(
-		AS* _storageA, ColliderID _handleA,
-		BS* _storageB, ColliderID _handleB,
+		ColliderID _handleA, ColliderID _handleB,
 		PhysicsTransformStorage* _transformStorage,
 		ColliderStorage* _colliderStorage,
 		CollisionManifoldBuffer* _manifoldBuffer, Simplex& _simplex);

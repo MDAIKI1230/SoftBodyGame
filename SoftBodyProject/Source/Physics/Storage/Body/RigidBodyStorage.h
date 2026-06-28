@@ -28,7 +28,9 @@ public:
 	// 持ってるEntity
 	EntityID GetOwnerEntity(BodyID _id) const;
 	// 対応Transform
-	PhysicsTransformID GetTransform(BodyID _id) const;
+	PhysicsTransformID GetTransformID(BodyID _id) const;
+	// RigidBody取得
+	bool TryGet(PhysicsTransformID _transformID, BodyID& _output);
 public:
 	std::vector<BodySlot> slots;
 	std::vector<uint32_t> freeSlots;
@@ -68,10 +70,10 @@ public:
 	// マテリアルID
 	std::vector<int> physicsMatrialID;
 
-	// TransformID
-	std::vector< PhysicsTransformID> transformID;
 	// ID
 	std::vector<BodyID> id;
 private:
-	BodyID GenerateBodyID(size_t _denseIndex, EntityID _ownerEntity);
+	BodyID GenerateBodyID(size_t _denseIndex, EntityID _ownerEntity, PhysicsTransformID _transformID);
+private:
+	std::unordered_map<PhysicsTransformID, BodyID> transformMap;
 };

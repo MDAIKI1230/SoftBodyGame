@@ -33,7 +33,7 @@ void RigidBodySystem::UpdatePosition(RigidBodyStorage* _bodyStorage, PhysicsTran
 
 
 		// 今の位置 + 速度
-		_transformStorage->position[_transformStorage->GetDenseIndex(_bodyStorage->transformID[i])] += _bodyStorage->velocity[i] * ServiceLocator::GetTimeManager()->GetDeltaTime();
+		_transformStorage->position[_transformStorage->GetDenseIndex(_bodyStorage->GetTransformID(_bodyStorage->id[i]))] += _bodyStorage->velocity[i] * ServiceLocator::GetTimeManager()->GetDeltaTime();
 	}
 }
 

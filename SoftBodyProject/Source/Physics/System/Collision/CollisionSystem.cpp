@@ -232,17 +232,16 @@ void CollisionSystem::Solve(
 	// ナローフェーズに行けたペアの衝突判定をしていく
 	for (auto& pair : pairList)
 	{
-		if (GJK<A, B, AS, BS>(_strageA, pair.a, _strageB, pair.b, _colliderStorage, _transformStorage, _manifoldBuffer))
+		if (GJK<A, B>(pair.a, pair.b, _colliderStorage, _transformStorage, _manifoldBuffer))
 		{
 			RegisterEvent(pair.a, pair.b, _colliderStorage, _eventManager);
 		}
 	}
 }
 
-template<class A, class B, class AS, class BS>
+template<class A, class B>
 bool CollisionSystem::GJK(
-	AS* _storageA, ColliderID _handleA,
-	BS* _storageB, ColliderID _handleB,
+	ColliderID _handleA, ColliderID _handleB,
 	ColliderStorage* _colliderStorage,
 	PhysicsTransformStorage* _transformStorage,
 	CollisionManifoldBuffer* _manifoldBuffer)
@@ -253,7 +252,7 @@ bool CollisionSystem::GJK(
 	while (true)
 	{
 		// ミンコフスキー差の支点計算
-		Vector3 vec{ A::Support(_storageA,_colliderStorage->GetDenseIndex(_handleA), _transformStorage,dir) - B::Support(_storageB,_colliderStorage->GetDenseIndex(_handleB),_transformStorage ,-dir) };
+		Vector3 vec{ A::Support(_colliderStorage,_handleA, _transformStorage,dir) - B::Support(_colliderStorage,_handleB,_transformStorage ,-dir) };
 
 		// 支点をSimplexに追加
 		simplex.Add(vec);
@@ -266,7 +265,7 @@ bool CollisionSystem::GJK(
 
 		if(SimplexSolve(simplex,dir))
 		{
-			EPA<A, B, AS, BS>(_storageA, _handleA, _storageB, _handleB, _transformStorage, _colliderStorage, _manifoldBuffer, simplex);
+			EPA<A, B>(_handleA, _handleB, _transformStorage, _colliderStorage, _manifoldBuffer, simplex);
 			return true;
 		}
 	}
@@ -478,10 +477,9 @@ bool CollisionSystem::SolveTetrahedron(Simplex& _simplex, Vector3& _output)
 	}
 }
 
-template<class A, class B, class AS, class BS>
+template<class A, class B>
 void CollisionSystem::EPA(
-	AS* _storageA, ColliderID _handleA,
-	BS* _storageB, ColliderID _handleB,
+	ColliderID _handleA, ColliderID _handleB,
 	PhysicsTransformStorage* _transformStorage,
 	ColliderStorage* _colliderStorage,
 	CollisionManifoldBuffer* _manifoldBuffer, Simplex& _simplex)
@@ -525,7 +523,7 @@ void CollisionSystem::EPA(
 		edges.clear();
 
 		// サポート関数を使って新たな点を計算
-		Vector3 support{ A::Support(_storageA,_colliderStorage->GetDenseIndex(_handleA), _transformStorage,faces[minIndex].normal) - B::Support(_storageB,_colliderStorage->GetDenseIndex(_handleB),_transformStorage ,-faces[minIndex].normal) };
+		Vector3 support{ A::Support(_colliderStorage,_handleA, _transformStorage,faces[minIndex].normal) - B::Support(_colliderStorage,_handleB,_transformStorage ,-faces[minIndex].normal) };
 		
 		// 収束判定
 		if (std::abs(Vector3::Dot(faces[minIndex].normal, support) - faces[minIndex].distance) < MathConstants::EPSILON)
