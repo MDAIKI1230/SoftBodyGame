@@ -87,6 +87,12 @@ float SIMDVectorMath::Length3(const SIMDVectorFloat& _vec)
 	return sqrtf(Dot3(_vec, _vec));
 }
 
+// ノルム
+float SIMDVectorMath::Norm(const SIMDVectorFloat& _vec)
+{
+	return sqrtf(Dot4(_vec, _vec));
+}
+
 // 正規化
 SIMDVectorFloat SIMDVectorMath::Normalize(const SIMDVectorFloat& _vec)
 {
