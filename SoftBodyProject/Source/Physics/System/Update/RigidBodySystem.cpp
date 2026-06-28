@@ -3,7 +3,7 @@
 #include "RigidBodySystem.h"
 
 
-void RigidBodySystem::FixedUpdate(RigidBodyStorage* _bodyStorage, PhysicsTransformStorage* _transformStorage)
+void RigidBodySystem::FixedUpdate(PhysicsTransformStorage* _transformStorage, RigidBodyStorage* _bodyStorage)
 {
 	// 各処理実行
 	UpdateGravity(_bodyStorage);

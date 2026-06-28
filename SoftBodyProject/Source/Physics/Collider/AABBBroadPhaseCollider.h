@@ -2,6 +2,7 @@
 
 #include "MDMath.h"
 #include "ColliderID.h"
+#include "PhysicsTransformID.h"
 
 struct AABBBroadPhaseCollider
 {
@@ -9,8 +10,9 @@ public:
 	// コンストラクタ
 	AABBBroadPhaseCollider() = default;
 	// コンストラクタ
-	AABBBroadPhaseCollider(ColliderID _colliderID) :
-		colliderID{ _colliderID }
+	AABBBroadPhaseCollider(ColliderID _colliderID, PhysicsTransformID _transformID) :
+		colliderID{ _colliderID },
+		transformID{ _transformID }
 	{
 	}
 public:
@@ -20,4 +22,6 @@ public:
 	Vector3 max;
 	// コライダーハンドル(どのコライダーのAABBかの識別用)
 	ColliderID colliderID;
+	// TransformID
+	PhysicsTransformID transformID;
 };

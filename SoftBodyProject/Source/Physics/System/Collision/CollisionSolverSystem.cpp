@@ -1,14 +1,14 @@
 ﻿#include "CollisionSolverSystem.h"
 
-void CollisionSolverSystem::FixedUpdate(RigidBodyStorage* _bodyStorage, CollisionManifoldBuffer* _manifoldBuffer)
+void CollisionSolverSystem::FixedUpdate(PhysicsTransformStorage* _transformStorage, RigidBodyStorage* _bodyStorage, CollisionManifoldBuffer* _manifoldBuffer)
 {
-	PositionSolver(_bodyStorage, _manifoldBuffer);
-	VelocitySolver(_bodyStorage, _manifoldBuffer);
-	OrientationSolver(_bodyStorage, _manifoldBuffer);
-	RotationSolver(_bodyStorage, _manifoldBuffer);
+	PositionSolver(_transformStorage, _bodyStorage, _manifoldBuffer);
+	VelocitySolver(_transformStorage, _bodyStorage, _manifoldBuffer);
+	OrientationSolver(_transformStorage, _bodyStorage, _manifoldBuffer);
+	RotationSolver(_transformStorage, _bodyStorage, _manifoldBuffer);
 }
 
-void CollisionSolverSystem::PositionSolver(RigidBodyStorage* _bodyStorage, CollisionManifoldBuffer* _manifoldBuffer)
+void CollisionSolverSystem::PositionSolver(PhysicsTransformStorage* _transformStorage, RigidBodyStorage* _bodyStorage, CollisionManifoldBuffer* _manifoldBuffer)
 {
 	/*int size{ (int)_manifoldBuffer->manifolds.size() };
 
@@ -22,7 +22,7 @@ void CollisionSolverSystem::PositionSolver(RigidBodyStorage* _bodyStorage, Colli
 	}*/
 }
 
-void CollisionSolverSystem::VelocitySolver(RigidBodyStorage* _bodyStorage, CollisionManifoldBuffer* _manifoldBuffer)
+void CollisionSolverSystem::VelocitySolver(PhysicsTransformStorage* _transformStorage, RigidBodyStorage* _bodyStorage, CollisionManifoldBuffer* _manifoldBuffer)
 {
 	//int size{ (int)_manifoldBuffer->manifolds.size() };
 
@@ -57,12 +57,12 @@ void CollisionSolverSystem::VelocitySolver(RigidBodyStorage* _bodyStorage, Colli
 	//}
 }
 
-void CollisionSolverSystem::OrientationSolver(RigidBodyStorage* _bodyStorage, CollisionManifoldBuffer* _manifoldBuffer)
+void CollisionSolverSystem::OrientationSolver(PhysicsTransformStorage* _transformStorage, RigidBodyStorage* _bodyStorage, CollisionManifoldBuffer* _manifoldBuffer)
 {
 
 }
 
-void CollisionSolverSystem::RotationSolver(RigidBodyStorage* _bodyStorage, CollisionManifoldBuffer* _manifoldBuffer)
+void CollisionSolverSystem::RotationSolver(PhysicsTransformStorage* _transformStorage, RigidBodyStorage* _bodyStorage, CollisionManifoldBuffer* _manifoldBuffer)
 {
 
 }

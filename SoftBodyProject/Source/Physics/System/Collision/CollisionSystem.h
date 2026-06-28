@@ -4,7 +4,7 @@
 #include <unordered_map>
 #include <unordered_set>
 
-#include "TransformComponentStorage.h"
+#include "PhysicsTransformStorage.h"
 #include "ColliderStorage.h"
 #include "ProjectionStorage.h"
 #include "CollisionManifoldBuffer.h"
@@ -16,21 +16,20 @@
 #include "Face.h"
 #include "Edge.h"
 
-#include "WorldStorage.h"
 #include "EventManager.h"
 
 class CollisionSystem
 {
 public:
 	// 更新
-	void FixedUpdate(WorldStorage* _worldStorage, EventManager* _eventManager, CollisionManifoldBuffer* _manifoldBuffer, ColliderStorage* _colliderStorage);
+	void FixedUpdate(PhysicsTransformStorage* _transformStorage, ColliderStorage* _colliderStorage, EventManager* _eventManager, CollisionManifoldBuffer* _manifoldBuffer);
 private:
 	// ブロードフェーズ
-	void BroadPhase(TransformComponentStorage* _transformStorage, ColliderStorage* _colliderStorage);
+	void BroadPhase(PhysicsTransformStorage* _transformStorage, ColliderStorage* _colliderStorage);
 	// ペアの対応付け処理
 	void Dispatch(ColliderStorage* _colliderStorage);
 	// ナローフェーズ
-	void NarrowPhase(TransformComponentStorage* _transformStorage, ColliderStorage* _colliderStorage, EventManager* _eventManager, CollisionManifoldBuffer* _manifoldBuffer);
+	void NarrowPhase(PhysicsTransformStorage* _transformStorage, ColliderStorage* _colliderStorage, EventManager* _eventManager, CollisionManifoldBuffer* _manifoldBuffer);
 	// 終了処理
 	void End();
 	/// <summary>
@@ -45,7 +44,7 @@ private:
 	void Solve(
 		AS* _strageA, BS* _strageB,
 		const std::vector<PairList>& pairList,
-		TransformComponentStorage* _transformStorage,
+		PhysicsTransformStorage* _transformStorage,
 		ColliderStorage* _colliderStorage,
 		EventManager* _eventManager,
 		CollisionManifoldBuffer* _manifoldBuffer);
@@ -62,13 +61,14 @@ private:
 	/// <param name="_storageB">Bの形状のストレージ</param>
 	/// <param name="_handleB">Bのエンティティハンドル</param>
 	/// <param name="_transformStorage">トランスフォームストレージ</param>
+	/// <param name="_manifoldBuffer">結果を入れる</param>
 	/// <returns>当たったか</returns>
 	template<class A,class B,class AS,class BS>
 	bool GJK(
 		AS* _storageA, ColliderID _handleA,
 		BS* _storageB, ColliderID _handleB,
 		ColliderStorage* _colliderStorage,
-		TransformComponentStorage* _transformStorage,
+		PhysicsTransformStorage* _transformStorage,
 		CollisionManifoldBuffer* _manifoldBuffer);
 
 	void RegisterEvent(
@@ -97,8 +97,9 @@ private:
 
 	template<class A, class B, class AS, class BS>
 	void EPA(
-		AS* _storageA, ColliderID _handleA, TransformComponent* _transA,
-		BS* _storageB, ColliderID _handleB, TransformComponent* _transB,
+		AS* _storageA, ColliderID _handleA,
+		BS* _storageB, ColliderID _handleB,
+		PhysicsTransformStorage* _transformStorage,
 		ColliderStorage* _colliderStorage,
 		CollisionManifoldBuffer* _manifoldBuffer, Simplex& _simplex);
 

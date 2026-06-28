@@ -20,7 +20,7 @@ ColliderID ColliderStorage::CreateSphere(EntityID _entity, PhysicsTransformID _t
 
 	// aabbを作成フラグを追加しておく(後からシステムが作ってくれる)
 	aabbStorage->dirty.emplace_back(AABBChangeDirtyFlag::MAKE);
-	aabbStorage->aabb.emplace_back(id);
+	aabbStorage->aabb.emplace_back(id, _transformID);
 
 	// IDを返してあげる
 	return id;
@@ -38,7 +38,7 @@ ColliderID ColliderStorage::CreateBox(EntityID _entity, PhysicsTransformID _tran
 
 	// aabbを作成フラグを追加しておく(後からシステムが作ってくれる)
 	aabbStorage->dirty.emplace_back(AABBChangeDirtyFlag::MAKE);
-	aabbStorage->aabb.emplace_back(id);
+	aabbStorage->aabb.emplace_back(id, _transformID);
 
 	return id;
 }

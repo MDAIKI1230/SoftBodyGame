@@ -4,9 +4,9 @@
 
 #include "AABBUpdateSystem.h"
 
-void AABBUpdateSystem::FixedUpdate(ColliderStorage* _colliderStorage, WorldStorage* _worldStorage)
+void AABBUpdateSystem::FixedUpdate(PhysicsTransformStorage* _transformStorage, ColliderStorage* _colliderStorage)
 {
-	AABBBroadPhaseColliderStorage* aabbStorage{ _colliderStorage->aabbStorage.get()};
+	AABBBroadPhaseColliderStorage* aabbStorage{ _colliderStorage->aabbStorage.get() };
 	for (int i{ 0 }; i < aabbStorage->dirty.size(); i++)
 	{
 		if (aabbStorage->dirty[i] & AABBChangeDirtyFlag::MAKE)
@@ -17,10 +17,10 @@ void AABBUpdateSystem::FixedUpdate(ColliderStorage* _colliderStorage, WorldStora
 			switch (_colliderStorage->GetType(id))
 			{
 			case ColliderType::SPHERE:
-				ComputeSphere(_colliderStorage->aabbStorage->aabb[i], _colliderStorage->sphereStorage.get(), _colliderStorage->slots[id.index].denseIndex);
+				ComputeSphere(_colliderStorage->aabbStorage->aabb[i], _colliderStorage->sphereStorage.get(), _colliderStorage->slots[id.index].denseIndex, _transformStorage);
 				break;
 			case ColliderType::BOX:
-				ComputeBox(_colliderStorage->aabbStorage->aabb[i], _colliderStorage, _colliderStorage->slots[id.index].denseIndex, _worldStorage);
+				ComputeBox(_colliderStorage->aabbStorage->aabb[i], _colliderStorage->boxStorage.get(), _colliderStorage->slots[id.index].denseIndex, _transformStorage);
 				break;
 			default:
 				break;
@@ -41,27 +41,34 @@ void AABBUpdateSystem::FixedUpdate(ColliderStorage* _colliderStorage, WorldStora
 	}
 }
 
-void AABBUpdateSystem::ComputeSphere(AABBBroadPhaseCollider& aabb, SphereColliderStorage* _storage, size_t _index)
+void AABBUpdateSystem::ComputeSphere(AABBBroadPhaseCollider& aabb, SphereColliderStorage* _sphereStorage, size_t _index, PhysicsTransformStorage* _transformStorage)
 {
-	aabb.min = Vector3{ -_storage->radius[_index] };
-	aabb.max = Vector3{ _storage->radius[_index] };
+	Vector3& scale{ _transformStorage->scale[_transformStorage->GetDenseIndex(_sphereStorage->transformID[_index])] };
+	// 最大値で倍にする
+	float multiple{ std::max(std::max(scale.x,scale.y),scale.z) };
+	aabb.min = Vector3{ -_sphereStorage->radius[_index] * multiple };
+	aabb.max = Vector3{ _sphereStorage->radius[_index] * multiple };
 }
 
-void AABBUpdateSystem::ComputeBox(AABBBroadPhaseCollider& aabb, ColliderStorage* _colliderStorage, size_t _index, WorldStorage* _worldStorage)
+void AABBUpdateSystem::ComputeBox(AABBBroadPhaseCollider& aabb, BoxColliderStorage* _boxStorage, size_t _index, PhysicsTransformStorage* _transformStorage)
 {
-	ColliderID id{ _colliderStorage->boxStorage->id[_index] };
-	TransformComponent* trans{ _worldStorage->GetStorage<TransformComponent>()->Get(_colliderStorage->GetOwnerEntity(id)) };
+	ColliderID id{ _boxStorage->id[_index] };
 
-	Vector3 right{ trans->Right() };
-	Vector3 up{ trans->Up() };
-	Vector3 forward{ trans->Forward() };
+	uint32_t transIndex{ _transformStorage->GetDenseIndex(_boxStorage->transformID[_index]) };
 
-	Vector3 halfScale{ _colliderStorage->boxStorage->scale[_index] * 0.5f };
+	// 行列から各方向を取得
+	Vector3 right{ _transformStorage->worldMatrix[transIndex] * Vector3::RIGHT };
+	Vector3 up{ _transformStorage->worldMatrix[transIndex] * Vector3::UP };
+	Vector3 forward{ _transformStorage->worldMatrix[transIndex] * Vector3::FORWARD };
 
-	halfScale = SIMDVectorMath::Mul(halfScale, trans->GetScale());
+	Vector3 halfScale{ _boxStorage->scale[_index] * 0.5f };
+
+	// 各方向に倍
+	halfScale = SIMDVectorMath::Mul(halfScale, _transformStorage->scale[transIndex]);
 
 	Vector3 aabbScale;
 
+	// スケールを計算
 	aabbScale.x =
 		std::abs(right.x) * halfScale.x +
 		std::abs(up.x) * halfScale.y +

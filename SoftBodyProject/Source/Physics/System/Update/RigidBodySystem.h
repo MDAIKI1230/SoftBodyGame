@@ -9,7 +9,7 @@ public:
 	// コンストラクタ
 	RigidBodySystem() = default;
 	// 更新
-	void FixedUpdate(RigidBodyStorage* _bodyStorage, PhysicsTransformStorage* _transformStorage);
+	void FixedUpdate(PhysicsTransformStorage* _transformStorage, RigidBodyStorage* _bodyStorage);
 private:
 	// 重力適応
 	void UpdateGravity(RigidBodyStorage* _bodyStorage);

@@ -2,7 +2,7 @@
 
 #include "MDMath.h"
 
-#include "TransformComponent.h"
+#include "PhysicsTransformStorage.h"
 #include "SphereColliderStorage.h"
 #include "BoxColliderStorage.h"
 
@@ -11,20 +11,22 @@ namespace ColliderTag
 	// 球
 	struct SphereTag
 	{
-		static Vector3 Support(SphereColliderStorage* _storage, size_t _index, TransformComponent* _trans, const Vector3& _dir)
+		static Vector3 Support(SphereColliderStorage* _colliderStorage, size_t _index, PhysicsTransformStorage* _transformStorage, const Vector3& _dir)
 		{
-			return _dir.Normalized() * _storage->radius[_index] + _trans->GetPosition();
+			uint32_t transformIndex{ _transformStorage->GetDenseIndex(_colliderStorage->transformID[_index]) };
+			return _dir.Normalized() * _colliderStorage->radius[_index] + _transformStorage->position[transformIndex];
 		}
 	};
 
 	// 箱
 	struct BoxTag
 	{
-		static Vector3 Support(BoxColliderStorage* _storage, size_t _index, TransformComponent* _trans, const Vector3& _dir)
+		static Vector3 Support(BoxColliderStorage* _colliderStorage, size_t _index, PhysicsTransformStorage* _transformStorage, const Vector3& _dir)
 		{
-			Vector3 halfScale{ _storage->scale[_index] * 0.5f };
-			Vector3 pos{ _trans->GetPosition() };
-			Quaternion rot{ _trans->GetRotation() };
+			Vector3 halfScale{ _colliderStorage->scale[_index] * 0.5f };
+			uint32_t transformIndex{ _transformStorage->GetDenseIndex(_colliderStorage->transformID[_index]) };
+			Vector3& pos{ _transformStorage->position[transformIndex] };
+			Quaternion& rot{ _transformStorage->rotation[transformIndex] };
 			Vector3 candidates[8]
 			{
 				pos + rot.Rotate(halfScale),

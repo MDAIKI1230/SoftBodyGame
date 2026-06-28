@@ -1,13 +1,13 @@
 ﻿#pragma once
 
 #include "ColliderStorage.h"
-#include "WorldStorage.h"
+#include "PhysicsTransformStorage.h"
 
 class AABBUpdateSystem
 {
 public:
-	void FixedUpdate(ColliderStorage* _colliderStorage, WorldStorage* _worldStorage);
+	void FixedUpdate(PhysicsTransformStorage* _transformStorage, ColliderStorage* _colliderStorage);
 private:
-	void ComputeSphere(AABBBroadPhaseCollider& aabb, SphereColliderStorage* _storage, size_t _index);
-	void ComputeBox(AABBBroadPhaseCollider& aabb, ColliderStorage* _colliderStorage, size_t _index, WorldStorage* _worldStorage);
+	void ComputeSphere(AABBBroadPhaseCollider& aabb, SphereColliderStorage* _sphereStorage, size_t _index, PhysicsTransformStorage* _transformStorage);
+	void ComputeBox(AABBBroadPhaseCollider& aabb, BoxColliderStorage* _boxStorage, size_t _index, PhysicsTransformStorage* _transformStorage);
 };

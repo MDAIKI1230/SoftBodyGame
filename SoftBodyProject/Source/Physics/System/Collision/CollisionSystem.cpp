@@ -5,21 +5,18 @@
 
 #include "CollisionSystem.h"
 
-void CollisionSystem::FixedUpdate(WorldStorage* _worldStorage, EventManager* _eventManager, CollisionManifoldBuffer* _manifoldBuffer, ColliderStorage* _colliderStorage)
+void CollisionSystem::FixedUpdate(PhysicsTransformStorage* _transformStorage, ColliderStorage* _colliderStorage, EventManager* _eventManager, CollisionManifoldBuffer* _manifoldBuffer)
 {
-	// Transformストレージ
-	TransformComponentStorage* transformStorage{ static_cast<TransformComponentStorage*>(_worldStorage->GetStorage<TransformComponent>()) };
-
 	// --- 衝突処理 --- 
-	BroadPhase(transformStorage, _colliderStorage);
+	BroadPhase(_transformStorage, _colliderStorage);
 	Dispatch(_colliderStorage);
-	NarrowPhase(transformStorage, _colliderStorage, _eventManager, _manifoldBuffer);
+	NarrowPhase(_transformStorage, _colliderStorage, _eventManager, _manifoldBuffer);
 
 	// 終了
 	End();
 }
 
-void CollisionSystem::BroadPhase(TransformComponentStorage* _transformStorage, ColliderStorage* _colliderStorage)
+void CollisionSystem::BroadPhase(PhysicsTransformStorage* _transformStorage, ColliderStorage* _colliderStorage)
 {
 	AABBBroadPhaseColliderStorage* aabbStorage{ _colliderStorage->aabbStorage.get()};
 	size_t count = aabbStorage->aabb.size();
@@ -28,23 +25,15 @@ void CollisionSystem::BroadPhase(TransformComponentStorage* _transformStorage, C
 	colliderProjectionYValues.reserve(count * 2);
 	colliderProjectionZValues.reserve(count * 2);
 
-	// 参照用
-	TransformComponent trans{};
-
 	// すべてのコライダーのAABBの各軸の射影を保存する。
 	for (int i{ 0 }; i < count; i++)
 	{
-		EntityID entity{ _colliderStorage->GetOwnerEntity(aabbStorage->aabb[i].colliderID) };
-		// 各軸に射影して値を保存
-		if (!_transformStorage->TryGet(entity, trans))
-		{
-			continue;
-		}
+		uint32_t transformIndex{ _transformStorage->GetDenseIndex(_colliderStorage->aabbStorage->aabb[i].transformID) };
 
 		ColliderProjectionData data;
 
-		data.min = _colliderStorage->aabbStorage->aabb[i].min + trans.GetPosition();
-		data.max = _colliderStorage->aabbStorage->aabb[i].max + trans.GetPosition();
+		data.min = _colliderStorage->aabbStorage->aabb[i].min + _transformStorage->position[transformIndex];
+		data.max = _colliderStorage->aabbStorage->aabb[i].max + _transformStorage->position[transformIndex];
 
 		// コライダーハンドルのindex
 		size_t colliderIndex{ aabbStorage->aabb[i].colliderID.index };
@@ -112,7 +101,7 @@ void CollisionSystem::Dispatch(ColliderStorage* _colliderStorage)
 	}
 }
 
-void CollisionSystem::NarrowPhase(TransformComponentStorage* _transformStorage, ColliderStorage* _colliderStorage, EventManager* _eventManager, CollisionManifoldBuffer* _manifoldBuffer)
+void CollisionSystem::NarrowPhase(PhysicsTransformStorage* _transformStorage, ColliderStorage* _colliderStorage, EventManager* _eventManager, CollisionManifoldBuffer* _manifoldBuffer)
 {
 	// 球VS球
 	Solve<ColliderTag::SphereTag, ColliderTag::SphereTag, SphereColliderStorage, SphereColliderStorage, CollisionPair::SphereSpherePair>
@@ -235,27 +224,14 @@ template<class A, class B, class AS, class BS, class PairList>
 void CollisionSystem::Solve(
 	AS* _strageA, BS* _strageB,
 	const std::vector<PairList>& pairList,
-	TransformComponentStorage* _transformStorage,
+	PhysicsTransformStorage* _transformStorage,
 	ColliderStorage* _colliderStorage,
 	EventManager* _eventManager,
 	CollisionManifoldBuffer* _manifoldBuffer)
 {
-	// 参照用
-	TransformComponent transA{}, transB{};
-
 	// ナローフェーズに行けたペアの衝突判定をしていく
 	for (auto& pair : pairList)
 	{
-		// Transformがあるかチェックないなら飛ばす
-		if (!_transformStorage->TryGet(_colliderStorage->GetOwnerEntity(pair.a), transA))
-		{
-			continue;
-		}
-		if (!_transformStorage->TryGet(_colliderStorage->GetOwnerEntity(pair.b), transB))
-		{
-			continue;
-		}
-
 		if (GJK<A, B, AS, BS>(_strageA, pair.a, _strageB, pair.b, _colliderStorage, _transformStorage, _manifoldBuffer))
 		{
 			RegisterEvent(pair.a, pair.b, _colliderStorage, _eventManager);
@@ -268,24 +244,16 @@ bool CollisionSystem::GJK(
 	AS* _storageA, ColliderID _handleA,
 	BS* _storageB, ColliderID _handleB,
 	ColliderStorage* _colliderStorage,
-	TransformComponentStorage* _transformStorage,
+	PhysicsTransformStorage* _transformStorage,
 	CollisionManifoldBuffer* _manifoldBuffer)
 {
-	/*
-		コライダー01の中心を原点として考えるものとしよう。
-	*/
-
 	Simplex simplex{};
 	Vector3 dir{ Vector3::UP };
-
-	// トランスフォーム取得
-	TransformComponent* transformA{ _transformStorage->Get(_colliderStorage->GetOwnerEntity(_handleA)) };
-	TransformComponent* transformB{ _transformStorage->Get(_colliderStorage->GetOwnerEntity(_handleB)) };
 
 	while (true)
 	{
 		// ミンコフスキー差の支点計算
-		Vector3 vec{ A::Support(_storageA,_colliderStorage->GetDenseIndex(_handleA), transformA,dir) - B::Support(_storageB,_colliderStorage->GetDenseIndex(_handleB),transformB ,-dir) };
+		Vector3 vec{ A::Support(_storageA,_colliderStorage->GetDenseIndex(_handleA), _transformStorage,dir) - B::Support(_storageB,_colliderStorage->GetDenseIndex(_handleB),_transformStorage ,-dir) };
 
 		// 支点をSimplexに追加
 		simplex.Add(vec);
@@ -298,7 +266,7 @@ bool CollisionSystem::GJK(
 
 		if(SimplexSolve(simplex,dir))
 		{
-			EPA<A, B, AS, BS>(_storageA, _handleA, transformA, _storageB, _handleB,  transformB, _colliderStorage, _manifoldBuffer, simplex);
+			EPA<A, B, AS, BS>(_storageA, _handleA, _storageB, _handleB, _transformStorage, _colliderStorage, _manifoldBuffer, simplex);
 			return true;
 		}
 	}
@@ -512,8 +480,9 @@ bool CollisionSystem::SolveTetrahedron(Simplex& _simplex, Vector3& _output)
 
 template<class A, class B, class AS, class BS>
 void CollisionSystem::EPA(
-	AS* _storageA, ColliderID _handleA,TransformComponent* _transA,
-	BS* _storageB, ColliderID _handleB, TransformComponent* _transB,
+	AS* _storageA, ColliderID _handleA,
+	BS* _storageB, ColliderID _handleB,
+	PhysicsTransformStorage* _transformStorage,
 	ColliderStorage* _colliderStorage,
 	CollisionManifoldBuffer* _manifoldBuffer, Simplex& _simplex)
 {
@@ -556,7 +525,7 @@ void CollisionSystem::EPA(
 		edges.clear();
 
 		// サポート関数を使って新たな点を計算
-		Vector3 support{ A::Support(_storageA,_colliderStorage->GetDenseIndex(_handleA), _transA,faces[minIndex].normal) - B::Support(_storageB,_colliderStorage->GetDenseIndex(_handleB),_transB ,-faces[minIndex].normal) };
+		Vector3 support{ A::Support(_storageA,_colliderStorage->GetDenseIndex(_handleA), _transformStorage,faces[minIndex].normal) - B::Support(_storageB,_colliderStorage->GetDenseIndex(_handleB),_transformStorage ,-faces[minIndex].normal) };
 		
 		// 収束判定
 		if (std::abs(Vector3::Dot(faces[minIndex].normal, support) - faces[minIndex].distance) < MathConstants::EPSILON)
