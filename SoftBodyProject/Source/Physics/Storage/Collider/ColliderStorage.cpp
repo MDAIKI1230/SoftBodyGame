@@ -114,6 +114,6 @@ ColliderID ColliderStorage::GenerateColliderID(ColliderType _type, size_t _dense
 		slots[index].ownerEntity = _ownerEntity;
 
 		// IDを作成(初代判定で1)
-		return ColliderID{ index,slots[index].generation };
+		return ColliderID{ (uint32_t)(index),slots[index].generation };
 	}
 }

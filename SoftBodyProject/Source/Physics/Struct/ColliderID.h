@@ -4,6 +4,6 @@
 
 struct ColliderID
 {
-	size_t index;
-	uint64_t generation;
+	uint32_t index{ 0 };
+	unsigned char generation{ 0 };
 };

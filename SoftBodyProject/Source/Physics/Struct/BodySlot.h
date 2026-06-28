@@ -8,7 +8,7 @@ struct BodySlot
 {
 public:
     // コンストラクタ
-    BodySlot(size_t _denseIndex, EntityID _ownerEntity) :
+    BodySlot(uint32_t _denseIndex, EntityID _ownerEntity) :
         denseIndex{ _denseIndex },
         ownerEntity{ _ownerEntity }
     {
@@ -21,7 +21,7 @@ public:
     bool alive{ true };
 
     // 実データ上のインデックス
-    size_t denseIndex;
+    uint32_t denseIndex;
     // オブジェクトエンティティ
     EntityID ownerEntity;
 };

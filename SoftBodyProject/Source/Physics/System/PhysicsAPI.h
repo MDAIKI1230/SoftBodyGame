@@ -7,6 +7,10 @@
 class PhysicsAPI
 {
 public:
+	// --- 物理用Transform ---
+	
+	// 生成
+	static PhysicsTransformID CreatePhysicsTransform(EntityID _entity);
 	// --- RigidBody ---
 
 	// 作成
@@ -76,17 +80,16 @@ public:
 	// Z方向の長さ変更
 	static void SetDepth(ColliderID _id, float _depth);
 
-	static void SetWorld(WorldStorage* _world) { world = _world; }
-
 	static void SetWorld(PhysicsWorld* _physicsWorld)
 	{
 		physicsWorld = _physicsWorld;
 		colliderStorage = _physicsWorld->GetColliderStorage();
 		rigidBodyStorage = _physicsWorld->GetRigidBodyStorage();
+		transformStorage = _physicsWorld->GetPhysicsTransformStorage();
 	}
 private:
-	static WorldStorage* world;
 	static PhysicsWorld* physicsWorld;
 	static ColliderStorage* colliderStorage;
 	static RigidBodyStorage* rigidBodyStorage;
+	static PhysicsTransformStorage* transformStorage;
 };

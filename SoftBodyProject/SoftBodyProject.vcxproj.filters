@@ -125,6 +125,9 @@
     <Filter Include="ソース ファイル\Physics\System\Sync">
       <UniqueIdentifier>{03d50d9b-6ad1-4a7d-9de5-0b3043694bb3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Physics\Storage\Transform">
+      <UniqueIdentifier>{7467adcf-127f-48f6-b07f-145eef1876eb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Objects\Camera.h">
@@ -418,6 +421,15 @@
     <ClInclude Include="Source\Physics\System\Sync\SynchronizationSystem.h">
       <Filter>ソース ファイル\Physics\System\Sync</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Physics\Storage\Transform\PhysicsTransformStorage.h">
+      <Filter>ソース ファイル\Physics\Storage\Transform</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Struct\PhysicsTransformSlot.h">
+      <Filter>ソース ファイル\Physics\Struct</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Struct\PhysicsTransformID.h">
+      <Filter>ソース ファイル\Physics\Struct</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\System\Adapter\Dxlib\DxlibInput.cpp">
@@ -542,6 +554,9 @@
     </ClCompile>
     <ClCompile Include="Source\Physics\System\Sync\SynchronizationSystem.cpp">
       <Filter>ソース ファイル\Physics\System\Sync</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Physics\Storage\Transform\PhysicsTransformStorage.cpp">
+      <Filter>ソース ファイル\Physics\Storage\Transform</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

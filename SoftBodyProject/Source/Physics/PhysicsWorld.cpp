@@ -5,6 +5,7 @@ PhysicsWorld::PhysicsWorld()
 	manifoldBuffer = std::make_unique<CollisionManifoldBuffer>();
 	colliderStorage = std::make_unique<ColliderStorage>();
 	rigidBodyStorage = std::make_unique<RigidBodyStorage>();
+	transformStorage = std::make_unique<PhysicsTransformStorage>();
 
 	aabbUpdateSystem = std::make_unique<AABBUpdateSystem>();
 	collisionSystem = std::make_unique<CollisionSystem>();

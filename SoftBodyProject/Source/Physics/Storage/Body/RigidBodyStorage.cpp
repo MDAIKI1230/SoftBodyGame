@@ -158,6 +158,6 @@ BodyID RigidBodyStorage::GenerateBodyID(size_t _denseIndex, EntityID _ownerEntit
 		slots[index].ownerEntity = _ownerEntity;
 
 		// IDを作成(初代判定で1)
-		return BodyID{ index,slots[index].generation };
+		return BodyID{ (uint32_t)(index),slots[index].generation };
 	}
 }

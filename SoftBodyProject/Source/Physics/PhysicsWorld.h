@@ -8,6 +8,7 @@
 #include "CollisionManifoldBuffer.h"
 #include "ColliderStorage.h"
 #include "RigidBodyStorage.h"
+#include "PhysicsTransformStorage.h"
 
 #include "AABBUpdateSystem.h"
 #include "CollisionSystem.h"
@@ -29,11 +30,14 @@ public:
 	ColliderStorage* GetColliderStorage() { return colliderStorage.get(); }
 	// RigidBodyストレージ取得
 	RigidBodyStorage* GetRigidBodyStorage() { return rigidBodyStorage.get(); }
-
+	// PhysicsTransformストレージ取得
+	PhysicsTransformStorage* GetPhysicsTransformStorage() { return transformStorage.get(); }
 private:
 	std::unique_ptr<CollisionManifoldBuffer> manifoldBuffer;
 	std::unique_ptr<ColliderStorage> colliderStorage;
 	std::unique_ptr<RigidBodyStorage> rigidBodyStorage;
+	std::unique_ptr< PhysicsTransformStorage> transformStorage;
+
 	std::unique_ptr<AABBUpdateSystem> aabbUpdateSystem;
 	std::unique_ptr<CollisionSystem> collisionSystem;
 	std::unique_ptr<CollisionSolverSystem> collisionSolverSystem;

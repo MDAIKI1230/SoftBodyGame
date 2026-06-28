@@ -3,6 +3,11 @@
 
 #include "PhysicsAPI.h"
 
+PhysicsTransformID  PhysicsAPI::CreatePhysicsTransform(EntityID _entity)
+{
+	return transformStorage->CreateTransform(_entity);
+}
+
 BodyID PhysicsAPI::CreateRigidBody(EntityID _entity)
 {
 	return rigidBodyStorage->CreateRigidBody(_entity);
@@ -136,7 +141,6 @@ void PhysicsAPI::SetDepth(ColliderID _id, float _depth)
 	colliderStorage->boxStorage->scale[colliderStorage->GetDenseIndex(_id)].z = _depth;
 }
 
-WorldStorage* PhysicsAPI::world{ nullptr };
 PhysicsWorld* PhysicsAPI::physicsWorld{ nullptr };
 ColliderStorage* PhysicsAPI::colliderStorage{ nullptr };
 RigidBodyStorage* PhysicsAPI::rigidBodyStorage{ nullptr };

@@ -5,12 +5,11 @@
 #include "CollisionConstants.h"
 #include "EntityID.h"
 
-struct ColliderSlot
+struct PhysicsTransformSlot
 {
 public:
     // コンストラクタ
-    ColliderSlot(ColliderType _type, uint32_t _denseIndex, EntityID _ownerEntity) :
-        type{ _type },
+    PhysicsTransformSlot(uint32_t _denseIndex, EntityID _ownerEntity) :
         denseIndex{ _denseIndex },
         ownerEntity{ _ownerEntity }
     {
@@ -22,7 +21,6 @@ public:
     // 生存フラグ
     bool alive{ true };
 
-    ColliderType type;
     // 実データ上のインデックス
     uint32_t denseIndex;
     // オブジェクトエンティティ
