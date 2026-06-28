@@ -128,6 +128,12 @@
     <Filter Include="ソース ファイル\Physics\Storage\Transform">
       <UniqueIdentifier>{7467adcf-127f-48f6-b07f-145eef1876eb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Common\Math\NamericalAnalysis">
+      <UniqueIdentifier>{f5e361c7-b168-4d9f-952b-67df79fa1a61}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Common\Math\Vector\Vector4">
+      <UniqueIdentifier>{23013ff9-648f-454e-9b7d-6d2894959875}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Objects\Camera.h">
@@ -430,6 +436,12 @@
     <ClInclude Include="Source\Physics\Struct\PhysicsTransformID.h">
       <Filter>ソース ファイル\Physics\Struct</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Common\Math\NamericalAnalysis\NamericalAnalysis.h">
+      <Filter>ソース ファイル\Common\Math\NamericalAnalysis</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Common\Math\Vector\Vector4\Vector4.h">
+      <Filter>ソース ファイル\Common\Math\Vector\Vector4</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\System\Adapter\Dxlib\DxlibInput.cpp">
@@ -557,6 +569,12 @@
     </ClCompile>
     <ClCompile Include="Source\Physics\Storage\Transform\PhysicsTransformStorage.cpp">
       <Filter>ソース ファイル\Physics\Storage\Transform</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Common\Math\Vector\Vector4\Vector4.cpp">
+      <Filter>ソース ファイル\Common\Math\Vector\Vector4</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Common\Math\NamericalAnalysis\NamericalAnalysis.cpp">
+      <Filter>ソース ファイル\Common\Math\NamericalAnalysis</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

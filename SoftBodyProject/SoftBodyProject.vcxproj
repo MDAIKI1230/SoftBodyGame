@@ -176,6 +176,7 @@
     <ClInclude Include="Source\Common\Math\Matrix\MatGenerateFunc.h" />
     <ClInclude Include="Source\Common\Math\Matrix\Matrix.h" />
     <ClInclude Include="Source\Common\Math\MDMath.h" />
+    <ClInclude Include="Source\Common\Math\NamericalAnalysis\NamericalAnalysis.h" />
     <ClInclude Include="Source\Common\Math\Quaternion\Quaternion.h" />
     <ClInclude Include="Source\Common\Math\Transform\Transform.h" />
     <ClInclude Include="Source\Common\Math\Vector\SIMD\SIMDVector.h" />
@@ -184,6 +185,7 @@
     <ClInclude Include="Source\Common\Math\Vector\Vector2\Vector2Int.h" />
     <ClInclude Include="Source\Common\Math\Vector\Vector3\Vector3.h" />
     <ClInclude Include="Source\Common\Math\Vector\Vector3\Vector3Int.h" />
+    <ClInclude Include="Source\Common\Math\Vector\Vector4\Vector4.h" />
     <ClInclude Include="Source\Objects\Camera.h" />
     <ClInclude Include="Source\Objects\DebugBox.h" />
     <ClInclude Include="Source\Objects\DebugSphere.h" />
@@ -254,6 +256,7 @@
     <ClCompile Include="Source\Common\ECS\SystemManager.cpp" />
     <ClCompile Include="Source\Common\Math\Matrix\MatGenerateFunc.cpp" />
     <ClCompile Include="Source\Common\Math\Matrix\Matrix.cpp" />
+    <ClCompile Include="Source\Common\Math\NamericalAnalysis\NamericalAnalysis.cpp" />
     <ClCompile Include="Source\Common\Math\Quaternion\Quaternion.cpp" />
     <ClCompile Include="Source\Common\Math\Transform\Transform.cpp" />
     <ClCompile Include="Source\Common\Math\Vector\SIMD\SIMDVectorMath.cpp" />
@@ -261,6 +264,7 @@
     <ClCompile Include="Source\Common\Math\Vector\Vector2\Vector2Int.cpp" />
     <ClCompile Include="Source\Common\Math\Vector\Vector3\Vector3.cpp" />
     <ClCompile Include="Source\Common\Math\Vector\Vector3\Vector3Int.cpp" />
+    <ClCompile Include="Source\Common\Math\Vector\Vector4\Vector4.cpp" />
     <ClCompile Include="Source\Main.cpp" />
     <ClCompile Include="Source\Objects\DebugBox.cpp" />
     <ClCompile Include="Source\Objects\DebugSphere.cpp" />

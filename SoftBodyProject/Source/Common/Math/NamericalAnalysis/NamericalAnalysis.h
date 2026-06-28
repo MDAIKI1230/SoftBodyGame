@@ -4,5 +4,5 @@
 
 namespace NamericalAnalysis
 {
-	inline Vector3 GaussJordan(const Matrix4x4& _coefficientMatrix,const Vector4& _vec);
+	static Vector4 GaussJordan(const Matrix4x4& _coefficientMatrix,const Vector4& _vec, Matrix4x4* inverseMatrix = nullptr);
 }
