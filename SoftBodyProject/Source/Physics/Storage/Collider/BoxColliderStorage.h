@@ -6,6 +6,7 @@
 
 #include "ColliderID.h"
 #include "PhysicsTransformID.h"
+#include "BodyID.h"
 
 class BoxColliderStorage
 {

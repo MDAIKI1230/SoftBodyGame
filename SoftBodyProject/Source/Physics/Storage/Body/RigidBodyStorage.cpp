@@ -124,6 +124,11 @@ EntityID RigidBodyStorage::GetOwnerEntity(BodyID _id) const
 	return slots[_id.index].ownerEntity;
 }
 
+PhysicsTransformID  RigidBodyStorage::GetTransform(BodyID _id) const
+{
+	return slots[_id.index].tra
+}
+
 BodyID RigidBodyStorage::GenerateBodyID(size_t _denseIndex, EntityID _ownerEntity)
 {
 	if (freeSlots.empty())

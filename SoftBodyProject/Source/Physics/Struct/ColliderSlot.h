@@ -4,6 +4,7 @@
 
 #include "CollisionConstants.h"
 #include "EntityID.h"
+#include "BodyID.h"
 
 struct ColliderSlot
 {
@@ -27,4 +28,6 @@ public:
     uint32_t denseIndex;
     // オブジェクトエンティティ
     EntityID ownerEntity;
+    // ボディ
+    BodyID bodyID;
 };

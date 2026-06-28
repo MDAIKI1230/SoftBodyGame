@@ -531,8 +531,8 @@ void CollisionSystem::EPA(
 		if (std::abs(Vector3::Dot(faces[minIndex].normal, support) - faces[minIndex].distance) < MathConstants::EPSILON)
 		{
 			Manifold manifold;
-			/*manifold.handleA = _colliderStorage->GetOwnerEntity(_handleA);
-			manifold.handleB = _colliderStorage->GetOwnerEntity(_handleB);*/
+			/*manifold.bodyA = _colliderStorage->GetOwnerEntity(_handleA);
+			manifold.bodyB = _colliderStorage->GetOwnerEntity(_handleB);*/
 			manifold.normal = faces[minIndex].normal;
 			manifold.points[0].penetration = faces[minIndex].distance;
 

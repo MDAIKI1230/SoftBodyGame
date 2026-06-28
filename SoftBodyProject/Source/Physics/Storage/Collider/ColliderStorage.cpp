@@ -1,6 +1,5 @@
 ﻿#include "ColliderStorage.h"
 
-
 ColliderStorage::ColliderStorage()
 {
 	aabbStorage = std::make_unique<AABBBroadPhaseColliderStorage>();
@@ -41,6 +40,11 @@ ColliderID ColliderStorage::CreateBox(EntityID _entity, PhysicsTransformID _tran
 	aabbStorage->aabb.emplace_back(id, _transformID);
 
 	return id;
+}
+
+void ColliderStorage::AttachBody(PhysicsTransformID _transformID, BodyID _bodyID)
+{
+	
 }
 
 void ColliderStorage::Destroy(ColliderID _id)

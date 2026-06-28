@@ -3,6 +3,7 @@
 #include <stdint.h>
 
 #include "EntityID.h"
+#include "BodyID.h"
 
 struct BodySlot
 {
@@ -24,4 +25,6 @@ public:
     uint32_t denseIndex;
     // オブジェクトエンティティ
     EntityID ownerEntity;
+    // TransformID
+    PhysicsTransformID transformID;
 };

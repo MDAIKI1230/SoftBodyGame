@@ -5,7 +5,8 @@
 
 BodyID PhysicsAPI::CreateRigidBody(EntityID _entity)
 {
-	return rigidBodyStorage->CreateRigidBody(_entity, transformStorage->CreateTransform(_entity));
+	PhysicsTransformID transformID{ transformStorage->CreateTransform(_entity) };
+	return rigidBodyStorage->CreateRigidBody(_entity, transformID);
 }
 
 void PhysicsAPI::AddForce(BodyID _id, const Vector3& _force)

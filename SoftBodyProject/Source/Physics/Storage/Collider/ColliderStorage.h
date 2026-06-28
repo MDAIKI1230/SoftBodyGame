@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <memory>
+#include <unordered_map>
 
 #include "ColliderSlot.h"
 #include "EntityID.h"
@@ -20,6 +21,9 @@ public:
     ColliderID CreateSphere(EntityID _entity, PhysicsTransformID _transformID, float _radius);
     // Box作成
     ColliderID CreateBox(EntityID _entity, PhysicsTransformID _transformID, const Vector3& _scale);
+
+    // コライダーにBodyをアタッチする
+    void AttachBody(PhysicsTransformID _transformID, BodyID _bodyID);
 
     // 破棄
     void Destroy(ColliderID _id);
@@ -44,4 +48,6 @@ public:
     std::unique_ptr<BoxColliderStorage> boxStorage;
 private:
     ColliderID GenerateColliderID(ColliderType _type, size_t _denseIndex, EntityID _ownerEntity);
+private:
+    std::unordered_map<PhysicsTransformID, std::vector<ColliderID>> transformMap;
 };

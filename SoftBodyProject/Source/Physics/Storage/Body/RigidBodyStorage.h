@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include <vector>
+#include <unordered_map>
 
 #include "MDMath.h"
 
@@ -26,6 +27,8 @@ public:
 	uint32_t GetDenseIndex(BodyID _id) const;
 	// 持ってるEntity
 	EntityID GetOwnerEntity(BodyID _id) const;
+	// 対応Transform
+	PhysicsTransformID GetTransform(BodyID _id) const;
 public:
 	std::vector<BodySlot> slots;
 	std::vector<uint32_t> freeSlots;
