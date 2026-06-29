@@ -16,9 +16,17 @@ public:
 			float w;
 		};
 
+		// 配列版
+		float elements[4];
+
 		// SIMD計算用
 		SIMDVectorFloat simd;
 	};
+public:
+	// 0
+	static const Vector4 ZERO;
+	// 1
+	static const Vector4 ONE;
 public:
 	// コンストラクタ
 	Vector4() :

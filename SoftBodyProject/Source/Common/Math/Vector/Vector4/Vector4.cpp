@@ -2,6 +2,10 @@
 
 #include "Vector4.h"
 
+// 0
+const Vector4 Vector4::ZERO{ 0.0f,0.0f,0.0f,0.0f };
+// 1
+const Vector4 Vector4::ONE{ 1.0f,1.0f,1.0f,1.0f };
 // 加算
 Vector4 Vector4::operator+(const Vector4& _other) const
 {

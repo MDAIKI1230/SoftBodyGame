@@ -59,6 +59,8 @@ public:
 
 	// 単位行列
 	static Matrix4x4 Identity();
+	// ZERO行列
+	static Matrix4x4 Zero();
 
 	// 加算
 	Matrix4x4 operator+(const Matrix4x4& _other)const;
@@ -93,16 +95,6 @@ public:
 	static Matrix4x4 Transposed(Matrix4x4& _value);
 	// 転置
 	static Matrix4x4& Transpose(Matrix4x4& _value);
-
-	// 逆行列(変化しない)
-	Matrix4x4 Inversed() const;
-	// 逆行列
-	Matrix4x4& Inverse();
-
-	// 逆行列(変化しない)
-	static Matrix4x4 Inversed(Matrix4x4& _value);
-	// 逆行列
-	static Matrix4x4& Inverse(Matrix4x4& _value);
 
 	// 一次変換
 	Vector3 operator *(const Vector3& _other) const;

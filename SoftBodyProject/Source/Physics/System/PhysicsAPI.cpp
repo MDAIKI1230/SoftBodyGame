@@ -1,4 +1,6 @@
-﻿#include "RigidBodyComponentStorage.h"
+﻿#include "NamericalAnalysis.h"
+
+#include "RigidBodyComponentStorage.h"
 #include "BoxColliderComponentStorage.h"
 
 #include "PhysicsAPI.h"
@@ -66,7 +68,7 @@ const Matrix4x4& PhysicsAPI::GetInertiaTensor(BodyID _id)
 void PhysicsAPI::SetInertiaTensor(BodyID _id, Matrix4x4& _matrix)
 {
 	rigidBodyStorage->inertiaTensor[rigidBodyStorage->GetDenseIndex(_id)] = _matrix;
-	rigidBodyStorage->inverseInertiaTensor[rigidBodyStorage->GetDenseIndex(_id)] = _matrix.Inversed();
+	rigidBodyStorage->inverseInertiaTensor[rigidBodyStorage->GetDenseIndex(_id)] = NamericalAnalysis::GaussJordan(_matrix);
 }
 
 bool PhysicsAPI::GetIsGravity(BodyID _id)
