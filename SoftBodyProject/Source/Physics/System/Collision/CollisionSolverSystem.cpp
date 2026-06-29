@@ -12,7 +12,7 @@ void CollisionSolverSystem::FixedUpdate(PhysicsTransformStorage* _transformStora
 
 void CollisionSolverSystem::StartUp(PhysicsTransformStorage* _transformStorage, RigidBodyStorage* _bodyStorage, CollisionManifoldBuffer* _manifoldBuffer)
 {
-	contactConstraints.reserve(_manifoldBuffer->manifolds.size() * 2);
+	/*contactConstraints.reserve(_manifoldBuffer->manifolds.size() * 2);
 	solverBodies.reserve(_manifoldBuffer->manifolds.size());
 
 	for (auto& manifold : _manifoldBuffer->manifolds)
@@ -36,7 +36,7 @@ void CollisionSolverSystem::StartUp(PhysicsTransformStorage* _transformStorage, 
 
 			contactConstraints.push_back(constraint);
 		}
-	}
+	}*/
 }
 
 void CollisionSolverSystem::PositionSolver(PhysicsTransformStorage* _transformStorage, RigidBodyStorage* _bodyStorage, CollisionManifoldBuffer* _manifoldBuffer)

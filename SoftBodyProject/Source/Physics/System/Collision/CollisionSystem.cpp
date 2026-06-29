@@ -529,8 +529,8 @@ void CollisionSystem::EPA(
 		if (std::abs(Vector3::Dot(faces[minIndex].normal, support) - faces[minIndex].distance) < MathConstants::EPSILON)
 		{
 			Manifold manifold;
-			manifold.bodyA = _colliderStorage->GetBodyID(_handleA);
-			manifold.bodyB = _colliderStorage->GetBodyID(_handleB);
+			manifold.colliderA = _handleA;
+			manifold.colliderB = _handleB;
 			manifold.normal = faces[minIndex].normal;
 			manifold.points[0].penetration = faces[minIndex].distance;
 			manifold.pointCount = 1;
@@ -585,8 +585,8 @@ void CollisionSystem::EPA(
 		if (count > 20)
 		{
 			Manifold manifold;
-			manifold.bodyA = _colliderStorage->GetBodyID(_handleA);
-			manifold.bodyB = _colliderStorage->GetBodyID(_handleB);
+			manifold.colliderA = _handleA;
+			manifold.colliderB = _handleB;
 			manifold.normal = faces[minIndex].normal;
 			manifold.points[0].penetration = faces[minIndex].distance;
 			manifold.pointCount = 1;

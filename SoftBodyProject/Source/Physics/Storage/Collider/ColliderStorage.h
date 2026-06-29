@@ -22,9 +22,6 @@ public:
     // Box作成
     ColliderID CreateBox(EntityID _entity, PhysicsTransformID _transformID, const Vector3& _scale);
 
-    // コライダーにBodyをアタッチする
-    void AttachBody(PhysicsTransformID _transformID, BodyID _bodyID);
-
     // 破棄
     void Destroy(ColliderID _id);
 
@@ -36,8 +33,6 @@ public:
     size_t GetDenseIndex(ColliderID _id) const;
     // 持ってるEntity
     EntityID GetOwnerEntity(ColliderID _id) const;
-    // BodyID
-    BodyID GetBodyID(ColliderID _id) const;
     // TransformID
     PhysicsTransformID GetTransformID(ColliderID _id) const;
 public:

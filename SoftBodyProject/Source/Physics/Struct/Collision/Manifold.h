@@ -2,7 +2,7 @@
 
 #include "MDMath.h"
 
-#include "BodyID.h"
+#include "ColliderID.h"
 
 struct ContactPoint
 {
@@ -14,8 +14,8 @@ struct ContactPoint
 
 struct Manifold
 {
-	BodyID bodyA;
-	BodyID bodyB;
+	ColliderID colliderA;
+	ColliderID colliderB;
 
 	Vector3 normal;
 

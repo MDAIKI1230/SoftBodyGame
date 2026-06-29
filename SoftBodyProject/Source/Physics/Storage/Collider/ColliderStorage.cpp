@@ -46,14 +46,6 @@ ColliderID ColliderStorage::CreateBox(EntityID _entity, PhysicsTransformID _tran
 	return id;
 }
 
-void ColliderStorage::AttachBody(PhysicsTransformID _transformID, BodyID _bodyID)
-{
-	for (auto& colliderID : transformMap[_transformID])
-	{
-		slots[colliderID.index].bodyID = _bodyID;
-	}
-}
-
 void ColliderStorage::Destroy(ColliderID _id)
 {
 	if (!IsAlive(_id))
@@ -121,11 +113,6 @@ size_t ColliderStorage::GetDenseIndex(ColliderID _id) const
 EntityID ColliderStorage::GetOwnerEntity(ColliderID _id) const
 {
 	return slots[_id.index].ownerEntity;
-}
-
-BodyID ColliderStorage::GetBodyID(ColliderID _id) const
-{
-	return slots[_id.index].bodyID;
 }
 
 PhysicsTransformID ColliderStorage::GetTransformID(ColliderID _id) const

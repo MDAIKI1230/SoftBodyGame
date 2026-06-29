@@ -97,6 +97,13 @@ void RigidBodyStorage::Destroy(BodyID _id)
 	// swap-removeしたときの移動したID
 	BodyID movedId{ id[index] };
 
+	// Mapから削除
+	auto it = transformMap.find(slots[_id.index].transformID);
+	if (it != transformMap.end())
+	{
+		transformMap.erase(it);
+	}
+
 	// 移動後のIDの修正
 	slots[movedId.index].denseIndex = slots[_id.index].denseIndex;
 

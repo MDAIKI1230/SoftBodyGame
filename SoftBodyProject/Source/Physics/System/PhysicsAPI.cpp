@@ -7,10 +7,7 @@
 
 BodyID PhysicsAPI::CreateRigidBody(EntityID _entity)
 {
-	PhysicsTransformID transformID{ transformStorage->CreateTransform(_entity) };
-	BodyID bodyID{ rigidBodyStorage->CreateRigidBody(_entity, transformID) };
-	colliderStorage->AttachBody(transformID, bodyID);
-	return bodyID;
+	return rigidBodyStorage->CreateRigidBody(_entity, transformStorage->CreateTransform(_entity));
 }
 
 void PhysicsAPI::AddForce(BodyID _id, const Vector3& _force)
@@ -93,26 +90,12 @@ void PhysicsAPI::SetGravity(BodyID _id, const Vector3& _gravity)
 
 ColliderID PhysicsAPI::CreateSphere(EntityID _entity, float _radius)
 {
-	PhysicsTransformID transformID{ transformStorage->CreateTransform(_entity) };
-	BodyID bodyID;
-	ColliderID colliderID{ colliderStorage->CreateSphere(_entity, transformID, _radius) };
-	if (rigidBodyStorage->TryGet(transformID, bodyID))
-	{
-		colliderStorage->AttachBody(transformID, bodyID);
-	}
-	return colliderID;
+	return colliderStorage->CreateSphere(_entity, transformStorage->CreateTransform(_entity), _radius);
 }
 
 ColliderID PhysicsAPI::CreateBox(EntityID _entity, const Vector3& _scale)
 {
-	PhysicsTransformID transformID{ transformStorage->CreateTransform(_entity) };
-	BodyID bodyID;
-	ColliderID colliderID{ colliderStorage->CreateBox(_entity, transformID, _scale) };
-	if (rigidBodyStorage->TryGet(transformID, bodyID))
-	{
-		colliderStorage->AttachBody(transformID, bodyID);
-	}
-	return colliderID;
+	return colliderStorage->CreateBox(_entity, transformStorage->CreateTransform(_entity), _scale);
 }
 
 float PhysicsAPI::GetRadius(ColliderID _id)
