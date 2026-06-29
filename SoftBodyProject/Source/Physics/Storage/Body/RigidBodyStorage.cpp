@@ -38,9 +38,11 @@ BodyID RigidBodyStorage::CreateRigidBody(EntityID _entity, PhysicsTransformID _t
 	// マテリアルID(一旦なし)
 	physicsMatrialID.emplace_back(-1);
 
-
 	// ID
 	id.emplace_back(GenerateBodyID(id.size(), _entity, _transformID));
+
+	// Map対応付け
+	transformMap[slots[id.back().index].transformID] = id.back();
 
 	return id.back();
 }

@@ -95,16 +95,24 @@ ColliderID PhysicsAPI::CreateSphere(EntityID _entity, float _radius)
 {
 	PhysicsTransformID transformID{ transformStorage->CreateTransform(_entity) };
 	BodyID bodyID;
+	ColliderID colliderID{ colliderStorage->CreateSphere(_entity, transformID, _radius) };
 	if (rigidBodyStorage->TryGet(transformID, bodyID))
 	{
 		colliderStorage->AttachBody(transformID, bodyID);
 	}
-	return colliderStorage->CreateSphere(_entity, transformID, _radius);
+	return colliderID;
 }
 
 ColliderID PhysicsAPI::CreateBox(EntityID _entity, const Vector3& _scale)
 {
-	return colliderStorage->CreateBox(_entity, transformStorage->CreateTransform(_entity), _scale);
+	PhysicsTransformID transformID{ transformStorage->CreateTransform(_entity) };
+	BodyID bodyID;
+	ColliderID colliderID{ colliderStorage->CreateBox(_entity, transformID, _scale) };
+	if (rigidBodyStorage->TryGet(transformID, bodyID))
+	{
+		colliderStorage->AttachBody(transformID, bodyID);
+	}
+	return colliderID;
 }
 
 float PhysicsAPI::GetRadius(ColliderID _id)

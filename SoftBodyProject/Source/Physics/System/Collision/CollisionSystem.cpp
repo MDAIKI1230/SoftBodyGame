@@ -530,7 +530,6 @@ void CollisionSystem::EPA(
 		{
 			Manifold manifold;
 			manifold.bodyA = _colliderStorage->GetBodyID(_handleA);
-			manifold.bodyB = _colliderStorage->GetBodyID(_handleB);
 			manifold.normal = faces[minIndex].normal;
 			manifold.points[0].penetration = faces[minIndex].distance;
 
