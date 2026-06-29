@@ -54,9 +54,9 @@ void AABBUpdateSystem::ComputeBox(AABBBroadPhaseCollider& aabb, ColliderStorage*
 	uint32_t transIndex{ _transformStorage->GetDenseIndex(_colliderStorage->GetTransformID(_id)) };
 
 	// 行列から各方向を取得
-	Vector3 right{ _transformStorage->worldMatrix[transIndex] * Vector3::RIGHT };
-	Vector3 up{ _transformStorage->worldMatrix[transIndex] * Vector3::UP };
-	Vector3 forward{ _transformStorage->worldMatrix[transIndex] * Vector3::FORWARD };
+	Vector3 right = _transformStorage->rotation[transIndex].Rotate(Vector3::RIGHT);
+	Vector3 up = _transformStorage->rotation[transIndex].Rotate(Vector3::UP);
+	Vector3 forward = _transformStorage->rotation[transIndex].Rotate(Vector3::FORWARD);
 
 	Vector3 halfScale{ _colliderStorage->boxStorage->scale[_colliderStorage->GetDenseIndex(_id)] * 0.5f};
 

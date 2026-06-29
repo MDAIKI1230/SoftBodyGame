@@ -23,6 +23,7 @@ namespace ColliderTag
 		{
 			Vector3 halfScale{ _colliderStorage->boxStorage->scale[_colliderStorage->GetDenseIndex(_id)] * 0.5f };
 			uint32_t transformIndex{ _transformStorage->GetDenseIndex(_colliderStorage->GetTransformID(_id)) };
+			halfScale = SIMDVectorMath::Mul(halfScale, _transformStorage->scale[transformIndex]);
 			Vector3& pos{ _transformStorage->position[transformIndex] };
 			Quaternion& rot{ _transformStorage->rotation[transformIndex] };
 			Vector3 candidates[8]
@@ -38,7 +39,7 @@ namespace ColliderTag
 			};
 
 			char maxIndex{ 0 };
-			float best{ FLT_MIN };
+			float best{ -FLT_MAX };
 
 			for (int i{ 0 }; i < 8; i++)
 			{
