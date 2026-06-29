@@ -15,6 +15,8 @@ struct SolverBody
     Quaternion rotation;
     Vector3 angularVelocity;
 
+    float mass;
+
     float inverseMass;
     Matrix4x4 inverseInertiaTensor;
 };

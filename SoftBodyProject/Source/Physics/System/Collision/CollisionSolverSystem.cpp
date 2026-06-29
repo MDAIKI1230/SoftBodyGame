@@ -4,7 +4,7 @@ void CollisionSolverSystem::FixedUpdate(PhysicsTransformStorage* _transformStora
 {
 	StartUp(_transformStorage, _bodyStorage, _colliderStorage, _manifoldBuffer);
 	VelocitySolver(_transformStorage, _bodyStorage, _manifoldBuffer);
-	PositionSolver(_transformStorage, _bodyStorage, _manifoldBuffer);
+	// PositionSolver(_transformStorage, _bodyStorage, _manifoldBuffer);
 	OrientationSolver(_transformStorage, _bodyStorage, _manifoldBuffer);
 	RotationSolver(_transformStorage, _bodyStorage, _manifoldBuffer);
 	End(_transformStorage, _bodyStorage);
@@ -39,35 +39,47 @@ void CollisionSolverSystem::StartUp(PhysicsTransformStorage* _transformStorage, 
 
 void CollisionSolverSystem::PositionSolver(PhysicsTransformStorage* _transformStorage, RigidBodyStorage* _bodyStorage, CollisionManifoldBuffer* _manifoldBuffer)
 {
-	for (auto& contactConstraint : contactConstraints)
-	{
-		float totalInvMass{ solverBodies[contactConstraint.solverBodyAIndex].inverseMass + solverBodies[contactConstraint.solverBodyBIndex].inverseMass };
-		if (totalInvMass == 0)
-		{
-			continue;
-		}
+	//for (auto& contactConstraint : contactConstraints)
+	//{
+	//	// 質量から両者がBodyを持っているかの判定をする(どちらかがBodyを持っているなら合計は0じゃないはず)
+	//	float totalInvMass{ solverBodies[contactConstraint.solverBodyAIndex].mass + solverBodies[contactConstraint.solverBodyBIndex].mass };
+	//	if (totalInvMass == 0)
+	//	{
+	//		continue;
+	//	}
 
-		solverBodies[contactConstraint.solverBodyAIndex].position += contactConstraint.normal * contactConstraint.penetration * (solverBodies[contactConstraint.solverBodyAIndex].inverseMass / totalInvMass);
-		solverBodies[contactConstraint.solverBodyBIndex].position -= contactConstraint.normal * contactConstraint.penetration * (solverBodies[contactConstraint.solverBodyBIndex].inverseMass / totalInvMass);
-	}
+	//	solverBodies[contactConstraint.solverBodyAIndex].position += contactConstraint.normal * contactConstraint.penetration * (solverBodies[contactConstraint.solverBodyAIndex].mass / totalInvMass);
+	//	solverBodies[contactConstraint.solverBodyBIndex].position -= contactConstraint.normal * contactConstraint.penetration * (solverBodies[contactConstraint.solverBodyBIndex].mass / totalInvMass);
+	//}
 }
 
 void CollisionSolverSystem::VelocitySolver(PhysicsTransformStorage* _transformStorage, RigidBodyStorage* _bodyStorage, CollisionManifoldBuffer* _manifoldBuffer)
 {
-	int size{ (int)_manifoldBuffer->manifolds.size() };
-
-	for (int i{ 0 }; i < size; i++)
+	for (auto& contactConstraint : contactConstraints)
 	{
-		Manifold& manifold{ _manifoldBuffer->manifolds[i] };
-
-		//if(_bodyStorage->IsAlive(manifold.bodyA))
+		//float totalInvMass{ solverBodies[contactConstraint.solverBodyAIndex].inverseMass + solverBodies[contactConstraint.solverBodyBIndex].inverseMass };
+		//if (totalInvMass == 0)
 		//{
-		//	uint32_t index{ _bodyStorage->GetDenseIndex(manifold.bodyID) };
-		//	Vector3 relativeVec{ _bodyStorage->velocity[index] - _bodyStorage->velocity[index] };
-		//	float massCoefficient{ (_bodyStorage->mass[index * _bodyStorage->mass[index]) / (_bodyStorage->mass[index] + _bodyStorage->mass[b.id]) };
-		//	float j{ massCoefficient * Vector3::Dot(relativeVec, manifold.normal) };
-		//	_bodyStorage->velocity[a.id] + (manifold.normal * j) / _bodyStorage->mass[a.id];
-		//	_bodyStorage->velocity[b.id] - (manifold.normal * j) / _bodyStorage->mass[b.id];
+		//	continue;
+		//}
+
+		//// 相対速度
+		//Vector3 relativevec{ solverBodies[contactConstraint.solverBodyAIndex].velocity - solverBodies[contactConstraint.solverBodyBIndex].velocity };
+		//// 質量係数( mass01 * mass02 / mass01 + mass02)
+		//float massCoefficient{
+		//	(solverBodies[contactConstraint.solverBodyAIndex].mass * solverBodies[contactConstraint.solverBodyBIndex].mass)
+		//	/ (solverBodies[contactConstraint.solverBodyAIndex].mass + solverBodies[contactConstraint.solverBodyBIndex].mass) };
+
+		//solverBodies[]
+
+		//if(_bodystorage->isalive(manifold.bodya))
+		//{
+		//	uint32_t index{ _bodystorage->getdenseindex(manifold.bodyid) };
+		//	
+		//	
+		//	float j{ masscoefficient * vector3::dot(relativevec, manifold.normal) };
+		//	_bodystorage->velocity[a.id] + (manifold.normal * j) / _bodystorage->mass[a.id];
+		//	_bodystorage->velocity[b.id] - (manifold.normal * j) / _bodystorage->mass[b.id];
 		//}
 	}
 }
@@ -117,6 +129,7 @@ uint32_t CollisionSolverSystem::CreateSolverBody(PhysicsTransformStorage* _trans
 	body.velocity = _bodyStorage->velocity[bodyIndex];
 	body.rotation = _transformStorage->rotation[transformIndex];
 	body.angularVelocity = _bodyStorage->angularVelocity[bodyIndex];
+	body.mass = _bodyStorage->mass[bodyIndex];
 	body.inverseMass = _bodyStorage->inverseMass[bodyIndex];
 	body.inverseInertiaTensor = _bodyStorage->inverseInertiaTensor[bodyIndex];
 
@@ -135,6 +148,7 @@ uint32_t CollisionSolverSystem::CreateSolverBody(PhysicsTransformStorage* _trans
 	uint32_t transformIndex{ _transformStorage->GetDenseIndex(_transformID) };
 	body.position = _transformStorage->position[transformIndex];
 	body.rotation = _transformStorage->rotation[transformIndex];
+	body.mass = 0;
 	body.inverseMass = 0;
 	body.inverseInertiaTensor = Matrix4x4::Zero();
 

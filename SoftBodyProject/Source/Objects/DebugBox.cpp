@@ -50,7 +50,7 @@ DebugBox::DebugBox(WorldStorage* _world, uint32_t _entity, float _width, float _
 void DebugBox::Update()
 {
 	TransformComponent* trans{ GetComponent<TransformComponent>() };
-	Quaternion rot{ Quaternion::AngleAxis(0.1f , Vector3::UP) };
+	Quaternion rot{ Quaternion::AngleAxis(3.14159265 / 90 * ServiceLocator::GetTimeManager()->GetDeltaTime() , Vector3::UP)};
 	trans->Rotate(rot);
 }
 void DebugBox::FixedUpdate()
