@@ -131,7 +131,7 @@ uint32_t CollisionSolverSystem::CreateSolverBody(PhysicsTransformStorage* _trans
 	body.angularVelocity = _bodyStorage->angularVelocity[bodyIndex];
 	body.mass = _bodyStorage->mass[bodyIndex];
 	body.inverseMass = _bodyStorage->inverseMass[bodyIndex];
-	body.inverseInertiaTensor = _bodyStorage->inverseInertiaTensor[bodyIndex];
+	body.inverseInertiaTensor = _bodyStorage->worldInverseInertiaTensor[bodyIndex];
 
 	// インデックス取ってから追加
 	uint32_t result{ static_cast<uint32_t>(solverBodies.size()) };

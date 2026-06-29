@@ -111,6 +111,10 @@ Quaternion Quaternion::Conjugate()const
 // 軸と角度で回転
 Quaternion Quaternion::AngleAxis(float _rad, const Vector3& _axis)
 {
+	if (_axis.LengthSqr() == 0.0f)
+	{
+		return Quaternion{};
+	}
 	Vector3 normal = Vector3::Normalized(_axis);
 
 	float angleHalf{ _rad / 2.0f };

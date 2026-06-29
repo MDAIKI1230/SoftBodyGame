@@ -17,4 +17,6 @@ private:
 	void UpdatePosition(RigidBodyStorage* _bodyStorage, PhysicsTransformStorage* _transformStorage);
 	// 回転更新
 	void UpdateRotation(RigidBodyStorage* _bodyStorage, PhysicsTransformStorage* _transformStorage);
+	// 逆慣性テンソル更新
+	void UpdateInverseInertiaTensor(RigidBodyStorage* _bodyStorage, PhysicsTransformStorage* _transformStorage);
 };

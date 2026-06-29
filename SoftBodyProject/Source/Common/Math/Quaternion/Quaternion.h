@@ -69,7 +69,11 @@ public:
 	// 共役
 	Quaternion Conjugate()const;
 
-	// 軸と角とで回転
+	/// <summary>
+	/// 軸と角とで回転(無効な場合は回転しない値を返す)
+	/// </summary>
+	/// <param name="_rad">弧度法</param>
+	/// <param name="_axis">正規化は必要ない</param>
 	static Quaternion AngleAxis(float _rad, const Vector3& _axis);
 	// オイラー角から生成
 	static Quaternion Euler(float _pitch, float _yaw, float _roll);

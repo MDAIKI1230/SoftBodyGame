@@ -55,6 +55,7 @@ void PhysicsAPI::SetMass(BodyID _id, float _mass)
 
 	rigidBodyStorage->mass[rigidBodyStorage->GetDenseIndex(_id)] = _mass;
 	rigidBodyStorage->inverseMass[rigidBodyStorage->GetDenseIndex(_id)] = 1 / _mass;
+	rigidBodyStorage->localInertiaDirty[rigidBodyStorage->GetDenseIndex(_id)] = true;
 }
 
 const Matrix4x4& PhysicsAPI::GetInertiaTensor(BodyID _id)
@@ -65,7 +66,8 @@ const Matrix4x4& PhysicsAPI::GetInertiaTensor(BodyID _id)
 void PhysicsAPI::SetInertiaTensor(BodyID _id, Matrix4x4& _matrix)
 {
 	rigidBodyStorage->inertiaTensor[rigidBodyStorage->GetDenseIndex(_id)] = _matrix;
-	rigidBodyStorage->inverseInertiaTensor[rigidBodyStorage->GetDenseIndex(_id)] = NamericalAnalysis::GaussJordan(_matrix);
+	rigidBodyStorage->localInverseInertiaTensor[rigidBodyStorage->GetDenseIndex(_id)] = NamericalAnalysis::GaussJordan(_matrix);
+	rigidBodyStorage->localInertiaDirty[rigidBodyStorage->GetDenseIndex(_id)] = true;
 }
 
 bool PhysicsAPI::GetIsGravity(BodyID _id)

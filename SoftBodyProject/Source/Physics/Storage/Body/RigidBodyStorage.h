@@ -64,15 +64,15 @@ public:
 	std::vector<float> inverseMass;
 	// 慣性テンソル
 	std::vector<Matrix4x4> inertiaTensor;
-	// 慣性テンソルの逆数
-	std::vector<Matrix4x4> inverseInertiaTensor;
+	// ローカル慣性テンソルの逆数
+	std::vector<Matrix4x4> localInverseInertiaTensor;
+	// ワールド慣性テンソルの逆数
+	std::vector<Matrix4x4> worldInverseInertiaTensor;
 
 	// --- Dirty系 ---
 	
 	// ローカル慣性テンソル変更
 	std::vector<bool> localInertiaDirty;
-	// ワールド慣性テンソル変更
-	std::vector<bool> worldInertiaDirty;
 
 	// マテリアルID
 	std::vector<int> physicsMatrialID;

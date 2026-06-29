@@ -33,14 +33,14 @@ BodyID RigidBodyStorage::CreateRigidBody(EntityID _entity, PhysicsTransformID _t
 	// 質量の逆数
 	inverseMass.emplace_back(1.0f);
 	// 慣性テンソルの逆数
-	inverseInertiaTensor.emplace_back();
+	localInverseInertiaTensor.emplace_back();
+	// ワールド慣性テンソルの逆数
+	worldInverseInertiaTensor.emplace_back();
 
 	// --- Dirty系 ---
 
 	// ローカル慣性テンソル変更
 	localInertiaDirty.emplace_back(true);
-	// ワールド慣性テンソル変更
-	worldInertiaDirty.emplace_back(true);
 
 	// マテリアルID(一旦なし)
 	physicsMatrialID.emplace_back(-1);
@@ -93,9 +93,16 @@ void RigidBodyStorage::Destroy(BodyID _id)
 	// 質量の逆数
 	inverseMass[index] = std::move(inverseMass.back());
 	inverseMass.pop_back();
-	// 慣性テンソルの逆数
-	inverseInertiaTensor[index] = std::move(inverseInertiaTensor.back());
-	inverseInertiaTensor.pop_back();
+	// ローカル慣性テンソルの逆数
+	localInverseInertiaTensor[index] = std::move(localInverseInertiaTensor.back());
+	localInverseInertiaTensor.pop_back();
+	// ワールド慣性テンソルの逆数
+	worldInverseInertiaTensor[index] = std::move(worldInverseInertiaTensor.back());
+	worldInverseInertiaTensor.pop_back();
+
+	// ローカル慣性テンソル変更
+	localInertiaDirty[index] = std::move(localInertiaDirty.back());
+	localInertiaDirty.pop_back();
 
 	// マテリアルID(一旦なし)
 	physicsMatrialID[index] = std::move(physicsMatrialID.back());
