@@ -530,8 +530,10 @@ void CollisionSystem::EPA(
 		{
 			Manifold manifold;
 			manifold.bodyA = _colliderStorage->GetBodyID(_handleA);
+			manifold.bodyB = _colliderStorage->GetBodyID(_handleB);
 			manifold.normal = faces[minIndex].normal;
 			manifold.points[0].penetration = faces[minIndex].distance;
+			manifold.pointCount = 1;
 
 			_manifoldBuffer->manifolds.push_back(manifold);
 
@@ -587,6 +589,7 @@ void CollisionSystem::EPA(
 			manifold.bodyB = _colliderStorage->GetBodyID(_handleB);
 			manifold.normal = faces[minIndex].normal;
 			manifold.points[0].penetration = faces[minIndex].distance;
+			manifold.pointCount = 1;
 
 			_manifoldBuffer->manifolds.push_back(manifold);
 

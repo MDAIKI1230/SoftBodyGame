@@ -1,0 +1,14 @@
+﻿#pragma once
+
+#include <stdint.h>
+
+#include "MDMath.h"
+
+struct ContactConstraint
+{
+	uint32_t solverBodyAIndex;
+	uint32_t solverBodyBIndex;
+
+	Vector3 normal;
+	float penetration;
+};

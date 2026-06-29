@@ -11,12 +11,12 @@ struct SolverBody
     BodyID bodyID;
 
     Vector3 position;
-    Quaternion rotation;
     Vector3 velocity;
+    Quaternion rotation;
     Vector3 angularVelocity;
 
     float inverseMass;
-    Matrix4x4 inverseInertia;
+    Matrix4x4 inverseInertiaTensor;
 
     bool writeBack;
 };

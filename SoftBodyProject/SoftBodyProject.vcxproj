@@ -218,6 +218,7 @@
     <ClInclude Include="Source\Physics\Struct\Collider\ColliderSlot.h" />
     <ClInclude Include="Source\Physics\Struct\Collider\ColliderTags.h" />
     <ClInclude Include="Source\Physics\Struct\Collision\CollisionPair.h" />
+    <ClInclude Include="Source\Physics\Struct\Collision\ContactConstraint.h" />
     <ClInclude Include="Source\Physics\Struct\Collision\Edge.h" />
     <ClInclude Include="Source\Physics\Struct\Collision\Face.h" />
     <ClInclude Include="Source\Physics\Struct\Collision\Manifold.h" />

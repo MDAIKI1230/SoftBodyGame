@@ -20,5 +20,5 @@ struct Manifold
 	Vector3 normal;
 
 	ContactPoint points[4];
-	int pointCount;
+	int pointCount{ 1 };
 };

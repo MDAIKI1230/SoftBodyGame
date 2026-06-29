@@ -42,7 +42,7 @@ BodyID RigidBodyStorage::CreateRigidBody(EntityID _entity, PhysicsTransformID _t
 	id.emplace_back(GenerateBodyID(id.size(), _entity, _transformID));
 
 	// Map対応付け
-	transformMap[slots[id.back().index].transformID] = id.back();
+	transformMap[_transformID] = id.back();
 
 	return id.back();
 }
@@ -123,6 +123,17 @@ EntityID RigidBodyStorage::GetOwnerEntity(BodyID _id) const
 PhysicsTransformID  RigidBodyStorage::GetTransformID(BodyID _id) const
 {
 	return slots[_id.index].transformID;
+}
+
+bool  RigidBodyStorage::TryGetTransformID(BodyID _id, PhysicsTransformID _output) const
+{
+	if (IsAlive(_id))
+	{
+		_output = slots[_id.index].transformID;
+
+		return true;
+	}
+	return false;
 }
 
 bool RigidBodyStorage::TryGet(PhysicsTransformID _transformID, BodyID& _output)
