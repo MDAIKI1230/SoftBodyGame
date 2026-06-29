@@ -7,6 +7,7 @@
 
 #include "PhysicsTransformStorage.h"
 #include "RigidBodyStorage.h"
+#include "ColliderStorage.h"
 
 #include "ContactConstraint.h"
 #include "SolverBody.h"
@@ -15,10 +16,10 @@ class CollisionSolverSystem
 {
 public:
 	// 更新
-	void FixedUpdate(PhysicsTransformStorage* _transformStorage, RigidBodyStorage* _bodyStorage, CollisionManifoldBuffer* _manifoldBuffer);
+	void FixedUpdate(PhysicsTransformStorage* _transformStorage, RigidBodyStorage* _bodyStorage, ColliderStorage* _colliderStorage, CollisionManifoldBuffer* _manifoldBuffer);
 private:
 	// 準備
-	void StartUp(PhysicsTransformStorage* _transformStorage, RigidBodyStorage* _bodyStorage, CollisionManifoldBuffer* _manifoldBuffer);
+	void StartUp(PhysicsTransformStorage* _transformStorage, RigidBodyStorage* _bodyStorage, ColliderStorage* _colliderStorage, CollisionManifoldBuffer* _manifoldBuffer);
 	// 位置解決
 	void PositionSolver(PhysicsTransformStorage* _transformStorage, RigidBodyStorage* _bodyStorage, CollisionManifoldBuffer* _manifoldBuffer);
 	// 速度解決
@@ -41,7 +42,7 @@ private:
 	uint32_t CreateSolverBody(PhysicsTransformStorage* _transformStorage, PhysicsTransformID& _transformID);
 	// BodyIndexを返してくれる関数
 	uint32_t  GetSolverBodyIndex(
-		PhysicsTransformStorage* _transformStorage, RigidBodyStorage* _bodyStorage, BodyID& _bodyID);
+		PhysicsTransformStorage* _transformStorage, RigidBodyStorage* _bodyStorage, PhysicsTransformID& _transformID);
 private:
 	std::vector<ContactConstraint> contactConstraints;
 	std::vector<SolverBody> solverBodies;

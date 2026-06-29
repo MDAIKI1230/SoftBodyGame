@@ -29,8 +29,6 @@ public:
 	EntityID GetOwnerEntity(BodyID _id) const;
 	// 対応Transform
 	PhysicsTransformID GetTransformID(BodyID _id) const;
-	// Transform
-	bool TryGetTransformID(BodyID _id, PhysicsTransformID _output) const;
 	// RigidBody取得
 	bool TryGet(PhysicsTransformID _transformID, BodyID& _output);
 public:

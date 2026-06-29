@@ -1,8 +1,8 @@
 ﻿#include "CollisionSolverSystem.h"
 
-void CollisionSolverSystem::FixedUpdate(PhysicsTransformStorage* _transformStorage, RigidBodyStorage* _bodyStorage, CollisionManifoldBuffer* _manifoldBuffer)
+void CollisionSolverSystem::FixedUpdate(PhysicsTransformStorage* _transformStorage, RigidBodyStorage* _bodyStorage, ColliderStorage* _colliderStorage, CollisionManifoldBuffer* _manifoldBuffer)
 {
-	StartUp(_transformStorage, _bodyStorage, _manifoldBuffer);
+	StartUp(_transformStorage, _bodyStorage, _colliderStorage, _manifoldBuffer);
 	VelocitySolver(_transformStorage, _bodyStorage, _manifoldBuffer);
 	PositionSolver(_transformStorage, _bodyStorage, _manifoldBuffer);
 	OrientationSolver(_transformStorage, _bodyStorage, _manifoldBuffer);
@@ -10,33 +10,31 @@ void CollisionSolverSystem::FixedUpdate(PhysicsTransformStorage* _transformStora
 	End(_transformStorage, _bodyStorage);
 }
 
-void CollisionSolverSystem::StartUp(PhysicsTransformStorage* _transformStorage, RigidBodyStorage* _bodyStorage, CollisionManifoldBuffer* _manifoldBuffer)
+void CollisionSolverSystem::StartUp(PhysicsTransformStorage* _transformStorage, RigidBodyStorage* _bodyStorage, ColliderStorage* _colliderStorage, CollisionManifoldBuffer* _manifoldBuffer)
 {
-	/*contactConstraints.reserve(_manifoldBuffer->manifolds.size() * 2);
+	// メモリの確保
+	contactConstraints.reserve(_manifoldBuffer->manifolds.size() * 2);
 	solverBodies.reserve(_manifoldBuffer->manifolds.size());
+	bodyMap.reserve(_manifoldBuffer->manifolds.size());
 
+	// すべての衝突情報から拘束条件とソルバ用Bodyの作成をする
 	for (auto& manifold : _manifoldBuffer->manifolds)
 	{
 		for (int i{ 0 }; i < manifold.pointCount; i++)
 		{
 			ContactConstraint constraint;
-			PhysicsTransformID transformID;
-			if (_bodyStorage->TryGetTransformID(manifold.bodyA, transformID))
-			{
-				constraint.solverBodyAIndex = GetSolverBodyIndex(_transformStorage, _bodyStorage, transformID, manifold.bodyA);
-			}
-			
-			if (_bodyStorage->TryGetTransformID(manifold.bodyB, transformID))
-			{
-				constraint.solverBodyBIndex = GetSolverBodyIndex(_transformStorage, _bodyStorage, transformID, manifold.bodyB);
-			}
+			// SolverBodyのIndexを取得
+			PhysicsTransformID transformID{ _colliderStorage->GetTransformID(manifold.colliderA) };
+			constraint.solverBodyAIndex = GetSolverBodyIndex(_transformStorage, _bodyStorage, transformID);
+			transformID = _colliderStorage->GetTransformID(manifold.colliderB);
+			constraint.solverBodyBIndex = GetSolverBodyIndex(_transformStorage, _bodyStorage, transformID);
 
 			constraint.normal = manifold.normal;
 			constraint.penetration = manifold.points[i].penetration;
 
 			contactConstraints.push_back(constraint);
 		}
-	}*/
+	}
 }
 
 void CollisionSolverSystem::PositionSolver(PhysicsTransformStorage* _transformStorage, RigidBodyStorage* _bodyStorage, CollisionManifoldBuffer* _manifoldBuffer)
@@ -44,7 +42,7 @@ void CollisionSolverSystem::PositionSolver(PhysicsTransformStorage* _transformSt
 	for (auto& contactConstraint : contactConstraints)
 	{
 		float totalInvMass{ solverBodies[contactConstraint.solverBodyAIndex].inverseMass + solverBodies[contactConstraint.solverBodyBIndex].inverseMass };
-		if (solverBodies[contactConstraint.solverBodyAIndex].inverseMass == 0 && solverBodies[contactConstraint.solverBodyBIndex].inverseMass == 0)
+		if (totalInvMass == 0)
 		{
 			continue;
 		}
@@ -89,22 +87,21 @@ void CollisionSolverSystem::End(PhysicsTransformStorage* _transformStorage, Rigi
 	// 結果を反映していく
 	for (auto& result : solverBodies)
 	{
-		if (_bodyStorage->IsAlive(result.bodyID))
+		// 質量が0ならBodyはないので書かない
+		if (result.inverseMass > 0)
 		{
-			if (result.writeBack)
-			{
-				uint32_t bodyIndex{ _bodyStorage->GetDenseIndex(result.bodyID) };
-				uint32_t transformIndex{ _transformStorage->GetDenseIndex(result.transformID) };
-				_transformStorage->position[transformIndex] = result.position;
-				_bodyStorage->velocity[bodyIndex] = result.velocity;
-				_transformStorage->rotation[transformIndex] = result.rotation;
-				_bodyStorage->angularVelocity[bodyIndex] = result.angularVelocity;
-			}
+			uint32_t bodyIndex{ _bodyStorage->GetDenseIndex(result.bodyID) };
+			uint32_t transformIndex{ _transformStorage->GetDenseIndex(result.transformID) };
+			_transformStorage->position[transformIndex] = result.position;
+			_bodyStorage->velocity[bodyIndex] = result.velocity;
+			_transformStorage->rotation[transformIndex] = result.rotation;
+			_bodyStorage->angularVelocity[bodyIndex] = result.angularVelocity;
 		}
 	}
 	// リセット
 	contactConstraints.clear();
 	solverBodies.clear();
+	bodyMap.clear();
 }
 
 uint32_t CollisionSolverSystem::CreateSolverBody(PhysicsTransformStorage* _transformStorage, RigidBodyStorage* _bodyStorage, PhysicsTransformID& _transformID, BodyID& _bodyID)
@@ -122,8 +119,6 @@ uint32_t CollisionSolverSystem::CreateSolverBody(PhysicsTransformStorage* _trans
 	body.angularVelocity = _bodyStorage->angularVelocity[bodyIndex];
 	body.inverseMass = _bodyStorage->inverseMass[bodyIndex];
 	body.inverseInertiaTensor = _bodyStorage->inverseInertiaTensor[bodyIndex];
-
-	body.writeBack = true;
 
 	// インデックス取ってから追加
 	uint32_t result{ static_cast<uint32_t>(solverBodies.size()) };
@@ -143,8 +138,6 @@ uint32_t CollisionSolverSystem::CreateSolverBody(PhysicsTransformStorage* _trans
 	body.inverseMass = 0;
 	body.inverseInertiaTensor = Matrix4x4::Zero();
 
-	body.writeBack = false;
-
 	// インデックス取ってから追加
 	uint32_t result{ static_cast<uint32_t>(solverBodies.size()) };
 	solverBodies.push_back(body);
@@ -152,35 +145,42 @@ uint32_t CollisionSolverSystem::CreateSolverBody(PhysicsTransformStorage* _trans
 }
 
 uint32_t   CollisionSolverSystem::GetSolverBodyIndex(
-	PhysicsTransformStorage* _transformStorage, RigidBodyStorage* _bodyStorage, BodyID& _bodyID)
+	PhysicsTransformStorage* _transformStorage, RigidBodyStorage* _bodyStorage, PhysicsTransformID& _transformID)
 {
 	uint32_t result;
 	
-	PhysicsTransformID transformID;
-	if (_bodyStorage->TryGetTransformID(_bodyID, transformID))
+	BodyID bodyID;
+	// Bodyがあるかの確認
+	if (_bodyStorage->TryGet(_transformID, bodyID))
 	{
 		// MAPを確認してあったらそれを使う
-		if (bodyMap.contains(transformID))
+		if (bodyMap.contains(_transformID))
 		{
-			result = bodyMap[transformID];
+			result = bodyMap[_transformID];
 		}
 		else
 		{
 			// SolverBodyがないので作る
-			if (_bodyStorage->IsAlive(_bodyID))
+			if (_bodyStorage->IsAlive(bodyID))
 			{
-				result = CreateSolverBody(_transformStorage, _bodyStorage, transformID, _bodyID);
-				bodyMap[transformID] = result;
+				// Bodyある版の作成
+				result = CreateSolverBody(_transformStorage, _bodyStorage, _transformID, bodyID);
+				bodyMap[_transformID] = result;
 			}
 			else
 			{
-				result = CreateSolverBody(_transformStorage, transformID);
-				bodyMap[transformID] = result;
+				// Bodyない版の作成
+				result = CreateSolverBody(_transformStorage, _transformID);
+				bodyMap[_transformID] = result;
 			}
 		}
 	}
-
-
+	else
+	{
+		// Bodyない版の作成
+		result = CreateSolverBody(_transformStorage, _transformID);
+		bodyMap[_transformID] = result;
+	}
 
 	return result;
 }

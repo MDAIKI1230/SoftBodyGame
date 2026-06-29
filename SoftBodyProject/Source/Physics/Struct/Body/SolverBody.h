@@ -17,6 +17,4 @@ struct SolverBody
 
     float inverseMass;
     Matrix4x4 inverseInertiaTensor;
-
-    bool writeBack;
 };
