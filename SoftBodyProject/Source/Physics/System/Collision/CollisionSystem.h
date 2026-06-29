@@ -22,14 +22,14 @@ class CollisionSystem
 {
 public:
 	// 更新
-	void FixedUpdate(PhysicsTransformStorage* _transformStorage, ColliderStorage* _colliderStorage, EventManager* _eventManager, CollisionManifoldBuffer* _manifoldBuffer);
+	void FixedUpdate(PhysicsTransformStorage* _transformStorage, ColliderStorage* _colliderStorage, CollisionManifoldBuffer* _manifoldBuffer, EventManager* _eventManager);
 private:
 	// ブロードフェーズ
 	void BroadPhase(PhysicsTransformStorage* _transformStorage, ColliderStorage* _colliderStorage);
 	// ペアの対応付け処理
 	void Dispatch(ColliderStorage* _colliderStorage);
 	// ナローフェーズ
-	void NarrowPhase(PhysicsTransformStorage* _transformStorage, ColliderStorage* _colliderStorage, EventManager* _eventManager, CollisionManifoldBuffer* _manifoldBuffer);
+	void NarrowPhase(PhysicsTransformStorage* _transformStorage, ColliderStorage* _colliderStorage, CollisionManifoldBuffer* _manifoldBuffer, EventManager* _eventManager);
 	// 終了処理
 	void End();
 	/// <summary>
@@ -40,36 +40,35 @@ private:
 	void CheckProjectionAxisValueCross(std::vector<ColliderProjection>& _projectionAxisValues);
 
 	// --- 各形状ごとの引数の当り判定 ---
-	template<class A, class B, class AS, class BS, class PairList>
+	template<class A, class B, class PairList>
 	void Solve(
-		AS* _strageA, BS* _strageB,
 		const std::vector<PairList>& pairList,
 		PhysicsTransformStorage* _transformStorage,
 		ColliderStorage* _colliderStorage,
-		EventManager* _eventManager,
-		CollisionManifoldBuffer* _manifoldBuffer);
+		CollisionManifoldBuffer* _manifoldBuffer,
+		EventManager* _eventManager);
 
 	/// <summary>
 	/// GJKアルゴリズムによる当り判定
 	/// </summary>
 	/// <typeparam name="A">Aの形状タグ</typeparam>
 	/// <typeparam name="B">Bの形状タグ</typeparam>
-	/// <param name="_handleA">Aのエンティティハンドル</param>
-	/// <param name="_handleB">Bのエンティティハンドル</param>
+	/// <param name="_colliderA">AのコライダーID</param>
+	/// <param name="_colliderB">BのコライダーID</param>
 	/// <param name="_colliderStorage">コライダーストレージ</param>
 	/// <param name="_transformStorage">トランスフォームストレージ</param>
 	/// <param name="_manifoldBuffer">結果を入れる</param>
 	/// <returns>当たったか</returns>
 	template<class A,class B>
 	bool GJK(
-		ColliderID _handleA,ColliderID _handleB,
+		ColliderID _colliderA,ColliderID _colliderB,
 		ColliderStorage* _colliderStorage,
 		PhysicsTransformStorage* _transformStorage,
 		CollisionManifoldBuffer* _manifoldBuffer);
 
 	void RegisterEvent(
-		ColliderID _a,
-		ColliderID _b,
+		ColliderID _colliderA,
+		ColliderID _colliderB,
 		ColliderStorage* _colliderStorage,
 		EventManager* _eventManager);
 
@@ -93,7 +92,7 @@ private:
 
 	template<class A, class B>
 	void EPA(
-		ColliderID _handleA, ColliderID _handleB,
+		ColliderID _colliderA, ColliderID _colliderB,
 		PhysicsTransformStorage* _transformStorage,
 		ColliderStorage* _colliderStorage,
 		CollisionManifoldBuffer* _manifoldBuffer, Simplex& _simplex);

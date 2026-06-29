@@ -5,12 +5,12 @@
 
 #include "CollisionSystem.h"
 
-void CollisionSystem::FixedUpdate(PhysicsTransformStorage* _transformStorage, ColliderStorage* _colliderStorage, EventManager* _eventManager, CollisionManifoldBuffer* _manifoldBuffer)
+void CollisionSystem::FixedUpdate(PhysicsTransformStorage* _transformStorage, ColliderStorage* _colliderStorage, CollisionManifoldBuffer* _manifoldBuffer, EventManager* _eventManager)
 {
 	// --- 衝突処理 --- 
 	BroadPhase(_transformStorage, _colliderStorage);
 	Dispatch(_colliderStorage);
-	NarrowPhase(_transformStorage, _colliderStorage, _eventManager, _manifoldBuffer);
+	NarrowPhase(_transformStorage, _colliderStorage, _manifoldBuffer, _eventManager);
 
 	// 終了
 	End();
@@ -101,50 +101,46 @@ void CollisionSystem::Dispatch(ColliderStorage* _colliderStorage)
 	}
 }
 
-void CollisionSystem::NarrowPhase(PhysicsTransformStorage* _transformStorage, ColliderStorage* _colliderStorage, EventManager* _eventManager, CollisionManifoldBuffer* _manifoldBuffer)
+void CollisionSystem::NarrowPhase(PhysicsTransformStorage* _transformStorage, ColliderStorage* _colliderStorage, CollisionManifoldBuffer* _manifoldBuffer, EventManager* _eventManager)
 {
 	// 球VS球
-	Solve<ColliderTag::SphereTag, ColliderTag::SphereTag, SphereColliderStorage, SphereColliderStorage, CollisionPair::SphereSpherePair>
+	Solve<ColliderTag::SphereTag, ColliderTag::SphereTag, CollisionPair::SphereSpherePair>
 		(
-			_colliderStorage->sphereStorage.get(), _colliderStorage->sphereStorage.get(),
 			narrowPhasePairBuilder.sphereSpherePair,
 			_transformStorage,
 			_colliderStorage,
-			_eventManager,
-			_manifoldBuffer
+			_manifoldBuffer,
+			_eventManager
 		);
 
 	// 箱VS球
-	Solve<ColliderTag::BoxTag, ColliderTag::SphereTag, BoxColliderStorage, SphereColliderStorage, CollisionPair::BoxSpherePair>
+	Solve<ColliderTag::BoxTag, ColliderTag::SphereTag, CollisionPair::BoxSpherePair>
 		(
-			_colliderStorage->boxStorage.get(), _colliderStorage->sphereStorage.get(),
 			narrowPhasePairBuilder.boxSpherePair,
 			_transformStorage,
 			_colliderStorage,
-			_eventManager,
-			_manifoldBuffer
+			_manifoldBuffer,
+			_eventManager
 		);
 
 	// 球VS箱
-	Solve<ColliderTag::SphereTag, ColliderTag::BoxTag, SphereColliderStorage, BoxColliderStorage, CollisionPair::SphereBoxPair>
+	Solve<ColliderTag::SphereTag, ColliderTag::BoxTag, CollisionPair::SphereBoxPair>
 		(
-			_colliderStorage->sphereStorage.get(), _colliderStorage->boxStorage.get(),
 			narrowPhasePairBuilder.sphereBoxPair,
 			_transformStorage,
 			_colliderStorage,
-			_eventManager,
-			_manifoldBuffer
+			_manifoldBuffer,
+			_eventManager
 		);
 
 	// 箱VS箱
-	Solve<ColliderTag::BoxTag, ColliderTag::BoxTag, BoxColliderStorage, BoxColliderStorage, CollisionPair::BoxBoxPair>
+	Solve<ColliderTag::BoxTag, ColliderTag::BoxTag, CollisionPair::BoxBoxPair>
 		(
-			_colliderStorage->boxStorage.get(), _colliderStorage->boxStorage.get(),
 			narrowPhasePairBuilder.boxBoxPair,
 			_transformStorage,
 			_colliderStorage,
-			_eventManager,
-			_manifoldBuffer
+			_manifoldBuffer,
+			_eventManager
 		);
 
 	// ExitEventの発行
@@ -220,14 +216,13 @@ void CollisionSystem::CheckProjectionAxisValueCross(std::vector<ColliderProjecti
 	}
 }
 
-template<class A, class B, class AS, class BS, class PairList>
+template<class A, class B, class PairList>
 void CollisionSystem::Solve(
-	AS* _strageA, BS* _strageB,
 	const std::vector<PairList>& pairList,
 	PhysicsTransformStorage* _transformStorage,
 	ColliderStorage* _colliderStorage,
-	EventManager* _eventManager,
-	CollisionManifoldBuffer* _manifoldBuffer)
+	CollisionManifoldBuffer* _manifoldBuffer,
+	EventManager* _eventManager)
 {
 	// ナローフェーズに行けたペアの衝突判定をしていく
 	for (auto& pair : pairList)
@@ -241,7 +236,7 @@ void CollisionSystem::Solve(
 
 template<class A, class B>
 bool CollisionSystem::GJK(
-	ColliderID _handleA, ColliderID _handleB,
+	ColliderID _colliderA, ColliderID _colliderB,
 	ColliderStorage* _colliderStorage,
 	PhysicsTransformStorage* _transformStorage,
 	CollisionManifoldBuffer* _manifoldBuffer)
@@ -252,7 +247,7 @@ bool CollisionSystem::GJK(
 	while (true)
 	{
 		// ミンコフスキー差の支点計算
-		Vector3 vec{ A::Support(_colliderStorage,_handleA, _transformStorage,dir) - B::Support(_colliderStorage,_handleB,_transformStorage ,-dir) };
+		Vector3 vec{ A::Support(_colliderStorage,_colliderA, _transformStorage,dir) - B::Support(_colliderStorage,_colliderB,_transformStorage ,-dir) };
 
 		// 支点をSimplexに追加
 		simplex.Add(vec);
@@ -265,7 +260,7 @@ bool CollisionSystem::GJK(
 
 		if(SimplexSolve(simplex,dir))
 		{
-			EPA<A, B>(_handleA, _handleB, _transformStorage, _colliderStorage, _manifoldBuffer, simplex);
+			EPA<A, B>(_colliderA, _colliderB, _transformStorage, _colliderStorage, _manifoldBuffer, simplex);
 			return true;
 		}
 	}
@@ -479,7 +474,7 @@ bool CollisionSystem::SolveTetrahedron(Simplex& _simplex, Vector3& _output)
 
 template<class A, class B>
 void CollisionSystem::EPA(
-	ColliderID _handleA, ColliderID _handleB,
+	ColliderID _colliderA, ColliderID _colliderB,
 	PhysicsTransformStorage* _transformStorage,
 	ColliderStorage* _colliderStorage,
 	CollisionManifoldBuffer* _manifoldBuffer, Simplex& _simplex)
@@ -523,14 +518,14 @@ void CollisionSystem::EPA(
 		edges.clear();
 
 		// サポート関数を使って新たな点を計算
-		Vector3 support{ A::Support(_colliderStorage,_handleA, _transformStorage,faces[minIndex].normal) - B::Support(_colliderStorage,_handleB,_transformStorage ,-faces[minIndex].normal) };
+		Vector3 support{ A::Support(_colliderStorage,_colliderA, _transformStorage,faces[minIndex].normal) - B::Support(_colliderStorage,_colliderB,_transformStorage ,-faces[minIndex].normal) };
 		
 		// 収束判定
 		if (std::abs(Vector3::Dot(faces[minIndex].normal, support) - faces[minIndex].distance) < MathConstants::EPSILON)
 		{
 			Manifold manifold;
-			manifold.colliderA = _handleA;
-			manifold.colliderB = _handleB;
+			manifold.colliderA = _colliderA;
+			manifold.colliderB = _colliderB;
 			manifold.normal = faces[minIndex].normal;
 			manifold.points[0].penetration = faces[minIndex].distance;
 			manifold.pointCount = 1;
@@ -585,8 +580,8 @@ void CollisionSystem::EPA(
 		if (count > 20)
 		{
 			Manifold manifold;
-			manifold.colliderA = _handleA;
-			manifold.colliderB = _handleB;
+			manifold.colliderA = _colliderA;
+			manifold.colliderB = _colliderB;
 			manifold.normal = faces[minIndex].normal;
 			manifold.points[0].penetration = faces[minIndex].distance;
 			manifold.pointCount = 1;
