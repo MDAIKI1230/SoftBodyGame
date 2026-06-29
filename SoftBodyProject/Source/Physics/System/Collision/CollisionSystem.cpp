@@ -526,7 +526,7 @@ void CollisionSystem::EPA(
 			Manifold manifold;
 			manifold.colliderA = _colliderA;
 			manifold.colliderB = _colliderB;
-			manifold.normal = faces[minIndex].normal;
+			manifold.normal = faces[minIndex].normal.Normalize();
 			manifold.points[0].penetration = faces[minIndex].distance;
 			manifold.pointCount = 1;
 
@@ -582,7 +582,7 @@ void CollisionSystem::EPA(
 			Manifold manifold;
 			manifold.colliderA = _colliderA;
 			manifold.colliderB = _colliderB;
-			manifold.normal = faces[minIndex].normal;
+			manifold.normal = faces[minIndex].normal.Normalize();
 			manifold.points[0].penetration = faces[minIndex].distance;
 			manifold.pointCount = 1;
 

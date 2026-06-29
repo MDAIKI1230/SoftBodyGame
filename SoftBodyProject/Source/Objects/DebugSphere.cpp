@@ -17,7 +17,7 @@ DebugSphere::DebugSphere(WorldStorage* world, uint32_t _entity) :
 	SphereColliderComponent* collider{ AddComponent<SphereColliderComponent>(30.0f) };
 	Color c{ 255, 255, 255 };
 	RigidBodyComponent* body{ AddComponent<RigidBodyComponent>() };
-	body->SetIsGravity(false);
+	// body->SetIsGravity(false);
 #ifdef _DEBUG
 	collider->SetColor(c);
 #endif // _DEBUG

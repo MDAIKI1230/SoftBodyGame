@@ -24,7 +24,7 @@ void DebugScene::Initialize()
 
 	objectManager->Add(std::make_unique<DebugSphere>(worldStorage.get(), 0));
 
-	objectManager->Add(std::make_unique<DebugBox>(worldStorage.get(), 1, 300.0f));
+	objectManager->Add(std::make_unique<DebugBox>(worldStorage.get(), 1, 300.0f, 50.0f, 300.0f));
 
 	/*RendererComponent renderer{ ServiceLocator::GetRenderer()->LoadModel(std::string{"Res/Model/M_001_player_073_01.mv1"}) };
 	
