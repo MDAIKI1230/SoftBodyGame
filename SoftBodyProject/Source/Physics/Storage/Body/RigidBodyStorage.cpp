@@ -35,6 +35,13 @@ BodyID RigidBodyStorage::CreateRigidBody(EntityID _entity, PhysicsTransformID _t
 	// 慣性テンソルの逆数
 	inverseInertiaTensor.emplace_back();
 
+	// --- Dirty系 ---
+
+	// ローカル慣性テンソル変更
+	localInertiaDirty.emplace_back(true);
+	// ワールド慣性テンソル変更
+	worldInertiaDirty.emplace_back(true);
+
 	// マテリアルID(一旦なし)
 	physicsMatrialID.emplace_back(-1);
 

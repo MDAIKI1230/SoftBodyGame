@@ -67,6 +67,13 @@ public:
 	// 慣性テンソルの逆数
 	std::vector<Matrix4x4> inverseInertiaTensor;
 
+	// --- Dirty系 ---
+	
+	// ローカル慣性テンソル変更
+	std::vector<bool> localInertiaDirty;
+	// ワールド慣性テンソル変更
+	std::vector<bool> worldInertiaDirty;
+
 	// マテリアルID
 	std::vector<int> physicsMatrialID;
 
