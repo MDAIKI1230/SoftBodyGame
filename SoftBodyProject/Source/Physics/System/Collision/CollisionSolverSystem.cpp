@@ -1,10 +1,11 @@
-﻿#include "CollisionSolverSystem.h"
+﻿#include "ServiceLocator.h"
+#include "CollisionSolverSystem.h"
 
 void CollisionSolverSystem::FixedUpdate(PhysicsTransformStorage* _transformStorage, RigidBodyStorage* _bodyStorage, ColliderStorage* _colliderStorage, CollisionManifoldBuffer* _manifoldBuffer)
 {
 	StartUp(_transformStorage, _bodyStorage, _colliderStorage, _manifoldBuffer);
 	VelocitySolver(_transformStorage, _bodyStorage, _manifoldBuffer);
-	// PositionSolver(_transformStorage, _bodyStorage, _manifoldBuffer);
+	PositionSolver(_transformStorage, _bodyStorage, _manifoldBuffer);
 	OrientationSolver(_transformStorage, _bodyStorage, _manifoldBuffer);
 	End(_transformStorage, _bodyStorage);
 }
@@ -39,18 +40,46 @@ void CollisionSolverSystem::StartUp(PhysicsTransformStorage* _transformStorage, 
 
 void CollisionSolverSystem::PositionSolver(PhysicsTransformStorage* _transformStorage, RigidBodyStorage* _bodyStorage, CollisionManifoldBuffer* _manifoldBuffer)
 {
-	//for (auto& contactConstraint : contactConstraints)
-	//{
-	//	// 質量から両者がBodyを持っているかの判定をする(どちらかがBodyを持っているなら合計は0じゃないはず)
-	//	float totalInvMass{ solverBodies[contactConstraint.solverBodyAIndex].mass + solverBodies[contactConstraint.solverBodyBIndex].mass };
-	//	if (totalInvMass == 0)
-	//	{
-	//		continue;
-	//	}
+	for (auto& contactConstraint : contactConstraints)
+	{
+		// 質量から両者がBodyを持っているかの判定をする(どちらかがBodyを持っているなら合計は0じゃないはず)
+		float totalInvMass{ solverBodies[contactConstraint.solverBodyAIndex].mass + solverBodies[contactConstraint.solverBodyBIndex].mass };
+		if (totalInvMass <= 0)
+		{
+			continue;
+		}
 
-	//	solverBodies[contactConstraint.solverBodyAIndex].position += contactConstraint.normal * contactConstraint.penetration * (solverBodies[contactConstraint.solverBodyAIndex].mass / totalInvMass);
-	//	solverBodies[contactConstraint.solverBodyBIndex].position -= contactConstraint.normal * contactConstraint.penetration * (solverBodies[contactConstraint.solverBodyBIndex].mass / totalInvMass);
-	//}
+		// 速度
+		Vector3 vecA{ contactConstraint.normal * contactConstraint.penetration * (solverBodies[contactConstraint.solverBodyAIndex].mass / totalInvMass) };
+		Vector3 vecB{ -contactConstraint.normal * contactConstraint.penetration * (solverBodies[contactConstraint.solverBodyBIndex].mass / totalInvMass) };
+
+		// コンストレイント
+		Vector3 constraintA{ solverBodies[contactConstraint.solverBodyAIndex].position + vecA };
+		Vector3 constraintB{ solverBodies[contactConstraint.solverBodyBIndex].position + vecB };
+
+		// 内積
+		float jvA{ Vector3::Dot(constraintA,contactConstraint.normal) };
+		float jvB{ Vector3::Dot(constraintB,-contactConstraint.normal) };
+
+		// バネ定数
+		float k{ 0.2f };
+		// 減衰定数
+		float c{ 0.5f };
+
+		// Δtk
+		float deltaK{ ServiceLocator::GetTimeManager()->GetFixedDeltaTime() * k };
+
+		// ERP項の計算
+		float beta{ deltaK / (deltaK + c) };
+		float erpA{ beta / ServiceLocator::GetTimeManager()->GetFixedDeltaTime() * jvA };
+		float erpB{ beta / ServiceLocator::GetTimeManager()->GetFixedDeltaTime() * jvB };
+
+		// CFM項
+		float ganma{ 1 / deltaK + c };
+		
+
+
+	}
 }
 
 void CollisionSolverSystem::VelocitySolver(PhysicsTransformStorage* _transformStorage, RigidBodyStorage* _bodyStorage, CollisionManifoldBuffer* _manifoldBuffer)
