@@ -4,9 +4,9 @@
 void CollisionSolverSystem::FixedUpdate(PhysicsTransformStorage* _transformStorage, RigidBodyStorage* _bodyStorage, ColliderStorage* _colliderStorage, CollisionManifoldBuffer* _manifoldBuffer)
 {
 	StartUp(_transformStorage, _bodyStorage, _colliderStorage, _manifoldBuffer);
-	// VelocitySolver(_transformStorage, _bodyStorage, _manifoldBuffer);
+	VelocitySolver(_transformStorage, _bodyStorage, _manifoldBuffer);
+	ReCalcPosRot();
 	PositionSolver(_transformStorage, _bodyStorage, _manifoldBuffer);
-	OrientationSolver(_transformStorage, _bodyStorage, _manifoldBuffer);
 	End(_transformStorage, _bodyStorage);
 }
 
@@ -37,6 +37,86 @@ void CollisionSolverSystem::StartUp(PhysicsTransformStorage* _transformStorage, 
 		}
 	}
 }
+
+void CollisionSolverSystem::VelocitySolver(PhysicsTransformStorage* _transformStorage, RigidBodyStorage* _bodyStorage, CollisionManifoldBuffer* _manifoldBuffer)
+{
+	for (auto& contactConstraint : contactConstraints)
+	{
+		float totalInvMass{ solverBodies[contactConstraint.solverBodyAIndex].inverseMass + solverBodies[contactConstraint.solverBodyBIndex].inverseMass };
+		if (totalInvMass == 0)
+		{
+			continue;
+		}
+
+		// 重心から衝突点ベクトル
+		Vector3 rA{ contactConstraint.position - solverBodies[contactConstraint.solverBodyAIndex].position };
+		Vector3 rB{ contactConstraint.position - solverBodies[contactConstraint.solverBodyBIndex].position };
+
+		// 相対速度
+		Vector3 vA{ solverBodies[contactConstraint.solverBodyAIndex].velocity +
+			Vector3::Cross(solverBodies[contactConstraint.solverBodyAIndex].angularVelocity, rA) };
+
+		Vector3 vB{ solverBodies[contactConstraint.solverBodyBIndex].velocity +
+			Vector3::Cross(solverBodies[contactConstraint.solverBodyBIndex].angularVelocity, rB) };
+
+		Vector3 relativeVec{ vA - vB };
+
+		float vn{ Vector3::Dot(relativeVec,contactConstraint.normal) };
+		if (vn > 0.0f)
+		{
+			continue;
+		}
+		// 質量係数( mass01 * mass02 / mass01 + mass02)
+		float massCoefficient{ solverBodies[contactConstraint.solverBodyAIndex].inverseMass + solverBodies[contactConstraint.solverBodyBIndex].inverseMass };
+
+		// 回転項
+		Vector3 rotationA{ Vector3::Cross((solverBodies[contactConstraint.solverBodyAIndex].inverseInertiaTensor * Vector3::Cross(rA,contactConstraint.normal)),rA) };
+		Vector3 rotationB{ Vector3::Cross((solverBodies[contactConstraint.solverBodyBIndex].inverseInertiaTensor * Vector3::Cross(rB,contactConstraint.normal)),rB) };
+		float rotationCoefficient{ Vector3::Dot(rotationA + rotationB,contactConstraint.normal) };
+
+		// 撃力計算
+		float j{ -vn / massCoefficient };
+
+		Vector3 impulse = contactConstraint.normal * j;
+
+		solverBodies[contactConstraint.solverBodyAIndex].velocity += impulse * solverBodies[contactConstraint.solverBodyAIndex].inverseMass;
+		solverBodies[contactConstraint.solverBodyBIndex].velocity -= impulse * solverBodies[contactConstraint.solverBodyBIndex].inverseMass;
+
+		// 角速度用の撃力計算
+		impulse /= rotationCoefficient;
+
+		solverBodies[contactConstraint.solverBodyAIndex].angularVelocity += solverBodies[contactConstraint.solverBodyAIndex].inverseInertiaTensor * Vector3::Cross(rA, impulse);
+		solverBodies[contactConstraint.solverBodyBIndex].angularVelocity -= solverBodies[contactConstraint.solverBodyBIndex].inverseInertiaTensor * Vector3::Cross(rB, impulse);
+	}
+}
+
+
+void CollisionSolverSystem::ReCalcPosRot()
+{
+	for (auto& constraint : contactConstraints)
+	{
+		// 変化した速度から位置を再計算
+		// 位置 + Δv × 質量の逆数
+		solverBodies[constraint.solverBodyAIndex].position = solverBodies[constraint.solverBodyAIndex].pastPos + solverBodies[constraint.solverBodyAIndex].velocity * ServiceLocator::GetTimeManager()->GetFixedDeltaTime() * solverBodies[constraint.solverBodyAIndex].inverseMass;
+		// 位置 + Δv × 質量の逆数
+		solverBodies[constraint.solverBodyBIndex].position = solverBodies[constraint.solverBodyBIndex].pastPos + solverBodies[constraint.solverBodyBIndex].velocity * ServiceLocator::GetTimeManager()->GetFixedDeltaTime() * solverBodies[constraint.solverBodyBIndex].inverseMass;
+		
+		// Δω
+		Vector3 deltaAngularVelocity{ solverBodies[constraint.solverBodyAIndex].angularVelocity * ServiceLocator::GetTimeManager()->GetFixedDeltaTime() };
+		// Δωの四元数を作る
+		Quaternion rotOmega{ Quaternion::AngleAxis(deltaAngularVelocity.Length(),deltaAngularVelocity) };
+		// 今の回転＋トルク(Δtに離散化)×慣性テンソルの逆行列
+		solverBodies[constraint.solverBodyAIndex].rotation *= rotOmega;
+
+		// Δω
+		deltaAngularVelocity = solverBodies[constraint.solverBodyBIndex].angularVelocity * ServiceLocator::GetTimeManager()->GetFixedDeltaTime();
+		// Δωの四元数を作る
+		rotOmega = Quaternion::AngleAxis(deltaAngularVelocity.Length(), deltaAngularVelocity);
+		// 今の回転＋トルク(Δtに離散化)×慣性テンソルの逆行列
+		solverBodies[constraint.solverBodyBIndex].rotation *= rotOmega;
+	}
+}
+
 
 void CollisionSolverSystem::PositionSolver(PhysicsTransformStorage* _transformStorage, RigidBodyStorage* _bodyStorage, CollisionManifoldBuffer* _manifoldBuffer)
 {
@@ -132,63 +212,6 @@ void CollisionSolverSystem::PositionSolver(PhysicsTransformStorage* _transformSt
 	}
 }
 
-void CollisionSolverSystem::VelocitySolver(PhysicsTransformStorage* _transformStorage, RigidBodyStorage* _bodyStorage, CollisionManifoldBuffer* _manifoldBuffer)
-{
-	for (auto& contactConstraint : contactConstraints)
-	{
-		float totalInvMass{ solverBodies[contactConstraint.solverBodyAIndex].inverseMass + solverBodies[contactConstraint.solverBodyBIndex].inverseMass };
-		if (totalInvMass == 0)
-		{
-			continue;
-		}
-
-		// 重心から衝突点ベクトル
-		Vector3 rA{ contactConstraint.position - solverBodies[contactConstraint.solverBodyAIndex].position };
-		Vector3 rB{ contactConstraint.position - solverBodies[contactConstraint.solverBodyBIndex].position };
-
-		// 相対速度
-		Vector3 vA{ solverBodies[contactConstraint.solverBodyAIndex].velocity +
-			Vector3::Cross(solverBodies[contactConstraint.solverBodyAIndex].angularVelocity, rA) };
-
-		Vector3 vB{ solverBodies[contactConstraint.solverBodyBIndex].velocity +
-			Vector3::Cross(solverBodies[contactConstraint.solverBodyBIndex].angularVelocity, rB) };
-
-		Vector3 relativeVec{ vA - vB };
-
-		float vn{ Vector3::Dot(relativeVec,contactConstraint.normal) };
-		if (vn > 0.0f)
-		{
-			continue;
-		}
-		// 質量係数( mass01 * mass02 / mass01 + mass02)
-		float massCoefficient{ solverBodies[contactConstraint.solverBodyAIndex].inverseMass + solverBodies[contactConstraint.solverBodyBIndex].inverseMass };
-
-		// 回転項
-		Vector3 rotationA{ Vector3::Cross((solverBodies[contactConstraint.solverBodyAIndex].inverseInertiaTensor * Vector3::Cross(rA,contactConstraint.normal)),rA) };
-		Vector3 rotationB{ Vector3::Cross((solverBodies[contactConstraint.solverBodyBIndex].inverseInertiaTensor * Vector3::Cross(rB,contactConstraint.normal)),rB) };
-		float rotationCoefficient{ Vector3::Dot(rotationA + rotationB,contactConstraint.normal) };
-
-		// 撃力計算
-		float j{ -vn / massCoefficient };
-		
-		Vector3 impulse = contactConstraint.normal * j;
-
-		solverBodies[contactConstraint.solverBodyAIndex].velocity += impulse * solverBodies[contactConstraint.solverBodyAIndex].inverseMass;
-		solverBodies[contactConstraint.solverBodyBIndex].velocity -= impulse* solverBodies[contactConstraint.solverBodyBIndex].inverseMass;
-
-		// 角速度用の撃力計算
-		impulse /= rotationCoefficient;
-
-		solverBodies[contactConstraint.solverBodyAIndex].angularVelocity += solverBodies[contactConstraint.solverBodyAIndex].inverseInertiaTensor * Vector3::Cross(rA, impulse);
-		solverBodies[contactConstraint.solverBodyBIndex].angularVelocity -= solverBodies[contactConstraint.solverBodyBIndex].inverseInertiaTensor * Vector3::Cross(rB, impulse);
-	}
-}
-
-void CollisionSolverSystem::OrientationSolver(PhysicsTransformStorage* _transformStorage, RigidBodyStorage* _bodyStorage, CollisionManifoldBuffer* _manifoldBuffer)
-{
-
-}
-
 void CollisionSolverSystem::End(PhysicsTransformStorage* _transformStorage, RigidBodyStorage* _bodyStorage)
 {
 	// 結果を反映していく
@@ -220,8 +243,10 @@ uint32_t CollisionSolverSystem::CreateSolverBody(PhysicsTransformStorage* _trans
 	body.transformID = _transformID;
 	uint32_t bodyIndex{ _bodyStorage->GetDenseIndex(_bodyID) };
 	uint32_t transformIndex{ _transformStorage->GetDenseIndex(_transformID) };
+	body.pastPos = _bodyStorage->pastPos[bodyIndex];
 	body.position = _transformStorage->position[transformIndex];
 	body.velocity = _bodyStorage->velocity[bodyIndex];
+	body.pastRot = _bodyStorage->pastRot[bodyIndex];
 	body.rotation = _transformStorage->rotation[transformIndex];
 	body.angularVelocity = _bodyStorage->angularVelocity[bodyIndex];
 	body.mass = _bodyStorage->mass[bodyIndex];
