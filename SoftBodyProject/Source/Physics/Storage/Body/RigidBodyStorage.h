@@ -72,9 +72,9 @@ public:
 	// --- 衝突用 ---
 
 	// 推定移動位置
-	std::vector<Vector3> expectedPos;
+	std::vector<Vector3> pastPos;
 	// 推定姿勢
-	std::vector<Quaternion> expectedRot;
+	std::vector<Quaternion> pastRot;
 
 	// --- Dirty系 ---
 	

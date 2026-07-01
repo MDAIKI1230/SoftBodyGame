@@ -40,9 +40,9 @@ BodyID RigidBodyStorage::CreateRigidBody(EntityID _entity, PhysicsTransformID _t
 	// --- 衝突用 ---
 
 	// 推定移動位置
-	expectedPos.emplace_back();
+	pastPos.emplace_back();
 	// 推定姿勢
-	expectedRot.emplace_back();
+	pastRot.emplace_back();
 
 	// --- Dirty系 ---
 
@@ -114,11 +114,11 @@ void RigidBodyStorage::Destroy(BodyID _id)
 	// --- 衝突用 ---
 
 	// 推定移動位置
-	expectedPos[index] = std::move(expectedPos.back());
-	expectedPos.pop_back();
+	pastPos[index] = std::move(pastPos.back());
+	pastPos.pop_back();
 	// 推定姿勢
-	expectedRot[index] = std::move(expectedRot.back());
-	expectedRot.pop_back();
+	pastRot[index] = std::move(pastRot.back());
+	pastRot.pop_back();
 
 	// マテリアルID(一旦なし)
 	physicsMatrialID[index] = std::move(physicsMatrialID.back());

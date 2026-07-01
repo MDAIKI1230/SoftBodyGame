@@ -38,6 +38,8 @@ void RigidBodySystem::UpdatePosition(RigidBodyStorage* _bodyStorage, PhysicsTran
 		// 速度 + 加速度(力(Δt) * 質量の逆数)
 		_bodyStorage->velocity[bodyIndex] += _bodyStorage->force[bodyIndex] * ServiceLocator::GetTimeManager()->GetFixedDeltaTime() * _bodyStorage->inverseMass[bodyIndex];
 
+		// 位置保存
+		_bodyStorage->pastPos[bodyIndex] = _transformStorage->position[transIndex];
 
 		// 今の位置 + 速度
 		_transformStorage->position[transIndex] += _bodyStorage->velocity[bodyIndex] * ServiceLocator::GetTimeManager()->GetFixedDeltaTime();
@@ -60,6 +62,9 @@ void RigidBodySystem::UpdateRotation(RigidBodyStorage* _bodyStorage, PhysicsTran
 		Vector3 deltaAngularVelocity{ _bodyStorage->angularVelocity[bodyIndex] * ServiceLocator::GetTimeManager()->GetFixedDeltaTime() };
 		// Δωの四元数を作る
 		Quaternion rotOmega{ Quaternion::AngleAxis(deltaAngularVelocity.Length(),deltaAngularVelocity) };
+
+		// 姿勢保存
+		_bodyStorage->pastRot[bodyIndex] = _transformStorage->rotation[transIndex];
 
 		// 今の回転＋トルク(Δtに離散化)×慣性テンソルの逆行列
 		_transformStorage->rotation[transIndex] *= rotOmega;
