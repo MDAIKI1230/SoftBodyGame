@@ -23,7 +23,4 @@ void PhysicsWorld::FixedUpdate(WorldStorage* _worldStorage, EventManager* _event
 	collisionSystem->FixedUpdate(transformStorage.get(), colliderStorage.get(), manifoldBuffer.get(), _eventManager);
 	collisionSolverSystem->FixedUpdate(transformStorage.get(), rigidBodyStorage.get(), colliderStorage.get(), manifoldBuffer.get());
 	physicsCommitSystem->FixedUpdate(transformStorage.get(), _worldStorage);
-
-	// 終了処理
-	manifoldBuffer->manifolds.clear();
 }

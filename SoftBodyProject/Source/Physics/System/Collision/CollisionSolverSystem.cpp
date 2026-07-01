@@ -38,24 +38,40 @@ void CollisionSolverSystem::StartUp(PhysicsTransformStorage* _transformStorage, 
 	solverBodies.reserve(_manifoldBuffer->manifolds.size());
 	bodyMap.reserve(_manifoldBuffer->manifolds.size());
 
+	// 削除ペア保存して後で消す
+	std::vector<CollisionPair::Pair> erasePairs;
 	// すべての衝突情報から拘束条件とソルバ用Bodyの作成をする
 	for (auto& manifold : _manifoldBuffer->manifolds)
 	{
-		for (int i{ 0 }; i < manifold.pointCount; i++)
+		if (manifold.second.isCollision == true)
 		{
-			ContactConstraint contactConstraint;
-			// SolverBodyのIndexを取得
-			PhysicsTransformID transformID{ _colliderStorage->GetTransformID(manifold.colliderA) };
-			contactConstraint.solverBodyAIndex = GetSolverBodyIndex(_transformStorage, _bodyStorage, transformID);
-			transformID = _colliderStorage->GetTransformID(manifold.colliderB);
-			contactConstraint.solverBodyBIndex = GetSolverBodyIndex(_transformStorage, _bodyStorage, transformID);
+			for (int i{ 0 }; i < manifold.second.pointCount; i++)
+			{
+				ContactConstraint contactConstraint;
+				// SolverBodyのIndexを取得
+				PhysicsTransformID transformID{ _colliderStorage->GetTransformID(manifold.second.colliderA) };
+				contactConstraint.solverBodyAIndex = GetSolverBodyIndex(_transformStorage, _bodyStorage, transformID);
+				transformID = _colliderStorage->GetTransformID(manifold.second.colliderB);
+				contactConstraint.solverBodyBIndex = GetSolverBodyIndex(_transformStorage, _bodyStorage, transformID);
 
-			contactConstraint.position = manifold.points[i].position;
-			contactConstraint.normal =  manifold.normal;
-			contactConstraint.penetration = manifold.points[i].penetration;
+				contactConstraint.position = manifold.second.points[i].position;
+				contactConstraint.normal = manifold.second.normal;
+				contactConstraint.penetration = manifold.second.points[i].penetration;
 
-			contactConstraints.push_back(contactConstraint);
+				contactConstraints.push_back(contactConstraint);
+			}
 		}
+		else
+		{
+			// ManifoldBufferの消すべきペアの追加
+			erasePairs.push_back(manifold.first);
+		}
+	}
+
+	// 削除
+	for (auto& erasePair : erasePairs)
+	{
+		_manifoldBuffer->manifolds.erase(erasePair);
 	}
 }
 

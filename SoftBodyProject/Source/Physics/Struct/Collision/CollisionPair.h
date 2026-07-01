@@ -4,13 +4,13 @@
 
 namespace CollisionPair
 {
-	struct BroadPhasePair
+	struct Pair
 	{
 		ColliderID a, b;
 
-		bool operator==(const BroadPhasePair& other) const
+		bool operator==(const Pair& other) const
 		{
-			return a.index == other.a.index && b.index == other.b.index;
+			return a.index == other.a.index && b.index == other.b.index || a.index == other.b.index && b.index == other.a.index;
 		}
 	};
 
@@ -34,9 +34,9 @@ namespace CollisionPair
 }
 
 template<>
-struct std::hash<CollisionPair::BroadPhasePair>
+struct std::hash<CollisionPair::Pair>
 {
-	size_t operator()(const CollisionPair::BroadPhasePair& p) const
+	size_t operator()(const CollisionPair::Pair& p) const
 	{
 		return std::hash<size_t>{}(p.a.index)
 			^ (std::hash<size_t>{}(p.b.index) << 1);

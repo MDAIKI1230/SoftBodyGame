@@ -134,16 +134,16 @@ private:
 	std::vector<ColliderProjection> colliderProjectionZValues;
 
 	// AABBの衝突判定用のカウンター
-	std::unordered_map<CollisionPair::BroadPhasePair, int> crossCountMap{};
+	std::unordered_map<CollisionPair::Pair, int> crossCountMap{};
 
 	// ナローフェーズへ移行できるペア(Dispatch処理でペアの形状を判定する)
-	std::vector<CollisionPair::BroadPhasePair> broadClearPairs;
+	std::vector<CollisionPair::Pair> broadClearPairs;
 
 	// --- 衝突管理 ---
 	// 今回当たってたやつ
-	std::unordered_set<CollisionPair::BroadPhasePair> currentFramePair;
+	std::unordered_set<CollisionPair::Pair> currentFramePair;
 	// 前回当たってたやつ
-	std::unordered_set<CollisionPair::BroadPhasePair> prevFramePair;
+	std::unordered_set<CollisionPair::Pair> prevFramePair;
 
 	// コライダーIDのindexに対応させる。
 	std::vector<ColliderProjectionData> projectionDatas;

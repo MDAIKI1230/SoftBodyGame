@@ -8,17 +8,25 @@ struct ContactPoint
 {
 	Vector3 position;
 	float penetration;
-	float normalImpulse;
 };
 
 
 struct Manifold
 {
+public:
+	void AddPoints(const ContactPoint& _contactPoint)
+	{
+		points[pointCount] = _contactPoint;
+		pointCount = (pointCount + 1) % 4;
+	}
+public:
 	ColliderID colliderA;
 	ColliderID colliderB;
 
 	Vector3 normal;
 
 	ContactPoint points[4];
-	int pointCount{ 1 };
+	int pointCount{ 0 };
+
+	bool isCollision;
 };
