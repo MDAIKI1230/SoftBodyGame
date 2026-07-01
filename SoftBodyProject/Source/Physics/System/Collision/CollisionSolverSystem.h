@@ -10,6 +10,7 @@
 #include "ColliderStorage.h"
 
 #include "ContactConstraint.h"
+#include "Constraint.h"
 #include "SolverBody.h"
 
 class CollisionSolverSystem
@@ -43,6 +44,7 @@ private:
 		PhysicsTransformStorage* _transformStorage, RigidBodyStorage* _bodyStorage, PhysicsTransformID& _transformID);
 private:
 	std::vector<ContactConstraint> contactConstraints;
+	std::vector<Constraint> constraints;
 	std::vector<SolverBody> solverBodies;
 	std::unordered_map<PhysicsTransformID, uint32_t> bodyMap;
 };

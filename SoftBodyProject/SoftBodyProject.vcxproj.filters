@@ -146,6 +146,9 @@
     <Filter Include="ソース ファイル\Physics\Struct\Collision">
       <UniqueIdentifier>{2e45a226-c298-41e8-a4d5-c588fb03dc73}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Physics\Struct\Constraint">
+      <UniqueIdentifier>{277277a4-b6a9-4c59-b178-a4b8be73190d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Objects\Camera.h">
@@ -457,7 +460,13 @@
     <ClInclude Include="Source\Physics\Struct\Body\SolverBody.h">
       <Filter>ソース ファイル\Physics\Struct\Body</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Physics\Struct\Collision\ContactConstraint.h">
+    <ClInclude Include="Source\Physics\Struct\Constraint\ContactConstraint.h">
+      <Filter>ソース ファイル\Physics\Struct\Constraint</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Struct\Constraint\Constraint.h">
+      <Filter>ソース ファイル\Physics\Struct\Constraint</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Struct\Collision\MinkowskiVertex.h">
       <Filter>ソース ファイル\Physics\Struct\Collision</Filter>
     </ClInclude>
   </ItemGroup>

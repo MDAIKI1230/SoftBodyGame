@@ -97,7 +97,7 @@ private:
 		ColliderStorage* _colliderStorage,
 		CollisionManifoldBuffer* _manifoldBuffer, Simplex& _simplex);
 
-	void ComputeFace(Face& _face, std::vector<Vector3>& _vertices);
+	void ComputeFace(Face& _face, std::vector<MinkowskiVertex>& _vertices);
 	void AddEdge(Edge& _edge, std::vector<Edge>& _edges);
 
 	// --- ソート ---

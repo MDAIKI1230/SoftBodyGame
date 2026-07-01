@@ -4,7 +4,7 @@
 void CollisionSolverSystem::FixedUpdate(PhysicsTransformStorage* _transformStorage, RigidBodyStorage* _bodyStorage, ColliderStorage* _colliderStorage, CollisionManifoldBuffer* _manifoldBuffer)
 {
 	StartUp(_transformStorage, _bodyStorage, _colliderStorage, _manifoldBuffer);
-	VelocitySolver(_transformStorage, _bodyStorage, _manifoldBuffer);
+	// VelocitySolver(_transformStorage, _bodyStorage, _manifoldBuffer);
 	PositionSolver(_transformStorage, _bodyStorage, _manifoldBuffer);
 	OrientationSolver(_transformStorage, _bodyStorage, _manifoldBuffer);
 	End(_transformStorage, _bodyStorage);
@@ -22,63 +22,113 @@ void CollisionSolverSystem::StartUp(PhysicsTransformStorage* _transformStorage, 
 	{
 		for (int i{ 0 }; i < manifold.pointCount; i++)
 		{
-			ContactConstraint constraint;
+			ContactConstraint contactConstraint;
 			// SolverBodyのIndexを取得
 			PhysicsTransformID transformID{ _colliderStorage->GetTransformID(manifold.colliderA) };
-			constraint.solverBodyAIndex = GetSolverBodyIndex(_transformStorage, _bodyStorage, transformID);
+			contactConstraint.solverBodyAIndex = GetSolverBodyIndex(_transformStorage, _bodyStorage, transformID);
 			transformID = _colliderStorage->GetTransformID(manifold.colliderB);
-			constraint.solverBodyBIndex = GetSolverBodyIndex(_transformStorage, _bodyStorage, transformID);
+			contactConstraint.solverBodyBIndex = GetSolverBodyIndex(_transformStorage, _bodyStorage, transformID);
 
-			constraint.position = manifold.points[i].position;
-			constraint.normal = manifold.normal;
-			constraint.penetration = manifold.points[i].penetration;
+			contactConstraint.position = manifold.points[i].position;
+			contactConstraint.normal =  manifold.normal;
+			contactConstraint.penetration = manifold.points[i].penetration;
 
-			contactConstraints.push_back(constraint);
+			contactConstraints.push_back(contactConstraint);
 		}
 	}
 }
 
 void CollisionSolverSystem::PositionSolver(PhysicsTransformStorage* _transformStorage, RigidBodyStorage* _bodyStorage, CollisionManifoldBuffer* _manifoldBuffer)
 {
-	for (auto& contactConstraint : contactConstraints)
+	for (auto& constraint : contactConstraints)
 	{
 		// 質量から両者がBodyを持っているかの判定をする(どちらかがBodyを持っているなら合計は0じゃないはず)
-		float totalInvMass{ solverBodies[contactConstraint.solverBodyAIndex].mass + solverBodies[contactConstraint.solverBodyBIndex].mass };
+		float totalInvMass{ solverBodies[constraint.solverBodyAIndex].inverseMass + solverBodies[constraint.solverBodyBIndex].inverseMass };
 		if (totalInvMass <= 0)
 		{
 			continue;
 		}
 
-		// 速度
-		Vector3 vecA{ contactConstraint.normal * contactConstraint.penetration * (solverBodies[contactConstraint.solverBodyAIndex].mass / totalInvMass) };
-		Vector3 vecB{ -contactConstraint.normal * contactConstraint.penetration * (solverBodies[contactConstraint.solverBodyBIndex].mass / totalInvMass) };
-
-		// コンストレイント
-		Vector3 constraintA{ solverBodies[contactConstraint.solverBodyAIndex].position + vecA };
-		Vector3 constraintB{ solverBodies[contactConstraint.solverBodyBIndex].position + vecB };
-
-		// 内積
-		float jvA{ Vector3::Dot(constraintA,contactConstraint.normal) };
-		float jvB{ Vector3::Dot(constraintB,-contactConstraint.normal) };
-
 		// バネ定数
-		float k{ 0.2f };
+		float k{ 1.0f };
+		// バネ定数×Δt
+		float kDeltaTime{ k * ServiceLocator::GetTimeManager()->GetFixedDeltaTime() };
 		// 減衰定数
-		float c{ 0.5f };
+		float c{ 1.0f };
+		// biasを求める
+		float erp{ kDeltaTime / (kDeltaTime + c) };
+		float bias{ erp / ServiceLocator::GetTimeManager()->GetFixedDeltaTime() * constraint.penetration };
 
-		// Δtk
-		float deltaK{ ServiceLocator::GetTimeManager()->GetFixedDeltaTime() * k };
+		// γ
+		float gamma{ 1 / c + kDeltaTime };
 
-		// ERP項の計算
-		float beta{ deltaK / (deltaK + c) };
-		float erpA{ beta / ServiceLocator::GetTimeManager()->GetFixedDeltaTime() * jvA };
-		float erpB{ beta / ServiceLocator::GetTimeManager()->GetFixedDeltaTime() * jvB };
+		// 重心から衝突点ベクトル
+		Vector3 rA{ constraint.position - solverBodies[constraint.solverBodyAIndex].position };
+		Vector3 rB{ constraint.position - solverBodies[constraint.solverBodyBIndex].position };
 
-		// CFM項
-		float ganma{ 1 / deltaK + c };
-		
+		// 重心から衝突点ベクトルAと法線の外積
+		Vector3 rACross{ Vector3::Cross(rA,constraint.normal) };
+		// 重心から衝突点ベクトルBと法線の外積
+		Vector3 rBCross{ Vector3::Cross(rB,constraint.normal) };
 
+		// ヤコビアン
+		Vector3 jacobian[4]{ constraint.normal,rACross,-constraint.normal,-rBCross };
+		// 変化量ベクトル
+		Vector3 deltaVector[4]{
+			solverBodies[constraint.solverBodyAIndex].velocity,
+			solverBodies[constraint.solverBodyAIndex].angularVelocity,
+			solverBodies[constraint.solverBodyBIndex].velocity,
+			solverBodies[constraint.solverBodyBIndex].angularVelocity,
+		};
+		// λを求める λ = -Jv - bias / Jm^-1J^T
+		// ヤコビアンと変化量ベクトルから速度拘束条件Jv = 0のJv作成
+		float jv{ 0 };
+		for (int i{ 0 }; i < 4; i++)
+		{
+			jv += Vector3::Dot(jacobian[i], deltaVector[i]);
+		}
 
+		// 質量と慣性テンソルが速度に影響する度合い
+		float effectiveMass{
+			solverBodies[constraint.solverBodyAIndex].inverseMass +
+			Vector3::Dot(rACross,solverBodies[constraint.solverBodyAIndex].inverseInertiaTensor * rACross) +
+			solverBodies[constraint.solverBodyBIndex].inverseMass +
+			Vector3::Dot(rBCross,solverBodies[constraint.solverBodyBIndex].inverseInertiaTensor * rBCross)
+		};
+
+		// λ計算
+		float lambda{ (jv - bias) / effectiveMass };
+
+		// CFM適応
+		lambda /= gamma;
+
+		// 0未満にしない
+		lambda = std::max(0.0f, lambda);
+
+		// 速度の解消
+		solverBodies[constraint.solverBodyAIndex].velocity -= constraint.normal * lambda * solverBodies[constraint.solverBodyAIndex].inverseMass;
+		solverBodies[constraint.solverBodyAIndex].angularVelocity -= solverBodies[constraint.solverBodyAIndex].inverseInertiaTensor * rACross * lambda;
+
+		solverBodies[constraint.solverBodyBIndex].velocity += constraint.normal * lambda * solverBodies[constraint.solverBodyBIndex].inverseMass;
+		solverBodies[constraint.solverBodyBIndex].angularVelocity += solverBodies[constraint.solverBodyBIndex].inverseInertiaTensor * rBCross * lambda;
+
+		// 位置の解消
+		lambda = constraint.penetration / effectiveMass;
+
+		// CFM適応
+		// lambda /= gamma;
+
+		solverBodies[constraint.solverBodyAIndex].position -= constraint.normal * lambda * solverBodies[constraint.solverBodyAIndex].inverseMass;
+		solverBodies[constraint.solverBodyBIndex].position += constraint.normal * lambda * solverBodies[constraint.solverBodyBIndex].inverseMass;
+
+		// 姿勢制御
+		Vector3 angVec{ solverBodies[constraint.solverBodyAIndex].inverseInertiaTensor * rACross * lambda };
+		Quaternion rotOmega{ Quaternion::AngleAxis(angVec.Length(), angVec) };
+		solverBodies[constraint.solverBodyAIndex].rotation *= rotOmega;
+
+		angVec = solverBodies[constraint.solverBodyAIndex].inverseInertiaTensor * rACross * lambda;
+		rotOmega = Quaternion::AngleAxis(angVec.Length(), angVec);
+		solverBodies[constraint.solverBodyAIndex].rotation *= rotOmega;
 	}
 }
 
@@ -129,8 +179,8 @@ void CollisionSolverSystem::VelocitySolver(PhysicsTransformStorage* _transformSt
 		// 角速度用の撃力計算
 		impulse /= rotationCoefficient;
 
-		solverBodies[contactConstraint.solverBodyAIndex].angularVelocity += solverBodies[contactConstraint.solverBodyAIndex].inverseInertiaTensor * impulse;
-		solverBodies[contactConstraint.solverBodyBIndex].angularVelocity -= solverBodies[contactConstraint.solverBodyBIndex].inverseInertiaTensor * impulse;
+		solverBodies[contactConstraint.solverBodyAIndex].angularVelocity += solverBodies[contactConstraint.solverBodyAIndex].inverseInertiaTensor * Vector3::Cross(rA, impulse);
+		solverBodies[contactConstraint.solverBodyBIndex].angularVelocity -= solverBodies[contactConstraint.solverBodyBIndex].inverseInertiaTensor * Vector3::Cross(rB, impulse);
 	}
 }
 

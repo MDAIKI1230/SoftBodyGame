@@ -247,13 +247,16 @@ bool CollisionSystem::GJK(
 	while (true)
 	{
 		// ミンコフスキー差の支点計算
-		Vector3 vec{ A::Support(_colliderStorage,_colliderA, _transformStorage,dir) - B::Support(_colliderStorage,_colliderB,_transformStorage ,-dir) };
+		MinkowskiVertex vertex;
+		vertex.supportA = A::Support(_colliderStorage, _colliderA, _transformStorage, dir);
+		vertex.supportB = B::Support(_colliderStorage, _colliderB, _transformStorage, -dir);
+		vertex.minkowski = { vertex.supportA - vertex.supportB };
 
 		// 支点をSimplexに追加
-		simplex.Add(vec);
+		simplex.Add(vertex);
 
 		// 内積から当たる可能性があるのか見てみる
-		if (Vector3::Dot(vec, dir) < 0)
+		if (Vector3::Dot(vertex.minkowski, dir) < 0)
 		{
 			return false;
 		}
@@ -332,7 +335,7 @@ bool CollisionSystem::SimplexSolve(Simplex& _simplex, Vector3& _output)
 bool CollisionSystem::SolvePoint(Simplex& _simplex, Vector3& _output)
 {
 	// 点が一つなので単純に座標がそのまま方向にする
-	_output = -_simplex[0];
+	_output = -_simplex[0].minkowski;
 	// 当たったかわからないからfalse
 	return false;
 }
@@ -341,9 +344,9 @@ bool CollisionSystem::SolvePoint(Simplex& _simplex, Vector3& _output)
 bool CollisionSystem::SolveLine(Simplex& _simplex, Vector3& _output)
 {
 	//        　　　　スタート地点   終点地点
-	Vector3 segment{ _simplex[0] - _simplex[1] };
+	Vector3 segment{ _simplex[0].minkowski - _simplex[1].minkowski };
 	// スタート地点から原点へのベクトル
-	Vector3 startVec{ -_simplex[0] };
+	Vector3 startVec{ -_simplex[0].minkowski };
 	// 三重積を使ってベクトルを求める
 	_output = Vector3::Cross(Vector3::Cross(segment, startVec), segment);
 	// 当たったかわからないからfalse
@@ -355,14 +358,14 @@ bool CollisionSystem::SolveTriangle(Simplex& _simplex, Vector3& _output)
 {
 	// 各線分
 	Vector3 segments[4]{ 
-		 _simplex[0] - _simplex[2],
-		 _simplex[1] - _simplex[2],
-		 _simplex[0] - _simplex[1],
-		 _simplex[2] - _simplex[1]
+		 _simplex[0].minkowski - _simplex[2].minkowski,
+		 _simplex[1].minkowski - _simplex[2].minkowski,
+		 _simplex[0].minkowski - _simplex[1].minkowski,
+		 _simplex[2].minkowski - _simplex[1].minkowski
 	};
 
 	// 新たな点と原点ベクトル
-	Vector3 toOrigin{ -_simplex[2] };
+	Vector3 toOrigin{ -_simplex[2].minkowski };
 
 	// 外積
 	Vector3 cross{ Vector3::Cross(segments[0],Vector3::Cross(segments[0],segments[1]))};
@@ -383,7 +386,7 @@ bool CollisionSystem::SolveTriangle(Simplex& _simplex, Vector3& _output)
 	}
 
 	cross = Vector3::Cross(segments[2], Vector3::Cross(segments[2], segments[3]));
-	toOrigin = -_simplex[0];
+	toOrigin = -_simplex[0].minkowski;
 
 	if (Vector3::Dot(toOrigin, cross) > 0)
 	{
@@ -392,13 +395,14 @@ bool CollisionSystem::SolveTriangle(Simplex& _simplex, Vector3& _output)
 		return false;
 	}
 
-
 	// 三角形内の領域なので三角形の外積で勝負
 	cross = Vector3::Cross(segments[0], segments[1]);
 
 	if (Vector3::Dot(cross, toOrigin) < 0)
 	{
 		_output = -cross;
+
+		return false;
 	}
 
 	_output = cross;
@@ -413,13 +417,14 @@ bool CollisionSystem::SolveTetrahedron(Simplex& _simplex, Vector3& _output)
 	int size{ _simplex.GetSize() };
 	// ベスト評価
 	float bestScore{ FLT_MIN };
+	int index{ 0 };
 	// 各頂点から四面体の四つの面を確認する
 	for (int i{ 0 }; i < size; i++)
 	{
 		// 頂点の検出
-		Vector3 a{ _simplex[i] };
-		Vector3 b{ _simplex[(i + 1) % size] };
-		Vector3 c{ _simplex[(i + 2) % size] };
+		Vector3 a{ _simplex[i].minkowski };
+		Vector3 b{ _simplex[(i + 1) % size].minkowski };
+		Vector3 c{ _simplex[(i + 2) % size].minkowski };
 
 		// 外積計算から
 		Vector3 cross{ Vector3::Cross(b - a,c - a) };
@@ -443,6 +448,8 @@ bool CollisionSystem::SolveTetrahedron(Simplex& _simplex, Vector3& _output)
 			{
 				bestScore = score;
 				_output = cross;
+
+				index = i;
 			}
 		}
 	}
@@ -454,20 +461,7 @@ bool CollisionSystem::SolveTetrahedron(Simplex& _simplex, Vector3& _output)
 	}
 	else
 	{
-		// 最も原点から遠い点を削除する
-		bestScore = FLT_MIN;
-		int bestIndex{ 0 };
-		for (int i{ 0 }; i < size; i++)
-		{
-			float len{ _simplex[i].LengthSqr() };
-			if (len > bestScore)
-			{
-				bestScore = len;
-				bestIndex = i;
-			}
-		}
-
-		_simplex.Erase(bestIndex);
+		_simplex.Erase(index + 3);
 		return false;
 	}
 }
@@ -479,7 +473,7 @@ void CollisionSystem::EPA(
 	ColliderStorage* _colliderStorage,
 	CollisionManifoldBuffer* _manifoldBuffer, Simplex& _simplex)
 {
-	std::vector<Vector3> vertices{ _simplex[0],_simplex[1], _simplex[2], _simplex[3] };
+	std::vector<MinkowskiVertex> vertices{ _simplex[0],_simplex[1], _simplex[2], _simplex[3] };
 	std::vector<Face> faces;
 	std::vector<Edge> edges;
 
@@ -518,16 +512,21 @@ void CollisionSystem::EPA(
 		edges.clear();
 
 		// サポート関数を使って新たな点を計算
-		Vector3 support{ A::Support(_colliderStorage,_colliderA, _transformStorage,faces[minIndex].normal) - B::Support(_colliderStorage,_colliderB,_transformStorage ,-faces[minIndex].normal) };
-		
+		// ミンコフスキー差の支点計算
+		MinkowskiVertex vertex;
+		vertex.supportA = A::Support(_colliderStorage, _colliderA, _transformStorage, faces[minIndex].normal);
+		vertex.supportB = B::Support(_colliderStorage, _colliderB, _transformStorage, -faces[minIndex].normal);
+		vertex.minkowski = { vertex.supportA - vertex.supportB };
+
 		// 収束判定
-		if (std::abs(Vector3::Dot(faces[minIndex].normal, support) - faces[minIndex].distance) < MathConstants::EPSILON)
+		if (std::abs(Vector3::Dot(faces[minIndex].normal, vertex.minkowski) - faces[minIndex].distance) < MathConstants::EPSILON)
 		{
 			Manifold manifold;
 			manifold.colliderA = _colliderA;
 			manifold.colliderB = _colliderB;
 			manifold.normal = faces[minIndex].normal.Normalize();
 			manifold.points[0].penetration = faces[minIndex].distance;
+			manifold.points[0].position = _transformStorage->position[_transformStorage->GetDenseIndex(_colliderStorage->GetTransformID(_colliderA))] + manifold.normal * manifold.points[0].penetration;
 			manifold.pointCount = 1;
 
 			_manifoldBuffer->manifolds.push_back(manifold);
@@ -535,13 +534,13 @@ void CollisionSystem::EPA(
 			return;
 		}
 
-		vertices.push_back(support);
+		vertices.push_back(vertex);
 
 		// エッジを追加
 		for (int i{ (int)faces.size() - 1 }; i >= 0; i--)
 		{
 			// 内積で、新たな点を向いてる面を出す。
-			if (Vector3::Dot(faces[i].normal, support - vertices[faces[i].pointIndex[0]]) > 0)
+			if (Vector3::Dot(faces[i].normal, vertex.minkowski - vertices[faces[i].pointIndex[0]].minkowski) > 0)
 			{
 				// 新しいエッジ追加
 				for (int j{ 0 }; j < 3;j++)
@@ -577,13 +576,14 @@ void CollisionSystem::EPA(
 
 		count++;
 
-		if (count > 20)
+		if (count > 10)
 		{
 			Manifold manifold;
 			manifold.colliderA = _colliderA;
 			manifold.colliderB = _colliderB;
 			manifold.normal = faces[minIndex].normal.Normalize();
 			manifold.points[0].penetration = faces[minIndex].distance;
+			manifold.points[0].position = _transformStorage->position[_transformStorage->GetDenseIndex(_colliderStorage->GetTransformID(_colliderA))] + manifold.normal * manifold.points[0].penetration;
 			manifold.pointCount = 1;
 
 			_manifoldBuffer->manifolds.push_back(manifold);
@@ -593,12 +593,12 @@ void CollisionSystem::EPA(
 	}
 }
 
-void CollisionSystem::ComputeFace(Face& _face, std::vector<Vector3>& _vertices)
+void CollisionSystem::ComputeFace(Face& _face, std::vector<MinkowskiVertex>& _vertices)
 {
 	// 頂点の検出
-	Vector3 a{ _vertices[_face.pointIndex[0]] };
-	Vector3 b{ _vertices[_face.pointIndex[1]] };
-	Vector3 c{ _vertices[_face.pointIndex[2]] };
+	Vector3 a{ _vertices[_face.pointIndex[0]].minkowski };
+	Vector3 b{ _vertices[_face.pointIndex[1]].minkowski };
+	Vector3 c{ _vertices[_face.pointIndex[2]].minkowski };
 
 	// 外積計算から
 	Vector3 cross{ Vector3::Cross(b - a, c - a) };
@@ -626,15 +626,7 @@ void CollisionSystem::AddEdge(Edge& _edge, std::vector<Edge>& _edges)
 			_edges[i] = _edges.back();
 			_edges.pop_back();
 
-			break;
-		}
-		else if (_edges[i].a == _edge.a &&
-			_edges[i].b == _edge.b)
-		{
-			_edges[i] = _edges.back();
-			_edges.pop_back();
-
-			break;
+			return;
 		}
 	}
 
