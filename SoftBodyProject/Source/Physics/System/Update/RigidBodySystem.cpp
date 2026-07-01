@@ -88,3 +88,14 @@ void RigidBodySystem::UpdateInverseInertiaTensor(RigidBodyStorage* _bodyStorage,
 		_bodyStorage->worldInverseInertiaTensor[bodyIndex] = rotMat * Matrix4x4::Identity() * rotMat.Transpose();
 	}
 }
+
+void RigidBodySystem::End(RigidBodyStorage* _bodyStorage)
+{
+	for (auto& bodyID : _bodyStorage->id)
+	{
+		// 実データインデックスの取得
+		uint32_t bodyIndex{ _bodyStorage->GetDenseIndex(bodyID) };
+		_bodyStorage->force[bodyIndex] = Vector3::ZERO;
+		_bodyStorage->torque[bodyIndex] = Vector3::ZERO;
+	}
+}

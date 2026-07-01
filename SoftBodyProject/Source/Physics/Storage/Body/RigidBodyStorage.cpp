@@ -37,6 +37,13 @@ BodyID RigidBodyStorage::CreateRigidBody(EntityID _entity, PhysicsTransformID _t
 	// ワールド慣性テンソルの逆数
 	worldInverseInertiaTensor.emplace_back();
 
+	// --- 衝突用 ---
+
+	// 推定移動位置
+	expectedPos.emplace_back();
+	// 推定姿勢
+	expectedRot.emplace_back();
+
 	// --- Dirty系 ---
 
 	// ローカル慣性テンソル変更
@@ -103,6 +110,15 @@ void RigidBodyStorage::Destroy(BodyID _id)
 	// ローカル慣性テンソル変更
 	localInertiaDirty[index] = std::move(localInertiaDirty.back());
 	localInertiaDirty.pop_back();
+
+	// --- 衝突用 ---
+
+	// 推定移動位置
+	expectedPos[index] = std::move(expectedPos.back());
+	expectedPos.pop_back();
+	// 推定姿勢
+	expectedRot[index] = std::move(expectedRot.back());
+	expectedRot.pop_back();
 
 	// マテリアルID(一旦なし)
 	physicsMatrialID[index] = std::move(physicsMatrialID.back());

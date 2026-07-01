@@ -69,6 +69,13 @@ public:
 	// ワールド慣性テンソルの逆数
 	std::vector<Matrix4x4> worldInverseInertiaTensor;
 
+	// --- 衝突用 ---
+
+	// 推定移動位置
+	std::vector<Vector3> expectedPos;
+	// 推定姿勢
+	std::vector<Quaternion> expectedRot;
+
 	// --- Dirty系 ---
 	
 	// ローカル慣性テンソル変更
