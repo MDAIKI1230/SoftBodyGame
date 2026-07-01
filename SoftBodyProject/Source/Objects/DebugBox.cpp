@@ -51,8 +51,8 @@ void DebugBox::Update()
 {
 	TransformComponent* trans{ GetComponent<TransformComponent>() };
 	trans->SetPosition(Vector3{ 0.0f,-200.0f,0.0f });
-	Quaternion rot{ Quaternion::AngleAxis(3.14159265 / 90 * ServiceLocator::GetTimeManager()->GetDeltaTime() , Vector3::UP)};
-	trans->Rotate(rot);
+	/*Quaternion rot{ Quaternion::AngleAxis(3.14159265 / 90 * ServiceLocator::GetTimeManager()->GetDeltaTime() , Vector3::UP)};
+	trans->Rotate(rot);*/
 }
 void DebugBox::FixedUpdate()
 {

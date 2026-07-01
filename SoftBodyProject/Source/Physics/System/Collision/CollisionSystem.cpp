@@ -526,7 +526,7 @@ void CollisionSystem::EPA(
 			manifold.colliderB = _colliderB;
 			manifold.normal = faces[minIndex].normal.Normalize();
 			manifold.points[0].penetration = faces[minIndex].distance;
-			manifold.points[0].position = _transformStorage->position[_transformStorage->GetDenseIndex(_colliderStorage->GetTransformID(_colliderA))] + manifold.normal * manifold.points[0].penetration;
+			manifold.points[0].position = CalcContactPosition(faces[minIndex], vertices);
 			manifold.pointCount = 1;
 
 			_manifoldBuffer->manifolds.push_back(manifold);
@@ -583,7 +583,7 @@ void CollisionSystem::EPA(
 			manifold.colliderB = _colliderB;
 			manifold.normal = faces[minIndex].normal.Normalize();
 			manifold.points[0].penetration = faces[minIndex].distance;
-			manifold.points[0].position = _transformStorage->position[_transformStorage->GetDenseIndex(_colliderStorage->GetTransformID(_colliderA))] + manifold.normal * manifold.points[0].penetration;
+			manifold.points[0].position = CalcContactPosition(faces[minIndex], vertices);
 			manifold.pointCount = 1;
 
 			_manifoldBuffer->manifolds.push_back(manifold);
@@ -631,6 +631,32 @@ void CollisionSystem::AddEdge(Edge& _edge, std::vector<Edge>& _edges)
 	}
 
 	_edges.push_back(_edge);
+}
+
+Vector3 CollisionSystem::CalcContactPosition(Face& _face, std::vector<MinkowskiVertex>& _vertices)
+{
+	Vector3 closestPoint{ _face.normal * _face.distance };
+	Vector3 v0{ _vertices[_face.pointIndex[1]].minkowski - _vertices[_face.pointIndex[0]].minkowski };
+	Vector3	v1{ _vertices[_face.pointIndex[2]].minkowski - _vertices[_face.pointIndex[0]].minkowski };
+	Vector3	v2{ closestPoint - _vertices[_face.pointIndex[0]].minkowski };
+
+	float d00{ Vector3::Dot(v0, v0) };
+	float d01{ Vector3::Dot(v0, v1) };
+	float d11{ Vector3::Dot(v1, v1) };
+	float d20{ Vector3::Dot(v2, v0) };
+	float d21{ Vector3::Dot(v2, v1) };
+
+	float denom{ d00 * d11 - d01 * d01 };
+
+	float w1{ (d11 * d20 - d01 * d21) / denom };
+	float w2{ (d00 * d21 - d01 * d20) / denom };
+	float w0{ 1 - w1 - w2 };
+
+	Vector3 pointA{ _vertices[_face.pointIndex[0]].supportA * w0 + _vertices[_face.pointIndex[1]].supportA * w1 + _vertices[_face.pointIndex[2]].supportA * w2 };
+	Vector3 pointB{ _vertices[_face.pointIndex[0]].supportB * w0 + _vertices[_face.pointIndex[1]].supportB * w1 + _vertices[_face.pointIndex[2]].supportB * w2 };
+
+
+	return (pointA + pointB) * 0.5f;
 }
 
 void CollisionSystem::InsertionSort(std::vector<ColliderProjection>& _projectionValues)
