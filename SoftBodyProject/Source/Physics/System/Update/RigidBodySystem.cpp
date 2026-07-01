@@ -10,6 +10,7 @@ void RigidBodySystem::FixedUpdate(PhysicsTransformStorage* _transformStorage, Ri
 	UpdatePosition(_bodyStorage, _transformStorage);
 	UpdateInverseInertiaTensor(_bodyStorage, _transformStorage);
 	UpdateRotation(_bodyStorage, _transformStorage);
+	End(_bodyStorage);
 }
 
 void RigidBodySystem::UpdateGravity(RigidBodyStorage* _bodyStorage)

@@ -24,7 +24,7 @@ BodyID RigidBodyStorage::CreateRigidBody(EntityID _entity, PhysicsTransformID _t
 	// 重力フラグ
 	isGravity.emplace_back(true);
 	// 重力加速度
-	gravity.emplace_back(0.0, -98.0f, 0.0f);
+	gravity.emplace_back(0.0, -980.0f, 0.0f);
 
 	// --- 質量系 ---
 

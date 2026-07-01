@@ -20,12 +20,14 @@ ApplicationManager::ApplicationManager()
 	renderer = std::make_unique<DxlibRenderer>();
 	input = std::make_unique<DxlibInput>();
 	timeManager = std::make_unique<TimeManager>();
-	sceneManager = std::make_unique<SceneManager>();
 
 	// サービスロケータに登録
 	ServiceLocator::SetRenderer(renderer.get());
 	ServiceLocator::SetInput(input.get());
 	ServiceLocator::SetTimeManager(timeManager.get());
+
+	// 時間を使って初期化系のために後から作る
+	sceneManager = std::make_unique<SceneManager>();
 }
 
 int ApplicationManager::ApplicationMain()

@@ -12,4 +12,7 @@ struct ContactConstraint
 	Vector3 position;
 	Vector3 normal;
 	float penetration;
+
+	// 蓄積したλ
+	float accumulatedLambda{ 0 };
 };
