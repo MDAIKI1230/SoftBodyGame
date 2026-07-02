@@ -1,12 +1,19 @@
 ﻿#pragma once
 
-#include <unordered_map>
+#include <vector>
 
 #include "Manifold.h"
-#include "CollisionPair.h"
 
 class CollisionManifoldBuffer
 {
 public:
-	std::unordered_map<CollisionPair::Pair, Manifold> manifolds;
+	void Clear()
+	{
+		for (auto& manifold : manifolds)
+		{
+			manifold.Clear();
+		}
+	}
+public:
+	std::vector<Manifold> manifolds;
 };

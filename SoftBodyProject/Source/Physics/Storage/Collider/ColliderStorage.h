@@ -30,11 +30,14 @@ public:
     // タイプ取得
     ColliderType GetType(ColliderID _id) const;
     // 実データのインデックス
-    size_t GetDenseIndex(ColliderID _id) const;
+    uint32_t GetDenseIndex(ColliderID _id) const;
     // 持ってるEntity
     EntityID GetOwnerEntity(ColliderID _id) const;
     // TransformID
     PhysicsTransformID GetTransformID(ColliderID _id) const;
+
+    // TransformIDから対応したCollider取得
+    std::vector<ColliderID>& GetColliderIDFromTransformID(PhysicsTransformID _id);
 public:
     std::vector<ColliderSlot> slots;
     std::vector<size_t> freeSlots;

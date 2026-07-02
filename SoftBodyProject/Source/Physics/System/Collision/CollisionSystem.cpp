@@ -522,24 +522,13 @@ void CollisionSystem::EPA(
 		if (std::abs(Vector3::Dot(faces[minIndex].normal, vertex.minkowski) - faces[minIndex].distance) < MathConstants::EPSILON)
 		{
 			CollisionPair::Pair pair{ _colliderA, _colliderB };
-			// 探してあったら情報を修正・追加無かったら新たに作る
-			if (_manifoldBuffer->manifolds.contains(pair))
-			{
-				_manifoldBuffer->manifolds[pair].normal = faces[minIndex].normal.Normalize();
-				_manifoldBuffer->manifolds[pair].AddPoints(ContactPoint{ CalcContactPosition(faces[minIndex], vertices) ,faces[minIndex].distance });
-				_manifoldBuffer->manifolds[pair].isCollision = true;
-			}
-			else
-			{
-				Manifold manifold;
-				manifold.colliderA = _colliderA;
-				manifold.colliderB = _colliderB;
-				manifold.normal = faces[minIndex].normal.Normalize();
-				manifold.AddPoints(ContactPoint{ CalcContactPosition(faces[minIndex], vertices) ,faces[minIndex].distance });
-				manifold.isCollision = true;
+			Manifold manifold;
+			manifold.colliderA = _colliderA;
+			manifold.colliderB = _colliderB;
+			manifold.normal = faces[minIndex].normal.Normalize();
+			manifold.AddPoints(ContactPoint{ CalcContactPosition(faces[minIndex], vertices) ,faces[minIndex].distance });
 
-				_manifoldBuffer->manifolds[pair] = manifold;
-			}
+			_manifoldBuffer->manifolds.push_back(manifold);
 
 			return;
 		}
@@ -590,23 +579,13 @@ void CollisionSystem::EPA(
 		{
 			CollisionPair::Pair pair{ _colliderA, _colliderB };
 			// 探してあったら情報を修正・追加無かったら新たに作る
-			if (_manifoldBuffer->manifolds.contains(pair))
-			{
-				_manifoldBuffer->manifolds[pair].normal = faces[minIndex].normal.Normalize();
-				_manifoldBuffer->manifolds[pair].AddPoints(ContactPoint{ CalcContactPosition(faces[minIndex], vertices) ,faces[minIndex].distance });
-				_manifoldBuffer->manifolds[pair].isCollision = true;
-			}
-			else
-			{
-				Manifold manifold;
-				manifold.colliderA = _colliderA;
-				manifold.colliderB = _colliderB;
-				manifold.normal = faces[minIndex].normal.Normalize();
-				manifold.AddPoints(ContactPoint{ CalcContactPosition(faces[minIndex], vertices) ,faces[minIndex].distance });
-				manifold.isCollision = true;
+			Manifold manifold;
+			manifold.colliderA = _colliderA;
+			manifold.colliderB = _colliderB;
+			manifold.normal = faces[minIndex].normal.Normalize();
+			manifold.AddPoints(ContactPoint{ CalcContactPosition(faces[minIndex], vertices) ,faces[minIndex].distance });
 
-				_manifoldBuffer->manifolds[pair] = manifold;
-			}
+			_manifoldBuffer->manifolds.push_back(manifold);
 			
 			return;
 		}

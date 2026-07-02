@@ -49,10 +49,8 @@ DebugBox::DebugBox(WorldStorage* _world, uint32_t _entity, float _width, float _
 
 void DebugBox::Update()
 {
-	Quaternion rot{ Quaternion::AngleAxis(3.14159265 / 90 * ServiceLocator::GetTimeManager()->GetDeltaTime() , Vector3::UP)};
-	GetComponent<TransformComponent>()->Rotate(rot);
-
-	Vector3 vec{ 1,1,1, };
+	/*Quaternion rot{ Quaternion::AngleAxis(3.14159265 / 90 * ServiceLocator::GetTimeManager()->GetDeltaTime() , Vector3::UP)};
+	GetComponent<TransformComponent>()->Rotate(rot);*/
 
 	//Vector3 rotVec{ rot.Rotate(vec) };
 	//Vector3 matVec{ MatGenerateFunc::Rotate(rot) * vec };

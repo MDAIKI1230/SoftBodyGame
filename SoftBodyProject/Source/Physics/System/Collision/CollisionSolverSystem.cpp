@@ -2,9 +2,9 @@
 #include "CollisionSolverSystem.h"
 
 CollisionSolverSystem::CollisionSolverSystem() :
-	K{ 0.3f },
+	K{ 0.1f },
 	K_DELTA_TIME{ K * ServiceLocator::GetTimeManager()->GetFixedDeltaTime() },
-	C{ 0.2f },
+	C{ 0.1f },
 	ERP{ K_DELTA_TIME / (K_DELTA_TIME + C) },
 	GAMMA{ 1 / (C + K_DELTA_TIME) }
 {
@@ -38,40 +38,24 @@ void CollisionSolverSystem::StartUp(PhysicsTransformStorage* _transformStorage, 
 	solverBodies.reserve(_manifoldBuffer->manifolds.size());
 	bodyMap.reserve(_manifoldBuffer->manifolds.size());
 
-	// 削除ペア保存して後で消す
-	std::vector<CollisionPair::Pair> erasePairs;
 	// すべての衝突情報から拘束条件とソルバ用Bodyの作成をする
 	for (auto& manifold : _manifoldBuffer->manifolds)
 	{
-		if (manifold.second.isCollision == true)
+		for (int i{ 0 }; i < manifold.pointCount; i++)
 		{
-			for (int i{ 0 }; i < manifold.second.pointCount; i++)
-			{
-				ContactConstraint contactConstraint;
-				// SolverBodyのIndexを取得
-				PhysicsTransformID transformID{ _colliderStorage->GetTransformID(manifold.second.colliderA) };
-				contactConstraint.solverBodyAIndex = GetSolverBodyIndex(_transformStorage, _bodyStorage, transformID);
-				transformID = _colliderStorage->GetTransformID(manifold.second.colliderB);
-				contactConstraint.solverBodyBIndex = GetSolverBodyIndex(_transformStorage, _bodyStorage, transformID);
+			ContactConstraint contactConstraint;
+			// SolverBodyのIndexを取得
+			PhysicsTransformID transformID{ _colliderStorage->GetTransformID(manifold.colliderA) };
+			contactConstraint.solverBodyAIndex = GetSolverBodyIndex(_transformStorage, _bodyStorage, transformID);
+			transformID = _colliderStorage->GetTransformID(manifold.colliderB);
+			contactConstraint.solverBodyBIndex = GetSolverBodyIndex(_transformStorage, _bodyStorage, transformID);
 
-				contactConstraint.position = manifold.second.points[i].position;
-				contactConstraint.normal = manifold.second.normal;
-				contactConstraint.penetration = manifold.second.points[i].penetration;
+			contactConstraint.position = manifold.points[i].position;
+			contactConstraint.normal = manifold.normal;
+			contactConstraint.penetration = manifold.points[i].penetration;
 
-				contactConstraints.push_back(contactConstraint);
-			}
+			contactConstraints.push_back(contactConstraint);
 		}
-		else
-		{
-			// ManifoldBufferの消すべきペアの追加
-			erasePairs.push_back(manifold.first);
-		}
-	}
-
-	// 削除
-	for (auto& erasePair : erasePairs)
-	{
-		_manifoldBuffer->manifolds.erase(erasePair);
 	}
 }
 
@@ -248,10 +232,7 @@ void CollisionSolverSystem::End(PhysicsTransformStorage* _transformStorage, Rigi
 	solverBodies.clear();
 	bodyMap.clear();
 
-	for (auto& manifold : _manifoldBuffer->manifolds)
-	{
-		manifold.second.isCollision = false;
-	}
+	_manifoldBuffer->Clear();
 }
 
 uint32_t CollisionSolverSystem::CreateSolverBody(PhysicsTransformStorage* _transformStorage, RigidBodyStorage* _bodyStorage, PhysicsTransformID& _transformID, BodyID& _bodyID)

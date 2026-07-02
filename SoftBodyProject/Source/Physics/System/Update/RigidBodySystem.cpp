@@ -3,13 +3,13 @@
 #include "RigidBodySystem.h"
 
 
-void RigidBodySystem::FixedUpdate(PhysicsTransformStorage* _transformStorage, RigidBodyStorage* _bodyStorage)
+void RigidBodySystem::FixedUpdate(PhysicsTransformStorage* _transformStorage, RigidBodyStorage* _bodyStorage, ColliderStorage* _colliderStorage)
 {
 	// 各処理実行
 	UpdateGravity(_bodyStorage);
-	UpdatePosition(_bodyStorage, _transformStorage);
-	UpdateInverseInertiaTensor(_bodyStorage, _transformStorage);
-	UpdateRotation(_bodyStorage, _transformStorage);
+	UpdatePosition(_transformStorage, _bodyStorage);
+	UpdateInverseInertiaTensor(_transformStorage, _bodyStorage, _colliderStorage);
+	UpdateRotation(_transformStorage, _bodyStorage);
 	End(_bodyStorage);
 }
 
@@ -28,7 +28,7 @@ void RigidBodySystem::UpdateGravity(RigidBodyStorage* _bodyStorage)
 	}
 }
 
-void RigidBodySystem::UpdatePosition(RigidBodyStorage* _bodyStorage, PhysicsTransformStorage* _transformStorage)
+void RigidBodySystem::UpdatePosition(PhysicsTransformStorage* _transformStorage, RigidBodyStorage* _bodyStorage)
 {
 	for (auto& bodyID : _bodyStorage->id)
 	{
@@ -47,7 +47,7 @@ void RigidBodySystem::UpdatePosition(RigidBodyStorage* _bodyStorage, PhysicsTran
 	}
 }
 
-void RigidBodySystem::UpdateRotation(RigidBodyStorage* _bodyStorage, PhysicsTransformStorage* _transformStorage)
+void RigidBodySystem::UpdateRotation(PhysicsTransformStorage* _transformStorage, RigidBodyStorage* _bodyStorage)
 {
 	for (auto& bodyID : _bodyStorage->id)
 	{
@@ -74,7 +74,7 @@ void RigidBodySystem::UpdateRotation(RigidBodyStorage* _bodyStorage, PhysicsTran
 	}
 }
 
-void RigidBodySystem::UpdateInverseInertiaTensor(RigidBodyStorage* _bodyStorage, PhysicsTransformStorage* _transformStorage)
+void RigidBodySystem::UpdateInverseInertiaTensor(PhysicsTransformStorage* _transformStorage, RigidBodyStorage* _bodyStorage, ColliderStorage* _colliderStorage)
 {
 	for (auto& bodyID:_bodyStorage->id)
 	{
@@ -85,15 +85,25 @@ void RigidBodySystem::UpdateInverseInertiaTensor(RigidBodyStorage* _bodyStorage,
 		// ローカル慣性テンソルの計算
 		if (_bodyStorage->localInertiaDirty[bodyIndex] == true)
 		{
-			// スケール行列取得
-			Matrix4x4 scaleMat{ MatGenerateFunc::Scale(_transformStorage->scale[transIndex]) };
-			_bodyStorage->localInverseInertiaTensor[bodyIndex] = scaleMat * Matrix4x4::Identity();
+			for (auto& colliderID : _colliderStorage->GetColliderIDFromTransformID(transformID))
+			{
+				
+				switch (_colliderStorage->GetType(colliderID))
+				{
+				case ColliderType::SPHERE:
+					_bodyStorage->localInverseInertiaTensor[bodyIndex] = GenerateSphereInverseInertiaTensor(transIndex, colliderID, _bodyStorage->mass[bodyIndex], _transformStorage, _colliderStorage);
+					break;
+				case ColliderType::BOX:
+					_bodyStorage->localInverseInertiaTensor[bodyIndex] = GenerateBoxInverseInertiaTensor(transIndex, colliderID, _bodyStorage->mass[bodyIndex], _transformStorage, _colliderStorage);
+					break;
+				}
+			}
 			// フラグを戻す
 			_bodyStorage->localInertiaDirty[bodyIndex] = false;
 		}
 		// 回転行列取得
 		Matrix4x4 rotMat{ MatGenerateFunc::Rotate(_transformStorage->rotation[transIndex]) };
-		_bodyStorage->worldInverseInertiaTensor[bodyIndex] = rotMat * Matrix4x4::Identity() * rotMat.Transpose();
+		_bodyStorage->worldInverseInertiaTensor[bodyIndex] = rotMat * _bodyStorage->localInverseInertiaTensor[bodyIndex] * rotMat.Transposed();
 	}
 }
 
@@ -106,4 +116,36 @@ void RigidBodySystem::End(RigidBodyStorage* _bodyStorage)
 		_bodyStorage->force[bodyIndex] = Vector3::ZERO;
 		_bodyStorage->torque[bodyIndex] = Vector3::ZERO;
 	}
+}
+
+
+Matrix4x4 RigidBodySystem::GenerateBoxInverseInertiaTensor(const uint32_t& _transformIndex, const ColliderID& _colliderID, float _mass, PhysicsTransformStorage* _transformStorage, ColliderStorage* _colliderStorage)
+{
+	uint32_t index{ _colliderStorage->GetDenseIndex(_colliderID) };
+	Vector3 size{ SIMDVectorMath::Mul(_colliderStorage->boxStorage->scale[index], _transformStorage->scale[_transformIndex]) };
+
+	float ixx{ (1.0f / 12.0f) * _mass * (size.y * size.y + size.z * size.z) };
+	float iyy{ (1.0f / 12.0f) * _mass * (size.z * size.z + size.x * size.x) };
+	float izz{ (1.0f / 12.0f) * _mass * (size.x * size.x + size.y * size.y) };
+
+	return Matrix4x4{
+		1 / ixx,0.0f,0.0f,0.0f,
+		0.0f,1 / iyy,0.0f,0.0f,
+		0.0f,0.0f,1 / izz,0.0f,
+		0.0f, 0.0f, 0.0f, 1.0f
+	};
+}
+
+Matrix4x4 RigidBodySystem::GenerateSphereInverseInertiaTensor(const uint32_t& _transformIndex, const ColliderID& _colliderID, float _mass, PhysicsTransformStorage* _transformStorage, ColliderStorage* _colliderStorage)
+{
+	uint32_t index{ _colliderStorage->GetDenseIndex(_colliderID) };
+	float radius{ _colliderStorage->sphereStorage->radius[index] * std::max(std::max(_transformStorage->scale[_transformIndex].x, _transformStorage->scale[_transformIndex].y), _transformStorage->scale[_transformIndex].z) };
+	float i{ (2.0f / 5.0f) * _mass * radius * radius };
+
+	return Matrix4x4{
+		1 / i,0.0f,0.0f,0.0f,
+		0.0f,1 / i,0.0f,0.0f,
+		0.0f,0.0f,1 / i,0.0f,
+		0.0f, 0.0f, 0.0f, 1.0f
+	};
 }

@@ -105,7 +105,7 @@ ColliderType ColliderStorage::GetType(ColliderID _id) const
 	return slots[_id.index].type;
 }
 
-size_t ColliderStorage::GetDenseIndex(ColliderID _id) const
+uint32_t ColliderStorage::GetDenseIndex(ColliderID _id) const
 {
 	return slots[_id.index].denseIndex;
 }
@@ -118,6 +118,11 @@ EntityID ColliderStorage::GetOwnerEntity(ColliderID _id) const
 PhysicsTransformID ColliderStorage::GetTransformID(ColliderID _id) const
 {
 	return slots[_id.index].transformID;
+}
+
+std::vector<ColliderID>& ColliderStorage::GetColliderIDFromTransformID(PhysicsTransformID _id)
+{
+	return transformMap[_id];
 }
 
 ColliderID ColliderStorage::GenerateColliderID(ColliderType _type, size_t _denseIndex, EntityID _ownerEntity, PhysicsTransformID _transformID)

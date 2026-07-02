@@ -23,6 +23,12 @@ public:
 		}
 		addIndex = (addIndex + 1) % 4;
 	}
+
+	void Clear()
+	{
+		pointCount = 0;
+		addIndex = 0;
+	}
 public:
 	ColliderID colliderA;
 	ColliderID colliderB;
@@ -32,6 +38,4 @@ public:
 	ContactPoint points[4];
 	char pointCount{ 0 };
 	char addIndex{ 0 };
-
-	bool isCollision;
 };

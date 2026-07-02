@@ -18,7 +18,7 @@ PhysicsWorld::PhysicsWorld()
 void PhysicsWorld::FixedUpdate(WorldStorage* _worldStorage, EventManager* _eventManager)
 {
 	synchronizationSystem->Sync(_worldStorage, transformStorage.get());
-	rigidBodySystem->FixedUpdate(transformStorage.get(), rigidBodyStorage.get());
+	rigidBodySystem->FixedUpdate(transformStorage.get(), rigidBodyStorage.get(), colliderStorage.get());
 	aabbUpdateSystem->FixedUpdate(transformStorage.get(), colliderStorage.get());
 	collisionSystem->FixedUpdate(transformStorage.get(), colliderStorage.get(), manifoldBuffer.get(), _eventManager);
 	collisionSolverSystem->FixedUpdate(transformStorage.get(), rigidBodyStorage.get(), colliderStorage.get(), manifoldBuffer.get());
