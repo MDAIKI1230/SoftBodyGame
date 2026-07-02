@@ -36,6 +36,8 @@ public:
 	Vector3 normal;
 
 	ContactPoint points[4];
+
+private:
 	char pointCount{ 0 };
 	char addIndex{ 0 };
 };

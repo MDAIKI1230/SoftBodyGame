@@ -196,6 +196,7 @@
     <ClInclude Include="Source\Physics\Collider\SphereCollider.h" />
     <ClInclude Include="Source\Physics\Collider\SphereColliderComponent.h" />
     <ClInclude Include="Source\Physics\Constants\CollisionConstants.h" />
+    <ClInclude Include="Source\Physics\Function\ContactFunction.h" />
     <ClInclude Include="Source\Physics\PhysicsWorld.h" />
     <ClInclude Include="Source\Physics\Storage\Body\RigidBodyStorage.h" />
     <ClInclude Include="Source\Physics\Storage\Collider\AABBBroadPhaseColliderStorage.h" />

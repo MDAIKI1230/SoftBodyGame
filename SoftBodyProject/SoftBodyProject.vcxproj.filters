@@ -149,6 +149,9 @@
     <Filter Include="ソース ファイル\Physics\Struct\Constraint">
       <UniqueIdentifier>{277277a4-b6a9-4c59-b178-a4b8be73190d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Physics\Function">
+      <UniqueIdentifier>{e386d585-ca9f-4818-8aec-d7a8a97027a2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Objects\Camera.h">
@@ -471,6 +474,9 @@
     </ClInclude>
     <ClInclude Include="Source\Physics\Struct\Collision\ContactGenerator.h">
       <Filter>ソース ファイル\Physics\Struct\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Function\ContactFunction.h">
+      <Filter>ソース ファイル\Physics\Function</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
