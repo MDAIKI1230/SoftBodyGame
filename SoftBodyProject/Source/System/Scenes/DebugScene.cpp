@@ -30,11 +30,11 @@ void DebugScene::Initialize()
 	debugBox01->GetComponent<TransformComponent>()->SetPosition(Vector3{ 0,-200,0 });
 	objectManager->Add(std::move(debugBox01));
 
-	std::unique_ptr<DebugBox> debugBox02{ std::make_unique<DebugBox>(worldStorage.get(), 2, 30.0f) };
-	debugBox02->GetComponent<TransformComponent>()->SetPosition(Vector3{ 0,50,0 });
-	// debugBox02->GetComponent<TransformComponent>()->Rotate(Quaternion::AngleAxis(1.5f, Vector3{ 1,0,1 }));
-	debugBox02->AddComponent<RigidBodyComponent>()->SetIsGravity(true);
-	objectManager->Add(std::move(debugBox02));
+	//std::unique_ptr<DebugBox> debugBox02{ std::make_unique<DebugBox>(worldStorage.get(), 2, 30.0f) };
+	//debugBox02->GetComponent<TransformComponent>()->SetPosition(Vector3{ 0,50,0 });
+	//// debugBox02->GetComponent<TransformComponent>()->Rotate(Quaternion::AngleAxis(1.5f, Vector3{ 1,0,1 }));
+	//debugBox02->AddComponent<RigidBodyComponent>()->SetIsGravity(true);
+	//objectManager->Add(std::move(debugBox02));
 
 	/*std::unique_ptr<DebugBox> debugBox03{ std::make_unique<DebugBox>(worldStorage.get(), 3, 30.0f) };
 	debugBox03->GetComponent<TransformComponent>()->SetPosition(Vector3{ 0,100,0 });

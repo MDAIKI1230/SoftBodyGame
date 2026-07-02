@@ -469,6 +469,9 @@
     <ClInclude Include="Source\Physics\Struct\Collision\MinkowskiVertex.h">
       <Filter>ソース ファイル\Physics\Struct\Collision</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Physics\Struct\Collision\ContactGenerator.h">
+      <Filter>ソース ファイル\Physics\Struct\Collision</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\System\Adapter\Dxlib\DxlibInput.cpp">
