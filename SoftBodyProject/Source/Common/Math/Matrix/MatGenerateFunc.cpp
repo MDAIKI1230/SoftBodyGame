@@ -56,21 +56,15 @@ Matrix4x4 MatGenerateFunc::Rotate(const Quaternion& _rot)
 	// x,x,y,w
 	v0 = SIMDVectorFloat::Shuffle<0, 0, 1, 3>(_rot.simd);
 
-	SIMDVectorFloat lhFix{ +1.0f,-1.0f,-1.0f,+1.0f };
-
 	// 2y,2z,2z,2w
 	v1 = SIMDVectorFloat::Shuffle<1, 2, 2, 3>(rot2);
 
 	// 2xy,2xz,2yz,2w^2
 	SIMDVectorFloat termXyz{ SIMDVectorMath::Mul(v0,v1) };
-	// 2xy,-2xz,-2yz,2w^2　　左手系に修正
-	termXyz = SIMDVectorMath::Mul(termXyz, lhFix);
 
 	// wの項を作る
 	// 2xw,2yw,2zw,2w^2
 	SIMDVectorFloat termW{ SIMDVectorMath::MulScalar(rot2,_rot.w) };
-	// 2xw,-2yw,-2zw,2w^2  　左手系に修正
-	termW = SIMDVectorMath::Mul(termW, lhFix);
 	// 2zw,2yw,2xw,2w^2
 	termW = SIMDVectorFloat::Shuffle<2, 1, 0, 3>(termW);
 
@@ -92,23 +86,23 @@ Matrix4x4 MatGenerateFunc::Rotate(const Quaternion& _rot)
 	// 行ごとに要素を構築
 	Matrix4x4 m;
 
-	// 一行目(1 - 2y^2 - 2z^2, 2xy + 2zw, 2xz - 2yw)
-	//  計算結果から値を抽出(1 - 2y^2 - 2x^2, 0, 2xy + 2zw, 2xz - 2yw)
-	m.row[0] = SIMDVectorFloat::Shuffle<0, 3, 0, 3>(elementDiagonal, v0);
+	// 一行目(1 - 2y^2 - 2z^2, 2xy - 2zw, 2xz + 2yw)
+	//  計算結果から値を抽出(1 - 2y^2 - 2x^2, 0, 2xy - 2zw, 2xz + 2yw)
+	m.row[0] = SIMDVectorFloat::Shuffle<0, 3, 3, 0>(elementDiagonal, v1);
 
 	// 整列(1 - 2y^2 - 2z^2, 2xy + 2wz, 2xz - 2yw)
 	m.row[0] = SIMDVectorFloat::Shuffle<0, 2, 3, 1>(m.row[0]);
 
-	// 二行目(2xy - 2zw, 1 - 2x^2 - 2z^2, 2yz + 2xw)
-	// 計算結果から値を抽出(1 - 2x^2 - 2z^2, 0, 2xy - 2zw, 2yz + 2xw)
-	m.row[1] = SIMDVectorFloat::Shuffle<1, 3, 2, 1>(elementDiagonal, v0);
+	// 二行目(2xy + 2zw, 1 - 2x^2 - 2z^2, 2yz - 2xw)
+	// 計算結果から値を抽出(1 - 2x^2 - 2z^2, 0, 2xy + 2zw, 2yz - 2xw)
+	m.row[1] = SIMDVectorFloat::Shuffle<1, 3, 1, 2>(elementDiagonal, v1);
 
 	// 整列(2xy - 2zw, 1 - 2x^2 - 2z^2, 2yz + 2xw)
 	m.row[1] = SIMDVectorFloat::Shuffle<2, 0, 3, 1>(m.row[1]);
 
-	// 三行目(2xz + 2yw, 2yz - 2xw, 1 - 2x^2 - 2y^2)
-	// 計算結果から値を抽出(1 - x^2 - y^2, 0, 2yz - 2xw, 2xz + 2yw)
-	m.row[2] = SIMDVectorFloat::Shuffle<2, 3, 2, 0>(elementDiagonal, v1);
+	// 三行目(2xz - 2yw, 2yz + 2xw, 1 - 2x^2 - 2y^2)
+	// 計算結果から値を抽出(1 - x^2 - y^2, 0, 2yz + 2xw, 2xz - 2yw)
+	m.row[2] = SIMDVectorFloat::Shuffle<2, 3, 1, 3>(elementDiagonal, v0);
 
 	// 整列(2xz + 2yw, 2yz - 2xw, 1 - 2x^2 - 2y^2)
 	m.row[2] = SIMDVectorFloat::Shuffle<3, 2, 0, 1>(m.row[2]);

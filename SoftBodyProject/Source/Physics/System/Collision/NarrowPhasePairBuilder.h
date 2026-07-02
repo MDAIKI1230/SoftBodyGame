@@ -8,10 +8,10 @@ public:
 	NarrowPhasePairBuilder() = default;
 	void Clear();
 
-	void AddSphereSphere(ColliderID a, ColliderID b);
-	void AddSphereBox(ColliderID sphere, ColliderID box);
-	void AddBoxSphere(ColliderID sphere, ColliderID box);
-	void AddBoxBox(ColliderID a, ColliderID b);
+	void AddSphereSphere(ColliderID _a, ColliderID _b);
+	void AddSphereBox(ColliderID _phere, ColliderID _box);
+	void AddBoxSphere(ColliderID _box, ColliderID _sphere);
+	void AddBoxBox(ColliderID _a, ColliderID _b);
 public:
 	std::vector<CollisionPair::SphereSpherePair> sphereSpherePair;
 	std::vector<CollisionPair::SphereBoxPair> sphereBoxPair;

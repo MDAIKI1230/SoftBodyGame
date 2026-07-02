@@ -21,27 +21,30 @@ Vector3 Quaternion::Rotate(const Vector3& _vec) const
 // 正規化
 Quaternion Quaternion::Normalized()
 {
-	return SIMDVectorMath::Normalize(simd);
+	Quaternion result{ simd };
+	return result.Normalize();
 }
 
 // 正規化
 Quaternion& Quaternion::Normalize()
 {
-	simd = SIMDVectorMath::Normalize(simd);
+	// 精度優先でちゃんと計算する
+	float invLen{ 1.0f / sqrtf(Quaternion::Dot(*this, *this)) };
+	SIMDVectorMath::MulScalar(simd, invLen);
 	return *this;
 }
 
 // 正規化
 Quaternion Quaternion::Normalized(Quaternion& _rot)
 {
-	return SIMDVectorMath::Normalize(_rot.simd);
+	Quaternion result{ _rot };
+	return result.Normalize();
 }
 
 // 正規化
 Quaternion& Quaternion::Normalize(Quaternion& _rot)
 {
-	_rot.simd = SIMDVectorMath::Normalize(_rot.simd);
-	return _rot;
+	return  _rot.Normalize();
 }
 
 // 乗法

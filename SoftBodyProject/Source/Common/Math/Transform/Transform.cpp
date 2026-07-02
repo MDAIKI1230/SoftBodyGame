@@ -87,7 +87,7 @@ void Transform::RotateAround(const Vector3& _point, const Vector3& _axis, float 
 void Transform::SetRotation(const Quaternion& _rot)
 {
 	rotation = _rot;
-
+	rotation.Normalize();
 	// 行列更新
 	UpdateLocalMatrix();
 }

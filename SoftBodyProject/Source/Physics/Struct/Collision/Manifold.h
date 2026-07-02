@@ -16,8 +16,12 @@ struct Manifold
 public:
 	void AddPoints(const ContactPoint& _contactPoint)
 	{
-		points[pointCount] = _contactPoint;
-		pointCount = (pointCount + 1) % 4;
+		points[addIndex] = _contactPoint;
+		if (pointCount < 4)
+		{
+			pointCount++;
+		}
+		addIndex = (addIndex + 1) % 4;
 	}
 public:
 	ColliderID colliderA;
@@ -26,7 +30,8 @@ public:
 	Vector3 normal;
 
 	ContactPoint points[4];
-	int pointCount{ 0 };
+	char pointCount{ 0 };
+	char addIndex{ 0 };
 
 	bool isCollision;
 };

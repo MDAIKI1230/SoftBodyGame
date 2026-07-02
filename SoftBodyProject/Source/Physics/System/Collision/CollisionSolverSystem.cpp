@@ -28,7 +28,7 @@ void CollisionSolverSystem::FixedUpdate(PhysicsTransformStorage* _transformStora
 		PositionSolver(_transformStorage, _bodyStorage, _manifoldBuffer);
 	}
 	// 終了
-	End(_transformStorage, _bodyStorage);
+	End(_transformStorage, _bodyStorage, _manifoldBuffer);
 }
 
 void CollisionSolverSystem::StartUp(PhysicsTransformStorage* _transformStorage, RigidBodyStorage* _bodyStorage, ColliderStorage* _colliderStorage, CollisionManifoldBuffer* _manifoldBuffer)
@@ -124,7 +124,7 @@ void CollisionSolverSystem::VelocitySolver(PhysicsTransformStorage* _transformSt
 		};
 
 		// λ計算(CFMも適応)
-		float lambda{ (jv - bias) / (effectiveMass + GAMMA) };
+		float lambda{ (jv + bias) / (effectiveMass + GAMMA) };
 
 		float oldLambda{ constraint.accumulatedLambda };
 
@@ -151,14 +151,14 @@ void CollisionSolverSystem::ReCalcPosRot()
 		if (body.inverseMass != 0.0f)
 		{
 			// 変化した速度から位置を再計算
-			// 位置 + Δv × 質量の逆数
+			// 位置 + 修正後のベクトル
 			body.position = body.pastPos + body.velocity * ServiceLocator::GetTimeManager()->GetFixedDeltaTime();
 			
 			// Δω
 			Vector3 deltaAngularVelocity{ body.angularVelocity * ServiceLocator::GetTimeManager()->GetFixedDeltaTime() };
 			// Δωの四元数を作る
 			Quaternion rotOmega{ Quaternion::AngleAxis(deltaAngularVelocity.Length(),deltaAngularVelocity) };
-			// 今の回転＋トルク(Δtに離散化)×慣性テンソルの逆行列
+			// 回転＋修正後の角速度の回転
 			body.rotation = body.pastRot * rotOmega;
 		}
 	}
@@ -211,12 +211,14 @@ void CollisionSolverSystem::PositionSolver(PhysicsTransformStorage* _transformSt
 
 		float applyLambda{ constraint.accumulatedLambda - oldLambda };
 
+		constraint.penetration -= applyLambda;
+
 		// Aの位置/姿勢制御
 		solverBodies[constraint.solverBodyAIndex].position -= constraint.normal * applyLambda * solverBodies[constraint.solverBodyAIndex].inverseMass;
 		Vector3 angVec{ solverBodies[constraint.solverBodyAIndex].inverseInertiaTensor * rACross * applyLambda };
 		Quaternion rotOmega{ Quaternion::AngleAxis(angVec.Length(), angVec) };
 		solverBodies[constraint.solverBodyAIndex].rotation *= rotOmega;
-	
+
 		// Bの位置/姿勢制御
 		solverBodies[constraint.solverBodyBIndex].position += constraint.normal * applyLambda * solverBodies[constraint.solverBodyBIndex].inverseMass;
 		angVec = solverBodies[constraint.solverBodyBIndex].inverseInertiaTensor * rBCross * applyLambda;
@@ -225,7 +227,7 @@ void CollisionSolverSystem::PositionSolver(PhysicsTransformStorage* _transformSt
 	}
 }
 
-void CollisionSolverSystem::End(PhysicsTransformStorage* _transformStorage, RigidBodyStorage* _bodyStorage)
+void CollisionSolverSystem::End(PhysicsTransformStorage* _transformStorage, RigidBodyStorage* _bodyStorage, CollisionManifoldBuffer* _manifoldBuffer)
 {
 	// 結果を反映していく
 	for (auto& result : solverBodies)
@@ -245,6 +247,11 @@ void CollisionSolverSystem::End(PhysicsTransformStorage* _transformStorage, Rigi
 	contactConstraints.clear();
 	solverBodies.clear();
 	bodyMap.clear();
+
+	for (auto& manifold : _manifoldBuffer->manifolds)
+	{
+		manifold.second.isCollision = false;
+	}
 }
 
 uint32_t CollisionSolverSystem::CreateSolverBody(PhysicsTransformStorage* _transformStorage, RigidBodyStorage* _bodyStorage, PhysicsTransformID& _transformID, BodyID& _bodyID)

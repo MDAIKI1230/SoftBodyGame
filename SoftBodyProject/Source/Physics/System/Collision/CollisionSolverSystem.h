@@ -30,7 +30,7 @@ private:
 	// 位置解決
 	void PositionSolver(PhysicsTransformStorage* _transformStorage, RigidBodyStorage* _bodyStorage, CollisionManifoldBuffer* _manifoldBuffer);
 	// 終わり
-	void End(PhysicsTransformStorage* _transformStorage, RigidBodyStorage* _bodyStorage);
+	void End(PhysicsTransformStorage* _transformStorage, RigidBodyStorage* _bodyStorage, CollisionManifoldBuffer* _manifoldBuffer);
 	/// <summary>
 	/// 情報からSolverBodyを作る
 	/// </summary>
@@ -48,7 +48,7 @@ private:
 	// 速度解消回数
 	static constexpr float VELOCITY_SOLVER_TIMES{ 8 };
 	// 位置/姿勢解消回数
-	static constexpr float POS_ROT_SOLVER_TIMES{ 1};
+	static constexpr float POS_ROT_SOLVER_TIMES{ 4 };
 	// バネ定数
 	const float K;
 	// バネ定数×Δt
