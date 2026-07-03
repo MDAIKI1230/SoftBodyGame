@@ -612,5 +612,8 @@
     <ClCompile Include="Source\Common\Math\NamericalAnalysis\NamericalAnalysis.cpp">
       <Filter>ソース ファイル\Common\Math\NamericalAnalysis</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Physics\Function\ContactFunction.cpp">
+      <Filter>ソース ファイル\Physics\Function</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

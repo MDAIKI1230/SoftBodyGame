@@ -24,7 +24,7 @@ void DebugScene::Initialize()
 	Camera camera{ Vector3{0,-175,-500},Vector3{0,-175,0} };
 	ServiceLocator::GetRenderer()->SetCamera(camera);
 
-	// objectManager->Add(std::make_unique<DebugSphere>(worldStorage.get(), 0));
+	objectManager->Add(std::make_unique<DebugSphere>(worldStorage.get(), 0));
 
 	std::unique_ptr<DebugBox> debugBox01{ std::make_unique<DebugBox>(worldStorage.get(), 1, 500.0f, 50.0f, 500.0f) };
 	debugBox01->GetComponent<TransformComponent>()->SetPosition(Vector3{ 0,-200,0 });

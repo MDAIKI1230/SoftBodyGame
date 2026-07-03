@@ -277,6 +277,7 @@
     <ClCompile Include="Source\Physics\Body\RigidBodyComponent.cpp" />
     <ClCompile Include="Source\Physics\Collider\BoxColliderComponent.cpp" />
     <ClCompile Include="Source\Physics\Collider\SphereColliderComponent.cpp" />
+    <ClCompile Include="Source\Physics\Function\ContactFunction.cpp" />
     <ClCompile Include="Source\Physics\PhysicsWorld.cpp" />
     <ClCompile Include="Source\Physics\Storage\Body\RigidBodyStorage.cpp" />
     <ClCompile Include="Source\Physics\Storage\Collider\ColliderStorage.cpp" />
