@@ -37,7 +37,7 @@ public:
 
 	ContactPoint points[4];
 
-private:
 	char pointCount{ 0 };
+private:
 	char addIndex{ 0 };
 };
