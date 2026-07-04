@@ -99,7 +99,7 @@ private:
 
 	void ComputeFace(Face& _face, std::vector<MinkowskiVertex>& _vertices);
 	void AddEdge(Edge& _edge, std::vector<Edge>& _edges);
-	Vector3 CalcContactPosition(Face& _face, std::vector<MinkowskiVertex>& _vertices);
+	ContactPoint CalcContactPosition(Face& _face, std::vector<MinkowskiVertex>& _vertices);
 	// --- ソート ---
 	void InsertionSort(std::vector<ColliderProjection>& _projectionValues);
 	/// <summary>

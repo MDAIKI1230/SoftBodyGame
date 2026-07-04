@@ -461,7 +461,7 @@ bool CollisionSystem::SolveTetrahedron(Simplex& _simplex, Vector3& _output)
 	}
 	else
 	{
-		_simplex.Erase(index + 3);
+		_simplex.Erase((index + 3) % size);
 		return false;
 	}
 }
@@ -526,7 +526,10 @@ void CollisionSystem::EPA(
 			manifold.colliderA = _colliderA;
 			manifold.colliderB = _colliderB;
 			manifold.normal = faces[minIndex].normal.Normalize();
-			manifold.AddPoints(ContactPoint{ CalcContactPosition(faces[minIndex], vertices) ,faces[minIndex].distance });
+
+			ContactPoint contactPoint{ CalcContactPosition(faces[minIndex], vertices) };
+			contactPoint.penetration = faces[minIndex].distance;
+			manifold.AddPoints(contactPoint);
 
 			_manifoldBuffer->manifolds.push_back(manifold);
 
@@ -583,7 +586,10 @@ void CollisionSystem::EPA(
 			manifold.colliderA = _colliderA;
 			manifold.colliderB = _colliderB;
 			manifold.normal = faces[minIndex].normal.Normalize();
-			manifold.AddPoints(ContactPoint{ CalcContactPosition(faces[minIndex], vertices) ,faces[minIndex].distance });
+
+			ContactPoint contactPoint{ CalcContactPosition(faces[minIndex], vertices) };
+			contactPoint.penetration = faces[minIndex].distance;
+			manifold.AddPoints(contactPoint);
 
 			_manifoldBuffer->manifolds.push_back(manifold);
 			
@@ -632,7 +638,7 @@ void CollisionSystem::AddEdge(Edge& _edge, std::vector<Edge>& _edges)
 	_edges.push_back(_edge);
 }
 
-Vector3 CollisionSystem::CalcContactPosition(Face& _face, std::vector<MinkowskiVertex>& _vertices)
+ContactPoint CollisionSystem::CalcContactPosition(Face& _face, std::vector<MinkowskiVertex>& _vertices)
 {
 	Vector3 closestPoint{ _face.normal * _face.distance };
 	Vector3 v0{ _vertices[_face.pointIndex[1]].minkowski - _vertices[_face.pointIndex[0]].minkowski };
@@ -655,7 +661,7 @@ Vector3 CollisionSystem::CalcContactPosition(Face& _face, std::vector<MinkowskiV
 	Vector3 pointB{ _vertices[_face.pointIndex[0]].supportB * w0 + _vertices[_face.pointIndex[1]].supportB * w1 + _vertices[_face.pointIndex[2]].supportB * w2 };
 
 
-	return (pointA + pointB) * 0.5f;
+	return ContactPoint{ pointA , pointB };
 }
 
 void CollisionSystem::InsertionSort(std::vector<ColliderProjection>& _projectionValues)

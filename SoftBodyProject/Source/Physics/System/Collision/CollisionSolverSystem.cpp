@@ -50,7 +50,8 @@ void CollisionSolverSystem::StartUp(PhysicsTransformStorage* _transformStorage, 
 			transformID = _colliderStorage->GetTransformID(manifold.colliderB);
 			contactConstraint.solverBodyBIndex = GetSolverBodyIndex(_transformStorage, _bodyStorage, transformID);
 
-			contactConstraint.position = manifold.points[i].position;
+			contactConstraint.positionA = manifold.points[i].positionA;
+			contactConstraint.positionB = manifold.points[i].positionB;
 			contactConstraint.normal = manifold.normal;
 			contactConstraint.penetration = manifold.points[i].penetration;
 
@@ -74,8 +75,8 @@ void CollisionSolverSystem::VelocitySolver(PhysicsTransformStorage* _transformSt
 		const float bias{ ERP / ServiceLocator::GetTimeManager()->GetFixedDeltaTime() * constraint.penetration };
 
 		// 重心から衝突点ベクトル
-		Vector3 rA{ constraint.position - solverBodies[constraint.solverBodyAIndex].position };
-		Vector3 rB{ constraint.position - solverBodies[constraint.solverBodyBIndex].position };
+		Vector3 rA{ constraint.positionA - solverBodies[constraint.solverBodyAIndex].position };
+		Vector3 rB{ constraint.positionB - solverBodies[constraint.solverBodyBIndex].position };
 
 		// 重心から衝突点ベクトルAと法線の外積
 		Vector3 rACross{ Vector3::Cross(rA,constraint.normal) };
@@ -169,8 +170,8 @@ void CollisionSolverSystem::PositionSolver(PhysicsTransformStorage* _transformSt
 		float bias{ ERP / ServiceLocator::GetTimeManager()->GetFixedDeltaTime() * constraint.penetration };
 
 		// 重心から衝突点ベクトル
-		Vector3 rA{ constraint.position - solverBodies[constraint.solverBodyAIndex].position };
-		Vector3 rB{ constraint.position - solverBodies[constraint.solverBodyBIndex].position };
+		Vector3 rA{ constraint.positionA - solverBodies[constraint.solverBodyAIndex].position };
+		Vector3 rB{ constraint.positionB - solverBodies[constraint.solverBodyBIndex].position };
 
 		// 重心から衝突点ベクトルAと法線の外積
 		Vector3 rACross{ Vector3::Cross(rA,constraint.normal) };
@@ -200,7 +201,7 @@ void CollisionSolverSystem::PositionSolver(PhysicsTransformStorage* _transformSt
 		// Aの位置/姿勢制御
 		solverBodies[constraint.solverBodyAIndex].position -= constraint.normal * applyLambda * solverBodies[constraint.solverBodyAIndex].inverseMass;
 		Vector3 angVec{ solverBodies[constraint.solverBodyAIndex].inverseInertiaTensor * rACross * applyLambda };
-		Quaternion rotOmega{ Quaternion::AngleAxis(angVec.Length(), angVec) };
+		Quaternion rotOmega{ Quaternion::AngleAxis(angVec.Length(), -angVec) };
 		solverBodies[constraint.solverBodyAIndex].rotation *= rotOmega;
 
 		// Bの位置/姿勢制御
