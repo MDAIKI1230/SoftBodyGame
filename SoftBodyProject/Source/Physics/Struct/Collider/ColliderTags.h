@@ -5,6 +5,8 @@
 #include "PhysicsTransformStorage.h"
 #include "ColliderStorage.h"
 
+#include "Manifold.h"
+
 namespace ColliderTag
 {
 	// 球
@@ -13,7 +15,12 @@ namespace ColliderTag
 		static Vector3 Support(ColliderStorage* _colliderStorage, ColliderID _id, PhysicsTransformStorage* _transformStorage, const Vector3& _dir)
 		{
 			uint32_t transformIndex{ _transformStorage->GetDenseIndex(_colliderStorage->GetTransformID(_id)) };
-			return _dir.Normalized() * _colliderStorage->sphereStorage->radius[_colliderStorage->GetDenseIndex(_id)] + _transformStorage->position[transformIndex];
+			return _dir.Normalized() * _colliderStorage->sphereStorage->radius[_colliderStorage->GetDenseIndex(_id)];
+		}
+
+		static Manifold MakeManifold(const Vector3& _normal, float _penetration)
+		{
+
 		}
 	};
 
@@ -25,18 +32,17 @@ namespace ColliderTag
 			Vector3 halfScale{ _colliderStorage->boxStorage->scale[_colliderStorage->GetDenseIndex(_id)] * 0.5f };
 			uint32_t transformIndex{ _transformStorage->GetDenseIndex(_colliderStorage->GetTransformID(_id)) };
 			halfScale = SIMDVectorMath::Mul(halfScale, _transformStorage->scale[transformIndex]);
-			Vector3& pos{ _transformStorage->position[transformIndex] };
 			Quaternion& rot{ _transformStorage->rotation[transformIndex] };
 			Vector3 candidates[8]
 			{
-				pos + rot.Rotate(halfScale),
-				pos + rot.Rotate(Vector3{halfScale.x,halfScale.y,-halfScale.z}),
-				pos + rot.Rotate(Vector3{halfScale.x,-halfScale.y,halfScale.z}),
-				pos + rot.Rotate(Vector3{-halfScale.x,halfScale.y,halfScale.z}),
-				pos - rot.Rotate(halfScale),
-				pos - rot.Rotate(Vector3{halfScale.x,halfScale.y,-halfScale.z}),
-				pos - rot.Rotate(Vector3{halfScale.x,-halfScale.y,halfScale.z}),
-				pos - rot.Rotate(Vector3{-halfScale.x,halfScale.y,halfScale.z})
+				rot.Rotate(halfScale),
+				rot.Rotate(Vector3{halfScale.x,halfScale.y,-halfScale.z}),
+				rot.Rotate(Vector3{halfScale.x,-halfScale.y,halfScale.z}),
+				rot.Rotate(Vector3{-halfScale.x,halfScale.y,halfScale.z}),
+				rot.Rotate(halfScale),
+				rot.Rotate(Vector3{halfScale.x,halfScale.y,-halfScale.z}),
+				rot.Rotate(Vector3{halfScale.x,-halfScale.y,halfScale.z}),
+				rot.Rotate(Vector3{-halfScale.x,halfScale.y,halfScale.z})
 			};
 
 			char maxIndex{ 0 };

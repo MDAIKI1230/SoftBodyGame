@@ -6,7 +6,8 @@
 
 struct ContactPoint
 {
-	Vector3 position;
+	Vector3 positionA;
+	Vector3 positionB;
 	float penetration;
 };
 

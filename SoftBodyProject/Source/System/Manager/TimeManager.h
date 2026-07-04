@@ -18,7 +18,7 @@ public:
 	// FixedUpdateを呼び出すタイミングか
 	bool IsFixedUpdateTime();
 private:
-	const double FIXED_TIME{ 0.04 };
+	const double FIXED_TIME{ 0.02 };
 
 	// 一フレームにかかる時間(秒)
 	std::chrono::duration<double> timePerFps;

@@ -20,6 +20,12 @@ public:
 
 	// オブジェクト取得
 	ObjectBase* Get(EntityID _index);
+
+	// EntityHandle取得
+	uint32_t GetHandle()
+	{
+		return objects.size() - 1;
+	}
 private:
 	std::vector<std::unique_ptr<ObjectBase>> objects;
 };
