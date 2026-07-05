@@ -30,7 +30,7 @@ Quaternion& Quaternion::Normalize()
 {
 	// 精度優先でちゃんと計算する
 	float invLen{ 1.0f / sqrtf(Quaternion::Dot(*this, *this)) };
-	SIMDVectorMath::MulScalar(simd, invLen);
+	simd = SIMDVectorMath::MulScalar(simd, invLen);
 	return *this;
 }
 

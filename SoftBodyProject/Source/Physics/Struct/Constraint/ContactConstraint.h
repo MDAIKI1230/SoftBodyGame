@@ -17,4 +17,5 @@ struct ContactConstraint
 
 	// 蓄積したλ
 	float accumulatedLambda{ 0 };
+	float accumulatedFrictionLambda{ 0 };
 };

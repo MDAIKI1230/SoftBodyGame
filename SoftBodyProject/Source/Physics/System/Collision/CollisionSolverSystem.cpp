@@ -1,8 +1,10 @@
-﻿#include "ServiceLocator.h"
+﻿#include <algorithm>
+
+#include "ServiceLocator.h"
 #include "CollisionSolverSystem.h"
 
 CollisionSolverSystem::CollisionSolverSystem() :
-	K{ 0.1f },
+	K{ 0.2f },
 	K_DELTA_TIME{ K * ServiceLocator::GetTimeManager()->GetFixedDeltaTime() },
 	C{ 0.1f },
 	ERP{ K_DELTA_TIME / (K_DELTA_TIME + C) },
@@ -125,9 +127,55 @@ void CollisionSolverSystem::VelocitySolver(PhysicsTransformStorage* _transformSt
 		// B速度の解消
 		solverBodies[constraint.solverBodyBIndex].velocity += constraint.normal * applyLambda * solverBodies[constraint.solverBodyBIndex].inverseMass;
 		solverBodies[constraint.solverBodyBIndex].angularVelocity += solverBodies[constraint.solverBodyBIndex].inverseInertiaTensor * rBCross * applyLambda;
+
+		// 摩擦
+		FrictionSolver(solverBodies[constraint.solverBodyAIndex], rA, solverBodies[constraint.solverBodyBIndex], rB, constraint, effectiveMass);
 	}
 }
 
+void CollisionSolverSystem::FrictionSolver(SolverBody& _bodyA, Vector3& _rA, SolverBody& _bodyB, Vector3& _rB, ContactConstraint& _constraint, float _effectiveMass)
+{
+	// 角速度まで含めた速度を計算
+	Vector3 vA = _bodyA.velocity + Vector3::Cross(_bodyA.angularVelocity, _rA);
+	Vector3 vB = _bodyB.velocity + Vector3::Cross(_bodyB.angularVelocity, _rB);
+
+	// 相対速度計算
+	Vector3 relativeVelocity = vA - vB;
+
+	// 法線方向成分を取り除いて表面方向の速度を取り出す
+	Vector3 tangentVelocity = relativeVelocity - (_constraint.normal * Vector3::Dot(relativeVelocity, _constraint.normal));
+
+	// 表面方向の速度がほぼないなら何もしない
+	if (tangentVelocity.Length() <= MathConstants::EPSILON)
+	{
+		return;
+	}
+
+	Vector3 tangent = tangentVelocity.Normalized();
+
+	// 重心から衝突点ベクトルAと法線の外積
+	Vector3 rACross{ Vector3::Cross(_rA,tangent) };
+	// 重心から衝突点ベクトルBと法線の外積
+	Vector3 rBCross{ Vector3::Cross(_rB,tangent) };
+
+	float lambda = Vector3::Dot(relativeVelocity, tangent) / _effectiveMass;
+
+	float maxFrictionLambda = _constraint.accumulatedLambda;
+
+	float oldLambda = _constraint.accumulatedFrictionLambda;
+	_constraint.accumulatedFrictionLambda =
+		std::clamp(oldLambda + lambda, 0.0f, maxFrictionLambda);
+
+	float applyLambda = _constraint.accumulatedFrictionLambda - oldLambda;
+
+	// A速度の摩擦
+	solverBodies[_constraint.solverBodyAIndex].velocity -= tangent * applyLambda * solverBodies[_constraint.solverBodyAIndex].inverseMass;
+	solverBodies[_constraint.solverBodyAIndex].angularVelocity -= solverBodies[_constraint.solverBodyAIndex].inverseInertiaTensor * rACross * applyLambda;
+
+	// B速度の摩擦
+	solverBodies[_constraint.solverBodyBIndex].velocity += tangent * applyLambda * solverBodies[_constraint.solverBodyBIndex].inverseMass;
+	solverBodies[_constraint.solverBodyBIndex].angularVelocity += solverBodies[_constraint.solverBodyBIndex].inverseInertiaTensor * rBCross * applyLambda;
+}
 
 void CollisionSolverSystem::ReCalcPosRot()
 {
