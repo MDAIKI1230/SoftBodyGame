@@ -25,7 +25,7 @@ void ManifoldFunction::BoxBox(Vector3& _positionA, Vector3& _positionB, Vector3*
         AddFaceBManifold(_positionA, _positionB, _candidateAxisA, _candidateAxisB, _halfsA, _halfsB, _info, _manifoldBuffer);
         break;
     case BoxBoxContactInfo::EdgeEdge:
-
+        AddEdgeManifold(_positionA, _positionB, _candidateAxisA, _candidateAxisB, _halfsA, _halfsB, _info, _manifoldBuffer);
         break;
     }
 }
@@ -129,9 +129,125 @@ void ManifoldFunction::AddFaceBManifold(Vector3& _positionA, Vector3& _positionB
 
     _manifoldBuffer->manifolds.push_back(manifold);
 }
+
 void ManifoldFunction::AddEdgeManifold(Vector3& _positionA, Vector3& _positionB, Vector3* _candidateAxisA, Vector3* _candidateAxisB, float* _halfsA, float* _halfsB, BoxBoxContactInfo& _info, CollisionManifoldBuffer* _manifoldBuffer)
 {
+    Manifold manifold;
+    manifold.colliderA = _info.colliderA;
+    manifold.colliderB = _info.colliderB;
+    manifold.normal = _info.normal;
 
+    const int edgeAxisA = _info.axisA;
+    const int edgeAxisB = _info.axisB;
+
+    Vector3 edgeCenterA = _positionA;
+    Vector3 edgeCenterB = _positionB;
+
+    for (int i = 0; i < 3; ++i)
+    {
+        if (i != edgeAxisA)
+        {
+            float sign = (Vector3::Dot(_candidateAxisA[i], _info.normal) >= 0.0f) ? 1.0f : -1.0f;
+            edgeCenterA += _candidateAxisA[i] * (_halfsA[i] * sign);
+        }
+
+        if (i != edgeAxisB)
+        {
+            float sign = (Vector3::Dot(_candidateAxisB[i], _info.normal) >= 0.0f) ? -1.0f : 1.0f;
+            edgeCenterB += _candidateAxisB[i] * (_halfsB[i] * sign);
+        }
+    }
+
+    Vector3 edgeDirA = _candidateAxisA[edgeAxisA];
+    Vector3 edgeDirB = _candidateAxisB[edgeAxisB];
+
+    Vector3 a0 = edgeCenterA - edgeDirA * _halfsA[edgeAxisA];
+    Vector3 a1 = edgeCenterA + edgeDirA * _halfsA[edgeAxisA];
+    Vector3 b0 = edgeCenterB - edgeDirB * _halfsB[edgeAxisB];
+    Vector3 b1 = edgeCenterB + edgeDirB * _halfsB[edgeAxisB];
+
+    auto Clamp01 = [](float value)
+        {
+            if (value < 0.0f) return 0.0f;
+            if (value > 1.0f) return 1.0f;
+            return value;
+        };
+
+    Vector3 dA = a1 - a0;
+    Vector3 dB = b1 - b0;
+    Vector3 r = a0 - b0;
+
+    float a = Vector3::Dot(dA, dA);
+    float e = Vector3::Dot(dB, dB);
+    float f = Vector3::Dot(dB, r);
+
+    float s = 0.0f;
+    float t = 0.0f;
+
+    if (a <= MathConstants::EPSILON && e <= MathConstants::EPSILON)
+    {
+        s = 0.0f;
+        t = 0.0f;
+    }
+    else if (a <= MathConstants::EPSILON)
+    {
+        s = 0.0f;
+        t = Clamp01(f / e);
+    }
+    else
+    {
+        float c = Vector3::Dot(dA, r);
+
+        if (e <= MathConstants::EPSILON)
+        {
+            t = 0.0f;
+            s = Clamp01(-c / a);
+        }
+        else
+        {
+            float b = Vector3::Dot(dA, dB);
+            float denom = a * e - b * b;
+
+            if (std::abs(denom) > MathConstants::EPSILON)
+            {
+                s = Clamp01((b * f - c * e) / denom);
+            }
+            else
+            {
+                s = 0.0f;
+            }
+
+            t = (b * s + f) / e;
+
+            if (t < 0.0f)
+            {
+                t = 0.0f;
+                s = Clamp01(-c / a);
+            }
+            else if (t > 1.0f)
+            {
+                t = 1.0f;
+                s = Clamp01((b - c) / a);
+            }
+        }
+    }
+
+    Vector3 closestA = a0 + dA * s;
+    Vector3 closestB = b0 + dB * t;
+
+    ContactPoint cp;
+    cp.positionA = closestA;
+    cp.positionB = closestB;
+    cp.penetration = _info.depth;
+
+    AddUniquePoint(manifold, cp);
+
+    if (manifold.pointCount <= 0)
+    {
+        return;
+    }
+
+    _manifoldBuffer->manifolds.push_back(manifold);
 }
 
 

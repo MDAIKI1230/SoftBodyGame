@@ -98,7 +98,7 @@ bool ContactFunction::BoxBox(const ColliderID& _colliderIDA, const ColliderID& _
 bool ContactFunction::CheckAxis(BoxBoxContactInfo& _info, BoxBoxContactInfo::Type _type, Vector3& _testAxis, Vector3& _diff, float _length, int _aIndex, int _bIndex)
 {
 	// 分離軸候補に射影した中心間の距離
-	float dist{ abs(Vector3::Dot(_testAxis, _diff)) };
+	float dist{ std::abs(Vector3::Dot(_testAxis, _diff)) };
 
 	// 中心の距離が射影した長さより、長いなら当たっていない
 	if (dist > _length)
@@ -143,8 +143,8 @@ float ContactFunction::CalcLength(Vector3& _axis,Vector3* _candidateAxisA, Vecto
 	for (int j = 0; j < 3; j++)
 	{
 		// 分離軸候補に射影した長さを足していく
-		result += abs(Vector3::Dot(_axis, _candidateAxisA[j])) * _halfsA[j];
-		result += abs(Vector3::Dot(_axis, _candidateAxisB[j])) * _halfsB[j];
+		result += std::abs(Vector3::Dot(_axis, _candidateAxisA[j])) * _halfsA[j];
+		result += std::abs(Vector3::Dot(_axis, _candidateAxisB[j])) * _halfsB[j];
 	}
 
 	return result;
