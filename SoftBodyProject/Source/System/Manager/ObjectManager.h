@@ -24,8 +24,8 @@ public:
 	// EntityHandle取得
 	uint32_t GetHandle()
 	{
-		return objects.size() - 1;
+		return objects.size();
 	}
 private:
-	std::vector<std::unique_ptr<ObjectBase>> objects;
+	std::vector<std::unique_ptr<ObjectBase>> objects{};
 };

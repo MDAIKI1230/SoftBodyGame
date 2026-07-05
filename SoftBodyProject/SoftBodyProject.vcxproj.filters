@@ -478,6 +478,12 @@
     <ClInclude Include="Source\Physics\Function\ContactFunction.h">
       <Filter>ソース ファイル\Physics\Function</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Physics\Function\ManifoldFunction.h">
+      <Filter>ソース ファイル\Physics\Function</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Struct\Collision\ContactInfo.h">
+      <Filter>ソース ファイル\Physics\Struct\Collision</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\System\Adapter\Dxlib\DxlibInput.cpp">
@@ -613,6 +619,9 @@
       <Filter>ソース ファイル\Common\Math\NamericalAnalysis</Filter>
     </ClCompile>
     <ClCompile Include="Source\Physics\Function\ContactFunction.cpp">
+      <Filter>ソース ファイル\Physics\Function</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Physics\Function\ManifoldFunction.cpp">
       <Filter>ソース ファイル\Physics\Function</Filter>
     </ClCompile>
   </ItemGroup>

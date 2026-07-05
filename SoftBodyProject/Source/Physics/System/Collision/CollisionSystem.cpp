@@ -5,6 +5,8 @@
 
 #include "CollisionSystem.h"
 
+#include "ContactFunction.h"
+
 void CollisionSystem::FixedUpdate(PhysicsTransformStorage* _transformStorage, ColliderStorage* _colliderStorage, CollisionManifoldBuffer* _manifoldBuffer, EventManager* _eventManager)
 {
 	// --- 衝突処理 --- 
@@ -231,6 +233,24 @@ void CollisionSystem::Solve(
 		{
 			RegisterEvent(pair.a, pair.b, _colliderStorage, _eventManager);
 		}
+	}
+}
+
+template<>
+void CollisionSystem::Solve<ColliderTag::BoxTag, ColliderTag::BoxTag, CollisionPair::BoxBoxPair>(
+	const std::vector<CollisionPair::BoxBoxPair>& pairList,
+	PhysicsTransformStorage* _transformStorage,
+	ColliderStorage* _colliderStorage,
+	CollisionManifoldBuffer* _manifoldBuffer,
+	EventManager* _eventManager)
+{
+	for (auto& pair : pairList)
+	{
+		if (ContactFunction::BoxBox(pair.a, pair.b, _colliderStorage, _transformStorage, _manifoldBuffer))
+		{
+			RegisterEvent(pair.a, pair.b, _colliderStorage, _eventManager);
+		}
+
 	}
 }
 
