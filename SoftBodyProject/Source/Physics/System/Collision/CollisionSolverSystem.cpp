@@ -22,14 +22,6 @@ void CollisionSolverSystem::FixedUpdate(PhysicsTransformStorage* _transformStora
 	{
 		VelocitySolver(_transformStorage, _bodyStorage, _manifoldBuffer);
 	}
-	// 修正された速度で位置を再計算
-	ReCalcPosRot();
-	// 位置/姿勢解消を指定回数分回す
-	for (int i{ 0 }; i < POS_ROT_SOLVER_TIMES; i++)
-	{
-		PositionSolver(_transformStorage, _bodyStorage, _manifoldBuffer);
-	}
-	// 終了
 	End(_transformStorage, _bodyStorage, _manifoldBuffer);
 }
 
@@ -175,89 +167,6 @@ void CollisionSolverSystem::FrictionSolver(SolverBody& _bodyA, Vector3& _rA, Sol
 	// B速度の摩擦
 	solverBodies[_constraint.solverBodyBIndex].velocity += tangent * applyLambda * solverBodies[_constraint.solverBodyBIndex].inverseMass;
 	solverBodies[_constraint.solverBodyBIndex].angularVelocity += solverBodies[_constraint.solverBodyBIndex].inverseInertiaTensor * rBCross * applyLambda;
-}
-
-void CollisionSolverSystem::ReCalcPosRot()
-{
-	for (auto& body : solverBodies)
-	{
-		if (body.inverseMass != 0.0f)
-		{
-			// 変化した速度から位置を再計算
-			// 位置 + 修正後のベクトル
-			body.position = body.pastPos + body.velocity * ServiceLocator::GetTimeManager()->GetFixedDeltaTime();
-			
-			// Δω
-			Vector3 deltaAngularVelocity{ body.angularVelocity * ServiceLocator::GetTimeManager()->GetFixedDeltaTime() };
-			// Δωの四元数を作る
-			Quaternion rotOmega{ Quaternion::AngleAxis(deltaAngularVelocity.Length(),deltaAngularVelocity) };
-			// 回転＋修正後の角速度の回転
-			body.rotation = body.pastRot * rotOmega;
-		}
-	}
-
-	for (auto& constraint : contactConstraints)
-	{
-		constraint.accumulatedLambda = 0.0f;
-	}
-}
-
-
-void CollisionSolverSystem::PositionSolver(PhysicsTransformStorage* _transformStorage, RigidBodyStorage* _bodyStorage, CollisionManifoldBuffer* _manifoldBuffer)
-{
-	for (auto& constraint : contactConstraints)
-	{
-		// 質量から両者がBodyを持っているかの判定をする(どちらかがBodyを持っているなら合計は0じゃないはず)
-		float totalInvMass{ solverBodies[constraint.solverBodyAIndex].inverseMass + solverBodies[constraint.solverBodyBIndex].inverseMass };
-		if (totalInvMass <= 0)
-		{
-			continue;
-		}
-
-		// biasを求める
-		float bias{ ERP / ServiceLocator::GetTimeManager()->GetFixedDeltaTime() * constraint.penetration };
-
-		// 重心から衝突点ベクトル
-		Vector3 rA{ constraint.positionA - solverBodies[constraint.solverBodyAIndex].position };
-		Vector3 rB{ constraint.positionB - solverBodies[constraint.solverBodyBIndex].position };
-
-		// 重心から衝突点ベクトルAと法線の外積
-		Vector3 rACross{ Vector3::Cross(rA,constraint.normal) };
-		// 重心から衝突点ベクトルBと法線の外積
-		Vector3 rBCross{ Vector3::Cross(rB,constraint.normal) };
-
-		// 質量と慣性テンソルが速度に影響する度合い
-		float effectiveMass{
-			solverBodies[constraint.solverBodyAIndex].inverseMass +
-			Vector3::Dot(rACross,solverBodies[constraint.solverBodyAIndex].inverseInertiaTensor * rACross) +
-			solverBodies[constraint.solverBodyBIndex].inverseMass +
-			Vector3::Dot(rBCross,solverBodies[constraint.solverBodyBIndex].inverseInertiaTensor * rBCross)
-		};
-
-		// λ計算(CFMも適応)
-		float lambda{ constraint.penetration / (effectiveMass + GAMMA) };
-
-		float oldLambda{ constraint.accumulatedLambda };
-
-		// 0未満にしない
-		constraint.accumulatedLambda = std::max(oldLambda + lambda, 0.0f);
-
-		float applyLambda{ constraint.accumulatedLambda - oldLambda };
-
-		constraint.penetration -= applyLambda;
-
-		// Aの位置/姿勢制御
-		solverBodies[constraint.solverBodyAIndex].position -= constraint.normal * applyLambda * solverBodies[constraint.solverBodyAIndex].inverseMass;
-		Vector3 angVec{ solverBodies[constraint.solverBodyAIndex].inverseInertiaTensor * rACross * applyLambda };
-		Quaternion rotOmega{ Quaternion::AngleAxis(angVec.Length(), -angVec) };
-		solverBodies[constraint.solverBodyAIndex].rotation *= rotOmega;
-
-		// Bの位置/姿勢制御
-		solverBodies[constraint.solverBodyBIndex].position += constraint.normal * applyLambda * solverBodies[constraint.solverBodyBIndex].inverseMass;
-		angVec = solverBodies[constraint.solverBodyBIndex].inverseInertiaTensor * rBCross * applyLambda;
-		rotOmega = Quaternion::AngleAxis(angVec.Length(), angVec);
-		solverBodies[constraint.solverBodyBIndex].rotation *= rotOmega;
-	}
 }
 
 void CollisionSolverSystem::End(PhysicsTransformStorage* _transformStorage, RigidBodyStorage* _bodyStorage, CollisionManifoldBuffer* _manifoldBuffer)
