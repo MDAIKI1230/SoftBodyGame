@@ -255,6 +255,9 @@
     <ClInclude Include="Source\System\Manager\ResourceManager.h" />
     <ClInclude Include="Source\System\Manager\SceneManager.h" />
     <ClInclude Include="Source\System\Manager\TimeManager.h" />
+    <ClInclude Include="Source\System\SceneData\SceneComponentData.h" />
+    <ClInclude Include="Source\System\SceneData\SceneFileData.h" />
+    <ClInclude Include="Source\System\SceneData\SceneObjectData.h" />
     <ClInclude Include="Source\System\Scenes\DebugScene.h" />
     <ClInclude Include="Source\System\ServiceLocator.h" />
   </ItemGroup>

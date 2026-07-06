@@ -152,6 +152,9 @@
     <Filter Include="ソース ファイル\Physics\Function">
       <UniqueIdentifier>{e386d585-ca9f-4818-8aec-d7a8a97027a2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\System\SceneData">
+      <UniqueIdentifier>{d366f04b-e681-47d3-b3d7-2458ae8550b0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Objects\Camera.h">
@@ -483,6 +486,15 @@
     </ClInclude>
     <ClInclude Include="Source\Physics\Struct\Collision\ContactInfo.h">
       <Filter>ソース ファイル\Physics\Struct\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\System\SceneData\SceneComponentData.h">
+      <Filter>ソース ファイル\System\SceneData</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\System\SceneData\SceneFileData.h">
+      <Filter>ソース ファイル\System\SceneData</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\System\SceneData\SceneObjectData.h">
+      <Filter>ソース ファイル\System\SceneData</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
