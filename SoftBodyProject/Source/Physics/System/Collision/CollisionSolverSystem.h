@@ -61,6 +61,10 @@ private:
 	const float ERP;
 	// γ
 	const float GAMMA;
+	// 位置解消パーセント
+	static constexpr float POSITION_SOLVE_PERCENT{ 0.2f };
+	// 位置解消時のちょっとの余裕
+	static constexpr float POSITION_SOLVE_SLOP{ 0.01f };
 private:
 	std::vector<ContactConstraint> contactConstraints;
 	std::vector<SolverBody> solverBodies;

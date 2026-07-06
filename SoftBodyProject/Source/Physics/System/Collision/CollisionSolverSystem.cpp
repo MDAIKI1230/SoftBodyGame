@@ -233,9 +233,10 @@ void CollisionSolverSystem::PositionSolver(PhysicsTransformStorage* _transformSt
 			solverBodies[constraint.solverBodyBIndex].inverseMass +
 			Vector3::Dot(rBCross,solverBodies[constraint.solverBodyBIndex].inverseInertiaTensor * rBCross)
 		};
-
-		float depth = std::max(constraint.penetration - 0.01f, 0.0f);
-		float correction = 0.2f * depth;
+		// 重なり深さを決める(0が最小になるように)
+		float depth = std::max(constraint.penetration - POSITION_SOLVE_SLOP, 0.0f);
+		// 解消の割合から解消量を計算
+		float correction = POSITION_SOLVE_PERCENT * depth;
 
 		// λ計算(CFMも適応)
 		float lambda{ correction / effectiveMass };
@@ -247,7 +248,7 @@ void CollisionSolverSystem::PositionSolver(PhysicsTransformStorage* _transformSt
 
 		float applyLambda{ constraint.accumulatedLambda - oldLambda };
 
-		// 
+		// 解消した分だけ減らす(0が最小になるように)
 		constraint.penetration = std::max(constraint.penetration - correction, 0.0f);
 
 		// Aの位置/姿勢制御
