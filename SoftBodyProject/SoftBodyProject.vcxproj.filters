@@ -155,6 +155,9 @@
     <Filter Include="ソース ファイル\System\SceneData">
       <UniqueIdentifier>{d366f04b-e681-47d3-b3d7-2458ae8550b0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\System\SceneData\Component">
+      <UniqueIdentifier>{24183107-637a-44b8-9724-c606342a4ab2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Objects\Camera.h">
@@ -495,6 +498,15 @@
     </ClInclude>
     <ClInclude Include="Source\System\SceneData\SceneObjectData.h">
       <Filter>ソース ファイル\System\SceneData</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\System\SceneData\Component\BoxColliderComponentData.h">
+      <Filter>ソース ファイル\System\SceneData\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\System\SceneData\Component\SphereColliderComponentData.h">
+      <Filter>ソース ファイル\System\SceneData\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\System\SceneData\Component\TransformComponentData.h">
+      <Filter>ソース ファイル\System\SceneData\Component</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
