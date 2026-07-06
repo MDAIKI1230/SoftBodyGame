@@ -1,0 +1,30 @@
+{
+    "version":1,
+    "objects":
+    [
+        {
+            "id":"floor",
+            "type":"DebugBox",
+            "transform":{
+                "position"   :{ "x": 0 ,"y": -200 ,"z": 0 },
+                "rotationDeg":{ "x": 0 ,"y":   0  ,"z": 0 },
+                "scale"      :{ "x": 1 ,"y":   1  ,"z": 1 }
+             },
+            "BoxColliderComponent":{
+                "size": { "x": 200 ,"y": 50 ,"z": 200 }
+            }
+        },
+        {
+            "id":"ball",
+            "type":"DebugSphere",
+            "transform":{
+                "position"   :{ "x": 0 ,"y":  200 ,"z": 0 },
+                "rotationDeg":{ "x": 0 ,"y":   0  ,"z": 0 },
+                "scale"      :{ "x": 1 ,"y":   1  ,"z": 1 }
+             },
+            "SphereColliderComponent":{
+                "radius": 30
+            }
+        }
+    ]
+}
