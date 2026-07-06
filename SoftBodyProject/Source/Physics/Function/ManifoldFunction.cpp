@@ -64,13 +64,13 @@ void ManifoldFunction::AddFaceAManifold(Vector3& _positionA, Vector3& _positionB
 
         if (penetration <= 0.0f)
         {
-            ContactPoint cp;
+            ContactPoint contactPoint;
 
-            cp.positionB = positionB;
-            cp.positionA = positionB - faceNormal * penetration;
-            cp.penetration = -penetration;
+            contactPoint.positionB = positionB;
+            contactPoint.positionA = positionB - faceNormal * penetration;
+            contactPoint.penetration = -penetration;
 
-            AddUniquePoint(manifold, cp);
+            AddUniquePoint(manifold, contactPoint);
         }
     }
 

@@ -1,14 +1,71 @@
 ﻿#include "ContactFunction.h"
 
-bool ContactFunction::BoxBox(const ColliderID& _colliderIDA, const ColliderID& _colliderIDB, ColliderStorage* _colliderStorage, PhysicsTransformStorage* _transformStorage, CollisionManifoldBuffer* _manifoldBuffer)
+bool ContactFunction::SphereSphere(const ColliderID& _colliderA, const ColliderID& _colliderB, ColliderStorage* _colliderStorage, PhysicsTransformStorage* _transformStorage, CollisionManifoldBuffer* _manifoldBuffer)
 {
 	// Aの情報取得
-	Vector3 halfScaleA{ _colliderStorage->boxStorage->scale[_colliderStorage->GetDenseIndex(_colliderIDA)] * 0.5f };
-	uint32_t transformIndexA{ _transformStorage->GetDenseIndex(_colliderStorage->GetTransformID(_colliderIDA)) };
+	float radiusA{ _colliderStorage->sphereStorage->radius[_colliderStorage->GetDenseIndex(_colliderA)] };
+	uint32_t transformIndexA{ _transformStorage->GetDenseIndex(_colliderStorage->GetTransformID(_colliderA)) };
+	// Bの情報取得
+	float radiusB{ _colliderStorage->sphereStorage->radius[_colliderStorage->GetDenseIndex(_colliderB)] };
+	uint32_t transformIndexB{ _transformStorage->GetDenseIndex(_colliderStorage->GetTransformID(_colliderB)) };
+
+	// スケールの適応(書く方向で最大を選ぶ)
+	Vector3 scale{ _transformStorage->scale[transformIndexA] };
+	radiusA *= std::max(std::max(scale.x, scale.y), scale.z);
+
+	scale = _transformStorage->scale[transformIndexB];
+	radiusB *= std::max(std::max(scale.x, scale.y), scale.z);
+
+	// 半径の合計
+	float totalRadius{ radiusA + radiusB };
+
+	// 差
+	Vector3 diff{ _transformStorage->position[transformIndexB] - _transformStorage->position[transformIndexA] };
+
+	float distSqr{ diff.LengthSqr() };
+	// 判定
+	if (distSqr <= totalRadius * totalRadius)
+	{
+		// 衝突情報の追加
+		Manifold manifold;
+		manifold.colliderA = _colliderA;
+		manifold.colliderB = _colliderB;
+
+		// 長さが0なら正規化できないので上方向にする
+		if (distSqr >= MathConstants::EPSILON)
+		{
+			manifold.normal = diff.Normalized();
+		}
+		else
+		{
+			manifold.normal = Vector3::UP;
+		}
+
+
+		ContactPoint contactPoint;
+		contactPoint.penetration = totalRadius - std::sqrtf(distSqr);
+		contactPoint.positionA = _transformStorage->position[transformIndexA] + manifold.normal * radiusA;
+		contactPoint.positionB = _transformStorage->position[transformIndexB] + manifold.normal * radiusB;
+
+		manifold.AddPoints(contactPoint);
+
+		_manifoldBuffer->manifolds.push_back(manifold);
+
+		return true;
+	}
+
+	return false;
+}
+
+bool ContactFunction::BoxBox(const ColliderID& _colliderA, const ColliderID& _colliderB, ColliderStorage* _colliderStorage, PhysicsTransformStorage* _transformStorage, CollisionManifoldBuffer* _manifoldBuffer)
+{
+	// Aの情報取得
+	Vector3 halfScaleA{ _colliderStorage->boxStorage->scale[_colliderStorage->GetDenseIndex(_colliderA)] * 0.5f };
+	uint32_t transformIndexA{ _transformStorage->GetDenseIndex(_colliderStorage->GetTransformID(_colliderA)) };
 	Quaternion rotA{ _transformStorage->rotation[transformIndexA] };
 	// Bの情報取得
-	Vector3 halfScaleB{ _colliderStorage->boxStorage->scale[_colliderStorage->GetDenseIndex(_colliderIDB)] * 0.5f };
-	uint32_t transformIndexB{ _transformStorage->GetDenseIndex(_colliderStorage->GetTransformID(_colliderIDB)) };
+	Vector3 halfScaleB{ _colliderStorage->boxStorage->scale[_colliderStorage->GetDenseIndex(_colliderB)] * 0.5f };
+	uint32_t transformIndexB{ _transformStorage->GetDenseIndex(_colliderStorage->GetTransformID(_colliderB)) };
 	Quaternion rotB{ _transformStorage->rotation[transformIndexB] };
 
 	// スケールの適応
@@ -47,8 +104,8 @@ bool ContactFunction::BoxBox(const ColliderID& _colliderIDA, const ColliderID& _
 
 	BoxBoxContactInfo info;
 
-	info.colliderA = _colliderIDA;
-	info.colliderB = _colliderIDB;
+	info.colliderA = _colliderA;
+	info.colliderB = _colliderB;
 
 	info.depth = FLT_MAX;
 	info.normal = Vector3::ZERO;

@@ -253,6 +253,24 @@ void CollisionSystem::Solve<ColliderTag::BoxTag, ColliderTag::BoxTag, CollisionP
 	}
 }
 
+template<>
+void CollisionSystem::Solve<ColliderTag::SphereTag, ColliderTag::SphereTag, CollisionPair::SphereSpherePair>(
+	const std::vector<CollisionPair::SphereSpherePair>& pairList,
+	PhysicsTransformStorage* _transformStorage,
+	ColliderStorage* _colliderStorage,
+	CollisionManifoldBuffer* _manifoldBuffer,
+	EventManager* _eventManager)
+{
+	for (auto& pair : pairList)
+	{
+		if (ContactFunction::SphereSphere(pair.a, pair.b, _colliderStorage, _transformStorage, _manifoldBuffer))
+		{
+			RegisterEvent(pair.a, pair.b, _colliderStorage, _eventManager);
+		}
+
+	}
+}
+
 template<class A, class B>
 bool CollisionSystem::GJK(
 	ColliderID _colliderA, ColliderID _colliderB,
