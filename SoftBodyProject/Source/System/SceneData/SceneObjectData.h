@@ -8,5 +8,5 @@
 struct SceneObjectData
 {
 	std::string name;
-	std::vector<SceneComponentData> component;
+	std::vector<std::unique_ptr<SceneComponentData>> component;
 };
