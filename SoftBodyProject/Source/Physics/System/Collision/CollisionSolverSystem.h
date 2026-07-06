@@ -27,6 +27,10 @@ private:
 	void VelocitySolver(PhysicsTransformStorage* _transformStorage, RigidBodyStorage* _bodyStorage, CollisionManifoldBuffer* _manifoldBuffer);
 	// 摩擦計算
 	void FrictionSolver(SolverBody& _bodyA, Vector3& _rA, SolverBody& _bodyB, Vector3& _rB, ContactConstraint& _constraint, float _effectiveMass);
+	// 位置姿勢の再計算
+	void ReCalcPosRot();
+	// 位置解決
+	void PositionSolver(PhysicsTransformStorage* _transformStorage, RigidBodyStorage* _bodyStorage, CollisionManifoldBuffer* _manifoldBuffer);
 	// 終わり
 	void End(PhysicsTransformStorage* _transformStorage, RigidBodyStorage* _bodyStorage, CollisionManifoldBuffer* _manifoldBuffer);
 	/// <summary>
@@ -44,7 +48,7 @@ private:
 		PhysicsTransformStorage* _transformStorage, RigidBodyStorage* _bodyStorage, PhysicsTransformID& _transformID);
 private:
 	// 速度解消回数
-	static constexpr float VELOCITY_SOLVER_TIMES{ 8 };
+	static constexpr float VELOCITY_SOLVER_TIMES{ 10 };
 	// 位置/姿勢解消回数
 	static constexpr float POS_ROT_SOLVER_TIMES{ 4 };
 	// バネ定数

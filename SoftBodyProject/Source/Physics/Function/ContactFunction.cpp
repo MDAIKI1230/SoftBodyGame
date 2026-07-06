@@ -109,8 +109,10 @@ bool ContactFunction::CheckAxis(BoxBoxContactInfo& _info, BoxBoxContactInfo::Typ
 	// 衝突判定の計算
 	// 重なり深さ
 	float depth = _length - dist;
+	// 辺を優先しないための補正
+	float edgeSLot{ (_type == BoxBoxContactInfo::EdgeEdge) ? 0.1f : 0.0f };
 	// 今の重なり深さより短いなら代入
-	if (depth < _info.depth)
+	if (depth < _info.depth + edgeSLot)
 	{
 		_info.depth = depth;
 		_info.normal = (Vector3::Dot(_testAxis, _diff) < 0.0f)

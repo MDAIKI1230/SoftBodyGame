@@ -117,8 +117,8 @@ void RigidBodySystem::End(RigidBodyStorage* _bodyStorage, ColliderStorage* _coll
 		_bodyStorage->torque[bodyIndex] = Vector3::ZERO;
 
 		// AABBのフラグを変更する
-		if (_bodyStorage->velocity[bodyIndex].LengthSqr() <= MathConstants::EPSILON &&
-			_bodyStorage->angularVelocity[bodyIndex].LengthSqr() <= MathConstants::EPSILON)
+		if (_bodyStorage->velocity[bodyIndex].LengthSqr() >= MathConstants::EPSILON ||
+			_bodyStorage->angularVelocity[bodyIndex].LengthSqr() >= MathConstants::EPSILON)
 		{
 			auto& colliders{ _colliderStorage->GetColliderIDFromTransformID(_bodyStorage->GetTransformID(bodyID)) };
 			for (auto& colliderID : colliders)

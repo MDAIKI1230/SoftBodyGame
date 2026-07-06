@@ -1,4 +1,6 @@
-﻿#include "ManifoldFunction.h"
+﻿#include <algorithm>
+
+#include "ManifoldFunction.h"
 
 void ManifoldFunction::AddUniquePoint(Manifold& _manifold, const ContactPoint& _point)
 {
@@ -137,109 +139,111 @@ void ManifoldFunction::AddEdgeManifold(Vector3& _positionA, Vector3& _positionB,
     manifold.colliderB = _info.colliderB;
     manifold.normal = _info.normal;
 
-    const int edgeAxisA = _info.axisA;
-    const int edgeAxisB = _info.axisB;
-
-    Vector3 edgeCenterA = _positionA;
-    Vector3 edgeCenterB = _positionB;
+    Vector3 edgeCenterA{ _positionA };
+    Vector3  edgeCenterB{ _positionB };
 
     for (int i = 0; i < 3; ++i)
     {
-        if (i != edgeAxisA)
+        if (i != _info.axisA)
         {
             float sign = (Vector3::Dot(_candidateAxisA[i], _info.normal) >= 0.0f) ? 1.0f : -1.0f;
             edgeCenterA += _candidateAxisA[i] * (_halfsA[i] * sign);
         }
 
-        if (i != edgeAxisB)
+        if (i != _info.axisB)
         {
             float sign = (Vector3::Dot(_candidateAxisB[i], _info.normal) >= 0.0f) ? -1.0f : 1.0f;
             edgeCenterB += _candidateAxisB[i] * (_halfsB[i] * sign);
         }
     }
 
-    Vector3 edgeDirA = _candidateAxisA[edgeAxisA];
-    Vector3 edgeDirB = _candidateAxisB[edgeAxisB];
+    // 各辺の端を計算
+    Vector3 startA = edgeCenterA - _candidateAxisA[_info.axisA] * _halfsA[_info.axisA];
+    Vector3 endA = edgeCenterA + _candidateAxisA[_info.axisA] * _halfsA[_info.axisA];
+    Vector3 startB = edgeCenterB - _candidateAxisB[_info.axisB] * _halfsB[_info.axisB];
+    Vector3 endB = edgeCenterB + _candidateAxisB[_info.axisB] * _halfsB[_info.axisB];
 
-    Vector3 a0 = edgeCenterA - edgeDirA * _halfsA[edgeAxisA];
-    Vector3 a1 = edgeCenterA + edgeDirA * _halfsA[edgeAxisA];
-    Vector3 b0 = edgeCenterB - edgeDirB * _halfsB[edgeAxisB];
-    Vector3 b1 = edgeCenterB + edgeDirB * _halfsB[edgeAxisB];
+    // 辺ベクトル
+    Vector3 segmentA = endA - startA;
+    Vector3 segmentB = endB - startB;
+    // AとBのスタート点のベクトル
+    Vector3 r = startA - startB;
 
-    auto Clamp01 = [](float value)
-        {
-            if (value < 0.0f) return 0.0f;
-            if (value > 1.0f) return 1.0f;
-            return value;
-        };
+    // 長さ
+    float lengthA = Vector3::Dot(segmentA, segmentA);
+    float lengthB = Vector3::Dot(segmentB, segmentB);
+    // スタート点をつなぐベクトルを射影
+    float dotB = Vector3::Dot(segmentB, r);
+    float dotA = Vector3::Dot(segmentA, r);
 
-    Vector3 dA = a1 - a0;
-    Vector3 dB = b1 - b0;
-    Vector3 r = a0 - b0;
-
-    float a = Vector3::Dot(dA, dA);
-    float e = Vector3::Dot(dB, dB);
-    float f = Vector3::Dot(dB, r);
-
+    // 最近点用の係数
     float s = 0.0f;
     float t = 0.0f;
 
-    if (a <= MathConstants::EPSILON && e <= MathConstants::EPSILON)
+    // 両方の長さが0に近いなら、スタート点を使う
+    if (lengthA <= MathConstants::EPSILON && lengthB <= MathConstants::EPSILON)
     {
         s = 0.0f;
         t = 0.0f;
     }
-    else if (a <= MathConstants::EPSILON)
+    // Aの長さが0に近いなら、Aはスタート点Bは最近点
+    else if (lengthA <= MathConstants::EPSILON)
     {
         s = 0.0f;
-        t = Clamp01(f / e);
+        t = std::clamp((dotB / lengthB), 0.0f, 1.0f);
     }
+    // Bの長さが0に近いなら、Bはスタート点Aは最近点
+    else if (lengthB <= MathConstants::EPSILON)
+    {
+        t = 0.0f;
+        s = std::clamp((-dotA / lengthA), 0.0f, 1.0f);
+    }
+    // 両者長さが十分なら普通に最近点を求める
     else
     {
-        float c = Vector3::Dot(dA, r);
+        /*
+               最近点ということは、最近点同士を結んだベクトルとAとBの辺の内積は0になるはず
+                 dot(dotA A(s) - B(t)) = 0
+                 dot(dotB, A(s) - B(t)) = 0
+                 になるsとtを求める
+                 連立方程式として解いたら下のような式になる
+        */
+        float dotAB = Vector3::Dot(segmentA, segmentB);
+        float denom = lengthA * lengthB - dotAB * dotAB;
 
-        if (e <= MathConstants::EPSILON)
+        if (std::abs(denom) > MathConstants::EPSILON)
         {
-            t = 0.0f;
-            s = Clamp01(-c / a);
+            s = std::clamp(((dotAB * dotB - dotA * lengthB) / denom), 0.0f, 1.0f);
         }
         else
         {
-            float b = Vector3::Dot(dA, dB);
-            float denom = a * e - b * b;
+            s = 0.0f;
+        }
 
-            if (std::abs(denom) > MathConstants::EPSILON)
-            {
-                s = Clamp01((b * f - c * e) / denom);
-            }
-            else
-            {
-                s = 0.0f;
-            }
+        t = (dotAB * s + dotB) / lengthB;
 
-            t = (b * s + f) / e;
-
-            if (t < 0.0f)
-            {
-                t = 0.0f;
-                s = Clamp01(-c / a);
-            }
-            else if (t > 1.0f)
-            {
-                t = 1.0f;
-                s = Clamp01((b - c) / a);
-            }
+        if (t < 0.0f)
+        {
+            t = 0.0f;
+            s = std::clamp((-dotA / lengthA), 0.0f, 1.0f);
+        }
+        else if (t > 1.0f)
+        {
+            t = 1.0f;
+            s = std::clamp(((dotAB - dotA) / lengthA), 0.0f, 1.0f);
         }
     }
 
-    Vector3 closestA = a0 + dA * s;
-    Vector3 closestB = b0 + dB * t;
+    // 求まったs.tから最近点を計算
+    Vector3 closestA = startA + segmentA * s;
+    Vector3 closestB = startB + segmentB * t;
 
     ContactPoint cp;
     cp.positionA = closestA;
     cp.positionB = closestB;
     cp.penetration = _info.depth;
 
+    // 追加
     AddUniquePoint(manifold, cp);
 
     if (manifold.pointCount <= 0)
@@ -247,6 +251,7 @@ void ManifoldFunction::AddEdgeManifold(Vector3& _positionA, Vector3& _positionB,
         return;
     }
 
+    // バッファに追加
     _manifoldBuffer->manifolds.push_back(manifold);
 }
 

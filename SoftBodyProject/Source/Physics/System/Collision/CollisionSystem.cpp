@@ -195,7 +195,6 @@ void CollisionSystem::CheckProjectionAxisValueCross(std::vector<ColliderProjecti
 					// 軸で交差しているので交差カウント増加
 					crossCountMap[CollisionPair::Pair(_projectionAxisValues[active].colliderID, _projectionAxisValues[i].colliderID)] += 1;
 				}
-
 			}
 			// 最小値なのでactiveリストに追加。
 			_projectionAxisValues[i].activeIndex = actives.size();
