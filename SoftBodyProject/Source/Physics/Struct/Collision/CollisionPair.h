@@ -10,7 +10,7 @@ namespace CollisionPair
 
 		bool operator==(const Pair& other) const
 		{
-			return a.index == other.a.index && b.index == other.b.index || a.index == other.b.index && b.index == other.a.index;
+			return a.index == other.a.index && b.index == other.b.index;
 		}
 	};
 

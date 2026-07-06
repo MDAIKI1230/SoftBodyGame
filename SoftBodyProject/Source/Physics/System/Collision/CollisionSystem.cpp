@@ -185,7 +185,7 @@ void CollisionSystem::CheckProjectionAxisValueCross(std::vector<ColliderProjecti
 			for (size_t active : actives)
 			{
 				// 同ペア対策
-				if (_projectionAxisValues[i].colliderID.index > active)
+				if (_projectionAxisValues[i].colliderID.index > _projectionAxisValues[active].colliderID.index)
 				{
 					// 軸で交差しているので交差カウント増加
 					crossCountMap[CollisionPair::Pair(_projectionAxisValues[i].colliderID, _projectionAxisValues[active].colliderID)] += 1;
