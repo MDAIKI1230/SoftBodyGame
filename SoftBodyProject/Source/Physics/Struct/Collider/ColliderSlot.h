@@ -10,9 +10,10 @@ struct ColliderSlot
 {
 public:
     // コンストラクタ
-    ColliderSlot(ColliderType _type, uint32_t _denseIndex, EntityID _ownerEntity, PhysicsTransformID _transformID) :
+    ColliderSlot(ColliderType _type, uint32_t _denseIndex, uint32_t _aabbIndex, EntityID _ownerEntity, PhysicsTransformID _transformID) :
         type{ _type },
         denseIndex{ _denseIndex },
+        aabbIndex{ _aabbIndex },
         ownerEntity{ _ownerEntity },
         transformID{ _transformID }
     {
@@ -27,6 +28,8 @@ public:
     ColliderType type;
     // 実データ上のインデックス
     uint32_t denseIndex;
+    // 対応aabbのインデックス
+    uint32_t aabbIndex;
     // オブジェクトエンティティ
     EntityID ownerEntity;
     // Transform

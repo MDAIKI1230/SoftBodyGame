@@ -31,6 +31,8 @@ public:
     ColliderType GetType(ColliderID _id) const;
     // 実データのインデックス
     uint32_t GetDenseIndex(ColliderID _id) const;
+    // AABBのインデックス
+    uint32_t GetAABBIndex(ColliderID _id) const;
     // 持ってるEntity
     EntityID GetOwnerEntity(ColliderID _id) const;
     // TransformID
@@ -49,7 +51,7 @@ public:
     // 箱Storage
     std::unique_ptr<BoxColliderStorage> boxStorage;
 private:
-    ColliderID GenerateColliderID(ColliderType _type, size_t _denseIndex, EntityID _ownerEntity, PhysicsTransformID _transformID);
+    ColliderID GenerateColliderID(ColliderType _type, uint32_t _denseIndex, uint32_t _aabbIndex, EntityID _ownerEntity, PhysicsTransformID _transformID);
 private:
     std::unordered_map<PhysicsTransformID, std::vector<ColliderID>> transformMap;
 };

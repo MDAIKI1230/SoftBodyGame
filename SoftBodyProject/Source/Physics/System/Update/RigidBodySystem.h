@@ -21,7 +21,7 @@ private:
 	// 逆慣性テンソル更新
 	void UpdateInverseInertiaTensor(PhysicsTransformStorage* _transformStorage, RigidBodyStorage* _bodyStorage, ColliderStorage* _colliderStorage);
 	// 終了処理
-	void End(RigidBodyStorage* _bodyStorage);
+	void End(RigidBodyStorage* _bodyStorage, ColliderStorage* _colliderStorage);
 
 	// --- 慣性テンソル計算 ---
 	Matrix4x4 GenerateBoxInverseInertiaTensor(const uint32_t& _transformIndex, const ColliderID& _colliderID, float _mass, PhysicsTransformStorage* _transformStorage, ColliderStorage* _colliderStorage);

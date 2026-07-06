@@ -10,7 +10,7 @@ void RigidBodySystem::FixedUpdate(PhysicsTransformStorage* _transformStorage, Ri
 	UpdatePosition(_transformStorage, _bodyStorage);
 	UpdateInverseInertiaTensor(_transformStorage, _bodyStorage, _colliderStorage);
 	UpdateRotation(_transformStorage, _bodyStorage);
-	End(_bodyStorage);
+	End(_bodyStorage, _colliderStorage);
 }
 
 void RigidBodySystem::UpdateGravity(RigidBodyStorage* _bodyStorage)
@@ -107,7 +107,7 @@ void RigidBodySystem::UpdateInverseInertiaTensor(PhysicsTransformStorage* _trans
 	}
 }
 
-void RigidBodySystem::End(RigidBodyStorage* _bodyStorage)
+void RigidBodySystem::End(RigidBodyStorage* _bodyStorage, ColliderStorage* _colliderStorage)
 {
 	for (auto& bodyID : _bodyStorage->id)
 	{
@@ -115,6 +115,23 @@ void RigidBodySystem::End(RigidBodyStorage* _bodyStorage)
 		uint32_t bodyIndex{ _bodyStorage->GetDenseIndex(bodyID) };
 		_bodyStorage->force[bodyIndex] = Vector3::ZERO;
 		_bodyStorage->torque[bodyIndex] = Vector3::ZERO;
+
+		// AABBのフラグを変更する
+		if (_bodyStorage->velocity[bodyIndex].LengthSqr() <= MathConstants::EPSILON &&
+			_bodyStorage->angularVelocity[bodyIndex].LengthSqr() <= MathConstants::EPSILON)
+		{
+			auto& colliders{ _colliderStorage->GetColliderIDFromTransformID(_bodyStorage->GetTransformID(bodyID)) };
+			for (auto& colliderID : colliders)
+			{
+				_colliderStorage->aabbStorage->dirty[_colliderStorage->GetAABBIndex(colliderID)] |= AABBChangeDirtyFlag::TRANSFORM;
+			}
+		}
+	}
+
+	for (auto& aabbDirty : _colliderStorage->aabbStorage->dirty)
+	{
+
+		aabbDirty |= AABBChangeDirtyFlag::TRANSFORM;
 	}
 }
 

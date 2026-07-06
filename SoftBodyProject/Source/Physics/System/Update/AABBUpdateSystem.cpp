@@ -30,7 +30,21 @@ void AABBUpdateSystem::FixedUpdate(PhysicsTransformStorage* _transformStorage, C
 
 		if (aabbStorage->dirty[i] & AABBChangeDirtyFlag::TRANSFORM)
 		{
+			ColliderID id{ _colliderStorage->aabbStorage->aabb[i].colliderID };
 
+			switch (_colliderStorage->GetType(id))
+			{
+			case ColliderType::SPHERE:
+				ComputeSphere(_colliderStorage->aabbStorage->aabb[i], _colliderStorage, id, _transformStorage);
+				break;
+			case ColliderType::BOX:
+				ComputeBox(_colliderStorage->aabbStorage->aabb[i], _colliderStorage, id, _transformStorage);
+				break;
+			default:
+				break;
+			}
+
+			aabbStorage->dirty[i] = AABBChangeDirtyFlag::NONE;
 		}
 
 		if (aabbStorage->dirty[i] & AABBChangeDirtyFlag::SHAPE)
