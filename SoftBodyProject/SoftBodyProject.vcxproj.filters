@@ -155,8 +155,11 @@
     <Filter Include="ソース ファイル\System\SceneData">
       <UniqueIdentifier>{d366f04b-e681-47d3-b3d7-2458ae8550b0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\System\SceneData\Component">
-      <UniqueIdentifier>{24183107-637a-44b8-9724-c606342a4ab2}</UniqueIdentifier>
+    <Filter Include="ソース ファイル\System\SceneData\Struct">
+      <UniqueIdentifier>{6f0c87e4-d179-415f-bbf5-347716e1f5e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\System\SceneData\Struct\Component">
+      <UniqueIdentifier>{a1a25e8a-8a5e-4095-9fe6-fa57d9ff28c7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -490,23 +493,29 @@
     <ClInclude Include="Source\Physics\Struct\Collision\ContactInfo.h">
       <Filter>ソース ファイル\Physics\Struct\Collision</Filter>
     </ClInclude>
-    <ClInclude Include="Source\System\SceneData\SceneComponentData.h">
+    <ClInclude Include="Source\System\SceneData\Struct\SceneComponentData.h">
+      <Filter>ソース ファイル\System\SceneData\Struct</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\System\SceneData\Struct\SceneFileData.h">
+      <Filter>ソース ファイル\System\SceneData\Struct</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\System\SceneData\Struct\SceneObjectData.h">
+      <Filter>ソース ファイル\System\SceneData\Struct</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\System\SceneData\Struct\Component\BoxColliderComponentData.h">
+      <Filter>ソース ファイル\System\SceneData\Struct\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\System\SceneData\Struct\Component\SphereColliderComponentData.h">
+      <Filter>ソース ファイル\System\SceneData\Struct\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\System\SceneData\Struct\Component\TransformComponentData.h">
+      <Filter>ソース ファイル\System\SceneData\Struct\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\System\SceneData\SceneDataLoader.h">
       <Filter>ソース ファイル\System\SceneData</Filter>
     </ClInclude>
-    <ClInclude Include="Source\System\SceneData\SceneFileData.h">
+    <ClInclude Include="Source\System\SceneData\JsonLoadHelperFunc.h">
       <Filter>ソース ファイル\System\SceneData</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\System\SceneData\SceneObjectData.h">
-      <Filter>ソース ファイル\System\SceneData</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\System\SceneData\Component\BoxColliderComponentData.h">
-      <Filter>ソース ファイル\System\SceneData\Component</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\System\SceneData\Component\SphereColliderComponentData.h">
-      <Filter>ソース ファイル\System\SceneData\Component</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\System\SceneData\Component\TransformComponentData.h">
-      <Filter>ソース ファイル\System\SceneData\Component</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -647,6 +656,12 @@
     </ClCompile>
     <ClCompile Include="Source\Physics\Function\ManifoldFunction.cpp">
       <Filter>ソース ファイル\Physics\Function</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\System\SceneData\SceneDataLoader.cpp">
+      <Filter>ソース ファイル\System\SceneData</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\System\SceneData\JsonLoadHelperFunc.cpp">
+      <Filter>ソース ファイル\System\SceneData</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

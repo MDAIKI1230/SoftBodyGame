@@ -5,14 +5,18 @@
         {
             "id":"floor",
             "type":"DebugBox",
-            "transform":{
+            "Transform":{
                 "position"   :{ "x": 0 ,"y": -200 ,"z": 0 },
                 "rotationDeg":{ "x": 0 ,"y":   0  ,"z": 0 },
                 "scale"      :{ "x": 1 ,"y":   1  ,"z": 1 }
-             },
-            "BoxColliderComponent":{
-                "size": { "x": 200 ,"y": 50 ,"z": 200 }
-            }
+            },
+            "Components":
+            [
+                {
+                    "name":"BoxCollider",
+                    "size": { "x": 200 ,"y": 50 ,"z": 200 }
+                }
+            ]
         },
         {
             "id":"ball",
@@ -22,9 +26,13 @@
                 "rotationDeg":{ "x": 0 ,"y":   0  ,"z": 0 },
                 "scale"      :{ "x": 1 ,"y":   1  ,"z": 1 }
              },
-            "SphereColliderComponent":{
-                "radius": 30
-            }
+            "Components":
+            [
+                {
+                    "name":"SphereCollider",
+                    "radius": 30
+                }
+            ]
         }
     ]
 }
