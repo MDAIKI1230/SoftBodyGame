@@ -3,6 +3,8 @@
 #include "ColliderID.h"
 #include "Face.h"
 #include "Edge.h"
+#include "MinkowskiVertex.h"
+#include "Simplex.h"
 
 #include "ColliderStorage.h"
 #include "PhysicsTransformStorage.h"

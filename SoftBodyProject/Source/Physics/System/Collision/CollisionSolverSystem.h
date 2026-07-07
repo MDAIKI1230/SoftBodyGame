@@ -31,6 +31,8 @@ private:
 	void ReCalcPosRot();
 	// 位置解決
 	void PositionSolver(PhysicsTransformStorage* _transformStorage, RigidBodyStorage* _bodyStorage, CollisionManifoldBuffer* _manifoldBuffer);
+	// 拘束解消
+	void ConstraintSolver(PhysicsTransformStorage* _transformStorage, RigidBodyStorage* _bodyStorage, CollisionManifoldBuffer* _manifoldBuffer);
 	// 終わり
 	void End(PhysicsTransformStorage* _transformStorage, RigidBodyStorage* _bodyStorage, CollisionManifoldBuffer* _manifoldBuffer);
 	/// <summary>
@@ -67,6 +69,7 @@ private:
 	static constexpr float POSITION_SOLVE_SLOP{ 0.01f };
 private:
 	std::vector<ContactConstraint> contactConstraints;
+	std::vector<Constraint> constraints;
 	std::vector<SolverBody> solverBodies;
 	std::unordered_map<PhysicsTransformID, uint32_t> bodyMap;
 };
