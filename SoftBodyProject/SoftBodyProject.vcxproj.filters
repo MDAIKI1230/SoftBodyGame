@@ -526,6 +526,9 @@
     <ClInclude Include="Source\System\Factory\ComponentFactory.h">
       <Filter>ソース ファイル\System\Factory</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Physics\Function\GJKEPA.h">
+      <Filter>ソース ファイル\Physics\Function</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\System\Adapter\Dxlib\DxlibInput.cpp">
@@ -677,6 +680,9 @@
     </ClCompile>
     <ClCompile Include="Source\System\Factory\ComponentFactory.cpp">
       <Filter>ソース ファイル\System\Factory</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Physics\Function\GJKEPA.cpp">
+      <Filter>ソース ファイル\Physics\Function</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

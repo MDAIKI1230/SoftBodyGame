@@ -197,6 +197,7 @@
     <ClInclude Include="Source\Physics\Collider\SphereColliderComponent.h" />
     <ClInclude Include="Source\Physics\Constants\CollisionConstants.h" />
     <ClInclude Include="Source\Physics\Function\ContactFunction.h" />
+    <ClInclude Include="Source\Physics\Function\GJKEPA.h" />
     <ClInclude Include="Source\Physics\Function\ManifoldFunction.h" />
     <ClInclude Include="Source\Physics\PhysicsWorld.h" />
     <ClInclude Include="Source\Physics\Storage\Body\RigidBodyStorage.h" />
@@ -290,6 +291,7 @@
     <ClCompile Include="Source\Physics\Collider\BoxColliderComponent.cpp" />
     <ClCompile Include="Source\Physics\Collider\SphereColliderComponent.cpp" />
     <ClCompile Include="Source\Physics\Function\ContactFunction.cpp" />
+    <ClCompile Include="Source\Physics\Function\GJKEPA.cpp" />
     <ClCompile Include="Source\Physics\Function\ManifoldFunction.cpp" />
     <ClCompile Include="Source\Physics\PhysicsWorld.cpp" />
     <ClCompile Include="Source\Physics\Storage\Body\RigidBodyStorage.cpp" />
