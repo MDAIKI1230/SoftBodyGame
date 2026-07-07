@@ -12,9 +12,6 @@
 
 #include "ColliderProjection.h"
 #include "CollisionPair.h"
-#include "Simplex.h"
-#include "Face.h"
-#include "Edge.h"
 
 #include "EventManager.h"
 
