@@ -1,4 +1,6 @@
-﻿#include "ContactFunction.h"
+﻿#include <algorithm>
+
+#include "ContactFunction.h"
 
 bool ContactFunction::SphereSphere(const ColliderID& _colliderA, const ColliderID& _colliderB, ColliderStorage* _colliderStorage, PhysicsTransformStorage* _transformStorage, CollisionManifoldBuffer* _manifoldBuffer)
 {
@@ -55,6 +57,130 @@ bool ContactFunction::SphereSphere(const ColliderID& _colliderA, const ColliderI
 	}
 
 	return false;
+}
+
+bool ContactFunction::SphereBox(const ColliderID& _colliderSphere, const ColliderID& _colliderBox, ColliderStorage* _colliderStorage, PhysicsTransformStorage* _transformStorage, CollisionManifoldBuffer* _manifoldBuffer)
+{
+	// Sphereの情報取得
+	float radius{ _colliderStorage->sphereStorage->radius[_colliderStorage->GetDenseIndex(_colliderSphere)] };
+	uint32_t transformIndexSphere{ _transformStorage->GetDenseIndex(_colliderStorage->GetTransformID(_colliderSphere)) };
+	// Boxの情報取得
+	Vector3 halfScaleBox{ _colliderStorage->boxStorage->scale[_colliderStorage->GetDenseIndex(_colliderBox)] * 0.5f };
+	uint32_t transformIndexBox{ _transformStorage->GetDenseIndex(_colliderStorage->GetTransformID(_colliderBox)) };
+	Quaternion rotBox{ _transformStorage->rotation[transformIndexBox] };
+
+	halfScaleBox = SIMDVectorMath::Mul(halfScaleBox, _transformStorage->scale[transformIndexBox]);
+
+	// 基底ベクトル
+	Vector3 axis[]
+	{
+		rotBox.Rotate(Vector3::RIGHT),
+		rotBox.Rotate(Vector3::UP),
+		rotBox.Rotate(Vector3::FORWARD)
+	};
+
+	// ローカル座標
+	Vector3 temp{ _transformStorage->position[transformIndexSphere] - _transformStorage->position[transformIndexBox] };
+	Vector3 localCirclePosition{ Vector3::Dot(axis[0],temp),Vector3::Dot(axis[1],temp),Vector3::Dot(axis[2],temp) };
+
+	// 矩形内にクランプ
+	Vector3 latestPoint{ 
+		std::clamp(localCirclePosition.x, -halfScaleBox.x, halfScaleBox.x),
+		std::clamp(localCirclePosition.y, -halfScaleBox.y, halfScaleBox.y),
+		std::clamp(localCirclePosition.z, -halfScaleBox.z, halfScaleBox.z),
+	};
+
+	// 最近点と円の中心の距離
+	float dist{ Vector3::DistanceSqr(localCirclePosition, latestPoint) };
+
+	// 距離が円の半径よりも大きいなら当たっていない
+	if (dist > radius * radius)
+	{
+		return false;
+	}
+
+	// ---衝突計算
+	Manifold manifold;
+
+	manifold.colliderA = _colliderSphere;
+	manifold.colliderB = _colliderBox;
+
+	// 中心点が矩形の外なら
+	if (latestPoint != localCirclePosition)
+	{
+		Vector3 deff{ latestPoint - localCirclePosition };
+
+		ContactPoint contactPoint;
+		// 重なり深さ計算
+		contactPoint.penetration = radius - deff.Length();
+		// 法線計算
+		Vector3 normalLocal = deff.Normalize();
+		// ワールド座標に変換
+		manifold.normal = axis[0] * normalLocal.x + axis[1] * normalLocal.y + axis[2] * normalLocal.z;
+
+		// クランプしたのをワールドに直すして衝突点にする(BOX)
+		contactPoint.positionA = _transformStorage->position[transformIndexSphere] + manifold.normal * radius;
+		// 球は法線から求める
+		contactPoint.positionB = axis[0] * latestPoint.x + axis[1] * latestPoint.y + axis[2] * latestPoint.z;
+
+		// 点追加
+		manifold.AddPoints(contactPoint);
+
+		_manifoldBuffer->manifolds.push_back(manifold);
+
+		return true;
+	}
+
+	// 中心点が矩形の中
+
+	// 4辺との距離
+	float distances[6]
+	{
+	localCirclePosition.x - halfScaleBox.x,  // left
+	halfScaleBox.x - localCirclePosition.x,  // right
+	localCirclePosition.y - halfScaleBox.y,  // bottom
+	halfScaleBox.y - localCirclePosition.y,  // top
+	localCirclePosition.z - halfScaleBox.z,  // front
+	halfScaleBox.z - localCirclePosition.z   // back
+	};
+
+	// 対応した法線
+	Vector3 normals[6]
+	{
+	axis[0],  // left
+	-axis[0], // right
+	-axis[1], // bottom
+	axis[1],  // top
+	axis[2],  // front
+	-axis[2]  // back
+	};
+
+	// 最小距離の探索
+	int minIndex{ 0 };
+	for (int i = 1; i < 6; i++)
+	{
+		if (distances[i] < distances[minIndex])
+		{
+			minIndex = i;
+		}
+	}
+
+	// 最小距離の法線
+	manifold.normal = normals[minIndex];
+	ContactPoint contactPoint;
+	// 重なり深さ計算
+	contactPoint.penetration = distances[minIndex];
+	// クランプしたのをワールドに直すして衝突点にする(BOX)
+	contactPoint.positionA = _transformStorage->position[transformIndexSphere] + manifold.normal * radius;
+	// 球は法線から求める
+	contactPoint.positionB = axis[0] * latestPoint.x + axis[1] * latestPoint.y + axis[2] * latestPoint.z;
+
+	// 点追加
+	manifold.AddPoints(contactPoint);
+
+	_manifoldBuffer->manifolds.push_back(manifold);
+
+	return true;
 }
 
 bool ContactFunction::BoxBox(const ColliderID& _colliderA, const ColliderID& _colliderB, ColliderStorage* _colliderStorage, PhysicsTransformStorage* _transformStorage, CollisionManifoldBuffer* _manifoldBuffer)

@@ -61,6 +61,20 @@ private:
 		ColliderStorage* _colliderStorage,
 		CollisionManifoldBuffer* _manifoldBuffer,
 		EventManager* _eventManager);
+	template<>
+	void Solve<ColliderTag::SphereTag, ColliderTag::BoxTag, CollisionPair::SphereBoxPair>(
+		const std::vector<CollisionPair::SphereBoxPair>& pairList,
+		PhysicsTransformStorage* _transformStorage,
+		ColliderStorage* _colliderStorage,
+		CollisionManifoldBuffer* _manifoldBuffer,
+		EventManager* _eventManager);
+	template<>
+	void Solve<ColliderTag::BoxTag, ColliderTag::SphereTag, CollisionPair::BoxSpherePair>(
+		const std::vector<CollisionPair::BoxSpherePair>& pairList,
+		PhysicsTransformStorage* _transformStorage,
+		ColliderStorage* _colliderStorage,
+		CollisionManifoldBuffer* _manifoldBuffer,
+		EventManager* _eventManager);
 
 	/// <summary>
 	/// GJKアルゴリズムによる当り判定

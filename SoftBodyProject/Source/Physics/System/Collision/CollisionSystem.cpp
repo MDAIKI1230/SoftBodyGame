@@ -249,7 +249,6 @@ void CollisionSystem::Solve<ColliderTag::BoxTag, ColliderTag::BoxTag, CollisionP
 		{
 			RegisterEvent(pair.a, pair.b, _colliderStorage, _eventManager);
 		}
-
 	}
 }
 
@@ -267,7 +266,39 @@ void CollisionSystem::Solve<ColliderTag::SphereTag, ColliderTag::SphereTag, Coll
 		{
 			RegisterEvent(pair.a, pair.b, _colliderStorage, _eventManager);
 		}
+	}
+}
 
+template<>
+void CollisionSystem::Solve<ColliderTag::SphereTag, ColliderTag::BoxTag, CollisionPair::SphereBoxPair>(
+	const std::vector<CollisionPair::SphereBoxPair>& pairList,
+	PhysicsTransformStorage* _transformStorage,
+	ColliderStorage* _colliderStorage,
+	CollisionManifoldBuffer* _manifoldBuffer,
+	EventManager* _eventManager)
+{
+	for (auto& pair : pairList)
+	{
+		if (ContactFunction::SphereBox(pair.a, pair.b, _colliderStorage, _transformStorage, _manifoldBuffer))
+		{
+			RegisterEvent(pair.a, pair.b, _colliderStorage, _eventManager);
+		}
+	}
+}
+template<>
+void CollisionSystem::Solve<ColliderTag::BoxTag, ColliderTag::SphereTag, CollisionPair::BoxSpherePair>(
+	const std::vector<CollisionPair::BoxSpherePair>& pairList,
+	PhysicsTransformStorage* _transformStorage,
+	ColliderStorage* _colliderStorage,
+	CollisionManifoldBuffer* _manifoldBuffer,
+	EventManager* _eventManager)
+{
+	for (auto& pair : pairList)
+	{
+		if (ContactFunction::SphereBox(pair.b, pair.a, _colliderStorage, _transformStorage, _manifoldBuffer))
+		{
+			RegisterEvent(pair.a, pair.b, _colliderStorage, _eventManager);
+		}
 	}
 }
 
