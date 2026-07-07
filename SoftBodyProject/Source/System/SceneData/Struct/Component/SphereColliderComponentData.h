@@ -7,8 +7,8 @@ struct SphereColliderComponentData :public SceneComponentData
 public:
 	std::string GetName() override
 	{
-		return "SphereColliderComponent";
+		return "SphereCollider";
 	}
 public:
-	float radius;
+	float radius{ 0.0f };
 };

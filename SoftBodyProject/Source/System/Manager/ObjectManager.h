@@ -24,7 +24,7 @@ public:
 	// EntityHandle取得
 	uint32_t GetHandle()
 	{
-		return objects.size();
+		return static_cast<uint32_t>(objects.size());
 	}
 private:
 	std::vector<std::unique_ptr<ObjectBase>> objects{};

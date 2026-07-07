@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include <memory>
+#include <string>
 
 #include "SceneConstants.h"
 
@@ -58,6 +59,8 @@ protected:
 	virtual void Initialize() = 0;
 	virtual void Update();
 	virtual void Terminate() = 0;
+
+	void LoadFile(std::string _filePath);
 protected:
 	std::unique_ptr<WorldStorage> worldStorage;
 	std::unique_ptr<PhysicsWorld> physicsWorld;

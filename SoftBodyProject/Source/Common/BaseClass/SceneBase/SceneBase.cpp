@@ -23,6 +23,10 @@
 // API
 #include "PhysicsAPI.h"
 
+#include "SceneDataLoader.h"
+#include "ObjectFactory.h"
+#include "ComponentFactory.h"
+
 #include "SceneBase.h"
 
 SceneBase::SceneBase()
@@ -146,4 +150,23 @@ void SceneBase::Update()
 void SceneBase::Render()
 {
 	systemManager->Render(worldStorage.get(), eventManager.get());
+}
+
+void SceneBase::LoadFile(std::string _filePath)
+{
+	SceneFileData fileData;
+	SceneDataLoader::LoadJson(_filePath, fileData);
+
+	for (auto& objData : fileData.objectDatas)
+	{
+		// 対応オブジェクトを作成
+		std::unique_ptr<ObjectBase> obj{ std::move(ObjectFactory::CreateFuncs[objData.type](worldStorage.get(), objectManager->GetHandle())) };
+
+		for (auto& componentData : objData.components)
+		{
+			ComponentFactory::CreateFuncs[componentData->GetName()](obj.get(), componentData.get());
+		}
+
+		objectManager->Add(std::move(obj));
+	}
 }

@@ -10,5 +10,5 @@ struct SceneObjectData
 {
 	std::string id;
 	std::string type;
-	std::vector<std::unique_ptr<SceneComponentData>> component;
+	std::vector<std::unique_ptr<SceneComponentData>> components;
 };

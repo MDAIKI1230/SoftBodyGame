@@ -5,5 +5,5 @@
 class SceneDataLoader
 {
 public:
-	bool LoadJson(std::string _filePath, SceneFileData& _output);
+	static bool LoadJson(std::string _filePath, SceneFileData& _output);
 };

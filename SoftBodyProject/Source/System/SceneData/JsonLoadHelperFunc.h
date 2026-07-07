@@ -23,8 +23,8 @@ namespace JsonLoadHelperFunc
 	// コンポーネント名と関数MAP
 	static std::unordered_map<std::string, ComponentCreateDataFunc> CreateFuncs
 	{
-		{"Transform",   &CreateTransformData},
-		{"BoxCollider", &CreateBoxColliderData},
-		{"BoxCollider", &CreateSphereColliderData},
+		{"Transform",      &CreateTransformData},
+		{"BoxCollider",    &CreateBoxColliderData},
+		{"SphereCollider", &CreateSphereColliderData},
 	};
 }

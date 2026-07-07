@@ -161,6 +161,9 @@
     <Filter Include="ソース ファイル\System\SceneData\Struct\Component">
       <UniqueIdentifier>{a1a25e8a-8a5e-4095-9fe6-fa57d9ff28c7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\System\Factory">
+      <UniqueIdentifier>{00709cff-6d90-483b-80c8-4734f0235a1a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Objects\Camera.h">
@@ -517,6 +520,12 @@
     <ClInclude Include="Source\System\SceneData\JsonLoadHelperFunc.h">
       <Filter>ソース ファイル\System\SceneData</Filter>
     </ClInclude>
+    <ClInclude Include="Source\System\Factory\ObjectFactory.h">
+      <Filter>ソース ファイル\System\Factory</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\System\Factory\ComponentFactory.h">
+      <Filter>ソース ファイル\System\Factory</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\System\Adapter\Dxlib\DxlibInput.cpp">
@@ -662,6 +671,12 @@
     </ClCompile>
     <ClCompile Include="Source\System\SceneData\JsonLoadHelperFunc.cpp">
       <Filter>ソース ファイル\System\SceneData</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\System\Factory\ObjectFactory.cpp">
+      <Filter>ソース ファイル\System\Factory</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\System\Factory\ComponentFactory.cpp">
+      <Filter>ソース ファイル\System\Factory</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

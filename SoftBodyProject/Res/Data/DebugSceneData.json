@@ -1,36 +1,38 @@
 {
-    "version":1,
-    "objects":
+    "Version":1,
+    "Objects":
     [
         {
-            "id":"floor",
-            "type":"DebugBox",
-            "Transform":{
-                "position"   :{ "x": 0 ,"y": -200 ,"z": 0 },
-                "rotationDeg":{ "x": 0 ,"y":   0  ,"z": 0 },
-                "scale"      :{ "x": 1 ,"y":   1  ,"z": 1 }
-            },
+            "ID":"floor",
+            "Type":"DebugBox",
             "Components":
             [
                 {
-                    "name":"BoxCollider",
-                    "size": { "x": 200 ,"y": 50 ,"z": 200 }
+                    "Name":"Transform",
+                    "Position"   :{ "X": 0 ,"Y": -200 ,"Z": 0 },
+                    "RotationDeg":{ "X": 0 ,"Y":   0  ,"Z": 0 },
+                    "Scale"      :{ "X": 1 ,"Y":   1  ,"Z": 1 }
+                },
+                {
+                    "Name":"BoxCollider",
+                    "Size": { "X": 200 ,"Y": 50 ,"Z": 200 }
                 }
             ]
         },
         {
-            "id":"ball",
-            "type":"DebugSphere",
-            "transform":{
-                "position"   :{ "x": 0 ,"y":  200 ,"z": 0 },
-                "rotationDeg":{ "x": 0 ,"y":   0  ,"z": 0 },
-                "scale"      :{ "x": 1 ,"y":   1  ,"z": 1 }
-             },
+            "ID":"ball",
+            "Type":"DebugSphere",
             "Components":
             [
                 {
-                    "name":"SphereCollider",
-                    "radius": 30
+                    "Name":"Transform",
+                    "Position"   :{ "X": 0 ,"Y": 0 ,"Z": 0 },
+                    "RotationDeg":{ "X": 0 ,"Y": 0 ,"Z": 0 },
+                    "Scale"      :{ "X": 1 ,"Y": 1 ,"Z": 1 }
+                },
+                {
+                    "Name":"SphereCollider",
+                    "Radius": 30
                 }
             ]
         }

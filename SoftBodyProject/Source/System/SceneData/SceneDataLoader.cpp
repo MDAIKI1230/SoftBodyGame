@@ -83,8 +83,13 @@ bool SceneDataLoader::LoadJson(std::string _filePath, SceneFileData& _output)
 
 		objData.id = obj["ID"].GetString();
 		objData.type = obj["Type"].GetString();
+
+		if (!obj.HasMember("Components"))
+		{
+			continue;
+		}
 		
-		for (auto& component : document["Components"].GetArray())
+		for (auto& component : obj["Components"].GetArray())
 		{
 			// 名前のチェックは忘れんなよ。
 			if (!component.HasMember("Name") || !component["Name"].IsString())
@@ -92,7 +97,7 @@ bool SceneDataLoader::LoadJson(std::string _filePath, SceneFileData& _output)
 				continue;
 			}
 			// 作成をしていく―
-			objData.component.push_back(std::move(JsonLoadHelperFunc::CreateFuncs[component["Name"].GetString()](component)));
+			objData.components.push_back(std::move(JsonLoadHelperFunc::CreateFuncs[component["Name"].GetString()](component)));
 		}
 
 		_output.objectDatas.push_back(std::move(objData));

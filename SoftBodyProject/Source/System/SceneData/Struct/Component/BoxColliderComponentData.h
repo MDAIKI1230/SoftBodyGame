@@ -9,7 +9,7 @@ struct BoxColliderComponentData :public SceneComponentData
 public:
 	std::string GetName() override
 	{
-		return "BoxColliderComponent";
+		return "BoxCollider";
 	}
 public:
 	Vector3 size;

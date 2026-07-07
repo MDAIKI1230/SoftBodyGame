@@ -9,7 +9,7 @@ struct TransformComponentData :public SceneComponentData
 public:
 	std::string GetName() override
 	{
-		return "TransformComponent";
+		return "Transform";
 	}
 public:
 	Vector3 position;

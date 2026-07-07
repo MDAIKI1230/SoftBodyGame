@@ -1,19 +1,20 @@
 {
-    "version":0,
-    "objects":
+    "Version":0,
+    "Objects":
     [
         {
-            "id":"name",
-            "type":"ObjectClassName",
-            "transform":{
-            "position"   :{ "x": 0 ,"y": 0 ,"z": 0 },
-            "rotationDeg":{ "x": 0 ,"y": 0 ,"z": 0 },
-            "scale"      :{ "x": 1 ,"y": 1 ,"z": 1 }
-            },
-            "components":
+            "ID":"name",
+            "Type":"ObjectClassName",
+            "Components":
             [
                 {
-                    "name":"ComponentName",
+                    "Name":"Transform",
+            "Position"   :{ "x": 0 ,"y": 0 ,"z": 0 },
+            "RotationDeg":{ "x": 0 ,"y": 0 ,"z": 0 },
+            "Scale"      :{ "x": 1 ,"y": 1 ,"z": 1 }
+            },
+                {
+                    "Name":"ComponentName",
                     "ParameterName": "Parameter"
                 }
             ]
