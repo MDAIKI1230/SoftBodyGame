@@ -6,11 +6,11 @@
 
 #include "PhysicsTransformStorage.h"
 #include "ColliderStorage.h"
-#include "ProjectionStorage.h"
 #include "CollisionManifoldBuffer.h"
 #include "NarrowPhasePairBuilder.h"
 
 #include "ColliderProjection.h"
+#include "ColliderProjectionData.h"
 #include "CollisionPair.h"
 
 #include "EventManager.h"

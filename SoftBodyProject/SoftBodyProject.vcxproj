@@ -212,7 +212,6 @@
     <ClInclude Include="Source\Physics\Storage\Component\SphereColliderComponentStorage.h" />
     <ClInclude Include="Source\Physics\Storage\Constraint\ConstraintStorage.h" />
     <ClInclude Include="Source\Physics\Storage\Constraint\PointConstraintStorage.h" />
-    <ClInclude Include="Source\Physics\Storage\ProjectionStorage.h" />
     <ClInclude Include="Source\Physics\Storage\Transform\PhysicsTransformStorage.h" />
     <ClInclude Include="Source\Physics\Struct\Body\BodyID.h" />
     <ClInclude Include="Source\Physics\Struct\Body\BodySlot.h" />
