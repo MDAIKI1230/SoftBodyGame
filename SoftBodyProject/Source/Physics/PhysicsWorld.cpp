@@ -10,13 +10,14 @@ PhysicsWorld::PhysicsWorld()
 	transformStorage = std::make_unique<PhysicsTransformStorage>();
 	constraintStorage = std::make_unique<ConstraintStorage>();
 
+	synchronizationSystem = std::make_unique<SynchronizationSystem>();
+	rigidBodySystem = std::make_unique<RigidBodySystem>();
 	aabbUpdateSystem = std::make_unique<AABBUpdateSystem>();
 	collisionSystem = std::make_unique<CollisionSystem>();
 	solverBodyBuildSystem = std::make_unique<SolverBodyBuildSystem>();
 	collisionSolverSystem = std::make_unique<CollisionSolverSystem>();
+	solverBodyCommitSystem = std::make_unique<SolverBodyCommitSystem>();
 	physicsCommitSystem = std::make_unique<PhysicsCommitSystem>();
-	synchronizationSystem = std::make_unique<SynchronizationSystem>();
-	rigidBodySystem = std::make_unique<RigidBodySystem>();
 }
 
 void PhysicsWorld::FixedUpdate(WorldStorage* _worldStorage, EventManager* _eventManager)
@@ -26,6 +27,7 @@ void PhysicsWorld::FixedUpdate(WorldStorage* _worldStorage, EventManager* _event
 	aabbUpdateSystem->FixedUpdate(transformStorage.get(), colliderStorage.get());
 	collisionSystem->FixedUpdate(transformStorage.get(), colliderStorage.get(), manifoldBuffer.get(), _eventManager);
 	solverBodyBuildSystem->Build(transformStorage.get(), rigidBodyStorage.get(), solverBodyBuffer.get());
-	collisionSolverSystem->FixedUpdate(transformStorage.get(), rigidBodyStorage.get(), colliderStorage.get(), manifoldBuffer.get(), solverBodyBuffer.get());
+	collisionSolverSystem->FixedUpdate(colliderStorage.get(), manifoldBuffer.get(), solverBodyBuffer.get());
+	solverBodyCommitSystem->Commit(transformStorage.get(), rigidBodyStorage.get(), solverBodyBuffer.get());
 	physicsCommitSystem->FixedUpdate(transformStorage.get(), _worldStorage);
 }

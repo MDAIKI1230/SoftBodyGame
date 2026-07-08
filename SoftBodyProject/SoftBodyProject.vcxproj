@@ -246,6 +246,7 @@
     <ClInclude Include="Source\Physics\System\Simplex.h" />
     <ClInclude Include="Source\Physics\System\Solver\CollisionSolverSystem.h" />
     <ClInclude Include="Source\Physics\System\Solver\ConstraintSolverSystem.h" />
+    <ClInclude Include="Source\Physics\System\Solver\SolverBodyCommitSystem.h" />
     <ClInclude Include="Source\Physics\System\Sync\PhysicsCommitSystem.h" />
     <ClInclude Include="Source\Physics\System\Sync\SynchronizationSystem.h" />
     <ClInclude Include="Source\Physics\System\Update\AABBUpdateSystem.h" />
@@ -317,6 +318,7 @@
     <ClCompile Include="Source\Physics\System\Simplex.cpp" />
     <ClCompile Include="Source\Physics\System\Solver\CollisionSolverSystem.cpp" />
     <ClCompile Include="Source\Physics\System\Solver\ConstraintSolverSystem.cpp" />
+    <ClCompile Include="Source\Physics\System\Solver\SolverBodyCommitSystem.cpp" />
     <ClCompile Include="Source\Physics\System\Sync\PhysicsCommitSystem.cpp" />
     <ClCompile Include="Source\Physics\System\Sync\SynchronizationSystem.cpp" />
     <ClCompile Include="Source\Physics\System\Update\AABBUpdateSystem.cpp" />

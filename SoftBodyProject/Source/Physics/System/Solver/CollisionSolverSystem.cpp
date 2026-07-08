@@ -13,7 +13,7 @@ CollisionSolverSystem::CollisionSolverSystem() :
 	
 }
 
-void CollisionSolverSystem::FixedUpdate(PhysicsTransformStorage* _transformStorage, RigidBodyStorage* _bodyStorage, ColliderStorage* _colliderStorage, CollisionManifoldBuffer* _manifoldBuffer, SolverBodyBuffer* _solverBodyBuffer)
+void CollisionSolverSystem::FixedUpdate(ColliderStorage* _colliderStorage, CollisionManifoldBuffer* _manifoldBuffer, SolverBodyBuffer* _solverBodyBuffer)
 {
 	// 解消準備
 	StartUp(_colliderStorage, _manifoldBuffer, _solverBodyBuffer);
@@ -30,7 +30,7 @@ void CollisionSolverSystem::FixedUpdate(PhysicsTransformStorage* _transformStora
 		PositionSolver(_manifoldBuffer, _solverBodyBuffer);
 	}
 	// 終了
-	End(_transformStorage, _bodyStorage, _manifoldBuffer, _solverBodyBuffer);
+	End(_manifoldBuffer);
 }
 
 void CollisionSolverSystem::StartUp(ColliderStorage* _colliderStorage, CollisionManifoldBuffer* _manifoldBuffer, SolverBodyBuffer* _solverBodyBuffer)
@@ -271,26 +271,9 @@ void CollisionSolverSystem::PositionSolver(CollisionManifoldBuffer* _manifoldBuf
 	}
 }
 
-void CollisionSolverSystem::End(PhysicsTransformStorage* _transformStorage, RigidBodyStorage* _bodyStorage, CollisionManifoldBuffer* _manifoldBuffer, SolverBodyBuffer* _solverBodyBuffer)
+void CollisionSolverSystem::End(CollisionManifoldBuffer* _manifoldBuffer)
 {
-	// 結果を反映していく
-	for (auto& result : _solverBodyBuffer->solverBodies)
-	{
-		// 質量が0ならBodyはないので書かない
-		if (result.inverseMass > 0)
-		{
-			uint32_t bodyIndex{ _bodyStorage->GetDenseIndex(result.bodyID) };
-			uint32_t transformIndex{ _transformStorage->GetDenseIndex(result.transformID) };
-			_transformStorage->position[transformIndex] = result.position;
-			_bodyStorage->velocity[bodyIndex] = result.velocity;
-			_transformStorage->rotation[transformIndex] = result.rotation;
-			_bodyStorage->angularVelocity[bodyIndex] = result.angularVelocity;
-		}
-	}
 	// リセット
 	contactConstraints.clear();
-
-	_solverBodyBuffer->Clear();
-
 	_manifoldBuffer->Clear();
 }

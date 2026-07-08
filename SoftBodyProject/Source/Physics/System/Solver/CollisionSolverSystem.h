@@ -19,7 +19,7 @@ public:
 	// コンストラクタ
 	CollisionSolverSystem();
 	// 更新
-	void FixedUpdate(PhysicsTransformStorage* _transformStorage, RigidBodyStorage* _bodyStorage, ColliderStorage* _colliderStorage, CollisionManifoldBuffer* _manifoldBuffer, SolverBodyBuffer* _solverBodyBuffer);
+	void FixedUpdate(ColliderStorage* _colliderStorage, CollisionManifoldBuffer* _manifoldBuffer, SolverBodyBuffer* _solverBodyBuffer);
 private:
 	// 準備
 	void StartUp(ColliderStorage* _colliderStorage, CollisionManifoldBuffer* _manifoldBuffer, SolverBodyBuffer* _solverBodyBuffer);
@@ -33,7 +33,7 @@ private:
 	void PositionSolver(CollisionManifoldBuffer* _manifoldBuffer, SolverBodyBuffer* _solverBodyBuffer);
 
 	// 終わり
-	void End(PhysicsTransformStorage* _transformStorage, RigidBodyStorage* _bodyStorage, CollisionManifoldBuffer* _manifoldBuffer, SolverBodyBuffer* _solverBodyBuffer);
+	void End(CollisionManifoldBuffer* _manifoldBuffer);
 private:
 	// 速度解消回数
 	static constexpr float VELOCITY_SOLVER_TIMES{ 10 };
