@@ -79,7 +79,9 @@ public:
 	// --- 拘束系 ---
 
 	// 点拘束作成
-	static ConstraintID CreatePointConstraint(EntityID& _entity, PhysicsTransformID _transformID, Vector3 _localOffset);
+	static ConstraintID CreatePointConstraint(EntityID& _entity, Vector3 _localOffset);
+	// 点拘束にEndPoint追加
+	static void AddEndPoint(ConstraintID _id, EntityID& _entity, Vector3 _localOffset);
 
 	static void SetWorld(PhysicsWorld* _physicsWorld)
 	{
