@@ -10,7 +10,6 @@ CollisionSolverSystem::CollisionSolverSystem() :
 	ERP{ K_DELTA_TIME / (K_DELTA_TIME + C) },
 	GAMMA{ 1 / (C + K_DELTA_TIME) }
 {
-	
 }
 
 void CollisionSolverSystem::FixedUpdate(ColliderStorage* _colliderStorage, CollisionManifoldBuffer* _manifoldBuffer, SolverBodyBuffer* _solverBodyBuffer)

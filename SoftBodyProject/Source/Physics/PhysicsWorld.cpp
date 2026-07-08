@@ -22,12 +22,19 @@ PhysicsWorld::PhysicsWorld()
 
 void PhysicsWorld::FixedUpdate(WorldStorage* _worldStorage, EventManager* _eventManager)
 {
+	// 更新処理
 	synchronizationSystem->Sync(_worldStorage, transformStorage.get());
 	rigidBodySystem->FixedUpdate(transformStorage.get(), rigidBodyStorage.get(), colliderStorage.get());
 	aabbUpdateSystem->FixedUpdate(transformStorage.get(), colliderStorage.get());
+
+	// 当り判定
 	collisionSystem->FixedUpdate(transformStorage.get(), colliderStorage.get(), manifoldBuffer.get(), _eventManager);
+
+	// 衝突・拘束解消
 	solverBodyBuildSystem->Build(transformStorage.get(), rigidBodyStorage.get(), solverBodyBuffer.get());
 	collisionSolverSystem->FixedUpdate(colliderStorage.get(), manifoldBuffer.get(), solverBodyBuffer.get());
 	solverBodyCommitSystem->Commit(transformStorage.get(), rigidBodyStorage.get(), solverBodyBuffer.get());
+
+	// シミュレーション結果反映
 	physicsCommitSystem->FixedUpdate(transformStorage.get(), _worldStorage);
 }
