@@ -6,6 +6,6 @@
 
 struct EndPoint
 {
-	PhysicsTransformID endPointMember;
+	PhysicsTransformID transformID;
 	Vector3 localPoint;
 };

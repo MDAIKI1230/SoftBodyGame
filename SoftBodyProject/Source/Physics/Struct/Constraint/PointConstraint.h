@@ -13,7 +13,7 @@ public:
 		for (int i{ 0 }; i < endPoints.size(); i++)
 		{
 			// 同じIDがあったら削除
-			if (endPoints[i].endPointMember == _transformID)
+			if (endPoints[i].transformID == _transformID)
 			{
 				endPoints[i] = endPoints.back();
 				endPoints.pop_back();
