@@ -193,7 +193,9 @@
     <ClInclude Include="Source\Physics\Component\Collider\BoxColliderComponent.h" />
     <ClInclude Include="Source\Physics\Component\Collider\ColliderComponent.h" />
     <ClInclude Include="Source\Physics\Component\Collider\SphereColliderComponent.h" />
+    <ClInclude Include="Source\Physics\Component\Constraint\PointConstraintComponent.h" />
     <ClInclude Include="Source\Physics\Constants\CollisionConstants.h" />
+    <ClInclude Include="Source\Physics\Constants\ConstraintConstants.h" />
     <ClInclude Include="Source\Physics\Function\ContactFunction.h" />
     <ClInclude Include="Source\Physics\Function\GJKEPA.h" />
     <ClInclude Include="Source\Physics\Function\ManifoldFunction.h" />
@@ -208,6 +210,8 @@
     <ClInclude Include="Source\Physics\Storage\Component\BoxColliderComponentStorage.h" />
     <ClInclude Include="Source\Physics\Storage\Component\RigidBodyComponentStorage.h" />
     <ClInclude Include="Source\Physics\Storage\Component\SphereColliderComponentStorage.h" />
+    <ClInclude Include="Source\Physics\Storage\Constraint\ConstraintStorage.h" />
+    <ClInclude Include="Source\Physics\Storage\Constraint\PointConstraintStorage.h" />
     <ClInclude Include="Source\Physics\Storage\ProjectionStorage.h" />
     <ClInclude Include="Source\Physics\Storage\Transform\PhysicsTransformStorage.h" />
     <ClInclude Include="Source\Physics\Struct\Body\BodyID.h" />
@@ -227,6 +231,8 @@
     <ClInclude Include="Source\Physics\Struct\Collision\Face.h" />
     <ClInclude Include="Source\Physics\Struct\Collision\Manifold.h" />
     <ClInclude Include="Source\Physics\Struct\Constraint\Constraint.h" />
+    <ClInclude Include="Source\Physics\Struct\Constraint\ConstraintID.h" />
+    <ClInclude Include="Source\Physics\Struct\Constraint\ConstraintSlot.h" />
     <ClInclude Include="Source\Physics\Struct\Constraint\ContactConstraint.h" />
     <ClInclude Include="Source\Physics\Struct\Constraint\EndPoint.h" />
     <ClInclude Include="Source\Physics\Struct\Constraint\PointConstraint.h" />
@@ -297,6 +303,7 @@
     <ClCompile Include="Source\Physics\PhysicsWorld.cpp" />
     <ClCompile Include="Source\Physics\Storage\Body\RigidBodyStorage.cpp" />
     <ClCompile Include="Source\Physics\Storage\Collider\ColliderStorage.cpp" />
+    <ClCompile Include="Source\Physics\Storage\Constraint\ConstraintStorage.cpp" />
     <ClCompile Include="Source\Physics\Storage\Transform\PhysicsTransformStorage.cpp" />
     <ClCompile Include="Source\Physics\System\Collision\CollisionSolverSystem.cpp" />
     <ClCompile Include="Source\Physics\System\Collision\CollisionSystem.cpp" />
