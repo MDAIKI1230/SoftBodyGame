@@ -1,9 +1,9 @@
 ﻿#pragma once
 
 #include <vector>
-#include <unordered_map>
 
 #include "CollisionManifoldBuffer.h"
+#include "SolverBodyBuffer.h"
 
 #include "PhysicsTransformStorage.h"
 #include "RigidBodyStorage.h"
@@ -19,35 +19,21 @@ public:
 	// コンストラクタ
 	CollisionSolverSystem();
 	// 更新
-	void FixedUpdate(PhysicsTransformStorage* _transformStorage, RigidBodyStorage* _bodyStorage, ColliderStorage* _colliderStorage, CollisionManifoldBuffer* _manifoldBuffer);
+	void FixedUpdate(PhysicsTransformStorage* _transformStorage, RigidBodyStorage* _bodyStorage, ColliderStorage* _colliderStorage, CollisionManifoldBuffer* _manifoldBuffer, SolverBodyBuffer* _solverBodyBuffer);
 private:
 	// 準備
-	void StartUp(PhysicsTransformStorage* _transformStorage, RigidBodyStorage* _bodyStorage, ColliderStorage* _colliderStorage, CollisionManifoldBuffer* _manifoldBuffer);
+	void StartUp(ColliderStorage* _colliderStorage, CollisionManifoldBuffer* _manifoldBuffer, SolverBodyBuffer* _solverBodyBuffer);
 	// 速度/角速度解決
-	void VelocitySolver(PhysicsTransformStorage* _transformStorage, RigidBodyStorage* _bodyStorage, CollisionManifoldBuffer* _manifoldBuffer);
+	void VelocitySolver(CollisionManifoldBuffer* _manifoldBuffer, SolverBodyBuffer* _solverBodyBuffer);
 	// 摩擦計算
 	void FrictionSolver(SolverBody& _bodyA, Vector3& _rA, SolverBody& _bodyB, Vector3& _rB, ContactConstraint& _constraint, float _effectiveMass);
 	// 位置姿勢の再計算
-	void ReCalcPosRot();
+	void ReCalcPosRot(SolverBodyBuffer* _solverBodyBuffer);
 	// 位置解決
-	void PositionSolver(PhysicsTransformStorage* _transformStorage, RigidBodyStorage* _bodyStorage, CollisionManifoldBuffer* _manifoldBuffer);
-	// 拘束解消
-	void ConstraintSolver(PhysicsTransformStorage* _transformStorage, RigidBodyStorage* _bodyStorage, CollisionManifoldBuffer* _manifoldBuffer);
+	void PositionSolver(CollisionManifoldBuffer* _manifoldBuffer, SolverBodyBuffer* _solverBodyBuffer);
+
 	// 終わり
-	void End(PhysicsTransformStorage* _transformStorage, RigidBodyStorage* _bodyStorage, CollisionManifoldBuffer* _manifoldBuffer);
-	/// <summary>
-	/// 情報からSolverBodyを作る
-	/// </summary>
-	/// <returns>インデックス</returns>
-	uint32_t CreateSolverBody(PhysicsTransformStorage* _transformStorage, RigidBodyStorage* _bodyStorage, PhysicsTransformID& _transformID, BodyID& _bodyID);
-	/// <summary>
-	/// 情報からSolverBodyを作る(Bodyがない版)
-	/// </summary>
-	/// <returns>インデックス</returns>
-	uint32_t CreateSolverBody(PhysicsTransformStorage* _transformStorage, PhysicsTransformID& _transformID);
-	// BodyIndexを返してくれる関数
-	uint32_t  GetSolverBodyIndex(
-		PhysicsTransformStorage* _transformStorage, RigidBodyStorage* _bodyStorage, PhysicsTransformID& _transformID);
+	void End(PhysicsTransformStorage* _transformStorage, RigidBodyStorage* _bodyStorage, CollisionManifoldBuffer* _manifoldBuffer, SolverBodyBuffer* _solverBodyBuffer);
 private:
 	// 速度解消回数
 	static constexpr float VELOCITY_SOLVER_TIMES{ 10 };
@@ -70,6 +56,4 @@ private:
 private:
 	std::vector<ContactConstraint> contactConstraints;
 	std::vector<Constraint> constraints;
-	std::vector<SolverBody> solverBodies;
-	std::unordered_map<PhysicsTransformID, uint32_t> bodyMap;
 };

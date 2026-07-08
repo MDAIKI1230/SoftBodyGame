@@ -6,6 +6,8 @@
 #include "EventManager.h"
 
 #include "CollisionManifoldBuffer.h"
+#include "SolverBodyBuffer.h"
+
 #include "ColliderStorage.h"
 #include "RigidBodyStorage.h"
 #include "PhysicsTransformStorage.h"
@@ -13,6 +15,7 @@
 
 #include "AABBUpdateSystem.h"
 #include "CollisionSystem.h"
+#include "SolverBodyBuildSystem.h"
 #include "CollisionSolverSystem.h"
 #include "PhysicsCommitSystem.h"
 #include "SynchronizationSystem.h"
@@ -37,6 +40,9 @@ public:
 	ConstraintStorage* GetConstraintStorage() { return constraintStorage.get(); }
 private:
 	std::unique_ptr<CollisionManifoldBuffer> manifoldBuffer;
+	std::unique_ptr<SolverBodyBuffer> solverBodyBuffer;
+
+
 	std::unique_ptr<ColliderStorage> colliderStorage;
 	std::unique_ptr<RigidBodyStorage> rigidBodyStorage;
 	std::unique_ptr< PhysicsTransformStorage> transformStorage;
@@ -44,6 +50,7 @@ private:
 
 	std::unique_ptr<AABBUpdateSystem> aabbUpdateSystem;
 	std::unique_ptr<CollisionSystem> collisionSystem;
+	std::unique_ptr<SolverBodyBuildSystem> solverBodyBuildSystem;
 	std::unique_ptr<CollisionSolverSystem> collisionSolverSystem;
 	std::unique_ptr<PhysicsCommitSystem> physicsCommitSystem;
 	std::unique_ptr<SynchronizationSystem> synchronizationSystem;
