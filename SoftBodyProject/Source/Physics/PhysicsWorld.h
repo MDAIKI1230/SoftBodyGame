@@ -33,6 +33,8 @@ public:
 	RigidBodyStorage* GetRigidBodyStorage() { return rigidBodyStorage.get(); }
 	// PhysicsTransformストレージ取得
 	PhysicsTransformStorage* GetPhysicsTransformStorage() { return transformStorage.get(); }
+	// Constraintストレージ取得
+	ConstraintStorage* GetConstraintStorage() { return constraintStorage.get(); }
 private:
 	std::unique_ptr<CollisionManifoldBuffer> manifoldBuffer;
 	std::unique_ptr<ColliderStorage> colliderStorage;

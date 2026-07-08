@@ -76,16 +76,23 @@ public:
 	// Z方向の長さ変更
 	static void SetDepth(ColliderID _id, float _depth);
 
+	// --- 拘束系 ---
+
+	// 点拘束作成
+	static ConstraintID CreatePointConstraint(EntityID& _entity, PhysicsTransformID _transformID, Vector3 _localOffset);
+
 	static void SetWorld(PhysicsWorld* _physicsWorld)
 	{
 		physicsWorld = _physicsWorld;
 		colliderStorage = _physicsWorld->GetColliderStorage();
 		rigidBodyStorage = _physicsWorld->GetRigidBodyStorage();
 		transformStorage = _physicsWorld->GetPhysicsTransformStorage();
+		constraintStorage = _physicsWorld->GetConstraintStorage();
 	}
 private:
 	static PhysicsWorld* physicsWorld;
 	static ColliderStorage* colliderStorage;
 	static RigidBodyStorage* rigidBodyStorage;
 	static PhysicsTransformStorage* transformStorage;
+	static ConstraintStorage* constraintStorage;
 };

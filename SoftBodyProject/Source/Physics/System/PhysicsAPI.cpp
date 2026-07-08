@@ -140,7 +140,13 @@ void PhysicsAPI::SetDepth(ColliderID _id, float _depth)
 	colliderStorage->boxStorage->scale[colliderStorage->GetDenseIndex(_id)].z = _depth;
 }
 
+ConstraintID PhysicsAPI::CreatePointConstraint(EntityID& _entity, PhysicsTransformID _transformID, Vector3 _localOffset)
+{
+	constraintStorage->CreatePointConstraint(_entity, transformStorage->CreateTransform(_entity), _localOffset);
+}
+
 PhysicsWorld* PhysicsAPI::physicsWorld{ nullptr };
 ColliderStorage* PhysicsAPI::colliderStorage{ nullptr };
 RigidBodyStorage* PhysicsAPI::rigidBodyStorage{ nullptr };
 PhysicsTransformStorage* PhysicsAPI::transformStorage{ nullptr };
+ConstraintStorage* PhysicsAPI::constraintStorage{ nullptr };
