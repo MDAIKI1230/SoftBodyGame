@@ -51,6 +51,11 @@ float TimeManager::GetFixedDeltaTime()
 	return static_cast<float>(FIXED_TIME);
 }
 
+float  TimeManager::GetFixedAlpha()
+{
+	return static_cast<float>(fixedTimer / FIXED_TIME);
+}
+
 bool TimeManager::IsFixedUpdateTime()
 {
 	if (fixedTimer >= FIXED_TIME)

@@ -15,6 +15,8 @@ public:
 	float GetDeltaTime();
 	// 経過時間取得
 	float GetFixedDeltaTime();
+	// 描画と物理の補間用α値
+	float GetFixedAlpha();
 	// FixedUpdateを呼び出すタイミングか
 	bool IsFixedUpdateTime();
 private:
