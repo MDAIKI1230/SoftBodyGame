@@ -49,6 +49,18 @@ EntityID PhysicsTransformStorage::GetOwnerEntity(PhysicsTransformID _id) const
 	return slots[_id.index].ownerEntity;
 }
 
+bool PhysicsTransformStorage::TryGet(EntityID _entity, PhysicsTransformID& _output)
+{
+	// あったらアウトプットに入れてないならflaseで終了
+	if (entityMap.contains(_entity))
+	{
+		_output = entityMap[_entity];
+		return true;
+	}
+
+	return false;
+}
+
 PhysicsTransformID PhysicsTransformStorage::GeneratePhysicsTransformID(size_t _denseIndex, EntityID _ownerEntity)
 {
 	if (freeSlots.empty())

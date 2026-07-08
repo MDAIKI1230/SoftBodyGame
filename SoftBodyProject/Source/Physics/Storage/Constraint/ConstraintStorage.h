@@ -12,7 +12,7 @@ class ConstraintStorage
 {
 public:
 	// 点拘束作成関数
-	ConstraintID CreatePointConstraint(EntityID& _entity, PhysicsTransformID _transformID, Vector3 _localOffset);
+	ConstraintID CreatePointConstraint(EntityID& _entity, PhysicsTransformID _transformID,const Vector3& _localOffset);
 
 	// 破棄
 	void Destory(ConstraintID& _id);

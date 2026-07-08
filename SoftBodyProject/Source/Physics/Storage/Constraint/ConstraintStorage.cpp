@@ -1,13 +1,13 @@
 ﻿#include "ConstraintStorage.h"
 
-ConstraintID ConstraintStorage::CreatePointConstraint(EntityID& _entity, PhysicsTransformID _transformID, Vector3 _localOffset)
+ConstraintID ConstraintStorage::CreatePointConstraint(EntityID& _entity, PhysicsTransformID _transformID,const Vector3& _localOffset)
 {
 	// ID作成
 	ConstraintID id{ GenerateConstraintID(ConstraintType::POINTS,pointConstraintStorage->constraints.size(),_entity,_transformID) };
 
 	// 実態を作る
 	PointConstraint pointConstraint;
-	pointConstraint.endpoints.emplace_back(_transformID, _localOffset);
+	pointConstraint.endPoints.emplace_back(_transformID, _localOffset);
 
 	// ID返して終了
 	return id;

@@ -140,15 +140,31 @@ void PhysicsAPI::SetDepth(ColliderID _id, float _depth)
 	colliderStorage->boxStorage->scale[colliderStorage->GetDenseIndex(_id)].z = _depth;
 }
 
-ConstraintID PhysicsAPI::CreatePointConstraint(EntityID& _entity, Vector3 _localOffset)
+ConstraintID PhysicsAPI::CreatePointConstraint(EntityID& _entity, const Vector3& _localOffset)
 {
 	return constraintStorage->CreatePointConstraint(_entity, transformStorage->GetOrCreateTransform(_entity), _localOffset);
 }
 
-void PhysicsAPI::AddEndPoint(ConstraintID _id, EntityID& _entity, Vector3 _localOffset)
+void PhysicsAPI::AddEndPoint(ConstraintID& _id, EntityID& _entity, Vector3& _localOffset)
 {
-	uint32_t index{ constraintStorage->GetDenseIndex(_id) };
-	constraintStorage->pointConstraintStorage->constraints[index].endpoints.emplace_back(_entity, _localOffset);
+	PhysicsTransformID transformID;
+	// エンティティに対応したTransformがあるならそれを追加ないなら何もしない
+	if (transformStorage->TryGet(_entity, transformID))
+	{
+		uint32_t index{ constraintStorage->GetDenseIndex(_id) };
+		constraintStorage->pointConstraintStorage->constraints[index].endPoints.emplace_back(transformID, _localOffset);
+	}
+}
+
+void  PhysicsAPI::RemoveEndPoint(ConstraintID& _id, EntityID& _entity)
+{
+	PhysicsTransformID transformID;
+	// エンティティに対応したTransformがあるならそれを除外ないなら何もしない
+	if (transformStorage->TryGet(_entity, transformID))
+	{
+		uint32_t index{ constraintStorage->GetDenseIndex(_id) };
+		constraintStorage->pointConstraintStorage->constraints[index].RemoveEndpoint(transformID);
+	}
 }
 
 PhysicsWorld* PhysicsAPI::physicsWorld{ nullptr };

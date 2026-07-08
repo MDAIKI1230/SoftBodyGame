@@ -26,6 +26,9 @@ public:
 	uint32_t GetDenseIndex(PhysicsTransformID _id) const;
 	// 持ってるEntity
 	EntityID GetOwnerEntity(PhysicsTransformID _id) const;
+
+	// EntityIDに対応したPhysicsTransformIDがあるか
+	bool TryGet(EntityID _entity,PhysicsTransformID& _output);
 public:
 	std::vector<PhysicsTransformSlot> slots;
 	std::vector<uint32_t> freeSlots;

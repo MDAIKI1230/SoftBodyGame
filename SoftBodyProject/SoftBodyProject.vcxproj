@@ -297,6 +297,7 @@
     <ClCompile Include="Source\Physics\Component\Body\RigidBodyComponent.cpp" />
     <ClCompile Include="Source\Physics\Component\Collider\BoxColliderComponent.cpp" />
     <ClCompile Include="Source\Physics\Component\Collider\SphereColliderComponent.cpp" />
+    <ClCompile Include="Source\Physics\Component\Constraint\PointConstraintComponent.cpp" />
     <ClCompile Include="Source\Physics\Function\ContactFunction.cpp" />
     <ClCompile Include="Source\Physics\Function\GJKEPA.cpp" />
     <ClCompile Include="Source\Physics\Function\ManifoldFunction.cpp" />
