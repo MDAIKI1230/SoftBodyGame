@@ -74,12 +74,6 @@
     <Filter Include="ソース ファイル\Physics">
       <UniqueIdentifier>{74951b05-2a6e-4b22-9c1a-073ee81bee8a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\Physics\Body">
-      <UniqueIdentifier>{3ddd4e94-7bf3-43ff-9413-8303062a4433}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\Physics\Collider">
-      <UniqueIdentifier>{bb12b480-c532-4805-b2e4-dce5f42e3d00}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ソース ファイル\Physics\System">
       <UniqueIdentifier>{cb2d5064-7b89-435a-9757-5e2513279225}</UniqueIdentifier>
     </Filter>
@@ -109,9 +103,6 @@
     </Filter>
     <Filter Include="ソース ファイル\Common\Math\Constants">
       <UniqueIdentifier>{4e1f64dc-d6db-4818-9365-2e73beec1b1e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\Physics\Collider\Component">
-      <UniqueIdentifier>{1ae0f8ed-9c8b-4653-a23f-0fbca31638ef}</UniqueIdentifier>
     </Filter>
     <Filter Include="ソース ファイル\Physics\Storage\Component">
       <UniqueIdentifier>{5e801506-484e-4394-9590-222b198d07fe}</UniqueIdentifier>
@@ -163,6 +154,27 @@
     </Filter>
     <Filter Include="ソース ファイル\System\Factory">
       <UniqueIdentifier>{00709cff-6d90-483b-80c8-4734f0235a1a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Physics\System\Solver">
+      <UniqueIdentifier>{bc92434c-d638-4b0a-aabc-6fc93f891bfe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Physics\System\Build">
+      <UniqueIdentifier>{008c1e6d-b05e-459e-bbb1-56026e0f03c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Physics\Storage\Constraint">
+      <UniqueIdentifier>{656e37e3-79c6-4b8d-92d4-c45fb42c5271}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Physics\Component">
+      <UniqueIdentifier>{78d1c2a0-036a-4a4c-a7a1-9318cdb73a51}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Physics\Component\Collider">
+      <UniqueIdentifier>{4abc7f76-af33-4ab0-a1d2-9e772f3abea3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Physics\Component\Body">
+      <UniqueIdentifier>{d2adb01f-8afb-4799-9b45-d8f459bcd42e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Physics\Component\Constraint">
+      <UniqueIdentifier>{93bab5e3-3ac7-4beb-ba9c-cd8e9c82aee3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -298,12 +310,6 @@
     <ClInclude Include="Source\Common\BaseClass\FixedUpdateSystem.h">
       <Filter>ソース ファイル\Common\BaseClass</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Physics\Body\RigidBodyComponent.h">
-      <Filter>ソース ファイル\Physics\Body</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Physics\Collider\AABBBroadPhaseCollider.h">
-      <Filter>ソース ファイル\Physics\Collider</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Physics\System\Simplex.h">
       <Filter>ソース ファイル\Physics\System</Filter>
     </ClInclude>
@@ -319,9 +325,6 @@
     <ClInclude Include="Source\Common\BaseClass\ObjectBase\ObjectBase.h">
       <Filter>ソース ファイル\Common\BaseClass</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Physics\Storage\ProjectionStorage.h">
-      <Filter>ソース ファイル\Physics\Storage</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Physics\Constants\CollisionConstants.h">
       <Filter>ソース ファイル\Physics\Constants</Filter>
     </ClInclude>
@@ -333,9 +336,6 @@
     </ClInclude>
     <ClInclude Include="Source\Physics\System\PhysicsAPI.h">
       <Filter>ソース ファイル\Physics\System</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Physics\System\Collision\CollisionSolverSystem.h">
-      <Filter>ソース ファイル\Physics\System\Collision</Filter>
     </ClInclude>
     <ClInclude Include="Source\Common\ECS\WorldStorage.h">
       <Filter>ソース ファイル\Common\ECS</Filter>
@@ -358,9 +358,6 @@
     <ClInclude Include="Source\Physics\Storage\CollisionContactBuffer.h">
       <Filter>ソース ファイル\Physics\Storage</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Common\BaseClass\BufferBase.h">
-      <Filter>ソース ファイル\Common\BaseClass</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Physics\Storage\CollisionManifoldBuffer.h">
       <Filter>ソース ファイル\Physics\Storage</Filter>
     </ClInclude>
@@ -372,18 +369,6 @@
     </ClInclude>
     <ClInclude Include="Source\Objects\DebugBox.h">
       <Filter>ソース ファイル\GameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Physics\Collider\SphereColliderComponent.h">
-      <Filter>ソース ファイル\Physics\Collider\Component</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Physics\Collider\ColliderComponent.h">
-      <Filter>ソース ファイル\Physics\Collider\Component</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Physics\Collider\BoxColliderComponent.h">
-      <Filter>ソース ファイル\Physics\Collider\Component</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Physics\Collider\SphereCollider.h">
-      <Filter>ソース ファイル\Physics\Collider</Filter>
     </ClInclude>
     <ClInclude Include="Source\Physics\Storage\Collider\SphereColliderStorage.h">
       <Filter>ソース ファイル\Physics\Storage\Collider</Filter>
@@ -529,6 +514,66 @@
     <ClInclude Include="Source\Physics\Function\GJKEPA.h">
       <Filter>ソース ファイル\Physics\Function</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Physics\System\Solver\CollisionSolverSystem.h">
+      <Filter>ソース ファイル\Physics\System\Solver</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\System\Solver\ConstraintSolverSystem.h">
+      <Filter>ソース ファイル\Physics\System\Solver</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\System\Build\ConstraintBuildSystem.h">
+      <Filter>ソース ファイル\Physics\System\Build</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\System\Build\SolverBodyBuildSystem.h">
+      <Filter>ソース ファイル\Physics\System\Build</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Storage\Constraint\ConstraintStorage.h">
+      <Filter>ソース ファイル\Physics\Storage\Constraint</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Component\Collider\BoxColliderComponent.h">
+      <Filter>ソース ファイル\Physics\Component\Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Component\Collider\ColliderComponent.h">
+      <Filter>ソース ファイル\Physics\Component\Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Component\Collider\SphereColliderComponent.h">
+      <Filter>ソース ファイル\Physics\Component\Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Component\Body\RigidBodyComponent.h">
+      <Filter>ソース ファイル\Physics\Component\Body</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Component\Constraint\PointConstraintComponent.h">
+      <Filter>ソース ファイル\Physics\Component\Constraint</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Struct\Collider\AABBBroadPhaseCollider.h">
+      <Filter>ソース ファイル\Physics\Struct\Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Storage\ConstraintBuffer.h">
+      <Filter>ソース ファイル\Physics\Storage</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Constants\ConstraintConstants.h">
+      <Filter>ソース ファイル\Physics\Constants</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Struct\Constraint\ConstraintID.h">
+      <Filter>ソース ファイル\Physics\Struct\Constraint</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Struct\Constraint\ConstraintSlot.h">
+      <Filter>ソース ファイル\Physics\Struct\Constraint</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Struct\Constraint\EndPoint.h">
+      <Filter>ソース ファイル\Physics\Struct\Constraint</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Struct\Constraint\PointConstraint.h">
+      <Filter>ソース ファイル\Physics\Struct\Constraint</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Storage\Constraint\PointConstraintStorage.h">
+      <Filter>ソース ファイル\Physics\Storage\Constraint</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Storage\SolverBodyBuffer.h">
+      <Filter>ソース ファイル\Physics\Storage</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\System\Solver\SolverBodyCommitSystem.h">
+      <Filter>ソース ファイル\Physics\System\Solver</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\System\Adapter\Dxlib\DxlibInput.cpp">
@@ -609,14 +654,8 @@
     <ClCompile Include="Source\Physics\System\Update\RigidBodySystem.cpp">
       <Filter>ソース ファイル\Physics\System\Update</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Physics\Body\RigidBodyComponent.cpp">
-      <Filter>ソース ファイル\Physics\Body</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Physics\System\PhysicsAPI.cpp">
       <Filter>ソース ファイル\Physics\System</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Physics\System\Collision\CollisionSolverSystem.cpp">
-      <Filter>ソース ファイル\Physics\System\Collision</Filter>
     </ClCompile>
     <ClCompile Include="Source\Common\ECS\SystemManager.cpp">
       <Filter>ソース ファイル\Common\ECS</Filter>
@@ -632,12 +671,6 @@
     </ClCompile>
     <ClCompile Include="Source\Physics\Storage\Collider\ColliderStorage.cpp">
       <Filter>ソース ファイル\Physics\Storage\Collider</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Physics\Collider\SphereColliderComponent.cpp">
-      <Filter>ソース ファイル\Physics\Collider\Component</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Physics\Collider\BoxColliderComponent.cpp">
-      <Filter>ソース ファイル\Physics\Collider\Component</Filter>
     </ClCompile>
     <ClCompile Include="Source\Physics\System\Update\AABBUpdateSystem.cpp">
       <Filter>ソース ファイル\Physics\System\Update</Filter>
@@ -683,6 +716,36 @@
     </ClCompile>
     <ClCompile Include="Source\Physics\Function\GJKEPA.cpp">
       <Filter>ソース ファイル\Physics\Function</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Physics\System\Solver\ConstraintSolverSystem.cpp">
+      <Filter>ソース ファイル\Physics\System\Solver</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Physics\System\Solver\CollisionSolverSystem.cpp">
+      <Filter>ソース ファイル\Physics\System\Solver</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Physics\System\Build\ConstraintBuildSystem.cpp">
+      <Filter>ソース ファイル\Physics\System\Build</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Physics\System\Build\SolverBodyBuildSystem.cpp">
+      <Filter>ソース ファイル\Physics\System\Build</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Physics\Storage\Constraint\ConstraintStorage.cpp">
+      <Filter>ソース ファイル\Physics\Storage\Constraint</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Physics\Component\Collider\SphereColliderComponent.cpp">
+      <Filter>ソース ファイル\Physics\Component\Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Physics\Component\Collider\BoxColliderComponent.cpp">
+      <Filter>ソース ファイル\Physics\Component\Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Physics\Component\Body\RigidBodyComponent.cpp">
+      <Filter>ソース ファイル\Physics\Component\Body</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Physics\Component\Constraint\PointConstraintComponent.cpp">
+      <Filter>ソース ファイル\Physics\Component\Constraint</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Physics\System\Solver\SolverBodyCommitSystem.cpp">
+      <Filter>ソース ファイル\Physics\System\Solver</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
