@@ -4,9 +4,7 @@
 
 #include "MDMath.h"
 
-#include "BufferBase.h"
-
-class CollisionContactBuffer :public BufferBase
+class CollisionContactBuffer
 {
 public:
 	// 深度
