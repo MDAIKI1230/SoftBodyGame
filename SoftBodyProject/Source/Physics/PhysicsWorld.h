@@ -9,6 +9,7 @@
 #include "ColliderStorage.h"
 #include "RigidBodyStorage.h"
 #include "PhysicsTransformStorage.h"
+#include "ConstraintStorage.h"
 
 #include "AABBUpdateSystem.h"
 #include "CollisionSystem.h"
@@ -37,6 +38,7 @@ private:
 	std::unique_ptr<ColliderStorage> colliderStorage;
 	std::unique_ptr<RigidBodyStorage> rigidBodyStorage;
 	std::unique_ptr< PhysicsTransformStorage> transformStorage;
+	std::unique_ptr< ConstraintStorage> constraintStorage;
 
 	std::unique_ptr<AABBUpdateSystem> aabbUpdateSystem;
 	std::unique_ptr<CollisionSystem> collisionSystem;
