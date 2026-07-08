@@ -14,8 +14,8 @@ public:
 	// コンストラクタ
 	PhysicsTransformStorage() = default;
 
-	// PhysicsTransform作成
-	PhysicsTransformID CreateTransform(EntityID _entity);
+	// PhysicsTransform取得もしくはないなら作成
+	PhysicsTransformID GetOrCreateTransform(EntityID _entity);
 
 	// 破棄
 	void Destroy(PhysicsTransformID _id);

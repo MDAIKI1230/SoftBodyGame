@@ -1,6 +1,6 @@
 ﻿#include "PhysicsTransformStorage.h"
 
-PhysicsTransformID PhysicsTransformStorage::CreateTransform(EntityID _entity)
+PhysicsTransformID PhysicsTransformStorage::GetOrCreateTransform(EntityID _entity)
 {
 	if (entityMap.contains(_entity))
 	{

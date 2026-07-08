@@ -7,7 +7,7 @@
 
 BodyID PhysicsAPI::CreateRigidBody(EntityID _entity)
 {
-	return rigidBodyStorage->CreateRigidBody(_entity, transformStorage->CreateTransform(_entity));
+	return rigidBodyStorage->CreateRigidBody(_entity, transformStorage->GetOrCreateTransform(_entity));
 }
 
 void PhysicsAPI::AddForce(BodyID _id, const Vector3& _force)
@@ -92,12 +92,12 @@ void PhysicsAPI::SetGravity(BodyID _id, const Vector3& _gravity)
 
 ColliderID PhysicsAPI::CreateSphere(EntityID _entity, float _radius)
 {
-	return colliderStorage->CreateSphere(_entity, transformStorage->CreateTransform(_entity), _radius);
+	return colliderStorage->CreateSphere(_entity, transformStorage->GetOrCreateTransform(_entity), _radius);
 }
 
 ColliderID PhysicsAPI::CreateBox(EntityID _entity, const Vector3& _scale)
 {
-	return colliderStorage->CreateBox(_entity, transformStorage->CreateTransform(_entity), _scale);
+	return colliderStorage->CreateBox(_entity, transformStorage->GetOrCreateTransform(_entity), _scale);
 }
 
 float PhysicsAPI::GetRadius(ColliderID _id)
@@ -142,7 +142,7 @@ void PhysicsAPI::SetDepth(ColliderID _id, float _depth)
 
 ConstraintID PhysicsAPI::CreatePointConstraint(EntityID& _entity, PhysicsTransformID _transformID, Vector3 _localOffset)
 {
-	constraintStorage->CreatePointConstraint(_entity, transformStorage->CreateTransform(_entity), _localOffset);
+	return constraintStorage->CreatePointConstraint(_entity, transformStorage->GetOrCreateTransform(_entity), _localOffset);
 }
 
 PhysicsWorld* PhysicsAPI::physicsWorld{ nullptr };
