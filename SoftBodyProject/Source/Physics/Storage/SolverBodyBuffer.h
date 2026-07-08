@@ -13,6 +13,11 @@ public:
 		bodyMap[_transformID] = solverBodies.size();
 		solverBodies.push_back(_body);
 	}
+	void Clear()
+	{
+		solverBodies.clear();
+		bodyMap.clear();
+	}
 public:
 	std::vector<SolverBody> solverBodies;
 	std::unordered_map<PhysicsTransformID, uint32_t> bodyMap;
