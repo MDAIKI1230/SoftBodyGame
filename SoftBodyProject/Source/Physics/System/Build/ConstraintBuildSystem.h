@@ -1,14 +1,14 @@
 ﻿#pragma once
 
 #include "ConstraintStorage.h"
-#include "PhysicsTransformStorage.h"
 
+#include "SolverBodyBuffer.h"
 #include "ConstraintBuffer.h"
 
 class ConstraintBuildSystem
 {
 public:
-	void FixedUpdate(PhysicsTransformStorage* _transformStorage, ConstraintStorage* _constraintStorage, ConstraintBuffer* _constraintBuffer);
+	void FixedUpdate(ConstraintStorage* _constraintStorage, SolverBodyBuffer* _solverBodyBuffer, ConstraintBuffer* _constraintBuffer);
 private:
-	void BuildPointConstraint(PhysicsTransformStorage* _transformStorage, ConstraintStorage* _constraintStorage, ConstraintBuffer* _constraintBuffer);
+	void BuildPointConstraint(ConstraintStorage* _constraintStorage, SolverBodyBuffer* _solverBodyBuffer, ConstraintBuffer* _constraintBuffer);
 };
