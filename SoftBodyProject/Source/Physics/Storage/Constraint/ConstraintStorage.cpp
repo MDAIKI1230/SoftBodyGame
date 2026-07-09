@@ -14,6 +14,10 @@ ConstraintID ConstraintStorage::CreatePointConstraint(EntityID& _entity, Physics
 	PointConstraint pointConstraint;
 	pointConstraint.endPoints.emplace_back(_transformID, _localOffset);
 
+	// 追加
+	pointConstraintStorage->constraints.push_back(pointConstraint);
+	pointConstraintStorage->id.push_back(id);
+
 	// ID返して終了
 	return id;
 }

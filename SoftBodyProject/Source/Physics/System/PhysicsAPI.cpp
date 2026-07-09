@@ -145,7 +145,7 @@ ConstraintID PhysicsAPI::CreatePointConstraint(EntityID& _entity, const Vector3&
 	return constraintStorage->CreatePointConstraint(_entity, transformStorage->GetOrCreateTransform(_entity), _localOffset);
 }
 
-void PhysicsAPI::AddEndPoint(ConstraintID& _id, EntityID& _entity, Vector3& _localOffset)
+void PhysicsAPI::AddEndPoint(ConstraintID& _id, const EntityID& _entity, const Vector3& _localOffset)
 {
 	PhysicsTransformID transformID;
 	// エンティティに対応したTransformがあるならそれを追加ないなら何もしない

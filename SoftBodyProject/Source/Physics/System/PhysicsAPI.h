@@ -81,7 +81,7 @@ public:
 	// 点拘束作成
 	static ConstraintID CreatePointConstraint(EntityID& _entity, const Vector3& _localOffset);
 	// 点拘束にEndPoint追加
-	static void AddEndPoint(ConstraintID& _id, EntityID& _entity, Vector3& _localOffset);
+	static void AddEndPoint(ConstraintID& _id, const EntityID& _entity, const Vector3& _localOffset);
 	// 点拘束からEndPoint除外
 	static void RemoveEndPoint(ConstraintID& _id, EntityID& _entity);
 
