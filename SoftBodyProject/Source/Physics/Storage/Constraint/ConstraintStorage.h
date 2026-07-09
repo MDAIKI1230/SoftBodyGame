@@ -11,6 +11,9 @@
 class ConstraintStorage
 {
 public:
+	// コンストラクタ
+	ConstraintStorage();
+
 	// 点拘束作成関数
 	ConstraintID CreatePointConstraint(EntityID& _entity, PhysicsTransformID _transformID,const Vector3& _localOffset);
 

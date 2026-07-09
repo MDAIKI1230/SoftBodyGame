@@ -30,5 +30,5 @@ public:
 	}
 public:
     std::vector<ConstraintID> id;
-	std::vector<PointConstraint> constraints;
+    std::vector<PointConstraint> constraints;
 };

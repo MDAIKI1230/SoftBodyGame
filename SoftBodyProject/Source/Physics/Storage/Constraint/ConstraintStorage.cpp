@@ -1,5 +1,10 @@
 ﻿#include "ConstraintStorage.h"
 
+ConstraintStorage::ConstraintStorage()
+{
+	pointConstraintStorage = std::make_unique<PointConstraintStorage>();
+}
+
 ConstraintID ConstraintStorage::CreatePointConstraint(EntityID& _entity, PhysicsTransformID _transformID,const Vector3& _localOffset)
 {
 	// ID作成

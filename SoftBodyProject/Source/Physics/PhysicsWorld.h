@@ -7,20 +7,23 @@
 
 #include "CollisionManifoldBuffer.h"
 #include "SolverBodyBuffer.h"
+#include "ConstraintBuffer.h"
 
 #include "ColliderStorage.h"
 #include "RigidBodyStorage.h"
 #include "PhysicsTransformStorage.h"
 #include "ConstraintStorage.h"
 
+#include "SynchronizationSystem.h"
+#include "RigidBodySystem.h"
 #include "AABBUpdateSystem.h"
 #include "CollisionSystem.h"
 #include "SolverBodyBuildSystem.h"
 #include "CollisionSolverSystem.h"
+#include "ConstraintBuildSystem.h"
+#include "ConstraintSolverSystem.h"
 #include "SolverBodyCommitSystem.h"
 #include "PhysicsCommitSystem.h"
-#include "SynchronizationSystem.h"
-#include "RigidBodySystem.h"
 
 class PhysicsWorld
 {
@@ -42,6 +45,7 @@ public:
 private:
 	std::unique_ptr<CollisionManifoldBuffer> manifoldBuffer;
 	std::unique_ptr<SolverBodyBuffer> solverBodyBuffer;
+	std::unique_ptr<ConstraintBuffer> constraintBuffer;
 
 
 	std::unique_ptr<ColliderStorage> colliderStorage;
@@ -55,6 +59,8 @@ private:
 	std::unique_ptr<CollisionSystem> collisionSystem;
 	std::unique_ptr<SolverBodyBuildSystem> solverBodyBuildSystem;
 	std::unique_ptr<CollisionSolverSystem> collisionSolverSystem;
+	std::unique_ptr<ConstraintBuildSystem> constraintBuildSystem;
+	std::unique_ptr<ConstraintSolverSystem> constraintSolverSystem;
 	std::unique_ptr<SolverBodyCommitSystem> solverBodyCommitSystem;
 	std::unique_ptr<PhysicsCommitSystem> physicsCommitSystem;
 };
