@@ -8,8 +8,13 @@ class ConstraintSolverSystem
 public:
 	// コンストラクタ
 	ConstraintSolverSystem();
+	// 更新
+	void FixedUpdate(SolverBodyBuffer* _solverBodyBuffer, ConstraintBuffer* _constraintBuffer);
+private:
 	// 拘束解消
 	void ConstraintSolver(SolverBodyBuffer* _solverBodyBuffer, ConstraintBuffer* _constraintBuffer);
+	// 再計算
+	void ReCalcPosRot(SolverBodyBuffer* _solverBodyBuffer);
 private:
 	// 速度解消回数
 	static constexpr float VELOCITY_SOLVER_TIMES{ 10 };

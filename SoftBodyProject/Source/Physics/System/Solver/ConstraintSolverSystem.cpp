@@ -11,6 +11,18 @@ ConstraintSolverSystem::ConstraintSolverSystem() :
 {
 }
 
+void ConstraintSolverSystem::FixedUpdate(SolverBodyBuffer* _solverBodyBuffer, ConstraintBuffer* _constraintBuffer)
+{
+	for (int i{ 0 }; i < VELOCITY_SOLVER_TIMES; i++)
+	{
+		ConstraintSolver(_solverBodyBuffer, _constraintBuffer);
+	}
+
+	ReCalcPosRot(_solverBodyBuffer);
+
+	_constraintBuffer->Clear();
+}
+
 void ConstraintSolverSystem::ConstraintSolver(SolverBodyBuffer* _solverBodyBuffer, ConstraintBuffer* _constraintBuffer)
 {
 	for (auto& constraint : _constraintBuffer->constraints)
@@ -36,7 +48,7 @@ void ConstraintSolverSystem::ConstraintSolver(SolverBodyBuffer* _solverBodyBuffe
 			solverBodyB.velocity,
 			solverBodyB.angularVelocity,
 		};
-		// λを求める λ = -Jv - bias / M^-1
+		// λを求める λ = (Jv + bias) / M^-1
 		// ヤコビアンと変化量ベクトルから速度拘束条件Jv = 0のJv作成
 		float jv{ 0 };
 		for (int i{ 0 }; i < 4; i++)
@@ -49,7 +61,7 @@ void ConstraintSolverSystem::ConstraintSolver(SolverBodyBuffer* _solverBodyBuffe
 			solverBodyA.inverseMass +
 			Vector3::Dot(constraint.jacobian[1],solverBodyA.inverseInertiaTensor * constraint.jacobian[1]) +
 			solverBodyB.inverseMass +
-			Vector3::Dot(-constraint.jacobian[3],solverBodyB.inverseInertiaTensor * -constraint.jacobian[3])
+			Vector3::Dot(constraint.jacobian[3],solverBodyB.inverseInertiaTensor * constraint.jacobian[3])
 		};
 
 		// λ計算(CFMも適応)
@@ -58,7 +70,7 @@ void ConstraintSolverSystem::ConstraintSolver(SolverBodyBuffer* _solverBodyBuffe
 		float oldLambda{ constraint.accumulatedLambda };
 
 		// 0未満にしない
-		constraint.accumulatedLambda = std::max(oldLambda + lambda, 0.0f);
+		constraint.accumulatedLambda = oldLambda + lambda;
 
 		float applyLambda{ constraint.accumulatedLambda - oldLambda };
 
@@ -67,8 +79,27 @@ void ConstraintSolverSystem::ConstraintSolver(SolverBodyBuffer* _solverBodyBuffe
 		solverBodyA.angularVelocity -= solverBodyA.inverseInertiaTensor * constraint.jacobian[1] * applyLambda;
 
 		// B速度の解消
-		solverBodyB.velocity += constraint.jacobian[2] * applyLambda * solverBodyB.inverseMass;
-		solverBodyB.angularVelocity += solverBodyB.inverseInertiaTensor * -constraint.jacobian[3] * applyLambda;
+		solverBodyB.velocity -= constraint.jacobian[2] * applyLambda * solverBodyB.inverseMass;
+		solverBodyB.angularVelocity -= solverBodyB.inverseInertiaTensor * constraint.jacobian[3] * applyLambda;
 	}
 }
 
+void ConstraintSolverSystem::ReCalcPosRot(SolverBodyBuffer* _solverBodyBuffer)
+{
+	for (auto& body : _solverBodyBuffer->solverBodies)
+	{
+		if (body.inverseMass != 0.0f)
+		{
+			// 変化した速度から位置を再計算
+			// 位置 + 修正後のベクトル
+			body.position = body.pastPos + body.velocity * ServiceLocator::GetTimeManager()->GetFixedDeltaTime();
+
+			// Δω
+			Vector3 deltaAngularVelocity{ body.angularVelocity * ServiceLocator::GetTimeManager()->GetFixedDeltaTime() };
+			// Δωの四元数を作る
+			Quaternion rotOmega{ Quaternion::AngleAxis(deltaAngularVelocity.Length(),deltaAngularVelocity) };
+			// 回転＋修正後の角速度の回転
+			body.rotation = body.pastRot * rotOmega;
+		}
+	}
+}

@@ -46,7 +46,7 @@ void DebugScene::Initialize()
 	std::unique_ptr<DebugBox> debugBox03{ std::make_unique<DebugBox>(worldStorage.get(), objectManager->GetHandle(), 30.0f) };
 	debugBox03->GetComponent<TransformComponent>()->SetPosition(Vector3{ 0,100,0 });
 	debugBox03->AddComponent<RigidBodyComponent>()->SetIsGravity(true);
-	pointConstraint->AddEndPoint(debugBox03->GetHandle(), Vector3{ 0,100,0 });
+	pointConstraint->AddEndPoint(debugBox03->GetHandle(), Vector3{ 15.0f,15.0f,15.0f });
 	objectManager->Add(std::move(debugBox03));
 
 	// LoadFile("Res/Data/DebugSceneData.json");
