@@ -20,7 +20,7 @@ public:
 	CollisionSolverSystem();
 	// 更新
 	void FixedUpdate(ColliderStorage* _colliderStorage, CollisionManifoldBuffer* _manifoldBuffer, SolverBodyBuffer* _solverBodyBuffer);
-private:
+
 	// 準備
 	void StartUp(ColliderStorage* _colliderStorage, CollisionManifoldBuffer* _manifoldBuffer, SolverBodyBuffer* _solverBodyBuffer);
 	// 速度/角速度解決

@@ -43,6 +43,8 @@ public:
 	// Constraintストレージ取得
 	ConstraintStorage* GetConstraintStorage() { return constraintStorage.get(); }
 private:
+	void Solver();
+private:
 	std::unique_ptr<CollisionManifoldBuffer> manifoldBuffer;
 	std::unique_ptr<SolverBodyBuffer> solverBodyBuffer;
 	std::unique_ptr<ConstraintBuffer> constraintBuffer;

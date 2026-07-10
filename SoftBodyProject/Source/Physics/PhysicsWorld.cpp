@@ -34,12 +34,37 @@ void PhysicsWorld::FixedUpdate(WorldStorage* _worldStorage, EventManager* _event
 	collisionSystem->FixedUpdate(transformStorage.get(), colliderStorage.get(), manifoldBuffer.get(), _eventManager);
 
 	// 衝突・拘束解消
-	solverBodyBuildSystem->Build(transformStorage.get(), rigidBodyStorage.get(), solverBodyBuffer.get());
-	collisionSolverSystem->FixedUpdate(colliderStorage.get(), manifoldBuffer.get(), solverBodyBuffer.get());
-	constraintBuildSystem->FixedUpdate(constraintStorage.get(), solverBodyBuffer.get(), constraintBuffer.get());
-	constraintSolverSystem->FixedUpdate(solverBodyBuffer.get(), constraintBuffer.get());
-	solverBodyCommitSystem->Commit(transformStorage.get(), rigidBodyStorage.get(), solverBodyBuffer.get());
+	Solver();
 
 	// シミュレーション結果反映
 	physicsCommitSystem->FixedUpdate(transformStorage.get(), _worldStorage);
+}
+
+void PhysicsWorld::Solver()
+{
+	// 衝突・拘束解消
+	solverBodyBuildSystem->Build(transformStorage.get(), rigidBodyStorage.get(), solverBodyBuffer.get());
+
+	collisionSolverSystem->StartUp(colliderStorage.get(), manifoldBuffer.get(), solverBodyBuffer.get());
+
+	for (int i{ 0 }; i < 10; i++)
+	{
+		collisionSolverSystem->VelocitySolver(manifoldBuffer.get(), solverBodyBuffer.get());
+		constraintSolverSystem->ConstraintSolver(solverBodyBuffer.get(), constraintBuffer.get());
+	}
+
+	constraintSolverSystem->ReCalcPosRot(solverBodyBuffer.get());
+
+	for (int i{ 0 }; i < 4; i++)
+	{
+		constraintBuildSystem->FixedUpdate(constraintStorage.get(), solverBodyBuffer.get(), constraintBuffer.get());
+		collisionSolverSystem->PositionSolver(manifoldBuffer.get(), solverBodyBuffer.get());
+		constraintSolverSystem->PositionSolver(solverBodyBuffer.get(), constraintBuffer.get());
+		constraintBuffer->Clear();
+	}
+
+	collisionSolverSystem->End(manifoldBuffer.get());
+
+
+	solverBodyCommitSystem->Commit(transformStorage.get(), rigidBodyStorage.get(), solverBodyBuffer.get());
 }
