@@ -130,11 +130,11 @@ void CollisionSolverSystem::VelocitySolver(CollisionManifoldBuffer* _manifoldBuf
 		solverBodyB.angularVelocity += solverBodyB.inverseInertiaTensor * rBCross * applyLambda;
 
 		// 摩擦
-		FrictionSolver(solverBodyA, rA, solverBodyB, rB, constraint, effectiveMass);
+		FrictionSolver(solverBodyA, rA, solverBodyB, rB, constraint);
 	}
 }
 
-void CollisionSolverSystem::FrictionSolver(SolverBody& _bodyA, Vector3& _rA, SolverBody& _bodyB, Vector3& _rB, ContactConstraint& _constraint, float _effectiveMass)
+void CollisionSolverSystem::FrictionSolver(SolverBody& _bodyA, Vector3& _rA, SolverBody& _bodyB, Vector3& _rB, ContactConstraint& _constraint)
 {
 	// 角速度まで含めた速度を計算
 	Vector3 vA = _bodyA.velocity + Vector3::Cross(_bodyA.angularVelocity, _rA);
@@ -159,7 +159,14 @@ void CollisionSolverSystem::FrictionSolver(SolverBody& _bodyA, Vector3& _rA, Sol
 	// 重心から衝突点ベクトルBと法線の外積
 	Vector3 rBCross{ Vector3::Cross(_rB,tangent) };
 
-	float lambda = Vector3::Dot(relativeVelocity, tangent) / _effectiveMass;
+	float effectiveMass{
+			_bodyA.inverseMass +
+			Vector3::Dot(rACross,_bodyA.inverseInertiaTensor * rACross) +
+			_bodyB.inverseMass +
+			Vector3::Dot(rBCross,_bodyB.inverseInertiaTensor * rBCross)
+	};
+
+	float lambda = Vector3::Dot(relativeVelocity, tangent) / effectiveMass;
 
 	float maxFrictionLambda = _constraint.accumulatedLambda;
 

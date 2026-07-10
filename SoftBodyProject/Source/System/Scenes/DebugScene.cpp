@@ -26,7 +26,7 @@ void DebugScene::Initialize()
 	Camera camera{ Vector3{0,-175,-500},Vector3{0,-175,0} };
 	ServiceLocator::GetRenderer()->SetCamera(camera);
 
-	//objectManager->Add(std::make_unique<DebugSphere>(worldStorage.get(), objectManager->GetHandle()));
+	objectManager->Add(std::make_unique<DebugSphere>(worldStorage.get(), objectManager->GetHandle()));
 
 	//std::unique_ptr<DebugSphere> sphere{ std::make_unique<DebugSphere>(worldStorage.get(), objectManager->GetHandle()) };
 	//sphere->AddComponent<PointConstraintComponent>();
@@ -39,8 +39,8 @@ void DebugScene::Initialize()
 	std::unique_ptr<DebugBox> debugBox02{ std::make_unique<DebugBox>(worldStorage.get(), objectManager->GetHandle(), 30.0f) };
 	debugBox02->GetComponent<TransformComponent>()->SetPosition(Vector3{ 0,50,0 });
 	debugBox02->GetComponent<TransformComponent>()->Rotate(Quaternion::AngleAxis((3.141592f / 4.0f), Vector3{ 0,1,1 }));
-	debugBox02->AddComponent<RigidBodyComponent>()->SetIsGravity(false);
-	PointConstraintComponent* pointConstraint{ debugBox02->AddComponent<PointConstraintComponent>(Vector3{ 15.0f,15.0f,15.0f }) };
+	debugBox02->AddComponent<RigidBodyComponent>()->SetIsGravity(true);
+	PointConstraintComponent* pointConstraint{ debugBox02->AddComponent<PointConstraintComponent>(Vector3{ 15.0f,16.0f,15.0f }) };
 	objectManager->Add(std::move(debugBox02));
 
 	std::unique_ptr<DebugBox> debugBox03{ std::make_unique<DebugBox>(worldStorage.get(), objectManager->GetHandle(), 30.0f) };

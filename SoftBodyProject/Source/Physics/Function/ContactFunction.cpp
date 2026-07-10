@@ -47,7 +47,7 @@ bool ContactFunction::SphereSphere(const ColliderID& _colliderA, const ColliderI
 		ContactPoint contactPoint;
 		contactPoint.penetration = totalRadius - std::sqrtf(distSqr);
 		contactPoint.positionA = _transformStorage->position[transformIndexA] + manifold.normal * radiusA;
-		contactPoint.positionB = _transformStorage->position[transformIndexB] + manifold.normal * radiusB;
+		contactPoint.positionB = _transformStorage->position[transformIndexB] - manifold.normal * radiusB;
 
 		manifold.AddPoints(contactPoint);
 
@@ -121,7 +121,7 @@ bool ContactFunction::SphereBox(const ColliderID& _colliderSphere, const Collide
 		// クランプしたのをワールドに直すして衝突点にする(BOX)
 		contactPoint.positionA = _transformStorage->position[transformIndexSphere] + manifold.normal * radius;
 		// 球は法線から求める
-		contactPoint.positionB = axis[0] * latestPoint.x + axis[1] * latestPoint.y + axis[2] * latestPoint.z;
+		contactPoint.positionB = _transformStorage->position[transformIndexBox] + (axis[0] * latestPoint.x + axis[1] * latestPoint.y + axis[2] * latestPoint.z);
 
 		// 点追加
 		manifold.AddPoints(contactPoint);

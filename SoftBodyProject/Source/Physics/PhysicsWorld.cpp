@@ -47,18 +47,22 @@ void PhysicsWorld::Solver()
 
 	collisionSolverSystem->StartUp(colliderStorage.get(), manifoldBuffer.get(), solverBodyBuffer.get());
 
+	constraintBuildSystem->FixedUpdate(constraintStorage.get(), solverBodyBuffer.get(), constraintBuffer.get());
+
 	for (int i{ 0 }; i < 10; i++)
 	{
 		collisionSolverSystem->VelocitySolver(manifoldBuffer.get(), solverBodyBuffer.get());
 		constraintSolverSystem->ConstraintSolver(solverBodyBuffer.get(), constraintBuffer.get());
 	}
 
+	constraintBuffer->Clear();
+
 	constraintSolverSystem->ReCalcPosRot(solverBodyBuffer.get());
 
 	for (int i{ 0 }; i < 4; i++)
 	{
-		constraintBuildSystem->FixedUpdate(constraintStorage.get(), solverBodyBuffer.get(), constraintBuffer.get());
 		collisionSolverSystem->PositionSolver(manifoldBuffer.get(), solverBodyBuffer.get());
+		constraintBuildSystem->FixedUpdate(constraintStorage.get(), solverBodyBuffer.get(), constraintBuffer.get());
 		constraintSolverSystem->PositionSolver(solverBodyBuffer.get(), constraintBuffer.get());
 		constraintBuffer->Clear();
 	}
@@ -67,4 +71,6 @@ void PhysicsWorld::Solver()
 
 
 	solverBodyCommitSystem->Commit(transformStorage.get(), rigidBodyStorage.get(), solverBodyBuffer.get());
+
+	solverBodyBuffer->Clear();
 }

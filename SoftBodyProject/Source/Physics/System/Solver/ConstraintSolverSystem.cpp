@@ -44,7 +44,7 @@ void ConstraintSolverSystem::ConstraintSolver(SolverBodyBuffer* _solverBodyBuffe
 		}
 
 		// biasを求める
-		const float bias{ ERP / ServiceLocator::GetTimeManager()->GetFixedDeltaTime() * constraint.constraintError };
+		const float bias{0 /*ERP / ServiceLocator::GetTimeManager()->GetFixedDeltaTime() * constraint.constraintError*/ };
 
 		// 変化量ベクトル
 		Vector3 deltaVector[4]{
@@ -66,7 +66,7 @@ void ConstraintSolverSystem::ConstraintSolver(SolverBodyBuffer* _solverBodyBuffe
 			solverBodyA.inverseMass +
 			Vector3::Dot(constraint.jacobian[1],solverBodyA.inverseInertiaTensor * constraint.jacobian[1]) +
 			solverBodyB.inverseMass +
-			Vector3::Dot(-constraint.jacobian[3],solverBodyB.inverseInertiaTensor * -constraint.jacobian[3])
+			Vector3::Dot(constraint.jacobian[3],solverBodyB.inverseInertiaTensor * constraint.jacobian[3])
 		};
 
 		// λ計算(CFMも適応)
@@ -132,7 +132,7 @@ void ConstraintSolverSystem::PositionSolver(SolverBodyBuffer* _solverBodyBuffer,
 			solverBodyA.inverseMass +
 			Vector3::Dot(constraint.jacobian[1],solverBodyA.inverseInertiaTensor * constraint.jacobian[1]) +
 			solverBodyB.inverseMass +
-			Vector3::Dot(-constraint.jacobian[3],solverBodyB.inverseInertiaTensor * -constraint.jacobian[3])
+			Vector3::Dot(constraint.jacobian[3],solverBodyB.inverseInertiaTensor * constraint.jacobian[3])
 		};
 
 		float depth = constraint.constraintError;
@@ -144,13 +144,13 @@ void ConstraintSolverSystem::PositionSolver(SolverBodyBuffer* _solverBodyBuffer,
 
 		float oldLambda{ constraint.accumulatedLambda };
 
-		// 0未満にしない
+		//
 		constraint.accumulatedLambda = oldLambda + lambda;
 
 		float applyLambda{ constraint.accumulatedLambda - oldLambda };
 
-		// 解消した分だけ減らす(0が最小になるように)
-		constraint.constraintError = std::max(constraint.constraintError - correction, 0.0f);
+		// 解消した分だけ減らす
+		constraint.constraintError -= correction;
 
 		// Aの位置/姿勢制御
 		solverBodyA.position -= constraint.jacobian[0] * applyLambda * solverBodyA.inverseMass;
