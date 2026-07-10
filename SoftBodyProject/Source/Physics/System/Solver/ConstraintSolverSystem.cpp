@@ -20,6 +20,11 @@ void ConstraintSolverSystem::FixedUpdate(SolverBodyBuffer* _solverBodyBuffer, Co
 
 	ReCalcPosRot(_solverBodyBuffer);
 
+	for (int i{ 0 }; i < POS_ROT_SOLVER_TIMES; i++)
+	{
+		PositionSolver(_solverBodyBuffer, _constraintBuffer);
+	}
+
 	_constraintBuffer->Clear();
 }
 
@@ -61,7 +66,7 @@ void ConstraintSolverSystem::ConstraintSolver(SolverBodyBuffer* _solverBodyBuffe
 			solverBodyA.inverseMass +
 			Vector3::Dot(constraint.jacobian[1],solverBodyA.inverseInertiaTensor * constraint.jacobian[1]) +
 			solverBodyB.inverseMass +
-			Vector3::Dot(constraint.jacobian[3],solverBodyB.inverseInertiaTensor * constraint.jacobian[3])
+			Vector3::Dot(-constraint.jacobian[3],solverBodyB.inverseInertiaTensor * -constraint.jacobian[3])
 		};
 
 		// λ計算(CFMも適応)
@@ -101,5 +106,62 @@ void ConstraintSolverSystem::ReCalcPosRot(SolverBodyBuffer* _solverBodyBuffer)
 			// 回転＋修正後の角速度の回転
 			body.rotation = body.pastRot * rotOmega;
 		}
+	}
+}
+
+void ConstraintSolverSystem::PositionSolver(SolverBodyBuffer* _solverBodyBuffer, ConstraintBuffer* _constraintBuffer)
+{
+	for (auto& constraint : _constraintBuffer->constraints)
+	{
+		// ボディA
+		SolverBody& solverBodyA{ _solverBodyBuffer->solverBodies[constraint.solverBodyAIndex] };
+		// ボディB
+		SolverBody& solverBodyB{ _solverBodyBuffer->solverBodies[constraint.solverBodyBIndex] };
+		// 質量から両者がBodyを持っているかの判定をする(どちらかがBodyを持っているなら合計は0じゃないはず)
+		float totalInvMass{ solverBodyA.inverseMass + solverBodyB.inverseMass };
+		if (totalInvMass <= 0)
+		{
+			continue;
+		}
+
+		// biasを求める
+		float bias{ ERP / ServiceLocator::GetTimeManager()->GetFixedDeltaTime() * constraint.constraintError };
+
+		// 質量と慣性テンソルが速度に影響する度合い
+		float effectiveMass{
+			solverBodyA.inverseMass +
+			Vector3::Dot(constraint.jacobian[1],solverBodyA.inverseInertiaTensor * constraint.jacobian[1]) +
+			solverBodyB.inverseMass +
+			Vector3::Dot(-constraint.jacobian[3],solverBodyB.inverseInertiaTensor * -constraint.jacobian[3])
+		};
+
+		float depth = constraint.constraintError;
+		// 解消の割合から解消量を計算
+		float correction = 0.2f * depth;
+
+		// λ計算(CFMも適応)
+		float lambda{ correction / effectiveMass };
+
+		float oldLambda{ constraint.accumulatedLambda };
+
+		// 0未満にしない
+		constraint.accumulatedLambda = oldLambda + lambda;
+
+		float applyLambda{ constraint.accumulatedLambda - oldLambda };
+
+		// 解消した分だけ減らす(0が最小になるように)
+		constraint.constraintError = std::max(constraint.constraintError - correction, 0.0f);
+
+		// Aの位置/姿勢制御
+		solverBodyA.position -= constraint.jacobian[0] * applyLambda * solverBodyA.inverseMass;
+		Vector3 angVec{ solverBodyA.inverseInertiaTensor * constraint.jacobian[1] * applyLambda };
+		Quaternion rotOmega{ Quaternion::AngleAxis(angVec.Length(), -angVec) };
+		solverBodyA.rotation *= rotOmega;
+
+		// Bの位置/姿勢制御
+		solverBodyB.position -= constraint.jacobian[2] * applyLambda * solverBodyB.inverseMass;
+		angVec = solverBodyB.inverseInertiaTensor * constraint.jacobian[3] * applyLambda;
+		rotOmega = Quaternion::AngleAxis(angVec.Length(), -angVec);
+		solverBodyB.rotation *= rotOmega;
 	}
 }

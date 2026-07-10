@@ -178,7 +178,6 @@ void CollisionSolverSystem::FrictionSolver(SolverBody& _bodyA, Vector3& _rA, Sol
 	_bodyB.angularVelocity += _bodyB.inverseInertiaTensor * rBCross * applyLambda;
 }
 
-
 void CollisionSolverSystem::ReCalcPosRot(SolverBodyBuffer* _solverBodyBuffer)
 {
 	for (auto& body : _solverBodyBuffer->solverBodies)

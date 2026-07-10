@@ -15,6 +15,8 @@ private:
 	void ConstraintSolver(SolverBodyBuffer* _solverBodyBuffer, ConstraintBuffer* _constraintBuffer);
 	// 再計算
 	void ReCalcPosRot(SolverBodyBuffer* _solverBodyBuffer);
+	// 位置解決
+	void PositionSolver(SolverBodyBuffer* _solverBodyBuffer, ConstraintBuffer* _constraintBuffer);
 private:
 	// 速度解消回数
 	static constexpr float VELOCITY_SOLVER_TIMES{ 10 };
