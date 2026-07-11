@@ -49,8 +49,8 @@ void CollisionSolverSystem::StartUp(ColliderStorage* _colliderStorage, Collision
 			transformID = _colliderStorage->GetTransformID(manifold.colliderB);
 			contactConstraint.solverBodyBIndex = _solverBodyBuffer->bodyMap[transformID];
 
-			contactConstraint.positionA = manifold.points[i].positionA;
-			contactConstraint.positionB = manifold.points[i].positionB;
+			contactConstraint.positionLocalA = manifold.points[i].positionLocalA;
+			contactConstraint.positionLocalB = manifold.points[i].positionLocalB;
 			contactConstraint.normal = manifold.normal;
 			contactConstraint.penetration = manifold.points[i].penetration;
 
@@ -78,8 +78,8 @@ void CollisionSolverSystem::VelocitySolver(CollisionManifoldBuffer* _manifoldBuf
 		const float bias{ ERP / ServiceLocator::GetTimeManager()->GetFixedDeltaTime() * constraint.penetration };
 
 		// 重心から衝突点ベクトル
-		Vector3 rA{ constraint.positionA - solverBodyA.position };
-		Vector3 rB{ constraint.positionB - solverBodyB.position };
+		Vector3 rA{ solverBodyA.rotation.Rotate(constraint.positionLocalA) };
+		Vector3 rB{ solverBodyB.rotation.Rotate(constraint.positionLocalB) };
 
 		// 重心から衝突点ベクトルAと法線の外積
 		Vector3 rACross{ Vector3::Cross(rA,constraint.normal) };
@@ -229,8 +229,8 @@ void CollisionSolverSystem::PositionSolver(CollisionManifoldBuffer* _manifoldBuf
 		float bias{ ERP / ServiceLocator::GetTimeManager()->GetFixedDeltaTime() * constraint.penetration };
 
 		// 重心から衝突点ベクトル
-		Vector3 rA{ constraint.positionA - solverBodyA.position };
-		Vector3 rB{ constraint.positionB - solverBodyB.position };
+		Vector3 rA{ solverBodyA.rotation.Rotate(constraint.positionLocalA) };
+		Vector3 rB{ solverBodyB.rotation.Rotate(constraint.positionLocalB) };
 
 		// 重心から衝突点ベクトルAと法線の外積
 		Vector3 rACross{ Vector3::Cross(rA,constraint.normal) };

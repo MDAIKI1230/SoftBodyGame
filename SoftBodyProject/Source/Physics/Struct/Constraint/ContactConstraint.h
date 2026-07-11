@@ -9,8 +9,8 @@ struct ContactConstraint
 	uint32_t solverBodyAIndex;
 	uint32_t solverBodyBIndex;
 
-	Vector3 positionA;
-	Vector3 positionB;
+	Vector3 positionLocalA;
+	Vector3 positionLocalB;
 
 	Vector3 normal;
 	float penetration;

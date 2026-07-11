@@ -8,9 +8,18 @@
 
 namespace ManifoldFunction
 {
-	void AddFaceAManifold(Vector3& _positionA, Vector3& _positionB, Vector3* _candidateAxisA, Vector3* _candidateAxisB, float* _halfsA, float* _halfsB, BoxBoxContactInfo& _info, CollisionManifoldBuffer* _manifoldBuffer);
-	void AddFaceBManifold(Vector3& _positionA, Vector3& _positionB, Vector3* _candidateAxisA, Vector3* _candidateAxisB, float* _halfsA, float* _halfsB, BoxBoxContactInfo& _info, CollisionManifoldBuffer* _manifoldBuffer);
-	void AddEdgeManifold(Vector3& _positionA, Vector3& _positionB, Vector3* _candidateAxisA, Vector3* _candidateAxisB, float* _halfsA, float* _halfsB, BoxBoxContactInfo& _info, CollisionManifoldBuffer* _manifoldBuffer);
+	void AddFaceAManifold(
+		Vector3& _positionA, Quaternion& _rotationA, Vector3* _candidateAxisA, float* _halfsA,
+		Vector3& _positionB, Quaternion& _rotationB, Vector3* _candidateAxisB, float* _halfsB,
+		BoxBoxContactInfo& _info, CollisionManifoldBuffer* _manifoldBuffer);
+	void AddFaceBManifold(
+		Vector3& _positionA, Quaternion& _rotationA, Vector3* _candidateAxisA, float* _halfsA,
+		Vector3& _positionB, Quaternion& _rotationB, Vector3* _candidateAxisB, float* _halfsB,
+		BoxBoxContactInfo& _info, CollisionManifoldBuffer* _manifoldBuffer);
+	void AddEdgeManifold(
+		Vector3& _positionA, Quaternion& _rotationA, Vector3* _candidateAxisA, float* _halfsA,
+		Vector3& _positionB, Quaternion& _rotationB, Vector3* _candidateAxisB, float* _halfsB,
+		BoxBoxContactInfo& _info, CollisionManifoldBuffer* _manifoldBuffer);
 
 	// 衝突点を出すのに必要な点を出してくれる関数
 	std::vector<Vector3> GenerateFaceContact(
@@ -24,5 +33,8 @@ namespace ManifoldFunction
 
 
 	
-	void BoxBox(Vector3& _positionA, Vector3& _positionB, Vector3* _candidateAxisA, Vector3* _candidateAxisB, float* _halfsA, float* _halfsB, BoxBoxContactInfo& _info, CollisionManifoldBuffer* _manifoldBuffer);
+	void BoxBox(
+		Vector3& _positionA, Quaternion& _rotationA, Vector3* _candidateAxisA, float* _halfsA,
+		Vector3& _positionB, Quaternion& _rotationB, Vector3* _candidateAxisB, float* _halfsB,
+		BoxBoxContactInfo& _info, CollisionManifoldBuffer* _manifoldBuffer);
 }

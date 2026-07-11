@@ -34,8 +34,11 @@ void PhysicsWorld::FixedUpdate(WorldStorage* _worldStorage, EventManager* _event
 	collisionSystem->FixedUpdate(transformStorage.get(), colliderStorage.get(), manifoldBuffer.get(), _eventManager);
 
 	// 衝突・拘束解消
-	Solver();
-
+	//Solver();
+	solverBodyBuildSystem->Build(transformStorage.get(), rigidBodyStorage.get(), solverBodyBuffer.get());
+	collisionSolverSystem->FixedUpdate(colliderStorage.get(), manifoldBuffer.get(), solverBodyBuffer.get());
+	solverBodyCommitSystem->Commit(transformStorage.get(), rigidBodyStorage.get(), solverBodyBuffer.get());
+	solverBodyBuffer->Clear();
 	// シミュレーション結果反映
 	physicsCommitSystem->FixedUpdate(transformStorage.get(), _worldStorage);
 }

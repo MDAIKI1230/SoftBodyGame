@@ -7,7 +7,7 @@ void ManifoldFunction::AddUniquePoint(Manifold& _manifold, const ContactPoint& _
     // 近すぎる点は追加しない
     for (int i = 0; i < _manifold.pointCount; i++)
     {
-        if (Vector3::DistanceSqr(_manifold.points[i].positionA, _point.positionA) < MathConstants::EPSILON * MathConstants::EPSILON)
+        if (Vector3::DistanceSqr(_manifold.points[i].positionLocalA, _point.positionLocalA) < MathConstants::EPSILON * MathConstants::EPSILON)
         {
             return;
         }
@@ -16,23 +16,38 @@ void ManifoldFunction::AddUniquePoint(Manifold& _manifold, const ContactPoint& _
     _manifold.AddPoints(_point);
 }
 
-void ManifoldFunction::BoxBox(Vector3& _positionA, Vector3& _positionB, Vector3* _candidateAxisA, Vector3* _candidateAxisB, float* _halfsA, float* _halfsB, BoxBoxContactInfo& _info, CollisionManifoldBuffer* _manifoldBuffer)
+void ManifoldFunction::BoxBox(
+    Vector3& _positionA, Quaternion& _rotationA, Vector3* _candidateAxisA, float* _halfsA,
+    Vector3& _positionB, Quaternion& _rotationB, Vector3* _candidateAxisB, float* _halfsB,
+    BoxBoxContactInfo& _info, CollisionManifoldBuffer* _manifoldBuffer)
 {
     switch (_info.type)
     {
     case BoxBoxContactInfo::FaceA:
-        AddFaceAManifold(_positionA, _positionB, _candidateAxisA, _candidateAxisB, _halfsA, _halfsB, _info, _manifoldBuffer);
+        AddFaceAManifold(
+            _positionA, _rotationA, _candidateAxisA, _halfsA,
+            _positionB, _rotationB, _candidateAxisB, _halfsB,
+            _info, _manifoldBuffer);
         break;
     case BoxBoxContactInfo::FaceB:
-        AddFaceBManifold(_positionA, _positionB, _candidateAxisA, _candidateAxisB, _halfsA, _halfsB, _info, _manifoldBuffer);
+        AddFaceBManifold(
+            _positionA, _rotationA, _candidateAxisA, _halfsA,
+            _positionB, _rotationB, _candidateAxisB, _halfsB,
+            _info, _manifoldBuffer);
         break;
     case BoxBoxContactInfo::EdgeEdge:
-        AddEdgeManifold(_positionA, _positionB, _candidateAxisA, _candidateAxisB, _halfsA, _halfsB, _info, _manifoldBuffer);
+        AddEdgeManifold(
+            _positionA, _rotationA, _candidateAxisA, _halfsA,
+            _positionB, _rotationB, _candidateAxisB, _halfsB,
+            _info, _manifoldBuffer);
         break;
     }
 }
 
-void ManifoldFunction::AddFaceAManifold(Vector3& _positionA, Vector3& _positionB, Vector3* _candidateAxisA, Vector3* _candidateAxisB, float* _halfsA, float* _halfsB, BoxBoxContactInfo& _info, CollisionManifoldBuffer* _manifoldBuffer)
+void ManifoldFunction::AddFaceAManifold(
+    Vector3& _positionA, Quaternion& _rotationA, Vector3* _candidateAxisA, float* _halfsA,
+    Vector3& _positionB, Quaternion& _rotationB, Vector3* _candidateAxisB, float* _halfsB,
+    BoxBoxContactInfo& _info, CollisionManifoldBuffer* _manifoldBuffer)
 {
     Manifold manifold;
     manifold.colliderA = _info.colliderA;
@@ -66,8 +81,8 @@ void ManifoldFunction::AddFaceAManifold(Vector3& _positionA, Vector3& _positionB
         {
             ContactPoint contactPoint;
 
-            contactPoint.positionB = positionB;
-            contactPoint.positionA = positionB - faceNormal * penetration;
+            contactPoint.positionLocalA = _rotationA.Conjugate().Rotate((positionB - faceNormal * penetration) - _positionA);
+            contactPoint.positionLocalB = _rotationB.Conjugate().Rotate(positionB - _positionB);
             contactPoint.penetration = -penetration;
 
             AddUniquePoint(manifold, contactPoint);
@@ -81,7 +96,10 @@ void ManifoldFunction::AddFaceAManifold(Vector3& _positionA, Vector3& _positionB
 
     _manifoldBuffer->manifolds.push_back(manifold);
 }
-void ManifoldFunction::AddFaceBManifold(Vector3& _positionA, Vector3& _positionB, Vector3* _candidateAxisA, Vector3* _candidateAxisB, float* _halfsA, float* _halfsB, BoxBoxContactInfo& _info, CollisionManifoldBuffer* _manifoldBuffer)
+void ManifoldFunction::AddFaceBManifold(
+    Vector3& _positionA, Quaternion& _rotationA, Vector3* _candidateAxisA, float* _halfsA,
+    Vector3& _positionB, Quaternion& _rotationB, Vector3* _candidateAxisB, float* _halfsB,
+    BoxBoxContactInfo& _info, CollisionManifoldBuffer* _manifoldBuffer)
 {
     Manifold manifold;
     manifold.colliderA = _info.colliderA;
@@ -116,8 +134,8 @@ void ManifoldFunction::AddFaceBManifold(Vector3& _positionA, Vector3& _positionB
         {
             ContactPoint cp;
 
-            cp.positionB = positionA - faceNormal * penetration;
-            cp.positionA = positionA;
+            cp.positionLocalA = _rotationA.Conjugate().Rotate(positionA - _positionA);
+            cp.positionLocalB = _rotationB.Conjugate().Rotate((positionA - faceNormal * penetration) - _positionB);
             cp.penetration = -penetration;
 
             AddUniquePoint(manifold, cp);
@@ -132,7 +150,10 @@ void ManifoldFunction::AddFaceBManifold(Vector3& _positionA, Vector3& _positionB
     _manifoldBuffer->manifolds.push_back(manifold);
 }
 
-void ManifoldFunction::AddEdgeManifold(Vector3& _positionA, Vector3& _positionB, Vector3* _candidateAxisA, Vector3* _candidateAxisB, float* _halfsA, float* _halfsB, BoxBoxContactInfo& _info, CollisionManifoldBuffer* _manifoldBuffer)
+void ManifoldFunction::AddEdgeManifold(
+    Vector3& _positionA, Quaternion& _rotationA, Vector3* _candidateAxisA, float* _halfsA,
+    Vector3& _positionB, Quaternion& _rotationB, Vector3* _candidateAxisB, float* _halfsB,
+    BoxBoxContactInfo& _info, CollisionManifoldBuffer* _manifoldBuffer)
 {
     Manifold manifold;
     manifold.colliderA = _info.colliderA;
@@ -239,8 +260,8 @@ void ManifoldFunction::AddEdgeManifold(Vector3& _positionA, Vector3& _positionB,
     Vector3 closestB = startB + segmentB * t;
 
     ContactPoint cp;
-    cp.positionA = closestA;
-    cp.positionB = closestB;
+    cp.positionLocalA = _rotationA.Conjugate().Rotate(closestA - _positionA);
+    cp.positionLocalB = _rotationB.Conjugate().Rotate(closestB - _positionB);
     cp.penetration = _info.depth;
 
     // 追加

@@ -46,8 +46,8 @@ bool ContactFunction::SphereSphere(const ColliderID& _colliderA, const ColliderI
 
 		ContactPoint contactPoint;
 		contactPoint.penetration = totalRadius - std::sqrtf(distSqr);
-		contactPoint.positionA = _transformStorage->position[transformIndexA] + manifold.normal * radiusA;
-		contactPoint.positionB = _transformStorage->position[transformIndexB] - manifold.normal * radiusB;
+		contactPoint.positionLocalA = _transformStorage->rotation[transformIndexA].Conjugate().Rotate(manifold.normal * radiusA);
+		contactPoint.positionLocalB = _transformStorage->rotation[transformIndexA].Conjugate().Rotate(-manifold.normal * radiusB);
 
 		manifold.AddPoints(contactPoint);
 
@@ -119,9 +119,9 @@ bool ContactFunction::SphereBox(const ColliderID& _colliderSphere, const Collide
 		manifold.normal = axis[0] * normalLocal.x + axis[1] * normalLocal.y + axis[2] * normalLocal.z;
 
 		// クランプしたのをワールドに直すして衝突点にする(BOX)
-		contactPoint.positionA = _transformStorage->position[transformIndexSphere] + manifold.normal * radius;
+		contactPoint.positionLocalA = _transformStorage->rotation[transformIndexSphere].Conjugate().Rotate(manifold.normal * radius);
 		// 球は法線から求める
-		contactPoint.positionB = _transformStorage->position[transformIndexBox] + (axis[0] * latestPoint.x + axis[1] * latestPoint.y + axis[2] * latestPoint.z);
+		contactPoint.positionLocalB = _transformStorage->rotation[transformIndexBox].Conjugate().Rotate(axis[0] * latestPoint.x + axis[1] * latestPoint.y + axis[2] * latestPoint.z);
 
 		// 点追加
 		manifold.AddPoints(contactPoint);
@@ -171,9 +171,9 @@ bool ContactFunction::SphereBox(const ColliderID& _colliderSphere, const Collide
 	// 重なり深さ計算
 	contactPoint.penetration = distances[minIndex];
 	// クランプしたのをワールドに直すして衝突点にする(BOX)
-	contactPoint.positionA = _transformStorage->position[transformIndexSphere] + manifold.normal * radius;
+	contactPoint.positionLocalA = _transformStorage->rotation[transformIndexSphere].Conjugate().Rotate(manifold.normal * radius);
 	// 球は法線から求める
-	contactPoint.positionB = axis[0] * latestPoint.x + axis[1] * latestPoint.y + axis[2] * latestPoint.z;
+	contactPoint.positionLocalB = _transformStorage->rotation[transformIndexBox].Conjugate().Rotate(axis[0] * latestPoint.x + axis[1] * latestPoint.y + axis[2] * latestPoint.z);
 
 	// 点追加
 	manifold.AddPoints(contactPoint);
@@ -273,7 +273,10 @@ bool ContactFunction::BoxBox(const ColliderID& _colliderA, const ColliderID& _co
 		}
 	}
 
-	ManifoldFunction::BoxBox(_transformStorage->position[transformIndexA], _transformStorage->position[transformIndexB], candidateAxisA, candidateAxisB, halfsA, halfsB, info, _manifoldBuffer);
+	ManifoldFunction::BoxBox(
+		_transformStorage->position[transformIndexA], _transformStorage->rotation[transformIndexA], candidateAxisA, halfsA,
+		_transformStorage->position[transformIndexB], _transformStorage->rotation[transformIndexB], candidateAxisB, halfsB,
+		info, _manifoldBuffer);
 
 	return true;
 }
