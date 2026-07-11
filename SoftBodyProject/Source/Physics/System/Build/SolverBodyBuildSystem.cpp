@@ -62,7 +62,7 @@ uint32_t SolverBodyBuildSystem::CreateSolverBody(PhysicsTransformStorage* _trans
 	body.rotation = _transformStorage->rotation[transformIndex];
 	body.angularVelocity = _bodyStorage->angularVelocity[bodyIndex];
 	body.inverseMass = _bodyStorage->inverseMass[bodyIndex];
-	body.inverseInertiaTensor = _bodyStorage->worldInverseInertiaTensor[bodyIndex];
+	body.localInverseInertiaTensor = _bodyStorage->localInverseInertiaTensor[bodyIndex];
 
 	// インデックス取ってから追加
 	uint32_t result{ static_cast<uint32_t>(_solverBodyBuffer->solverBodies.size()) };
@@ -84,7 +84,7 @@ uint32_t SolverBodyBuildSystem::CreateSolverBody(PhysicsTransformStorage* _trans
 	body.rotation = _transformStorage->rotation[transformIndex];
 	body.angularVelocity = Vector3::ZERO;;
 	body.inverseMass = 0;
-	body.inverseInertiaTensor = Matrix4x4::Zero();
+	body.localInverseInertiaTensor = Matrix4x4::Zero();
 
 	// インデックス取ってから追加
 	uint32_t result{ static_cast<uint32_t>(_solverBodyBuffer->solverBodies.size()) };

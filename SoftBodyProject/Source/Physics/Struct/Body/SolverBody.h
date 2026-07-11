@@ -19,5 +19,5 @@ struct SolverBody
     Vector3 angularVelocity;
 
     float inverseMass;
-    Matrix4x4 inverseInertiaTensor;
+    Matrix4x4 localInverseInertiaTensor;
 };

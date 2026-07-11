@@ -44,7 +44,7 @@ void ConstraintSolverSystem::ConstraintSolver(SolverBodyBuffer* _solverBodyBuffe
 		}
 
 		// biasを求める
-		const float bias{0 /*ERP / ServiceLocator::GetTimeManager()->GetFixedDeltaTime() * constraint.constraintError*/ };
+		const float bias{ ERP / ServiceLocator::GetTimeManager()->GetFixedDeltaTime() * constraint.constraintError };
 
 		// 変化量ベクトル
 		Vector3 deltaVector[4]{
@@ -61,12 +61,19 @@ void ConstraintSolverSystem::ConstraintSolver(SolverBodyBuffer* _solverBodyBuffe
 			jv += Vector3::Dot(constraint.jacobian[i], deltaVector[i]);
 		}
 
+		// 慣性テンソル求める
+		Matrix4x4 rotMat{ MatGenerateFunc::Rotate(solverBodyA.rotation) };
+		Matrix4x4 worldInertiaTnesorA{ rotMat * solverBodyA.localInverseInertiaTensor * rotMat.Transposed() };
+
+		rotMat = MatGenerateFunc::Rotate(solverBodyB.rotation);
+		Matrix4x4 worldInertiaTnesorB{ rotMat * solverBodyB.localInverseInertiaTensor * rotMat.Transposed() };
+
 		// 質量と慣性テンソルが速度に影響する度合い
 		float effectiveMass{
 			solverBodyA.inverseMass +
-			Vector3::Dot(constraint.jacobian[1],solverBodyA.inverseInertiaTensor * constraint.jacobian[1]) +
+			Vector3::Dot(constraint.jacobian[1],worldInertiaTnesorA * constraint.jacobian[1]) +
 			solverBodyB.inverseMass +
-			Vector3::Dot(constraint.jacobian[3],solverBodyB.inverseInertiaTensor * constraint.jacobian[3])
+			Vector3::Dot(constraint.jacobian[3],worldInertiaTnesorB * constraint.jacobian[3])
 		};
 
 		// λ計算(CFMも適応)
@@ -81,11 +88,11 @@ void ConstraintSolverSystem::ConstraintSolver(SolverBodyBuffer* _solverBodyBuffe
 
 		// A速度の解消
 		solverBodyA.velocity -= constraint.jacobian[0] * applyLambda * solverBodyA.inverseMass;
-		solverBodyA.angularVelocity -= solverBodyA.inverseInertiaTensor * constraint.jacobian[1] * applyLambda;
+		solverBodyA.angularVelocity -= worldInertiaTnesorA * constraint.jacobian[1] * applyLambda;
 
 		// B速度の解消
 		solverBodyB.velocity -= constraint.jacobian[2] * applyLambda * solverBodyB.inverseMass;
-		solverBodyB.angularVelocity -= solverBodyB.inverseInertiaTensor * constraint.jacobian[3] * applyLambda;
+		solverBodyB.angularVelocity -= worldInertiaTnesorB * constraint.jacobian[3] * applyLambda;
 	}
 }
 
@@ -127,12 +134,19 @@ void ConstraintSolverSystem::PositionSolver(SolverBodyBuffer* _solverBodyBuffer,
 		// biasを求める
 		float bias{ ERP / ServiceLocator::GetTimeManager()->GetFixedDeltaTime() * constraint.constraintError };
 
+		// 慣性テンソル求める
+		Matrix4x4 rotMat{ MatGenerateFunc::Rotate(solverBodyA.rotation) };
+		Matrix4x4 worldInertiaTnesorA{ rotMat * solverBodyA.localInverseInertiaTensor * rotMat.Transposed() };
+
+		rotMat = MatGenerateFunc::Rotate(solverBodyB.rotation);
+		Matrix4x4 worldInertiaTnesorB{ rotMat * solverBodyB.localInverseInertiaTensor * rotMat.Transposed() };
+
 		// 質量と慣性テンソルが速度に影響する度合い
 		float effectiveMass{
 			solverBodyA.inverseMass +
-			Vector3::Dot(constraint.jacobian[1],solverBodyA.inverseInertiaTensor * constraint.jacobian[1]) +
+			Vector3::Dot(constraint.jacobian[1],worldInertiaTnesorA * constraint.jacobian[1]) +
 			solverBodyB.inverseMass +
-			Vector3::Dot(constraint.jacobian[3],solverBodyB.inverseInertiaTensor * constraint.jacobian[3])
+			Vector3::Dot(constraint.jacobian[3],worldInertiaTnesorB * constraint.jacobian[3])
 		};
 
 		float depth = constraint.constraintError;
@@ -154,14 +168,14 @@ void ConstraintSolverSystem::PositionSolver(SolverBodyBuffer* _solverBodyBuffer,
 
 		// Aの位置/姿勢制御
 		solverBodyA.position -= constraint.jacobian[0] * applyLambda * solverBodyA.inverseMass;
-		Vector3 angVec{ solverBodyA.inverseInertiaTensor * constraint.jacobian[1] * applyLambda };
+		Vector3 angVec{ worldInertiaTnesorA * constraint.jacobian[1] * applyLambda };
 		Quaternion rotOmega{ Quaternion::AngleAxis(angVec.Length(), -angVec) };
-		solverBodyA.rotation *= rotOmega;
+		solverBodyA.rotation = rotOmega * solverBodyA.rotation;
 
 		// Bの位置/姿勢制御
 		solverBodyB.position -= constraint.jacobian[2] * applyLambda * solverBodyB.inverseMass;
-		angVec = solverBodyB.inverseInertiaTensor * constraint.jacobian[3] * applyLambda;
+		angVec = worldInertiaTnesorB * constraint.jacobian[3] * applyLambda;
 		rotOmega = Quaternion::AngleAxis(angVec.Length(), -angVec);
-		solverBodyB.rotation *= rotOmega;
+		solverBodyB.rotation = rotOmega * solverBodyB.rotation;
 	}
 }

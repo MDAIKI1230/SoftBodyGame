@@ -40,13 +40,13 @@ void DebugScene::Initialize()
 	debugBox02->GetComponent<TransformComponent>()->SetPosition(Vector3{ 0,50,0 });
 	debugBox02->GetComponent<TransformComponent>()->Rotate(Quaternion::AngleAxis((3.141592f / 4.0f), Vector3{ 0,1,1 }));
 	debugBox02->AddComponent<RigidBodyComponent>()->SetIsGravity(true);
-	//PointConstraintComponent* pointConstraint{ debugBox02->AddComponent<PointConstraintComponent>(Vector3{ 15.0f,16.0f,15.0f }) };
+	PointConstraintComponent* pointConstraint{ debugBox02->AddComponent<PointConstraintComponent>(Vector3{ 15.0f,16.0f,15.0f }) };
 	objectManager->Add(std::move(debugBox02));
 
 	std::unique_ptr<DebugBox> debugBox03{ std::make_unique<DebugBox>(worldStorage.get(), objectManager->GetHandle(), 30.0f) };
 	debugBox03->GetComponent<TransformComponent>()->SetPosition(Vector3{ 0,100,0 });
 	debugBox03->AddComponent<RigidBodyComponent>()->SetIsGravity(true);
-	//pointConstraint->AddEndPoint(debugBox03->GetHandle(), Vector3{ 15.0f,15.0f,15.0f });
+	pointConstraint->AddEndPoint(debugBox03->GetHandle(), Vector3{ 15.0f,15.0f,15.0f });
 	objectManager->Add(std::move(debugBox03));
 
 	// LoadFile("Res/Data/DebugSceneData.json");

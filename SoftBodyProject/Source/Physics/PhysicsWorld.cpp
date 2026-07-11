@@ -34,46 +34,49 @@ void PhysicsWorld::FixedUpdate(WorldStorage* _worldStorage, EventManager* _event
 	collisionSystem->FixedUpdate(transformStorage.get(), colliderStorage.get(), manifoldBuffer.get(), _eventManager);
 
 	// 衝突・拘束解消
-	//Solver();
-	solverBodyBuildSystem->Build(transformStorage.get(), rigidBodyStorage.get(), solverBodyBuffer.get());
+	Solver();
+	/*solverBodyBuildSystem->Build(transformStorage.get(), rigidBodyStorage.get(), solverBodyBuffer.get());
 	collisionSolverSystem->FixedUpdate(colliderStorage.get(), manifoldBuffer.get(), solverBodyBuffer.get());
 	solverBodyCommitSystem->Commit(transformStorage.get(), rigidBodyStorage.get(), solverBodyBuffer.get());
-	solverBodyBuffer->Clear();
+	solverBodyBuffer->Clear();*/
 	// シミュレーション結果反映
 	physicsCommitSystem->FixedUpdate(transformStorage.get(), _worldStorage);
 }
 
 void PhysicsWorld::Solver()
 {
-	// 衝突・拘束解消
 	solverBodyBuildSystem->Build(transformStorage.get(), rigidBodyStorage.get(), solverBodyBuffer.get());
-
+	// 解消準備
 	collisionSolverSystem->StartUp(colliderStorage.get(), manifoldBuffer.get(), solverBodyBuffer.get());
-
+	// 拘束生成
 	constraintBuildSystem->FixedUpdate(constraintStorage.get(), solverBodyBuffer.get(), constraintBuffer.get());
-
+	// 速度解消を指定回数分回す
 	for (int i{ 0 }; i < 10; i++)
 	{
 		collisionSolverSystem->VelocitySolver(manifoldBuffer.get(), solverBodyBuffer.get());
 		constraintSolverSystem->ConstraintSolver(solverBodyBuffer.get(), constraintBuffer.get());
 	}
+	// 修正された速度で位置を再計算
+	collisionSolverSystem->ReCalcPosRot(solverBodyBuffer.get());
 
 	constraintBuffer->Clear();
 
-	constraintSolverSystem->ReCalcPosRot(solverBodyBuffer.get());
-
+	constraintBuildSystem->FixedUpdate(constraintStorage.get(), solverBodyBuffer.get(), constraintBuffer.get());
+	// 位置/姿勢解消を指定回数分回す
 	for (int i{ 0 }; i < 4; i++)
 	{
-		collisionSolverSystem->PositionSolver(manifoldBuffer.get(), solverBodyBuffer.get());
-		constraintBuildSystem->FixedUpdate(constraintStorage.get(), solverBodyBuffer.get(), constraintBuffer.get());
-		constraintSolverSystem->PositionSolver(solverBodyBuffer.get(), constraintBuffer.get());
-		constraintBuffer->Clear();
-	}
 
+		collisionSolverSystem->PositionSolver(manifoldBuffer.get(), solverBodyBuffer.get());
+
+		constraintSolverSystem->PositionSolver(solverBodyBuffer.get(), constraintBuffer.get());
+
+
+	}
+	constraintBuffer->Clear();
+
+	// 終了
 	collisionSolverSystem->End(manifoldBuffer.get());
 
-
 	solverBodyCommitSystem->Commit(transformStorage.get(), rigidBodyStorage.get(), solverBodyBuffer.get());
-
 	solverBodyBuffer->Clear();
 }
