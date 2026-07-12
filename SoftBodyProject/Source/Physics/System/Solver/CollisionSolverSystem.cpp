@@ -12,26 +12,6 @@ CollisionSolverSystem::CollisionSolverSystem() :
 {
 }
 
-void CollisionSolverSystem::FixedUpdate(ColliderStorage* _colliderStorage, CollisionManifoldBuffer* _manifoldBuffer, SolverBodyBuffer* _solverBodyBuffer)
-{
-	// 解消準備
-	StartUp(_colliderStorage, _manifoldBuffer, _solverBodyBuffer);
-	// 速度解消を指定回数分回す
-	for (int i{ 0 }; i < VELOCITY_SOLVER_TIMES; i++)
-	{
-		VelocitySolver(_manifoldBuffer, _solverBodyBuffer);
-	}
-	// 修正された速度で位置を再計算
-	ReCalcPosRot(_solverBodyBuffer);
-	// 位置/姿勢解消を指定回数分回す
-	for (int i{ 0 }; i < POS_ROT_SOLVER_TIMES; i++)
-	{
-		PositionSolver(_manifoldBuffer, _solverBodyBuffer);
-	}
-	// 終了
-	End(_manifoldBuffer);
-}
-
 void CollisionSolverSystem::StartUp(ColliderStorage* _colliderStorage, CollisionManifoldBuffer* _manifoldBuffer, SolverBodyBuffer* _solverBodyBuffer)
 {
 	// メモリの確保

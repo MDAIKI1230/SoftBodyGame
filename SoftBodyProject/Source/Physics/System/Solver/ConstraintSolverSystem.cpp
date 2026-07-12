@@ -11,23 +11,6 @@ ConstraintSolverSystem::ConstraintSolverSystem() :
 {
 }
 
-void ConstraintSolverSystem::FixedUpdate(SolverBodyBuffer* _solverBodyBuffer, ConstraintBuffer* _constraintBuffer)
-{
-	for (int i{ 0 }; i < VELOCITY_SOLVER_TIMES; i++)
-	{
-		ConstraintSolver(_solverBodyBuffer, _constraintBuffer);
-	}
-
-	ReCalcPosRot(_solverBodyBuffer);
-
-	for (int i{ 0 }; i < POS_ROT_SOLVER_TIMES; i++)
-	{
-		PositionSolver(_solverBodyBuffer, _constraintBuffer);
-	}
-
-	_constraintBuffer->Clear();
-}
-
 void ConstraintSolverSystem::ConstraintSolver(SolverBodyBuffer* _solverBodyBuffer, ConstraintBuffer* _constraintBuffer)
 {
 	for (auto& constraint : _constraintBuffer->constraints)

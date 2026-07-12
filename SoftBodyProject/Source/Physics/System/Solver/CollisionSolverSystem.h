@@ -18,8 +18,6 @@ class CollisionSolverSystem
 public:
 	// コンストラクタ
 	CollisionSolverSystem();
-	// 更新
-	void FixedUpdate(ColliderStorage* _colliderStorage, CollisionManifoldBuffer* _manifoldBuffer, SolverBodyBuffer* _solverBodyBuffer);
 
 	// 準備
 	void StartUp(ColliderStorage* _colliderStorage, CollisionManifoldBuffer* _manifoldBuffer, SolverBodyBuffer* _solverBodyBuffer);

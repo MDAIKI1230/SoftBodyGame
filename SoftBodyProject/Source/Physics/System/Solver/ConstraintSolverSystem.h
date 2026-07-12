@@ -8,8 +8,6 @@ class ConstraintSolverSystem
 public:
 	// コンストラクタ
 	ConstraintSolverSystem();
-	// 更新
-	void FixedUpdate(SolverBodyBuffer* _solverBodyBuffer, ConstraintBuffer* _constraintBuffer);
 	// 拘束解消
 	void ConstraintSolver(SolverBodyBuffer* _solverBodyBuffer, ConstraintBuffer* _constraintBuffer);
 	// 再計算
