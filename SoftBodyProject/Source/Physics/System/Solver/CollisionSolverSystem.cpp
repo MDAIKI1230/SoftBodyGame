@@ -4,7 +4,7 @@
 #include "CollisionSolverSystem.h"
 
 CollisionSolverSystem::CollisionSolverSystem() :
-	K{ 0.4f },
+	K{ 0.3f },
 	K_DELTA_TIME{ K * ServiceLocator::GetTimeManager()->GetFixedDeltaTime() },
 	C{ 0.4f },
 	ERP{ K_DELTA_TIME / (K_DELTA_TIME + C) },

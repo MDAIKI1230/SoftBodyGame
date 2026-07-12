@@ -25,7 +25,7 @@ DebugScene::DebugScene()
 // 初期化
 void DebugScene::Initialize()
 {
-	Camera camera{ Vector3{0,0,-500},Vector3{0,-175,0} };
+	Camera camera{ Vector3{0,-175,-500},Vector3{0,-175,0} };
 	ServiceLocator::GetRenderer()->SetCamera(camera);
 
 	//objectManager->Add(std::make_unique<DebugSphere>(worldStorage.get(), objectManager->GetHandle()));
