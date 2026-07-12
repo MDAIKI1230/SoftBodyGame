@@ -21,7 +21,7 @@ void PhysicsAPI::AddTorque(BodyID& _id, const Vector3& _torque)
 	rigidBodyStorage->torque[rigidBodyStorage->GetDenseIndex(_id)] += _torque;
 }
 
-const Vector3& PhysicsAPI::GetVelocity(BodyID& _id)
+const Vector3& PhysicsAPI::GetVelocity(const BodyID& _id)
 {
 	return rigidBodyStorage->velocity[rigidBodyStorage->GetDenseIndex(_id)];
 }
@@ -31,7 +31,7 @@ void PhysicsAPI::SetVelocity(BodyID& _id, const Vector3& _velocity)
 	rigidBodyStorage->velocity[rigidBodyStorage->GetDenseIndex(_id)] = _velocity;
 }
 
-const Vector3& PhysicsAPI::GetAngularVelocity(BodyID& _id)
+const Vector3& PhysicsAPI::GetAngularVelocity(const BodyID& _id)
 {
 	return rigidBodyStorage->angularVelocity[rigidBodyStorage->GetDenseIndex(_id)];
 }
@@ -41,7 +41,7 @@ void PhysicsAPI::SetAngularVelocity(BodyID& _id, const Vector3& _omega)
 	rigidBodyStorage->angularVelocity[rigidBodyStorage->GetDenseIndex(_id)] = _omega;
 }
 
-float PhysicsAPI::GetMass(BodyID& _id)
+float PhysicsAPI::GetMass(const BodyID& _id)
 {
 	return rigidBodyStorage->mass[rigidBodyStorage->GetDenseIndex(_id)];
 }
@@ -58,7 +58,7 @@ void PhysicsAPI::SetMass(BodyID& _id, float _mass)
 	rigidBodyStorage->localInertiaDirty[rigidBodyStorage->GetDenseIndex(_id)] = true;
 }
 
-const Matrix4x4& PhysicsAPI::GetInertiaTensor(BodyID& _id)
+const Matrix4x4& PhysicsAPI::GetInertiaTensor(const BodyID& _id)
 {
 	return rigidBodyStorage->inertiaTensor[rigidBodyStorage->GetDenseIndex(_id)];
 }
@@ -70,7 +70,7 @@ void PhysicsAPI::SetInertiaTensor(BodyID& _id, Matrix4x4& _matrix)
 	rigidBodyStorage->localInertiaDirty[rigidBodyStorage->GetDenseIndex(_id)] = true;
 }
 
-bool PhysicsAPI::GetIsGravity(BodyID& _id)
+bool PhysicsAPI::GetIsGravity(const BodyID& _id)
 {
 	return rigidBodyStorage->isGravity[rigidBodyStorage->GetDenseIndex(_id)];
 }
@@ -80,7 +80,7 @@ void PhysicsAPI::SetIsGravity(BodyID&_id, bool _isGravity)
 	rigidBodyStorage->isGravity[rigidBodyStorage->GetDenseIndex(_id)] = _isGravity;
 }
 
-const Vector3& PhysicsAPI::GetGravity(BodyID& _id)
+const Vector3& PhysicsAPI::GetGravity(const BodyID& _id)
 {
 	return rigidBodyStorage->gravity[rigidBodyStorage->GetDenseIndex(_id)];
 }

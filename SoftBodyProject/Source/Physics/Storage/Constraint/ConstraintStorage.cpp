@@ -3,6 +3,7 @@
 ConstraintStorage::ConstraintStorage()
 {
 	pointConstraintStorage = std::make_unique<PointConstraintStorage>();
+	distanceConstraintStorage = std::make_unique<DistanceConstraintStorage>();
 }
 
 ConstraintID ConstraintStorage::CreatePointConstraint(EntityID& _entity, PhysicsTransformID _transformID,const Vector3& _localOffset)

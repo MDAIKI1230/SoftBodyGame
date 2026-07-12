@@ -192,6 +192,7 @@
     <ClInclude Include="Source\Physics\Component\Collider\BoxColliderComponent.h" />
     <ClInclude Include="Source\Physics\Component\Collider\ColliderComponent.h" />
     <ClInclude Include="Source\Physics\Component\Collider\SphereColliderComponent.h" />
+    <ClInclude Include="Source\Physics\Component\Constraint\DistanceConstraintComponent.h" />
     <ClInclude Include="Source\Physics\Component\Constraint\PointConstraintComponent.h" />
     <ClInclude Include="Source\Physics\Constants\CollisionConstants.h" />
     <ClInclude Include="Source\Physics\Constants\ConstraintConstants.h" />
@@ -207,11 +208,13 @@
     <ClInclude Include="Source\Physics\Storage\CollisionContactBuffer.h" />
     <ClInclude Include="Source\Physics\Storage\CollisionManifoldBuffer.h" />
     <ClInclude Include="Source\Physics\Storage\Component\BoxColliderComponentStorage.h" />
+    <ClInclude Include="Source\Physics\Storage\Component\DistanceConstraintComponentStorage.h" />
     <ClInclude Include="Source\Physics\Storage\Component\PointConstraintComponentStorage.h" />
     <ClInclude Include="Source\Physics\Storage\Component\RigidBodyComponentStorage.h" />
     <ClInclude Include="Source\Physics\Storage\Component\SphereColliderComponentStorage.h" />
     <ClInclude Include="Source\Physics\Storage\ConstraintBuffer.h" />
     <ClInclude Include="Source\Physics\Storage\Constraint\ConstraintStorage.h" />
+    <ClInclude Include="Source\Physics\Storage\Constraint\DistanceConstraintStorage.h" />
     <ClInclude Include="Source\Physics\Storage\Constraint\PointConstraintStorage.h" />
     <ClInclude Include="Source\Physics\Storage\SolverBodyBuffer.h" />
     <ClInclude Include="Source\Physics\Storage\Transform\PhysicsTransformStorage.h" />
@@ -235,6 +238,7 @@
     <ClInclude Include="Source\Physics\Struct\Constraint\ConstraintID.h" />
     <ClInclude Include="Source\Physics\Struct\Constraint\ConstraintSlot.h" />
     <ClInclude Include="Source\Physics\Struct\Constraint\ContactConstraint.h" />
+    <ClInclude Include="Source\Physics\Struct\Constraint\DistanceConstraint.h" />
     <ClInclude Include="Source\Physics\Struct\Constraint\EndPoint.h" />
     <ClInclude Include="Source\Physics\Struct\Constraint\PointConstraint.h" />
     <ClInclude Include="Source\Physics\Struct\Transform\PhysicsTransformID.h" />
@@ -302,6 +306,7 @@
     <ClCompile Include="Source\Physics\Component\Body\RigidBodyComponent.cpp" />
     <ClCompile Include="Source\Physics\Component\Collider\BoxColliderComponent.cpp" />
     <ClCompile Include="Source\Physics\Component\Collider\SphereColliderComponent.cpp" />
+    <ClCompile Include="Source\Physics\Component\Constraint\DistanceConstraintComponent.cpp" />
     <ClCompile Include="Source\Physics\Component\Constraint\PointConstraintComponent.cpp" />
     <ClCompile Include="Source\Physics\Function\ContactFunction.cpp" />
     <ClCompile Include="Source\Physics\Function\GJKEPA.cpp" />

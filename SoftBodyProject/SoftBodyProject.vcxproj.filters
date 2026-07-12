@@ -577,6 +577,18 @@
     <ClInclude Include="Source\Physics\Storage\Component\PointConstraintComponentStorage.h">
       <Filter>ソース ファイル\Physics\Storage\Component</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Physics\Struct\Constraint\DistanceConstraint.h">
+      <Filter>ソース ファイル\Physics\Struct\Constraint</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Component\Constraint\DistanceConstraintComponent.h">
+      <Filter>ソース ファイル\Physics\Component\Constraint</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Storage\Constraint\DistanceConstraintStorage.h">
+      <Filter>ソース ファイル\Physics\Storage\Constraint</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Storage\Component\DistanceConstraintComponentStorage.h">
+      <Filter>ソース ファイル\Physics\Storage\Component</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\System\Adapter\Dxlib\DxlibInput.cpp">
@@ -749,6 +761,9 @@
     </ClCompile>
     <ClCompile Include="Source\Physics\System\Solver\SolverBodyCommitSystem.cpp">
       <Filter>ソース ファイル\Physics\System\Solver</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Physics\Component\Constraint\DistanceConstraintComponent.cpp">
+      <Filter>ソース ファイル\Physics\Component\Constraint</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

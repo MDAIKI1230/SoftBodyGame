@@ -18,31 +18,31 @@ public:
 	static void AddTorque(BodyID& _id, const Vector3& _torque);
 
 	// 速度取得
-	static const Vector3& GetVelocity(BodyID& _id);
+	static const Vector3& GetVelocity(const BodyID& _id);
 	// 速度変更
 	static void SetVelocity(BodyID& _id, const Vector3& _velocity);
 
 	// 角速度取得
-	static const Vector3& GetAngularVelocity(BodyID& _id);
+	static const Vector3& GetAngularVelocity(const BodyID& _id);
 	// 角速度変更
 	static void SetAngularVelocity(BodyID& _id, const Vector3& _omega);
 
 	// 質量取得
-	static float GetMass(BodyID& _id);
+	static float GetMass(const BodyID& _id);
 	// 質量変更
 	static void SetMass(BodyID& _id, float _mass);
 
 	// 慣性テンソル取得
-	static const Matrix4x4& GetInertiaTensor(BodyID& _id);
+	static const Matrix4x4& GetInertiaTensor(const BodyID& _id);
 	// 慣性テンソル変更
 	static void SetInertiaTensor(BodyID& _id, Matrix4x4& _matrix);
 
 	// isGravity取得
-	static bool GetIsGravity(BodyID& _id);
+	static bool GetIsGravity(const BodyID& _id);
 	// isGravity変更
 	static void SetIsGravity(BodyID& _id, bool _isGravity);
 	// 重力加速度取得
-	static const Vector3& GetGravity(BodyID& _id);
+	static const Vector3& GetGravity(const BodyID& _id);
 	// 重力加速度変更
 	static void SetGravity(BodyID& _id, const Vector3& _gravity);
 
