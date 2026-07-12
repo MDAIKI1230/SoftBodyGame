@@ -27,7 +27,7 @@ void ConstraintSolverSystem::ConstraintSolver(SolverBodyBuffer* _solverBodyBuffe
 		}
 
 		// biasを求める
-		const float bias{ ERP / ServiceLocator::GetTimeManager()->GetFixedDeltaTime() * constraint.constraintError };
+		const float bias{ ERP / ServiceLocator::GetTimeManager()->GetFixedDeltaTime() * constraint.error };
 
 		// 変化量ベクトル
 		Vector3 deltaVector[4]{
@@ -115,7 +115,7 @@ void ConstraintSolverSystem::PositionSolver(SolverBodyBuffer* _solverBodyBuffer,
 		}
 
 		// biasを求める
-		float bias{ ERP / ServiceLocator::GetTimeManager()->GetFixedDeltaTime() * constraint.constraintError };
+		float bias{ ERP / ServiceLocator::GetTimeManager()->GetFixedDeltaTime() * constraint.error };
 
 		// 慣性テンソル求める
 		Matrix4x4 rotMat{ MatGenerateFunc::Rotate(solverBodyA.rotation) };
@@ -132,7 +132,7 @@ void ConstraintSolverSystem::PositionSolver(SolverBodyBuffer* _solverBodyBuffer,
 			Vector3::Dot(constraint.jacobian[3],worldInertiaTnesorB * constraint.jacobian[3])
 		};
 
-		float depth = constraint.constraintError;
+		float depth = constraint.error;
 		// 解消の割合から解消量を計算
 		float correction = 0.2f * depth;
 
@@ -147,7 +147,7 @@ void ConstraintSolverSystem::PositionSolver(SolverBodyBuffer* _solverBodyBuffer,
 		float applyLambda{ constraint.accumulatedLambda - oldLambda };
 
 		// 解消した分だけ減らす
-		constraint.constraintError -= correction;
+		constraint.error -= correction;
 
 		// Aの位置/姿勢制御
 		solverBodyA.position -= constraint.jacobian[0] * applyLambda * solverBodyA.inverseMass;

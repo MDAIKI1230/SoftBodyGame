@@ -10,7 +10,7 @@ struct Constraint
 	uint32_t solverBodyBIndex;
 
 	// ズレの数値(拘束条件Cの値と考えてOK)
-	float constraintError;
+	float error;
 	// Aの速度、Aの角速度、Bの速度、Bの角速度
 	Vector3 jacobian[4];
 

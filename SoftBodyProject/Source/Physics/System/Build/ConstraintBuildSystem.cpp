@@ -44,7 +44,7 @@ void ConstraintBuildSystem::BuildPointConstraint(ConstraintStorage* _constraintS
 			// 差
 			Vector3 diff{ basePoint - point };
 			// 差をそのまま拘束Cの結果とする
-			constraint.constraintError = diff.x;
+			constraint.error = diff.x;
 
 
 			// ヤコビアンの計算
@@ -57,7 +57,7 @@ void ConstraintBuildSystem::BuildPointConstraint(ConstraintStorage* _constraintS
 			_constraintBuffer->constraints.push_back(constraint);
 
 			// 差をそのまま拘束Cの結果とする
-			constraint.constraintError = diff.y;
+			constraint.error = diff.y;
 
 
 			// ヤコビアンの計算
@@ -70,7 +70,7 @@ void ConstraintBuildSystem::BuildPointConstraint(ConstraintStorage* _constraintS
 			_constraintBuffer->constraints.push_back(constraint);
 
 			// 差をそのまま拘束Cの結果とする
-			constraint.constraintError = diff.z;
+			constraint.error = diff.z;
 
 
 			// ヤコビアンの計算
@@ -123,7 +123,7 @@ void ConstraintBuildSystem::BuildDistanceConstraint(ConstraintStorage* _constrai
 			// 差
 			Vector3 diff{ basePoint - point };
 			// 差をそのまま拘束Cの結果とする
-			constraint.constraintError = diff.Length() - distanceConstraint.distance;
+			constraint.error = diff.Length() - distanceConstraint.distance;
 
 			Vector3 normal{ diff.Normalized() };
 			// ヤコビアンの計算
