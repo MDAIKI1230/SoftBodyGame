@@ -32,7 +32,7 @@ void ConstraintBuildSystem::BuildPointConstraint(ConstraintStorage* _constraintS
 
 			// 対象の位置を取得
 			uint32_t pointIndex{ _solverBodyBuffer->bodyMap[pointConstraint.endPoints[i].transformID] };
-			SolverBody solverBody{ _solverBodyBuffer->solverBodies[pointIndex] };
+			SolverBody& solverBody{ _solverBodyBuffer->solverBodies[pointIndex] };
 			Vector3 point{ solverBody.position + solverBody.rotation.Rotate(pointConstraint.endPoints[i].localPoint) };
 
 			constraint.solverBodyAIndex = basePointIndex;
@@ -111,7 +111,7 @@ void ConstraintBuildSystem::BuildDistanceConstraint(ConstraintStorage* _constrai
 
 			// 対象の位置を取得
 			uint32_t pointIndex{ _solverBodyBuffer->bodyMap[distanceConstraint.endPoints[i].transformID] };
-			SolverBody solverBody{ _solverBodyBuffer->solverBodies[pointIndex] };
+			SolverBody& solverBody{ _solverBodyBuffer->solverBodies[pointIndex] };
 			Vector3 point{ solverBody.position + solverBody.rotation.Rotate(distanceConstraint.endPoints[i].localPoint) };
 
 			constraint.solverBodyAIndex = basePointIndex;
