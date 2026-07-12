@@ -144,7 +144,7 @@ void CollisionSolverSystem::VelocitySolver(CollisionManifoldBuffer* _manifoldBuf
 		solverBodyB.angularVelocity += worldInertiaTnesorB * rBCross * applyLambda;
 
 		// 摩擦
-		// FrictionSolver(solverBodyA, rA, solverBodyB, rB, constraint);
+		FrictionSolver(solverBodyA, rA, solverBodyB, rB, constraint);
 	}
 }
 
@@ -193,7 +193,7 @@ void CollisionSolverSystem::FrictionSolver(SolverBody& _bodyA, Vector3& _rA, Sol
 
 	float oldLambda = _constraint.accumulatedFrictionLambda;
 	_constraint.accumulatedFrictionLambda =
-		std::clamp(oldLambda + lambda, 0.0f, maxFrictionLambda);
+		std::clamp(oldLambda + lambda, -maxFrictionLambda, maxFrictionLambda);
 
 	float applyLambda = _constraint.accumulatedFrictionLambda - oldLambda;
 
