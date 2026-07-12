@@ -25,6 +25,11 @@
 #include "SolverBodyCommitSystem.h"
 #include "PhysicsCommitSystem.h"
 
+#ifdef _DEBUG
+#include "ConstraintDebugRenderSystem.h"
+#endif // DEBUG
+
+
 class PhysicsWorld
 {
 public:
@@ -33,6 +38,11 @@ public:
 
 	// 物理更新
 	void FixedUpdate(WorldStorage* _worldStorage, EventManager* _eventManager);
+
+#ifdef _DEBUG
+	// デバッグ描画
+	void DebugRender();
+#endif // _DEBUG
 
 	// コライダーストレージ取得
 	ColliderStorage* GetColliderStorage() { return colliderStorage.get(); }
@@ -65,4 +75,7 @@ private:
 	std::unique_ptr<ConstraintSolverSystem> constraintSolverSystem;
 	std::unique_ptr<SolverBodyCommitSystem> solverBodyCommitSystem;
 	std::unique_ptr<PhysicsCommitSystem> physicsCommitSystem;
+
+	// --- デバッグ用 ---
+	std::unique_ptr<ConstraintDebugRenderSystem> constraintDebugRenderSystem;
 };

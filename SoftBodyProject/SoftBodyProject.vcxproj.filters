@@ -176,6 +176,9 @@
     <Filter Include="ソース ファイル\Physics\Component\Constraint">
       <UniqueIdentifier>{93bab5e3-3ac7-4beb-ba9c-cd8e9c82aee3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Physics\DebugRender">
+      <UniqueIdentifier>{ac31dc76-d793-4268-8656-74cc1a31d744}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Objects\Camera.h">
@@ -592,6 +595,9 @@
     <ClInclude Include="Source\Objects\EmptyObject.h">
       <Filter>ソース ファイル\GameObject</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Physics\DebugRender\ConstraintDebugRenderSystem.h">
+      <Filter>ソース ファイル\Physics\DebugRender</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\System\Adapter\Dxlib\DxlibInput.cpp">
@@ -770,6 +776,9 @@
     </ClCompile>
     <ClCompile Include="Source\Objects\EmptyObject.cpp">
       <Filter>ソース ファイル\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Physics\DebugRender\ConstraintDebugRenderSystem.cpp">
+      <Filter>ソース ファイル\Physics\DebugRender</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

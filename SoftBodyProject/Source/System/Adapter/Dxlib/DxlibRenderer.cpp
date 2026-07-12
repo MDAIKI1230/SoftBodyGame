@@ -134,6 +134,11 @@ void DxlibRenderer::DrawBox(const Matrix4x4& _mat, const Vector3& _size, const C
     L(3, 7);
 }
 
+void DxlibRenderer::DrawLine(const Vector3& _pos1, const Vector3& _pos2, const Color& _color)
+{
+    DxLib::DrawLine3D(ToDxlib(_pos1), ToDxlib(_pos2), ToDxlib(_color));
+}
+
 // ---リソース削除関数---
 // モデル素材削除
 void DxlibRenderer::DeleteModel(int _handle)

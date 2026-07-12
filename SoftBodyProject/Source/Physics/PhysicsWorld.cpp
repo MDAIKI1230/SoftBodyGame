@@ -21,6 +21,11 @@ PhysicsWorld::PhysicsWorld()
 	constraintSolverSystem = std::make_unique<ConstraintSolverSystem>();
 	solverBodyCommitSystem = std::make_unique<SolverBodyCommitSystem>();
 	physicsCommitSystem = std::make_unique<PhysicsCommitSystem>();
+
+#ifdef _DEBUG
+	constraintDebugRenderSystem = std::make_unique<ConstraintDebugRenderSystem>();
+#endif // _DEBUG
+
 }
 
 void PhysicsWorld::FixedUpdate(WorldStorage* _worldStorage, EventManager* _eventManager)
@@ -42,6 +47,13 @@ void PhysicsWorld::FixedUpdate(WorldStorage* _worldStorage, EventManager* _event
 	// シミュレーション結果反映
 	physicsCommitSystem->FixedUpdate(transformStorage.get(), _worldStorage);
 }
+
+#ifdef _DEBUG
+void PhysicsWorld::DebugRender()
+{
+	constraintDebugRenderSystem->Render(constraintStorage.get(), transformStorage.get());
+}
+#endif // _DEBUG
 
 void PhysicsWorld::Solver()
 {

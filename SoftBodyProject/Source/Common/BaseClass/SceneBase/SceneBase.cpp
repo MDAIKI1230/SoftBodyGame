@@ -151,6 +151,9 @@ void SceneBase::Update()
 void SceneBase::Render()
 {
 	systemManager->Render(worldStorage.get(), eventManager.get());
+#ifdef _DEBUG
+	physicsWorld->DebugRender();
+#endif // _DEBUG
 }
 
 void SceneBase::LoadFile(std::string _filePath)
