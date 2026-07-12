@@ -16,6 +16,7 @@
 #include "BoxColliderComponentStorage.h"
 #include "RigidBodyComponentStorage.h"
 #include "PointConstraintComponentStorage.h"
+#include "DistanceConstraintComponentStorage.h"
 
 // API
 #include "PhysicsAPI.h"
@@ -45,6 +46,7 @@ SceneBase::SceneBase()
 	AddStorage<BoxColliderComponent>(std::make_unique<BoxColliderComponentStorage>());
 	AddStorage<RigidBodyComponent>(std::make_unique<RigidBodyComponentStorage>());
 	AddStorage<PointConstraintComponent>(std::make_unique<PointConstraintComponentStorage>());
+	AddStorage<DistanceConstraintComponent>(std::make_unique<DistanceConstraintComponentStorage>());
 	// オブジェクトマネージャー
 	objectManager = std::make_unique<ObjectManager>();
 
