@@ -63,7 +63,7 @@ void PhysicsWorld::Solver()
 	// 拘束生成
 	constraintBuildSystem->FixedUpdate(constraintStorage.get(), solverBodyBuffer.get(), constraintBuffer.get());
 	// 速度解消を指定回数分回す
-	for (int i{ 0 }; i < 10; i++)
+	for (int i{ 0 }; i < VELOCITY_SOLVER_TIMES; i++)
 	{
 		collisionSolverSystem->VelocitySolver(manifoldBuffer.get(), solverBodyBuffer.get());
 		constraintSolverSystem->ConstraintSolver(solverBodyBuffer.get(), constraintBuffer.get());
@@ -75,7 +75,7 @@ void PhysicsWorld::Solver()
 
 	constraintBuildSystem->FixedUpdate(constraintStorage.get(), solverBodyBuffer.get(), constraintBuffer.get());
 	// 位置/姿勢解消を指定回数分回す
-	for (int i{ 0 }; i < 4; i++)
+	for (int i{ 0 }; i < POS_ROT_SOLVER_TIMES; i++)
 	{
 
 		collisionSolverSystem->PositionSolver(manifoldBuffer.get(), solverBodyBuffer.get());

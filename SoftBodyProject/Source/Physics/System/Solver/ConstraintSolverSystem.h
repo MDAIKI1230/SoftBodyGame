@@ -15,10 +15,6 @@ public:
 	// 位置解決
 	void PositionSolver(SolverBodyBuffer* _solverBodyBuffer, ConstraintBuffer* _constraintBuffer);
 private:
-	// 速度解消回数
-	static constexpr float VELOCITY_SOLVER_TIMES{ 10 };
-	// 位置/姿勢解消回数
-	static constexpr float POS_ROT_SOLVER_TIMES{ 4 };
 	// バネ定数
 	const float K;
 	// バネ定数×Δt

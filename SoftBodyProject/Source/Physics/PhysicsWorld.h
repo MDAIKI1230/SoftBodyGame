@@ -55,6 +55,11 @@ public:
 private:
 	void Solver();
 private:
+	// 速度解消回数
+	static constexpr float VELOCITY_SOLVER_TIMES{ 10 };
+	// 位置/姿勢解消回数
+	static constexpr float POS_ROT_SOLVER_TIMES{ 4 };
+private:
 	std::unique_ptr<CollisionManifoldBuffer> manifoldBuffer;
 	std::unique_ptr<SolverBodyBuffer> solverBodyBuffer;
 	std::unique_ptr<ConstraintBuffer> constraintBuffer;
