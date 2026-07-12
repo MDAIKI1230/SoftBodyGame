@@ -49,6 +49,12 @@ void DebugScene::Initialize()
 	pointConstraint->AddEndPoint(debugBox03->GetHandle(), Vector3{ 15.0f,15.0f,15.0f });
 	objectManager->Add(std::move(debugBox03));
 
+	//std::unique_ptr<DebugBox> debugBox04{ std::make_unique<DebugBox>(worldStorage.get(), objectManager->GetHandle(), 30.0f) };
+	//debugBox04->GetComponent<TransformComponent>()->SetPosition(Vector3{ 0,100,0 });
+	//debugBox04->AddComponent<RigidBodyComponent>()->SetIsGravity(true);
+	//pointConstraint->AddEndPoint(debugBox04->GetHandle(), Vector3{ 15.0f,15.0f,15.0f });
+	//objectManager->Add(std::move(debugBox04));
+
 	// LoadFile("Res/Data/DebugSceneData.json");
 
 	RendererComponent renderer{ ServiceLocator::GetRenderer()->LoadModel(std::string{"Res/Model/M_001_player_073_01.mv1"}) };
