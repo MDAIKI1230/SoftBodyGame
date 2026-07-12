@@ -22,6 +22,24 @@ ConstraintID ConstraintStorage::CreatePointConstraint(EntityID& _entity, Physics
 	return id;
 }
 
+ConstraintID ConstraintStorage::CreateDistanceConstraint(EntityID& _entity, PhysicsTransformID _transformID, const Vector3& _localOffset, float _distance)
+{
+	// ID作成
+	ConstraintID id{ GenerateConstraintID(ConstraintType::DISTANCE,distanceConstraintStorage->constraints.size(),_entity,_transformID) };
+	
+	// 実態を作る
+	DistanceConstraint distanceConstraint;
+	distanceConstraint.endPoints.emplace_back(_transformID, _localOffset);
+	distanceConstraint.distance = _distance;
+
+	// 追加
+	distanceConstraintStorage->constraints.push_back(distanceConstraint);
+	distanceConstraintStorage->id.push_back(id);
+
+	// ID返して終了
+	return id;
+}
+
 void ConstraintStorage::Destory(ConstraintID& _id)
 {
 	// 生存チェック
@@ -38,6 +56,8 @@ void ConstraintStorage::Destory(ConstraintID& _id)
 	case  ConstraintType::POINTS:
 		movedId = pointConstraintStorage->Remove(GetDenseIndex(_id));
 		break;
+	case ConstraintType::DISTANCE:
+		movedId = distanceConstraintStorage->Remove(GetDenseIndex(_id));
 	default:
 		break;
 	}

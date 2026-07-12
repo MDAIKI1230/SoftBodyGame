@@ -7,6 +7,7 @@
 #include "ConstraintSlot.h"
 
 #include "PointConstraintStorage.h"
+#include "DistanceConstraintStorage.h"
 
 class ConstraintStorage
 {
@@ -16,6 +17,8 @@ public:
 
 	// 点拘束作成関数
 	ConstraintID CreatePointConstraint(EntityID& _entity, PhysicsTransformID _transformID,const Vector3& _localOffset);
+	// 距離拘束作成関数
+	ConstraintID CreateDistanceConstraint(EntityID& _entity, PhysicsTransformID _transformID, const Vector3& _localOffset, float _distance);
 
 	// 破棄
 	void Destory(ConstraintID& _id);
@@ -33,7 +36,11 @@ public:
 public:
 	std::vector<ConstraintSlot> slots;
 	std::vector<uint32_t> freeSlots;
+
+	// --- 各種拘束ストレージ ---
+
 	std::unique_ptr<PointConstraintStorage> pointConstraintStorage;
+	std::unique_ptr<DistanceConstraintStorage> distanceConstraintStorage;
 private:
 	ConstraintID GenerateConstraintID(ConstraintType _type, uint32_t _denseIndex, EntityID _ownerEntity, PhysicsTransformID _transformID);
 };

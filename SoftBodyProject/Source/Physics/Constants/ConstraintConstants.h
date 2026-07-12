@@ -2,5 +2,6 @@
 
 enum class ConstraintType
 {
-	POINTS
+	POINTS,
+	DISTANCE
 };
