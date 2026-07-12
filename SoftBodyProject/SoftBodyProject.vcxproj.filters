@@ -589,6 +589,9 @@
     <ClInclude Include="Source\Physics\Storage\Component\DistanceConstraintComponentStorage.h">
       <Filter>ソース ファイル\Physics\Storage\Component</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Objects\EmptyObject.h">
+      <Filter>ソース ファイル\GameObject</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\System\Adapter\Dxlib\DxlibInput.cpp">
@@ -764,6 +767,9 @@
     </ClCompile>
     <ClCompile Include="Source\Physics\Component\Constraint\DistanceConstraintComponent.cpp">
       <Filter>ソース ファイル\Physics\Component\Constraint</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Objects\EmptyObject.cpp">
+      <Filter>ソース ファイル\GameObject</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

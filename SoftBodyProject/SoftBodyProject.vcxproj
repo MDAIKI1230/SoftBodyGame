@@ -188,6 +188,7 @@
     <ClInclude Include="Source\Objects\Camera.h" />
     <ClInclude Include="Source\Objects\DebugBox.h" />
     <ClInclude Include="Source\Objects\DebugSphere.h" />
+    <ClInclude Include="Source\Objects\EmptyObject.h" />
     <ClInclude Include="Source\Physics\Component\Body\RigidBodyComponent.h" />
     <ClInclude Include="Source\Physics\Component\Collider\BoxColliderComponent.h" />
     <ClInclude Include="Source\Physics\Component\Collider\ColliderComponent.h" />
@@ -303,6 +304,7 @@
     <ClCompile Include="Source\Main.cpp" />
     <ClCompile Include="Source\Objects\DebugBox.cpp" />
     <ClCompile Include="Source\Objects\DebugSphere.cpp" />
+    <ClCompile Include="Source\Objects\EmptyObject.cpp" />
     <ClCompile Include="Source\Physics\Component\Body\RigidBodyComponent.cpp" />
     <ClCompile Include="Source\Physics\Component\Collider\BoxColliderComponent.cpp" />
     <ClCompile Include="Source\Physics\Component\Collider\SphereColliderComponent.cpp" />
