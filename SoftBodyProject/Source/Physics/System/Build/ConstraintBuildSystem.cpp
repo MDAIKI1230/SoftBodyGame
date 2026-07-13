@@ -125,7 +125,18 @@ void ConstraintBuildSystem::BuildDistanceConstraint(ConstraintStorage* _constrai
 			// 差をそのまま拘束Cの結果とする
 			constraint.error = diff.Length() - distanceConstraint.distance;
 
-			Vector3 normal{ diff.Normalized() };
+			Vector3 normal;
+
+			if (diff.LengthSqr() <= MathConstants::EPSILON)
+			{
+				normal = Vector3::UP;
+			}
+			else
+			{
+				normal = diff.Normalized();
+			}
+
+			
 			// ヤコビアンの計算
 			constraint.jacobian[0] = normal;
 			constraint.jacobian[1] = Vector3::Cross(rA, normal);

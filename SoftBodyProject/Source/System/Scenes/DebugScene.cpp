@@ -52,18 +52,35 @@ void DebugScene::Initialize()
 	objectManager->Add(std::move(debugBox03));
 
 	// 点拘束デバッグ
-	std::unique_ptr<DebugBox> debugBox02{ std::make_unique<DebugBox>(worldStorage.get(), objectManager->GetHandle(), 30.0f) };
-	debugBox02->GetComponent<TransformComponent>()->SetPosition(Vector3{ 0,50,0 });
-	debugBox02->GetComponent<TransformComponent>()->Rotate(Quaternion::AngleAxis((3.141592f / 4.0f), Vector3{ 0,1,1 }));
-	debugBox02->AddComponent<RigidBodyComponent>()->SetIsGravity(true);
-	PointConstraintComponent* pointConstraint{ debugBox02->AddComponent<PointConstraintComponent>(Vector3{ 15.0f,15.0f,15.0f }) };
-	objectManager->Add(std::move(debugBox02));
+	//std::unique_ptr<DebugBox> debugBox02{ std::make_unique<DebugBox>(worldStorage.get(), objectManager->GetHandle(), 30.0f) };
+	//debugBox02->GetComponent<TransformComponent>()->SetPosition(Vector3{ 0,50,0 });
+	//debugBox02->GetComponent<TransformComponent>()->Rotate(Quaternion::AngleAxis((3.141592f / 4.0f), Vector3{ 0,1,1 }));
+	//debugBox02->AddComponent<RigidBodyComponent>()->SetIsGravity(true);
+	//PointConstraintComponent* pointConstraint{ debugBox02->AddComponent<PointConstraintComponent>(Vector3{ 15.0f,15.0f,15.0f }) };
+	//objectManager->Add(std::move(debugBox02));
 
-	std::unique_ptr<DebugBox> debugBox04{ std::make_unique<DebugBox>(worldStorage.get(), objectManager->GetHandle(), 30.0f) };
-	debugBox04->GetComponent<TransformComponent>()->SetPosition(Vector3{ 0,100,0 });
-	debugBox04->AddComponent<RigidBodyComponent>()->SetIsGravity(true);
-	pointConstraint->AddEndPoint(debugBox04->GetHandle(), Vector3{ 15.0f,15.0f,15.0f });
-	objectManager->Add(std::move(debugBox04));
+	//std::unique_ptr<DebugBox> debugBox04{ std::make_unique<DebugBox>(worldStorage.get(), objectManager->GetHandle(), 30.0f) };
+	//debugBox04->GetComponent<TransformComponent>()->SetPosition(Vector3{ 0,100,0 });
+	//debugBox04->AddComponent<RigidBodyComponent>()->SetIsGravity(true);
+	//pointConstraint->AddEndPoint(debugBox04->GetHandle(), Vector3{ 15.0f,15.0f,15.0f });
+	//objectManager->Add(std::move(debugBox04));
+
+	// 距離拘束によるロープの実装
+	float distance{ 15.0f };
+
+	std::unique_ptr<EmptyObject> empty1{ std::make_unique<EmptyObject>(worldStorage.get(), objectManager->GetHandle()) };
+	distanceConstraint = empty1->AddComponent<DistanceConstraintComponent>(distance);
+	objectManager->Add(std::move(empty1));
+
+	for (int i{ 0 }; i < 10; i++)
+	{
+		std::unique_ptr<DebugSphere> point{ std::make_unique<DebugSphere>(worldStorage.get(), objectManager->GetHandle()) };
+		point->GetComponent<SphereColliderComponent>()->SetRadius(2.0f);
+		point->GetComponent<TransformComponent>()->SetPosition(Vector3{ distance * i,0.0f,0.0f });
+		distanceConstraint->AddEndPoint(point->GetHandle(), Vector3::ZERO);
+		distanceConstraint = point->AddComponent<DistanceConstraintComponent>(distance);
+		objectManager->Add(std::move(point));
+	}
 
 	// LoadFile("Res/Data/DebugSceneData.json");
 
