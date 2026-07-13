@@ -83,13 +83,13 @@ void DebugScene::Initialize()
 	}
 
 	// 布のテスト
-	//float distanceCloth{ 15.0f };
+	//float distanceCloth{ 50.0f };
 
 	//std::vector<DistanceConstraintComponent*> distanceConstraints;
 	//std::vector<std::unique_ptr<ObjectBase>> objects;
 
-	//int width{ 5 };
-	//int height{ 5 };
+	//int width{ 3 };
+	//int height{ 3 };
 
 	//for (int i{ 0 }; i < width; i++)
 	//{
@@ -126,6 +126,7 @@ void DebugScene::Initialize()
 	//{
 	//	objectManager->Add(std::move(obj));
 	//}
+
 	// LoadFile("Res/Data/DebugSceneData.json");
 
 	RendererComponent renderer{ ServiceLocator::GetRenderer()->LoadModel(std::string{"Res/Model/M_001_player_073_01.mv1"}) };
