@@ -82,5 +82,7 @@ private:
 	std::unique_ptr<PhysicsCommitSystem> physicsCommitSystem;
 
 	// --- デバッグ用 ---
+#ifdef _DEBUG
 	std::unique_ptr<ConstraintDebugRenderSystem> constraintDebugRenderSystem;
+#endif // _DEBUG
 };
