@@ -68,11 +68,14 @@ void DebugScene::Initialize()
 	// 距離拘束によるロープの実装
 	/*
 			思ったよりええ感じ。
+			当り判定は質点の球のみだからコリジョン抜けしまくる
 	*/
 	float distanceRope{ 15.0f };
 
+	Vector3 ropePosition{ -200.0f,0.0f,0.0f };
+
 	std::unique_ptr<EmptyObject> empty1{ std::make_unique<EmptyObject>(worldStorage.get(), objectManager->GetHandle()) };
-	empty1->GetComponent<TransformComponent>()->SetPosition(Vector3{ -200.0f,0.0f,0.0f });
+	empty1->GetComponent<TransformComponent>()->SetPosition(ropePosition);
 	DistanceConstraintComponent* distanceConstraintRope = empty1->AddComponent<DistanceConstraintComponent>(distanceRope);
 	objectManager->Add(std::move(empty1));
 
@@ -80,7 +83,7 @@ void DebugScene::Initialize()
 	{
 		std::unique_ptr<DebugSphere> point{ std::make_unique<DebugSphere>(worldStorage.get(), objectManager->GetHandle()) };
 		point->GetComponent<SphereColliderComponent>()->SetRadius(2.0f);
-		point->GetComponent<TransformComponent>()->SetPosition(Vector3{ -200.0f,0.0f,0.0f } + Vector3{ distanceRope * i,0.0f,0.0f });
+		point->GetComponent<TransformComponent>()->SetPosition(ropePosition + Vector3{ distanceRope * i,0.0f,0.0f });
 		distanceConstraintRope->AddEndPoint(point->GetHandle(), Vector3::ZERO);
 		distanceConstraintRope = point->AddComponent<DistanceConstraintComponent>(distanceRope);
 		objectManager->Add(std::move(point));
@@ -89,13 +92,14 @@ void DebugScene::Initialize()
 	// 布のテスト
 	/*
 			ただ拘束をつなげただけだと柔らかさがない。
+			当り判定はロープと同じ
 	*/
 	float distanceCloth{ 20.0f };
 
 	std::vector<DistanceConstraintComponent*> distanceConstraints;
 	std::vector<std::unique_ptr<ObjectBase>> objects;
 
-	int width{ 6 };
+	int width{ 8 };
 	int height{ 6};
 	uint32_t handle{ objectManager->GetHandle() };
 	for (int i{ 0 }; i < height; i++)
