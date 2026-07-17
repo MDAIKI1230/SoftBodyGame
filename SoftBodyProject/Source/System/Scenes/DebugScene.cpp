@@ -39,7 +39,7 @@ void DebugScene::Initialize()
 	objectManager->Add(std::move(debugBox01));
 
 	// 距離拘束デバッグ
-	std::unique_ptr<EmptyObject> emptyObject{ std::make_unique<EmptyObject>(worldStorage.get(), objectManager->GetHandle()) };
+	/*std::unique_ptr<EmptyObject> emptyObject{ std::make_unique<EmptyObject>(worldStorage.get(), objectManager->GetHandle()) };
 	emptyObject->GetComponent<TransformComponent>()->SetPosition(Vector3{ 200.0f,0.0f,0.0f });
 	DistanceConstraintComponent* distanceConstraint{ emptyObject->AddComponent<DistanceConstraintComponent>(Vector3{ 15.0f,15.0f,15.0f },100.0f) };
 	objectManager->Add(std::move(emptyObject));
@@ -49,10 +49,10 @@ void DebugScene::Initialize()
 	debugBox03->GetComponent<TransformComponent>()->SetPosition(Vector3{ 0,100,0 });
 	debugBox03->AddComponent<RigidBodyComponent>()->SetIsGravity(true);
 	distanceConstraint->AddEndPoint(debugBox03->GetHandle(), Vector3{ 15.0f,15.0f,15.0f });
-	objectManager->Add(std::move(debugBox03));
+	objectManager->Add(std::move(debugBox03));*/
 
 	// 点拘束デバッグ
-	std::unique_ptr<DebugBox> debugBox02{ std::make_unique<DebugBox>(worldStorage.get(), objectManager->GetHandle(), 30.0f) };
+	/*std::unique_ptr<DebugBox> debugBox02{ std::make_unique<DebugBox>(worldStorage.get(), objectManager->GetHandle(), 30.0f) };
 	debugBox02->GetComponent<TransformComponent>()->SetPosition(Vector3{ 0,50,0 });
 	debugBox02->GetComponent<TransformComponent>()->Rotate(Quaternion::AngleAxis((3.141592f / 4.0f), Vector3{ 0,1,1 }));
 	debugBox02->AddComponent<RigidBodyComponent>()->SetIsGravity(true);
@@ -63,14 +63,14 @@ void DebugScene::Initialize()
 	debugBox04->GetComponent<TransformComponent>()->SetPosition(Vector3{ 0,100,0 });
 	debugBox04->AddComponent<RigidBodyComponent>()->SetIsGravity(true);
 	pointConstraint->AddEndPoint(debugBox04->GetHandle(), Vector3{ 15.0f,15.0f,15.0f });
-	objectManager->Add(std::move(debugBox04));
+	objectManager->Add(std::move(debugBox04));*/
 
 	// 距離拘束によるロープの実装
 	/*
 			思ったよりええ感じ。
 			当り判定は質点の球のみだからコリジョン抜けしまくる
 	*/
-	float distanceRope{ 15.0f };
+	/*float distanceRope{ 15.0f };
 
 	Vector3 ropePosition{ -200.0f,0.0f,0.0f };
 
@@ -87,7 +87,7 @@ void DebugScene::Initialize()
 		distanceConstraintRope->AddEndPoint(point->GetHandle(), Vector3::ZERO);
 		distanceConstraintRope = point->AddComponent<DistanceConstraintComponent>(distanceRope);
 		objectManager->Add(std::move(point));
-	}
+	}*/
 
 	// 布のテスト
 	/*

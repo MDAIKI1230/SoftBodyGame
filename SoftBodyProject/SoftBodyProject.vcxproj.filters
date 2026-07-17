@@ -179,6 +179,9 @@
     <Filter Include="ソース ファイル\Physics\DebugRender">
       <UniqueIdentifier>{ac31dc76-d793-4268-8656-74cc1a31d744}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Physics\Storage\Buffer">
+      <UniqueIdentifier>{57ae44e5-d821-4cde-af6b-bae4e95ec697}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Objects\Camera.h">
@@ -357,12 +360,6 @@
     </ClInclude>
     <ClInclude Include="Source\Common\ECS\EventSystem.h">
       <Filter>ソース ファイル\Common\ECS</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Physics\Storage\CollisionContactBuffer.h">
-      <Filter>ソース ファイル\Physics\Storage</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Physics\Storage\CollisionManifoldBuffer.h">
-      <Filter>ソース ファイル\Physics\Storage</Filter>
     </ClInclude>
     <ClInclude Include="Source\Physics\PhysicsWorld.h">
       <Filter>ソース ファイル\Physics</Filter>
@@ -550,9 +547,6 @@
     <ClInclude Include="Source\Physics\Struct\Collider\AABBBroadPhaseCollider.h">
       <Filter>ソース ファイル\Physics\Struct\Collider</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Physics\Storage\ConstraintBuffer.h">
-      <Filter>ソース ファイル\Physics\Storage</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Physics\Constants\ConstraintConstants.h">
       <Filter>ソース ファイル\Physics\Constants</Filter>
     </ClInclude>
@@ -570,9 +564,6 @@
     </ClInclude>
     <ClInclude Include="Source\Physics\Storage\Constraint\PointConstraintStorage.h">
       <Filter>ソース ファイル\Physics\Storage\Constraint</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Physics\Storage\SolverBodyBuffer.h">
-      <Filter>ソース ファイル\Physics\Storage</Filter>
     </ClInclude>
     <ClInclude Include="Source\Physics\System\Solver\SolverBodyCommitSystem.h">
       <Filter>ソース ファイル\Physics\System\Solver</Filter>
@@ -597,6 +588,18 @@
     </ClInclude>
     <ClInclude Include="Source\Physics\DebugRender\ConstraintDebugRenderSystem.h">
       <Filter>ソース ファイル\Physics\DebugRender</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Storage\Buffer\CollisionContactBuffer.h">
+      <Filter>ソース ファイル\Physics\Storage\Buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Storage\Buffer\CollisionManifoldBuffer.h">
+      <Filter>ソース ファイル\Physics\Storage\Buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Storage\Buffer\ConstraintBuffer.h">
+      <Filter>ソース ファイル\Physics\Storage\Buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Storage\Buffer\SolverBodyBuffer.h">
+      <Filter>ソース ファイル\Physics\Storage\Buffer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
