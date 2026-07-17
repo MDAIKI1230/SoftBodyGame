@@ -2,6 +2,8 @@
 
 #include <vector>
 
+#include "BodyUpdate.h"
+
 class PhysicsCommandBuffer
 {
 public:
@@ -11,6 +13,8 @@ private:
 	// メモリ確保
 	void SecureCapacity(uint32_t _size);
 private:
+	std::vector<BodyUpdate> bodyUpdates;
+
 	uint32_t currentStamp{ 0 };
 
 	std::vector<uint32_t> stamps;
