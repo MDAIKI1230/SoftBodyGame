@@ -3,10 +3,13 @@
 #include <vector>
 
 #include "BodyUpdate.h"
+#include "BodyID.h"
 
 class PhysicsCommandBuffer
 {
 public:
+	// 編集
+	BodyUpdate& Edit(BodyID& _id);
 	// 記録開始
 	void BeginRecord();
 private:
