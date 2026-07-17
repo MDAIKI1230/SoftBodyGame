@@ -196,6 +196,7 @@
     <ClInclude Include="Source\Physics\Component\Constraint\DistanceConstraintComponent.h" />
     <ClInclude Include="Source\Physics\Component\Constraint\PointConstraintComponent.h" />
     <ClInclude Include="Source\Physics\Constants\CollisionConstants.h" />
+    <ClInclude Include="Source\Physics\Constants\CommandConstraints.h" />
     <ClInclude Include="Source\Physics\Constants\ConstraintConstants.h" />
     <ClInclude Include="Source\Physics\DebugRender\ConstraintDebugRenderSystem.h" />
     <ClInclude Include="Source\Physics\Function\ContactFunction.h" />
@@ -205,6 +206,7 @@
     <ClInclude Include="Source\Physics\Storage\Body\RigidBodyStorage.h" />
     <ClInclude Include="Source\Physics\Storage\Buffer\CollisionContactBuffer.h" />
     <ClInclude Include="Source\Physics\Storage\Buffer\CollisionManifoldBuffer.h" />
+    <ClInclude Include="Source\Physics\Storage\Buffer\PhysicsCommandBuffer.h" />
     <ClInclude Include="Source\Physics\Storage\Buffer\ConstraintBuffer.h" />
     <ClInclude Include="Source\Physics\Storage\Buffer\SolverBodyBuffer.h" />
     <ClInclude Include="Source\Physics\Storage\Collider\AABBBroadPhaseColliderStorage.h" />
@@ -236,6 +238,7 @@
     <ClInclude Include="Source\Physics\Struct\Collision\MinkowskiVertex.h" />
     <ClInclude Include="Source\Physics\Struct\Collision\Face.h" />
     <ClInclude Include="Source\Physics\Struct\Collision\Manifold.h" />
+    <ClInclude Include="Source\Physics\Struct\Command\BodyUpdate.h" />
     <ClInclude Include="Source\Physics\Struct\Constraint\Constraint.h" />
     <ClInclude Include="Source\Physics\Struct\Constraint\ConstraintID.h" />
     <ClInclude Include="Source\Physics\Struct\Constraint\ConstraintSlot.h" />
@@ -317,6 +320,7 @@
     <ClCompile Include="Source\Physics\Function\ManifoldFunction.cpp" />
     <ClCompile Include="Source\Physics\PhysicsWorld.cpp" />
     <ClCompile Include="Source\Physics\Storage\Body\RigidBodyStorage.cpp" />
+    <ClCompile Include="Source\Physics\Storage\Buffer\PhysicsCommandBuffer.cpp" />
     <ClCompile Include="Source\Physics\Storage\Collider\ColliderStorage.cpp" />
     <ClCompile Include="Source\Physics\Storage\Constraint\ConstraintStorage.cpp" />
     <ClCompile Include="Source\Physics\Storage\Transform\PhysicsTransformStorage.cpp" />

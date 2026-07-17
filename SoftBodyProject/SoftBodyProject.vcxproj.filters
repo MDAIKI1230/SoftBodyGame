@@ -182,6 +182,9 @@
     <Filter Include="ソース ファイル\Physics\Storage\Buffer">
       <UniqueIdentifier>{57ae44e5-d821-4cde-af6b-bae4e95ec697}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Physics\Struct\Command">
+      <UniqueIdentifier>{a6c68d1b-6726-4827-9a6f-dfdbcaee34e5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Objects\Camera.h">
@@ -601,6 +604,15 @@
     <ClInclude Include="Source\Physics\Storage\Buffer\SolverBodyBuffer.h">
       <Filter>ソース ファイル\Physics\Storage\Buffer</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Physics\Storage\Buffer\PhysicsCommandBuffer.h">
+      <Filter>ソース ファイル\Physics\Storage\Buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Struct\Command\BodyUpdate.h">
+      <Filter>ソース ファイル\Physics\Struct\Command</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Constants\CommandConstraints.h">
+      <Filter>ソース ファイル\Physics\Constants</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\System\Adapter\Dxlib\DxlibInput.cpp">
@@ -782,6 +794,9 @@
     </ClCompile>
     <ClCompile Include="Source\Physics\DebugRender\ConstraintDebugRenderSystem.cpp">
       <Filter>ソース ファイル\Physics\DebugRender</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Physics\Storage\Buffer\PhysicsCommandBuffer.cpp">
+      <Filter>ソース ファイル\Physics\Storage\Buffer</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
