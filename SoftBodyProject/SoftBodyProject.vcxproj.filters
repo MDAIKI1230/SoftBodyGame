@@ -185,25 +185,16 @@
     <Filter Include="ソース ファイル\Physics\Struct\Command">
       <UniqueIdentifier>{a6c68d1b-6726-4827-9a6f-dfdbcaee34e5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\System\Adapter\Dxlib">
+      <UniqueIdentifier>{d720879d-64f8-443d-9ef0-efe5bdec64b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\System\Adapter\Raylib">
+      <UniqueIdentifier>{3087f53b-58c0-4352-8597-ab3dafdd1b32}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Objects\Camera.h">
       <Filter>ソース ファイル\GameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\System\Adapter\Dxlib\DxlibConstants.h">
-      <Filter>ソース ファイル\System\Adapter</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\System\Adapter\Dxlib\DxlibConvert.h">
-      <Filter>ソース ファイル\System\Adapter</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\System\Adapter\Dxlib\DxlibInput.h">
-      <Filter>ソース ファイル\System\Adapter</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\System\Adapter\Dxlib\DxlibRenderer.h">
-      <Filter>ソース ファイル\System\Adapter</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\System\Adapter\Dxlib\DxlibSystem.h">
-      <Filter>ソース ファイル\System\Adapter</Filter>
     </ClInclude>
     <ClInclude Include="Source\System\Components\TransformComponent.h">
       <Filter>ソース ファイル\System\Components</Filter>
@@ -613,17 +604,41 @@
     <ClInclude Include="Source\Physics\Constants\CommandConstraints.h">
       <Filter>ソース ファイル\Physics\Constants</Filter>
     </ClInclude>
+    <ClInclude Include="Source\System\Adapter\Dxlib\DxlibConstants.h">
+      <Filter>ソース ファイル\System\Adapter\Dxlib</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\System\Adapter\Dxlib\DxlibConvert.h">
+      <Filter>ソース ファイル\System\Adapter\Dxlib</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\System\Adapter\Dxlib\DxlibInput.h">
+      <Filter>ソース ファイル\System\Adapter\Dxlib</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\System\Adapter\Dxlib\DxlibRenderer.h">
+      <Filter>ソース ファイル\System\Adapter\Dxlib</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\System\Adapter\Dxlib\DxlibSystem.h">
+      <Filter>ソース ファイル\System\Adapter\Dxlib</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\System\Adapter\Raylib\RaylibInput.h">
+      <Filter>ソース ファイル\System\Adapter\Raylib</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\System\Adapter\Raylib\RaylibRenderer.h">
+      <Filter>ソース ファイル\System\Adapter\Raylib</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\System\Adapter\Raylib\RaylibSystem.h">
+      <Filter>ソース ファイル\System\Adapter\Raylib</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\System\Adapter\Raylib\RaylibInclude.h">
+      <Filter>ソース ファイル\System\Adapter\Raylib</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\System\Adapter\Raylib\RaylibConvert.h">
+      <Filter>ソース ファイル\System\Adapter\Raylib</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\System\Adapter\Raylib\RaylibConstants.h">
+      <Filter>ソース ファイル\System\Adapter\Raylib</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Source\System\Adapter\Dxlib\DxlibInput.cpp">
-      <Filter>ソース ファイル\System\Adapter</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\System\Adapter\Dxlib\DxlibRenderer.cpp">
-      <Filter>ソース ファイル\System\Adapter</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\System\Adapter\Dxlib\DxlibSystem.cpp">
-      <Filter>ソース ファイル\System\Adapter</Filter>
-    </ClCompile>
     <ClCompile Include="Source\System\Scenes\DebugScene.cpp">
       <Filter>ソース ファイル\System\Scene</Filter>
     </ClCompile>
@@ -797,6 +812,27 @@
     </ClCompile>
     <ClCompile Include="Source\Physics\Storage\Buffer\PhysicsCommandBuffer.cpp">
       <Filter>ソース ファイル\Physics\Storage\Buffer</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\System\Adapter\Dxlib\DxlibInput.cpp">
+      <Filter>ソース ファイル\System\Adapter\Dxlib</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\System\Adapter\Dxlib\DxlibRenderer.cpp">
+      <Filter>ソース ファイル\System\Adapter\Dxlib</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\System\Adapter\Dxlib\DxlibSystem.cpp">
+      <Filter>ソース ファイル\System\Adapter\Dxlib</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\System\Adapter\Raylib\RaylibInput.cpp">
+      <Filter>ソース ファイル\System\Adapter\Raylib</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\System\Adapter\Raylib\RaylibRenderer.cpp">
+      <Filter>ソース ファイル\System\Adapter\Raylib</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\System\Adapter\Raylib\RaylibSystem.cpp">
+      <Filter>ソース ファイル\System\Adapter\Raylib</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\System\Adapter\Raylib\RaylibConvert.cpp">
+      <Filter>ソース ファイル\System\Adapter\Raylib</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
