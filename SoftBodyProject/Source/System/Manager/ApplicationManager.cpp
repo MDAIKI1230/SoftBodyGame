@@ -3,28 +3,24 @@
 
 #include "ServiceLocator.h"
 
-#include "Dxlib\DxlibRenderer.h"
-#include "Dxlib\DxlibInput.h"
-#include "Dxlib\DxlibSystem.h"
-
 #include "ApplicationManager.h"
 
-ApplicationManager::ApplicationManager()
-{
-	system = std::make_unique<DxlibSystem>();
+ApplicationManager::ApplicationManager(BackEnd&& _backEnd):
+	renderer{ std::move(_backEnd.renderer) },
+	input{ std::move(_backEnd.input) },
+	system{ std::move(_backEnd.system) }
 
+{
 	system->ChangeWindowMode(true);
 	system->SetGraphMode(Config::WINDOW_SIZE_W, Config::WINDOW_SIZE_H, Config::COLOR_BIT);
 
-	// 生成
-	renderer = std::make_unique<DxlibRenderer>();
-	input = std::make_unique<DxlibInput>();
 	timeManager = std::make_unique<TimeManager>();
 
 	// サービスロケータに登録
 	ServiceLocator::SetRenderer(renderer.get());
 	ServiceLocator::SetInput(input.get());
 	ServiceLocator::SetTimeManager(timeManager.get());
+
 
 	// 時間を使って初期化系のために後から作る
 	sceneManager = std::make_unique<SceneManager>();

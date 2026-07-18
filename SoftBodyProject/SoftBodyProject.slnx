@@ -1,7 +1,15 @@
 <Solution>
   <Configurations>
+    <BuildType Name="Debug" />
+    <BuildType Name="DebugRaylib" />
+    <BuildType Name="Release" />
+    <BuildType Name="ReleaseRaylib" />
     <Platform Name="x64" />
     <Platform Name="x86" />
   </Configurations>
-  <Project Path="SoftBodyProject.vcxproj" Id="cd46769d-d612-4082-873e-9a7549dc28f2" />
+  <Project Path="SoftBodyProject.vcxproj" Id="cd46769d-d612-4082-873e-9a7549dc28f2">
+    <BuildType Solution="Debug|x64" Project="ReleaseDxlib" />
+    <BuildType Solution="Debug|x86" Project="DebugDxlib" />
+    <BuildType Solution="Release|*" Project="ReleaseDxlib" />
+  </Project>
 </Solution>

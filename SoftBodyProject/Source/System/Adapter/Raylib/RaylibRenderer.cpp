@@ -2,6 +2,8 @@
 
 #include "RaylibRenderer.h"
 
+#include "RaylibConvert.h"
+
 void RaylibRenderer::SetCamera(const Camera& _camera)
 {
     // 位置と見る点を決める

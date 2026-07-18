@@ -1,15 +1,13 @@
 ﻿#pragma once
 
-#include "IRenderer.h"
-#include "IInput.h"
-#include "ISystem.h"
+#include "BackEnd.h"
 #include "SceneManager.h"
 #include "TimeManager.h"
 
 class ApplicationManager
 {
 public:
-	ApplicationManager();
+	ApplicationManager(BackEnd&& _backEnd);
 	int ApplicationMain();
 private:
 	std::unique_ptr<IRenderer> renderer;

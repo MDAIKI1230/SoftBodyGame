@@ -191,6 +191,9 @@
     <Filter Include="ソース ファイル\System\Adapter\Raylib">
       <UniqueIdentifier>{3087f53b-58c0-4352-8597-ab3dafdd1b32}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\System\Struct">
+      <UniqueIdentifier>{6992a724-6b3e-46bc-94c8-826b9c9a2a5b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Objects\Camera.h">
@@ -637,6 +640,12 @@
     <ClInclude Include="Source\System\Adapter\Raylib\RaylibConstants.h">
       <Filter>ソース ファイル\System\Adapter\Raylib</Filter>
     </ClInclude>
+    <ClInclude Include="Source\System\Factory\BackEndFactory.h">
+      <Filter>ソース ファイル\System\Factory</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\System\struct\BackEnd.h">
+      <Filter>ソース ファイル\System\Struct</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\System\Scenes\DebugScene.cpp">
@@ -830,6 +839,9 @@
     </ClCompile>
     <ClCompile Include="Source\System\Adapter\Raylib\RaylibSystem.cpp">
       <Filter>ソース ファイル\System\Adapter\Raylib</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\System\Factory\BackEndFactory.cpp">
+      <Filter>ソース ファイル\System\Factory</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
