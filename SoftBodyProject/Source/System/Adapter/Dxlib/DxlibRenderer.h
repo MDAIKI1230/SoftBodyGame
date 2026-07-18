@@ -49,6 +49,8 @@ public:
 	void DrawGraph(const Vector2& _pos, int _handle, bool _transFlag) override;
 	// 球描画
 	void DrawSphere(const Vector3& _pos, float _radius, const Color& _color) override;
+	// メッシュ球描画
+	void DrawSphereMesh(const Vector3& _pos, float _radius, const Color& _color) override;
 	// Box描画
 	void DrawBox(const Matrix4x4& _mat, const Vector3& _size, const Color& _color) override;
 	// 線描画

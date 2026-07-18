@@ -149,6 +149,12 @@ void RaylibRenderer::DrawSphere(const Vector3& _pos, float _radius, const Color&
     ::DrawSphere(ToRaylib(_pos), _radius, ToRaylib(_color));
 }
 
+// メッシュ球描画
+void RaylibRenderer::DrawSphereMesh(const Vector3& _pos, float _radius, const Color& _color)
+{
+    ::DrawSphereWires(ToRaylib(_pos), _radius, 1.0f, 1.0f, ToRaylib(_color));
+}
+
 // Box描画
 void RaylibRenderer::DrawBox(const Matrix4x4& _mat, const Vector3& _size, const Color& _color)
 {

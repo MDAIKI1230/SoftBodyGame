@@ -88,7 +88,16 @@ void DxlibRenderer::DrawSphere(const Vector3& _pos, float _radius, const Color& 
 	DxLib::DrawSphere3D(
 		ToDxlib(_pos), _radius, 32,
 		ToDxlib(_color), ToDxlib(_color),
-		false);
+		true);
+}
+
+// メッシュ球描画
+void DxlibRenderer::DrawSphereMesh(const Vector3& _pos, float _radius, const Color& _color)
+{
+    DxLib::DrawSphere3D(
+        ToDxlib(_pos), _radius, 32,
+        ToDxlib(_color), ToDxlib(_color),
+        false);
 }
 
 // Box描画

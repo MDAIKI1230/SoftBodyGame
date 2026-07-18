@@ -53,6 +53,8 @@ public:
 	virtual void DrawGraph(const Vector2& _pos, int _handle, bool _transFlag) = 0;
 	// 球描画
 	virtual void DrawSphere(const Vector3& _pos, float _radius, const Color& _color) = 0;
+	// メッシュ球描画
+	virtual void DrawSphereMesh(const Vector3& _pos, float _radius, const Color& _color) = 0;
 	// Box描画
 	virtual void DrawBox(const Matrix4x4& _mat, const Vector3& _size, const Color& _color) = 0;
 	// 線描画
