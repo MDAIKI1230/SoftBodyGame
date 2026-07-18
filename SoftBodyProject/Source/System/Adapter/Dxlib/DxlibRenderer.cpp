@@ -7,7 +7,23 @@
 void DxlibRenderer::SetCamera(const Camera& _camera)
 {
 	// 位置と見る点を決める
-	SetCameraPositionAndTarget_UpVecY(ToDxlib(_camera.GetPos()), ToDxlib(_camera.GetTarget()));
+    VECTOR eye = ToDxlib(_camera.GetPos());
+    VECTOR target = ToDxlib(_camera.GetTarget());
+    VECTOR up = DxLib::VGet(0.0f, 1.0f, 0.0f);
+
+    MATRIX view{};
+    DxLib::CreateLookAtMatrixRH(&view, &eye, &target, &up);
+    DxLib::SetCameraViewMatrix(view);
+
+    MATRIX projection{};
+    DxLib::CreatePerspectiveFovMatrixRH(
+        &projection,
+        DX_PI_F / 3.0f,
+        0.05f,
+        4000.0f
+    );
+
+    DxLib::SetupCamera_ProjectionMatrix(projection);
 }
 
 int DxlibRenderer::ClearDrawScreen()
@@ -86,7 +102,7 @@ void DxlibRenderer::DrawGraph(const Vector2& _pos, int _handle, bool _transFlag)
 void DxlibRenderer::DrawSphere(const Vector3& _pos, float _radius, const Color& _color)
 {
 	DxLib::DrawSphere3D(
-		ToDxlib(_pos), _radius, 32,
+		ToDxlib(_pos), _radius, 8,
 		ToDxlib(_color), ToDxlib(_color),
 		true);
 }
@@ -95,7 +111,7 @@ void DxlibRenderer::DrawSphere(const Vector3& _pos, float _radius, const Color& 
 void DxlibRenderer::DrawSphereMesh(const Vector3& _pos, float _radius, const Color& _color)
 {
     DxLib::DrawSphere3D(
-        ToDxlib(_pos), _radius, 32,
+        ToDxlib(_pos), _radius, 8,
         ToDxlib(_color), ToDxlib(_color),
         false);
 }

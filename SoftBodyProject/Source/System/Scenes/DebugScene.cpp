@@ -28,7 +28,7 @@ void DebugScene::Initialize()
 	Camera camera{ Vector3{0,-175,-500},Vector3{0,-175,0} };
 	ServiceLocator::GetRenderer()->SetCamera(camera);
 
-	//objectManager->Add(std::make_unique<DebugSphere>(worldStorage.get(), objectManager->GetHandle()));
+	objectManager->Add(std::make_unique<DebugSphere>(worldStorage.get(), objectManager->GetHandle()));
 
 	//std::unique_ptr<DebugSphere> sphere{ std::make_unique<DebugSphere>(worldStorage.get(), objectManager->GetHandle()) };
 	//// sphere->AddComponent<PointConstraintComponent>();
@@ -153,8 +153,13 @@ void DebugScene::Initialize()
 	*/
 
 	// LoadFile("Res/Data/DebugSceneData.json");
-
+#ifdef USE_RAYLIB
+	RendererComponent renderer{ ServiceLocator::GetRenderer()->LoadModel(std::string{"Res/Model/Player.glb"}) };
+#else
 	RendererComponent renderer{ ServiceLocator::GetRenderer()->LoadModel(std::string{"Res/Model/M_001_player_073_01.mv1"}) };
+#endif // PLAY_RAYLIB
+
+	
 	EntityID id{ objectManager->GetHandle() };
 	worldStorage->GetStorage<RendererComponent>()->Add(id, renderer);
 

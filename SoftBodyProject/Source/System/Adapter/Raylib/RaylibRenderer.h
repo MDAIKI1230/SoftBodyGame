@@ -70,7 +70,7 @@ private:
 	bool useZDepth{ true };
 	bool writeZDepth{ true };
 
-	int nextResourceHandle{ 1 };
+	int nextResourceHandle{ 0 };
 
 	std::unordered_map<int, Model> modelMap;
 	std::unordered_map<int, Texture2D> textureMap;

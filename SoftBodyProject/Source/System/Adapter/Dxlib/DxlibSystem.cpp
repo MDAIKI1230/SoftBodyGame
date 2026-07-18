@@ -5,7 +5,15 @@
 // 初期化
 int DxlibSystem::Init()
 {
-	return DxLib::DxLib_Init();
+    const int result = DxLib::DxLib_Init();
+
+    if (result < 0)
+    {
+        return -1;
+    }
+
+    DxLib::SetUseRightHandClippingProcess(TRUE);
+    return 0;
 }
 
 // ウィンドウモードに変更

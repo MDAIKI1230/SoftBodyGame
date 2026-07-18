@@ -12,7 +12,7 @@ void RaylibRenderer::SetCamera(const Camera& _camera)
 
     // 今の自作Cameraに存在しない値は固定
     raylibCamera.up = RlVector3{ 0.0f, 1.0f, 0.0f };
-    raylibCamera.fovy = 45.0f;
+    raylibCamera.fovy = 60.0f;
     raylibCamera.projection = CAMERA_PERSPECTIVE;
 }
 
@@ -83,7 +83,6 @@ int RaylibRenderer::SetWriteZDepth(bool _flag)
     {
         rlEnableDepthMask();
     }
-
     else
     {
         rlDisableDepthMask();
@@ -95,9 +94,21 @@ int RaylibRenderer::SetWriteZDepth(bool _flag)
 // モデルの読み込み
 int RaylibRenderer::LoadModel(const std::string& _fileName)
 {
-    nextResourceHandle++;
-    modelMap[nextResourceHandle] = ::LoadModel(_fileName.c_str());
-    return nextResourceHandle;
+    if (!FileExists(_fileName.c_str()))
+    {
+        return -1;
+    }
+
+    Model model = ::LoadModel(_fileName.c_str());
+
+    if (!IsModelValid(model))
+    {
+        return -1;
+    }
+
+    const int handle = ++nextResourceHandle;
+    modelMap.emplace(handle, model);
+    return handle;
 }
 
 // 画像の読み込み
@@ -152,7 +163,7 @@ void RaylibRenderer::DrawSphere(const Vector3& _pos, float _radius, const Color&
 // メッシュ球描画
 void RaylibRenderer::DrawSphereMesh(const Vector3& _pos, float _radius, const Color& _color)
 {
-    ::DrawSphereWires(ToRaylib(_pos), _radius, 1.0f, 1.0f, ToRaylib(_color));
+    ::DrawSphereWires(ToRaylib(_pos), _radius, 8, 8, ToRaylib(_color));
 }
 
 // Box描画

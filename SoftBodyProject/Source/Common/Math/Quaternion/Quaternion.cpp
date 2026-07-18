@@ -137,22 +137,26 @@ Quaternion Quaternion::AngleAxis(float _rad, const Vector3& _axis)
 // オイラー角から生成
 Quaternion Quaternion::Euler(float _pitch, float _yaw, float _roll)
 {
-	// yaw
-	float cy = cosf(_yaw * 0.5f);
-	float sy = sinf(_yaw * 0.5f);
-	// pitch
+	// Pitch：X軸
 	float cp = cosf(_pitch * 0.5f);
 	float sp = sinf(_pitch * 0.5f);
-	// roll
+
+	// Yaw：Y軸
+	float cy = cosf(_yaw * 0.5f);
+	float sy = sinf(_yaw * 0.5f);
+
+	// Roll：Z軸
 	float cr = cosf(_roll * 0.5f);
 	float sr = sinf(_roll * 0.5f);
 
+	// yaw * pitch * roll
+	// 適用順序：Roll → Pitch → Yaw
 	return
 	{
-		cr * cp * cy + sr * sp * sy,
-		sr * cp * cy - cr * sp * sy,
-		cr * sp * cy + sr * cp * sy,
-		cr * cp * sy - sr * sp * cy
+		sp * cy * cr + cp * sy * sr, // x
+		cp * sy * cr - sp * cy * sr, // y
+		cp * cy * sr - sp * sy * cr, // z
+		cp * cy * cr + sp * sy * sr  // w
 	};
 }
 
@@ -218,18 +222,18 @@ Quaternion Quaternion::FromMatrix(Matrix4x4 _mat)
 	{
 		float s = sqrtf(trace + 1.0f) * 2.0f; // s = 4 * w
 		q.w = 0.25f * s;
-		// (2yz + 2xw) - (2yz - 2xw) = 4wx
-		q.x = (_mat.m[1][2] - _mat.m[2][1]) / s;
-		// (2xz + 2yw) - (2xz - 2yw) = 4wy
-		q.y = (_mat.m[2][0] - _mat.m[0][2]) / s;
-		// (2xy + 2zw) - (2xy - 2zx) = 4wz
-		q.z = (_mat.m[0][1] - _mat.m[1][0]) / s;
+		// (2yz - 2xw) - (2yz + 2xw) = 4wx
+		q.x = (_mat.m[2][1] - _mat.m[1][2]) / s;
+		// (2xz - 2yw) - (2xz + 2yw) = 4wy
+		q.y = (_mat.m[0][2] - _mat.m[2][0]) / s;
+		// (2xy - 2zx) - (2xy + 2zw) = 4wz
+		q.z = (_mat.m[1][0] - _mat.m[0][1]) / s;
 	}
 	else if (_mat.m[0][0] > _mat.m[1][1] && _mat.m[0][0] > _mat.m[2][2])
 	{
 		float s = sqrtf(1.0f + _mat.m[0][0] - _mat.m[1][1] - _mat.m[2][2]) * 2.0f; // s = 4 * x
-		// (2yz + 2xw) - (2yz - 2xw) = 4wx
-		q.w = (_mat.m[1][2] - _mat.m[2][1]) / s;
+		// (2yz - 2xw) - (2yz + 2xw) = 4wx
+		q.w = (_mat.m[2][1] - _mat.m[1][2]) / s;
 		q.x = 0.25f * s;
 		// (2xy + 2zw) + (2xy - 2 zw) = 4xy
 		q.y = (_mat.m[0][1] + _mat.m[1][0]) / s;
@@ -239,8 +243,8 @@ Quaternion Quaternion::FromMatrix(Matrix4x4 _mat)
 	else if (_mat.m[1][1] > _mat.m[2][2])
 	{
 		float s = sqrtf(1.0f + _mat.m[1][1] - _mat.m[0][0] - _mat.m[2][2]) * 2.0f; // s = 4 * y
-		// (2xz + 2yw) - (2xz - 2yw) = 4wy
-		q.w = (_mat.m[2][0] - _mat.m[0][2]) / s;
+		// (2xz - 2yw) - (2xz + 2yw) = 4wy
+		q.w = (_mat.m[0][2] - _mat.m[2][0]) / s;
 		// (2xy + 2wz) + (2xy - 2wz) = 4yx
 		q.x = (_mat.m[0][1] + _mat.m[1][0]) / s;
 		q.y = 0.25f * s;
@@ -250,8 +254,8 @@ Quaternion Quaternion::FromMatrix(Matrix4x4 _mat)
 	else
 	{
 		float s = sqrtf(1.0f + _mat.m[2][2] - _mat.m[0][0] - _mat.m[1][1]) * 2.0f; // s = 4 * z
-		// (2xy + 2zw) - (2xy - 2zx) = 4zw
-		q.w = (_mat.m[0][1] - _mat.m[1][0]) / s;
+		// (2xy - 2zx) - (2xy + 2zw) = 4zw
+		q.w = (_mat.m[1][0] - _mat.m[0][1]) / s;
 		// (2xz - 2yw) + (2xz + 2yw) = 4zx
 		q.x = (_mat.m[0][2] + _mat.m[2][0]) / s;
 		// (2yz + 2xw) + (2yz - 2xw) = 4zy

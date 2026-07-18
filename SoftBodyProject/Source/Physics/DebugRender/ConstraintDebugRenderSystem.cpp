@@ -24,7 +24,7 @@ void ConstraintDebugRenderSystem::PointConstraintRender(ConstraintStorage* _cons
 			uint32_t basePointIndex{ _transformStorage->GetDenseIndex(pointConstraint.endPoints[i].transformID) };
 			Vector3 basePoint{ _transformStorage->position[basePointIndex] + _transformStorage->rotation[basePointIndex].Rotate(pointConstraint.endPoints[i].localPoint) };
 
-			ServiceLocator::GetRenderer()->DrawSphere(basePoint, 3.0f, Color{ 0,255,0 });
+			ServiceLocator::GetRenderer()->DrawSphereMesh(basePoint, 3.0f, Color{ 0,255,0 });
 		}
 	}
 }

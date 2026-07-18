@@ -172,7 +172,6 @@ Matrix4x4 MatGenerateFunc::InverseTRS(const Vector3& _pos, const Quaternion& _ro
 
 Matrix4x4 MatGenerateFunc::LookAt(const Vector3& _eye, const Vector3& _target, const Vector3& _up)
 {
-	// 左手系
 	Vector3 frwd{ (_target - _eye).Normalize()};
 	Vector3 right{ Vector3::Cross(frwd,_up).Normalize() };
 	Vector3 up{ Vector3::Cross(right,frwd) };
@@ -187,9 +186,9 @@ Matrix4x4 MatGenerateFunc::LookAt(const Vector3& _eye, const Vector3& _target, c
 	// 列ベクトル
 	return
 	{
-		right.x,up.x,frwd.x,0.0f,
-		right.y,up.y,frwd.y,0.0f,
-		right.z,up.z,frwd.z,0.0f,
-		-dotR,-dotU,-dotF,1.0f
+		 right.x, right.y, right.z, -Vector3::Dot(right, _eye),
+		 up.x,       up.y,    up.z, -Vector3::Dot(up, _eye),
+		-frwd.x,  -frwd.y, -frwd.z, Vector3::Dot(frwd, _eye),
+		 0.0f,       0.0f,       0.0f,     1.0f
 	};
 }
