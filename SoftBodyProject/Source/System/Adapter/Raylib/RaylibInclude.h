@@ -11,9 +11,6 @@
 #define Camera3D   RlCamera3D
 #define Transform  RlTransform
 
-using RlModel = ::Model;
-using RlTexture2D = ::Texture2D;
-
 #include <raylib.h>
 #include <rlgl.h>
 

@@ -102,7 +102,7 @@ int RaylibRenderer::LoadModel(const std::string& _fileName)
 int RaylibRenderer::LoadGraph(const std::string& _fileName)
 {
     nextResourceHandle++;
-    modelMap[nextResourceHandle] = ::LoadTexture(_fileName.c_str());
+    textureMap[nextResourceHandle] = ::LoadTexture(_fileName.c_str());
     return nextResourceHandle;
 }
 

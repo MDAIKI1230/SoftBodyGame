@@ -350,7 +350,6 @@
     <ClCompile Include="Source\System\Adapter\Dxlib\DxlibInput.cpp" />
     <ClCompile Include="Source\System\Adapter\Dxlib\DxlibRenderer.cpp" />
     <ClCompile Include="Source\System\Adapter\Dxlib\DxlibSystem.cpp" />
-    <ClCompile Include="Source\System\Adapter\Raylib\RaylibConvert.cpp" />
     <ClCompile Include="Source\System\Adapter\Raylib\RaylibInput.cpp" />
     <ClCompile Include="Source\System\Adapter\Raylib\RaylibRenderer.cpp" />
     <ClCompile Include="Source\System\Adapter\Raylib\RaylibSystem.cpp" />

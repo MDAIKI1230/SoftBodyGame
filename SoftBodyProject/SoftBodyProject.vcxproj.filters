@@ -831,8 +831,5 @@
     <ClCompile Include="Source\System\Adapter\Raylib\RaylibSystem.cpp">
       <Filter>ソース ファイル\System\Adapter\Raylib</Filter>
     </ClCompile>
-    <ClCompile Include="Source\System\Adapter\Raylib\RaylibConvert.cpp">
-      <Filter>ソース ファイル\System\Adapter\Raylib</Filter>
-    </ClCompile>
   </ItemGroup>
 </Project>

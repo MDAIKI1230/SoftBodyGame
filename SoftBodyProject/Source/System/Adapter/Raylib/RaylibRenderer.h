@@ -70,8 +70,8 @@ private:
 
 	int nextResourceHandle{ 1 };
 
-	std::unordered_map<int, RlModel> modelMap;
-	std::unordered_map<int, RlTexture2D> textureMap;
+	std::unordered_map<int, Model> modelMap;
+	std::unordered_map<int, Texture2D> textureMap;
 
 	RlCamera3D raylibCamera{
 		RlVector3{0.0f, 0.0f, -10.0f}, // position
