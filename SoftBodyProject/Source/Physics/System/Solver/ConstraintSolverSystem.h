@@ -9,9 +9,7 @@ public:
 	// コンストラクタ
 	ConstraintSolverSystem();
 	// 拘束解消
-	void ConstraintSolver(SolverBodyBuffer* _solverBodyBuffer, ConstraintBuffer* _constraintBuffer);
-	// 再計算
-	void ReCalcPosRot(SolverBodyBuffer* _solverBodyBuffer);
+	void VelocitySolver(SolverBodyBuffer* _solverBodyBuffer, ConstraintBuffer* _constraintBuffer);
 	// 位置解決
 	void PositionSolver(SolverBodyBuffer* _solverBodyBuffer, ConstraintBuffer* _constraintBuffer);
 private:

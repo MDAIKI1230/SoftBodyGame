@@ -201,7 +201,7 @@ void CollisionSolverSystem::ReCalcPosRot(SolverBodyBuffer* _solverBodyBuffer)
 			// Δωの四元数を作る
 			Quaternion rotOmega{ Quaternion::AngleAxis(deltaAngularVelocity.Length(),deltaAngularVelocity) };
 			// 回転＋修正後の角速度の回転
-			body.rotation = body.pastRot * rotOmega;
+			body.rotation = rotOmega * body.pastRot;
 		}
 	}
 

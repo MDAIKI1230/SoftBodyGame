@@ -11,7 +11,7 @@ ConstraintSolverSystem::ConstraintSolverSystem() :
 {
 }
 
-void ConstraintSolverSystem::ConstraintSolver(SolverBodyBuffer* _solverBodyBuffer, ConstraintBuffer* _constraintBuffer)
+void ConstraintSolverSystem::VelocitySolver(SolverBodyBuffer* _solverBodyBuffer, ConstraintBuffer* _constraintBuffer)
 {
 	for (auto& constraint : _constraintBuffer->constraints)
 	{
@@ -76,26 +76,6 @@ void ConstraintSolverSystem::ConstraintSolver(SolverBodyBuffer* _solverBodyBuffe
 		// B速度の解消
 		solverBodyB.velocity -= constraint.jacobian[2] * applyLambda * solverBodyB.inverseMass;
 		solverBodyB.angularVelocity -= worldInertiaTnesorB * constraint.jacobian[3] * applyLambda;
-	}
-}
-
-void ConstraintSolverSystem::ReCalcPosRot(SolverBodyBuffer* _solverBodyBuffer)
-{
-	for (auto& body : _solverBodyBuffer->solverBodies)
-	{
-		if (body.inverseMass != 0.0f)
-		{
-			// 変化した速度から位置を再計算
-			// 位置 + 修正後のベクトル
-			body.position = body.pastPos + body.velocity * ServiceLocator::GetTimeManager()->GetFixedDeltaTime();
-
-			// Δω
-			Vector3 deltaAngularVelocity{ body.angularVelocity * ServiceLocator::GetTimeManager()->GetFixedDeltaTime() };
-			// Δωの四元数を作る
-			Quaternion rotOmega{ Quaternion::AngleAxis(deltaAngularVelocity.Length(),deltaAngularVelocity) };
-			// 回転＋修正後の角速度の回転
-			body.rotation = body.pastRot * rotOmega;
-		}
 	}
 }
 

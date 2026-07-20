@@ -99,10 +99,8 @@ Quaternion Quaternion::Inverse() const
 {
 	// 内積
 	float dot{ SIMDVectorMath::Dot4(simd,simd) };
-	// ノルム
-	float norm{ sqrtf(dot) };
-	// simd / norm
-	return SIMDVectorMath::DivScalar(this->Conjugate().simd, norm);
+	// simd / 内積
+	return SIMDVectorMath::DivScalar(this->Conjugate().simd, dot);
 }
 
 // 共役

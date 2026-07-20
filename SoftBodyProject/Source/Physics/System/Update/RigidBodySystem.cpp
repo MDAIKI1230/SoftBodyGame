@@ -68,9 +68,7 @@ void RigidBodySystem::UpdateRotation(PhysicsTransformStorage* _transformStorage,
 		_bodyStorage->pastRot[bodyIndex] = _transformStorage->rotation[transIndex];
 
 		// 今の回転＋トルク(Δtに離散化)×慣性テンソルの逆行列
-		_transformStorage->rotation[transIndex] *= rotOmega;
-		// 一応の正規化
-		_transformStorage->rotation[transIndex].Normalize();
+		_transformStorage->rotation[transIndex] = (rotOmega * _transformStorage->rotation[transIndex]).Normalized();
 	}
 }
 

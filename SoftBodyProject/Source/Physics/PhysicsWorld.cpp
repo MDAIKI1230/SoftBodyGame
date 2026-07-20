@@ -60,31 +60,36 @@ void PhysicsWorld::Solver()
 	solverBodyBuildSystem->Build(transformStorage.get(), rigidBodyStorage.get(), solverBodyBuffer.get());
 	// 解消準備
 	collisionSolverSystem->StartUp(colliderStorage.get(), manifoldBuffer.get(), solverBodyBuffer.get());
-	// 拘束生成
-	constraintBuildSystem->FixedUpdate(constraintStorage.get(), solverBodyBuffer.get(), constraintBuffer.get());
+
 	// 速度解消を指定回数分回す
 	for (int i{ 0 }; i < VELOCITY_SOLVER_TIMES; i++)
 	{
 		collisionSolverSystem->VelocitySolver(manifoldBuffer.get(), solverBodyBuffer.get());
-		constraintSolverSystem->ConstraintSolver(solverBodyBuffer.get(), constraintBuffer.get());
+
+		// 拘束生成
+		constraintBuildSystem->FixedUpdate(constraintStorage.get(), solverBodyBuffer.get(), constraintBuffer.get());
+
+		constraintSolverSystem->VelocitySolver(solverBodyBuffer.get(), constraintBuffer.get());
+
+		constraintBuffer->Clear();
 	}
+
 	// 修正された速度で位置を再計算
 	collisionSolverSystem->ReCalcPosRot(solverBodyBuffer.get());
 
-	constraintBuffer->Clear();
-
-	constraintBuildSystem->FixedUpdate(constraintStorage.get(), solverBodyBuffer.get(), constraintBuffer.get());
 	// 位置/姿勢解消を指定回数分回す
-	for (int i{ 0 }; i < POS_ROT_SOLVER_TIMES; i++)
+	/*for (int i{ 0 }; i < POS_ROT_SOLVER_TIMES; i++)
 	{
 
 		collisionSolverSystem->PositionSolver(manifoldBuffer.get(), solverBodyBuffer.get());
 
+		 拘束生成
+		constraintBuildSystem->FixedUpdate(constraintStorage.get(), solverBodyBuffer.get(), constraintBuffer.get());
+
 		constraintSolverSystem->PositionSolver(solverBodyBuffer.get(), constraintBuffer.get());
 
-
-	}
-	constraintBuffer->Clear();
+		constraintBuffer->Clear();
+	}*/
 
 	// 終了
 	collisionSolverSystem->End(manifoldBuffer.get());

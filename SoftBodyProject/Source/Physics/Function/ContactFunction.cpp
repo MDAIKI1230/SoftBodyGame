@@ -47,7 +47,7 @@ bool ContactFunction::SphereSphere(const ColliderID& _colliderA, const ColliderI
 		ContactPoint contactPoint;
 		contactPoint.penetration = totalRadius - std::sqrtf(distSqr);
 		contactPoint.positionLocalA = _transformStorage->rotation[transformIndexA].Conjugate().Rotate(manifold.normal * radiusA);
-		contactPoint.positionLocalB = _transformStorage->rotation[transformIndexA].Conjugate().Rotate(-manifold.normal * radiusB);
+		contactPoint.positionLocalB = _transformStorage->rotation[transformIndexB].Conjugate().Rotate(-manifold.normal * radiusB);
 
 		manifold.AddPoints(contactPoint);
 

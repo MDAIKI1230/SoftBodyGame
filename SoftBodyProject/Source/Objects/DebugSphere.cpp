@@ -27,32 +27,7 @@ DebugSphere::DebugSphere(WorldStorage* world, uint32_t _entity) :
 
 void DebugSphere::Update()
 {
-	TransformComponent* trans{ GetComponent<TransformComponent>() };
-
-	if (ServiceLocator::GetInputManager()->GetKeyPress(KeyConstants::A))
-	{
-		trans->TranslateLocal(-Vector3::RIGHT);
-	}
-	if (ServiceLocator::GetInputManager()->GetKeyPress(KeyConstants::D))
-	{
-		trans->TranslateLocal(Vector3::RIGHT);
-	}
-	if (ServiceLocator::GetInputManager()->GetKeyPress(KeyConstants::W))
-	{
-		trans->TranslateLocal(Vector3::FORWARD);
-	}
-	if (ServiceLocator::GetInputManager()->GetKeyPress(KeyConstants::S))
-	{
-		trans->TranslateLocal(-Vector3::FORWARD);
-	}
-	if (ServiceLocator::GetInputManager()->GetKeyPress(KeyConstants::LSHIFT))
-	{
-		trans->TranslateLocal(-Vector3::UP);
-	}
-	if (ServiceLocator::GetInputManager()->GetKeyPress(KeyConstants::SPACE))
-	{
-		trans->TranslateLocal(Vector3::UP);
-	}
+	
 }
 void DebugSphere::FixedUpdate()
 {
