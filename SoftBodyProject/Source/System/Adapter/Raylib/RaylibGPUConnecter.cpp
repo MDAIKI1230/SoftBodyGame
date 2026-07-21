@@ -4,8 +4,8 @@
 // コンストラクタ
 RaylibGPUConnecter::RaylibGPUConnecter()
 {
-	graphicsShaderStorage = std::make_unique<GraphicsShaderStorage>();
-	computeShaderStorage = std::make_unique<ComputeShaderStorage>();
+	graphicsShaderStorage = std::make_unique<RaylibStorage<GraphicsShaderHandle, Shader>>();
+	computeShaderStorage = std::make_unique<RaylibStorage<ComputeShaderHandle, unsigned int>>();
 }
 
 // --- シェーダ関連-- -

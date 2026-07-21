@@ -667,10 +667,7 @@
     <ClInclude Include="Source\System\Adapter\Raylib\RaylibGPUConnecter.h">
       <Filter>ソース ファイル\System\Adapter\Raylib</Filter>
     </ClInclude>
-    <ClInclude Include="Source\System\Adapter\Raylib\Storage\GraphicsShaderStorage.h">
-      <Filter>ソース ファイル\System\Adapter\Raylib\Storage</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\System\Adapter\Raylib\Storage\ComputeShaderStorage.h">
+    <ClInclude Include="Source\System\Adapter\Raylib\Storage\RaylibStorage.h">
       <Filter>ソース ファイル\System\Adapter\Raylib\Storage</Filter>
     </ClInclude>
   </ItemGroup>
@@ -872,12 +869,6 @@
     </ClCompile>
     <ClCompile Include="Source\System\Adapter\Raylib\RaylibGPUConnecter.cpp">
       <Filter>ソース ファイル\System\Adapter\Raylib</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\System\Adapter\Raylib\Storage\GraphicsShaderStorage.cpp">
-      <Filter>ソース ファイル\System\Adapter\Raylib\Storage</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\System\Adapter\Raylib\Storage\ComputeShaderStorage.cpp">
-      <Filter>ソース ファイル\System\Adapter\Raylib\Storage</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

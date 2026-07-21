@@ -4,8 +4,9 @@
 
 #include "IGPUConnecter.h"
 
-#include "Storage/GraphicsShaderStorage.h"
-#include "Storage/ComputeShaderStorage.h"
+#include "RaylibInclude.h"
+
+#include "Storage/RaylibStorage.h"
 
 class RaylibGPUConnecter :public IGPUConnecter
 {
@@ -58,6 +59,8 @@ public:
 	void ShaderBufferBarrier() override;
 
 private:
-	std::unique_ptr<GraphicsShaderStorage> graphicsShaderStorage;
-	std::unique_ptr<ComputeShaderStorage> computeShaderStorage;
+	// 描画系シェーダストレージ
+	std::unique_ptr<RaylibStorage<GraphicsShaderHandle, Shader>> graphicsShaderStorage;
+	// コンピュートシェーダストレージ
+	std::unique_ptr<RaylibStorage<ComputeShaderHandle, unsigned int>> computeShaderStorage;
 };

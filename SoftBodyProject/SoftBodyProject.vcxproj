@@ -415,8 +415,7 @@
     <ClInclude Include="Source\System\Adapter\Raylib\RaylibInput.h" />
     <ClInclude Include="Source\System\Adapter\Raylib\RaylibRenderer.h" />
     <ClInclude Include="Source\System\Adapter\Raylib\RaylibSystem.h" />
-    <ClInclude Include="Source\System\Adapter\Raylib\Storage\ComputeShaderStorage.h" />
-    <ClInclude Include="Source\System\Adapter\Raylib\Storage\GraphicsShaderStorage.h" />
+    <ClInclude Include="Source\System\Adapter\Raylib\Storage\RaylibStorage.h" />
     <ClInclude Include="Source\System\ComponentStorages\RendererComponentStorage.h" />
     <ClInclude Include="Source\System\ComponentStorages\TransformComponentStorage.h" />
     <ClInclude Include="Source\System\ComponentSystems\DebugRenderingSystem.h" />
@@ -497,8 +496,6 @@
     <ClCompile Include="Source\System\Adapter\Raylib\RaylibInput.cpp" />
     <ClCompile Include="Source\System\Adapter\Raylib\RaylibRenderer.cpp" />
     <ClCompile Include="Source\System\Adapter\Raylib\RaylibSystem.cpp" />
-    <ClCompile Include="Source\System\Adapter\Raylib\Storage\ComputeShaderStorage.cpp" />
-    <ClCompile Include="Source\System\Adapter\Raylib\Storage\GraphicsShaderStorage.cpp" />
     <ClCompile Include="Source\System\ComponentSystems\DebugRenderingSystem.cpp" />
     <ClCompile Include="Source\System\ComponentSystems\ModelRenderingSystem.cpp" />
     <ClCompile Include="Source\System\Factory\BackEndFactory.cpp" />
