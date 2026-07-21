@@ -332,6 +332,9 @@
     <ClInclude Include="Source\Objects\DebugSphere.h" />
     <ClInclude Include="Source\Objects\EmptyObject.h" />
     <ClInclude Include="Source\Physics\Component\Body\RigidBodyComponent.h" />
+    <ClInclude Include="Source\Physics\Component\Body\Soft\ClothComponent.h" />
+    <ClInclude Include="Source\Physics\Component\Body\Soft\RopeComponent.h" />
+    <ClInclude Include="Source\Physics\Component\Body\Soft\SoftBodyComponent.h" />
     <ClInclude Include="Source\Physics\Component\Collider\BoxColliderComponent.h" />
     <ClInclude Include="Source\Physics\Component\Collider\ColliderComponent.h" />
     <ClInclude Include="Source\Physics\Component\Collider\SphereColliderComponent.h" />
@@ -366,6 +369,9 @@
     <ClInclude Include="Source\Physics\Storage\Transform\PhysicsTransformStorage.h" />
     <ClInclude Include="Source\Physics\Struct\Body\BodyID.h" />
     <ClInclude Include="Source\Physics\Struct\Body\BodySlot.h" />
+    <ClInclude Include="Source\Physics\Struct\Body\Soft\ClothID.h" />
+    <ClInclude Include="Source\Physics\Struct\Body\Soft\RopeID.h" />
+    <ClInclude Include="Source\Physics\Struct\Body\Soft\SoftBodyID.h" />
     <ClInclude Include="Source\Physics\Struct\Body\SolverBody.h" />
     <ClInclude Include="Source\Physics\Struct\Collider\AABBBroadPhaseCollider.h" />
     <ClInclude Include="Source\Physics\Struct\Collider\ColliderID.h" />
@@ -462,6 +468,9 @@
     <ClCompile Include="Source\Objects\DebugSphere.cpp" />
     <ClCompile Include="Source\Objects\EmptyObject.cpp" />
     <ClCompile Include="Source\Physics\Component\Body\RigidBodyComponent.cpp" />
+    <ClCompile Include="Source\Physics\Component\Body\Soft\ClothComponent.cpp" />
+    <ClCompile Include="Source\Physics\Component\Body\Soft\RopeComponent.cpp" />
+    <ClCompile Include="Source\Physics\Component\Body\Soft\SoftBodyComponent.cpp" />
     <ClCompile Include="Source\Physics\Component\Collider\BoxColliderComponent.cpp" />
     <ClCompile Include="Source\Physics\Component\Collider\SphereColliderComponent.cpp" />
     <ClCompile Include="Source\Physics\Component\Constraint\DistanceConstraintComponent.cpp" />
@@ -510,7 +519,7 @@
     <ClCompile Include="Source\System\SceneData\SceneDataLoader.cpp" />
     <ClCompile Include="Source\System\Scenes\DebugScene.cpp" />
   </ItemGroup>
-	<Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
 </Project>

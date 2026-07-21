@@ -200,6 +200,12 @@
     <Filter Include="ソース ファイル\System\Adapter\Raylib\Storage">
       <UniqueIdentifier>{aeeb51f4-1169-4fc5-95d3-845a1610e4a6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Physics\Component\Body\Soft">
+      <UniqueIdentifier>{fd9b9a12-8c42-4fb0-a0df-0c02d9f334ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Physics\Struct\Body\Soft">
+      <UniqueIdentifier>{8073d815-6892-4112-9309-cab7f8863c5c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Objects\Camera.h">
@@ -670,6 +676,24 @@
     <ClInclude Include="Source\System\Adapter\Raylib\Storage\RaylibStorage.h">
       <Filter>ソース ファイル\System\Adapter\Raylib\Storage</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Physics\Component\Body\Soft\ClothComponent.h">
+      <Filter>ソース ファイル\Physics\Component\Body\Soft</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Component\Body\Soft\RopeComponent.h">
+      <Filter>ソース ファイル\Physics\Component\Body\Soft</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Component\Body\Soft\SoftBodyComponent.h">
+      <Filter>ソース ファイル\Physics\Component\Body\Soft</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Struct\Body\Soft\ClothID.h">
+      <Filter>ソース ファイル\Physics\Struct\Body\Soft</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Struct\Body\Soft\RopeID.h">
+      <Filter>ソース ファイル\Physics\Struct\Body\Soft</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Struct\Body\Soft\SoftBodyID.h">
+      <Filter>ソース ファイル\Physics\Struct\Body\Soft</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\System\Scenes\DebugScene.cpp">
@@ -869,6 +893,15 @@
     </ClCompile>
     <ClCompile Include="Source\System\Adapter\Raylib\RaylibGPUConnecter.cpp">
       <Filter>ソース ファイル\System\Adapter\Raylib</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Physics\Component\Body\Soft\ClothComponent.cpp">
+      <Filter>ソース ファイル\Physics\Component\Body\Soft</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Physics\Component\Body\Soft\RopeComponent.cpp">
+      <Filter>ソース ファイル\Physics\Component\Body\Soft</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Physics\Component\Body\Soft\SoftBodyComponent.cpp">
+      <Filter>ソース ファイル\Physics\Component\Body\Soft</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
