@@ -60,44 +60,6 @@ public:
 	// 線描画
 	virtual void DrawLine(const Vector3& _pos1, const Vector3& _pos2, const Color& _color) = 0;
 
-	// --- シェーダ関連 ---
-
-	//// コンピュートシェーダ読み込み
-	//virtual int LoadComputeShader(
-	//	const char* shaderPath) = 0;
-	//// バッファ作成
-	//virtual int CreateShaderBuffer(
-	//	size_t size,
-	//	const void* initialData) = 0;
-	//// バッファ更新
-	//virtual void UpdateShaderBuffer(
-	//	int buffer,
-	//	const void* data,
-	//	size_t size,
-	//	size_t offset = 0) = 0;
-	//// シェーダとバッファバインド
-	//virtual void BindShaderBuffer(
-	//	int buffer,
-	//	uint32_t binding) = 0;
-	//// ディスパッチ
-	//virtual void Dispatch(
-	//	int shader,
-	//	uint32_t groupX,
-	//	uint32_t groupY,
-	//	uint32_t groupZ) = 0;
-	//// バッファ値取り出し
-	//virtual void ReadShaderBuffer(
-	//	int buffer,
-	//	void* destination,
-	//	size_t size,
-	//	size_t offset = 0) = 0;
-	//// シェーダ破棄
-	//virtual void DestroyComputeShader(
-	//	int shader) = 0;
-	//// バッファ破棄
-	//virtual void DestroyShaderBuffer(
-	//	int buffer) = 0;
-
 	// ---リソース削除関数---
 
 	// モデル素材削除
