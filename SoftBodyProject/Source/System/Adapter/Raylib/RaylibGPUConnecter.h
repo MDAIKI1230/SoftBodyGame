@@ -14,6 +14,9 @@ public:
 	// コンストラクタ
 	RaylibGPUConnecter();
 
+	// 初期化関数
+	void Initialize() override;
+
 	// --- シェーダ関連-- -
 
 	// コンピュートシェーダ読み込み
@@ -45,7 +48,7 @@ public:
 	ShaderBufferHandle CreateShaderBuffer(uint32_t _size, const void* _initialData) override;
 	// バッファ更新
 	void UpdateShaderBuffer(ShaderBufferHandle& _buffer, const void* _data, uint32_t _size, uint32_t _offset = 0) override;
-	// シェーダとバッファバインド
+	// バインド
 	void BindShaderBuffer(ShaderBufferHandle& _buffer, uint32_t _binding) override;
 	// バッファ値取り出し
 	void ReadShaderBuffer(ShaderBufferHandle& _buffer, void* _destination, uint32_t _size, uint32_t _offset = 0) override;
@@ -57,10 +60,19 @@ public:
 	void ShaderBufferBarrier() override;
 
 private:
+	static constexpr int SHADER_STORAGE_BARRIER_BIT{ 0x00002000 };
+
+private:
 	// 描画系シェーダストレージ
 	std::unique_ptr<RaylibStorage<GraphicsShaderHandle, Shader>> graphicsShaderStorage;
 	// コンピュートシェーダストレージ
 	std::unique_ptr<RaylibStorage<ComputeShaderHandle, unsigned int>> computeShaderStorage;
 	// バッファストレージ
 	std::unique_ptr<RaylibStorage<ShaderBufferHandle, unsigned int>> bufferStorage;
+
+	// Windowsのみの奴やで―
+	using MemoryBarrierFunction = void(__stdcall*)(unsigned int);
+
+	MemoryBarrierFunction memoryBarrierFunction{ nullptr };
+
 };

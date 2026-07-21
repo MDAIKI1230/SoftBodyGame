@@ -10,6 +10,8 @@
 class IGPUConnecter
 {
 public:
+	// 初期化関数
+	virtual void Initialize() = 0;
 	// --- シェーダ関連-- -
 
 	// コンピュートシェーダ読み込み

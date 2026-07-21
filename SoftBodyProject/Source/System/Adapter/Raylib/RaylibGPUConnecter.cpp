@@ -9,6 +9,13 @@ RaylibGPUConnecter::RaylibGPUConnecter()
 	bufferStorage = std::make_unique<RaylibStorage<ShaderBufferHandle, unsigned int>>();
 }
 
+// 初期化関数
+void RaylibGPUConnecter::Initialize()
+{
+	// メモリバリア用の関数取得
+	memoryBarrierFunction = reinterpret_cast<MemoryBarrierFunction>(::rlGetProcAddress("glMemoryBarrier"));
+}
+
 // --- シェーダ関連-- -
 
 // コンピュートシェーダ読み込み
@@ -152,5 +159,11 @@ void RaylibGPUConnecter::DestroyShaderBuffer(ShaderBufferHandle& _buffer)
 
 void RaylibGPUConnecter::ShaderBufferBarrier()
 {
-	
+	// nullチェックしてnullじゃないなら呼ぶだけ
+	if (memoryBarrierFunction == nullptr)
+	{
+		return;
+	}
+
+	memoryBarrierFunction(SHADER_STORAGE_BARRIER_BIT);
 }
