@@ -48,7 +48,7 @@ public:
 	ShaderBufferHandle CreateShaderBuffer(uint32_t _size, const void* _initialData) override;
 	// バッファ更新
 	void UpdateShaderBuffer(ShaderBufferHandle& _buffer, const void* _data, uint32_t _size, uint32_t _offset = 0) override;
-	// バインド
+	// シェーダとバッファバインド
 	void BindShaderBuffer(ShaderBufferHandle& _buffer, uint32_t _binding) override;
 	// バッファ値取り出し
 	void ReadShaderBuffer(ShaderBufferHandle& _buffer, void* _destination, uint32_t _size, uint32_t _offset = 0) override;

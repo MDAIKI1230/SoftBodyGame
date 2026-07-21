@@ -6,6 +6,7 @@
 #include "Raylib\RaylibRenderer.h"
 #include "Raylib\RaylibInput.h"
 #include "Raylib\RaylibSystem.h"
+#include "Raylib\RaylibGPUConnecter.h"
 
 #else
 
@@ -24,6 +25,7 @@ BackEnd BackEndFactory::CreateBackEnd()
 	backend.renderer = std::make_unique<RaylibRenderer>();
 	backend.input = std::make_unique<RaylibInput>();
 	backend.system = std::make_unique<RaylibSystem>();
+	backend.gpuConnecter = std::make_unique<RaylibGPUConnecter>();
 #else
 	backend.renderer = std::make_unique<DxlibRenderer>();
 	backend.input = std::make_unique<DxlibInput>();
