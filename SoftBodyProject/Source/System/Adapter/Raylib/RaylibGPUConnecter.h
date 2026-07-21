@@ -1,11 +1,11 @@
 ﻿#pragma once
 
-#include <vector>
 #include <memory>
 
 #include "IGPUConnecter.h"
 
 #include "Storage/GraphicsShaderStorage.h"
+#include "Storage/ComputeShaderStorage.h"
 
 class RaylibGPUConnecter :public IGPUConnecter
 {
@@ -16,7 +16,7 @@ public:
 	// --- シェーダ関連-- -
 
 	// コンピュートシェーダ読み込み
-	ComputeShaderHandle LoadComputeShader(const std::string& _shaderPath) override;
+	ComputeShaderHandle LoadComputeShader(const std::string& _filePath) override;
 	// シェーダとバッファバインド
 	void BindShaderBuffer(ShaderBufferHandle& _buffer, ComputeShaderHandle _binding) override;
 	// ディスパッチ
@@ -59,4 +59,5 @@ public:
 
 private:
 	std::unique_ptr<GraphicsShaderStorage> graphicsShaderStorage;
+	std::unique_ptr<ComputeShaderStorage> computeShaderStorage;
 };

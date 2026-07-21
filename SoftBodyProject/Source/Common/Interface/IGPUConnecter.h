@@ -13,7 +13,7 @@ public:
 	// --- シェーダ関連-- -
 
 	// コンピュートシェーダ読み込み
-	virtual ComputeShaderHandle LoadComputeShader(const std::string& _shaderPath) = 0;
+	virtual ComputeShaderHandle LoadComputeShader(const std::string& _filePath) = 0;
 	// シェーダとバッファバインド
 	virtual void BindShaderBuffer(ShaderBufferHandle& _buffer, ComputeShaderHandle _binding) = 0;
 	// ディスパッチ

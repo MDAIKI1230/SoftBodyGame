@@ -670,6 +670,9 @@
     <ClInclude Include="Source\System\Adapter\Raylib\Storage\GraphicsShaderStorage.h">
       <Filter>ソース ファイル\System\Adapter\Raylib\Storage</Filter>
     </ClInclude>
+    <ClInclude Include="Source\System\Adapter\Raylib\Storage\ComputeShaderStorage.h">
+      <Filter>ソース ファイル\System\Adapter\Raylib\Storage</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\System\Scenes\DebugScene.cpp">
@@ -871,6 +874,9 @@
       <Filter>ソース ファイル\System\Adapter\Raylib</Filter>
     </ClCompile>
     <ClCompile Include="Source\System\Adapter\Raylib\Storage\GraphicsShaderStorage.cpp">
+      <Filter>ソース ファイル\System\Adapter\Raylib\Storage</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\System\Adapter\Raylib\Storage\ComputeShaderStorage.cpp">
       <Filter>ソース ファイル\System\Adapter\Raylib\Storage</Filter>
     </ClCompile>
   </ItemGroup>

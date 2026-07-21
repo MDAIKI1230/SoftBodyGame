@@ -5,29 +5,42 @@
 RaylibGPUConnecter::RaylibGPUConnecter()
 {
 	graphicsShaderStorage = std::make_unique<GraphicsShaderStorage>();
+	computeShaderStorage = std::make_unique<ComputeShaderStorage>();
 }
 
 // --- シェーダ関連-- -
 
 // コンピュートシェーダ読み込み
-ComputeShaderHandle RaylibGPUConnecter::LoadComputeShader(const std::string& _shaderPath)
+ComputeShaderHandle RaylibGPUConnecter::LoadComputeShader(const std::string& _filePath)
 {
-	return ComputeShaderHandle{};
+	unsigned int handle{ ::rlLoadShader(_filePath.c_str(), RL_COMPUTE_SHADER) };
+	ComputeShaderHandle result{ computeShaderStorage->Add(::rlLoadShaderProgramCompute(handle)) };
+	::rlUnloadShader(handle);
+	return result;
 }
 // シェーダとバッファバインド
 void RaylibGPUConnecter::BindShaderBuffer(ShaderBufferHandle& _buffer, ComputeShaderHandle _binding)
 {
-
+	
 }
 // ディスパッチ
 void RaylibGPUConnecter::Dispatch(ComputeShaderHandle& _shader, uint32_t _groupX, uint32_t _groupY, uint32_t _groupZ)
 {
-
+	unsigned int handle;
+	if (computeShaderStorage->TryGet(_shader, handle))
+	{
+		::rlEnableShader(handle);
+		::rlComputeShaderDispatch(_groupX, _groupY, _groupZ);
+	}
 }
 // シェーダ破棄
 void RaylibGPUConnecter::DestroyComputeShader(ComputeShaderHandle& _shader)
 {
-
+	unsigned int shader;
+	if (computeShaderStorage->TryGet(_shader, shader))
+	{
+		::rlUnloadShaderProgram(shader);
+	}
 }
 
 // --- 描画系シェーダ関連 ---
@@ -35,17 +48,17 @@ void RaylibGPUConnecter::DestroyComputeShader(ComputeShaderHandle& _shader)
 // 頂点シェーダ読み込み
 GraphicsShaderHandle RaylibGPUConnecter::LoadVertexShader(const std::string& _filePath)
 {
-	return graphicsShaderStorage->Add(LoadShader(_filePath.c_str(), nullptr));
+	return graphicsShaderStorage->Add(::LoadShader(_filePath.c_str(), nullptr));
 }
 // ピクセルシェーダ読み込み
 GraphicsShaderHandle RaylibGPUConnecter::LoadPixelShader(const std::string& _filePath)
 {
-	return graphicsShaderStorage->Add(LoadShader(nullptr, _filePath.c_str()));
+	return graphicsShaderStorage->Add(::LoadShader(nullptr, _filePath.c_str()));
 }
 // 頂点とピクセルシェーダ読み込み
 GraphicsShaderHandle RaylibGPUConnecter::LoadPixelShader(const std::string& _vertexShaderFilePath, const std::string& _pixelShaderFilePath)
 {
-	return graphicsShaderStorage->Add(LoadShader(_vertexShaderFilePath.c_str(), _pixelShaderFilePath.c_str()));
+	return graphicsShaderStorage->Add(::LoadShader(_vertexShaderFilePath.c_str(), _pixelShaderFilePath.c_str()));
 }
 // シェーダとバッファバインド
 void RaylibGPUConnecter::BindShaderBuffer(ShaderBufferHandle& _buffer, GraphicsShaderHandle _binding)
