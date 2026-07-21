@@ -18,8 +18,6 @@ public:
 
 	// コンピュートシェーダ読み込み
 	ComputeShaderHandle LoadComputeShader(const std::string& _filePath) override;
-	// シェーダとバッファバインド
-	void BindShaderBuffer(ShaderBufferHandle& _buffer, ComputeShaderHandle _binding) override;
 	// ディスパッチ
 	void Dispatch(ComputeShaderHandle& _shader, uint32_t _groupX, uint32_t _groupY, uint32_t _groupZ) override;
 	// シェーダ破棄
@@ -34,8 +32,6 @@ public:
 	GraphicsShaderHandle LoadPixelShader(const std::string& _filePath) override;
 	// 頂点とピクセルシェーダ読み込み
 	GraphicsShaderHandle LoadPixelShader(const std::string& _vertexShaderFilePath, const std::string& _pixelShaderFilePath) override;
-	// シェーダとバッファバインド
-	void BindShaderBuffer(ShaderBufferHandle& _buffer, GraphicsShaderHandle _binding) override;
 	// 描画関連(頂点とピクセル)シェーダスタート
 	void BeginGraphicsShader(GraphicsShaderHandle& _shader) override;
 	// 描画関連(頂点とピクセル)シェーダ終了
@@ -46,11 +42,13 @@ public:
 	// --- バッファ関連 ---
 
 	// バッファ作成
-	ShaderBufferHandle CreateShaderBuffer(size_t _size, const void* _initialData) override;
+	ShaderBufferHandle CreateShaderBuffer(uint32_t _size, const void* _initialData) override;
 	// バッファ更新
-	void UpdateShaderBuffer(ShaderBufferHandle& _buffer, const void* _data, size_t _size, size_t _offset = 0) override;
+	void UpdateShaderBuffer(ShaderBufferHandle& _buffer, const void* _data, uint32_t _size, uint32_t _offset = 0) override;
+	// シェーダとバッファバインド
+	void BindShaderBuffer(ShaderBufferHandle& _buffer, uint32_t _binding) override;
 	// バッファ値取り出し
-	void ReadShaderBuffer(ShaderBufferHandle& _buffer, void* _destination, size_t _size, size_t _offset = 0) override;
+	void ReadShaderBuffer(ShaderBufferHandle& _buffer, void* _destination, uint32_t _size, uint32_t _offset = 0) override;
 	// バッファ破棄
 	void DestroyShaderBuffer(ShaderBufferHandle& _buffer) override;
 
@@ -63,4 +61,6 @@ private:
 	std::unique_ptr<RaylibStorage<GraphicsShaderHandle, Shader>> graphicsShaderStorage;
 	// コンピュートシェーダストレージ
 	std::unique_ptr<RaylibStorage<ComputeShaderHandle, unsigned int>> computeShaderStorage;
+	// バッファストレージ
+	std::unique_ptr<RaylibStorage<ShaderBufferHandle, unsigned int>> bufferStorage;
 };
