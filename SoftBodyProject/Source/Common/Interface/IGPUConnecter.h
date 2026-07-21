@@ -26,28 +26,31 @@ class IGPUConnecter
 	// 頂点シェーダ読み込み
 	virtual GraphicsShaderHandle LoadVertexShader(const std::string& _vertexShaderPath) = 0;
 	// ピクセルシェーダ読み込み
-	virtual GraphicsShaderHandle LoadPixelShader(const std::string& pixelShaderPath) = 0;
+	virtual GraphicsShaderHandle LoadPixelShader(const std::string& _pixelShaderPath) = 0;
 	// シェーダとバッファバインド
-	virtual void BindShaderBuffer(ShaderBufferHandle& buffer, uint32_t binding) = 0;
+	virtual void BindShaderBuffer(ShaderBufferHandle& _buffer, uint32_t _binding) = 0;
 	// 描画関連(頂点とピクセル)シェーダスタート
-	virtual void BeginGraphicsShader(GraphicsShaderHandle& shader) = 0;
+	virtual void BeginGraphicsShader(GraphicsShaderHandle& _shader) = 0;
 	// 描画関連(頂点とピクセル)シェーダ終了
 	virtual void EndGraphicsShader() = 0;
 	// 描画関連(頂点とピクセル)シェーダ破棄
-	virtual void DestroyGraphicsShader(GraphicsShaderHandle& shader) = 0;
+	virtual void DestroyGraphicsShader(GraphicsShaderHandle& _shader) = 0;
 
 	// --- バッファ関連 ---
 
 	// バッファ作成
-	virtual ShaderBufferHandle CreateShaderBuffer(size_t size, const void* initialData) = 0;
+	virtual ShaderBufferHandle CreateShaderBuffer(size_t _size, const void* _initialData) = 0;
 	// バッファ更新
-	virtual void UpdateShaderBuffer(ShaderBufferHandle& buffer, const void* data, size_t size, size_t offset = 0) = 0;
+	virtual void UpdateShaderBuffer(ShaderBufferHandle& _buffer, const void* _data, size_t _size, size_t _offset = 0) = 0;
 	// バッファ値取り出し
-	virtual void ReadShaderBuffer(ShaderBufferHandle& buffer, void* destination, size_t size, size_t offset = 0) = 0;
+	virtual void ReadShaderBuffer(ShaderBufferHandle& _buffer, void* _destination, size_t _size, size_t _offset = 0) = 0;
 	// バッファ破棄
-	virtual void DestroyShaderBuffer(ShaderBufferHandle& buffer) = 0;
+	virtual void DestroyShaderBuffer(ShaderBufferHandle& _buffer) = 0;
 
 	// --- 同期 ---
 
 	virtual void ShaderBufferBarrier() = 0;
+
+	// 仮想デストラクタ
+	virtual ~IGPUConnecter() = default
 };
