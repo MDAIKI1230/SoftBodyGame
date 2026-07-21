@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "../Vector/Vector3/Vector3.h"
 #include "../Quaternion/Quaternion.h"
@@ -68,7 +68,7 @@ public:
     // 位置
     const Vector3& GetPosition() const { return position; }
     // 回転
-    const Quaternion& GetRotate() const { return rotation; }
+    const Quaternion& GetRotation() const { return rotation; }
     // 大きさ
     const Vector3& GetScale() const { return scale; }
     // ローカル行列

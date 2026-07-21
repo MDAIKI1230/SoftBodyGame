@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "IRenderer.h"
 
@@ -14,6 +14,13 @@ public:
 	int ClearDrawScreen() override;
 	// ダブルバッファリングの反転
 	int ScreenFlip() override;
+	// --- 設定 ---
+
+	// ZDepth使う
+	int SetUseZDepth(bool _flag) override;
+	// ZDepth書き込み
+	int SetWriteZDepth(bool _flag) override;
+
 	// ---読み込み関数---
 	
 	// モデルの読み込み
@@ -41,7 +48,13 @@ public:
 	// 画像描画
 	void DrawGraph(const Vector2& _pos, int _handle, bool _transFlag) override;
 	// 球描画
-	void DrawSphere(const Vector3& _pos, float _radius) override;
+	void DrawSphere(const Vector3& _pos, float _radius, const Color& _color) override;
+	// メッシュ球描画
+	void DrawSphereMesh(const Vector3& _pos, float _radius, const Color& _color) override;
+	// Box描画
+	void DrawBox(const Matrix4x4& _mat, const Vector3& _size, const Color& _color) override;
+	// 線描画
+	void DrawLine(const Vector3& _pos1, const Vector3& _pos2, const Color& _color) override;
 	// ---リソース削除関数---
 	
 	// モデル素材削除

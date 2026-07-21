@@ -1,11 +1,14 @@
-#pragma once
+﻿#pragma once
 
 #include "MDMath.h"
+#include "Color.h"
+
+#include "Dxlib.h"
 
 // 行列変換
-MATRIX ToDxlib(const Matrix4x4& _mat)
+DxLib::MATRIX ToDxlib(const Matrix4x4& _mat)
 {
-	MATRIX r{};
+	DxLib::MATRIX r{};
 
 	// 行優先に変換
 	r.m[0][0] = _mat.m[0][0];
@@ -32,7 +35,13 @@ MATRIX ToDxlib(const Matrix4x4& _mat)
 }
 
 // ベクトル変換
-VECTOR ToDxlib(const Vector3& _vec)
+DxLib::VECTOR ToDxlib(const Vector3& _vec)
 {
-	return VGet(_vec.x, _vec.y, _vec.z);
+	return DxLib::VGet(_vec.x, _vec.y, _vec.z);
+}
+
+// 色
+unsigned int ToDxlib(const Color& _color)
+{
+	return DxLib::GetColor(_color.r, _color.g, _color.b);
 }

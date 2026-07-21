@@ -1,4 +1,4 @@
-#include "../SIMD/SIMDVectorMath.h"
+﻿#include "../SIMD/SIMDVectorMath.h"
 #include "Vector3Int.h"
 
 // 0

@@ -1,4 +1,4 @@
-#include "Matrix.h"
+﻿#include "Matrix.h"
 #include "../Vector/SIMD/SIMDVectorMath.h"
 
 // 単位行列
@@ -9,6 +9,17 @@ Matrix4x4 Matrix4x4::Identity()
 		0.0f,1.0f,0.0f,0.0f,
 		0.0f,0.0f,1.0f,0.0f,
 		0.0f,0.0f,0.0f,1.0f
+	};
+}
+
+// ZERO行列
+Matrix4x4 Matrix4x4::Zero()
+{
+	return Matrix4x4{
+		0.0f,0.0f,0.0f,0.0f,
+		0.0f,0.0f,0.0f,0.0f,
+		0.0f,0.0f,0.0f,0.0f,
+		0.0f,0.0f,0.0f,0.0f
 	};
 }
 

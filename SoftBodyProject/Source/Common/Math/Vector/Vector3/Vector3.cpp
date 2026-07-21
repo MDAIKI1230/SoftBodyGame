@@ -1,11 +1,11 @@
-#include <math.h>
+﻿#include <math.h>
 #include "../SIMD/SIMDVectorMath.h"
 #include "Vector3.h"
 
 // 0
-static const Vector3 ZERO{ 0.0f,0.0f,0.0f };
+const Vector3 Vector3::ZERO{ 0.0f,0.0f,0.0f };
 // 1
-static const Vector3 ONE{ 1.0f,1.0f,1.0f };
+const Vector3 Vector3::ONE{ 1.0f,1.0f,1.0f };
 // 前(z)
 const Vector3 Vector3::FORWARD{ 0.0f,0.0f,1.0f };
 // 右(x)
@@ -92,26 +92,26 @@ bool Vector3::operator!=(const Vector3& _other) const
 // ベクトルの長さ(実数のみ)
 float Vector3::Length() const
 {
-	return SIMDVectorMath::Length2(simd);
+	return SIMDVectorMath::Length3(simd);
 }
 
 // ベクトルの長さの2乗(実数のみ)
 float Vector3::LengthSqr() const
 {
-	return SIMDVectorMath::Dot2(simd, simd);
+	return SIMDVectorMath::Dot3(simd, simd);
 }
 
 // 2つのベクトル間の距離(実数のみ)
 float Vector3::Distance(const Vector3& _from, const Vector3& _to)
 {
-	return SIMDVectorMath::Length2((_to - _from).simd);
+	return SIMDVectorMath::Length3((_to - _from).simd);
 }
 
 // 2つのベクトル間の距離の2乗(実数のみ)
 float Vector3::DistanceSqr(const Vector3& _from, const Vector3& _to)
 {
 	Vector3 dist{ _to - _from };
-	return SIMDVectorMath::Dot2(dist, dist);
+	return SIMDVectorMath::Dot3(dist, dist);
 }
 
 // 2つのベクトル間の角度(実数のみ)
@@ -143,7 +143,7 @@ Vector3& Vector3::Normalize(Vector3& _vec)
 }
 
 // 正規化(値の変化無)(実数のみ)
-Vector3 Vector3::Normalized()
+Vector3 Vector3::Normalized() const
 {
 	return SIMDVectorMath::Normalize(simd);
 }
@@ -157,7 +157,7 @@ Vector3 Vector3::Normalized(const Vector3& _vec)
 // 内積
 float Vector3::Dot(const Vector3& _vec1, const Vector3& _vec2)
 {
-	return SIMDVectorMath::Dot2(_vec1, _vec2);
+	return SIMDVectorMath::Dot3(_vec1, _vec2);
 }
 
 // 外積

@@ -1,0 +1,15 @@
+﻿#pragma once
+
+enum class  RigidBodyUpdateFlag
+{
+	POSITION,
+	VELOCITY,
+	FORCE,
+	ROTATION,
+	ANGULAR_VELOCITY,
+	TORQUE,
+	MASS,
+	INERTIA_TENSOR,
+	IS_GRAVITY,
+	GRAVITY
+};

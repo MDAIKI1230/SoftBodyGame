@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "Matrix/Matrix.h"
 #include "Quaternion/Quaternion.h"
@@ -6,5 +6,8 @@
 #include "Vector/Vector2/Vector2Int.h"
 #include "Vector/Vector3/Vector3.h"
 #include "Vector/Vector3/Vector3Int.h"
+#include "Vector/Vector4/Vector4.h"
 #include "Transform/Transform.h"
 #include "Matrix/MatGenerateFunc.h"
+#include "Constants/MathConstants.h"
+#include "Vector/SIMD/SIMDVectorMath.h"

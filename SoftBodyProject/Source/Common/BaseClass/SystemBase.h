@@ -1,6 +1,4 @@
-#pragma once
-
-#include "IWorld.h"
+﻿#pragma once
 
 class SystemBase
 {

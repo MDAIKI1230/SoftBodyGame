@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <xmmintrin.h>
 #include <immintrin.h>
@@ -57,9 +57,9 @@ public:
 	/// 値入れ替え
 	/// </summary>
 	/// <typeparam name="X">値1がどこと変わるか</typeparam>
-	/// <typeparam name="Y">値1がどこと変わるか</typeparam>
-	/// <typeparam name="Z">値1がどこと変わるか</typeparam>
-	/// <typeparam name="W">値1がどこと変わるか</typeparam>
+	/// <typeparam name="Y">値2がどこと変わるか</typeparam>
+	/// <typeparam name="Z">値3がどこと変わるか</typeparam>
+	/// <typeparam name="W">値4がどこと変わるか</typeparam>
 	/// <param name="_value">入れ替える元の値</param>
 	/// <returns>入れ替えられた新しい値</returns>
 	template<int X,int Y,int Z,int W>
@@ -72,10 +72,11 @@ public:
 	/// 値入れ替え
 	/// </summary>
 	/// <typeparam name="X">値1がどこと変わるか</typeparam>
-	/// <typeparam name="Y">値1がどこと変わるか</typeparam>
-	/// <typeparam name="Z">値1がどこと変わるか</typeparam>
-	/// <typeparam name="W">値1がどこと変わるか</typeparam>
-	/// <param name="_value">入れ替える元の値</param>
+	/// <typeparam name="Y">値2がどこと変わるか</typeparam>
+	/// <typeparam name="Z">値3がどこと変わるか</typeparam>
+	/// <typeparam name="W">値4がどこと変わるか</typeparam>
+	/// <param name="_value1">入れ替える元の値(X,Y)</param>
+	/// <param name="_value2">入れ替える元の値(Z,W)</param>
 	/// <returns>入れ替えられた新しい値</returns>
 	template<int X, int Y, int Z, int W>
 	static SIMDVectorFloat Shuffle(const SIMDVectorFloat& _value1, const SIMDVectorFloat _value2)

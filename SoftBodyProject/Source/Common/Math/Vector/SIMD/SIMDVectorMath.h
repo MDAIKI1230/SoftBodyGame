@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "SIMDVector.h"
 
@@ -33,6 +33,8 @@ namespace SIMDVectorMath
 	float Length2(const SIMDVectorFloat& _vec);
 	// 長さ(Vector3)
 	float Length3(const SIMDVectorFloat& _vec);
+	// 長さ(Vector4)
+	float Norm(const SIMDVectorFloat& _vec);
 	// 正規化
 	SIMDVectorFloat Normalize(const SIMDVectorFloat& _vec);
 

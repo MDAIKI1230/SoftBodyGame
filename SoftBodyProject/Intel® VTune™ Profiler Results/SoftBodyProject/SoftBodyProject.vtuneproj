@@ -1,0 +1,530 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+ <rdmgr>
+  <timestamp type="u64_t">1783878548</timestamp>
+  <hostname>DESKTOP-9Q2EAU9</hostname>
+  <os>windows</os>
+  <product>Intel® VTune™ Profiler 2026.2.0</product>
+  <buildNumber type="s32_t">632324</buildNumber>
+  <logicalCPUCount type="s32_t">16</logicalCPUCount>
+  <physicalCoreCount type="s32_t">8</physicalCoreCount>
+  <processorPackageCount type="s32_t">1</processorPackageCount>
+  <CPUFrequency type="s64_t">2500000000</CPUFrequency>
+  <CPUFamily type="s32_t">6</CPUFamily>
+  <CPUModel type="s32_t">167</CPUModel>
+  <CPUStepping type="s32_t">1</CPUStepping>
+  <CPUBrandName>11th Gen Intel(R) Core(TM) i7-11700 @ 2.50GHz</CPUBrandName>
+  <isa>avx512</isa>
+ </rdmgr>
+ <vs_search_dirs>
+  <searchDirs>
+   <searchCategory>
+    <category type="u8_t">1</category>
+    <searchDirectory>
+     <name>C:\Users\Daiki\Documents\Dxlib作品\SoftBodyProject\SoftBodyProject\x64\Debug</name>
+     <recursive type="bool">false</recursive>
+     <priority type="bool">false</priority>
+    </searchDirectory>
+    <searchDirectory>
+     <name>C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.51.36231\bin\HostX64\x64</name>
+     <recursive type="bool">false</recursive>
+     <priority type="bool">false</priority>
+    </searchDirectory>
+    <searchDirectory>
+     <name>C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64</name>
+     <recursive type="bool">false</recursive>
+     <priority type="bool">false</priority>
+    </searchDirectory>
+    <searchDirectory>
+     <name>C:\Program Files (x86)\Microsoft SDKs\Windows\v10.0A\bin\NETFX 4.8 Tools\x64</name>
+     <recursive type="bool">false</recursive>
+     <priority type="bool">false</priority>
+    </searchDirectory>
+    <searchDirectory>
+     <name>C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x86</name>
+     <recursive type="bool">false</recursive>
+     <priority type="bool">false</priority>
+    </searchDirectory>
+    <searchDirectory>
+     <name>C:\Program Files (x86)\Microsoft SDKs\Windows\v10.0A\bin\NETFX 4.8 Tools</name>
+     <recursive type="bool">false</recursive>
+     <priority type="bool">false</priority>
+    </searchDirectory>
+    <searchDirectory>
+     <name>C:\Program Files\Microsoft Visual Studio\18\Community\Common7\tools</name>
+     <recursive type="bool">false</recursive>
+     <priority type="bool">false</priority>
+    </searchDirectory>
+    <searchDirectory>
+     <name>C:\Program Files\Microsoft Visual Studio\18\Community\Common7\ide</name>
+     <recursive type="bool">false</recursive>
+     <priority type="bool">false</priority>
+    </searchDirectory>
+    <searchDirectory>
+     <name>C:\Program Files\Microsoft Visual Studio\18\Community\MSBuild\Current\Bin\amd64</name>
+     <recursive type="bool">false</recursive>
+     <priority type="bool">false</priority>
+    </searchDirectory>
+    <searchDirectory>
+     <name>C:\WINDOWS\Microsoft.NET\Framework64\v4.0.30319\</name>
+     <recursive type="bool">false</recursive>
+     <priority type="bool">false</priority>
+    </searchDirectory>
+    <searchDirectory>
+     <name>C:\WINDOWS\Microsoft.NET\Framework\v4.0.30319\</name>
+     <recursive type="bool">false</recursive>
+     <priority type="bool">false</priority>
+    </searchDirectory>
+    <searchDirectory>
+     <name>C:\Program Files\Microsoft Visual Studio\18\Community\MSBuild\Current\Bin</name>
+     <recursive type="bool">false</recursive>
+     <priority type="bool">false</priority>
+    </searchDirectory>
+    <searchDirectory>
+     <name>C:\Windows\system32</name>
+     <recursive type="bool">false</recursive>
+     <priority type="bool">false</priority>
+    </searchDirectory>
+    <searchDirectory>
+     <name>C:\Windows</name>
+     <recursive type="bool">false</recursive>
+     <priority type="bool">false</priority>
+    </searchDirectory>
+    <searchDirectory>
+     <name>C:\Windows\System32\Wbem</name>
+     <recursive type="bool">false</recursive>
+     <priority type="bool">false</priority>
+    </searchDirectory>
+    <searchDirectory>
+     <name>C:\Windows\System32\WindowsPowerShell\v1.0\</name>
+     <recursive type="bool">false</recursive>
+     <priority type="bool">false</priority>
+    </searchDirectory>
+    <searchDirectory>
+     <name>C:\Windows\System32\OpenSSH\</name>
+     <recursive type="bool">false</recursive>
+     <priority type="bool">false</priority>
+    </searchDirectory>
+    <searchDirectory>
+     <name>C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common</name>
+     <recursive type="bool">false</recursive>
+     <priority type="bool">false</priority>
+    </searchDirectory>
+    <searchDirectory>
+     <name>C:\Program Files\NVIDIA Corporation\NVIDIA app\NvDLISR</name>
+     <recursive type="bool">false</recursive>
+     <priority type="bool">false</priority>
+    </searchDirectory>
+    <searchDirectory>
+     <name>C:\Program Files\nodejs\</name>
+     <recursive type="bool">false</recursive>
+     <priority type="bool">false</priority>
+    </searchDirectory>
+    <searchDirectory>
+     <name>C:\Program Files (x86)\Windows Kits\10\Windows Performance Toolkit\</name>
+     <recursive type="bool">false</recursive>
+     <priority type="bool">false</priority>
+    </searchDirectory>
+    <searchDirectory>
+     <name>C:\Program Files\dotnet\</name>
+     <recursive type="bool">false</recursive>
+     <priority type="bool">false</priority>
+    </searchDirectory>
+    <searchDirectory>
+     <name>C:\Users\Daiki\.local\bin</name>
+     <recursive type="bool">false</recursive>
+     <priority type="bool">false</priority>
+    </searchDirectory>
+    <searchDirectory>
+     <name>C:\Users\Daiki\AppData\Local\Programs\Python\Python312\Scripts\</name>
+     <recursive type="bool">false</recursive>
+     <priority type="bool">false</priority>
+    </searchDirectory>
+    <searchDirectory>
+     <name>C:\Users\Daiki\AppData\Local\Programs\Python\Python312\</name>
+     <recursive type="bool">false</recursive>
+     <priority type="bool">false</priority>
+    </searchDirectory>
+    <searchDirectory>
+     <name>C:\Users\Daiki\AppData\Local\Programs\Python\Python314\Scripts\</name>
+     <recursive type="bool">false</recursive>
+     <priority type="bool">false</priority>
+    </searchDirectory>
+    <searchDirectory>
+     <name>C:\Users\Daiki\AppData\Local\Programs\Python\Python314\</name>
+     <recursive type="bool">false</recursive>
+     <priority type="bool">false</priority>
+    </searchDirectory>
+    <searchDirectory>
+     <name>C:\Users\Daiki\AppData\Local\Programs\Python\Launcher\</name>
+     <recursive type="bool">false</recursive>
+     <priority type="bool">false</priority>
+    </searchDirectory>
+    <searchDirectory>
+     <name>C:\Users\Daiki\AppData\Local\Microsoft\WindowsApps</name>
+     <recursive type="bool">false</recursive>
+     <priority type="bool">false</priority>
+    </searchDirectory>
+    <searchDirectory>
+     <name>C:\Users\Daiki\AppData\Roaming\npm</name>
+     <recursive type="bool">false</recursive>
+     <priority type="bool">false</priority>
+    </searchDirectory>
+    <searchDirectory>
+     <name>C:\Users\Daiki\AppData\Local\Programs\Microsoft VS Code\bin</name>
+     <recursive type="bool">false</recursive>
+     <priority type="bool">false</priority>
+    </searchDirectory>
+    <searchDirectory>
+     <name>C:\Users\Daiki\Documents\Dxlib作品\SoftBodyProject\SoftBodyProject</name>
+     <recursive type="bool">false</recursive>
+     <priority type="bool">false</priority>
+    </searchDirectory>
+   </searchCategory>
+   <searchCategory>
+    <category type="u8_t">2</category>
+    <searchDirectory>
+     <name>C:\Users\Daiki\Documents\Dxlib作品\SoftBodyProject\SoftBodyProject\x64\Debug</name>
+     <recursive type="bool">false</recursive>
+     <priority type="bool">false</priority>
+    </searchDirectory>
+    <searchDirectory>
+     <name>C:\Users\Daiki\Documents\Dxlib作品\SoftBodyProject\SoftBodyProject</name>
+     <recursive type="bool">true</recursive>
+     <priority type="bool">false</priority>
+    </searchDirectory>
+   </searchCategory>
+   <searchCategory>
+    <category type="u8_t">3</category>
+    <searchDirectory>
+     <name>C:\Users\Daiki\Documents\Dxlib作品\SoftBodyProject\SoftBodyProject</name>
+     <recursive type="bool">true</recursive>
+     <priority type="bool">false</priority>
+    </searchDirectory>
+    <searchDirectory>
+     <name>C:\Users\Daiki\Documents\Dxlib作品\SoftBodyProject\SoftBodyProject\ThirdParty\プロジェクトに追加すべきファイル_VC用</name>
+     <recursive type="bool">false</recursive>
+     <priority type="bool">false</priority>
+    </searchDirectory>
+    <searchDirectory>
+     <name>C:\Users\Daiki\Documents\Dxlib作品\SoftBodyProject\SoftBodyProject\Source\</name>
+     <recursive type="bool">false</recursive>
+     <priority type="bool">false</priority>
+    </searchDirectory>
+    <searchDirectory>
+     <name>C:\Users\Daiki\Documents\Dxlib作品\SoftBodyProject\SoftBodyProject\Source\Common</name>
+     <recursive type="bool">false</recursive>
+     <priority type="bool">false</priority>
+    </searchDirectory>
+    <searchDirectory>
+     <name>C:\Users\Daiki\Documents\Dxlib作品\SoftBodyProject\SoftBodyProject\Source\Objects</name>
+     <recursive type="bool">false</recursive>
+     <priority type="bool">false</priority>
+    </searchDirectory>
+    <searchDirectory>
+     <name>C:\Users\Daiki\Documents\Dxlib作品\SoftBodyProject\SoftBodyProject\Source\System</name>
+     <recursive type="bool">false</recursive>
+     <priority type="bool">false</priority>
+    </searchDirectory>
+    <searchDirectory>
+     <name>C:\Users\Daiki\Documents\Dxlib作品\SoftBodyProject\SoftBodyProject\Source\Common\Math</name>
+     <recursive type="bool">false</recursive>
+     <priority type="bool">false</priority>
+    </searchDirectory>
+    <searchDirectory>
+     <name>C:\Users\Daiki\Documents\Dxlib作品\SoftBodyProject\SoftBodyProject\Source\Common\BaseClass</name>
+     <recursive type="bool">false</recursive>
+     <priority type="bool">false</priority>
+    </searchDirectory>
+    <searchDirectory>
+     <name>C:\Users\Daiki\Documents\Dxlib作品\SoftBodyProject\SoftBodyProject\Source\Common\Constants</name>
+     <recursive type="bool">false</recursive>
+     <priority type="bool">false</priority>
+    </searchDirectory>
+    <searchDirectory>
+     <name>C:\Users\Daiki\Documents\Dxlib作品\SoftBodyProject\SoftBodyProject\Source\Common\ECS</name>
+     <recursive type="bool">false</recursive>
+     <priority type="bool">false</priority>
+    </searchDirectory>
+    <searchDirectory>
+     <name>C:\Users\Daiki\Documents\Dxlib作品\SoftBodyProject\SoftBodyProject\Source\Common\Interface</name>
+     <recursive type="bool">false</recursive>
+     <priority type="bool">false</priority>
+    </searchDirectory>
+    <searchDirectory>
+     <name>C:\Users\Daiki\Documents\Dxlib作品\SoftBodyProject\SoftBodyProject\Source\Common\BaseClass\SceneBase</name>
+     <recursive type="bool">false</recursive>
+     <priority type="bool">false</priority>
+    </searchDirectory>
+    <searchDirectory>
+     <name>C:\Users\Daiki\Documents\Dxlib作品\SoftBodyProject\SoftBodyProject\Source\System\Adapter</name>
+     <recursive type="bool">false</recursive>
+     <priority type="bool">false</priority>
+    </searchDirectory>
+    <searchDirectory>
+     <name>C:\Users\Daiki\Documents\Dxlib作品\SoftBodyProject\SoftBodyProject\Source\System\Components</name>
+     <recursive type="bool">false</recursive>
+     <priority type="bool">false</priority>
+    </searchDirectory>
+    <searchDirectory>
+     <name>C:\Users\Daiki\Documents\Dxlib作品\SoftBodyProject\SoftBodyProject\Source\System\ComponentStorages</name>
+     <recursive type="bool">false</recursive>
+     <priority type="bool">false</priority>
+    </searchDirectory>
+    <searchDirectory>
+     <name>C:\Users\Daiki\Documents\Dxlib作品\SoftBodyProject\SoftBodyProject\Source\System\ComponentSystems</name>
+     <recursive type="bool">false</recursive>
+     <priority type="bool">false</priority>
+    </searchDirectory>
+    <searchDirectory>
+     <name>C:\Users\Daiki\Documents\Dxlib作品\SoftBodyProject\SoftBodyProject\Source\System\Scenes</name>
+     <recursive type="bool">false</recursive>
+     <priority type="bool">false</priority>
+    </searchDirectory>
+    <searchDirectory>
+     <name>C:\Users\Daiki\Documents\Dxlib作品\SoftBodyProject\SoftBodyProject\Source\System\Manager</name>
+     <recursive type="bool">false</recursive>
+     <priority type="bool">false</priority>
+    </searchDirectory>
+    <searchDirectory>
+     <name>C:\Users\Daiki\Documents\Dxlib作品\SoftBodyProject\SoftBodyProject\Source\Physics</name>
+     <recursive type="bool">false</recursive>
+     <priority type="bool">false</priority>
+    </searchDirectory>
+    <searchDirectory>
+     <name>C:\Users\Daiki\Documents\Dxlib作品\SoftBodyProject\SoftBodyProject\Source\Physics\Storage</name>
+     <recursive type="bool">false</recursive>
+     <priority type="bool">false</priority>
+    </searchDirectory>
+    <searchDirectory>
+     <name>C:\Users\Daiki\Documents\Dxlib作品\SoftBodyProject\SoftBodyProject\Source\Physics\System</name>
+     <recursive type="bool">false</recursive>
+     <priority type="bool">false</priority>
+    </searchDirectory>
+    <searchDirectory>
+     <name>C:\Users\Daiki\Documents\Dxlib作品\SoftBodyProject\SoftBodyProject\Source\Physics\Struct</name>
+     <recursive type="bool">false</recursive>
+     <priority type="bool">false</priority>
+    </searchDirectory>
+    <searchDirectory>
+     <name>C:\Users\Daiki\Documents\Dxlib作品\SoftBodyProject\SoftBodyProject\Source\Common\BaseClass\ObjectBase</name>
+     <recursive type="bool">false</recursive>
+     <priority type="bool">false</priority>
+    </searchDirectory>
+    <searchDirectory>
+     <name>C:\Users\Daiki\Documents\Dxlib作品\SoftBodyProject\SoftBodyProject\Source\Common\Color</name>
+     <recursive type="bool">false</recursive>
+     <priority type="bool">false</priority>
+    </searchDirectory>
+    <searchDirectory>
+     <name>C:\Users\Daiki\Documents\Dxlib作品\SoftBodyProject\SoftBodyProject\Source\Physics\Constants\</name>
+     <recursive type="bool">false</recursive>
+     <priority type="bool">false</priority>
+    </searchDirectory>
+    <searchDirectory>
+     <name>C:\Users\Daiki\Documents\Dxlib作品\SoftBodyProject\SoftBodyProject\Source\Physics\System\Collision</name>
+     <recursive type="bool">false</recursive>
+     <priority type="bool">false</priority>
+    </searchDirectory>
+    <searchDirectory>
+     <name>C:\Users\Daiki\Documents\Dxlib作品\SoftBodyProject\SoftBodyProject\Source\Physics\System\Update</name>
+     <recursive type="bool">false</recursive>
+     <priority type="bool">false</priority>
+    </searchDirectory>
+    <searchDirectory>
+     <name>C:\Users\Daiki\Documents\Dxlib作品\SoftBodyProject\SoftBodyProject\Source\Physics\System\Sync</name>
+     <recursive type="bool">false</recursive>
+     <priority type="bool">false</priority>
+    </searchDirectory>
+    <searchDirectory>
+     <name>C:\Users\Daiki\Documents\Dxlib作品\SoftBodyProject\SoftBodyProject\Source\Common\Events</name>
+     <recursive type="bool">false</recursive>
+     <priority type="bool">false</priority>
+    </searchDirectory>
+    <searchDirectory>
+     <name>C:\Users\Daiki\Documents\Dxlib作品\SoftBodyProject\SoftBodyProject\Source\Common\Events\Physics</name>
+     <recursive type="bool">false</recursive>
+     <priority type="bool">false</priority>
+    </searchDirectory>
+    <searchDirectory>
+     <name>C:\Users\Daiki\Documents\Dxlib作品\SoftBodyProject\SoftBodyProject\Source\Physics\Storage\Collider</name>
+     <recursive type="bool">false</recursive>
+     <priority type="bool">false</priority>
+    </searchDirectory>
+    <searchDirectory>
+     <name>C:\Users\Daiki\Documents\Dxlib作品\SoftBodyProject\SoftBodyProject\Source\Physics\Storage\Component</name>
+     <recursive type="bool">false</recursive>
+     <priority type="bool">false</priority>
+    </searchDirectory>
+    <searchDirectory>
+     <name>C:\Users\Daiki\Documents\Dxlib作品\SoftBodyProject\SoftBodyProject\Source\Physics\Storage\Body</name>
+     <recursive type="bool">false</recursive>
+     <priority type="bool">false</priority>
+    </searchDirectory>
+    <searchDirectory>
+     <name>C:\Users\Daiki\Documents\Dxlib作品\SoftBodyProject\SoftBodyProject\Source\Physics\Storage\Transform</name>
+     <recursive type="bool">false</recursive>
+     <priority type="bool">false</priority>
+    </searchDirectory>
+    <searchDirectory>
+     <name>C:\Users\Daiki\Documents\Dxlib作品\SoftBodyProject\SoftBodyProject\Source\Common\Math\NamericalAnalysis</name>
+     <recursive type="bool">false</recursive>
+     <priority type="bool">false</priority>
+    </searchDirectory>
+    <searchDirectory>
+     <name>C:\Users\Daiki\Documents\Dxlib作品\SoftBodyProject\SoftBodyProject\Source\Physics\Struct\Collision</name>
+     <recursive type="bool">false</recursive>
+     <priority type="bool">false</priority>
+    </searchDirectory>
+    <searchDirectory>
+     <name>C:\Users\Daiki\Documents\Dxlib作品\SoftBodyProject\SoftBodyProject\Source\Physics\Struct\Body</name>
+     <recursive type="bool">false</recursive>
+     <priority type="bool">false</priority>
+    </searchDirectory>
+    <searchDirectory>
+     <name>C:\Users\Daiki\Documents\Dxlib作品\SoftBodyProject\SoftBodyProject\Source\Physics\Struct\Transform</name>
+     <recursive type="bool">false</recursive>
+     <priority type="bool">false</priority>
+    </searchDirectory>
+    <searchDirectory>
+     <name>C:\Users\Daiki\Documents\Dxlib作品\SoftBodyProject\SoftBodyProject\Source\Physics\Struct\Collider</name>
+     <recursive type="bool">false</recursive>
+     <priority type="bool">false</priority>
+    </searchDirectory>
+    <searchDirectory>
+     <name>C:\Users\Daiki\Documents\Dxlib作品\SoftBodyProject\SoftBodyProject\Source\Physics\Struct\Constraint</name>
+     <recursive type="bool">false</recursive>
+     <priority type="bool">false</priority>
+    </searchDirectory>
+    <searchDirectory>
+     <name>C:\Users\Daiki\Documents\Dxlib作品\SoftBodyProject\SoftBodyProject\Source\Physics\Function</name>
+     <recursive type="bool">false</recursive>
+     <priority type="bool">false</priority>
+    </searchDirectory>
+    <searchDirectory>
+     <name>C:\Users\Daiki\Documents\Dxlib作品\SoftBodyProject\SoftBodyProject\ThirdParty\rapidjson</name>
+     <recursive type="bool">false</recursive>
+     <priority type="bool">false</priority>
+    </searchDirectory>
+    <searchDirectory>
+     <name>C:\Users\Daiki\Documents\Dxlib作品\SoftBodyProject\SoftBodyProject\Source\System\SceneData\Struct</name>
+     <recursive type="bool">false</recursive>
+     <priority type="bool">false</priority>
+    </searchDirectory>
+    <searchDirectory>
+     <name>C:\Users\Daiki\Documents\Dxlib作品\SoftBodyProject\SoftBodyProject\Source\System\SceneData\Struct\Component</name>
+     <recursive type="bool">false</recursive>
+     <priority type="bool">false</priority>
+    </searchDirectory>
+    <searchDirectory>
+     <name>C:\Users\Daiki\Documents\Dxlib作品\SoftBodyProject\SoftBodyProject\Source\System\SceneData</name>
+     <recursive type="bool">false</recursive>
+     <priority type="bool">false</priority>
+    </searchDirectory>
+    <searchDirectory>
+     <name>C:\Users\Daiki\Documents\Dxlib作品\SoftBodyProject\SoftBodyProject\Source\System\Factory</name>
+     <recursive type="bool">false</recursive>
+     <priority type="bool">false</priority>
+    </searchDirectory>
+    <searchDirectory>
+     <name>C:\Users\Daiki\Documents\Dxlib作品\SoftBodyProject\SoftBodyProject\Source\Physics\Component\Body</name>
+     <recursive type="bool">false</recursive>
+     <priority type="bool">false</priority>
+    </searchDirectory>
+    <searchDirectory>
+     <name>C:\Users\Daiki\Documents\Dxlib作品\SoftBodyProject\SoftBodyProject\Source\Physics\Component\Collider</name>
+     <recursive type="bool">false</recursive>
+     <priority type="bool">false</priority>
+    </searchDirectory>
+    <searchDirectory>
+     <name>C:\Users\Daiki\Documents\Dxlib作品\SoftBodyProject\SoftBodyProject\Source\Physics\Storage\Constraint</name>
+     <recursive type="bool">false</recursive>
+     <priority type="bool">false</priority>
+    </searchDirectory>
+    <searchDirectory>
+     <name>C:\Users\Daiki\Documents\Dxlib作品\SoftBodyProject\SoftBodyProject\Source\Physics\System\Solver</name>
+     <recursive type="bool">false</recursive>
+     <priority type="bool">false</priority>
+    </searchDirectory>
+    <searchDirectory>
+     <name>C:\Users\Daiki\Documents\Dxlib作品\SoftBodyProject\SoftBodyProject\Source\Physics\System\Build</name>
+     <recursive type="bool">false</recursive>
+     <priority type="bool">false</priority>
+    </searchDirectory>
+    <searchDirectory>
+     <name>C:\Users\Daiki\Documents\Dxlib作品\SoftBodyProject\SoftBodyProject\Source\Physics\Component\Constraint</name>
+     <recursive type="bool">false</recursive>
+     <priority type="bool">false</priority>
+    </searchDirectory>
+    <searchDirectory>
+     <name>C:\Users\Daiki\Documents\Dxlib作品\SoftBodyProject\SoftBodyProject\Source\Physics\DebugRender</name>
+     <recursive type="bool">false</recursive>
+     <priority type="bool">false</priority>
+    </searchDirectory>
+    <searchDirectory>
+     <name>C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.51.36231\atlmfc\src\atl</name>
+     <recursive type="bool">false</recursive>
+     <priority type="bool">false</priority>
+    </searchDirectory>
+    <searchDirectory>
+     <name>C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.51.36231\crt\src</name>
+     <recursive type="bool">false</recursive>
+     <priority type="bool">false</priority>
+    </searchDirectory>
+    <searchDirectory>
+     <name>C:\Program Files (x86)\Windows Kits\10\Source\10.0.26100.0\ucrt</name>
+     <recursive type="bool">false</recursive>
+     <priority type="bool">false</priority>
+    </searchDirectory>
+    <searchDirectory>
+     <name>C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.51.36231\include</name>
+     <recursive type="bool">false</recursive>
+     <priority type="bool">false</priority>
+    </searchDirectory>
+    <searchDirectory>
+     <name>C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.51.36231\atlmfc\include</name>
+     <recursive type="bool">false</recursive>
+     <priority type="bool">false</priority>
+    </searchDirectory>
+    <searchDirectory>
+     <name>C:\Program Files\Microsoft Visual Studio\18\Community\VC\Auxiliary\VS\include</name>
+     <recursive type="bool">false</recursive>
+     <priority type="bool">false</priority>
+    </searchDirectory>
+    <searchDirectory>
+     <name>C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt</name>
+     <recursive type="bool">false</recursive>
+     <priority type="bool">false</priority>
+    </searchDirectory>
+    <searchDirectory>
+     <name>C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\um</name>
+     <recursive type="bool">false</recursive>
+     <priority type="bool">false</priority>
+    </searchDirectory>
+    <searchDirectory>
+     <name>C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\shared</name>
+     <recursive type="bool">false</recursive>
+     <priority type="bool">false</priority>
+    </searchDirectory>
+    <searchDirectory>
+     <name>C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\winrt</name>
+     <recursive type="bool">false</recursive>
+     <priority type="bool">false</priority>
+    </searchDirectory>
+    <searchDirectory>
+     <name>C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\cppwinrt</name>
+     <recursive type="bool">false</recursive>
+     <priority type="bool">false</priority>
+    </searchDirectory>
+    <searchDirectory>
+     <name>C:\Program Files (x86)\Windows Kits\NETFXSDK\4.8\Include\um</name>
+     <recursive type="bool">false</recursive>
+     <priority type="bool">false</priority>
+    </searchDirectory>
+   </searchCategory>
+   <searchCategory>
+    <category type="u8_t">4</category>
+   </searchCategory>
+  </searchDirs>
+ </vs_search_dirs>
+</root>

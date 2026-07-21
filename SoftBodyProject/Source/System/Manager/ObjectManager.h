@@ -1,0 +1,31 @@
+﻿#pragma once
+
+#include <vector>
+#include <memory>
+
+#include "ObjectBase.h"
+
+class ObjectManager
+{
+public:
+	// --- 追加・削除系 ---
+
+	// 追加
+	void Add(std::unique_ptr<ObjectBase> _object);
+
+	// --- 更新系 ---
+
+	void Update();
+	void FixedUpdate();
+
+	// オブジェクト取得
+	ObjectBase* Get(EntityID _index);
+
+	// EntityHandle取得
+	uint32_t GetHandle()
+	{
+		return static_cast<uint32_t>(objects.size());
+	}
+private:
+	std::vector<std::unique_ptr<ObjectBase>> objects{};
+};

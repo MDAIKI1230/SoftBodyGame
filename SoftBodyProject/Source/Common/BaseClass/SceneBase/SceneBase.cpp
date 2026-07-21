@@ -1,20 +1,60 @@
-#include <algorithm>
+﻿#include <algorithm>
+
+#include "ServiceLocator.h"
+
+// 描画系
+#include "ModelRenderingSystem.h"
+#include "RendererComponentStorage.h"
+#include "DebugRenderingSystem.h"
+
+// Transform
+#include "TransformComponentStorage.h"
+
+
+// 物理系
+#include "SphereColliderComponentStorage.h"
+#include "BoxColliderComponentStorage.h"
+#include "RigidBodyComponentStorage.h"
+#include "PointConstraintComponentStorage.h"
+#include "DistanceConstraintComponentStorage.h"
+
+// API
+#include "PhysicsAPI.h"
+
+#include "SceneDataLoader.h"
+#include "ObjectFactory.h"
+#include "ComponentFactory.h"
 
 #include "SceneBase.h"
 
-#include "ModelRenderingSystem.h"
-#include "RendererComponentStorage.h"
-
-#include "TransformComponentStorage.h"
-
 SceneBase::SceneBase()
 {
+	worldStorage = std::make_unique<WorldStorage>();
+	systemManager = std::make_unique<SystemManager>();
+	eventManager = std::make_unique<EventManager>();
+	eventSystem = std::make_unique<EventSystem>();
+	physicsWorld = std::make_unique<PhysicsWorld>();
+
 	// レンダリングシステム追加
 	AddSystem(std::make_unique<ModelRenderingSystem>());
 	// レンダラーストレージ追加
 	AddStorage<RendererComponent>(std::make_unique<RendererComponentStorage>());
 	// Transformも同様
 	AddStorage<TransformComponent>(std::make_unique<TransformComponentStorage>());
+	// 物理関係
+	AddStorage<SphereColliderComponent>(std::make_unique<SphereColliderComponentStorage>());
+	AddStorage<BoxColliderComponent>(std::make_unique<BoxColliderComponentStorage>());
+	AddStorage<RigidBodyComponent>(std::make_unique<RigidBodyComponentStorage>());
+	AddStorage<PointConstraintComponent>(std::make_unique<PointConstraintComponentStorage>());
+	AddStorage<DistanceConstraintComponent>(std::make_unique<DistanceConstraintComponentStorage>());
+	// オブジェクトマネージャー
+	objectManager = std::make_unique<ObjectManager>();
+
+	PhysicsAPI::SetWorld(physicsWorld.get());
+
+#ifdef _DEBUG
+	AddSystem(std::make_unique<DebugRenderingSystem>());
+#endif // _DEBUG
 }
 
 void SceneBase::Execute()
@@ -53,40 +93,27 @@ void SceneBase::Execute()
 /// システムの追加(moveされる)
 /// </summary>
 /// <param name="system">入れたいシステム</param>
-void SceneBase::AddSystem(std::unique_ptr<UpdateSystem> _system)
+void SceneBase::AddSystem(std::unique_ptr<UpdateSystem>&& _system)
 {
-	// 入れる位置を探す
-	auto it = std::lower_bound(
-		updateSystems.begin(),
-		updateSystems.end(),
-		_system,
-		[](const std::unique_ptr<UpdateSystem>& a, const std::unique_ptr<UpdateSystem>& b)
-		{
-			return a->GetPriority() > b->GetPriority();
-		});
-
-	// その位置に挿入
-	updateSystems.insert(it, std::move(_system));
+	systemManager->AddSystem(std::move(_system));
 }
 
 /// <summary>
 /// システムの追加(moveされる)
 /// </summary>
 /// <param name="system">入れたいシステム</param>
-void SceneBase::AddSystem(std::unique_ptr<RenderingSystem> _system)
+void SceneBase::AddSystem(std::unique_ptr<FixedUpdateSystem>&& _system)
 {
-	// 入れる位置を探す
-	auto it = std::lower_bound(
-		renderingSystems.begin(),
-		renderingSystems.end(),
-		_system,
-		[](const std::unique_ptr<RenderingSystem>& a, const std::unique_ptr<RenderingSystem>& b)
-		{
-			return a->GetPriority() > b->GetPriority();
-		});
+	systemManager->AddSystem(std::move(_system));
+}
 
-	// その位置に挿入
-	renderingSystems.insert(it, std::move(_system));
+/// <summary>
+/// システムの追加(moveされる)
+/// </summary>
+/// <param name="system">入れたいシステム</param>
+void SceneBase::AddSystem(std::unique_ptr<RenderingSystem>&& _system)
+{
+	systemManager->AddSystem(std::move(_system));
 }
 
 void SceneBase::FadeIn()
@@ -101,19 +128,49 @@ void SceneBase::FadeOut()
 
 void SceneBase::Update()
 {
-	// 更新
-	for (int i{ 0 }; i < updateSystems.size(); i++)
+	// オブジェクトマネージャー更新
+	objectManager->Update();
+	// システムマネージャー更新
+	systemManager->Update(worldStorage.get(), eventManager.get());
+
+	eventManager->Swap();
+
+	eventSystem->Update(eventManager.get(), objectManager.get());
+
+	// 物理更新
+	while (ServiceLocator::GetTimeManager()->IsFixedUpdateTime())
 	{
-		updateSystems[i]->Update(this);
+		objectManager->FixedUpdate();
+
+		systemManager->FixedUpdate(worldStorage.get(), eventManager.get());
+
+		physicsWorld->FixedUpdate(worldStorage.get(), eventManager.get());
 	}
 }
 
-// 描画
-void SceneBase::Draw()
+void SceneBase::Render()
 {
-	// 更新
-	for (int i{ 0 }; i < renderingSystems.size(); i++)
+	systemManager->Render(worldStorage.get(), eventManager.get());
+#ifdef _DEBUG
+	physicsWorld->DebugRender();
+#endif // _DEBUG
+}
+
+void SceneBase::LoadFile(std::string _filePath)
+{
+	SceneFileData fileData;
+	SceneDataLoader::LoadJson(_filePath, fileData);
+
+	for (auto& objData : fileData.objectDatas)
 	{
-		renderingSystems[i]->Draw(this);
+		// 対応オブジェクトを作成
+		std::unique_ptr<ObjectBase> obj{ std::move(ObjectFactory::CreateFuncs[objData.type](worldStorage.get(), objectManager->GetHandle())) };
+
+		for (auto& componentData : objData.components)
+		{
+			ComponentFactory::CreateFuncs[componentData->GetName()](obj.get(), componentData.get());
+		}
+
+		objectManager->Add(std::move(obj));
 	}
 }

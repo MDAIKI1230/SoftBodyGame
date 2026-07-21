@@ -1,22 +1,22 @@
-#include "ServiceLocator.h"
+﻿#include "ServiceLocator.h"
 
 #include "TransformComponent.h"
 #include "RendererComponentStorage.h"
 
 #include "ModelRenderingSystem.h"
 
-void ModelRenderingSystem::Draw(IWorld* world)
+void ModelRenderingSystem::Draw(WorldStorage* _worldStorage, EventManager* _eventManager)
 {
 	// レンダラーコンポーネントストレージ
-	SparseSetStorageBase<RendererComponent>* rendererStorage{ world->GetStorage<RendererComponent>() };
+	SparseSetStorageBase<RendererComponent>* rendererStorage{ _worldStorage->GetStorage<RendererComponent>() };
 	// Transformストレージ
-	SparseSetStorageBase<TransformComponent>* transformStorage{ world->GetStorage<TransformComponent>() };
+	SparseSetStorageBase<TransformComponent>* transformStorage{ _worldStorage->GetStorage<TransformComponent>() };
 	// エンティティ
-	std::vector<int>* entities{ rendererStorage->GetEntities() };
+	std::vector<EntityID>* entities{ rendererStorage->GetEntities() };
 	// トランスフォーム
 	TransformComponent trans{};
 	// 全コンポーネントを描画
-	for (auto id : *entities)
+	for (EntityID id : *entities)
 	{
 		// 取得&チェック
 		if (!transformStorage->TryGet(id, trans))

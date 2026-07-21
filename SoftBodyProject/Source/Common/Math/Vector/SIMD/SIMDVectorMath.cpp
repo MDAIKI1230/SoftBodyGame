@@ -1,4 +1,4 @@
-#include <smmintrin.h>
+﻿#include <smmintrin.h>
 #include <math.h>
 #include "SIMDVectorMath.h"
 
@@ -47,7 +47,7 @@ float SIMDVectorMath::Dot2(const SIMDVectorFloat& _vec1, const SIMDVectorFloat& 
 // 内積(Vector3)
 float SIMDVectorMath::Dot3(const SIMDVectorFloat& _vec1, const SIMDVectorFloat& _vec2)
 {
-	return _mm_cvtss_f32(_mm_dp_ps(_vec1, _vec2, 0xE1));
+	return _mm_cvtss_f32(_mm_dp_ps(_vec1, _vec2, 0x71));
 }
 
 // 内積(Vector4)
@@ -85,6 +85,12 @@ float SIMDVectorMath::Length2(const SIMDVectorFloat& _vec)
 float SIMDVectorMath::Length3(const SIMDVectorFloat& _vec)
 {
 	return sqrtf(Dot3(_vec, _vec));
+}
+
+// ノルム
+float SIMDVectorMath::Norm(const SIMDVectorFloat& _vec)
+{
+	return sqrtf(Dot4(_vec, _vec));
 }
 
 // 正規化

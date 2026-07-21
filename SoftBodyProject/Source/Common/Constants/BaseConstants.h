@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 namespace Config
 {
@@ -7,3 +7,10 @@ namespace Config
 	inline constexpr int WINDOW_SIZE_H{ 540 };
 	inline constexpr int COLOR_BIT{ 32 };
 }
+
+enum Axis
+{
+	X,
+	Y,
+	Z
+};

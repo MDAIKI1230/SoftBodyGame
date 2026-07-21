@@ -1,4 +1,4 @@
-#include "../Vector/SIMD/SIMDVectorMath.h"
+﻿#include "../Vector/SIMD/SIMDVectorMath.h"
 #include "../Matrix/MatGenerateFunc.h"
 #include "Transform.h"
 
@@ -87,7 +87,7 @@ void Transform::RotateAround(const Vector3& _point, const Vector3& _axis, float 
 void Transform::SetRotation(const Quaternion& _rot)
 {
 	rotation = _rot;
-
+	rotation.Normalize();
 	// 行列更新
 	UpdateLocalMatrix();
 }
@@ -163,7 +163,7 @@ void Transform::SetParent(Transform* _parent, bool keepLocal)
 		if (parent)
 		{
 			// 逆行列を生成
-			invParent = MatGenerateFunc::InverseTRS(parent->GetPosition(), parent->GetRotate(), parent->GetScale());
+			invParent = MatGenerateFunc::InverseTRS(parent->GetPosition(), parent->GetRotation(), parent->GetScale());
 		}
 		else
 		{

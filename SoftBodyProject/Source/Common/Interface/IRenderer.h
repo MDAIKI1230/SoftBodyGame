@@ -1,8 +1,9 @@
-#pragma once
+﻿#pragma once
 
 #include <string>
 
 #include "MDMath.h"
+#include "Color.h"
 #include "Camera.h"
 
 class IRenderer
@@ -17,6 +18,13 @@ public:
 	virtual int ClearDrawScreen() = 0;
 	// ダブルバッファリングの反転
 	virtual int ScreenFlip() = 0;
+	// --- 設定 ---
+
+	// ZDepth使う
+	virtual int SetUseZDepth(bool _flag) = 0;
+	// ZDepth書き込み
+	virtual int SetWriteZDepth(bool _flag) = 0;
+
 	// ---読み込み関数---
 	
 	// モデルの読み込み
@@ -44,7 +52,14 @@ public:
 	// 画像描画
 	virtual void DrawGraph(const Vector2& _pos, int _handle, bool _transFlag) = 0;
 	// 球描画
-	virtual void DrawSphere(const Vector3& _pos, float _radius) = 0;
+	virtual void DrawSphere(const Vector3& _pos, float _radius, const Color& _color) = 0;
+	// メッシュ球描画
+	virtual void DrawSphereMesh(const Vector3& _pos, float _radius, const Color& _color) = 0;
+	// Box描画
+	virtual void DrawBox(const Matrix4x4& _mat, const Vector3& _size, const Color& _color) = 0;
+	// 線描画
+	virtual void DrawLine(const Vector3& _pos1, const Vector3& _pos2, const Color& _color) = 0;
+
 	// ---リソース削除関数---
 
 	// モデル素材削除

@@ -1,0 +1,40 @@
+{
+    "Version":1,
+    "Objects":
+    [
+        {
+            "ID":"floor",
+            "Type":"DebugBox",
+            "Components":
+            [
+                {
+                    "Name":"Transform",
+                    "Position"   :{ "X": 0 ,"Y": -200 ,"Z": 0 },
+                    "RotationDeg":{ "X": 0 ,"Y":   0  ,"Z": 0 },
+                    "Scale"      :{ "X": 1 ,"Y":   1  ,"Z": 1 }
+                },
+                {
+                    "Name":"BoxCollider",
+                    "Size": { "X": 200 ,"Y": 50 ,"Z": 200 }
+                }
+            ]
+        },
+        {
+            "ID":"ball",
+            "Type":"DebugSphere",
+            "Components":
+            [
+                {
+                    "Name":"Transform",
+                    "Position"   :{ "X": 0 ,"Y": 0 ,"Z": 0 },
+                    "RotationDeg":{ "X": 0 ,"Y": 0 ,"Z": 0 },
+                    "Scale"      :{ "X": 1 ,"Y": 1 ,"Z": 1 }
+                },
+                {
+                    "Name":"SphereCollider",
+                    "Radius": 30
+                }
+            ]
+        }
+    ]
+}

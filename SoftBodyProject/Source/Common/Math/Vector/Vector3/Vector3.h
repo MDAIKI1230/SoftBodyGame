@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "../SIMD/SIMDVector.h"
 
@@ -107,7 +107,7 @@ public:
 	static Vector3& Normalize(Vector3& _vec);
 
 	// 正規化(値の変化無)(実数のみ)
-	Vector3 Normalized();
+	Vector3 Normalized() const;
 	// 正規化(値の変化無)(実数のみ)
 	static Vector3 Normalized(const Vector3& _vec);
 

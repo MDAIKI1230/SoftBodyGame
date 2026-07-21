@@ -1,4 +1,4 @@
-#include "../SIMD/SIMDVectorMath.h"
+﻿#include "../SIMD/SIMDVectorMath.h"
 #include "Vector2Int.h"
 
 const Vector2Int Vector2Int::ZERO{ 0,0 };

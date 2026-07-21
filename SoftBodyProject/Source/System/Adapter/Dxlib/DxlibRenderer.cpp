@@ -1,4 +1,4 @@
-#include <DxLib.h>
+﻿#include <DxLib.h>
 
 #include "DxlibConvert.h"
 
@@ -7,7 +7,23 @@
 void DxlibRenderer::SetCamera(const Camera& _camera)
 {
 	// 位置と見る点を決める
-	SetCameraPositionAndTarget_UpVecY(ToDxlib(_camera.GetPos()), ToDxlib(_camera.GetTarget()));
+    VECTOR eye = ToDxlib(_camera.GetPos());
+    VECTOR target = ToDxlib(_camera.GetTarget());
+    VECTOR up = DxLib::VGet(0.0f, 1.0f, 0.0f);
+
+    MATRIX view{};
+    DxLib::CreateLookAtMatrixRH(&view, &eye, &target, &up);
+    DxLib::SetCameraViewMatrix(view);
+
+    MATRIX projection{};
+    DxLib::CreatePerspectiveFovMatrixRH(
+        &projection,
+        DX_PI_F / 3.0f,
+        0.05f,
+        4000.0f
+    );
+
+    DxLib::SetupCamera_ProjectionMatrix(projection);
 }
 
 int DxlibRenderer::ClearDrawScreen()
@@ -18,6 +34,18 @@ int DxlibRenderer::ClearDrawScreen()
 int DxlibRenderer::ScreenFlip()
 {
 	return DxLib::ScreenFlip();
+}
+
+// ZDepth使う
+int DxlibRenderer::SetUseZDepth(bool _flag)
+{
+	return DxLib::SetUseZBuffer3D(_flag);
+}
+
+// ZDepth書き込み
+int DxlibRenderer::SetWriteZDepth(bool _flag)
+{
+	return DxLib::SetWriteZBuffer3D(_flag);
 }
 
 // モデルの読み込み
@@ -58,6 +86,9 @@ void DxlibRenderer::ModelSetMatrix(int _handle, const Matrix4x4& _mat)
 // モデル描画
 void DxlibRenderer::DrawModel(int _handle)
 {
+	MV1SetUseZBuffer(_handle, true);
+	MV1SetWriteZBuffer(_handle, true);
+
 	DxLib::MV1DrawModel(_handle);
 }
 
@@ -68,12 +99,69 @@ void DxlibRenderer::DrawGraph(const Vector2& _pos, int _handle, bool _transFlag)
 }
 
 // 球描画
-void DxlibRenderer::DrawSphere(const Vector3& _pos, float _radius)
+void DxlibRenderer::DrawSphere(const Vector3& _pos, float _radius, const Color& _color)
 {
 	DxLib::DrawSphere3D(
-		ToDxlib(_pos), _radius, 32,
-		GetColor(255, 255, 255), GetColor(255, 255, 255),
+		ToDxlib(_pos), _radius, 8,
+		ToDxlib(_color), ToDxlib(_color),
 		true);
+}
+
+// メッシュ球描画
+void DxlibRenderer::DrawSphereMesh(const Vector3& _pos, float _radius, const Color& _color)
+{
+    DxLib::DrawSphere3D(
+        ToDxlib(_pos), _radius, 8,
+        ToDxlib(_color), ToDxlib(_color),
+        false);
+}
+
+// Box描画
+void DxlibRenderer::DrawBox(const Matrix4x4& _mat, const Vector3& _size, const Color& _color)
+{
+    Vector3 halfSize = _size * 0.5f;
+
+    // ローカル8頂点
+    Vector3 point[8] = {
+        {-halfSize.x, -halfSize.y, -halfSize.z},
+        { halfSize.x, -halfSize.y, -halfSize.z},
+        { halfSize.x,  halfSize.y, -halfSize.z},
+        {-halfSize.x,  halfSize.y, -halfSize.z},
+
+        {-halfSize.x, -halfSize.y,  halfSize.z},
+        { halfSize.x, -halfSize.y,  halfSize.z},
+        { halfSize.x,  halfSize.y,  halfSize.z},
+        {-halfSize.x,  halfSize.y,  halfSize.z},
+    };
+
+    // ワールド変換
+    for (int i = 0; i < 8; i++)
+    {
+        point[i] = _mat * point[i];
+    }
+
+    // エッジ12本
+    auto L = [&](int a, int b)
+        {
+            DrawLine3D(ToDxlib(point[a]), ToDxlib(point[b]), ToDxlib(_color));
+        };
+
+    // 下
+    L(0, 1); L(1, 2); L(2, 3); L(3, 0);
+
+    // 上
+    L(4, 5); L(5, 6); L(6, 7); L(7, 4);
+
+    // 横の線
+    L(0, 4);
+    L(1, 5);
+    L(2, 6);
+    L(3, 7);
+}
+
+void DxlibRenderer::DrawLine(const Vector3& _pos1, const Vector3& _pos2, const Color& _color)
+{
+    DxLib::DrawLine3D(ToDxlib(_pos1), ToDxlib(_pos2), ToDxlib(_color));
 }
 
 // ---リソース削除関数---

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "../Vector/Vector3/Vector3.h"
 
@@ -59,6 +59,8 @@ public:
 
 	// 単位行列
 	static Matrix4x4 Identity();
+	// ZERO行列
+	static Matrix4x4 Zero();
 
 	// 加算
 	Matrix4x4 operator+(const Matrix4x4& _other)const;
