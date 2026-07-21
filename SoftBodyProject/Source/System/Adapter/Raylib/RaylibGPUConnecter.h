@@ -1,19 +1,24 @@
 ﻿#pragma once
 
 #include <vector>
-
-#include "RaylibInclude.h"
+#include <memory>
 
 #include "IGPUConnecter.h"
 
+#include "Storage/GraphicsShaderStorage.h"
+
 class RaylibGPUConnecter :public IGPUConnecter
 {
+public:
+	// コンストラクタ
+	RaylibGPUConnecter();
+
 	// --- シェーダ関連-- -
 
 	// コンピュートシェーダ読み込み
 	ComputeShaderHandle LoadComputeShader(const std::string& _shaderPath) override;
 	// シェーダとバッファバインド
-	void BindShaderBuffer(ShaderBufferHandle& _buffer, uint32_t _binding) override;
+	void BindShaderBuffer(ShaderBufferHandle& _buffer, ComputeShaderHandle _binding) override;
 	// ディスパッチ
 	void Dispatch(ComputeShaderHandle& _shader, uint32_t _groupX, uint32_t _groupY, uint32_t _groupZ) override;
 	// シェーダ破棄
@@ -23,11 +28,13 @@ class RaylibGPUConnecter :public IGPUConnecter
 	// --- 描画系シェーダ関連 ---
 
 	// 頂点シェーダ読み込み
-	GraphicsShaderHandle LoadVertexShader(const std::string& _vertexShaderPath) override;
+	GraphicsShaderHandle LoadVertexShader(const std::string& _filePath) override;
 	// ピクセルシェーダ読み込み
-	GraphicsShaderHandle LoadPixelShader(const std::string& _pixelShaderPath) override;
+	GraphicsShaderHandle LoadPixelShader(const std::string& _filePath) override;
+	// 頂点とピクセルシェーダ読み込み
+	GraphicsShaderHandle LoadPixelShader(const std::string& _vertexShaderFilePath, const std::string& _pixelShaderFilePath) override;
 	// シェーダとバッファバインド
-	void BindShaderBuffer(ShaderBufferHandle& _buffer, uint32_t _binding) override;
+	void BindShaderBuffer(ShaderBufferHandle& _buffer, GraphicsShaderHandle _binding) override;
 	// 描画関連(頂点とピクセル)シェーダスタート
 	void BeginGraphicsShader(GraphicsShaderHandle& _shader) override;
 	// 描画関連(頂点とピクセル)シェーダ終了
@@ -51,8 +58,5 @@ class RaylibGPUConnecter :public IGPUConnecter
 	void ShaderBufferBarrier() override;
 
 private:
-	std::vector<Shader> shaders;
-
-	std::vector<uint32_t> slots;
-	std::vector<size_t> freeSlots;
+	std::unique_ptr<GraphicsShaderStorage> graphicsShaderStorage;
 };

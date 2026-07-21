@@ -1,0 +1,99 @@
+﻿#include "GraphicsShaderStorage.h"
+
+// 持ってるか確認
+bool GraphicsShaderStorage::Has(GraphicsShaderHandle& _handle)
+{
+	if (!Alive(_handle))
+	{
+		return false;
+	}
+
+	uint32_t index{ slots[_handle.index] };
+	if (shaders.size() <= index)
+	{
+		return false;
+	}
+	
+	if (generations[index] != _handle.generation)
+	{
+		return false;
+	}
+
+	return true;
+}
+// ハンドルが生きているか
+bool GraphicsShaderStorage::Alive(GraphicsShaderHandle& _handle)
+{
+	if (generations.size() <= _handle.index)
+	{
+		return false;
+	}
+
+	return generations[_handle.index] == _handle.generation;
+}
+// 取得
+bool GraphicsShaderStorage::TryGet(GraphicsShaderHandle& _handle, Shader& _output)
+{
+	if (!Alive(_handle))
+	{
+		return false;
+	}
+
+	uint32_t index{ slots[_handle.index] };
+	if (shaders.size() <= index)
+	{
+		return false;
+	}
+
+	if (generations[index] != _handle.generation)
+	{
+		return false;
+	}
+
+	_output = shaders[index];
+
+	return true;
+}
+// 破棄
+void GraphicsShaderStorage::Remove(GraphicsShaderHandle& _handle)
+{
+	if (Alive(_handle))
+	{
+		generations[_handle.index]++;
+		freeSlots.push_back(_handle.index);
+	}
+}
+// 追加
+GraphicsShaderHandle GraphicsShaderStorage::Add(const Shader& _shader)
+{
+	// ハンドルのIndexを決定
+	uint32_t index;
+	if (freeSlots.empty())
+	{
+		index = static_cast<uint32_t>(slots.size());
+		// 枠増加
+		slots.push_back(static_cast<uint32_t>(shaders.size()));
+		// 世代を追加
+		generations.emplace_back(1);
+	}
+	else
+	{
+		index = freeSlots.back();
+		freeSlots.pop_back();
+		// 枠に入れとく
+		slots[index] = static_cast<uint32_t>(shaders.size());
+	}
+
+	// Shaderを追加
+	shaders.push_back(_shader);
+	// 世代とIndexからHandle出す
+	return GraphicsShaderHandle{ index,generations[index] };
+}
+// クリア
+void GraphicsShaderStorage::Clear()
+{
+	shaders.clear();
+	slots.clear();
+	generations.clear();
+	freeSlots.clear();
+}

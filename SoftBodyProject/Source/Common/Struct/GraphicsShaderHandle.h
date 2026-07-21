@@ -4,6 +4,6 @@
 
 struct GraphicsShaderHandle
 {
-	uint32_t index;
-	uint32_t generation;
+	const uint32_t index;
+	const uint32_t generation;
 };

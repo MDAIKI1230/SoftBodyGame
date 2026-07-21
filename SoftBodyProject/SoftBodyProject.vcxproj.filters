@@ -194,6 +194,12 @@
     <Filter Include="ソース ファイル\System\Struct">
       <UniqueIdentifier>{6992a724-6b3e-46bc-94c8-826b9c9a2a5b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Common\Struct">
+      <UniqueIdentifier>{5d02ebba-dc11-44e2-80e5-988d230cc36a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\System\Adapter\Raylib\Storage">
+      <UniqueIdentifier>{aeeb51f4-1169-4fc5-95d3-845a1610e4a6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Objects\Camera.h">
@@ -646,6 +652,24 @@
     <ClInclude Include="Source\System\struct\BackEnd.h">
       <Filter>ソース ファイル\System\Struct</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Common\Interface\IGPUConnecter.h">
+      <Filter>ソース ファイル\Common\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Common\Struct\GraphicsShaderHandle.h">
+      <Filter>ソース ファイル\Common\Struct</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Common\Struct\ComputeShaderHandle.h">
+      <Filter>ソース ファイル\Common\Struct</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Common\Struct\ShaderBufferHandle.h">
+      <Filter>ソース ファイル\Common\Struct</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\System\Adapter\Raylib\RaylibGPUConnecter.h">
+      <Filter>ソース ファイル\System\Adapter\Raylib</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\System\Adapter\Raylib\Storage\GraphicsShaderStorage.h">
+      <Filter>ソース ファイル\System\Adapter\Raylib\Storage</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\System\Scenes\DebugScene.cpp">
@@ -842,6 +866,12 @@
     </ClCompile>
     <ClCompile Include="Source\System\Factory\BackEndFactory.cpp">
       <Filter>ソース ファイル\System\Factory</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\System\Adapter\Raylib\RaylibGPUConnecter.cpp">
+      <Filter>ソース ファイル\System\Adapter\Raylib</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\System\Adapter\Raylib\Storage\GraphicsShaderStorage.cpp">
+      <Filter>ソース ファイル\System\Adapter\Raylib\Storage</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
