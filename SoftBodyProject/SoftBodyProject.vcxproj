@@ -349,6 +349,9 @@
     <ClInclude Include="Source\Physics\Function\ManifoldFunction.h" />
     <ClInclude Include="Source\Physics\PhysicsWorld.h" />
     <ClInclude Include="Source\Physics\Storage\Body\RigidBodyStorage.h" />
+    <ClInclude Include="Source\Physics\Storage\Body\Soft\ClothStorage.h" />
+    <ClInclude Include="Source\Physics\Storage\Body\Soft\RopeStorage.h" />
+    <ClInclude Include="Source\Physics\Storage\Body\Soft\SoftBodyStorage.h" />
     <ClInclude Include="Source\Physics\Storage\Buffer\CollisionContactBuffer.h" />
     <ClInclude Include="Source\Physics\Storage\Buffer\CollisionManifoldBuffer.h" />
     <ClInclude Include="Source\Physics\Storage\Buffer\PhysicsCommandBuffer.h" />
@@ -369,9 +372,7 @@
     <ClInclude Include="Source\Physics\Storage\Transform\PhysicsTransformStorage.h" />
     <ClInclude Include="Source\Physics\Struct\Body\BodyID.h" />
     <ClInclude Include="Source\Physics\Struct\Body\BodySlot.h" />
-    <ClInclude Include="Source\Physics\Struct\Body\Soft\ClothID.h" />
-    <ClInclude Include="Source\Physics\Struct\Body\Soft\RopeID.h" />
-    <ClInclude Include="Source\Physics\Struct\Body\Soft\SoftBodyID.h" />
+    <ClInclude Include="Source\Physics\Struct\Body\Soft\SolveGPUMeta.h" />
     <ClInclude Include="Source\Physics\Struct\Body\SolverBody.h" />
     <ClInclude Include="Source\Physics\Struct\Collider\AABBBroadPhaseCollider.h" />
     <ClInclude Include="Source\Physics\Struct\Collider\ColliderID.h" />

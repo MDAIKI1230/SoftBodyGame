@@ -2,7 +2,7 @@
 
 #include "ComponentBase.h"
 
-#include "SoftBodyID.h"
+#include "BodyID.h"
 
 struct SoftBodyComponent :public ComponentBase
 {
@@ -10,5 +10,5 @@ public:
 	// コンストラクタ
 	SoftBodyComponent(int _handle);
 private:
-	SoftBodyID id;
+	BodyID id;
 };

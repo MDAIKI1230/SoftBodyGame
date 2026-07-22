@@ -206,6 +206,9 @@
     <Filter Include="ソース ファイル\Physics\Struct\Body\Soft">
       <UniqueIdentifier>{8073d815-6892-4112-9309-cab7f8863c5c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Physics\Storage\Body\Soft">
+      <UniqueIdentifier>{5500034f-5c93-4b9d-b68f-fa3f7cdc4dd2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Objects\Camera.h">
@@ -685,13 +688,16 @@
     <ClInclude Include="Source\Physics\Component\Body\Soft\SoftBodyComponent.h">
       <Filter>ソース ファイル\Physics\Component\Body\Soft</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Physics\Struct\Body\Soft\ClothID.h">
-      <Filter>ソース ファイル\Physics\Struct\Body\Soft</Filter>
+    <ClInclude Include="Source\Physics\Storage\Body\Soft\ClothStorage.h">
+      <Filter>ソース ファイル\Physics\Storage\Body\Soft</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Physics\Struct\Body\Soft\RopeID.h">
-      <Filter>ソース ファイル\Physics\Struct\Body\Soft</Filter>
+    <ClInclude Include="Source\Physics\Storage\Body\Soft\RopeStorage.h">
+      <Filter>ソース ファイル\Physics\Storage\Body\Soft</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Physics\Struct\Body\Soft\SoftBodyID.h">
+    <ClInclude Include="Source\Physics\Storage\Body\Soft\SoftBodyStorage.h">
+      <Filter>ソース ファイル\Physics\Storage\Body\Soft</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Struct\Body\Soft\SolveGPUMeta.h">
       <Filter>ソース ファイル\Physics\Struct\Body\Soft</Filter>
     </ClInclude>
   </ItemGroup>
