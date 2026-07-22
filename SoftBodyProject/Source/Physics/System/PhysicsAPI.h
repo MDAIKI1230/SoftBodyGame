@@ -46,6 +46,72 @@ public:
 	// 重力加速度変更
 	static void SetGravity(BodyID& _id, const Vector3& _gravity);
 
+	// --- ソフト系 ---
+
+	// ロープ作成
+	static BodyID CreateRope(EntityID& _entity, const RopeUpdateInfo _info);
+	// クロス作成
+	static BodyID CreateCloth(EntityID& _entity, const ClothUpdateInfo _info);
+	// ソフトボディ作成
+	static BodyID CreateSoftBody(EntityID& _entity, const SoftBodyUpdateInfo _info);
+
+	// --- ロープ系 ---
+
+	// 全体の長さ取得
+	static float GetLength(BodyID& _id);
+	// 全体の長さ変更
+	static void SetLength(BodyID& _id, float _length);
+	// 分割数取得
+	static int GetSegmentCount(BodyID& _id);
+	// 分割数変更
+	static void SetSegmentCount(BodyID& _id, int _segmentCount);
+	
+	// --- クロス系 ---
+
+	// 横幅取得
+	static float GetClothWidth(BodyID& _id);
+	// 横幅変更
+	static void SetClothWidth(BodyID& _id, float _width);
+	// 縦幅取得
+	static float GetClothHeight(BodyID& _id);
+	// 縦幅変更
+	static void SetClothHeight(BodyID& _id, float _height);
+	// 横分割取得
+	static int GetRowCount(BodyID& _id);
+	// 横分割変更
+	static void SetRowCount(BodyID& _id, int _rowCount);
+	// 縦分割取得
+	static int GetColumnCount(BodyID& _id);
+	// 縦分割変更
+	static void SetColumnCount(BodyID& _id, int _columnCount);
+
+	// --- ソフトボディ系 ---
+
+	// 横幅取得
+	static float GetSoftBodyWidth(BodyID& _id);
+	// 横幅変更
+	static void SetSoftBodyWidth(BodyID& _id, float _width);
+	// 縦幅取得
+	static float GetSoftBodyHeight(BodyID& _id);
+	// 縦幅変更
+	static void SetSoftBodyHeight(BodyID& _id, float _height);
+	// 奥行き取得
+	static float GetSoftBodyDepth(BodyID& _id);
+	// 奥行き変更
+	static void SetSoftBodyDepth(BodyID& _id, float _depth);
+	// 横分割取得
+	static int GetSegmentCountX(BodyID& _id);
+	// 横分割変更
+	static void SetSegmentCountX(BodyID& _id, int _segmentCountX);
+	// 縦分割取得
+	static int GetSegmentCountY(BodyID& _id);
+	// 縦分割変更
+	static void SetSegmentCountY(BodyID& _id, int _segmentCountY);
+	// 奥行き分割取得
+	static int GetSegmentCountZ(BodyID& _id);
+	// 奥行き分割変更
+	static void SetSegmentCountZ(BodyID& _id, int _segmentCountZ);
+
 	// --- コライダー系 ---
 	// --- コライダー生成 ---
 

@@ -25,9 +25,9 @@ public:
             width[_index] = width[last];
             height[_index] = height[last];
             depth[_index] = depth[last];
-            columnCountX[_index] = columnCountX[last];
-            columnCountY[_index] = columnCountY[last];
-            columnCountZ[_index] = columnCountZ[last];
+            segmentCountX[_index] = segmentCountX[last];
+            segmentCountY[_index] = segmentCountY[last];
+            segmentCountZ[_index] = segmentCountZ[last];
         }
 
         id.pop_back();
@@ -35,9 +35,9 @@ public:
         width.pop_back();
         height.pop_back();
         depth.pop_back();
-        columnCountX.pop_back();
-        columnCountY.pop_back();
-        columnCountZ.pop_back();
+        segmentCountX.pop_back();
+        segmentCountY.pop_back();
+        segmentCountZ.pop_back();
 
         return movedId;
     }
@@ -47,7 +47,7 @@ public:
     std::vector<float> width;
     std::vector<float> height;
     std::vector<float> depth;
-    std::vector<int > columnCountX;
-    std::vector<int > columnCountY;
-    std::vector<int > columnCountZ;
+    std::vector<int > segmentCountX;
+    std::vector<int > segmentCountY;
+    std::vector<int > segmentCountZ;
 };

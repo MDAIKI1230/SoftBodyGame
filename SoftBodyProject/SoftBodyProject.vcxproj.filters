@@ -709,6 +709,15 @@
     <ClInclude Include="Source\Physics\Storage\Body\Rigid\RigidBodyStorage.h">
       <Filter>ソース ファイル\Physics\Storage\Body\Rigid</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Physics\Struct\Body\Soft\RopeUpdateInfo.h">
+      <Filter>ソース ファイル\Physics\Struct\Body\Soft</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Struct\Body\Soft\ClothUpdateInfo.h">
+      <Filter>ソース ファイル\Physics\Struct\Body\Soft</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Struct\Body\Soft\SoftBodyUpdateInfo.h">
+      <Filter>ソース ファイル\Physics\Struct\Body\Soft</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\System\Scenes\DebugScene.cpp">

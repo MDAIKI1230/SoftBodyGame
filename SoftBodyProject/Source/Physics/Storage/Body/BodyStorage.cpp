@@ -1,5 +1,6 @@
 ﻿#include "BodyStorage.h"
 
+// コンストラクタ
 BodyStorage::BodyStorage()
 {
 	rigidBodyStorage = std::make_unique<RigidBodyStorage>();
@@ -8,6 +9,7 @@ BodyStorage::BodyStorage()
 	softBodyStorage = std::make_unique<SoftBodyStorage>();
 }
 
+// RigidBody作成
 BodyID BodyStorage::CreateRigidBody(const EntityID& _entity, const PhysicsTransformID& _transformID)
 {
 	BodyID result{ GenerateBodyID(rigidBodyStorage->id.size(),BodyType::RIGID_BODY,_entity,_transformID) };
@@ -19,22 +21,50 @@ BodyID BodyStorage::CreateRigidBody(const EntityID& _entity, const PhysicsTransf
 
 	return result;
 }
-
-BodyID BodyStorage::CreateRope(const EntityID& _entity, const PhysicsTransformID& _transformID)
+// Rope作成
+BodyID BodyStorage::CreateRope(const EntityID& _entity, const PhysicsTransformID& _transformID, const RopeUpdateInfo& _info)
 {
+	BodyID result{ GenerateBodyID(ropeStorage->id.size(),BodyType::ROPE,_entity,_transformID) };
 
-	return BodyID{};
+	ropeStorage->id.push_back(result);
+	ropeStorage->meta.emplace_back();
+	ropeStorage->length.emplace_back(_info.length);
+	ropeStorage->segmentCount.emplace_back(_info.segmentCount);
+
+	return result;
+}
+// Cloth作成
+BodyID BodyStorage::CreateCloth(const EntityID& _entity, const PhysicsTransformID& _transformID, const ClothUpdateInfo& _info)
+{
+	BodyID result{ GenerateBodyID(clothStorage->id.size(),BodyType::CLOTH,_entity,_transformID) };
+
+	clothStorage->id.push_back(result);
+	clothStorage->meta.emplace_back();
+	clothStorage->width.emplace_back(_info.width);
+	clothStorage->height.emplace_back(_info.height);
+	clothStorage->rowCount.emplace_back(_info.rowCount);
+	clothStorage->columnCount.emplace_back(_info.columnCount);
+
+	return result;
+}
+// SoftBody作成
+BodyID BodyStorage::CreateSoftBody(const EntityID& _entity, const PhysicsTransformID& _transformID, const SoftBodyUpdateInfo& _info)
+{
+	BodyID result{ GenerateBodyID(softBodyStorage->id.size(),BodyType::SOFT_BODY,_entity,_transformID) };
+
+	softBodyStorage->id.push_back(result);
+	softBodyStorage->meta.emplace_back();
+	softBodyStorage->width.emplace_back(_info.width);
+	softBodyStorage->height.emplace_back(_info.height);
+	softBodyStorage->depth.emplace_back(_info.depth);
+	softBodyStorage->segmentCountX.emplace_back(_info.segmentCountX);
+	softBodyStorage->segmentCountX.emplace_back(_info.segmentCountY);
+	softBodyStorage->segmentCountX.emplace_back(_info.segmentCountZ);
+
+	return result;
 }
 
-BodyID BodyStorage::CreateCloth(const EntityID& _entity, const PhysicsTransformID& _transformID)
-{
-	return BodyID{};
-}
-BodyID BodyStorage::CreateSoftBody(const EntityID& _entity, const PhysicsTransformID& _transformID)
-{
-	return BodyID{};
-}
-
+// 破棄
 void BodyStorage::Destroy(const BodyID& _id)
 {
 	if (!IsAlive(_id))
@@ -78,31 +108,32 @@ void BodyStorage::Destroy(const BodyID& _id)
 	slots[_id.index].generation++;
 }
 
+// 生存確認
 bool BodyStorage::IsAlive(const BodyID& _id) const
 {
 	return slots[_id.index].alive && slots[_id.index].generation == _id.generation;
 }
-
+// 種類取得
 BodyType BodyStorage::GetType(const BodyID& _id) const
 {
 	return slots[_id.index].type;
 }
-
+// 実データのインデックス
 uint32_t BodyStorage::GetDenseIndex(const BodyID& _id) const
 {
 	return slots[_id.index].denseIndex;
 }
-
+// 持ってるEntity
 EntityID BodyStorage::GetOwnerEntity(const BodyID& _id) const
 {
 	return slots[_id.index].ownerEntity;
 }
-
+// 対応Transform
 PhysicsTransformID BodyStorage::GetTransformID(const BodyID& _id) const
 {
 	return slots[_id.index].transformID;
 }
-
+// RigidBodyのBodyID取得
 bool BodyStorage::TryGetRigidBodyID(const PhysicsTransformID& _transformID, BodyID& _output)
 {
 	if (transformMap.contains(_transformID))
@@ -114,6 +145,13 @@ bool BodyStorage::TryGetRigidBodyID(const PhysicsTransformID& _transformID, Body
 	return false;
 }
 
+// TransformIDと紐づくBodyIDがあるか否か
+bool BodyStorage::Has(const PhysicsTransformID& _transformID) const
+{
+	return transformMap.contains(_transformID);
+}
+
+// 一意なID発行関数
 BodyID BodyStorage::GenerateBodyID(size_t _denseIndex, const BodyType& _type, const EntityID& _ownerEntity, const PhysicsTransformID& _transformID)
 {
 	if (freeSlots.empty())

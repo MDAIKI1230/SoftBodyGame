@@ -374,6 +374,9 @@
     <ClInclude Include="Source\Physics\Storage\Transform\PhysicsTransformStorage.h" />
     <ClInclude Include="Source\Physics\Struct\Body\BodyID.h" />
     <ClInclude Include="Source\Physics\Struct\Body\BodySlot.h" />
+    <ClInclude Include="Source\Physics\Struct\Body\Soft\ClothUpdateInfo.h" />
+    <ClInclude Include="Source\Physics\Struct\Body\Soft\RopeUpdateInfo.h" />
+    <ClInclude Include="Source\Physics\Struct\Body\Soft\SoftBodyUpdateInfo.h" />
     <ClInclude Include="Source\Physics\Struct\Body\Soft\SolveGPUMeta.h" />
     <ClInclude Include="Source\Physics\Struct\Body\SolverBody.h" />
     <ClInclude Include="Source\Physics\Struct\Collider\AABBBroadPhaseCollider.h" />

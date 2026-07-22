@@ -10,6 +10,10 @@
 #include "Soft/ClothStorage.h"
 #include "Soft/SoftBodyStorage.h"
 
+#include "RopeUpdateInfo.h"
+#include "ClothUpdateInfo.h"
+#include "SoftBodyUpdateInfo.h"
+
 class BodyStorage
 {
 public:
@@ -19,11 +23,11 @@ public:
 	// RigidBody作成
 	BodyID CreateRigidBody(const EntityID& _entity, const PhysicsTransformID& _transformID);
 	// Rope作成
-	BodyID CreateRope(const EntityID& _entity, const PhysicsTransformID& _transformID);
+	BodyID CreateRope(const EntityID& _entity, const PhysicsTransformID& _transformID, const RopeUpdateInfo& _info);
 	// Cloth作成
-	BodyID CreateCloth(const EntityID& _entity, const PhysicsTransformID& _transformID);
+	BodyID CreateCloth(const EntityID& _entity, const PhysicsTransformID& _transformID, const ClothUpdateInfo& _info);
 	// SoftBody作成
-	BodyID CreateSoftBody(const EntityID& _entity, const PhysicsTransformID& _transformID);
+	BodyID CreateSoftBody(const EntityID& _entity, const PhysicsTransformID& _transformID, const SoftBodyUpdateInfo& _info);
 
 	// 破棄
 	void Destroy(const BodyID& _id);
@@ -40,6 +44,8 @@ public:
 	PhysicsTransformID GetTransformID(const BodyID& _id) const;
 	// RigidBodyのBodyID取得
 	bool TryGetRigidBodyID(const PhysicsTransformID& _transformID, BodyID& _output);
+	// TransformIDと紐づくBodyIDがあるか否か
+	bool Has(const PhysicsTransformID& _transformID) const;
 public:
 	std::vector<BodySlot> slots;
 	std::vector<uint32_t> freeSlots;
@@ -50,6 +56,7 @@ public:
 	std::unique_ptr<ClothStorage> clothStorage;
 	std::unique_ptr<SoftBodyStorage> softBodyStorage;
 private:
+	// 一意なID発行関数
 	BodyID GenerateBodyID(size_t _denseIndex, const BodyType& _type, const EntityID& _ownerEntity, const PhysicsTransformID& _transformID);
 private:
 	// RigidBody限定対応MAP
