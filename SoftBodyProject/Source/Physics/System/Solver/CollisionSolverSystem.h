@@ -5,8 +5,6 @@
 #include "CollisionManifoldBuffer.h"
 #include "SolverBodyBuffer.h"
 
-#include "PhysicsTransformStorage.h"
-#include "RigidBodyStorage.h"
 #include "ColliderStorage.h"
 
 #include "ContactConstraint.h"

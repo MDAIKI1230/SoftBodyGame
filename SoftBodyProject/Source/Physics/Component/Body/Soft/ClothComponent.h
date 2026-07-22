@@ -2,7 +2,7 @@
 
 #include "ComponentBase.h"
 
-#include "ClothID.h"
+#include "BodyID.h"
 
 struct ClothComponent :public ComponentBase
 {
@@ -10,5 +10,5 @@ public:
 	// コンストラクタ
 	ClothComponent(int _handle);
 private:
-	ClothID id;
+	BodyID id;
 };

@@ -97,14 +97,14 @@ public:
 	{
 		physicsWorld = _physicsWorld;
 		colliderStorage = _physicsWorld->GetColliderStorage();
-		rigidBodyStorage = _physicsWorld->GetRigidBodyStorage();
+		bodyStorage = _physicsWorld->GetRigidBodyStorage();
 		transformStorage = _physicsWorld->GetPhysicsTransformStorage();
 		constraintStorage = _physicsWorld->GetConstraintStorage();
 	}
 private:
 	static PhysicsWorld* physicsWorld;
 	static ColliderStorage* colliderStorage;
-	static RigidBodyStorage* rigidBodyStorage;
+	static BodyStorage* bodyStorage;
 	static PhysicsTransformStorage* transformStorage;
 	static ConstraintStorage* constraintStorage;
 };

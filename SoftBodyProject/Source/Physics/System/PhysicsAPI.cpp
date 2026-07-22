@@ -7,43 +7,43 @@
 
 BodyID PhysicsAPI::CreateRigidBody(EntityID& _entity)
 {
-	return rigidBodyStorage->CreateRigidBody(_entity, transformStorage->GetOrCreateTransform(_entity));
+	return bodyStorage->CreateRigidBody(_entity, transformStorage->GetOrCreateTransform(_entity));
 }
 
 void PhysicsAPI::AddForce(BodyID& _id, const Vector3& _force)
 {
 	// 加算
-	rigidBodyStorage->force[rigidBodyStorage->GetDenseIndex(_id)] += _force;
+	bodyStorage->rigidBodyStorage->force[bodyStorage->GetDenseIndex(_id)] += _force;
 }
 void PhysicsAPI::AddTorque(BodyID& _id, const Vector3& _torque)
 {
 	// 加算
-	rigidBodyStorage->torque[rigidBodyStorage->GetDenseIndex(_id)] += _torque;
+	bodyStorage->rigidBodyStorage->torque[bodyStorage->GetDenseIndex(_id)] += _torque;
 }
 
 const Vector3& PhysicsAPI::GetVelocity(const BodyID& _id)
 {
-	return rigidBodyStorage->velocity[rigidBodyStorage->GetDenseIndex(_id)];
+	return bodyStorage->rigidBodyStorage->velocity[bodyStorage->GetDenseIndex(_id)];
 }
 
 void PhysicsAPI::SetVelocity(BodyID& _id, const Vector3& _velocity)
 {
-	rigidBodyStorage->velocity[rigidBodyStorage->GetDenseIndex(_id)] = _velocity;
+	bodyStorage->rigidBodyStorage->velocity[bodyStorage->GetDenseIndex(_id)] = _velocity;
 }
 
 const Vector3& PhysicsAPI::GetAngularVelocity(const BodyID& _id)
 {
-	return rigidBodyStorage->angularVelocity[rigidBodyStorage->GetDenseIndex(_id)];
+	return bodyStorage->rigidBodyStorage->angularVelocity[bodyStorage->GetDenseIndex(_id)];
 }
 
 void PhysicsAPI::SetAngularVelocity(BodyID& _id, const Vector3& _omega)
 {
-	rigidBodyStorage->angularVelocity[rigidBodyStorage->GetDenseIndex(_id)] = _omega;
+	bodyStorage->rigidBodyStorage->angularVelocity[bodyStorage->GetDenseIndex(_id)] = _omega;
 }
 
 float PhysicsAPI::GetMass(const BodyID& _id)
 {
-	return rigidBodyStorage->mass[rigidBodyStorage->GetDenseIndex(_id)];
+	return bodyStorage->rigidBodyStorage->mass[bodyStorage->GetDenseIndex(_id)];
 }
 
 void PhysicsAPI::SetMass(BodyID& _id, float _mass)
@@ -53,41 +53,41 @@ void PhysicsAPI::SetMass(BodyID& _id, float _mass)
 		return;
 	}
 
-	rigidBodyStorage->mass[rigidBodyStorage->GetDenseIndex(_id)] = _mass;
-	rigidBodyStorage->inverseMass[rigidBodyStorage->GetDenseIndex(_id)] = 1 / _mass;
-	rigidBodyStorage->localInertiaDirty[rigidBodyStorage->GetDenseIndex(_id)] = true;
+	bodyStorage->rigidBodyStorage->mass[bodyStorage->GetDenseIndex(_id)] = _mass;
+	bodyStorage->rigidBodyStorage->inverseMass[bodyStorage->GetDenseIndex(_id)] = 1 / _mass;
+	bodyStorage->rigidBodyStorage->localInertiaDirty[bodyStorage->GetDenseIndex(_id)] = true;
 }
 
 const Matrix4x4& PhysicsAPI::GetInertiaTensor(const BodyID& _id)
 {
-	return rigidBodyStorage->inertiaTensor[rigidBodyStorage->GetDenseIndex(_id)];
+	return bodyStorage->rigidBodyStorage->inertiaTensor[bodyStorage->GetDenseIndex(_id)];
 }
 
 void PhysicsAPI::SetInertiaTensor(BodyID& _id, Matrix4x4& _matrix)
 {
-	rigidBodyStorage->inertiaTensor[rigidBodyStorage->GetDenseIndex(_id)] = _matrix;
-	rigidBodyStorage->localInverseInertiaTensor[rigidBodyStorage->GetDenseIndex(_id)] = NamericalAnalysis::GaussJordan(_matrix);
-	rigidBodyStorage->localInertiaDirty[rigidBodyStorage->GetDenseIndex(_id)] = true;
+	bodyStorage->rigidBodyStorage->inertiaTensor[bodyStorage->GetDenseIndex(_id)] = _matrix;
+	bodyStorage->rigidBodyStorage->localInverseInertiaTensor[bodyStorage->GetDenseIndex(_id)] = NamericalAnalysis::GaussJordan(_matrix);
+	bodyStorage->rigidBodyStorage->localInertiaDirty[bodyStorage->GetDenseIndex(_id)] = true;
 }
 
 bool PhysicsAPI::GetIsGravity(const BodyID& _id)
 {
-	return rigidBodyStorage->isGravity[rigidBodyStorage->GetDenseIndex(_id)];
+	return bodyStorage->rigidBodyStorage->isGravity[bodyStorage->GetDenseIndex(_id)];
 }
 
 void PhysicsAPI::SetIsGravity(BodyID&_id, bool _isGravity)
 {
-	rigidBodyStorage->isGravity[rigidBodyStorage->GetDenseIndex(_id)] = _isGravity;
+	bodyStorage->rigidBodyStorage->isGravity[bodyStorage->GetDenseIndex(_id)] = _isGravity;
 }
 
 const Vector3& PhysicsAPI::GetGravity(const BodyID& _id)
 {
-	return rigidBodyStorage->gravity[rigidBodyStorage->GetDenseIndex(_id)];
+	return bodyStorage->rigidBodyStorage->gravity[bodyStorage->GetDenseIndex(_id)];
 }
 
 void PhysicsAPI::SetGravity(BodyID& _id, const Vector3& _gravity)
 {
-	rigidBodyStorage->gravity[rigidBodyStorage->GetDenseIndex(_id)] = _gravity;
+	bodyStorage->rigidBodyStorage->gravity[bodyStorage->GetDenseIndex(_id)] = _gravity;
 }
 
 ColliderID PhysicsAPI::CreateSphere(EntityID& _entity, float _radius)
@@ -206,6 +206,6 @@ void  PhysicsAPI::RemoveEndPoint(ConstraintID& _id, EntityID& _entity)
 
 PhysicsWorld* PhysicsAPI::physicsWorld{ nullptr };
 ColliderStorage* PhysicsAPI::colliderStorage{ nullptr };
-RigidBodyStorage* PhysicsAPI::rigidBodyStorage{ nullptr };
+BodyStorage* PhysicsAPI::bodyStorage{ nullptr };
 PhysicsTransformStorage* PhysicsAPI::transformStorage{ nullptr };
 ConstraintStorage* PhysicsAPI::constraintStorage{ nullptr };

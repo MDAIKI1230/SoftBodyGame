@@ -3,10 +3,10 @@
 #include "SolverBodyBuffer.h"
 
 #include "PhysicsTransformStorage.h"
-#include "RigidBodyStorage.h"
+#include "BodyStorage.h"
 
 class SolverBodyCommitSystem
 {
 public:
-	void Commit(PhysicsTransformStorage* _transformStorage, RigidBodyStorage* _bodyStorage, SolverBodyBuffer* _solverBodyBuffer);
+	void Commit(PhysicsTransformStorage* _transformStorage, BodyStorage* _bodyStorage, SolverBodyBuffer* _solverBodyBuffer);
 };

@@ -340,6 +340,7 @@
     <ClInclude Include="Source\Physics\Component\Collider\SphereColliderComponent.h" />
     <ClInclude Include="Source\Physics\Component\Constraint\DistanceConstraintComponent.h" />
     <ClInclude Include="Source\Physics\Component\Constraint\PointConstraintComponent.h" />
+    <ClInclude Include="Source\Physics\Constants\BodyConstraints.h" />
     <ClInclude Include="Source\Physics\Constants\CollisionConstants.h" />
     <ClInclude Include="Source\Physics\Constants\CommandConstraints.h" />
     <ClInclude Include="Source\Physics\Constants\ConstraintConstants.h" />
@@ -348,7 +349,8 @@
     <ClInclude Include="Source\Physics\Function\GJKEPA.h" />
     <ClInclude Include="Source\Physics\Function\ManifoldFunction.h" />
     <ClInclude Include="Source\Physics\PhysicsWorld.h" />
-    <ClInclude Include="Source\Physics\Storage\Body\RigidBodyStorage.h" />
+    <ClInclude Include="Source\Physics\Storage\Body\BodyStorage.h" />
+    <ClInclude Include="Source\Physics\Storage\Body\Rigid\RigidBodyStorage.h" />
     <ClInclude Include="Source\Physics\Storage\Body\Soft\ClothStorage.h" />
     <ClInclude Include="Source\Physics\Storage\Body\Soft\RopeStorage.h" />
     <ClInclude Include="Source\Physics\Storage\Body\Soft\SoftBodyStorage.h" />
@@ -481,7 +483,8 @@
     <ClCompile Include="Source\Physics\Function\GJKEPA.cpp" />
     <ClCompile Include="Source\Physics\Function\ManifoldFunction.cpp" />
     <ClCompile Include="Source\Physics\PhysicsWorld.cpp" />
-    <ClCompile Include="Source\Physics\Storage\Body\RigidBodyStorage.cpp" />
+    <ClCompile Include="Source\Physics\Storage\Body\BodyStorage.cpp" />
+    <ClCompile Include="Source\Physics\Storage\Body\Rigid\RigidBodyStorage.cpp" />
     <ClCompile Include="Source\Physics\Storage\Buffer\PhysicsCommandBuffer.cpp" />
     <ClCompile Include="Source\Physics\Storage\Collider\ColliderStorage.cpp" />
     <ClCompile Include="Source\Physics\Storage\Constraint\ConstraintStorage.cpp" />

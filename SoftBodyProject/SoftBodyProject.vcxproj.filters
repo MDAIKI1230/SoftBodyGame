@@ -209,6 +209,9 @@
     <Filter Include="ソース ファイル\Physics\Storage\Body\Soft">
       <UniqueIdentifier>{5500034f-5c93-4b9d-b68f-fa3f7cdc4dd2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Physics\Storage\Body\Rigid">
+      <UniqueIdentifier>{ab5f5cd2-d368-4d2d-bcb3-cc96842f7585}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Objects\Camera.h">
@@ -408,9 +411,6 @@
     </ClInclude>
     <ClInclude Include="Source\Physics\System\Update\AABBUpdateSystem.h">
       <Filter>ソース ファイル\Physics\System\Update</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Physics\Storage\Body\RigidBodyStorage.h">
-      <Filter>ソース ファイル\Physics\Storage\Body</Filter>
     </ClInclude>
     <ClInclude Include="Source\Physics\System\Collision\NarrowPhasePairBuilder.h">
       <Filter>ソース ファイル\Physics\System\Collision</Filter>
@@ -700,6 +700,15 @@
     <ClInclude Include="Source\Physics\Struct\Body\Soft\SolveGPUMeta.h">
       <Filter>ソース ファイル\Physics\Struct\Body\Soft</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Physics\Constants\BodyConstraints.h">
+      <Filter>ソース ファイル\Physics\Constants</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Storage\Body\BodyStorage.h">
+      <Filter>ソース ファイル\Physics\Storage\Body</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Storage\Body\Rigid\RigidBodyStorage.h">
+      <Filter>ソース ファイル\Physics\Storage\Body\Rigid</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\System\Scenes\DebugScene.cpp">
@@ -791,9 +800,6 @@
     </ClCompile>
     <ClCompile Include="Source\Physics\System\Update\AABBUpdateSystem.cpp">
       <Filter>ソース ファイル\Physics\System\Update</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Physics\Storage\Body\RigidBodyStorage.cpp">
-      <Filter>ソース ファイル\Physics\Storage\Body</Filter>
     </ClCompile>
     <ClCompile Include="Source\Physics\System\Collision\NarrowPhasePairBuilder.cpp">
       <Filter>ソース ファイル\Physics\System\Collision</Filter>
@@ -908,6 +914,12 @@
     </ClCompile>
     <ClCompile Include="Source\Physics\Component\Body\Soft\SoftBodyComponent.cpp">
       <Filter>ソース ファイル\Physics\Component\Body\Soft</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Physics\Storage\Body\Rigid\RigidBodyStorage.cpp">
+      <Filter>ソース ファイル\Physics\Storage\Body\Rigid</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Physics\Storage\Body\BodyStorage.cpp">
+      <Filter>ソース ファイル\Physics\Storage\Body</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
