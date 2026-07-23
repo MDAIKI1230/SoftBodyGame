@@ -212,6 +212,15 @@
     <Filter Include="ソース ファイル\Physics\Storage\Body\Rigid">
       <UniqueIdentifier>{ab5f5cd2-d368-4d2d-bcb3-cc96842f7585}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Physics\Storage\Component\Body">
+      <UniqueIdentifier>{8b6fe77f-e14a-4e27-bd02-093b47c86db0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Physics\Storage\Component\Collider">
+      <UniqueIdentifier>{023d7355-4414-4770-9a3e-46472fa8d821}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Physics\Storage\Component\Constraint">
+      <UniqueIdentifier>{ea6612c2-03b8-4146-925f-27ea1cb384f1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Objects\Camera.h">
@@ -394,15 +403,6 @@
     <ClInclude Include="Source\Physics\Storage\Collider\AABBBroadPhaseColliderStorage.h">
       <Filter>ソース ファイル\Physics\Storage\Collider</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Physics\Storage\Component\BoxColliderComponentStorage.h">
-      <Filter>ソース ファイル\Physics\Storage\Component</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Physics\Storage\Component\RigidBodyComponentStorage.h">
-      <Filter>ソース ファイル\Physics\Storage\Component</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Physics\Storage\Component\SphereColliderComponentStorage.h">
-      <Filter>ソース ファイル\Physics\Storage\Component</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Common\ECS\EntityID.h">
       <Filter>ソース ファイル\Common\ECS</Filter>
     </ClInclude>
@@ -580,9 +580,6 @@
     <ClInclude Include="Source\Physics\System\Solver\SolverBodyCommitSystem.h">
       <Filter>ソース ファイル\Physics\System\Solver</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Physics\Storage\Component\PointConstraintComponentStorage.h">
-      <Filter>ソース ファイル\Physics\Storage\Component</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Physics\Struct\Constraint\DistanceConstraint.h">
       <Filter>ソース ファイル\Physics\Struct\Constraint</Filter>
     </ClInclude>
@@ -591,9 +588,6 @@
     </ClInclude>
     <ClInclude Include="Source\Physics\Storage\Constraint\DistanceConstraintStorage.h">
       <Filter>ソース ファイル\Physics\Storage\Constraint</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Physics\Storage\Component\DistanceConstraintComponentStorage.h">
-      <Filter>ソース ファイル\Physics\Storage\Component</Filter>
     </ClInclude>
     <ClInclude Include="Source\Objects\EmptyObject.h">
       <Filter>ソース ファイル\GameObject</Filter>
@@ -717,6 +711,21 @@
     </ClInclude>
     <ClInclude Include="Source\Physics\Struct\Body\Soft\SoftBodyUpdateInfo.h">
       <Filter>ソース ファイル\Physics\Struct\Body\Soft</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Storage\Component\Body\RigidBodyComponentStorage.h">
+      <Filter>ソース ファイル\Physics\Storage\Component\Body</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Storage\Component\Collider\BoxColliderComponentStorage.h">
+      <Filter>ソース ファイル\Physics\Storage\Component\Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Storage\Component\Collider\SphereColliderComponentStorage.h">
+      <Filter>ソース ファイル\Physics\Storage\Component\Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Storage\Component\Constraint\DistanceConstraintComponentStorage.h">
+      <Filter>ソース ファイル\Physics\Storage\Component\Constraint</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Storage\Component\Constraint\PointConstraintComponentStorage.h">
+      <Filter>ソース ファイル\Physics\Storage\Component\Constraint</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -930,8 +939,8 @@
     <ClCompile Include="Source\Physics\Storage\Body\BodyStorage.cpp">
       <Filter>ソース ファイル\Physics\Storage\Body</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Physics\Storage\Component\RigidBodyComponentStorage.cpp">
-      <Filter>ソース ファイル\Physics\Storage\Component</Filter>
+    <ClCompile Include="Source\Physics\Storage\Component\Body\RigidBodyComponentStorage.cpp">
+      <Filter>ソース ファイル\Physics\Storage\Component\Body</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
