@@ -28,7 +28,7 @@ ComputeShaderHandle RaylibGPUConnecter::LoadComputeShader(const std::string& _fi
 }
 
 // ディスパッチ
-void RaylibGPUConnecter::Dispatch(ComputeShaderHandle& _shader, uint32_t _groupX, uint32_t _groupY, uint32_t _groupZ)
+void RaylibGPUConnecter::Dispatch(ComputeShaderHandle _shader, uint32_t _groupX, uint32_t _groupY, uint32_t _groupZ)
 {
 	unsigned int handle;
 	if (computeShaderStorage->TryGet(_shader, handle))
@@ -38,7 +38,7 @@ void RaylibGPUConnecter::Dispatch(ComputeShaderHandle& _shader, uint32_t _groupX
 	}
 }
 // シェーダ破棄
-void RaylibGPUConnecter::DestroyComputeShader(ComputeShaderHandle& _shader)
+void RaylibGPUConnecter::DestroyComputeShader(ComputeShaderHandle _shader)
 {
 	unsigned int shader;
 	if (computeShaderStorage->TryGet(_shader, shader))
@@ -65,7 +65,7 @@ GraphicsShaderHandle RaylibGPUConnecter::LoadPixelShader(const std::string& _ver
 	return graphicsShaderStorage->Add(::LoadShader(_vertexShaderFilePath.c_str(), _pixelShaderFilePath.c_str()));
 }
 // 描画関連(頂点とピクセル)シェーダスタート
-void RaylibGPUConnecter::BeginGraphicsShader(GraphicsShaderHandle& _shader)
+void RaylibGPUConnecter::BeginGraphicsShader(GraphicsShaderHandle _shader)
 {
 	Shader shader;
 	if (graphicsShaderStorage->TryGet(_shader, shader))
@@ -79,7 +79,7 @@ void RaylibGPUConnecter::EndGraphicsShader()
 	::EndShaderMode();
 }
 // 描画関連(頂点とピクセル)シェーダ破棄
-void RaylibGPUConnecter::DestroyGraphicsShader(GraphicsShaderHandle& _shader)
+void RaylibGPUConnecter::DestroyGraphicsShader(GraphicsShaderHandle _shader)
 {
 	Shader shader;
 	if (graphicsShaderStorage->TryGet(_shader, shader))
@@ -98,7 +98,7 @@ ShaderBufferHandle RaylibGPUConnecter::CreateShaderBuffer(uint32_t _size, const 
 	return ShaderBufferHandle{ result.index,result.generation,_size };
 }
 // バッファ更新
-void RaylibGPUConnecter::UpdateShaderBuffer(ShaderBufferHandle& _buffer, const void* _data, uint32_t _size, uint32_t _offset)
+void RaylibGPUConnecter::UpdateShaderBuffer(ShaderBufferHandle _buffer, const void* _data, uint32_t _size, uint32_t _offset)
 {
 	if (_data == nullptr || _size == 0)
 	{
@@ -117,7 +117,7 @@ void RaylibGPUConnecter::UpdateShaderBuffer(ShaderBufferHandle& _buffer, const v
 	}
 }
 // シェーダとバッファバインド
-void RaylibGPUConnecter::BindShaderBuffer(ShaderBufferHandle& _buffer, uint32_t _binding)
+void RaylibGPUConnecter::BindShaderBuffer(ShaderBufferHandle _buffer, uint32_t _binding)
 {
 	unsigned int handle;
 	if (bufferStorage->TryGet(_buffer, handle))
@@ -126,7 +126,7 @@ void RaylibGPUConnecter::BindShaderBuffer(ShaderBufferHandle& _buffer, uint32_t 
 	}
 }
 // バッファ値取り出し
-void RaylibGPUConnecter::ReadShaderBuffer(ShaderBufferHandle& _buffer, void* _destination, uint32_t _size, uint32_t _offset)
+void RaylibGPUConnecter::ReadShaderBuffer(ShaderBufferHandle _buffer, void* _destination, uint32_t _size, uint32_t _offset)
 {
 	if (_destination == nullptr || _size == 0)
 	{
@@ -145,7 +145,7 @@ void RaylibGPUConnecter::ReadShaderBuffer(ShaderBufferHandle& _buffer, void* _de
 	}
 }
 // バッファ破棄
-void RaylibGPUConnecter::DestroyShaderBuffer(ShaderBufferHandle& _buffer)
+void RaylibGPUConnecter::DestroyShaderBuffer(ShaderBufferHandle _buffer)
 {
 
 	unsigned int handle;
