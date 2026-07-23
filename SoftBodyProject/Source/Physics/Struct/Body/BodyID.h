@@ -1,9 +1,7 @@
 ﻿#pragma once
 
-#include <stdint.h>
+#include "GenerationalID.h"
 
-struct BodyID
-{
-	uint32_t index{ 0 };
-	unsigned char generation{ 0 };
-};
+struct BodyTag;
+
+using BodyID = GenerationalID<BodyTag>;

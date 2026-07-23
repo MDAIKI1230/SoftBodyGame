@@ -75,63 +75,63 @@ void BodyStorage::Destroy(const BodyID& _id)
 	// swap-removeしたときの移動したID
 	BodyID movedId;
 
-	switch (slots[_id.index].type)
+	switch (slots[_id.GetIndex()].type)
 	{
 	case BodyType::RIGID_BODY:
-		movedId = rigidBodyStorage->Remove(slots[_id.index].denseIndex);
+		movedId = rigidBodyStorage->Remove(slots[_id.GetIndex()].denseIndex);
 		break;
 	case BodyType::ROPE:
-		movedId = ropeStorage->Remove(slots[_id.index].denseIndex);
+		movedId = ropeStorage->Remove(slots[_id.GetIndex()].denseIndex);
 		break;
 	case BodyType::CLOTH:
-		movedId = clothStorage->Remove(slots[_id.index].denseIndex);
+		movedId = clothStorage->Remove(slots[_id.GetIndex()].denseIndex);
 		break;
 	case BodyType::SOFT_BODY:
-		movedId = softBodyStorage->Remove(slots[_id.index].denseIndex);
+		movedId = softBodyStorage->Remove(slots[_id.GetIndex()].denseIndex);
 		break;
 	default:
 		break;
 	}
 
 	// Mapから削除
-	auto it = transformMap.find(slots[_id.index].transformID);
+	auto it = transformMap.find(slots[_id.GetIndex()].transformID);
 	if (it != transformMap.end())
 	{
 		transformMap.erase(it);
 	}
 
 	// 移動後のIDの修正
-	slots[movedId.index].denseIndex = slots[_id.index].denseIndex;
+	slots[movedId.GetIndex()].denseIndex = slots[_id.GetIndex()].denseIndex;
 
 	// フリーに追加
-	freeSlots.push_back(_id.index);
-	slots[_id.index].generation++;
+	freeSlots.push_back(_id.GetIndex());
+	slots[_id.GetIndex()].generation++;
 }
 
 // 生存確認
 bool BodyStorage::IsAlive(const BodyID& _id) const
 {
-	return slots[_id.index].alive && slots[_id.index].generation == _id.generation;
+	return slots[_id.GetIndex()].alive && slots[_id.GetGeneration()].generation == _id.GetGeneration();
 }
 // 種類取得
 BodyType BodyStorage::GetType(const BodyID& _id) const
 {
-	return slots[_id.index].type;
+	return slots[_id.GetIndex()].type;
 }
 // 実データのインデックス
 uint32_t BodyStorage::GetDenseIndex(const BodyID& _id) const
 {
-	return slots[_id.index].denseIndex;
+	return slots[_id.GetIndex()].denseIndex;
 }
 // 持ってるEntity
 EntityID BodyStorage::GetOwnerEntity(const BodyID& _id) const
 {
-	return slots[_id.index].ownerEntity;
+	return slots[_id.GetIndex()].ownerEntity;
 }
 // 対応Transform
 PhysicsTransformID BodyStorage::GetTransformID(const BodyID& _id) const
 {
-	return slots[_id.index].transformID;
+	return slots[_id.GetIndex()].transformID;
 }
 // RigidBodyのBodyID取得
 bool BodyStorage::TryGetRigidBodyID(const PhysicsTransformID& _transformID, BodyID& _output)
@@ -159,7 +159,7 @@ BodyID BodyStorage::GenerateBodyID(size_t _denseIndex, const BodyType& _type, co
 		// --- フリーのスロットがないため新たにスロットを作成---
 
 		// IDを作成(初代判定で1)
-		BodyID result{ slots.size(),1 };
+		BodyID result{ static_cast<BodyID::Index>(slots.size()),1 };
 		// Slotを増設
 		slots.emplace_back(_denseIndex, _type, _ownerEntity, _transformID);
 

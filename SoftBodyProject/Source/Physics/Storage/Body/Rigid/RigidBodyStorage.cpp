@@ -118,7 +118,7 @@ BodyID RigidBodyStorage::Remove(uint32_t _index)
 	BodyID movedId{ id[_index] };
 
 	// 移動後のIDの修正
-	slots[movedId.index].denseIndex = slots[_index].denseIndex;
+	slots[movedId.GetIndex()].denseIndex = slots[_index].denseIndex;
 
 	return movedId;
 }
