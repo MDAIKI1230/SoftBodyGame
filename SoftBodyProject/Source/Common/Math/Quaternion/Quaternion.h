@@ -53,7 +53,7 @@ public:
 	// 正規化(変化あり)
 	Quaternion& Normalize();
 	// 正規化(変化なし)
-	static Quaternion Normalized(Quaternion& _rot);
+	static Quaternion Normalized(const Quaternion& _rot);
 	// 正規化(変化あり)
 	static Quaternion& Normalize(Quaternion& _rot);
 

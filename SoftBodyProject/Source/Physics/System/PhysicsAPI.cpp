@@ -82,7 +82,7 @@ const Matrix4x4& PhysicsAPI::GetInertiaTensor(BodyID _id)
 	return bodyStorage->rigidBodyStorage->inertiaTensor[bodyStorage->GetDenseIndex(_id)];
 }
 // 慣性テンソル変更
-void PhysicsAPI::SetInertiaTensor(BodyID _id, Matrix4x4& _matrix)
+void PhysicsAPI::SetInertiaTensor(BodyID _id, const Matrix4x4& _matrix)
 {
 	bodyStorage->rigidBodyStorage->inertiaTensor[bodyStorage->GetDenseIndex(_id)] = _matrix;
 	bodyStorage->rigidBodyStorage->localInverseInertiaTensor[bodyStorage->GetDenseIndex(_id)] = NamericalAnalysis::GaussJordan(_matrix);

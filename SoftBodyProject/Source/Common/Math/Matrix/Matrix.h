@@ -92,7 +92,7 @@ public:
 	Matrix4x4& Transpose();
 
 	// 転置(変化しない)
-	static Matrix4x4 Transposed(Matrix4x4& _value);
+	static Matrix4x4 Transposed(const Matrix4x4& _value);
 	// 転置
 	static Matrix4x4& Transpose(Matrix4x4& _value);
 

@@ -128,7 +128,7 @@ void CollisionSolverSystem::VelocitySolver(CollisionManifoldBuffer* _manifoldBuf
 	}
 }
 
-void CollisionSolverSystem::FrictionSolver(SolverBody& _bodyA, Vector3& _rA, SolverBody& _bodyB, Vector3& _rB, ContactConstraint& _constraint)
+void CollisionSolverSystem::FrictionSolver(SolverBody& _bodyA, const Vector3& _rA, SolverBody& _bodyB, const Vector3& _rB, ContactConstraint& _constraint)
 {
 	// 角速度まで含めた速度を計算
 	Vector3 vA = _bodyA.velocity + Vector3::Cross(_bodyA.angularVelocity, _rA);

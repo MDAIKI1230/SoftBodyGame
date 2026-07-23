@@ -51,9 +51,9 @@ namespace GJKEPA
 		ColliderID _colliderA, ColliderID _colliderB,
 		PhysicsTransformStorage* _transformStorage,
 		ColliderStorage* _colliderStorage,
-		CollisionManifoldBuffer* _manifoldBuffer, Simplex& _simplex);
+		CollisionManifoldBuffer* _manifoldBuffer, const Simplex& _simplex);
 
-	void ComputeFace(Face& _face, std::vector<MinkowskiVertex>& _vertices);
-	void AddEdge(Edge& _edge, std::vector<Edge>& _edges);
-	ContactPoint CalcContactPosition(Face& _face, std::vector<MinkowskiVertex>& _vertices);
+	void ComputeFace(Face& _face, const std::vector<MinkowskiVertex>& _vertices);
+	void AddEdge(Edge _edge, std::vector<Edge>& _edges);
+	ContactPoint CalcContactPosition(const Face& _face, const std::vector<MinkowskiVertex>& _vertices);
 }

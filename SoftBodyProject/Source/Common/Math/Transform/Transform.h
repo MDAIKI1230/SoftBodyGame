@@ -85,7 +85,7 @@ public:
     /// <param name="_pos">位置を入れる変数</param>
     /// <param name="_rot">四元数を入れる変数</param>
     /// <param name="_scale">大きさを入れる変数</param>
-    static void DecomposeTRS(Matrix4x4& _mat, Vector3& _pos, Quaternion& _rot, Vector3& _scale);
+    static void DecomposeTRS(const Matrix4x4& _mat, Vector3& _pos, Quaternion& _rot, Vector3& _scale);
 
 private:
     // 位置

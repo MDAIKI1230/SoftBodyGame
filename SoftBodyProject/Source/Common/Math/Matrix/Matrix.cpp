@@ -185,7 +185,7 @@ Matrix4x4& Matrix4x4::Transpose()
 }
 
 // 転置(変化しない)
-Matrix4x4 Matrix4x4::Transposed(Matrix4x4& _value)
+Matrix4x4 Matrix4x4::Transposed(const Matrix4x4& _value)
 {
 	SIMDVectorFloat temp1{ SIMDVectorFloat::UnpackLow(_value.row[0],_value.row[1]) };  // m00,m10,m01,m11
 	SIMDVectorFloat temp2{ SIMDVectorFloat::UnpackHigh(_value.row[0],_value.row[1]) }; // m02,m12,m03,m13

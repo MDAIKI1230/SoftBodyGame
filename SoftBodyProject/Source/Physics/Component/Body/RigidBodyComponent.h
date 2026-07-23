@@ -46,7 +46,7 @@ public:
 	// 慣性テンソル取得
 	const Matrix4x4& GetInertiaTensor() const;
 	// 慣性テンソル変更
-	void SetInertiaTensor(Matrix4x4& _matrix);
+	void SetInertiaTensor(const Matrix4x4& _matrix);
 
 	// --- 重力系 ---
 

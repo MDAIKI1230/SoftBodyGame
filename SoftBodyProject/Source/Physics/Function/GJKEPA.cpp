@@ -199,7 +199,7 @@ void GJKEPA::EPA(
 	ColliderID _colliderA, ColliderID _colliderB,
 	PhysicsTransformStorage* _transformStorage,
 	ColliderStorage* _colliderStorage,
-	CollisionManifoldBuffer* _manifoldBuffer, Simplex& _simplex)
+	CollisionManifoldBuffer* _manifoldBuffer, const Simplex& _simplex)
 {
 	std::vector<MinkowskiVertex> vertices{ _simplex[0],_simplex[1], _simplex[2], _simplex[3] };
 	std::vector<Face> faces;
@@ -326,7 +326,7 @@ void GJKEPA::EPA(
 	}
 }
 
-void GJKEPA::ComputeFace(Face& _face, std::vector<MinkowskiVertex>& _vertices)
+void GJKEPA::ComputeFace(Face& _face, const std::vector<MinkowskiVertex>& _vertices)
 {
 	// 頂点の検出
 	Vector3 a{ _vertices[_face.pointIndex[0]].minkowski };
@@ -349,7 +349,7 @@ void GJKEPA::ComputeFace(Face& _face, std::vector<MinkowskiVertex>& _vertices)
 	_face.distance = Vector3::Dot(_face.normal, a);
 }
 
-void GJKEPA::AddEdge(Edge& _edge, std::vector<Edge>& _edges)
+void GJKEPA::AddEdge(Edge _edge, std::vector<Edge>& _edges)
 {
 	for (int i{ 0 }; i < _edges.size(); i++)
 	{
@@ -366,7 +366,7 @@ void GJKEPA::AddEdge(Edge& _edge, std::vector<Edge>& _edges)
 	_edges.push_back(_edge);
 }
 
-ContactPoint GJKEPA::CalcContactPosition(Face& _face, std::vector<MinkowskiVertex>& _vertices)
+ContactPoint GJKEPA::CalcContactPosition(const Face& _face, const std::vector<MinkowskiVertex>& _vertices)
 {
 	Vector3 closestPoint{ _face.normal * _face.distance };
 	Vector3 v0{ _vertices[_face.pointIndex[1]].minkowski - _vertices[_face.pointIndex[0]].minkowski };

@@ -35,7 +35,7 @@ Quaternion& Quaternion::Normalize()
 }
 
 // 正規化
-Quaternion Quaternion::Normalized(Quaternion& _rot)
+Quaternion Quaternion::Normalized(const Quaternion& _rot)
 {
 	Quaternion result{ _rot };
 	return result.Normalize();

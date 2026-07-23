@@ -22,7 +22,7 @@ public:
 	// 速度/角速度解決
 	void VelocitySolver(CollisionManifoldBuffer* _manifoldBuffer, SolverBodyBuffer* _solverBodyBuffer);
 	// 摩擦計算
-	void FrictionSolver(SolverBody& _bodyA, Vector3& _rA, SolverBody& _bodyB, Vector3& _rB, ContactConstraint& _constraint);
+	void FrictionSolver(SolverBody& _bodyA, const Vector3& _rA, SolverBody& _bodyB, const Vector3& _rB, ContactConstraint& _constraint);
 	// 位置姿勢の再計算
 	void ReCalcPosRot(SolverBodyBuffer* _solverBodyBuffer);
 	// 位置解決

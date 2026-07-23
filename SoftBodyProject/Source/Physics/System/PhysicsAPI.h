@@ -40,7 +40,7 @@ public:
 	// 慣性テンソル取得
 	static const Matrix4x4& GetInertiaTensor(BodyID _id);
 	// 慣性テンソル変更
-	static void SetInertiaTensor(BodyID _id, Matrix4x4& _matrix);
+	static void SetInertiaTensor(BodyID _id, const Matrix4x4& _matrix);
 
 	// isGravity取得
 	static bool GetIsGravity(BodyID _id);

@@ -52,7 +52,7 @@ const Matrix4x4& RigidBodyComponent::GetInertiaTensor() const
 	return PhysicsAPI::GetInertiaTensor(bodyId);
 }
 
-void RigidBodyComponent::SetInertiaTensor(Matrix4x4& _matrix)
+void RigidBodyComponent::SetInertiaTensor(const Matrix4x4& _matrix)
 {
 	PhysicsAPI::SetInertiaTensor(bodyId, _matrix);
 }

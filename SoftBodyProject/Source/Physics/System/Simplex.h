@@ -8,7 +8,7 @@ class Simplex
 {
 public:
 	// 頂点数
-	int GetSize() { return size; }
+	int GetSize() const { return size; }
 	// 頂点追加
 	void Add(const MinkowskiVertex& _vec);
 	// 頂点削除

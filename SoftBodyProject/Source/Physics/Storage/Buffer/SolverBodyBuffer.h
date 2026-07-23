@@ -8,7 +8,7 @@
 class SolverBodyBuffer
 {
 public:
-	void AddSolverBody(PhysicsTransformID _transformID, SolverBody& _body)
+	void AddSolverBody(PhysicsTransformID _transformID, const SolverBody& _body)
 	{
 		bodyMap[_transformID] = solverBodies.size();
 		solverBodies.push_back(_body);
