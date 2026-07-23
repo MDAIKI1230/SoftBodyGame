@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "RigidBodyStorage.h"
+#include "BodyStorage.h"
 #include "ColliderStorage.h"
 #include "PhysicsTransformStorage.h"
 
@@ -10,18 +10,18 @@ public:
 	// コンストラクタ
 	RigidBodySystem() = default;
 	// 更新
-	void FixedUpdate(PhysicsTransformStorage* _transformStorage, RigidBodyStorage* _bodyStorage, ColliderStorage* _colliderStorage);
+	void FixedUpdate(PhysicsTransformStorage* _transformStorage, BodyStorage* _bodyStorage, ColliderStorage* _colliderStorage);
 private:
 	// 重力適応
-	void UpdateGravity(RigidBodyStorage* _bodyStorage);
+	void UpdateGravity(BodyStorage* _bodyStorage);
 	// 位置更新
-	void UpdatePosition(PhysicsTransformStorage* _transformStorage, RigidBodyStorage* _bodyStorage);
+	void UpdatePosition(PhysicsTransformStorage* _transformStorage, BodyStorage* _bodyStorage);
 	// 回転更新
-	void UpdateRotation(PhysicsTransformStorage* _transformStorage, RigidBodyStorage* _bodyStorage);
+	void UpdateRotation(PhysicsTransformStorage* _transformStorage, BodyStorage* _bodyStorage);
 	// 逆慣性テンソル更新
-	void UpdateInverseInertiaTensor(PhysicsTransformStorage* _transformStorage, RigidBodyStorage* _bodyStorage, ColliderStorage* _colliderStorage);
+	void UpdateInverseInertiaTensor(PhysicsTransformStorage* _transformStorage, BodyStorage* _bodyStorage, ColliderStorage* _colliderStorage);
 	// 終了処理
-	void End(RigidBodyStorage* _bodyStorage, ColliderStorage* _colliderStorage);
+	void End(BodyStorage* _bodyStorage, ColliderStorage* _colliderStorage);
 
 	// --- 慣性テンソル計算 ---
 	Matrix4x4 GenerateBoxInverseInertiaTensor(const uint32_t& _transformIndex, const ColliderID& _colliderID, float _mass, PhysicsTransformStorage* _transformStorage, ColliderStorage* _colliderStorage);

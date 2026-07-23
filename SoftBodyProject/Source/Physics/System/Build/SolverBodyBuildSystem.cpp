@@ -1,6 +1,6 @@
 ﻿#include "SolverBodyBuildSystem.h"
 
-void SolverBodyBuildSystem::Build(PhysicsTransformStorage* _transformStorage, RigidBodyStorage* _bodyStorage, SolverBodyBuffer* _solverBodyBuffer)
+void SolverBodyBuildSystem::Build(PhysicsTransformStorage* _transformStorage, BodyStorage* _bodyStorage, SolverBodyBuffer* _solverBodyBuffer)
 {
 	// メモリの確保
 	_solverBodyBuffer->solverBodies.reserve(_transformStorage->id.size());
@@ -13,7 +13,7 @@ void SolverBodyBuildSystem::Build(PhysicsTransformStorage* _transformStorage, Ri
 
 		BodyID bodyID;
 		// Bodyがあるかの確認
-		if (_bodyStorage->TryGet(transformID, bodyID))
+		if (_bodyStorage->TryGetRigidBodyID(transformID, bodyID))
 		{
 			// MAPを確認してあったらそれを使う
 			if (_solverBodyBuffer->bodyMap.contains(transformID))
@@ -46,7 +46,7 @@ void SolverBodyBuildSystem::Build(PhysicsTransformStorage* _transformStorage, Ri
 	}
 }
 
-uint32_t SolverBodyBuildSystem::CreateSolverBody(PhysicsTransformStorage* _transformStorage, RigidBodyStorage* _bodyStorage, PhysicsTransformID& _transformID, BodyID& _bodyID, SolverBodyBuffer* _solverBodyBuffer)
+uint32_t SolverBodyBuildSystem::CreateSolverBody(PhysicsTransformStorage* _transformStorage, BodyStorage* _bodyStorage, PhysicsTransformID& _transformID, BodyID& _bodyID, SolverBodyBuffer* _solverBodyBuffer)
 {
 	SolverBody body;
 
@@ -55,14 +55,14 @@ uint32_t SolverBodyBuildSystem::CreateSolverBody(PhysicsTransformStorage* _trans
 	body.transformID = _transformID;
 	uint32_t bodyIndex{ _bodyStorage->GetDenseIndex(_bodyID) };
 	uint32_t transformIndex{ _transformStorage->GetDenseIndex(_transformID) };
-	body.pastPos = _bodyStorage->pastPos[bodyIndex];
+	body.pastPos = _bodyStorage->rigidBodyStorage->pastPos[bodyIndex];
 	body.position = _transformStorage->position[transformIndex];
-	body.velocity = _bodyStorage->velocity[bodyIndex];
-	body.pastRot = _bodyStorage->pastRot[bodyIndex];
+	body.velocity = _bodyStorage->rigidBodyStorage->velocity[bodyIndex];
+	body.pastRot = _bodyStorage->rigidBodyStorage->pastRot[bodyIndex];
 	body.rotation = _transformStorage->rotation[transformIndex];
-	body.angularVelocity = _bodyStorage->angularVelocity[bodyIndex];
-	body.inverseMass = _bodyStorage->inverseMass[bodyIndex];
-	body.localInverseInertiaTensor = _bodyStorage->localInverseInertiaTensor[bodyIndex];
+	body.angularVelocity = _bodyStorage->rigidBodyStorage->angularVelocity[bodyIndex];
+	body.inverseMass = _bodyStorage->rigidBodyStorage->inverseMass[bodyIndex];
+	body.localInverseInertiaTensor = _bodyStorage->rigidBodyStorage->localInverseInertiaTensor[bodyIndex];
 
 	// インデックス取ってから追加
 	uint32_t result{ static_cast<uint32_t>(_solverBodyBuffer->solverBodies.size()) };

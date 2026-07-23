@@ -10,7 +10,7 @@
 #include "ConstraintBuffer.h"
 
 #include "ColliderStorage.h"
-#include "RigidBodyStorage.h"
+#include "BodyStorage.h"
 #include "PhysicsTransformStorage.h"
 #include "ConstraintStorage.h"
 
@@ -47,7 +47,7 @@ public:
 	// コライダーストレージ取得
 	ColliderStorage* GetColliderStorage() { return colliderStorage.get(); }
 	// RigidBodyストレージ取得
-	RigidBodyStorage* GetRigidBodyStorage() { return rigidBodyStorage.get(); }
+	BodyStorage* GetRigidBodyStorage() { return bodyStorage.get(); }
 	// PhysicsTransformストレージ取得
 	PhysicsTransformStorage* GetPhysicsTransformStorage() { return transformStorage.get(); }
 	// Constraintストレージ取得
@@ -66,7 +66,7 @@ private:
 
 
 	std::unique_ptr<ColliderStorage> colliderStorage;
-	std::unique_ptr<RigidBodyStorage> rigidBodyStorage;
+	std::unique_ptr<BodyStorage> bodyStorage;
 	std::unique_ptr< PhysicsTransformStorage> transformStorage;
 	std::unique_ptr< ConstraintStorage> constraintStorage;
 

@@ -7,7 +7,7 @@ PhysicsWorld::PhysicsWorld()
 	constraintBuffer = std::make_unique<ConstraintBuffer>();
 
 	colliderStorage = std::make_unique<ColliderStorage>();
-	rigidBodyStorage = std::make_unique<RigidBodyStorage>();
+	bodyStorage = std::make_unique<BodyStorage>();
 	transformStorage = std::make_unique<PhysicsTransformStorage>();
 	constraintStorage = std::make_unique<ConstraintStorage>();
 
@@ -32,7 +32,7 @@ void PhysicsWorld::FixedUpdate(WorldStorage* _worldStorage, EventManager* _event
 {
 	// 更新処理
 	synchronizationSystem->Sync(_worldStorage, transformStorage.get());
-	rigidBodySystem->FixedUpdate(transformStorage.get(), rigidBodyStorage.get(), colliderStorage.get());
+	rigidBodySystem->FixedUpdate(transformStorage.get(), bodyStorage.get(), colliderStorage.get());
 	aabbUpdateSystem->FixedUpdate(transformStorage.get(), colliderStorage.get());
 
 	// 当り判定
@@ -57,7 +57,7 @@ void PhysicsWorld::DebugRender()
 
 void PhysicsWorld::Solver()
 {
-	solverBodyBuildSystem->Build(transformStorage.get(), rigidBodyStorage.get(), solverBodyBuffer.get());
+	solverBodyBuildSystem->Build(transformStorage.get(), bodyStorage.get(), solverBodyBuffer.get());
 	// 解消準備
 	collisionSolverSystem->StartUp(colliderStorage.get(), manifoldBuffer.get(), solverBodyBuffer.get());
 
@@ -94,6 +94,6 @@ void PhysicsWorld::Solver()
 	// 終了
 	collisionSolverSystem->End(manifoldBuffer.get());
 
-	solverBodyCommitSystem->Commit(transformStorage.get(), rigidBodyStorage.get(), solverBodyBuffer.get());
+	solverBodyCommitSystem->Commit(transformStorage.get(), bodyStorage.get(), solverBodyBuffer.get());
 	solverBodyBuffer->Clear();
 }

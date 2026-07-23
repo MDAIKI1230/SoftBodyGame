@@ -200,6 +200,30 @@
     <Filter Include="ソース ファイル\System\Adapter\Raylib\Storage">
       <UniqueIdentifier>{aeeb51f4-1169-4fc5-95d3-845a1610e4a6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Physics\Component\Body\Soft">
+      <UniqueIdentifier>{fd9b9a12-8c42-4fb0-a0df-0c02d9f334ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Physics\Struct\Body\Soft">
+      <UniqueIdentifier>{8073d815-6892-4112-9309-cab7f8863c5c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Physics\Storage\Body\Soft">
+      <UniqueIdentifier>{5500034f-5c93-4b9d-b68f-fa3f7cdc4dd2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Physics\Storage\Body\Rigid">
+      <UniqueIdentifier>{ab5f5cd2-d368-4d2d-bcb3-cc96842f7585}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Physics\Storage\Component\Body">
+      <UniqueIdentifier>{8b6fe77f-e14a-4e27-bd02-093b47c86db0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Physics\Storage\Component\Collider">
+      <UniqueIdentifier>{023d7355-4414-4770-9a3e-46472fa8d821}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Physics\Storage\Component\Constraint">
+      <UniqueIdentifier>{ea6612c2-03b8-4146-925f-27ea1cb384f1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Physics\Storage\Component\Body\Soft">
+      <UniqueIdentifier>{93733d9e-2408-4f50-b669-6e52f51323a6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Objects\Camera.h">
@@ -213,9 +237,6 @@
     </ClInclude>
     <ClInclude Include="Source\Common\Constants\BaseConstants.h">
       <Filter>ソース ファイル\Common\Constants</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Common\BaseClass\ComponentBase.h">
-      <Filter>ソース ファイル\Common\BaseClass</Filter>
     </ClInclude>
     <ClInclude Include="Source\System\Scenes\DebugScene.h">
       <Filter>ソース ファイル\System\Scene</Filter>
@@ -382,15 +403,6 @@
     <ClInclude Include="Source\Physics\Storage\Collider\AABBBroadPhaseColliderStorage.h">
       <Filter>ソース ファイル\Physics\Storage\Collider</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Physics\Storage\Component\BoxColliderComponentStorage.h">
-      <Filter>ソース ファイル\Physics\Storage\Component</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Physics\Storage\Component\RigidBodyComponentStorage.h">
-      <Filter>ソース ファイル\Physics\Storage\Component</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Physics\Storage\Component\SphereColliderComponentStorage.h">
-      <Filter>ソース ファイル\Physics\Storage\Component</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Common\ECS\EntityID.h">
       <Filter>ソース ファイル\Common\ECS</Filter>
     </ClInclude>
@@ -399,9 +411,6 @@
     </ClInclude>
     <ClInclude Include="Source\Physics\System\Update\AABBUpdateSystem.h">
       <Filter>ソース ファイル\Physics\System\Update</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Physics\Storage\Body\RigidBodyStorage.h">
-      <Filter>ソース ファイル\Physics\Storage\Body</Filter>
     </ClInclude>
     <ClInclude Include="Source\Physics\System\Collision\NarrowPhasePairBuilder.h">
       <Filter>ソース ファイル\Physics\System\Collision</Filter>
@@ -571,9 +580,6 @@
     <ClInclude Include="Source\Physics\System\Solver\SolverBodyCommitSystem.h">
       <Filter>ソース ファイル\Physics\System\Solver</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Physics\Storage\Component\PointConstraintComponentStorage.h">
-      <Filter>ソース ファイル\Physics\Storage\Component</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Physics\Struct\Constraint\DistanceConstraint.h">
       <Filter>ソース ファイル\Physics\Struct\Constraint</Filter>
     </ClInclude>
@@ -582,9 +588,6 @@
     </ClInclude>
     <ClInclude Include="Source\Physics\Storage\Constraint\DistanceConstraintStorage.h">
       <Filter>ソース ファイル\Physics\Storage\Constraint</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Physics\Storage\Component\DistanceConstraintComponentStorage.h">
-      <Filter>ソース ファイル\Physics\Storage\Component</Filter>
     </ClInclude>
     <ClInclude Include="Source\Objects\EmptyObject.h">
       <Filter>ソース ファイル\GameObject</Filter>
@@ -669,6 +672,72 @@
     </ClInclude>
     <ClInclude Include="Source\System\Adapter\Raylib\Storage\RaylibStorage.h">
       <Filter>ソース ファイル\System\Adapter\Raylib\Storage</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Component\Body\Soft\ClothComponent.h">
+      <Filter>ソース ファイル\Physics\Component\Body\Soft</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Component\Body\Soft\RopeComponent.h">
+      <Filter>ソース ファイル\Physics\Component\Body\Soft</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Component\Body\Soft\SoftBodyComponent.h">
+      <Filter>ソース ファイル\Physics\Component\Body\Soft</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Storage\Body\Soft\ClothStorage.h">
+      <Filter>ソース ファイル\Physics\Storage\Body\Soft</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Storage\Body\Soft\RopeStorage.h">
+      <Filter>ソース ファイル\Physics\Storage\Body\Soft</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Storage\Body\Soft\SoftBodyStorage.h">
+      <Filter>ソース ファイル\Physics\Storage\Body\Soft</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Struct\Body\Soft\SolveGPUMeta.h">
+      <Filter>ソース ファイル\Physics\Struct\Body\Soft</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Constants\BodyConstraints.h">
+      <Filter>ソース ファイル\Physics\Constants</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Storage\Body\BodyStorage.h">
+      <Filter>ソース ファイル\Physics\Storage\Body</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Storage\Body\Rigid\RigidBodyStorage.h">
+      <Filter>ソース ファイル\Physics\Storage\Body\Rigid</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Struct\Body\Soft\RopeUpdateInfo.h">
+      <Filter>ソース ファイル\Physics\Struct\Body\Soft</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Struct\Body\Soft\ClothUpdateInfo.h">
+      <Filter>ソース ファイル\Physics\Struct\Body\Soft</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Struct\Body\Soft\SoftBodyUpdateInfo.h">
+      <Filter>ソース ファイル\Physics\Struct\Body\Soft</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Storage\Component\Body\RigidBodyComponentStorage.h">
+      <Filter>ソース ファイル\Physics\Storage\Component\Body</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Storage\Component\Collider\BoxColliderComponentStorage.h">
+      <Filter>ソース ファイル\Physics\Storage\Component\Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Storage\Component\Collider\SphereColliderComponentStorage.h">
+      <Filter>ソース ファイル\Physics\Storage\Component\Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Storage\Component\Constraint\DistanceConstraintComponentStorage.h">
+      <Filter>ソース ファイル\Physics\Storage\Component\Constraint</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Storage\Component\Constraint\PointConstraintComponentStorage.h">
+      <Filter>ソース ファイル\Physics\Storage\Component\Constraint</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Storage\Component\Body\Soft\RopeComponentStorage.h">
+      <Filter>ソース ファイル\Physics\Storage\Component\Body\Soft</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Storage\Component\Body\Soft\ClothComponentStorage.h">
+      <Filter>ソース ファイル\Physics\Storage\Component\Body\Soft</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Storage\Component\Body\Soft\SoftBodyComponentStorage.h">
+      <Filter>ソース ファイル\Physics\Storage\Component\Body\Soft</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Common\BaseClass\ComponentBase.h">
+      <Filter>ソース ファイル\Common\BaseClass</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -761,9 +830,6 @@
     </ClCompile>
     <ClCompile Include="Source\Physics\System\Update\AABBUpdateSystem.cpp">
       <Filter>ソース ファイル\Physics\System\Update</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Physics\Storage\Body\RigidBodyStorage.cpp">
-      <Filter>ソース ファイル\Physics\Storage\Body</Filter>
     </ClCompile>
     <ClCompile Include="Source\Physics\System\Collision\NarrowPhasePairBuilder.cpp">
       <Filter>ソース ファイル\Physics\System\Collision</Filter>
@@ -869,6 +935,33 @@
     </ClCompile>
     <ClCompile Include="Source\System\Adapter\Raylib\RaylibGPUConnecter.cpp">
       <Filter>ソース ファイル\System\Adapter\Raylib</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Physics\Component\Body\Soft\ClothComponent.cpp">
+      <Filter>ソース ファイル\Physics\Component\Body\Soft</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Physics\Component\Body\Soft\RopeComponent.cpp">
+      <Filter>ソース ファイル\Physics\Component\Body\Soft</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Physics\Component\Body\Soft\SoftBodyComponent.cpp">
+      <Filter>ソース ファイル\Physics\Component\Body\Soft</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Physics\Storage\Body\Rigid\RigidBodyStorage.cpp">
+      <Filter>ソース ファイル\Physics\Storage\Body\Rigid</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Physics\Storage\Body\BodyStorage.cpp">
+      <Filter>ソース ファイル\Physics\Storage\Body</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Physics\Storage\Component\Body\RigidBodyComponentStorage.cpp">
+      <Filter>ソース ファイル\Physics\Storage\Component\Body</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Physics\Storage\Component\Body\Soft\RopeComponentStorage.cpp">
+      <Filter>ソース ファイル\Physics\Storage\Component\Body\Soft</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Physics\Storage\Component\Body\Soft\ClothComponentStorage.cpp">
+      <Filter>ソース ファイル\Physics\Storage\Component\Body\Soft</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Physics\Storage\Component\Body\Soft\SoftBodyComponentStorage.cpp">
+      <Filter>ソース ファイル\Physics\Storage\Component\Body\Soft</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

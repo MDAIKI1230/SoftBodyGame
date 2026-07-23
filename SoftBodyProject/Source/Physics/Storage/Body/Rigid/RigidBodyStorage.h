@@ -16,21 +16,10 @@ public:
 	RigidBodyStorage() = default;
 
 	// RigidBody作成
-	BodyID CreateRigidBody(EntityID _entity, PhysicsTransformID _transformID);
+	void CreateRigidBody(const EntityID& _entity, const PhysicsTransformID& _transformID, const BodyID& _id);
 
 	// 破棄
-	void Destroy(BodyID _id);
-
-	// 生存確認
-	bool IsAlive(BodyID _id) const;
-	// 実データのインデックス
-	uint32_t GetDenseIndex(BodyID _id) const;
-	// 持ってるEntity
-	EntityID GetOwnerEntity(BodyID _id) const;
-	// 対応Transform
-	PhysicsTransformID GetTransformID(BodyID _id) const;
-	// RigidBody取得
-	bool TryGet(PhysicsTransformID _transformID, BodyID& _output);
+	BodyID Remove(uint32_t _index);
 public:
 	std::vector<BodySlot> slots;
 	std::vector<uint32_t> freeSlots;
