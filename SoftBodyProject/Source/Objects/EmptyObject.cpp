@@ -2,7 +2,7 @@
 
 #include "EmptyObject.h"
 
-EmptyObject::EmptyObject(WorldStorage* world, uint32_t _entity) :
+EmptyObject::EmptyObject(WorldStorage* world, const EntityID& _entity) :
 	ObjectBase{ world,_entity }
 {
 	AddComponent<TransformComponent>();

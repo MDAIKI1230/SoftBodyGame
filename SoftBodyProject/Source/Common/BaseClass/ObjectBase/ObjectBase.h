@@ -10,7 +10,7 @@ class ObjectBase
 {
 public:
 	// コンストラクタ
-	ObjectBase(WorldStorage* _world, uint32_t _entity) :
+	ObjectBase(WorldStorage* _world, const EntityID& _entity) :
 		world{ _world },
 		entity{ _entity }
 	{

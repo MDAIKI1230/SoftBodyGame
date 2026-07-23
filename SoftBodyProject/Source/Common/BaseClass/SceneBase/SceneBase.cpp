@@ -180,7 +180,7 @@ void SceneBase::LoadFile(std::string _filePath)
 	for (auto& objData : fileData.objectDatas)
 	{
 		// 対応オブジェクトを作成
-		std::unique_ptr<ObjectBase> obj{ std::move(ObjectFactory::CreateFuncs[objData.type](worldStorage.get(), objectManager->GetHandle())) };
+		std::unique_ptr<ObjectBase> obj{ std::move(ObjectFactory::CreateFuncs[objData.type](worldStorage.get(), objectManager->GenerateNewID())) };
 
 		for (auto& componentData : objData.components)
 		{

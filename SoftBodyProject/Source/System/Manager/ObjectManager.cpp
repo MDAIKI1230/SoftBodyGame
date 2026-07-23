@@ -25,10 +25,10 @@ void ObjectManager::FixedUpdate()
 ObjectBase* ObjectManager::Get(EntityID _index)
 {
 	// サイズチェック
-	if (_index.id >= objects.size())
+	if (_index.GetIndex() >= objects.size())
 	{
 		return nullptr;
 	}
 
-	return objects[_index.id].get();
+	return objects[_index.GetIndex()].get();
 }

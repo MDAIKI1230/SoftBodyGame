@@ -1,23 +1,18 @@
 ﻿#pragma once
 
-#include <stdint.h>
+#include "GenerationalID.h"
 #include <xhash>
 
-struct EntityID
-{
-	uint32_t id;
+struct EntityTag;
 
-	bool operator==(const EntityID& other) const
-	{
-		return id == other.id;
-	}
-};
+using EntityID = GenerationalID<EntityTag>;
 
 template<>
 struct std::hash<EntityID>
 {
     size_t operator()(const EntityID& id) const noexcept
     {
-        return std::hash<int>{}(id.id);
+        return std::hash<size_t>{}(id.GetIndex())
+            ^ (std::hash<size_t>{}(id.GetGeneration()) << 1);
     }
 };
