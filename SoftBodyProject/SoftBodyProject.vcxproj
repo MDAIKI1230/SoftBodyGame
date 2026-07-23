@@ -490,6 +490,7 @@
     <ClCompile Include="Source\Physics\Storage\Body\Rigid\RigidBodyStorage.cpp" />
     <ClCompile Include="Source\Physics\Storage\Buffer\PhysicsCommandBuffer.cpp" />
     <ClCompile Include="Source\Physics\Storage\Collider\ColliderStorage.cpp" />
+    <ClCompile Include="Source\Physics\Storage\Component\RigidBodyComponentStorage.cpp" />
     <ClCompile Include="Source\Physics\Storage\Constraint\ConstraintStorage.cpp" />
     <ClCompile Include="Source\Physics\Storage\Transform\PhysicsTransformStorage.cpp" />
     <ClCompile Include="Source\Physics\System\Build\ConstraintBuildSystem.cpp" />

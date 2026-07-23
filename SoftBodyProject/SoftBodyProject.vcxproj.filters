@@ -930,5 +930,8 @@
     <ClCompile Include="Source\Physics\Storage\Body\BodyStorage.cpp">
       <Filter>ソース ファイル\Physics\Storage\Body</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Physics\Storage\Component\RigidBodyComponentStorage.cpp">
+      <Filter>ソース ファイル\Physics\Storage\Component</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

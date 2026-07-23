@@ -8,5 +8,6 @@
 
 class RigidBodyComponentStorage :public SparseSetStorageBase<RigidBodyComponent>
 {
-
+private:
+	bool CanAdd(EntityID& _entity) override;
 };

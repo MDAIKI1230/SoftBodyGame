@@ -26,7 +26,7 @@ public:
 	template<class... Args>
 		T* Add(EntityID _entity, Args&&... _args)
 		{
-			if (CanAdd())
+			if (CanAdd(_entity))
 			{
 				T* result;
 				if constexpr (std::is_constructible_v<T, EntityID, Args...>)
@@ -85,7 +85,7 @@ protected:
 	// 追加後に即座に呼ばれる関数(追加後必要な処理がるのならここに)
 	virtual void OnAdded() {};
 	// 追加できるか関数(重複が許されない関数をこれでカットする)
-	virtual bool CanAdd() { return true; }
+	virtual bool CanAdd(EntityID& _entity) { return true; }
 protected:
 	SparseSet<T> sparseSet{};
 };
