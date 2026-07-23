@@ -63,7 +63,7 @@ public:
 	}
 
 	// --- ゲッター　---
-	EntityID GetHandle() { return entity; }
+	EntityID& GetHandle() { return entity; }
 	// 仮想デストラクタ
 	virtual ~ObjectBase() = default;
 private:
