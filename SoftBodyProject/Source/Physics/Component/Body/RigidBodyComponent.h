@@ -1,19 +1,17 @@
 ﻿#pragma once
 
-#include "ComponentBase.h"
-
 #include "EntityID.h"
 #include "BodyID.h"
 
-struct RigidBodyComponent:public ComponentBase
+struct RigidBodyComponent
 {
 public:
 	// --- コンストラクタ ---
 	
 	// デフォルトコンストラクタ(ストレージに追加できないよ)
-	RigidBodyComponent();
+	RigidBodyComponent() = default;
 
-	RigidBodyComponent(EntityID _entity, int _handle);
+	RigidBodyComponent(EntityID _entity);
 
 	// --- 力加算系 ---
 

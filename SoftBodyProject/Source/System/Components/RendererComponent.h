@@ -1,12 +1,18 @@
 ﻿#pragma once
 
-#include "ComponentBase.h"
-
-struct RendererComponent : public ComponentBase
+struct RendererComponent
 {
 public:
 	RendererComponent(int _handle) :
-		ComponentBase(_handle)
+		handle{_handle}
 	{
 	}
+
+	int GetHandle()
+	{
+		return handle;
+	}
+
+private:
+	int handle;
 };

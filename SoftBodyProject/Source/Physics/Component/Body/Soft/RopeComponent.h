@@ -1,15 +1,13 @@
 ﻿#pragma once
 
-#include "ComponentBase.h"
-
 #include "EntityID.h"
 #include "BodyID.h"
 
-struct RopeComponent :public ComponentBase
+struct RopeComponent
 {
 public:
 	// コンストラクタ
-	RopeComponent(EntityID& _entity, int _handle);
+	RopeComponent(EntityID& _entity);
 
 	// 全体の長さ取得
 	float GetLength();

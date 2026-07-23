@@ -1,15 +1,13 @@
 ﻿#pragma once
 
-#include "ComponentBase.h"
-
 #include "EntityID.h"
 #include "BodyID.h"
 
-struct ClothComponent :public ComponentBase
+struct ClothComponent
 {
 public:
 	// コンストラクタ
-	ClothComponent(EntityID _entity, int _handle);
+	ClothComponent(EntityID _entity);
 
 	// 横幅取得
 	float GetWidth();

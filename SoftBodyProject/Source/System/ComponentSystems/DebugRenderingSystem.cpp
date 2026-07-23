@@ -51,8 +51,6 @@ void DebugRenderingSystem::DrawBox(BoxColliderComponentStorage* _boxStorage, Tra
 
 		BoxColliderComponent* box{ _boxStorage->Get(entity) };
 
-		int handle{ box->GetHandle() };
-
 		Vector3 scale{ box->GetWidth(),box->GetHeight(),box->GetDepth() };
 
 		ServiceLocator::GetRenderer()->DrawBox(trans.GetWorldMatrix(), scale, box->GetColor());

@@ -3,28 +3,24 @@
 #include "DistanceConstraintComponent.h"
 
 
-DistanceConstraintComponent::DistanceConstraintComponent(EntityID _entity, int _handle) :
-	ComponentBase{ _handle }
+DistanceConstraintComponent::DistanceConstraintComponent(EntityID _entity) :
+	id{ PhysicsAPI::CreateDistanceConstraint(_entity, Vector3::ZERO, 0.0f) }
 {
-	id = PhysicsAPI::CreateDistanceConstraint(_entity, Vector3::ZERO, 0.0f);
 }
 
-DistanceConstraintComponent::DistanceConstraintComponent(EntityID _entity, int _handle, Vector3 _localOffset) :
-	ComponentBase{ _handle }
+DistanceConstraintComponent::DistanceConstraintComponent(EntityID _entity, Vector3 _localOffset) :
+	id{ PhysicsAPI::CreateDistanceConstraint(_entity, _localOffset, 0.0f) }
 {
-	id = PhysicsAPI::CreateDistanceConstraint(_entity, _localOffset, 0.0f);
 }
 
-DistanceConstraintComponent::DistanceConstraintComponent(EntityID _entity, int _handle, float _distance) :
-	ComponentBase{ _handle }
+DistanceConstraintComponent::DistanceConstraintComponent(EntityID _entity, float _distance) :
+	id{ PhysicsAPI::CreateDistanceConstraint(_entity, Vector3::ZERO, _distance) }
 {
-	id = PhysicsAPI::CreateDistanceConstraint(_entity, Vector3::ZERO, _distance);
 }
 
-DistanceConstraintComponent::DistanceConstraintComponent(EntityID _entity, int _handle, Vector3 _localOffset, float _distance) :
-	ComponentBase{ _handle }
+DistanceConstraintComponent::DistanceConstraintComponent(EntityID _entity, Vector3 _localOffset, float _distance) :
+	id{ PhysicsAPI::CreateDistanceConstraint(_entity, _localOffset, _distance) }
 {
-	id = PhysicsAPI::CreateDistanceConstraint(_entity, _localOffset, _distance);
 }
 
 void DistanceConstraintComponent::AddEndPoint(const EntityID& _entityID, const Vector3& _localOffset)

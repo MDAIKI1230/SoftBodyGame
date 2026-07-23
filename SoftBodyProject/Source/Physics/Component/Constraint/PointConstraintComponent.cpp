@@ -2,16 +2,14 @@
 
 #include "PointConstraintComponent.h"
 
-PointConstraintComponent::PointConstraintComponent(EntityID _entity, int _handle) :
-	ComponentBase{ _handle }
+PointConstraintComponent::PointConstraintComponent(EntityID _entity) :
+	id{ PhysicsAPI::CreatePointConstraint(_entity, Vector3::ZERO) }
 {
-	id = PhysicsAPI::CreatePointConstraint(_entity, Vector3::ZERO);
 }
 
-PointConstraintComponent::PointConstraintComponent(EntityID _entity, int _handle, Vector3 _localOffset):
-	ComponentBase{ _handle }
+PointConstraintComponent::PointConstraintComponent(EntityID _entity, Vector3 _localOffset):
+	id{ PhysicsAPI::CreatePointConstraint(_entity, _localOffset) }
 {
-	id = PhysicsAPI::CreatePointConstraint(_entity, _localOffset);
 }
 
 // 対応点追加

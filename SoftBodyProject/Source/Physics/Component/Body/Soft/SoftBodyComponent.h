@@ -1,15 +1,13 @@
 ﻿#pragma once
 
-#include "ComponentBase.h"
-
 #include "EntityID.h"
 #include "BodyID.h"
 
-struct SoftBodyComponent :public ComponentBase
+struct SoftBodyComponent
 {
 public:
 	// コンストラクタ
-	SoftBodyComponent(EntityID _entity, int _handle);
+	SoftBodyComponent(EntityID _entity);
 
 	// 横幅取得
 	float GetWidth();

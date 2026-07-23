@@ -285,7 +285,6 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Source\Common\BaseClass\ComponentBase.h" />
     <ClInclude Include="Source\Common\BaseClass\FixedUpdateSystem.h" />
     <ClInclude Include="Source\Common\BaseClass\ObjectBase\ObjectBase.h" />
     <ClInclude Include="Source\Common\BaseClass\RenderingSystem.h" />

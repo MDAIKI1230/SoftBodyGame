@@ -3,10 +3,9 @@
 #include "ClothComponent.h"
 
 // コンストラクタ
-ClothComponent::ClothComponent(EntityID _entity, int _handle) :
-	ComponentBase{ _handle }
+ClothComponent::ClothComponent(EntityID _entity) :
+	id{ PhysicsAPI::CreateCloth(_entity, ClothUpdateInfo{}) }
 {
-	id = PhysicsAPI::CreateCloth(_entity, ClothUpdateInfo{});
 }
 
 // 横幅取得

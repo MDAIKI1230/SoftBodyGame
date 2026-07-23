@@ -42,7 +42,7 @@ public:
 
 		if(storage != nullptr)
 		{
-			return storage->Add(entity, storage->GetHandle(), std::forward<Args>(args)...);
+			return storage->Add(entity, std::forward<Args>(args)...);
 		}
 
 		return nullptr;

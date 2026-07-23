@@ -1,6 +1,5 @@
 ﻿#pragma once
 
-#include "ComponentBase.h"
 #include "ColliderID.h"
 #include "EntityID.h"
 
@@ -8,12 +7,12 @@
 #include "Color.h"
 #endif // DEBUG
 
-struct ColliderComponent : public ComponentBase
+struct ColliderComponent
 {
 public:
 	// コンストラクタ
-	ColliderComponent(int _handle) :
-		ComponentBase{ _handle }
+	ColliderComponent(const ColliderID& _colliderID) :
+		colliderID{ _colliderID }
 	{
 	}
 

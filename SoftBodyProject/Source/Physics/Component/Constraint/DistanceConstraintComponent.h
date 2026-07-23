@@ -1,24 +1,22 @@
 ﻿#pragma once
 
-#include "ComponentBase.h"
-
 #include "MDMath.h"
 
 #include "EntityID.h"
 
 #include "ConstraintID.h"
 
-struct DistanceConstraintComponent : public ComponentBase
+struct DistanceConstraintComponent
 {
 public:
 	// コンストラクタ
-	DistanceConstraintComponent(EntityID _entity, int _handle);
+	DistanceConstraintComponent(EntityID _entity);
 	// コンストラクタ
-	DistanceConstraintComponent(EntityID _entity, int _handle, Vector3 _localOffset);
+	DistanceConstraintComponent(EntityID _entity, Vector3 _localOffset);
 	// コンストラクタ
-	DistanceConstraintComponent(EntityID _entity, int _handle, float _distance);
+	DistanceConstraintComponent(EntityID _entity, float _distance);
 	// コンストラクタ
-	DistanceConstraintComponent(EntityID _entity, int _handle, Vector3 _localOffset, float _distance);
+	DistanceConstraintComponent(EntityID _entity, Vector3 _localOffset, float _distance);
 
 	// 対応点追加
 	void AddEndPoint(const EntityID& _entityID, const Vector3& _localOffset);

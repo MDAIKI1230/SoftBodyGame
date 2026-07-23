@@ -2,15 +2,9 @@
 
 #include "RigidBodyComponent.h"
 
-RigidBodyComponent::RigidBodyComponent() :
-	ComponentBase{ -1 }
+RigidBodyComponent::RigidBodyComponent(EntityID _entity) :
+	bodyId{ PhysicsAPI::CreateRigidBody(_entity) }
 {
-}
-
-RigidBodyComponent::RigidBodyComponent(EntityID _entity, int _handle) :
-	ComponentBase{ _handle }
-{
-	bodyId = PhysicsAPI::CreateRigidBody(_entity);
 }
 
 void RigidBodyComponent::AddForce(const Vector3& _force)
