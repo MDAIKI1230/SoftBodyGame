@@ -727,6 +727,9 @@
     <ClInclude Include="Source\Physics\Storage\Component\Constraint\PointConstraintComponentStorage.h">
       <Filter>ソース ファイル\Physics\Storage\Component\Constraint</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Physics\Storage\Component\Body\RopeComponentStorge.h">
+      <Filter>ソース ファイル\Physics\Storage\Component\Body</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\System\Scenes\DebugScene.cpp">
@@ -940,6 +943,9 @@
       <Filter>ソース ファイル\Physics\Storage\Body</Filter>
     </ClCompile>
     <ClCompile Include="Source\Physics\Storage\Component\Body\RigidBodyComponentStorage.cpp">
+      <Filter>ソース ファイル\Physics\Storage\Component\Body</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Physics\Storage\Component\Body\RopeComponentStorge.cpp">
       <Filter>ソース ファイル\Physics\Storage\Component\Body</Filter>
     </ClCompile>
   </ItemGroup>
