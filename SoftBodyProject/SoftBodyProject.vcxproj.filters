@@ -221,6 +221,9 @@
     <Filter Include="ソース ファイル\Physics\Storage\Component\Constraint">
       <UniqueIdentifier>{ea6612c2-03b8-4146-925f-27ea1cb384f1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Physics\Storage\Component\Body\Soft">
+      <UniqueIdentifier>{93733d9e-2408-4f50-b669-6e52f51323a6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Objects\Camera.h">
@@ -234,9 +237,6 @@
     </ClInclude>
     <ClInclude Include="Source\Common\Constants\BaseConstants.h">
       <Filter>ソース ファイル\Common\Constants</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Common\BaseClass\ComponentBase.h">
-      <Filter>ソース ファイル\Common\BaseClass</Filter>
     </ClInclude>
     <ClInclude Include="Source\System\Scenes\DebugScene.h">
       <Filter>ソース ファイル\System\Scene</Filter>
@@ -727,8 +727,17 @@
     <ClInclude Include="Source\Physics\Storage\Component\Constraint\PointConstraintComponentStorage.h">
       <Filter>ソース ファイル\Physics\Storage\Component\Constraint</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Physics\Storage\Component\Body\RopeComponentStorge.h">
-      <Filter>ソース ファイル\Physics\Storage\Component\Body</Filter>
+    <ClInclude Include="Source\Physics\Storage\Component\Body\Soft\RopeComponentStorage.h">
+      <Filter>ソース ファイル\Physics\Storage\Component\Body\Soft</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Storage\Component\Body\Soft\ClothComponentStorage.h">
+      <Filter>ソース ファイル\Physics\Storage\Component\Body\Soft</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Storage\Component\Body\Soft\SoftBodyComponentStorage.h">
+      <Filter>ソース ファイル\Physics\Storage\Component\Body\Soft</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Common\BaseClass\ComponentBase.h">
+      <Filter>ソース ファイル\Common\BaseClass</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -945,8 +954,14 @@
     <ClCompile Include="Source\Physics\Storage\Component\Body\RigidBodyComponentStorage.cpp">
       <Filter>ソース ファイル\Physics\Storage\Component\Body</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Physics\Storage\Component\Body\RopeComponentStorge.cpp">
-      <Filter>ソース ファイル\Physics\Storage\Component\Body</Filter>
+    <ClCompile Include="Source\Physics\Storage\Component\Body\Soft\RopeComponentStorage.cpp">
+      <Filter>ソース ファイル\Physics\Storage\Component\Body\Soft</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Physics\Storage\Component\Body\Soft\ClothComponentStorage.cpp">
+      <Filter>ソース ファイル\Physics\Storage\Component\Body\Soft</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Physics\Storage\Component\Body\Soft\SoftBodyComponentStorage.cpp">
+      <Filter>ソース ファイル\Physics\Storage\Component\Body\Soft</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

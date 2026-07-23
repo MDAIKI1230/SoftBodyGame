@@ -12,9 +12,17 @@
 
 
 // 物理系
+// コライダー
 #include "SphereColliderComponentStorage.h"
 #include "BoxColliderComponentStorage.h"
+
+// ボディ
 #include "RigidBodyComponentStorage.h"
+#include "RopeComponentStorage.h"
+#include "ClothComponentStorage.h"
+#include "SoftBodyComponentStorage.h"
+
+// 拘束
 #include "PointConstraintComponentStorage.h"
 #include "DistanceConstraintComponentStorage.h"
 
@@ -42,9 +50,17 @@ SceneBase::SceneBase()
 	// Transformも同様
 	AddStorage<TransformComponent>(std::make_unique<TransformComponentStorage>());
 	// 物理関係
+	// コライダー
 	AddStorage<SphereColliderComponent>(std::make_unique<SphereColliderComponentStorage>());
 	AddStorage<BoxColliderComponent>(std::make_unique<BoxColliderComponentStorage>());
+
+	// ボディ
 	AddStorage<RigidBodyComponent>(std::make_unique<RigidBodyComponentStorage>());
+	AddStorage<RopeComponent>(std::make_unique<RopeComponentStorage>());
+	AddStorage<ClothComponent>(std::make_unique<ClothComponentStorage>());
+	AddStorage<SoftBodyComponent>(std::make_unique<SoftBodyComponentStorage>());
+
+	// 拘束
 	AddStorage<PointConstraintComponent>(std::make_unique<PointConstraintComponentStorage>());
 	AddStorage<DistanceConstraintComponent>(std::make_unique<DistanceConstraintComponentStorage>());
 	// オブジェクトマネージャー

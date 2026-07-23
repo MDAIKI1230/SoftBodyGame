@@ -5,7 +5,7 @@
 #include "RopeComponent.h"
 
 
-class RopeComponentStorge:public SparseSetStorageBase<RopeComponent>
+class RopeComponentStorage:public SparseSetStorageBase<RopeComponent>
 {
 private:
 	bool CanAdd(EntityID& _entity) override;
