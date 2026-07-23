@@ -27,7 +27,7 @@ public:
 	// 無効なIDじゃないか確認関数
 	constexpr bool IsValid() const
 	{
-		return generation_ != INVALID_GENERATION;
+		return generation != INVALID_GENERATION;
 	}
 
 	// 全部の変数比較
