@@ -3,7 +3,7 @@
 #include "RopeComponent.h"
 
 // コンストラクタ
-RopeComponent::RopeComponent(EntityID& _entity) :
+RopeComponent::RopeComponent(EntityID _entity) :
 	id{ PhysicsAPI::CreateRope(_entity, RopeUpdateInfo{}) }
 {
 }

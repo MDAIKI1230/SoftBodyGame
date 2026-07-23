@@ -1,6 +1,6 @@
 ﻿#include "PhysicsCommandBuffer.h"
 
-BodyUpdate& PhysicsCommandBuffer::Edit(BodyID& _id)
+BodyUpdate& PhysicsCommandBuffer::Edit(BodyID _id)
 {
 	SecureCapacity(_id.GetIndex());
 

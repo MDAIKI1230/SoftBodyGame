@@ -21,31 +21,31 @@ public:
 	BodyStorage();
 
 	// RigidBody作成
-	BodyID CreateRigidBody(const EntityID& _entity, const PhysicsTransformID& _transformID);
+	BodyID CreateRigidBody(EntityID _entity, PhysicsTransformID _transformID);
 	// Rope作成
-	BodyID CreateRope(const EntityID& _entity, const PhysicsTransformID& _transformID, const RopeUpdateInfo& _info);
+	BodyID CreateRope(EntityID _entity, PhysicsTransformID _transformID, const RopeUpdateInfo& _info);
 	// Cloth作成
-	BodyID CreateCloth(const EntityID& _entity, const PhysicsTransformID& _transformID, const ClothUpdateInfo& _info);
+	BodyID CreateCloth(EntityID _entity, PhysicsTransformID _transformID, const ClothUpdateInfo& _info);
 	// SoftBody作成
-	BodyID CreateSoftBody(const EntityID& _entity, const PhysicsTransformID& _transformID, const SoftBodyUpdateInfo& _info);
+	BodyID CreateSoftBody(EntityID _entity, PhysicsTransformID _transformID, const SoftBodyUpdateInfo& _info);
 
 	// 破棄
-	void Destroy(const BodyID& _id);
+	void Destroy(BodyID _id);
 
 	// 生存確認
-	bool IsAlive(const BodyID& _id) const;
+	bool IsAlive(BodyID _id) const;
 	// 種類取得
-	BodyType GetType(const BodyID& _id) const;
+	BodyType GetType(BodyID _id) const;
 	// 実データのインデックス
-	uint32_t GetDenseIndex(const BodyID& _id) const;
+	uint32_t GetDenseIndex(BodyID _id) const;
 	// 持ってるEntity
-	EntityID GetOwnerEntity(const BodyID& _id) const;
+	EntityID GetOwnerEntity(BodyID _id) const;
 	// 対応Transform
-	PhysicsTransformID GetTransformID(const BodyID& _id) const;
+	PhysicsTransformID GetTransformID(BodyID _id) const;
 	// RigidBodyのBodyID取得
-	bool TryGetRigidBodyID(const PhysicsTransformID& _transformID, BodyID& _output);
+	bool TryGetRigidBodyID(PhysicsTransformID _transformID, BodyID& _output);
 	// TransformIDと紐づくBodyIDがあるか否か
-	bool Has(const PhysicsTransformID& _transformID) const;
+	bool Has(PhysicsTransformID _transformID) const;
 public:
 	std::vector<BodySlot> slots;
 	std::vector<uint32_t> freeSlots;
@@ -57,7 +57,7 @@ public:
 	std::unique_ptr<SoftBodyStorage> softBodyStorage;
 private:
 	// 一意なID発行関数
-	BodyID GenerateBodyID(size_t _denseIndex, const BodyType& _type, const EntityID& _ownerEntity, const PhysicsTransformID& _transformID);
+	BodyID GenerateBodyID(size_t _denseIndex, const BodyType& _type, EntityID _ownerEntity, PhysicsTransformID _transformID);
 private:
 	// RigidBody限定対応MAP
 	std::unordered_map<PhysicsTransformID, BodyID> transformMap;

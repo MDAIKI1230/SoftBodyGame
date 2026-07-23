@@ -1,7 +1,7 @@
 ﻿#include "RigidBodyStorage.h"
 
 
-void RigidBodyStorage::CreateRigidBody(const EntityID& _entity, const PhysicsTransformID& _transformID, const BodyID& _id)
+void RigidBodyStorage::CreateRigidBody(EntityID _entity, PhysicsTransformID _transformID, BodyID _id)
 {
 	// --- 速度系 ---
 

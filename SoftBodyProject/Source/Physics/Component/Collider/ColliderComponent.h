@@ -11,7 +11,7 @@ struct ColliderComponent
 {
 public:
 	// コンストラクタ
-	ColliderComponent(const ColliderID& _colliderID) :
+	ColliderComponent(ColliderID _colliderID) :
 		colliderID{ _colliderID }
 	{
 	}

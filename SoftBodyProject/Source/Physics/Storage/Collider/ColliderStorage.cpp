@@ -59,7 +59,7 @@ void ColliderStorage::Destroy(ColliderID _id)
 	{
 		auto& list = it->second;
 
-		std::erase_if(list, [_id](const ColliderID& x)
+		std::erase_if(list, [_id](ColliderID x)
 			{
 				return x.GetIndex() == _id.GetIndex() && x.GetGeneration() == _id.GetGeneration();
 			});

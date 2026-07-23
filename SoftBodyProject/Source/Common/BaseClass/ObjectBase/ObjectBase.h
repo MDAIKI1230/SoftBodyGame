@@ -10,7 +10,7 @@ class ObjectBase
 {
 public:
 	// コンストラクタ
-	ObjectBase(WorldStorage* _world, const EntityID& _entity) :
+	ObjectBase(WorldStorage* _world, EntityID _entity) :
 		world{ _world },
 		entity{ _entity }
 	{
@@ -63,7 +63,7 @@ public:
 	}
 
 	// --- ゲッター　---
-	EntityID& GetHandle() { return entity; }
+	EntityID GetHandle() { return entity; }
 	// 仮想デストラクタ
 	virtual ~ObjectBase() = default;
 private:

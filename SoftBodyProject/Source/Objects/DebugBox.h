@@ -7,19 +7,19 @@ class DebugBox :public ObjectBase
 {
 public:
 	// コンストラクタ
-	DebugBox(WorldStorage* _world, const EntityID& _entity);
+	DebugBox(WorldStorage* _world, EntityID _entity);
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
 	/// <param name="_size">一辺の大きさ</param>
-	DebugBox(WorldStorage* _world, const EntityID& _entity, float _size);
+	DebugBox(WorldStorage* _world, EntityID _entity, float _size);
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
 	/// <param name="_width">X方向の長さ</param>
 	/// <param name="_height">Y方向の長さ</param>
 	/// <param name="_depth">Z方向の長さ</param>
-	DebugBox(WorldStorage* _world, const EntityID& _entity, float _width, float _height, float _depth);
+	DebugBox(WorldStorage* _world, EntityID _entity, float _width, float _height, float _depth);
 	// --- 更新系 ---
 
 	void Update() override;

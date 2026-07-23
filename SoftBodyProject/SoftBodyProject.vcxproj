@@ -390,7 +390,6 @@
     <ClInclude Include="Source\Physics\Struct\Collider\ColliderSlot.h" />
     <ClInclude Include="Source\Physics\Struct\Collider\ColliderTags.h" />
     <ClInclude Include="Source\Physics\Struct\Collision\CollisionPair.h" />
-    <ClInclude Include="Source\Physics\Struct\Collision\ContactGenerator.h" />
     <ClInclude Include="Source\Physics\Struct\Collision\ContactInfo.h" />
     <ClInclude Include="Source\Physics\Struct\Collision\Edge.h" />
     <ClInclude Include="Source\Physics\Struct\Collision\MinkowskiVertex.h" />

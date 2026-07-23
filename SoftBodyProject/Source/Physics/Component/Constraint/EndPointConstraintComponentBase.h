@@ -9,15 +9,15 @@ struct EndPointConstraintComponentBase
 {
 public:
 	// コンストラクタ
-	EndPointConstraintComponentBase(const ConstraintID& _id) :
+	EndPointConstraintComponentBase(ConstraintID _id) :
 		id{ _id }
 	{
 	}
 
 	// 対応点追加
-	void AddEndPoint(EntityID& _entityID, const Vector3& _localOffset);
+	void AddEndPoint(EntityID _entityID, const Vector3& _localOffset);
 	// 対応点削除
-	void RemoveEndPoint(EntityID& _entityID);
+	void RemoveEndPoint(EntityID _entityID);
 protected:
 	ConstraintID id;
 };

@@ -7,7 +7,7 @@ struct RopeComponent
 {
 public:
 	// コンストラクタ
-	RopeComponent(EntityID& _entity);
+	RopeComponent(EntityID _entity);
 
 	// 全体の長さ取得
 	float GetLength();

@@ -8,5 +8,5 @@
 class RopeComponentStorage:public SparseSetStorageBase<RopeComponent>
 {
 private:
-	bool CanAdd(EntityID& _entity) override;
+	bool CanAdd(EntityID _entity) override;
 };

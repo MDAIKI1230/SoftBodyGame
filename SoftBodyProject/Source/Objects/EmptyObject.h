@@ -7,7 +7,7 @@ class EmptyObject :public ObjectBase
 {
 public:
 	// コンストラクタ
-	EmptyObject(WorldStorage* world, const EntityID& _entity);
+	EmptyObject(WorldStorage* world, EntityID _entity);
 	// --- 更新系 ---
 
 	void Update() override;

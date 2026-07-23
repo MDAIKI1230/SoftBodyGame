@@ -8,5 +8,5 @@
 class ClothComponentStorage :public SparseSetStorageBase<ClothComponent>
 {
 private:
-	bool CanAdd(EntityID& _entity) override;
+	bool CanAdd(EntityID _entity) override;
 };

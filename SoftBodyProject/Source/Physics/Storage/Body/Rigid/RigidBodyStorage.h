@@ -16,7 +16,7 @@ public:
 	RigidBodyStorage() = default;
 
 	// RigidBody作成
-	void CreateRigidBody(const EntityID& _entity, const PhysicsTransformID& _transformID, const BodyID& _id);
+	void CreateRigidBody(EntityID _entity, PhysicsTransformID _transformID, BodyID _id);
 
 	// 破棄
 	BodyID Remove(uint32_t _index);

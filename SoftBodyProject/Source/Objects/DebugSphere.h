@@ -7,7 +7,7 @@ class DebugSphere :public ObjectBase
 {
 public:
 	// コンストラクタ
-	DebugSphere(WorldStorage* world, const EntityID& _entity);
+	DebugSphere(WorldStorage* world, EntityID _entity);
 	// --- 更新系 ---
 
 	void Update() override;

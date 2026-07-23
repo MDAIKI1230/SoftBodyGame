@@ -10,7 +10,7 @@
 
 #include "DebugSphere.h"
 
-DebugSphere::DebugSphere(WorldStorage* world, const EntityID& _entity) :
+DebugSphere::DebugSphere(WorldStorage* world, EntityID _entity) :
 	ObjectBase{ world,_entity }
 {
 	AddComponent<TransformComponent>();

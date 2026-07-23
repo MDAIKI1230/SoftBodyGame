@@ -9,7 +9,7 @@ class PhysicsCommandBuffer
 {
 public:
 	// 編集
-	BodyUpdate& Edit(BodyID& _id);
+	BodyUpdate& Edit(BodyID _id);
 	// 記録開始
 	void BeginRecord();
 private:

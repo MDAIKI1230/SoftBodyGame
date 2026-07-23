@@ -8,7 +8,7 @@ struct PointConstraint
 {
 public:
 	// EndPoint削除処理
-	void RemoveEndpoint(PhysicsTransformID& _transformID)
+	void RemoveEndpoint(PhysicsTransformID _transformID)
 	{
 		for (int i{ 0 }; i < endPoints.size(); i++)
 		{

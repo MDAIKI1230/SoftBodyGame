@@ -46,7 +46,7 @@ void SolverBodyBuildSystem::Build(PhysicsTransformStorage* _transformStorage, Bo
 	}
 }
 
-uint32_t SolverBodyBuildSystem::CreateSolverBody(PhysicsTransformStorage* _transformStorage, BodyStorage* _bodyStorage, PhysicsTransformID& _transformID, BodyID& _bodyID, SolverBodyBuffer* _solverBodyBuffer)
+uint32_t SolverBodyBuildSystem::CreateSolverBody(PhysicsTransformStorage* _transformStorage, BodyStorage* _bodyStorage, PhysicsTransformID _transformID, BodyID _bodyID, SolverBodyBuffer* _solverBodyBuffer)
 {
 	SolverBody body;
 
@@ -70,7 +70,7 @@ uint32_t SolverBodyBuildSystem::CreateSolverBody(PhysicsTransformStorage* _trans
 	return result;
 }
 
-uint32_t SolverBodyBuildSystem::CreateSolverBody(PhysicsTransformStorage* _transformStorage, PhysicsTransformID& _transformID, SolverBodyBuffer* _solverBodyBuffer)
+uint32_t SolverBodyBuildSystem::CreateSolverBody(PhysicsTransformStorage* _transformStorage, PhysicsTransformID _transformID, SolverBodyBuffer* _solverBodyBuffer)
 {
 	SolverBody body;
 

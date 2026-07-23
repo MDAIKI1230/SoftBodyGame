@@ -6,7 +6,7 @@ ConstraintStorage::ConstraintStorage()
 	distanceConstraintStorage = std::make_unique<DistanceConstraintStorage>();
 }
 
-ConstraintID ConstraintStorage::CreatePointConstraint(EntityID& _entity, PhysicsTransformID _transformID,const Vector3& _localOffset)
+ConstraintID ConstraintStorage::CreatePointConstraint(EntityID _entity, PhysicsTransformID _transformID,const Vector3& _localOffset)
 {
 	// ID作成
 	ConstraintID id{ GenerateConstraintID(ConstraintType::POINTS,pointConstraintStorage->constraints.size(),_entity,_transformID) };
@@ -23,7 +23,7 @@ ConstraintID ConstraintStorage::CreatePointConstraint(EntityID& _entity, Physics
 	return id;
 }
 
-ConstraintID ConstraintStorage::CreateDistanceConstraint(EntityID& _entity, PhysicsTransformID _transformID, const Vector3& _localOffset, float _distance)
+ConstraintID ConstraintStorage::CreateDistanceConstraint(EntityID _entity, PhysicsTransformID _transformID, const Vector3& _localOffset, float _distance)
 {
 	// ID作成
 	ConstraintID id{ GenerateConstraintID(ConstraintType::DISTANCE,distanceConstraintStorage->constraints.size(),_entity,_transformID) };
@@ -41,7 +41,7 @@ ConstraintID ConstraintStorage::CreateDistanceConstraint(EntityID& _entity, Phys
 	return id;
 }
 
-void ConstraintStorage::Destory(ConstraintID& _id)
+void ConstraintStorage::Destory(ConstraintID _id)
 {
 	// 生存チェック
 	if (!IsAlive(_id))
@@ -75,27 +75,27 @@ void ConstraintStorage::Destory(ConstraintID& _id)
 	freeSlots.push_back(_id.GetIndex());
 }
 
-bool ConstraintStorage::IsAlive(ConstraintID& _id) const
+bool ConstraintStorage::IsAlive(ConstraintID _id) const
 {
 	return slots[_id.GetIndex()].alive && slots[_id.GetIndex()].generation == _id.GetGeneration();
 }
 
-ConstraintType ConstraintStorage::GetType(ConstraintID& _id) const
+ConstraintType ConstraintStorage::GetType(ConstraintID _id) const
 {
 	return slots[_id.GetIndex()].type;
 }
 
-uint32_t ConstraintStorage::GetDenseIndex(ConstraintID& _id) const
+uint32_t ConstraintStorage::GetDenseIndex(ConstraintID _id) const
 {
 	return slots[_id.GetIndex()].denseIndex;
 }
 
-EntityID ConstraintStorage::GetOwnerEntity(ConstraintID& _id) const
+EntityID ConstraintStorage::GetOwnerEntity(ConstraintID _id) const
 {
 	return slots[_id.GetIndex()].ownerEntity;
 }
 
-PhysicsTransformID ConstraintStorage::GetTransformID(ConstraintID& _id) const
+PhysicsTransformID ConstraintStorage::GetTransformID(ConstraintID _id) const
 {
 	return slots[_id.GetIndex()].transformID;
 }

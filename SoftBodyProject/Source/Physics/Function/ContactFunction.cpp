@@ -2,7 +2,7 @@
 
 #include "ContactFunction.h"
 
-bool ContactFunction::SphereSphere(const ColliderID& _colliderA, const ColliderID& _colliderB, ColliderStorage* _colliderStorage, PhysicsTransformStorage* _transformStorage, CollisionManifoldBuffer* _manifoldBuffer)
+bool ContactFunction::SphereSphere(ColliderID _colliderA, ColliderID _colliderB, ColliderStorage* _colliderStorage, PhysicsTransformStorage* _transformStorage, CollisionManifoldBuffer* _manifoldBuffer)
 {
 	// Aの情報取得
 	float radiusA{ _colliderStorage->sphereStorage->radius[_colliderStorage->GetDenseIndex(_colliderA)] };
@@ -59,7 +59,7 @@ bool ContactFunction::SphereSphere(const ColliderID& _colliderA, const ColliderI
 	return false;
 }
 
-bool ContactFunction::SphereBox(const ColliderID& _colliderSphere, const ColliderID& _colliderBox, ColliderStorage* _colliderStorage, PhysicsTransformStorage* _transformStorage, CollisionManifoldBuffer* _manifoldBuffer)
+bool ContactFunction::SphereBox(ColliderID _colliderSphere, ColliderID _colliderBox, ColliderStorage* _colliderStorage, PhysicsTransformStorage* _transformStorage, CollisionManifoldBuffer* _manifoldBuffer)
 {
 	// Sphereの情報取得
 	float radius{ _colliderStorage->sphereStorage->radius[_colliderStorage->GetDenseIndex(_colliderSphere)] };
@@ -183,7 +183,7 @@ bool ContactFunction::SphereBox(const ColliderID& _colliderSphere, const Collide
 	return true;
 }
 
-bool ContactFunction::BoxBox(const ColliderID& _colliderA, const ColliderID& _colliderB, ColliderStorage* _colliderStorage, PhysicsTransformStorage* _transformStorage, CollisionManifoldBuffer* _manifoldBuffer)
+bool ContactFunction::BoxBox(ColliderID _colliderA, ColliderID _colliderB, ColliderStorage* _colliderStorage, PhysicsTransformStorage* _transformStorage, CollisionManifoldBuffer* _manifoldBuffer)
 {
 	// Aの情報取得
 	Vector3 halfScaleA{ _colliderStorage->boxStorage->scale[_colliderStorage->GetDenseIndex(_colliderA)] * 0.5f };

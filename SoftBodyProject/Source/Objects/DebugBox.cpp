@@ -10,7 +10,7 @@
 
 #include "DebugBox.h"
 
-DebugBox::DebugBox(WorldStorage* _world, const EntityID& _entity) :
+DebugBox::DebugBox(WorldStorage* _world, EntityID _entity) :
 	ObjectBase{ _world,_entity }
 {
 	AddComponent<TransformComponent>();
@@ -22,7 +22,7 @@ DebugBox::DebugBox(WorldStorage* _world, const EntityID& _entity) :
 }
 
 // コンストラクタ
-DebugBox::DebugBox(WorldStorage* _world, const EntityID& _entity, float _size) :
+DebugBox::DebugBox(WorldStorage* _world, EntityID _entity, float _size) :
 	ObjectBase{ _world,_entity }
 {
 	AddComponent<TransformComponent>();
@@ -34,7 +34,7 @@ DebugBox::DebugBox(WorldStorage* _world, const EntityID& _entity, float _size) :
 }
 
 // コンストラクタ
-DebugBox::DebugBox(WorldStorage* _world, const EntityID& _entity, float _width, float _height, float _depth) :
+DebugBox::DebugBox(WorldStorage* _world, EntityID _entity, float _width, float _height, float _depth) :
 	ObjectBase{ _world,_entity }
 {
 	AddComponent<TransformComponent>();

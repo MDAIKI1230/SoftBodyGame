@@ -7,5 +7,5 @@
 class SoftBodyComponentStorage :public SparseSetStorageBase<SoftBodyComponent>
 {
 private:
-	bool CanAdd(EntityID& _entity) override;
+	bool CanAdd(EntityID _entity) override;
 };
