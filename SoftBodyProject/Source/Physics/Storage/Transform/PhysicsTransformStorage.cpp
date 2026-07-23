@@ -36,17 +36,17 @@ void PhysicsTransformStorage::Destroy(PhysicsTransformID _id)
 
 bool PhysicsTransformStorage::IsAlive(PhysicsTransformID _id) const
 {
-	return slots[_id.index].alive && slots[_id.index].generation == _id.generation;
+	return slots[_id.GetIndex()].alive && slots[_id.GetIndex()].generation == _id.GetGeneration();
 }
 
 uint32_t PhysicsTransformStorage::GetDenseIndex(PhysicsTransformID _id) const
 {
-	return slots[_id.index].denseIndex;
+	return slots[_id.GetIndex()].denseIndex;
 }
 
 EntityID PhysicsTransformStorage::GetOwnerEntity(PhysicsTransformID _id) const
 {
-	return slots[_id.index].ownerEntity;
+	return slots[_id.GetIndex()].ownerEntity;
 }
 
 bool PhysicsTransformStorage::TryGet(EntityID _entity, PhysicsTransformID& _output)
@@ -68,7 +68,7 @@ PhysicsTransformID PhysicsTransformStorage::GeneratePhysicsTransformID(size_t _d
 		// --- フリーのスロットがないため新たにスロットを作成---
 
 		// IDを作成(初代判定で1)
-		PhysicsTransformID result{ slots.size(),1 };
+		PhysicsTransformID result{ static_cast<PhysicsTransformID::Index>(slots.size()),1 };
 		// Slotを増設
 		slots.emplace_back(_denseIndex, _ownerEntity);
 
