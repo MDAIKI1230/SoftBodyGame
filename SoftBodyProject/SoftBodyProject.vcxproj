@@ -324,6 +324,7 @@
     <ClInclude Include="Source\Common\Math\Vector\Vector3\Vector3Int.h" />
     <ClInclude Include="Source\Common\Math\Vector\Vector4\Vector4.h" />
     <ClInclude Include="Source\Common\Struct\ComputeShaderHandle.h" />
+    <ClInclude Include="Source\Common\Struct\GenerationalID.h" />
     <ClInclude Include="Source\Common\Struct\GraphicsShaderHandle.h" />
     <ClInclude Include="Source\Common\Struct\ShaderBufferHandle.h" />
     <ClInclude Include="Source\Objects\Camera.h" />
