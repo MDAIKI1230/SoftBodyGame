@@ -1,9 +1,7 @@
 ﻿#pragma once
 
-#include <stdint.h>
+#include "GenerationalID.h"
 
-struct ColliderID
-{
-	uint32_t index{ 0 };
-	unsigned char generation{ 0 };
-};
+struct ColliderTag;
+
+using ColliderID = GenerationalID<ColliderTag>;

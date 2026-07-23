@@ -5,7 +5,7 @@
 #include "PhysicsTransformStorage.h"
 #include "ColliderStorage.h"
 
-namespace ColliderTag
+namespace 
 {
 	// 球
 	struct SphereTag

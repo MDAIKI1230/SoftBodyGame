@@ -45,28 +45,28 @@ private:
 		CollisionManifoldBuffer* _manifoldBuffer,
 		EventManager* _eventManager);
 	template<>
-	void Solve<ColliderTag::BoxTag, ColliderTag::BoxTag, CollisionPair::BoxBoxPair>(
+	void Solve<BoxTag, BoxTag, CollisionPair::BoxBoxPair>(
 		const std::vector<CollisionPair::BoxBoxPair>& pairList,
 		PhysicsTransformStorage* _transformStorage,
 		ColliderStorage* _colliderStorage,
 		CollisionManifoldBuffer* _manifoldBuffer,
 		EventManager* _eventManager);
 	template<>
-	void Solve<ColliderTag::SphereTag, ColliderTag::SphereTag, CollisionPair::SphereSpherePair>(
+	void Solve<SphereTag, SphereTag, CollisionPair::SphereSpherePair>(
 		const std::vector<CollisionPair::SphereSpherePair>& pairList,
 		PhysicsTransformStorage* _transformStorage,
 		ColliderStorage* _colliderStorage,
 		CollisionManifoldBuffer* _manifoldBuffer,
 		EventManager* _eventManager);
 	template<>
-	void Solve<ColliderTag::SphereTag, ColliderTag::BoxTag, CollisionPair::SphereBoxPair>(
+	void Solve<SphereTag, BoxTag, CollisionPair::SphereBoxPair>(
 		const std::vector<CollisionPair::SphereBoxPair>& pairList,
 		PhysicsTransformStorage* _transformStorage,
 		ColliderStorage* _colliderStorage,
 		CollisionManifoldBuffer* _manifoldBuffer,
 		EventManager* _eventManager);
 	template<>
-	void Solve<ColliderTag::BoxTag, ColliderTag::SphereTag, CollisionPair::BoxSpherePair>(
+	void Solve<BoxTag, SphereTag, CollisionPair::BoxSpherePair>(
 		const std::vector<CollisionPair::BoxSpherePair>& pairList,
 		PhysicsTransformStorage* _transformStorage,
 		ColliderStorage* _colliderStorage,

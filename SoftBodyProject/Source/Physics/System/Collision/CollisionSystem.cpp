@@ -39,7 +39,7 @@ void CollisionSystem::BroadPhase(PhysicsTransformStorage* _transformStorage, Col
 		data.max = _colliderStorage->aabbStorage->aabb[i].max + _transformStorage->position[transformIndex];
 
 		// コライダーハンドルのindex
-		size_t colliderIndex{ aabbStorage->aabb[i].colliderID.index };
+		size_t colliderIndex{ aabbStorage->aabb[i].colliderID.GetIndex()};
 
 		if (projectionDatas.size() > colliderIndex)
 		{
@@ -107,7 +107,7 @@ void CollisionSystem::Dispatch(ColliderStorage* _colliderStorage)
 void CollisionSystem::NarrowPhase(PhysicsTransformStorage* _transformStorage, ColliderStorage* _colliderStorage, CollisionManifoldBuffer* _manifoldBuffer, EventManager* _eventManager)
 {
 	// 球VS球
-	Solve<ColliderTag::SphereTag, ColliderTag::SphereTag, CollisionPair::SphereSpherePair>
+	Solve<SphereTag, SphereTag, CollisionPair::SphereSpherePair>
 		(
 			narrowPhasePairBuilder.sphereSpherePair,
 			_transformStorage,
@@ -117,7 +117,7 @@ void CollisionSystem::NarrowPhase(PhysicsTransformStorage* _transformStorage, Co
 		);
 
 	// 箱VS球
-	Solve<ColliderTag::BoxTag, ColliderTag::SphereTag, CollisionPair::BoxSpherePair>
+	Solve<BoxTag, SphereTag, CollisionPair::BoxSpherePair>
 		(
 			narrowPhasePairBuilder.boxSpherePair,
 			_transformStorage,
@@ -127,7 +127,7 @@ void CollisionSystem::NarrowPhase(PhysicsTransformStorage* _transformStorage, Co
 		);
 
 	// 球VS箱
-	Solve<ColliderTag::SphereTag, ColliderTag::BoxTag, CollisionPair::SphereBoxPair>
+	Solve<SphereTag, BoxTag, CollisionPair::SphereBoxPair>
 		(
 			narrowPhasePairBuilder.sphereBoxPair,
 			_transformStorage,
@@ -137,7 +137,7 @@ void CollisionSystem::NarrowPhase(PhysicsTransformStorage* _transformStorage, Co
 		);
 
 	// 箱VS箱
-	Solve<ColliderTag::BoxTag, ColliderTag::BoxTag, CollisionPair::BoxBoxPair>
+	Solve<BoxTag, BoxTag, CollisionPair::BoxBoxPair>
 		(
 			narrowPhasePairBuilder.boxBoxPair,
 			_transformStorage,
@@ -186,7 +186,7 @@ void CollisionSystem::CheckProjectionAxisValueCross(std::vector<ColliderProjecti
 			for (size_t active : actives)
 			{
 				// 同ペア対策
-				if (_projectionAxisValues[i].colliderID.index > _projectionAxisValues[active].colliderID.index)
+				if (_projectionAxisValues[i].colliderID.GetIndex() > _projectionAxisValues[active].colliderID.GetIndex())
 				{
 					// 軸で交差しているので交差カウント増加
 					crossCountMap[CollisionPair::Pair(_projectionAxisValues[i].colliderID, _projectionAxisValues[active].colliderID)] += 1;
@@ -207,7 +207,7 @@ void CollisionSystem::CheckProjectionAxisValueCross(std::vector<ColliderProjecti
 			// activeリストから消す
 			ProjectionAxisType minAxis{ static_cast<ProjectionAxisType>(_projectionAxisValues[i].axisType - 1) };
 			// プロジェクションデータとColliderIDのIndexは紐づいているためこれで取得できる
-			uint32_t minAxisIndex{ projectionDatas[_projectionAxisValues[i].colliderID.index].endpointIndex[minAxis] };
+			uint32_t minAxisIndex{ projectionDatas[_projectionAxisValues[i].colliderID.GetIndex()].endpointIndex[minAxis]};
 
 			// 移動した奴のIndexの更新
 			_projectionAxisValues[actives.back()].activeIndex = _projectionAxisValues[minAxisIndex].activeIndex;
@@ -237,7 +237,7 @@ void CollisionSystem::Solve(
 }
 
 template<>
-void CollisionSystem::Solve<ColliderTag::BoxTag, ColliderTag::BoxTag, CollisionPair::BoxBoxPair>(
+void CollisionSystem::Solve<BoxTag, BoxTag, CollisionPair::BoxBoxPair>(
 	const std::vector<CollisionPair::BoxBoxPair>& pairList,
 	PhysicsTransformStorage* _transformStorage,
 	ColliderStorage* _colliderStorage,
@@ -254,7 +254,7 @@ void CollisionSystem::Solve<ColliderTag::BoxTag, ColliderTag::BoxTag, CollisionP
 }
 
 template<>
-void CollisionSystem::Solve<ColliderTag::SphereTag, ColliderTag::SphereTag, CollisionPair::SphereSpherePair>(
+void CollisionSystem::Solve<SphereTag, SphereTag, CollisionPair::SphereSpherePair>(
 	const std::vector<CollisionPair::SphereSpherePair>& pairList,
 	PhysicsTransformStorage* _transformStorage,
 	ColliderStorage* _colliderStorage,
@@ -271,7 +271,7 @@ void CollisionSystem::Solve<ColliderTag::SphereTag, ColliderTag::SphereTag, Coll
 }
 
 template<>
-void CollisionSystem::Solve<ColliderTag::SphereTag, ColliderTag::BoxTag, CollisionPair::SphereBoxPair>(
+void CollisionSystem::Solve<SphereTag, BoxTag, CollisionPair::SphereBoxPair>(
 	const std::vector<CollisionPair::SphereBoxPair>& pairList,
 	PhysicsTransformStorage* _transformStorage,
 	ColliderStorage* _colliderStorage,
@@ -287,7 +287,7 @@ void CollisionSystem::Solve<ColliderTag::SphereTag, ColliderTag::BoxTag, Collisi
 	}
 }
 template<>
-void CollisionSystem::Solve<ColliderTag::BoxTag, ColliderTag::SphereTag, CollisionPair::BoxSpherePair>(
+void CollisionSystem::Solve<BoxTag, SphereTag, CollisionPair::BoxSpherePair>(
 	const std::vector<CollisionPair::BoxSpherePair>& pairList,
 	PhysicsTransformStorage* _transformStorage,
 	ColliderStorage* _colliderStorage,
@@ -369,6 +369,6 @@ void CollisionSystem::Swap(std::vector<ColliderProjection>& _projectionValues, i
 	// 元の要素を入れ替えてその後の値を見て値を変える。
 	std::swap(_projectionValues[_a], _projectionValues[_b]);
 
-	projectionDatas[_projectionValues[_a].colliderID.index].endpointIndex[_projectionValues[_a].axisType] = _a;
-	projectionDatas[_projectionValues[_b].colliderID.index].endpointIndex[_projectionValues[_b].axisType] = _b;
+	projectionDatas[_projectionValues[_a].colliderID.GetIndex()].endpointIndex[_projectionValues[_a].axisType] = _a;
+	projectionDatas[_projectionValues[_b].colliderID.GetIndex()].endpointIndex[_projectionValues[_b].axisType] = _b;
 }
