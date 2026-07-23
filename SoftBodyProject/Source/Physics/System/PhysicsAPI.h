@@ -7,6 +7,11 @@
 class PhysicsAPI
 {
 public:
+	// --- Body系 ---
+
+	// 追加可否判定
+	bool CanAddBody(EntityID& _entity);
+
 	// --- RigidBody ---
 
 	// 作成

@@ -5,6 +5,21 @@
 
 #include "PhysicsAPI.h"
 
+// --- Body系 ---
+
+// 追加可否判定
+bool PhysicsAPI::CanAddBody(EntityID& _entity)
+{
+	// もし仮に、すでにTransformIDに紐づいているBodyIDがいるならそれ以上他のモノをつけたくないのでflaseを返す
+	PhysicsTransformID transformID{ transformStorage->GetOrCreateTransform(_entity) };
+	if (bodyStorage->Has(transformID))
+	{
+		return false;
+	}
+
+	return true;
+}
+
 // --- RigidBody ---
 
 // 作成
@@ -99,38 +114,17 @@ void PhysicsAPI::SetGravity(BodyID& _id, const Vector3& _gravity)
 // ロープ作成
 BodyID PhysicsAPI::CreateRope(EntityID& _entity, const RopeUpdateInfo _info)
 {
-	// もし仮に、すでにTransformIDに紐づいているBodyIDがいるならそれ以上他のモノをつけたくないので
-	PhysicsTransformID transformID{ transformStorage->GetOrCreateTransform(_entity) };
-	if(bodyStorage->Has(transformID))
-	{
-		return BodyID{};
-	}
-
-	return bodyStorage->CreateRope(_entity, transformID, _info);
+	return bodyStorage->CreateRope(_entity, transformStorage->GetOrCreateTransform(_entity), _info);
 }
 // クロス作成
 BodyID PhysicsAPI::CreateCloth(EntityID& _entity, const ClothUpdateInfo _info)
 {
-	// もし仮に、すでにTransformIDに紐づいているBodyIDがいるならそれ以上他のモノをつけたくないので
-	PhysicsTransformID transformID{ transformStorage->GetOrCreateTransform(_entity) };
-	if (bodyStorage->Has(transformID))
-	{
-		return BodyID{};
-	}
-
-	return bodyStorage->CreateCloth(_entity, transformID, _info);
+	return bodyStorage->CreateCloth(_entity, transformStorage->GetOrCreateTransform(_entity), _info);
 }
 // ソフトボディ作成
 BodyID PhysicsAPI::CreateSoftBody(EntityID& _entity, const SoftBodyUpdateInfo _info)
 {
-	// もし仮に、すでにTransformIDに紐づいているBodyIDがいるならそれ以上他のモノをつけたくないので
-	PhysicsTransformID transformID{ transformStorage->GetOrCreateTransform(_entity) };
-	if (bodyStorage->Has(transformID))
-	{
-		return BodyID{};
-	}
-
-	return bodyStorage->CreateSoftBody(_entity, transformID, _info);
+	return bodyStorage->CreateSoftBody(_entity, transformStorage->GetOrCreateTransform(_entity), _info);
 }
 
 // --- ロープ系 ---
