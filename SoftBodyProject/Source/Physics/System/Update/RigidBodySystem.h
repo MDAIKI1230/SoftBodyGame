@@ -24,6 +24,6 @@ private:
 	void End(BodyStorage* _bodyStorage, ColliderStorage* _colliderStorage);
 
 	// --- 慣性テンソル計算 ---
-	Matrix4x4 GenerateBoxInverseInertiaTensor(const uint32_t& _transformIndex, ColliderID _colliderID, float _mass, PhysicsTransformStorage* _transformStorage, ColliderStorage* _colliderStorage);
-	Matrix4x4 GenerateSphereInverseInertiaTensor(const uint32_t& _transformIndex, ColliderID _colliderID, float _mass, PhysicsTransformStorage* _transformStorage, ColliderStorage* _colliderStorage);
+	Matrix4x4 GenerateBoxInverseInertiaTensor(uint32_t _transformIndex, ColliderID _colliderID, float _mass, PhysicsTransformStorage* _transformStorage, ColliderStorage* _colliderStorage);
+	Matrix4x4 GenerateSphereInverseInertiaTensor(uint32_t _transformIndex, ColliderID _colliderID, float _mass, PhysicsTransformStorage* _transformStorage, ColliderStorage* _colliderStorage);
 };

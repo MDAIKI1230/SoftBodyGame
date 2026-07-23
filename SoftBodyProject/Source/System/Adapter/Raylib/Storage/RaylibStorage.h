@@ -7,7 +7,7 @@ class RaylibStorage
 {
 public:
 	// 持ってるか確認
-	bool Has(HANDLE& _handle)
+	bool Has(HANDLE _handle)
 	{
 		if (!Alive(_handle))
 		{
@@ -28,7 +28,7 @@ public:
 		return true;
 	}
 	// ハンドルが生きているか
-	bool Alive(HANDLE& _handle)
+	bool Alive(HANDLE _handle)
 	{
 		if (generations.size() <= _handle.index)
 		{
@@ -38,7 +38,7 @@ public:
 		return generations[_handle.index] == _handle.generation;
 	}
 	// 取得
-	bool TryGet(HANDLE& _handle, DATA& _output)
+	bool TryGet(HANDLE _handle, DATA& _output)
 	{
 		if (!Alive(_handle))
 		{
@@ -61,7 +61,7 @@ public:
 		return true;
 	}
 	// 破棄
-	void Remove(HANDLE& _handle)
+	void Remove(HANDLE _handle)
 	{
 		if (Alive(_handle))
 		{

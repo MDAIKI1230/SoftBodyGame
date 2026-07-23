@@ -134,7 +134,7 @@ void RigidBodySystem::End(BodyStorage* _bodyStorage, ColliderStorage* _colliderS
 }
 
 
-Matrix4x4 RigidBodySystem::GenerateBoxInverseInertiaTensor(const uint32_t& _transformIndex, ColliderID _colliderID, float _mass, PhysicsTransformStorage* _transformStorage, ColliderStorage* _colliderStorage)
+Matrix4x4 RigidBodySystem::GenerateBoxInverseInertiaTensor(uint32_t _transformIndex, ColliderID _colliderID, float _mass, PhysicsTransformStorage* _transformStorage, ColliderStorage* _colliderStorage)
 {
 	uint32_t index{ _colliderStorage->GetDenseIndex(_colliderID) };
 	Vector3 size{ SIMDVectorMath::Mul(_colliderStorage->boxStorage->scale[index], _transformStorage->scale[_transformIndex]) };
@@ -151,7 +151,7 @@ Matrix4x4 RigidBodySystem::GenerateBoxInverseInertiaTensor(const uint32_t& _tran
 	};
 }
 
-Matrix4x4 RigidBodySystem::GenerateSphereInverseInertiaTensor(const uint32_t& _transformIndex, ColliderID _colliderID, float _mass, PhysicsTransformStorage* _transformStorage, ColliderStorage* _colliderStorage)
+Matrix4x4 RigidBodySystem::GenerateSphereInverseInertiaTensor(uint32_t _transformIndex, ColliderID _colliderID, float _mass, PhysicsTransformStorage* _transformStorage, ColliderStorage* _colliderStorage)
 {
 	uint32_t index{ _colliderStorage->GetDenseIndex(_colliderID) };
 	float radius{ _colliderStorage->sphereStorage->radius[index] * std::max(std::max(_transformStorage->scale[_transformIndex].x, _transformStorage->scale[_transformIndex].y), _transformStorage->scale[_transformIndex].z) };

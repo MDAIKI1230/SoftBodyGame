@@ -104,7 +104,7 @@ Matrix4x4& Matrix4x4::operator*=(const Matrix4x4& _other)
 }
 
 // スカラー倍
-Matrix4x4 Matrix4x4::operator*(const float& _value) const
+Matrix4x4 Matrix4x4::operator*(float _value) const
 {
 	Matrix4x4 m;
 
@@ -117,7 +117,7 @@ Matrix4x4 Matrix4x4::operator*(const float& _value) const
 }
 
 // スカラー割
-Matrix4x4 Matrix4x4::operator/(const float& _value) const
+Matrix4x4 Matrix4x4::operator/(float _value) const
 {
 	Matrix4x4 m;
 
@@ -130,7 +130,7 @@ Matrix4x4 Matrix4x4::operator/(const float& _value) const
 }
 
 // スカラー倍
-Matrix4x4& Matrix4x4::operator*=(const float& _value)
+Matrix4x4& Matrix4x4::operator*=(float _value)
 {
 	for (int i{ 0 }; i < 4; i++)
 	{
@@ -141,7 +141,7 @@ Matrix4x4& Matrix4x4::operator*=(const float& _value)
 }
 
 // スカラー割
-Matrix4x4& Matrix4x4::operator/=(const float& _value) 
+Matrix4x4& Matrix4x4::operator/=(float _value)
 {
 	for (int i{ 0 }; i < 4; i++)
 	{

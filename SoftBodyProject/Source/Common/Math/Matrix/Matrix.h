@@ -77,14 +77,14 @@ public:
 	Matrix4x4& operator*=(const Matrix4x4& _other);
 
 	// スカラー倍
-	Matrix4x4 operator*(const float& _value) const;
+	Matrix4x4 operator*(float _value) const;
 	// スカラー割
-	Matrix4x4 operator/(const float& _value) const;
+	Matrix4x4 operator/(float _value) const;
 
 	// スカラー倍
-	Matrix4x4& operator*=(const float& _value);
+	Matrix4x4& operator*=(float _value);
 	// スカラー割
-	Matrix4x4& operator/=(const float& _value);
+	Matrix4x4& operator/=(float _value);
 
 	// 転置(変化しない)
 	Matrix4x4 Transposed() const;

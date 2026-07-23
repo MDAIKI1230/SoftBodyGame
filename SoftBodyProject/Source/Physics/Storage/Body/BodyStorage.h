@@ -57,7 +57,7 @@ public:
 	std::unique_ptr<SoftBodyStorage> softBodyStorage;
 private:
 	// 一意なID発行関数
-	BodyID GenerateBodyID(size_t _denseIndex, const BodyType& _type, EntityID _ownerEntity, PhysicsTransformID _transformID);
+	BodyID GenerateBodyID(size_t _denseIndex, BodyType _type, EntityID _ownerEntity, PhysicsTransformID _transformID);
 private:
 	// RigidBody限定対応MAP
 	std::unordered_map<PhysicsTransformID, BodyID> transformMap;
