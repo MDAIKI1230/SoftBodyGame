@@ -325,12 +325,12 @@ ConstraintID PhysicsAPI::CreateDistanceConstraint(EntityID& _entity, const Vecto
 // 距離拘束の距離取得
 float PhysicsAPI::GetDistance(ConstraintID& _id)
 {
-	return constraintStorage->distanceConstraintStorage->constraints[_id.index].distance;
+	return constraintStorage->distanceConstraintStorage->constraints[_id.GetIndex()].distance;
 }
 // 距離拘束の距離設定
 void PhysicsAPI::SetDistance(ConstraintID& _id, float _distance)
 {
-	constraintStorage->distanceConstraintStorage->constraints[_id.index].distance = _distance;
+	constraintStorage->distanceConstraintStorage->constraints[_id.GetIndex()].distance = _distance;
 }
 // 拘束にEndPoint追加
 void PhysicsAPI::AddEndPoint(ConstraintID& _id, const EntityID& _entity, const Vector3& _localOffset)

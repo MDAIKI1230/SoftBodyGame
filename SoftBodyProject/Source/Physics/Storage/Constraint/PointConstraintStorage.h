@@ -11,7 +11,7 @@ public:
 	{
         if (id.empty())
         {
-            return ConstraintID{ 0, 0 };
+            return ConstraintID{};
         }
 
         size_t last = id.size() - 1;

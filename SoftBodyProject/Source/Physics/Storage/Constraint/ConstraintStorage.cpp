@@ -64,40 +64,40 @@ void ConstraintStorage::Destory(ConstraintID& _id)
 	}
 
 	// 移動した奴の対応付けを戻す
-	if (!(movedId.index == _id.index && movedId.generation == _id.generation))
+	if (!(movedId.GetIndex() == _id.GetIndex() && movedId.GetGeneration() == _id.GetGeneration()))
 	{
-		slots[movedId.index].denseIndex = slots[_id.index].denseIndex;
+		slots[movedId.GetIndex()].denseIndex = slots[_id.GetIndex()].denseIndex;
 	}
 
 	// 削除
-	slots[_id.index].alive = false;
-	slots[_id.index].generation++;
-	freeSlots.push_back(_id.index);
+	slots[_id.GetIndex()].alive = false;
+	slots[_id.GetIndex()].generation++;
+	freeSlots.push_back(_id.GetIndex());
 }
 
 bool ConstraintStorage::IsAlive(ConstraintID& _id) const
 {
-	return slots[_id.index].alive && slots[_id.index].generation == _id.generation;
+	return slots[_id.GetIndex()].alive && slots[_id.GetIndex()].generation == _id.GetGeneration();
 }
 
 ConstraintType ConstraintStorage::GetType(ConstraintID& _id) const
 {
-	return slots[_id.index].type;
+	return slots[_id.GetIndex()].type;
 }
 
 uint32_t ConstraintStorage::GetDenseIndex(ConstraintID& _id) const
 {
-	return slots[_id.index].denseIndex;
+	return slots[_id.GetIndex()].denseIndex;
 }
 
 EntityID ConstraintStorage::GetOwnerEntity(ConstraintID& _id) const
 {
-	return slots[_id.index].ownerEntity;
+	return slots[_id.GetIndex()].ownerEntity;
 }
 
 PhysicsTransformID ConstraintStorage::GetTransformID(ConstraintID& _id) const
 {
-	return slots[_id.index].transformID;
+	return slots[_id.GetIndex()].transformID;
 }
 
 ConstraintID ConstraintStorage::GenerateConstraintID(ConstraintType _type, uint32_t _denseIndex, EntityID _ownerEntity, PhysicsTransformID _transformID)
@@ -107,7 +107,7 @@ ConstraintID ConstraintStorage::GenerateConstraintID(ConstraintType _type, uint3
 		// --- フリーのスロットがないため新たにスロットを作成---
 
 		// IDを作成(初代判定で1)
-		ConstraintID result{ slots.size(),1 };
+		ConstraintID result{ static_cast<ConstraintID::Index>(slots.size()),1 };
 		// Slotを増設
 		slots.emplace_back(_type, _denseIndex, _ownerEntity, _transformID);
 
