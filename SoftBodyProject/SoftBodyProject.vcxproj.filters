@@ -224,6 +224,9 @@
     <Filter Include="ソース ファイル\Physics\Storage\Component\Body\Soft">
       <UniqueIdentifier>{93733d9e-2408-4f50-b669-6e52f51323a6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Common\Macro">
+      <UniqueIdentifier>{3aa8d424-0d44-4460-9723-b3d92630848a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Objects\Camera.h">
@@ -481,9 +484,6 @@
     <ClInclude Include="Source\Physics\Struct\Collision\MinkowskiVertex.h">
       <Filter>ソース ファイル\Physics\Struct\Collision</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Physics\Struct\Collision\ContactGenerator.h">
-      <Filter>ソース ファイル\Physics\Struct\Collision</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Physics\Function\ContactFunction.h">
       <Filter>ソース ファイル\Physics\Function</Filter>
     </ClInclude>
@@ -736,8 +736,11 @@
     <ClInclude Include="Source\Physics\Storage\Component\Body\Soft\SoftBodyComponentStorage.h">
       <Filter>ソース ファイル\Physics\Storage\Component\Body\Soft</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Common\BaseClass\ComponentBase.h">
-      <Filter>ソース ファイル\Common\BaseClass</Filter>
+    <ClInclude Include="Source\Common\ECS\SparseIndex.h" />
+    <ClInclude Include="Source\Common\Struct\GenerationalID.h" />
+    <ClInclude Include="Source\Physics\Component\Constraint\EndPointConstraintComponentBase.h" />
+    <ClInclude Include="Source\Common\Macro\StorageAccessorsMacros.h">
+      <Filter>ソース ファイル\Common\Macro</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -962,6 +965,9 @@
     </ClCompile>
     <ClCompile Include="Source\Physics\Storage\Component\Body\Soft\SoftBodyComponentStorage.cpp">
       <Filter>ソース ファイル\Physics\Storage\Component\Body\Soft</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Physics\Component\Constraint\EndPointConstraintComponentBase.cpp">
+      <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
