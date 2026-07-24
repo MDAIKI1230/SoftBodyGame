@@ -973,7 +973,7 @@
       <Filter>ソース ファイル\Physics\Storage\Component\Body\Soft</Filter>
     </ClCompile>
     <ClCompile Include="Source\Physics\Component\Constraint\EndPointConstraintComponentBase.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>ソース ファイル\Physics\Component\Constraint</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
