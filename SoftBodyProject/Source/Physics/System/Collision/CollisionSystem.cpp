@@ -35,8 +35,8 @@ void CollisionSystem::BroadPhase(PhysicsTransformStorage* _transformStorage, Col
 
 		ColliderProjectionData data;
 
-		data.min = _colliderStorage->aabbStorage->aabb[i].min + _transformStorage->position[transformIndex];
-		data.max = _colliderStorage->aabbStorage->aabb[i].max + _transformStorage->position[transformIndex];
+		data.min = _colliderStorage->aabbStorage->aabb[i].min + _transformStorage->GetPosition(transformIndex);
+		data.max = _colliderStorage->aabbStorage->aabb[i].max + _transformStorage->GetPosition(transformIndex);
 
 		// コライダーハンドルのindex
 		size_t colliderIndex{ aabbStorage->aabb[i].colliderID.GetIndex()};

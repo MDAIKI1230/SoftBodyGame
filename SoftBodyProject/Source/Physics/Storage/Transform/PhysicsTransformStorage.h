@@ -4,6 +4,7 @@
 #include <unordered_map>
 
 #include "MDMath.h"
+#include "StorageAccessorsMacros.h"
 
 #include "PhysicsTransformSlot.h"
 #include "PhysicsTransformID.h"
@@ -34,7 +35,8 @@ public:
 	std::vector<uint32_t> freeSlots;
 
 	// 位置
-	std::vector<Vector3> position;
+	MD_STORAGE_READ_WRITE_COLUMN(Vector3, Position, positions);
+public:
 	// 回転
 	std::vector<Quaternion> rotation;
 	// 大きさ

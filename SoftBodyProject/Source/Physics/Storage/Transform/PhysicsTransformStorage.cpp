@@ -10,7 +10,7 @@ PhysicsTransformID PhysicsTransformStorage::GetOrCreateTransform(EntityID _entit
 	// --- 実際のデータを追加 ---
 
 	// 位置
-	position.emplace_back();
+	positions.emplace_back();
 	// 回転
 	rotation.emplace_back();
 	// スケール

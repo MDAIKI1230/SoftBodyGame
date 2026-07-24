@@ -56,7 +56,7 @@ uint32_t SolverBodyBuildSystem::CreateSolverBody(PhysicsTransformStorage* _trans
 	uint32_t bodyIndex{ _bodyStorage->GetDenseIndex(_bodyID) };
 	uint32_t transformIndex{ _transformStorage->GetDenseIndex(_transformID) };
 	body.pastPos = _bodyStorage->rigidBodyStorage->pastPos[bodyIndex];
-	body.position = _transformStorage->position[transformIndex];
+	body.position = _transformStorage->GetPosition(transformIndex);
 	body.velocity = _bodyStorage->rigidBodyStorage->velocity[bodyIndex];
 	body.pastRot = _bodyStorage->rigidBodyStorage->pastRot[bodyIndex];
 	body.rotation = _transformStorage->rotation[transformIndex];
@@ -77,8 +77,8 @@ uint32_t SolverBodyBuildSystem::CreateSolverBody(PhysicsTransformStorage* _trans
 	// 情報をひとつづつ埋めていく(Bodyが存在しない版)
 	body.transformID = _transformID;
 	uint32_t transformIndex{ _transformStorage->GetDenseIndex(_transformID) };
-	body.pastPos = _transformStorage->position[transformIndex];
-	body.position = _transformStorage->position[transformIndex];
+	body.pastPos = _transformStorage->GetPosition(transformIndex);
+	body.position = _transformStorage->GetPosition(transformIndex);
 	body.velocity = Vector3::ZERO;
 	body.pastRot = _transformStorage->rotation[transformIndex];
 	body.rotation = _transformStorage->rotation[transformIndex];

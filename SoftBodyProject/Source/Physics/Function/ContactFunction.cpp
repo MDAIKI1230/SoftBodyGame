@@ -22,7 +22,7 @@ bool ContactFunction::SphereSphere(ColliderID _colliderA, ColliderID _colliderB,
 	float totalRadius{ radiusA + radiusB };
 
 	// 差
-	Vector3 diff{ _transformStorage->position[transformIndexB] - _transformStorage->position[transformIndexA] };
+	Vector3 diff{ _transformStorage->GetPosition(transformIndexB) - _transformStorage->GetPosition(transformIndexA) };
 
 	float distSqr{ diff.LengthSqr() };
 	// 判定
@@ -80,7 +80,7 @@ bool ContactFunction::SphereBox(ColliderID _colliderSphere, ColliderID _collider
 	};
 
 	// ローカル座標
-	Vector3 temp{ _transformStorage->position[transformIndexSphere] - _transformStorage->position[transformIndexBox] };
+	Vector3 temp{ _transformStorage->GetPosition(transformIndexSphere) - _transformStorage->GetPosition(transformIndexBox) };
 	Vector3 localCirclePosition{ Vector3::Dot(axis[0],temp),Vector3::Dot(axis[1],temp),Vector3::Dot(axis[2],temp) };
 
 	// 矩形内にクランプ
@@ -226,7 +226,7 @@ bool ContactFunction::BoxBox(ColliderID _colliderA, ColliderID _colliderB, Colli
 	};
 
 	// 位置の差
-	Vector3 diff{ _transformStorage->position[transformIndexB] - _transformStorage->position[transformIndexA] };
+	Vector3 diff{ _transformStorage->GetPosition(transformIndexB) - _transformStorage->GetPosition(transformIndexA) };
 
 	BoxBoxContactInfo info;
 
@@ -274,8 +274,8 @@ bool ContactFunction::BoxBox(ColliderID _colliderA, ColliderID _colliderB, Colli
 	}
 
 	ManifoldFunction::BoxBox(
-		_transformStorage->position[transformIndexA], _transformStorage->rotation[transformIndexA], candidateAxisA, halfsA,
-		_transformStorage->position[transformIndexB], _transformStorage->rotation[transformIndexB], candidateAxisB, halfsB,
+		_transformStorage->GetPosition(transformIndexA), _transformStorage->rotation[transformIndexA], candidateAxisA, halfsA,
+		_transformStorage->GetPosition(transformIndexB), _transformStorage->rotation[transformIndexB], candidateAxisB, halfsB,
 		info, _manifoldBuffer);
 
 	return true;

@@ -13,7 +13,7 @@ namespace
 		static Vector3 Support(ColliderStorage* _colliderStorage, ColliderID _id, PhysicsTransformStorage* _transformStorage, const Vector3& _dir)
 		{
 			uint32_t transformIndex{ _transformStorage->GetDenseIndex(_colliderStorage->GetTransformID(_id)) };
-			return _dir.Normalized() * _colliderStorage->sphereStorage->radius[_colliderStorage->GetDenseIndex(_id)] + _transformStorage->position[transformIndex];
+			return _dir.Normalized() * _colliderStorage->sphereStorage->radius[_colliderStorage->GetDenseIndex(_id)] + _transformStorage->GetPosition(transformIndex);
 		}
 
 		static Vector3 GetContactPosition(ColliderStorage* _colliderStorage, ColliderID _id, PhysicsTransformStorage* _transformStorage, const Vector3& _normal)
@@ -30,7 +30,7 @@ namespace
 			Vector3 halfScale{ _colliderStorage->boxStorage->scale[_colliderStorage->GetDenseIndex(_id)] * 0.5f };
 			uint32_t transformIndex{ _transformStorage->GetDenseIndex(_colliderStorage->GetTransformID(_id)) };
 			halfScale = SIMDVectorMath::Mul(halfScale, _transformStorage->scale[transformIndex]);
-			Vector3& pos{ _transformStorage->position[transformIndex] };
+			Vector3 pos{ _transformStorage->GetPosition(transformIndex) };
 			Quaternion& rot{ _transformStorage->rotation[transformIndex] };
 			Vector3 candidates[8]
 			{

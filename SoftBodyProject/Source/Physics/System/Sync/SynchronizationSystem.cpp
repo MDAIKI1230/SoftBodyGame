@@ -11,7 +11,7 @@ void SynchronizationSystem::Sync(WorldStorage* _worldStorage,  PhysicsTransformS
 	for (int i{ 0 }; i < _physicsTransformStorage->id.size(); i++)
 	{
 		TransformComponent* trans{ transformStorage->Get(_physicsTransformStorage->GetOwnerEntity(_physicsTransformStorage->id[i])) };
-		_physicsTransformStorage->position[i] = trans->GetPosition();
+		_physicsTransformStorage->EditPosition(i) = trans->GetPosition();
 		_physicsTransformStorage->rotation[i] = trans->GetRotation();
 		_physicsTransformStorage->scale[i] = trans->GetScale();
 		_physicsTransformStorage->localMatrix[i] = trans->GetLocalMatrix();

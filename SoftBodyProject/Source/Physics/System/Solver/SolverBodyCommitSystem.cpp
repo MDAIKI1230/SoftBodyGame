@@ -10,7 +10,7 @@ void SolverBodyCommitSystem::Commit(PhysicsTransformStorage* _transformStorage, 
 		{
 			uint32_t bodyIndex{ _bodyStorage->GetDenseIndex(result.bodyID) };
 			uint32_t transformIndex{ _transformStorage->GetDenseIndex(result.transformID) };
-			_transformStorage->position[transformIndex] = result.position;
+			_transformStorage->EditPosition(transformIndex) = result.position;
 			_bodyStorage->rigidBodyStorage->velocity[bodyIndex] = result.velocity;
 			_transformStorage->rotation[transformIndex] = result.rotation;
 			_bodyStorage->rigidBodyStorage->angularVelocity[bodyIndex] = result.angularVelocity;

@@ -736,11 +736,17 @@
     <ClInclude Include="Source\Physics\Storage\Component\Body\Soft\SoftBodyComponentStorage.h">
       <Filter>ソース ファイル\Physics\Storage\Component\Body\Soft</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Common\ECS\SparseIndex.h" />
-    <ClInclude Include="Source\Common\Struct\GenerationalID.h" />
-    <ClInclude Include="Source\Physics\Component\Constraint\EndPointConstraintComponentBase.h" />
     <ClInclude Include="Source\Common\Macro\StorageAccessorsMacros.h">
       <Filter>ソース ファイル\Common\Macro</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Component\Constraint\EndPointConstraintComponentBase.h">
+      <Filter>ソース ファイル\Physics\Component\Constraint</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Common\Struct\GenerationalID.h">
+      <Filter>ソース ファイル\Common\Struct</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Common\ECS\SparseIndex.h">
+      <Filter>ソース ファイル\Common\ECS</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

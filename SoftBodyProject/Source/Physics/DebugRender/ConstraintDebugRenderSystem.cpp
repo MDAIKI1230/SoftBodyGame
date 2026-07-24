@@ -22,7 +22,7 @@ void ConstraintDebugRenderSystem::PointConstraintRender(ConstraintStorage* _cons
 		{
 			// 基準点となる位置を持ってくる。
 			uint32_t basePointIndex{ _transformStorage->GetDenseIndex(pointConstraint.endPoints[i].transformID) };
-			Vector3 basePoint{ _transformStorage->position[basePointIndex] + _transformStorage->rotation[basePointIndex].Rotate(pointConstraint.endPoints[i].localPoint) };
+			Vector3 basePoint{ _transformStorage->GetPosition(basePointIndex) + _transformStorage->rotation[basePointIndex].Rotate(pointConstraint.endPoints[i].localPoint) };
 
 			ServiceLocator::GetRenderer()->DrawSphereMesh(basePoint, 3.0f, Color{ 0,255,0 });
 		}
@@ -41,13 +41,13 @@ void ConstraintDebugRenderSystem::DistanceConstraintRender(ConstraintStorage* _c
 
 		// 基準点となる位置を持ってくる。
 		uint32_t basePointIndex{ _transformStorage->GetDenseIndex(pointConstraint.endPoints[0].transformID) };
-		Vector3 basePoint{ _transformStorage->position[basePointIndex] + _transformStorage->rotation[basePointIndex].Rotate(pointConstraint.endPoints[0].localPoint) };
+		Vector3 basePoint{ _transformStorage->GetPosition(basePointIndex) + _transformStorage->rotation[basePointIndex].Rotate(pointConstraint.endPoints[0].localPoint) };
 
 		for (int i{ 1 }; i < pointConstraint.endPoints.size(); i++)
 		{
 			// 対象点となる位置を持ってくる。
 			uint32_t pointIndex{ _transformStorage->GetDenseIndex(pointConstraint.endPoints[i].transformID) };
-			Vector3 point{ _transformStorage->position[pointIndex] + _transformStorage->rotation[pointIndex].Rotate(pointConstraint.endPoints[i].localPoint) };
+			Vector3 point{ _transformStorage->GetPosition(pointIndex) + _transformStorage->rotation[pointIndex].Rotate(pointConstraint.endPoints[i].localPoint) };
 
 			ServiceLocator::GetRenderer()->DrawLine(basePoint, point, Color{ 0,255,0 });
 		}

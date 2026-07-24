@@ -40,10 +40,10 @@ void RigidBodySystem::UpdatePosition(PhysicsTransformStorage* _transformStorage,
 		_bodyStorage->rigidBodyStorage->velocity[bodyIndex] += _bodyStorage->rigidBodyStorage->force[bodyIndex] * ServiceLocator::GetTimeManager()->GetFixedDeltaTime() * _bodyStorage->rigidBodyStorage->inverseMass[bodyIndex];
 
 		// 位置保存
-		_bodyStorage->rigidBodyStorage->pastPos[bodyIndex] = _transformStorage->position[transIndex];
+		_bodyStorage->rigidBodyStorage->pastPos[bodyIndex] = _transformStorage->GetPosition(transIndex);
 
 		// 今の位置 + 速度
-		_transformStorage->position[transIndex] += _bodyStorage->rigidBodyStorage->velocity[bodyIndex] * ServiceLocator::GetTimeManager()->GetFixedDeltaTime();
+		_transformStorage->EditPosition(transIndex) += _bodyStorage->rigidBodyStorage->velocity[bodyIndex] * ServiceLocator::GetTimeManager()->GetFixedDeltaTime();
 	}
 }
 
