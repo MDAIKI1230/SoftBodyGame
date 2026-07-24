@@ -343,7 +343,7 @@ void PhysicsAPI::AddEndPoint(ConstraintID _id, EntityID _entity, const Vector3& 
 		switch (constraintStorage->GetType(_id))
 		{
 		case ConstraintType::POINTS:
-			constraintStorage->pointConstraintStorage->EditConstraint(index).endPoints.emplace_back(transformID, _localOffset);
+			constraintStorage->EditPointConstraint(_id).endPoints.emplace_back(transformID, _localOffset);
 			break;
 		case ConstraintType::DISTANCE:
 			constraintStorage->distanceConstraintStorage->constraints[index].endPoints.emplace_back(transformID, _localOffset);
@@ -364,7 +364,7 @@ void  PhysicsAPI::RemoveEndPoint(ConstraintID _id, EntityID _entity)
 		switch (constraintStorage->GetType(_id))
 		{
 		case ConstraintType::POINTS:
-			constraintStorage->pointConstraintStorage->EditConstraint(index).RemoveEndpoint(transformID);
+			constraintStorage->EditPointConstraint(_id).RemoveEndpoint(transformID);
 			break;
 		case ConstraintType::DISTANCE:
 			constraintStorage->distanceConstraintStorage->constraints[index].RemoveEndpoint(transformID);

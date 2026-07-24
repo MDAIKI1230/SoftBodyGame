@@ -35,13 +35,14 @@ public:
 	// TransformID
 	PhysicsTransformID GetTransformID(ConstraintID _id) const;
 public:
+
+	std::unique_ptr<DistanceConstraintStorage> distanceConstraintStorage;
+private:
+	ConstraintID GenerateConstraintID(ConstraintType _type, uint32_t _denseIndex, EntityID _ownerEntity, PhysicsTransformID _transformID);
 	std::vector<ConstraintSlot> slots;
 	std::vector<uint32_t> freeSlots;
 
 	// --- 各種拘束ストレージ ---
 
 	std::unique_ptr<PointConstraintStorage> pointConstraintStorage;
-	std::unique_ptr<DistanceConstraintStorage> distanceConstraintStorage;
-private:
-	ConstraintID GenerateConstraintID(ConstraintType _type, uint32_t _denseIndex, EntityID _ownerEntity, PhysicsTransformID _transformID);
 };
