@@ -81,7 +81,7 @@ void RigidBodySystem::UpdateInverseInertiaTensor(PhysicsTransformStorage* _trans
 		PhysicsTransformID transformID{ _bodyStorage->GetTransformID(bodyID) };
 		uint32_t transIndex{ _transformStorage->GetDenseIndex(transformID) };
 		// ローカル慣性テンソルの計算
-		if (_bodyStorage->rigidBodyStorage->localInertiaDirty[bodyIndex] == true)
+		if (_bodyStorage->rigidBodyStorage->localInertiaDiary[bodyIndex] == true)
 		{
 			for (auto& colliderID : _colliderStorage->GetColliderIDFromTransformID(transformID))
 			{
@@ -97,7 +97,7 @@ void RigidBodySystem::UpdateInverseInertiaTensor(PhysicsTransformStorage* _trans
 				}
 			}
 			// フラグを戻す
-			_bodyStorage->rigidBodyStorage->localInertiaDirty[bodyIndex] = false;
+			_bodyStorage->rigidBodyStorage->localInertiaDiary[bodyIndex] = false;
 		}
 		// 回転行列取得
 		Matrix4x4 rotMat{ MatGenerateFunc::Rotate(_transformStorage->GetRotation(transIndex)) };
@@ -121,15 +121,9 @@ void RigidBodySystem::End(BodyStorage* _bodyStorage, ColliderStorage* _colliderS
 			auto& colliders{ _colliderStorage->GetColliderIDFromTransformID(_bodyStorage->GetTransformID(bodyID)) };
 			for (auto& colliderID : colliders)
 			{
-				_colliderStorage->aabbStorage->dirty[_colliderStorage->GetAABBIndex(colliderID)] |= AABBChangeDirtyFlag::TRANSFORM;
+				_colliderStorage->aabbStorage->diary[_colliderStorage->GetAABBIndex(colliderID)] |= AABBChangeDiaryFlag::TRANSFORM;
 			}
 		}
-	}
-
-	for (auto& aabbDirty : _colliderStorage->aabbStorage->dirty)
-	{
-
-		aabbDirty |= AABBChangeDirtyFlag::TRANSFORM;
 	}
 }
 

@@ -11,7 +11,7 @@ BodyUpdate& PhysicsCommandBuffer::Edit(BodyID _id)
 	else
 	{
 		stamps[_id.GetIndex()] = currentStamp;
-		dirtyIndices.push_back(_id.GetIndex());
+		diaryIndices.push_back(_id.GetIndex());
 		return bodyUpdates[_id.GetIndex()];
 	}
 }
@@ -19,7 +19,7 @@ BodyUpdate& PhysicsCommandBuffer::Edit(BodyID _id)
 void PhysicsCommandBuffer::BeginRecord()
 {
 	currentStamp++;
-	dirtyIndices.clear();
+	diaryIndices.clear();
 }
 
 void PhysicsCommandBuffer::SecureCapacity(uint32_t _size)

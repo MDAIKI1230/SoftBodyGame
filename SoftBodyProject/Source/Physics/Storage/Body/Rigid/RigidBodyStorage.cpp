@@ -42,10 +42,10 @@ void RigidBodyStorage::CreateRigidBody(EntityID _entity, PhysicsTransformID _tra
 	// 推定姿勢
 	pastRot.emplace_back();
 
-	// --- Dirty系 ---
+	// --- Diary系 ---
 
 	// ローカル慣性テンソル変更
-	localInertiaDirty.emplace_back(true);
+	localInertiaDiary.emplace_back(true);
 
 	// マテリアルID(一旦なし)
 	physicsMatrialID.emplace_back(-1);
@@ -98,8 +98,8 @@ BodyID RigidBodyStorage::Remove(uint32_t _index)
 	worldInverseInertiaTensor.pop_back();
 
 	// ローカル慣性テンソル変更
-	localInertiaDirty[_index] = std::move(localInertiaDirty.back());
-	localInertiaDirty.pop_back();
+	localInertiaDiary[_index] = std::move(localInertiaDiary.back());
+	localInertiaDiary.pop_back();
 
 	// --- 衝突用 ---
 

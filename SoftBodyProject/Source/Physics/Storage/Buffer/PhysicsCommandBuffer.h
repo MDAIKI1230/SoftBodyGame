@@ -21,5 +21,5 @@ private:
 	uint32_t currentStamp{ 0 };
 
 	std::vector<uint32_t> stamps;
-	std::vector<uint32_t> dirtyIndices;
+	std::vector<uint32_t> diaryIndices;
 };

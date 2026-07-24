@@ -7,9 +7,9 @@
 void AABBUpdateSystem::FixedUpdate(PhysicsTransformStorage* _transformStorage, ColliderStorage* _colliderStorage)
 {
 	AABBBroadPhaseColliderStorage* aabbStorage{ _colliderStorage->aabbStorage.get() };
-	for (int i{ 0 }; i < aabbStorage->dirty.size(); i++)
+	for (int i{ 0 }; i < aabbStorage->diary.size(); i++)
 	{
-		if (aabbStorage->dirty[i] & AABBChangeDirtyFlag::MAKE)
+		if (aabbStorage->diary[i] & AABBChangeDiaryFlag::MAKE)
 		{
 			ColliderID id{ _colliderStorage->aabbStorage->aabb[i].colliderID };
 
@@ -25,10 +25,10 @@ void AABBUpdateSystem::FixedUpdate(PhysicsTransformStorage* _transformStorage, C
 				break;
 			}
 
-			aabbStorage->dirty[i] = AABBChangeDirtyFlag::NONE;
+			aabbStorage->diary[i] = AABBChangeDiaryFlag::NONE;
 		}
 
-		if (aabbStorage->dirty[i] & AABBChangeDirtyFlag::TRANSFORM)
+		if (aabbStorage->diary[i] & AABBChangeDiaryFlag::TRANSFORM)
 		{
 			ColliderID id{ _colliderStorage->aabbStorage->aabb[i].colliderID };
 
@@ -44,10 +44,10 @@ void AABBUpdateSystem::FixedUpdate(PhysicsTransformStorage* _transformStorage, C
 				break;
 			}
 
-			aabbStorage->dirty[i] = AABBChangeDirtyFlag::NONE;
+			aabbStorage->diary[i] = AABBChangeDiaryFlag::NONE;
 		}
 
-		if (aabbStorage->dirty[i] & AABBChangeDirtyFlag::SHAPE)
+		if (aabbStorage->diary[i] & AABBChangeDiaryFlag::SHAPE)
 		{
 
 		}

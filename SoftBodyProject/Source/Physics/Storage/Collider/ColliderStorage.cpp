@@ -16,7 +16,7 @@ ColliderID ColliderStorage::CreateSphere(EntityID _entity, PhysicsTransformID _t
 	sphereStorage->Add(id, _radius);
 
 	// aabbを作成フラグを追加しておく(後からシステムが作ってくれる)
-	aabbStorage->dirty.emplace_back(AABBChangeDirtyFlag::MAKE);
+	aabbStorage->diary.emplace_back(AABBChangeDiaryFlag::MAKE);
 	aabbStorage->aabb.emplace_back(id, _transformID);
 
 	// mapに追加
@@ -35,7 +35,7 @@ ColliderID ColliderStorage::CreateBox(EntityID _entity, PhysicsTransformID _tran
 	boxStorage->Add(id, _scale);
 
 	// aabbを作成フラグを追加しておく(後からシステムが作ってくれる)
-	aabbStorage->dirty.emplace_back(AABBChangeDirtyFlag::MAKE);
+	aabbStorage->diary.emplace_back(AABBChangeDiaryFlag::MAKE);
 	aabbStorage->aabb.emplace_back(id, _transformID);
 
 	// mapに追加

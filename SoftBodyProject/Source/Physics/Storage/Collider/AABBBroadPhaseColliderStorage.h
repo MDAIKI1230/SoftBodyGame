@@ -20,15 +20,15 @@ public:
         if (_index != last)
         {
             aabb[_index] = aabb[last];
-            dirty[_index] = dirty[last];
+            diary[_index] = diary[last];
         }
 
         aabb.pop_back();
-        dirty.pop_back();
+        diary.pop_back();
 
         return movedId;
 	}
 public:
 	std::vector<AABBBroadPhaseCollider> aabb;
-	std::vector<AABBDirtyFlag> dirty;
+	std::vector<AABBDiaryFlag> diary;
 };

@@ -65,10 +65,10 @@ public:
 	// 推定姿勢
 	std::vector<Quaternion> pastRot;
 
-	// --- Dirty系 ---
+	// --- Diary系 ---
 	
 	// ローカル慣性テンソル変更
-	std::vector<bool> localInertiaDirty;
+	std::vector<bool> localInertiaDiary;
 
 	// マテリアルID
 	std::vector<int> physicsMatrialID;

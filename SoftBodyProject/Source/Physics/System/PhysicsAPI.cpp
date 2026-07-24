@@ -74,7 +74,7 @@ void PhysicsAPI::SetMass(BodyID _id, float _mass)
 
 	bodyStorage->rigidBodyStorage->mass[bodyStorage->GetDenseIndex(_id)] = _mass;
 	bodyStorage->rigidBodyStorage->inverseMass[bodyStorage->GetDenseIndex(_id)] = 1 / _mass;
-	bodyStorage->rigidBodyStorage->localInertiaDirty[bodyStorage->GetDenseIndex(_id)] = true;
+	bodyStorage->rigidBodyStorage->localInertiaDiary[bodyStorage->GetDenseIndex(_id)] = true;
 }
 // 慣性テンソル取得
 const Matrix4x4& PhysicsAPI::GetInertiaTensor(BodyID _id)
@@ -86,7 +86,7 @@ void PhysicsAPI::SetInertiaTensor(BodyID _id, const Matrix4x4& _matrix)
 {
 	bodyStorage->rigidBodyStorage->inertiaTensor[bodyStorage->GetDenseIndex(_id)] = _matrix;
 	bodyStorage->rigidBodyStorage->localInverseInertiaTensor[bodyStorage->GetDenseIndex(_id)] = NamericalAnalysis::GaussJordan(_matrix);
-	bodyStorage->rigidBodyStorage->localInertiaDirty[bodyStorage->GetDenseIndex(_id)] = true;
+	bodyStorage->rigidBodyStorage->localInertiaDiary[bodyStorage->GetDenseIndex(_id)] = true;
 }
 // isGravity取得
 bool PhysicsAPI::GetIsGravity(BodyID _id)
