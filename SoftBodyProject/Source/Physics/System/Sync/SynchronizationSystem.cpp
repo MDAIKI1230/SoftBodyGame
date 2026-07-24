@@ -8,13 +8,14 @@ void SynchronizationSystem::Sync(WorldStorage* _worldStorage,  PhysicsTransformS
 	TransformComponentStorage* transformStorage{ static_cast<TransformComponentStorage*>(_worldStorage->GetStorage<TransformComponent>()) };
 
 	// PhysicsTransformの変更
-	for (int i{ 0 }; i < _physicsTransformStorage->id.size(); i++)
+	for (auto& id : _physicsTransformStorage->GetIDRange())
 	{
-		TransformComponent* trans{ transformStorage->Get(_physicsTransformStorage->GetOwnerEntity(_physicsTransformStorage->id[i])) };
-		_physicsTransformStorage->EditPosition(i) = trans->GetPosition();
-		_physicsTransformStorage->rotation[i] = trans->GetRotation();
-		_physicsTransformStorage->scale[i] = trans->GetScale();
-		_physicsTransformStorage->localMatrix[i] = trans->GetLocalMatrix();
-		_physicsTransformStorage->worldMatrix[i] = trans->GetWorldMatrix();
+		TransformComponent* trans{ transformStorage->Get(_physicsTransformStorage->GetOwnerEntity(id)) };
+		uint32_t index{ _physicsTransformStorage->GetDenseIndex(id) };
+		_physicsTransformStorage->EditPosition(index) = trans->GetPosition();
+		_physicsTransformStorage->EditRotation(index) = trans->GetRotation();
+		_physicsTransformStorage->EditScale(index) = trans->GetScale();
+		_physicsTransformStorage->EditLocalMatrix(index) = trans->GetLocalMatrix();
+		_physicsTransformStorage->EditWorldMatrix(index) = trans->GetWorldMatrix();
 	}
 }

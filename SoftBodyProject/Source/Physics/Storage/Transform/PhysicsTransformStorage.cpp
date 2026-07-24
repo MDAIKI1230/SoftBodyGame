@@ -12,21 +12,21 @@ PhysicsTransformID PhysicsTransformStorage::GetOrCreateTransform(EntityID _entit
 	// 位置
 	positions.emplace_back();
 	// 回転
-	rotation.emplace_back();
+	rotations.emplace_back();
 	// スケール
-	scale.emplace_back();
+	scales.emplace_back();
 	// ローカル行列
-	localMatrix.emplace_back();
+	localMatrices.emplace_back();
 	// ワールド行列
-	worldMatrix.emplace_back();
+	worldMatrices.emplace_back();
 	// 親ID
-	parentID.emplace_back();
+	parentIDs.emplace_back();
 	// ID
-	id.emplace_back(GeneratePhysicsTransformID(id.size(), _entity));
+	ids.emplace_back(GeneratePhysicsTransformID(ids.size(), _entity));
 	// mapに追加
-	entityMap[_entity] = id.back();
+	entityMap[_entity] = ids.back();
 	// IDを返してあげる
-	return id.back();
+	return ids.back();
 }
 
 void PhysicsTransformStorage::Destroy(PhysicsTransformID _id)

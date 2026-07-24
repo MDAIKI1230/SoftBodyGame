@@ -11,6 +11,20 @@
 
 class PhysicsTransformStorage
 {
+	// 位置
+	MD_STORAGE_READ_WRITE_COLUMN(Vector3, Position, positions);
+	// 回転
+	MD_STORAGE_READ_WRITE_COLUMN(Quaternion, Rotation, rotations);
+	// 大きさ
+	MD_STORAGE_READ_WRITE_COLUMN(Vector3, Scale, scales);
+	// ローカル行列
+	MD_STORAGE_READ_WRITE_COLUMN(Matrix4x4, LocalMatrix, localMatrices);
+	// ワールド行列
+	MD_STORAGE_READ_WRITE_COLUMN(Matrix4x4, WorldMatrix, worldMatrices);
+	// 親
+	MD_STORAGE_READ_WRITE_COLUMN(PhysicsTransformID, ParentID, parentIDs);
+	// ID
+	MD_STORAGE_READ_ONLY_COLUMN(PhysicsTransformID, ID, ids);
 public:
 	// コンストラクタ
 	PhysicsTransformStorage() = default;
@@ -30,30 +44,10 @@ public:
 
 	// EntityIDに対応したPhysicsTransformIDがあるか
 	bool TryGet(EntityID _entity,PhysicsTransformID& _output);
-public:
-	std::vector<PhysicsTransformSlot> slots;
-	std::vector<uint32_t> freeSlots;
-
-	// 位置
-	MD_STORAGE_READ_WRITE_COLUMN(Vector3, Position, positions);
-public:
-	// 回転
-	std::vector<Quaternion> rotation;
-	// 大きさ
-	std::vector<Vector3> scale;
-
-	// ローカル行列
-	std::vector<Matrix4x4> localMatrix;
-	// ワールド行列
-	std::vector<Matrix4x4> worldMatrix;
-
-	// 親
-	std::vector<PhysicsTransformID> parentID;
-
-	// ID
-	std::vector<PhysicsTransformID> id;
 private:
 	PhysicsTransformID GeneratePhysicsTransformID(size_t _denseIndex, EntityID _ownerEntity);
 private:
 	std::unordered_map<EntityID, PhysicsTransformID> entityMap;
+	std::vector<PhysicsTransformSlot> slots;
+	std::vector<uint32_t> freeSlots;
 };

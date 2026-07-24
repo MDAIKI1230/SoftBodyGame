@@ -29,9 +29,9 @@ namespace
 		{
 			Vector3 halfScale{ _colliderStorage->boxStorage->scale[_colliderStorage->GetDenseIndex(_id)] * 0.5f };
 			uint32_t transformIndex{ _transformStorage->GetDenseIndex(_colliderStorage->GetTransformID(_id)) };
-			halfScale = SIMDVectorMath::Mul(halfScale, _transformStorage->scale[transformIndex]);
+			halfScale = SIMDVectorMath::Mul(halfScale, _transformStorage->GetScale(transformIndex));
 			Vector3 pos{ _transformStorage->GetPosition(transformIndex) };
-			Quaternion& rot{ _transformStorage->rotation[transformIndex] };
+			Quaternion rot{ _transformStorage->GetRotation(transformIndex) };
 			Vector3 candidates[8]
 			{
 				pos + rot.Rotate(halfScale),
