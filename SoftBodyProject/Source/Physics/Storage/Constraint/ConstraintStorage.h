@@ -10,8 +10,12 @@
 
 class ConstraintStorage
 {
+	// 点拘束
 	MD_OWNED_STORAGE_READ_ONLY_ACCESSORS(ConstraintID, ConstraintID, PointConstraintID, pointConstraintStorage, ID);
 	MD_OWNED_STORAGE_READ_WRITE_ACCESSORS(ConstraintID, PointConstraint, PointConstraint, pointConstraintStorage, Constraint);
+	// 距離拘束
+	MD_OWNED_STORAGE_READ_ONLY_ACCESSORS(ConstraintID, ConstraintID, DistanceConstraintID, distanceConstraintStorage, ID);
+	MD_OWNED_STORAGE_READ_WRITE_ACCESSORS(ConstraintID, DistanceConstraint, DistanceConstraint, distanceConstraintStorage, Constraint);
 public:
 	// コンストラクタ
 	ConstraintStorage();
@@ -36,7 +40,7 @@ public:
 	PhysicsTransformID GetTransformID(ConstraintID _id) const;
 public:
 
-	std::unique_ptr<DistanceConstraintStorage> distanceConstraintStorage;
+
 private:
 	ConstraintID GenerateConstraintID(ConstraintType _type, uint32_t _denseIndex, EntityID _ownerEntity, PhysicsTransformID _transformID);
 	std::vector<ConstraintSlot> slots;
@@ -45,4 +49,5 @@ private:
 	// --- 各種拘束ストレージ ---
 
 	std::unique_ptr<PointConstraintStorage> pointConstraintStorage;
+	std::unique_ptr<DistanceConstraintStorage> distanceConstraintStorage;
 };

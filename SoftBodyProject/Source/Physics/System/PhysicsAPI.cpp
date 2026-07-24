@@ -325,12 +325,12 @@ ConstraintID PhysicsAPI::CreateDistanceConstraint(EntityID _entity, const Vector
 // 距離拘束の距離取得
 float PhysicsAPI::GetDistance(ConstraintID _id)
 {
-	return constraintStorage->distanceConstraintStorage->constraints[_id.GetIndex()].distance;
+	return constraintStorage->GetDistanceConstraint(_id).distance;
 }
 // 距離拘束の距離設定
 void PhysicsAPI::SetDistance(ConstraintID _id, float _distance)
 {
-	constraintStorage->distanceConstraintStorage->constraints[_id.GetIndex()].distance = _distance;
+	constraintStorage->EditDistanceConstraint(_id).distance = _distance;
 }
 // 拘束にEndPoint追加
 void PhysicsAPI::AddEndPoint(ConstraintID _id, EntityID _entity, const Vector3& _localOffset)
@@ -339,14 +339,13 @@ void PhysicsAPI::AddEndPoint(ConstraintID _id, EntityID _entity, const Vector3& 
 	// エンティティに対応したTransformがあるならそれを追加ないなら何もしない
 	if (transformStorage->TryGet(_entity, transformID))
 	{
-		uint32_t index{ constraintStorage->GetDenseIndex(_id) };
 		switch (constraintStorage->GetType(_id))
 		{
 		case ConstraintType::POINTS:
 			constraintStorage->EditPointConstraint(_id).endPoints.emplace_back(transformID, _localOffset);
 			break;
 		case ConstraintType::DISTANCE:
-			constraintStorage->distanceConstraintStorage->constraints[index].endPoints.emplace_back(transformID, _localOffset);
+			constraintStorage->EditDistanceConstraint(_id).endPoints.emplace_back(transformID, _localOffset);
 			break;
 		default:
 			break;
@@ -367,7 +366,7 @@ void  PhysicsAPI::RemoveEndPoint(ConstraintID _id, EntityID _entity)
 			constraintStorage->EditPointConstraint(_id).RemoveEndpoint(transformID);
 			break;
 		case ConstraintType::DISTANCE:
-			constraintStorage->distanceConstraintStorage->constraints[index].RemoveEndpoint(transformID);
+			constraintStorage->EditDistanceConstraint(_id).RemoveEndpoint(transformID);
 			break;
 		default:
 			break;

@@ -1,35 +1,42 @@
 ﻿#pragma once
 
-#include <vector>
+#include "StorageAccessorsMacros.h"
 
 #include "DistanceConstraint.h"
 #include "ConstraintID.h"
 
 class DistanceConstraintStorage
 {
+    MD_STORAGE_READ_ONLY_COLUMN(ConstraintID, ID, ids);
+    MD_STORAGE_READ_WRITE_COLUMN(DistanceConstraint, Constraint, constraints);
 public:
+    // 追加関数
+    void Add(ConstraintID _id, const DistanceConstraint& _constraint)
+    {
+        ids.push_back(_id);
+        constraints.push_back(_constraint);
+    }
+
+    // 除外関数
     ConstraintID Remove(uint32_t _index)
     {
-        if (id.empty())
+        if (ids.empty())
         {
             return ConstraintID{ 0, 0 };
         }
 
-        size_t last = id.size() - 1;
-        ConstraintID movedId = id[last];
+        size_t last = ids.size() - 1;
+        ConstraintID movedId = ids[last];
 
         if (_index != last)
         {
             constraints[_index] = constraints[last];
-            id[_index] = id[last];
+            ids[_index] = ids[last];
         }
 
         constraints.pop_back();
-        id.pop_back();
+        ids.pop_back();
 
         return movedId;
     }
-public:
-    std::vector<ConstraintID> id;
-    std::vector<DistanceConstraint> constraints;
 };

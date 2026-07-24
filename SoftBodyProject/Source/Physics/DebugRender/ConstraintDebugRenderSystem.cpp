@@ -31,7 +31,7 @@ void ConstraintDebugRenderSystem::PointConstraintRender(ConstraintStorage* _cons
 
 void ConstraintDebugRenderSystem::DistanceConstraintRender(ConstraintStorage* _constraintStorage, PhysicsTransformStorage* _transformStorage)
 {
-	for (auto& pointConstraint : _constraintStorage->distanceConstraintStorage->constraints)
+	for (auto& pointConstraint : _constraintStorage->GetDistanceConstraintRange())
 	{
 		// ポイントが2つ以上じゃないと拘束なんて発生しない
 		if (pointConstraint.endPoints.size() <= 1)

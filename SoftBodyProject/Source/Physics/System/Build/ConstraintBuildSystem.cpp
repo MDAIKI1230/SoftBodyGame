@@ -88,11 +88,11 @@ void ConstraintBuildSystem::BuildPointConstraint(ConstraintStorage* _constraintS
 void ConstraintBuildSystem::BuildDistanceConstraint(ConstraintStorage* _constraintStorage, SolverBodyBuffer* _solverBodyBuffer, ConstraintBuffer* _constraintBuffer)
 {
 	// 拘束が存在するかチェック
-	if (_constraintStorage->distanceConstraintStorage->constraints.size() <= 0)
+	if (_constraintStorage->CountDistanceConstraint() <= 0)
 	{
 		return;
 	}
-	for (auto& distanceConstraint : _constraintStorage->distanceConstraintStorage->constraints)
+	for (auto& distanceConstraint : _constraintStorage->GetDistanceConstraintRange())
 	{
 		// ポイントが2つ以上じゃないと拘束なんて発生しない
 		if (distanceConstraint.endPoints.size() <= 1)

@@ -9,7 +9,7 @@ ConstraintStorage::ConstraintStorage()
 ConstraintID ConstraintStorage::CreatePointConstraint(EntityID _entity, PhysicsTransformID _transformID,const Vector3& _localOffset)
 {
 	// ID作成
-	ConstraintID id{ GenerateConstraintID(ConstraintType::POINTS,pointConstraintStorage->CountID(),_entity,_transformID)};
+	ConstraintID id{ GenerateConstraintID(ConstraintType::POINTS,pointConstraintStorage->CountConstraint(),_entity,_transformID)};
 
 	// 実態を作る
 	PointConstraint pointConstraint;
@@ -25,7 +25,7 @@ ConstraintID ConstraintStorage::CreatePointConstraint(EntityID _entity, PhysicsT
 ConstraintID ConstraintStorage::CreateDistanceConstraint(EntityID _entity, PhysicsTransformID _transformID, const Vector3& _localOffset, float _distance)
 {
 	// ID作成
-	ConstraintID id{ GenerateConstraintID(ConstraintType::DISTANCE,distanceConstraintStorage->constraints.size(),_entity,_transformID) };
+	ConstraintID id{ GenerateConstraintID(ConstraintType::DISTANCE,distanceConstraintStorage->CountConstraint(),_entity,_transformID)};
 	
 	// 実態を作る
 	DistanceConstraint distanceConstraint;
@@ -33,8 +33,7 @@ ConstraintID ConstraintStorage::CreateDistanceConstraint(EntityID _entity, Physi
 	distanceConstraint.distance = _distance;
 
 	// 追加
-	distanceConstraintStorage->constraints.push_back(distanceConstraint);
-	distanceConstraintStorage->id.push_back(id);
+	distanceConstraintStorage->Add(id, distanceConstraint);
 
 	// ID返して終了
 	return id;
