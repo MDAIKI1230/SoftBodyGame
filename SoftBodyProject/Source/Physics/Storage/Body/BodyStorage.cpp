@@ -26,7 +26,7 @@ BodyID BodyStorage::CreateRigidBody(EntityID _entity, PhysicsTransformID _transf
 {
 	BodyID result{ GenerateBodyID(rigidBodyStorage->CountID(),BodyType::RIGID_BODY,_entity,_transformID) };
 
-	rigidBodyStorage->CreateRigidBody(_entity, _transformID, result);
+	rigidBodyStorage->CreateRigidBody(result);
 
 	// Map対応付け
 	transformMap[_transformID] = result;

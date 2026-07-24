@@ -22,7 +22,7 @@ void RigidBodyStorage::LocalInertiaCalcSucces(uint32_t _index)
 	localInertiaDiaries[_index] = false;
 }
 
-void RigidBodyStorage::CreateRigidBody(EntityID _entity, PhysicsTransformID _transformID, BodyID _id)
+void RigidBodyStorage::CreateRigidBody(BodyID _id)
 {
 	// --- 速度系 ---
 
