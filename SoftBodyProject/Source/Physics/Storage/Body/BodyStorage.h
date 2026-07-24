@@ -89,9 +89,7 @@ public:
 public:
 
 
-	std::unique_ptr<RigidBodyStorage> rigidBodyStorage;
 
-	std::unique_ptr<RopeStorage> ropeStorage;
 	std::unique_ptr<ClothStorage> clothStorage;
 	std::unique_ptr<SoftBodyStorage> softBodyStorage;
 private:
@@ -100,6 +98,12 @@ private:
 private:
 	std::vector<BodySlot> slots;
 	std::vector<uint32_t> freeSlots;
+
+	// 各種ボディストレージ
+
+	std::unique_ptr<RigidBodyStorage> rigidBodyStorage;
+
+	std::unique_ptr<RopeStorage> ropeStorage;
 
 	// RigidBody限定対応MAP
 	std::unordered_map<PhysicsTransformID, BodyID> transformMap;
