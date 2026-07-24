@@ -9,11 +9,11 @@ void ConstraintBuildSystem::FixedUpdate(ConstraintStorage* _constraintStorage, S
 void ConstraintBuildSystem::BuildPointConstraint(ConstraintStorage* _constraintStorage, SolverBodyBuffer* _solverBodyBuffer, ConstraintBuffer* _constraintBuffer)
 {
 	// 拘束が存在するかチェック
-	if (_constraintStorage->pointConstraintStorage->constraints.size() <= 0)
+	if (_constraintStorage->CountPointConstraint() <= 0)
 	{
 		return;
 	}
-	for (auto& pointConstraint : _constraintStorage->pointConstraintStorage->constraints)
+	for (auto& pointConstraint : _constraintStorage->GetPointConstraintRange())
 	{
 		// ポイントが2つ以上じゃないと拘束なんて発生しない
 		if (pointConstraint.endPoints.size() <= 1)

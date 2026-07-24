@@ -1,7 +1,6 @@
 ﻿#pragma once
 
-#include <vector>
-#include <memory>
+#include "StorageAccessorsMacros.h"
 
 #include "ConstraintID.h"
 #include "ConstraintSlot.h"
@@ -11,6 +10,8 @@
 
 class ConstraintStorage
 {
+	MD_OWNED_STORAGE_READ_ONLY_ACCESSORS(ConstraintID, ConstraintID, PointConstraintID, pointConstraintStorage, ID);
+	MD_OWNED_STORAGE_READ_WRITE_ACCESSORS(ConstraintID, PointConstraint, PointConstraint, pointConstraintStorage, Constraint);
 public:
 	// コンストラクタ
 	ConstraintStorage();

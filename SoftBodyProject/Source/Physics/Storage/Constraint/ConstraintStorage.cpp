@@ -9,15 +9,14 @@ ConstraintStorage::ConstraintStorage()
 ConstraintID ConstraintStorage::CreatePointConstraint(EntityID _entity, PhysicsTransformID _transformID,const Vector3& _localOffset)
 {
 	// ID作成
-	ConstraintID id{ GenerateConstraintID(ConstraintType::POINTS,pointConstraintStorage->constraints.size(),_entity,_transformID) };
+	ConstraintID id{ GenerateConstraintID(ConstraintType::POINTS,pointConstraintStorage->CountID(),_entity,_transformID)};
 
 	// 実態を作る
 	PointConstraint pointConstraint;
 	pointConstraint.endPoints.emplace_back(_transformID, _localOffset);
 
 	// 追加
-	pointConstraintStorage->constraints.push_back(pointConstraint);
-	pointConstraintStorage->id.push_back(id);
+	pointConstraintStorage->Add(id, pointConstraint);
 
 	// ID返して終了
 	return id;
