@@ -4,7 +4,6 @@
 #include "StorageAccessorsMacros.h"
 
 #include "BodyID.h"
-#include "EntityID.h"
 #include "PhysicsTransformID.h"
 
 class RigidBodyStorage
@@ -54,7 +53,7 @@ public:
 	RigidBodyStorage() = default;
 
 	// RigidBody作成
-	void CreateRigidBody(BodyID _id);
+	void Create(BodyID _id);
 
 	// 破棄
 	BodyID Remove(uint32_t _index);
