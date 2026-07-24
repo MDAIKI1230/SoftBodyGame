@@ -47,16 +47,6 @@ void RigidBodyComponent::SetMass(float _mass)
 	PhysicsAPI::SetMass(bodyId, _mass);
 }
 
-const Matrix4x4& RigidBodyComponent::GetInertiaTensor() const
-{
-	return PhysicsAPI::GetInertiaTensor(bodyId);
-}
-
-void RigidBodyComponent::SetInertiaTensor(const Matrix4x4& _matrix)
-{
-	PhysicsAPI::SetInertiaTensor(bodyId, _matrix);
-}
-
 bool RigidBodyComponent::GetIsGravity() const
 {
 	return PhysicsAPI::GetIsGravity(bodyId);

@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include <memory>
+#include "StorageAccessorsMacros.h"
 
 #include "BodySlot.h"
 
@@ -16,6 +16,37 @@
 
 class BodyStorage
 {
+	// 剛体Body
+	// 力
+	MD_OWNED_STORAGE_READ_WRITE_ACCESSORS(BodyID, Vector3, RigidBodyForce, rigidBodyStorage, Force);
+	// 速度
+	MD_OWNED_STORAGE_READ_WRITE_ACCESSORS(BodyID, Vector3, RigidBodyVelocity, rigidBodyStorage, Velocity);
+	// トルク
+	MD_OWNED_STORAGE_READ_WRITE_ACCESSORS(BodyID, Vector3, RigidBodyTorque, rigidBodyStorage, Torque);
+	// 角速度
+	MD_OWNED_STORAGE_READ_WRITE_ACCESSORS(BodyID, Vector3, RigidBodyAngularVelocity, rigidBodyStorage, AngularVelocity);
+	// 重力フラグ
+	MD_OWNED_STORAGE_READ_WRITE_ACCESSORS(BodyID, bool, RigidBodyIsGravity, rigidBodyStorage, IsGravity);
+	// 重力加速度
+	MD_OWNED_STORAGE_READ_WRITE_ACCESSORS(BodyID, Vector3, RigidBodyGravity, rigidBodyStorage, Gravity);
+	// 質量
+	MD_OWNED_STORAGE_WRITE_ORIGINAL_ACCESSORS(BodyID, float, RigidBodyMass, rigidBodyStorage, Mass);
+	// 質量の代入
+	void SetRigidBodyMass(BodyID _id, float _mass);
+	// 質量の逆数
+	MD_OWNED_STORAGE_READ_ONLY_ACCESSORS(BodyID, float, RigidBodyInverseMass, rigidBodyStorage, InverseMass);
+	// ローカル慣性テンソルの逆数
+	MD_OWNED_STORAGE_READ_WRITE_ACCESSORS(BodyID, Matrix4x4, RigidBodyLocalInverseInertiaTensor, rigidBodyStorage, LocalInverseInertiaTensor);
+	// 推定移動位置
+	MD_OWNED_STORAGE_READ_WRITE_ACCESSORS(BodyID, Vector3, RigidBodyPastPosition, rigidBodyStorage, PastPosition);
+	// 推定姿勢
+	MD_OWNED_STORAGE_READ_WRITE_ACCESSORS(BodyID, Quaternion, RigidBodyPastRotation, rigidBodyStorage, PastRotation);
+	// ローカル慣性テンソル変更フラグ
+	MD_OWNED_STORAGE_READ_ONLY_ACCESSORS(BodyID, bool, RigidBodyLocalInertiaDiary, rigidBodyStorage, LocalInertiaDiary);
+	// 計算が完了したときに呼ぶ関数
+	void LocalInertiaCalcSucces(BodyID _id);
+	// ID
+	MD_OWNED_STORAGE_READ_ONLY_ACCESSORS(BodyID, BodyID, RigidBodyID, rigidBodyStorage, ID);
 public:
 	// コンストラクタ
 	BodyStorage();
@@ -47,8 +78,7 @@ public:
 	// TransformIDと紐づくBodyIDがあるか否か
 	bool Has(PhysicsTransformID _transformID) const;
 public:
-	std::vector<BodySlot> slots;
-	std::vector<uint32_t> freeSlots;
+
 
 	std::unique_ptr<RigidBodyStorage> rigidBodyStorage;
 
@@ -59,6 +89,9 @@ private:
 	// 一意なID発行関数
 	BodyID GenerateBodyID(size_t _denseIndex, BodyType _type, EntityID _ownerEntity, PhysicsTransformID _transformID);
 private:
+	std::vector<BodySlot> slots;
+	std::vector<uint32_t> freeSlots;
+
 	// RigidBody限定対応MAP
 	std::unordered_map<PhysicsTransformID, BodyID> transformMap;
 };

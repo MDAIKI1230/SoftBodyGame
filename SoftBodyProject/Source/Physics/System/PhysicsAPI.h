@@ -32,16 +32,6 @@ public:
 	// 角速度変更
 	static void SetAngularVelocity(BodyID _id, const Vector3& _omega);
 
-	// 質量取得
-	static float GetMass(BodyID _id);
-	// 質量変更
-	static void SetMass(BodyID _id, float _mass);
-
-	// 慣性テンソル取得
-	static const Matrix4x4& GetInertiaTensor(BodyID _id);
-	// 慣性テンソル変更
-	static void SetInertiaTensor(BodyID _id, const Matrix4x4& _matrix);
-
 	// isGravity取得
 	static bool GetIsGravity(BodyID _id);
 	// isGravity変更
@@ -50,6 +40,11 @@ public:
 	static const Vector3& GetGravity(BodyID _id);
 	// 重力加速度変更
 	static void SetGravity(BodyID _id, const Vector3& _gravity);
+
+	// 質量取得
+	static float GetMass(BodyID _id);
+	// 質量変更
+	static void SetMass(BodyID _id, float _mass);
 
 	// --- ソフト系 ---
 

@@ -1,5 +1,17 @@
 ﻿#include "BodyStorage.h"
 
+// 質量の代入
+void BodyStorage::SetRigidBodyMass(BodyID _id, float _mass)
+{
+	rigidBodyStorage->SetMass(GetDenseIndex(_id), _mass);
+}
+
+// 計算が完了したときに呼ぶ関数
+void BodyStorage::LocalInertiaCalcSucces(BodyID _id)
+{
+	rigidBodyStorage->LocalInertiaCalcSucces(GetDenseIndex(_id));
+}
+
 // コンストラクタ
 BodyStorage::BodyStorage()
 {
@@ -12,7 +24,7 @@ BodyStorage::BodyStorage()
 // RigidBody作成
 BodyID BodyStorage::CreateRigidBody(EntityID _entity, PhysicsTransformID _transformID)
 {
-	BodyID result{ GenerateBodyID(rigidBodyStorage->id.size(),BodyType::RIGID_BODY,_entity,_transformID) };
+	BodyID result{ GenerateBodyID(rigidBodyStorage->CountID(),BodyType::RIGID_BODY,_entity,_transformID) };
 
 	rigidBodyStorage->CreateRigidBody(_entity, _transformID, result);
 

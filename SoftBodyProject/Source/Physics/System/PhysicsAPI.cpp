@@ -31,82 +31,63 @@ BodyID PhysicsAPI::CreateRigidBody(EntityID _entity)
 void PhysicsAPI::AddForce(BodyID _id, const Vector3& _force)
 {
 	// 加算
-	bodyStorage->rigidBodyStorage->force[bodyStorage->GetDenseIndex(_id)] += _force;
+	bodyStorage->EditRigidBodyForce(_id) += _force;
 }
 // トルク加算
 void PhysicsAPI::AddTorque(BodyID _id, const Vector3& _torque)
 {
 	// 加算
-	bodyStorage->rigidBodyStorage->torque[bodyStorage->GetDenseIndex(_id)] += _torque;
+	bodyStorage->EditRigidBodyTorque(_id) += _torque;
 }
 // 速度取得
 const Vector3& PhysicsAPI::GetVelocity(BodyID _id)
 {
-	return bodyStorage->rigidBodyStorage->velocity[bodyStorage->GetDenseIndex(_id)];
+	return bodyStorage->GetRigidBodyVelocity(_id);
 }
 // 速度変更
 void PhysicsAPI::SetVelocity(BodyID _id, const Vector3& _velocity)
 {
-	bodyStorage->rigidBodyStorage->velocity[bodyStorage->GetDenseIndex(_id)] = _velocity;
+	bodyStorage->SetRigidBodyVelocity(_id, _velocity);
 }
 // 角速度取得
 const Vector3& PhysicsAPI::GetAngularVelocity(BodyID _id)
 {
-	return bodyStorage->rigidBodyStorage->angularVelocity[bodyStorage->GetDenseIndex(_id)];
+	return bodyStorage->GetRigidBodyAngularVelocity(_id);
 }
 // 角速度変更
 void PhysicsAPI::SetAngularVelocity(BodyID _id, const Vector3& _omega)
 {
-	bodyStorage->rigidBodyStorage->angularVelocity[bodyStorage->GetDenseIndex(_id)] = _omega;
-}
-// 質量取得
-float PhysicsAPI::GetMass(BodyID _id)
-{
-	return bodyStorage->rigidBodyStorage->mass[bodyStorage->GetDenseIndex(_id)];
-}
-// 質量変更
-void PhysicsAPI::SetMass(BodyID _id, float _mass)
-{
-	if (_mass <= 0)
-	{
-		return;
-	}
-
-	bodyStorage->rigidBodyStorage->mass[bodyStorage->GetDenseIndex(_id)] = _mass;
-	bodyStorage->rigidBodyStorage->inverseMass[bodyStorage->GetDenseIndex(_id)] = 1 / _mass;
-	bodyStorage->rigidBodyStorage->localInertiaDiary[bodyStorage->GetDenseIndex(_id)] = true;
-}
-// 慣性テンソル取得
-const Matrix4x4& PhysicsAPI::GetInertiaTensor(BodyID _id)
-{
-	return bodyStorage->rigidBodyStorage->inertiaTensor[bodyStorage->GetDenseIndex(_id)];
-}
-// 慣性テンソル変更
-void PhysicsAPI::SetInertiaTensor(BodyID _id, const Matrix4x4& _matrix)
-{
-	bodyStorage->rigidBodyStorage->inertiaTensor[bodyStorage->GetDenseIndex(_id)] = _matrix;
-	bodyStorage->rigidBodyStorage->localInverseInertiaTensor[bodyStorage->GetDenseIndex(_id)] = NamericalAnalysis::GaussJordan(_matrix);
-	bodyStorage->rigidBodyStorage->localInertiaDiary[bodyStorage->GetDenseIndex(_id)] = true;
+	bodyStorage->SetRigidBodyAngularVelocity(_id, _omega);
 }
 // isGravity取得
 bool PhysicsAPI::GetIsGravity(BodyID _id)
 {
-	return bodyStorage->rigidBodyStorage->isGravity[bodyStorage->GetDenseIndex(_id)];
+	return bodyStorage->GetRigidBodyIsGravity(_id);
 }
 // isGravity変更
 void PhysicsAPI::SetIsGravity(BodyID _id, bool _isGravity)
 {
-	bodyStorage->rigidBodyStorage->isGravity[bodyStorage->GetDenseIndex(_id)] = _isGravity;
+	bodyStorage->SetRigidBodyIsGravity(_id, _isGravity);
 }
 // 重力加速度取得
 const Vector3& PhysicsAPI::GetGravity(BodyID _id)
 {
-	return bodyStorage->rigidBodyStorage->gravity[bodyStorage->GetDenseIndex(_id)];
+	return bodyStorage->GetRigidBodyGravity(_id);
 }
 // 重力加速度変更
 void PhysicsAPI::SetGravity(BodyID _id, const Vector3& _gravity)
 {
-	bodyStorage->rigidBodyStorage->gravity[bodyStorage->GetDenseIndex(_id)] = _gravity;
+	bodyStorage->SetRigidBodyGravity(_id, _gravity);
+}
+// 質量取得
+float PhysicsAPI::GetMass(BodyID _id)
+{
+	return bodyStorage->GetRigidBodyMass(_id);
+}
+// 質量変更
+void PhysicsAPI::SetMass(BodyID _id, float _mass)
+{
+	bodyStorage->SetRigidBodyMass(_id, _mass);
 }
 
 // --- ソフト系 ---

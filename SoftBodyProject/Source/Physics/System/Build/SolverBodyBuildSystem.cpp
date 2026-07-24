@@ -53,16 +53,15 @@ uint32_t SolverBodyBuildSystem::CreateSolverBody(PhysicsTransformStorage* _trans
 	// 情報をひとつづつ埋めていく
 	body.bodyID = _bodyID;
 	body.transformID = _transformID;
-	uint32_t bodyIndex{ _bodyStorage->GetDenseIndex(_bodyID) };
 	uint32_t transformIndex{ _transformStorage->GetDenseIndex(_transformID) };
-	body.pastPos = _bodyStorage->rigidBodyStorage->pastPos[bodyIndex];
+	body.pastPos = _bodyStorage->GetRigidBodyPastPosition(_bodyID);
 	body.position = _transformStorage->GetPosition(transformIndex);
-	body.velocity = _bodyStorage->rigidBodyStorage->velocity[bodyIndex];
-	body.pastRot = _bodyStorage->rigidBodyStorage->pastRot[bodyIndex];
+	body.velocity = _bodyStorage->GetRigidBodyVelocity(_bodyID);
+	body.pastRot = _bodyStorage->GetRigidBodyPastRotation(_bodyID);
 	body.rotation = _transformStorage->GetRotation(transformIndex);
-	body.angularVelocity = _bodyStorage->rigidBodyStorage->angularVelocity[bodyIndex];
-	body.inverseMass = _bodyStorage->rigidBodyStorage->inverseMass[bodyIndex];
-	body.localInverseInertiaTensor = _bodyStorage->rigidBodyStorage->localInverseInertiaTensor[bodyIndex];
+	body.angularVelocity = _bodyStorage->GetRigidBodyAngularVelocity(_bodyID);
+	body.inverseMass = _bodyStorage->GetRigidBodyInverseMass(_bodyID);
+	body.localInverseInertiaTensor = _bodyStorage->GetRigidBodyLocalInverseInertiaTensor(_bodyID);
 
 	// インデックス取ってから追加
 	uint32_t result{ static_cast<uint32_t>(_solverBodyBuffer->solverBodies.size()) };

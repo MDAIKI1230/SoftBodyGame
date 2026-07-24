@@ -1,16 +1,54 @@
 ﻿#pragma once
 
-#include <vector>
-#include <unordered_map>
-
 #include "MDMath.h"
+#include "StorageAccessorsMacros.h"
 
-#include "BodySlot.h"
 #include "BodyID.h"
+#include "EntityID.h"
 #include "PhysicsTransformID.h"
 
 class RigidBodyStorage
 {
+	// --- 速度系 ---
+	// 力
+	MD_STORAGE_READ_WRITE_COLUMN(Vector3, Force, forces);
+	// 速度
+	MD_STORAGE_READ_WRITE_COLUMN(Vector3, Velocity, velocities);
+	// --- 角速度系 ---
+	// トルク
+	MD_STORAGE_READ_WRITE_COLUMN(Vector3, Torque, torques);
+	// 角速度
+	MD_STORAGE_READ_WRITE_COLUMN(Vector3, AngularVelocity, angularVelocities);
+	// --- 重力系 ---
+	// 重力フラグ
+	MD_STORAGE_READ_WRITE_COLUMN(bool, IsGravity, isGravities);
+	// 重力加速度
+	MD_STORAGE_READ_WRITE_COLUMN(Vector3, Gravity, gravities);
+	// --- 質量系 ---
+	// 質量
+	MD_STORAGE_WRITE_ORIGINAL_COLUMN(float, Mass, masses);
+public:
+	// 質量の代入
+	void SetMass(uint32_t _index, float _mass);
+	// 質量の逆数
+	MD_STORAGE_READ_ONLY_COLUMN(float, InverseMass, inverseMasses);
+	// ローカル慣性テンソルの逆数
+	MD_STORAGE_READ_WRITE_COLUMN(Matrix4x4, LocalInverseInertiaTensor, localInverseInertiaTensors);
+	// --- 衝突用 ---
+	// 推定移動位置
+	MD_STORAGE_READ_WRITE_COLUMN(Vector3, PastPosition, pastPositions);
+	// 推定姿勢
+	MD_STORAGE_READ_WRITE_COLUMN(Quaternion, PastRotation, pastRotations);
+	// --- Diary系 ---
+	// ローカル慣性テンソル変更フラグ
+	MD_STORAGE_WRITE_ORIGINAL_COLUMN(bool, LocalInertiaDiary, localInertiaDiaries);
+public:
+	// 計算が完了したときに呼ぶ関数
+	void LocalInertiaCalcSucces(uint32_t _index);
+
+	// ID
+	MD_STORAGE_READ_ONLY_COLUMN(BodyID, ID, ids);
+
 public:
 	// コンストラクタ
 	RigidBodyStorage() = default;
@@ -20,63 +58,7 @@ public:
 
 	// 破棄
 	BodyID Remove(uint32_t _index);
-public:
-	std::vector<BodySlot> slots;
-	std::vector<uint32_t> freeSlots;
 
-	// --- 速度系 ---
-
-	// 力
-	std::vector<Vector3> force;
-	// 速度
-	std::vector<Vector3> velocity;
-
-	// --- 角速度系 ---
-
-	// トルク
-	std::vector<Vector3> torque;
-	// 角速度
-	std::vector<Vector3>angularVelocity;
-
-	// --- 重力系 ---
-
-	// 重力フラグ
-	std::vector<bool> isGravity;
-	// 重力加速度
-	std::vector<Vector3> gravity;
-
-	// --- 質量系 ---
-
-	// 質量
-	std::vector<float> mass;
-	// 質量の逆数
-	std::vector<float> inverseMass;
-	// 慣性テンソル
-	std::vector<Matrix4x4> inertiaTensor;
-	// ローカル慣性テンソルの逆数
-	std::vector<Matrix4x4> localInverseInertiaTensor;
-	// ワールド慣性テンソルの逆数
-	std::vector<Matrix4x4> worldInverseInertiaTensor;
-
-	// --- 衝突用 ---
-
-	// 推定移動位置
-	std::vector<Vector3> pastPos;
-	// 推定姿勢
-	std::vector<Quaternion> pastRot;
-
-	// --- Diary系 ---
-	
-	// ローカル慣性テンソル変更
-	std::vector<bool> localInertiaDiary;
-
-	// マテリアルID
-	std::vector<int> physicsMatrialID;
-
-	// ID
-	std::vector<BodyID> id;
-private:
-	BodyID GenerateBodyID(size_t _denseIndex, EntityID _ownerEntity, PhysicsTransformID _transformID);
 private:
 	std::unordered_map<PhysicsTransformID, BodyID> transformMap;
 };
