@@ -179,62 +179,62 @@ void PhysicsAPI::SetColumnCount(BodyID _id, int _columnCount)
 // 横幅取得
 float PhysicsAPI::GetSoftBodyWidth(BodyID _id)
 {
-	return bodyStorage->softBodyStorage->width[bodyStorage->GetDenseIndex(_id)];
+	return bodyStorage->GetSoftBodyWidth(_id);
 }
 // 横幅変更
 void PhysicsAPI::SetSoftBodyWidth(BodyID _id, float _width)
 {
-	bodyStorage->softBodyStorage->width[bodyStorage->GetDenseIndex(_id)] = _width;
+	bodyStorage->SetSoftBodyWidth(_id, _width);
 }
 // 縦幅取得
 float PhysicsAPI::GetSoftBodyHeight(BodyID _id)
 {
-	return bodyStorage->softBodyStorage->height[bodyStorage->GetDenseIndex(_id)];
+	return bodyStorage->GetSoftBodyHeight(_id);
 }
 // 縦幅変更
 void PhysicsAPI::SetSoftBodyHeight(BodyID _id, float _height)
 {
-	bodyStorage->softBodyStorage->height[bodyStorage->GetDenseIndex(_id)] = _height;
+	bodyStorage->SetSoftBodyHeight(_id, _height);
 }
 // 奥行き取得
 float PhysicsAPI::GetSoftBodyDepth(BodyID _id)
 {
-	return bodyStorage->softBodyStorage->depth[bodyStorage->GetDenseIndex(_id)];
+	return bodyStorage->GetSoftBodyDepth(_id);
 }
 // 奥行き変更
 void PhysicsAPI::SetSoftBodyDepth(BodyID _id, float _depth)
 {
-	bodyStorage->softBodyStorage->depth[bodyStorage->GetDenseIndex(_id)] = _depth;
+	bodyStorage->SetSoftBodyDepth(_id, _depth);
 }
 // 横分割取得
 int PhysicsAPI::GetSegmentCountX(BodyID _id)
 {
-	return bodyStorage->softBodyStorage->segmentCountX[bodyStorage->GetDenseIndex(_id)];
+	return bodyStorage->GetSoftBodySegmentCountX(_id);
 }
 // 横分割変更
 void PhysicsAPI::SetSegmentCountX(BodyID _id, int _segmentCountX)
 {
-	bodyStorage->softBodyStorage->segmentCountX[bodyStorage->GetDenseIndex(_id)] = _segmentCountX;
+	bodyStorage->SetSoftBodySegmentCountX(_id, _segmentCountX);
 }
 // 縦分割取得
 int PhysicsAPI::GetSegmentCountY(BodyID _id)
 {
-	return bodyStorage->softBodyStorage->segmentCountY[bodyStorage->GetDenseIndex(_id)];
+	return bodyStorage->GetSoftBodySegmentCountY(_id);
 }
 // 縦分割変更
 void PhysicsAPI::SetSegmentCountY(BodyID _id, int _segmentCountY)
 {
-	bodyStorage->softBodyStorage->segmentCountY[bodyStorage->GetDenseIndex(_id)] = _segmentCountY;
+	bodyStorage->SetSoftBodySegmentCountY(_id, _segmentCountY);
 }
 // 奥行き分割取得
 int PhysicsAPI::GetSegmentCountZ(BodyID _id)
 {
-	return bodyStorage->softBodyStorage->segmentCountZ[bodyStorage->GetDenseIndex(_id)];
+	return bodyStorage->GetSoftBodySegmentCountZ(_id);
 }
 // 奥行き分割変更
 void PhysicsAPI::SetSegmentCountZ(BodyID _id, int _segmentCountZ)
 {
-	bodyStorage->softBodyStorage->segmentCountZ[bodyStorage->GetDenseIndex(_id)] = _segmentCountZ;
+	bodyStorage->SetSoftBodySegmentCountZ(_id, _segmentCountZ);
 }
 
 // --- コライダー系 ---

@@ -51,7 +51,7 @@ class BodyStorage
 	// ID
 	MD_OWNED_STORAGE_READ_ONLY_ACCESSORS(BodyID, BodyID, RopeID, ropeStorage, ID);
 	// GPU情報
-	MD_OWNED_STORAGE_READ_WRITE_ACCESSORS(BodyID, SolveGPUMeta, RopeMeta, ropeStorage, Meta);
+	MD_OWNED_STORAGE_READ_ONLY_ACCESSORS(BodyID, SolveGPUMeta, RopeMeta, ropeStorage, Meta);
 	// 長さ
 	MD_OWNED_STORAGE_READ_WRITE_ACCESSORS(BodyID, float, RopeLength, ropeStorage, Length);
 	// 切り分け数
@@ -69,6 +69,23 @@ class BodyStorage
 	MD_OWNED_STORAGE_READ_WRITE_ACCESSORS(BodyID, int, ClothColumnCount, clothStorage, ColumnCount);
 	// 縦切り分け数
 	MD_OWNED_STORAGE_READ_WRITE_ACCESSORS(BodyID, int, ClothRowCount, clothStorage, RowCount);
+	// --- SoftBody ---
+	// ID
+	MD_OWNED_STORAGE_READ_ONLY_ACCESSORS(BodyID, BodyID, SoftBodyID, softBodyStorage, ID);
+	// GPU情報
+	MD_OWNED_STORAGE_READ_ONLY_ACCESSORS(BodyID, SolveGPUMeta, SoftBodyMeta, softBodyStorage, Meta);
+	// 横幅
+	MD_OWNED_STORAGE_READ_WRITE_ACCESSORS(BodyID, float, SoftBodyWidth, softBodyStorage, Width);
+	// 縦幅
+	MD_OWNED_STORAGE_READ_WRITE_ACCESSORS(BodyID, float, SoftBodyHeight, softBodyStorage, Height);
+	// 奥行き
+	MD_OWNED_STORAGE_READ_WRITE_ACCESSORS(BodyID, float, SoftBodyDepth, softBodyStorage, Depth);
+	// 横切り分け数
+	MD_OWNED_STORAGE_READ_WRITE_ACCESSORS(BodyID, int, SoftBodySegmentCountX, softBodyStorage, SegmentCountX);
+	// 縦切り分け数
+	MD_OWNED_STORAGE_READ_WRITE_ACCESSORS(BodyID, int, SoftBodySegmentCountY, softBodyStorage, SegmentCountY);
+	// 奥行き分け数
+	MD_OWNED_STORAGE_READ_WRITE_ACCESSORS(BodyID, int, SoftBodySegmentCountZ, softBodyStorage, SegmentCountZ);
 public:
 	// コンストラクタ
 	BodyStorage();
@@ -99,12 +116,6 @@ public:
 	bool TryGetRigidBodyID(PhysicsTransformID _transformID, BodyID& _output);
 	// TransformIDと紐づくBodyIDがあるか否か
 	bool Has(PhysicsTransformID _transformID) const;
-public:
-
-
-
-	std::unique_ptr<ClothStorage> clothStorage;
-	std::unique_ptr<SoftBodyStorage> softBodyStorage;
 private:
 	// 一意なID発行関数
 	BodyID GenerateBodyID(size_t _denseIndex, BodyType _type, EntityID _ownerEntity, PhysicsTransformID _transformID);
@@ -117,6 +128,8 @@ private:
 	std::unique_ptr<RigidBodyStorage> rigidBodyStorage;
 
 	std::unique_ptr<RopeStorage> ropeStorage;
+	std::unique_ptr<ClothStorage> clothStorage;
+	std::unique_ptr<SoftBodyStorage> softBodyStorage;
 
 	// RigidBody限定対応MAP
 	std::unordered_map<PhysicsTransformID, BodyID> transformMap;

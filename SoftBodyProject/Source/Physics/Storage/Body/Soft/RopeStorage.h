@@ -11,7 +11,7 @@ class RopeStorage
     // ID
     MD_STORAGE_READ_ONLY_COLUMN(BodyID, ID, ids);
     // GPU情報
-    MD_STORAGE_READ_WRITE_COLUMN(SolveGPUMeta, Meta, metas);
+    MD_STORAGE_READ_ONLY_COLUMN(SolveGPUMeta, Meta, metas);
     // 長さ
     MD_STORAGE_READ_WRITE_COLUMN(float, Length, lengths);
     // 切り分け数

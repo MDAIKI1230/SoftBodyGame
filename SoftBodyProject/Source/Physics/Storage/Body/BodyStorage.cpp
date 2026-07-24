@@ -54,17 +54,9 @@ BodyID BodyStorage::CreateCloth(EntityID _entity, PhysicsTransformID _transformI
 // SoftBody作成
 BodyID BodyStorage::CreateSoftBody(EntityID _entity, PhysicsTransformID _transformID, const SoftBodyUpdateInfo& _info)
 {
-	BodyID result{ GenerateBodyID(softBodyStorage->id.size(),BodyType::SOFT_BODY,_entity,_transformID) };
+	BodyID result{ GenerateBodyID(softBodyStorage->CountID(),BodyType::SOFT_BODY,_entity,_transformID) };
 
-	softBodyStorage->id.push_back(result);
-	softBodyStorage->meta.emplace_back();
-	softBodyStorage->width.emplace_back(_info.width);
-	softBodyStorage->height.emplace_back(_info.height);
-	softBodyStorage->depth.emplace_back(_info.depth);
-	softBodyStorage->segmentCountX.emplace_back(_info.segmentCountX);
-	softBodyStorage->segmentCountX.emplace_back(_info.segmentCountY);
-	softBodyStorage->segmentCountX.emplace_back(_info.segmentCountZ);
-
+	softBodyStorage->Create(result, _info);
 	return result;
 }
 

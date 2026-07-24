@@ -21,7 +21,7 @@ class ClothStorage
     // 縦切り分け数
     MD_STORAGE_READ_WRITE_COLUMN(int, RowCount, rowCounts);
 public:
-    // Rope作成
+    // Cloth作成
     void Create(BodyID _id, const ClothUpdateInfo& _info)
     {
         ids.push_back(_id);
