@@ -113,22 +113,22 @@ BodyID PhysicsAPI::CreateSoftBody(EntityID _entity, const SoftBodyUpdateInfo _in
 // 全体の長さ取得
 float PhysicsAPI::GetLength(BodyID _id)
 {
-	return bodyStorage->ropeStorage->length[bodyStorage->GetDenseIndex(_id)];
+	return bodyStorage->GetRopeLength(_id);
 }
 // 全体の長さ変更
 void PhysicsAPI::SetLength(BodyID _id, float _length)
 {
-	bodyStorage->ropeStorage->length[bodyStorage->GetDenseIndex(_id)] = _length;
+	bodyStorage->SetRopeLength(_id, _length);
 }
 // 分割数取得
 int PhysicsAPI::GetSegmentCount(BodyID _id)
 {
-	return bodyStorage->ropeStorage->segmentCount[bodyStorage->GetDenseIndex(_id)];
+	return bodyStorage->GetRopeSegmentCount(_id);
 }
 // 分割数変更
 void PhysicsAPI::SetSegmentCount(BodyID _id, int _segmentCount)
 {
-	bodyStorage->ropeStorage->segmentCount[bodyStorage->GetDenseIndex(_id)] = _segmentCount;
+	bodyStorage->SetRopeSegmentCount(_id, _segmentCount);
 }
 
 // --- クロス系 ---

@@ -36,12 +36,9 @@ BodyID BodyStorage::CreateRigidBody(EntityID _entity, PhysicsTransformID _transf
 // Rope作成
 BodyID BodyStorage::CreateRope(EntityID _entity, PhysicsTransformID _transformID, const RopeUpdateInfo& _info)
 {
-	BodyID result{ GenerateBodyID(ropeStorage->id.size(),BodyType::ROPE,_entity,_transformID) };
+	BodyID result{ GenerateBodyID(ropeStorage->CountID(),BodyType::ROPE,_entity,_transformID)};
 
-	ropeStorage->id.push_back(result);
-	ropeStorage->meta.emplace_back();
-	ropeStorage->length.emplace_back(_info.length);
-	ropeStorage->segmentCount.emplace_back(_info.segmentCount);
+	ropeStorage->CreateRope(result, _info);
 
 	return result;
 }

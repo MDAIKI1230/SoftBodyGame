@@ -10,13 +10,13 @@
 #include "Soft/ClothStorage.h"
 #include "Soft/SoftBodyStorage.h"
 
-#include "RopeUpdateInfo.h"
+
 #include "ClothUpdateInfo.h"
 #include "SoftBodyUpdateInfo.h"
 
 class BodyStorage
 {
-	// 剛体Body
+	// --- 剛体Body ---
 	// 力
 	MD_OWNED_STORAGE_READ_WRITE_ACCESSORS(BodyID, Vector3, RigidBodyForce, rigidBodyStorage, Force);
 	// 速度
@@ -47,6 +47,15 @@ class BodyStorage
 	void LocalInertiaCalcSucces(BodyID _id);
 	// ID
 	MD_OWNED_STORAGE_READ_ONLY_ACCESSORS(BodyID, BodyID, RigidBodyID, rigidBodyStorage, ID);
+	// --- RopeBody ---
+	// ID
+	MD_OWNED_STORAGE_READ_ONLY_ACCESSORS(BodyID, BodyID, RopeID, ropeStorage, ID);
+	// GPU情報
+	MD_OWNED_STORAGE_READ_WRITE_ACCESSORS(BodyID, SolveGPUMeta, RopeMeta, ropeStorage, Meta);
+	// 長さ
+	MD_OWNED_STORAGE_READ_WRITE_ACCESSORS(BodyID, float, RopeLength, ropeStorage, Length);
+	// 切り分け数
+	MD_OWNED_STORAGE_READ_WRITE_ACCESSORS(BodyID, int, RopeSegmentCount, ropeStorage, SegmentCount);
 public:
 	// コンストラクタ
 	BodyStorage();
