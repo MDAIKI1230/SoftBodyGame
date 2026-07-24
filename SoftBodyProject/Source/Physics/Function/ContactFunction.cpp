@@ -5,10 +5,10 @@
 bool ContactFunction::SphereSphere(ColliderID _colliderA, ColliderID _colliderB, ColliderStorage* _colliderStorage, PhysicsTransformStorage* _transformStorage, CollisionManifoldBuffer* _manifoldBuffer)
 {
 	// Aの情報取得
-	float radiusA{ _colliderStorage->sphereStorage->radius[_colliderStorage->GetDenseIndex(_colliderA)] };
+	float radiusA{ _colliderStorage->GetSphereColliderRadius(_colliderA) };
 	uint32_t transformIndexA{ _transformStorage->GetDenseIndex(_colliderStorage->GetTransformID(_colliderA)) };
 	// Bの情報取得
-	float radiusB{ _colliderStorage->sphereStorage->radius[_colliderStorage->GetDenseIndex(_colliderB)] };
+	float radiusB{ _colliderStorage->GetSphereColliderRadius(_colliderB) };
 	uint32_t transformIndexB{ _transformStorage->GetDenseIndex(_colliderStorage->GetTransformID(_colliderB)) };
 
 	// スケールの適応(書く方向で最大を選ぶ)
@@ -62,7 +62,7 @@ bool ContactFunction::SphereSphere(ColliderID _colliderA, ColliderID _colliderB,
 bool ContactFunction::SphereBox(ColliderID _colliderSphere, ColliderID _colliderBox, ColliderStorage* _colliderStorage, PhysicsTransformStorage* _transformStorage, CollisionManifoldBuffer* _manifoldBuffer)
 {
 	// Sphereの情報取得
-	float radius{ _colliderStorage->sphereStorage->radius[_colliderStorage->GetDenseIndex(_colliderSphere)] };
+	float radius{ _colliderStorage->GetSphereColliderRadius(_colliderSphere) };
 	uint32_t transformIndexSphere{ _transformStorage->GetDenseIndex(_colliderStorage->GetTransformID(_colliderSphere)) };
 	// Boxの情報取得
 	Vector3 halfScaleBox{ _colliderStorage->boxStorage->scale[_colliderStorage->GetDenseIndex(_colliderBox)] * 0.5f };

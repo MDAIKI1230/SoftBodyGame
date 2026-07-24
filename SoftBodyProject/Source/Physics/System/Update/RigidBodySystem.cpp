@@ -155,7 +155,7 @@ Matrix4x4 RigidBodySystem::GenerateSphereInverseInertiaTensor(uint32_t _transfor
 {
 	uint32_t index{ _colliderStorage->GetDenseIndex(_colliderID) };
 	Vector3 scale{ _transformStorage->GetScale(_transformIndex) };
-	float radius{ _colliderStorage->sphereStorage->radius[index] * std::max(std::max(scale.x, scale.y), scale.z) };
+	float radius{ _colliderStorage->GetSphereColliderRadius(_colliderID) * std::max(std::max(scale.x, scale.y), scale.z) };
 	float i{ (2.0f / 5.0f) * _mass * radius * radius };
 
 	return Matrix4x4{

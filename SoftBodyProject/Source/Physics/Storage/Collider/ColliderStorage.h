@@ -1,8 +1,6 @@
 ﻿#pragma once
 
-#include <vector>
-#include <memory>
-#include <unordered_map>
+#include "StorageAccessorsMacros.h"
 
 #include "ColliderSlot.h"
 #include "EntityID.h"
@@ -13,6 +11,9 @@
 
 class ColliderStorage
 {
+    // 球コライダー
+    MD_OWNED_STORAGE_READ_ONLY_ACCESSORS(ColliderID, ColliderID, SphereColliderID, sphereStorage, ID);
+    MD_OWNED_STORAGE_READ_WRITE_ACCESSORS(ColliderID, float, SphereColliderRadius, sphereStorage, Radius);
 public:
     // コンストラクタ
     ColliderStorage();
@@ -41,17 +42,21 @@ public:
     // TransformIDから対応したCollider取得
     std::vector<ColliderID>& GetColliderIDFromTransformID(PhysicsTransformID _id);
 public:
-    std::vector<ColliderSlot> slots;
-    std::vector<size_t> freeSlots;
+
 
     // AABBストレージ
     std::unique_ptr<AABBBroadPhaseColliderStorage> aabbStorage;
-    // 球Storage
-    std::unique_ptr<SphereColliderStorage> sphereStorage;
+
     // 箱Storage
     std::unique_ptr<BoxColliderStorage> boxStorage;
 private:
     ColliderID GenerateColliderID(ColliderType _type, uint32_t _denseIndex, uint32_t _aabbIndex, EntityID _ownerEntity, PhysicsTransformID _transformID);
 private:
+    std::vector<ColliderSlot> slots;
+    std::vector<size_t> freeSlots;
+
+    // 球Storage
+    std::unique_ptr<SphereColliderStorage> sphereStorage;
+
     std::unordered_map<PhysicsTransformID, std::vector<ColliderID>> transformMap;
 };

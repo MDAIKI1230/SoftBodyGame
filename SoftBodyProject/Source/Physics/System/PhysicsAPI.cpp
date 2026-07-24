@@ -271,12 +271,12 @@ ColliderID PhysicsAPI::CreateBox(EntityID _entity, const Vector3& _scale)
 // 半径取得
 float PhysicsAPI::GetRadius(ColliderID _id)
 {
-	return colliderStorage->sphereStorage->radius[colliderStorage->GetDenseIndex(_id)];
+	return colliderStorage->GetSphereColliderRadius(_id);
 }
 // 半径変更
 void PhysicsAPI::SetRadius(ColliderID _id, float _radius)
 {
-	colliderStorage->sphereStorage->radius[colliderStorage->GetDenseIndex(_id)] = _radius;
+	colliderStorage->SetSphereColliderRadius(_id, _radius);
 }
 // X方向の長さ取得
 float PhysicsAPI::GetWidth(ColliderID _id)

@@ -10,11 +10,10 @@ ColliderStorage::ColliderStorage()
 ColliderID ColliderStorage::CreateSphere(EntityID _entity, PhysicsTransformID _transformID, float _radius)
 {
 	// ColliderIDの作成(denseIndexに関しては、どの配列も同じサイズのためIDを使う)
-	ColliderID id{ GenerateColliderID(ColliderType::SPHERE, sphereStorage->id.size(),aabbStorage->aabb.size(), _entity, _transformID) };
+	ColliderID id{ GenerateColliderID(ColliderType::SPHERE, sphereStorage->CountID(),aabbStorage->aabb.size(), _entity, _transformID)};
 
 	// 実際のデータを追加
-	sphereStorage->radius.push_back(_radius);
-	sphereStorage->id.push_back(id);
+	sphereStorage->Add(id, _radius);
 
 	// aabbを作成フラグを追加しておく(後からシステムが作ってくれる)
 	aabbStorage->dirty.emplace_back(AABBChangeDirtyFlag::MAKE);

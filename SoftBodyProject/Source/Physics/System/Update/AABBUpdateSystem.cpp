@@ -59,8 +59,8 @@ void AABBUpdateSystem::ComputeSphere(AABBBroadPhaseCollider& aabb, ColliderStora
 	Vector3 scale{ _transformStorage->GetScale(_transformStorage->GetDenseIndex(_colliderStorage->GetTransformID(_id))) };
 	// 最大値で倍にする
 	float multiple{ std::max(std::max(scale.x,scale.y),scale.z) };
-	aabb.min = Vector3{ -_colliderStorage->sphereStorage->radius[_colliderStorage->GetDenseIndex(_id)] * multiple};
-	aabb.max = Vector3{ _colliderStorage->sphereStorage->radius[_colliderStorage->GetDenseIndex(_id)] * multiple };
+	aabb.min = Vector3{ -_colliderStorage->GetSphereColliderRadius(_id) * multiple };
+	aabb.max = Vector3{ _colliderStorage->GetSphereColliderRadius(_id) * multiple };
 }
 
 void AABBUpdateSystem::ComputeBox(AABBBroadPhaseCollider& aabb, ColliderStorage* _colliderStorage, ColliderID _id, PhysicsTransformStorage* _transformStorage)

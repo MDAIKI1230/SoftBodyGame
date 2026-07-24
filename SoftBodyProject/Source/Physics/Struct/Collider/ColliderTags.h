@@ -13,7 +13,7 @@ namespace
 		static Vector3 Support(ColliderStorage* _colliderStorage, ColliderID _id, PhysicsTransformStorage* _transformStorage, const Vector3& _dir)
 		{
 			uint32_t transformIndex{ _transformStorage->GetDenseIndex(_colliderStorage->GetTransformID(_id)) };
-			return _dir.Normalized() * _colliderStorage->sphereStorage->radius[_colliderStorage->GetDenseIndex(_id)] + _transformStorage->GetPosition(transformIndex);
+			return _dir.Normalized() * _colliderStorage->GetSphereColliderRadius(_id) + _transformStorage->GetPosition(transformIndex);
 		}
 
 		static Vector3 GetContactPosition(ColliderStorage* _colliderStorage, ColliderID _id, PhysicsTransformStorage* _transformStorage, const Vector3& _normal)
