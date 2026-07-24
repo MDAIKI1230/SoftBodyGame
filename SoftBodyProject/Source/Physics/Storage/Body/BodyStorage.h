@@ -11,7 +11,7 @@
 #include "Soft/SoftBodyStorage.h"
 
 
-#include "ClothUpdateInfo.h"
+
 #include "SoftBodyUpdateInfo.h"
 
 class BodyStorage
@@ -56,6 +56,19 @@ class BodyStorage
 	MD_OWNED_STORAGE_READ_WRITE_ACCESSORS(BodyID, float, RopeLength, ropeStorage, Length);
 	// 切り分け数
 	MD_OWNED_STORAGE_READ_WRITE_ACCESSORS(BodyID, int, RopeSegmentCount, ropeStorage, SegmentCount);
+	// --- ClothBody ---
+	// ID
+	MD_OWNED_STORAGE_READ_ONLY_ACCESSORS(BodyID, BodyID, ClothID, clothStorage, ID);
+	// GPU情報
+	MD_OWNED_STORAGE_READ_ONLY_ACCESSORS(BodyID, SolveGPUMeta, ClothMeta, clothStorage, Meta);
+	// 横幅
+	MD_OWNED_STORAGE_READ_WRITE_ACCESSORS(BodyID, float, ClothWidth, clothStorage, Width);
+	// 縦幅
+	MD_OWNED_STORAGE_READ_WRITE_ACCESSORS(BodyID, float, ClothHeight, clothStorage, Height);
+	// 横切り分け数
+	MD_OWNED_STORAGE_READ_WRITE_ACCESSORS(BodyID, int, ClothColumnCount, clothStorage, ColumnCount);
+	// 縦切り分け数
+	MD_OWNED_STORAGE_READ_WRITE_ACCESSORS(BodyID, int, ClothRowCount, clothStorage, RowCount);
 public:
 	// コンストラクタ
 	BodyStorage();

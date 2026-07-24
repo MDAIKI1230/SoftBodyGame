@@ -45,14 +45,9 @@ BodyID BodyStorage::CreateRope(EntityID _entity, PhysicsTransformID _transformID
 // Cloth作成
 BodyID BodyStorage::CreateCloth(EntityID _entity, PhysicsTransformID _transformID, const ClothUpdateInfo& _info)
 {
-	BodyID result{ GenerateBodyID(clothStorage->id.size(),BodyType::CLOTH,_entity,_transformID) };
+	BodyID result{ GenerateBodyID(clothStorage->CountID(),BodyType::CLOTH,_entity,_transformID)};
 
-	clothStorage->id.push_back(result);
-	clothStorage->meta.emplace_back();
-	clothStorage->width.emplace_back(_info.width);
-	clothStorage->height.emplace_back(_info.height);
-	clothStorage->rowCount.emplace_back(_info.rowCount);
-	clothStorage->columnCount.emplace_back(_info.columnCount);
+	clothStorage->Create(result, _info);
 
 	return result;
 }

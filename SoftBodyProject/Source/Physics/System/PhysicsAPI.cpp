@@ -136,42 +136,42 @@ void PhysicsAPI::SetSegmentCount(BodyID _id, int _segmentCount)
 // 横幅取得
 float PhysicsAPI::GetClothWidth(BodyID _id)
 {
-	return bodyStorage->clothStorage->width[bodyStorage->GetDenseIndex(_id)];
+	return bodyStorage->GetClothWidth(_id);
 }
 // 横幅変更
 void PhysicsAPI::SetClothWidth(BodyID _id, float _width)
 {
-	bodyStorage->clothStorage->width[bodyStorage->GetDenseIndex(_id)] = _width;
+	bodyStorage->SetClothWidth(_id, _width);
 }
 // 縦幅取得
 float PhysicsAPI::GetClothHeight(BodyID _id)
 {
-	return bodyStorage->clothStorage->height[bodyStorage->GetDenseIndex(_id)];
+	return bodyStorage->GetClothHeight(_id);
 }
 // 縦幅変更
 void PhysicsAPI::SetClothHeight(BodyID _id, float _height)
 {
-	bodyStorage->clothStorage->height[bodyStorage->GetDenseIndex(_id)] = _height;
+	bodyStorage->SetClothHeight(_id, _height);
 }
 // 横分割取得
 int PhysicsAPI::GetRowCount(BodyID _id)
 {
-	return bodyStorage->clothStorage->rowCount[bodyStorage->GetDenseIndex(_id)];
+	return bodyStorage->GetClothRowCount(_id);
 }
 // 横分割変更
 void PhysicsAPI::SetRowCount(BodyID _id, int _rowCount)
 {
-	bodyStorage->clothStorage->rowCount[bodyStorage->GetDenseIndex(_id)] = _rowCount;
+	bodyStorage->SetClothRowCount(_id, _rowCount);
 }
 // 縦分割取得
 int PhysicsAPI::GetColumnCount(BodyID _id)
 {
-	return bodyStorage->clothStorage->columnCount[bodyStorage->GetDenseIndex(_id)];
+	return bodyStorage->GetClothColumnCount(_id);
 }
 // 縦分割変更
 void PhysicsAPI::SetColumnCount(BodyID _id, int _columnCount)
 {
-	bodyStorage->clothStorage->columnCount[bodyStorage->GetDenseIndex(_id)] = _columnCount;
+	bodyStorage->SetClothColumnCount(_id, _columnCount);
 }
 
 // --- ソフトボディ系 ---
