@@ -281,32 +281,32 @@ void PhysicsAPI::SetRadius(ColliderID _id, float _radius)
 // X方向の長さ取得
 float PhysicsAPI::GetWidth(ColliderID _id)
 {
-	return colliderStorage->boxStorage->scale[colliderStorage->GetDenseIndex(_id)].x;
+	return colliderStorage->GetBoxColliderScale(_id).x;
 }
 // X方向の長さ変更
 void PhysicsAPI::SetWidth(ColliderID _id, float _width)
 {
-	colliderStorage->boxStorage->scale[colliderStorage->GetDenseIndex(_id)].x = _width;
+	colliderStorage->EditBoxColliderScale(_id).x = _width;
 }
 // Y方向の長さ取得
 float PhysicsAPI::GetHeight(ColliderID _id)
 {
-	return colliderStorage->boxStorage->scale[colliderStorage->GetDenseIndex(_id)].y;
+	return colliderStorage->GetBoxColliderScale(_id).y;
 }
 // Y方向の長さ変更
 void PhysicsAPI::SetHeight(ColliderID _id, float _height)
 {
-	colliderStorage->boxStorage->scale[colliderStorage->GetDenseIndex(_id)].y = _height;
+	colliderStorage->EditBoxColliderScale(_id).y = _height;
 }
 // Z方向の長さ取得
 float PhysicsAPI::GetDepth(ColliderID _id)
 {
-	return colliderStorage->boxStorage->scale[colliderStorage->GetDenseIndex(_id)].z;
+	return colliderStorage->GetBoxColliderScale(_id).z;
 }
 // Z方向の長さ変更
 void PhysicsAPI::SetDepth(ColliderID _id, float _depth)
 {
-	colliderStorage->boxStorage->scale[colliderStorage->GetDenseIndex(_id)].z = _depth;
+	colliderStorage->EditBoxColliderScale(_id).z = _depth;
 }
 
 // --- 拘束系 ---

@@ -29,11 +29,10 @@ ColliderID ColliderStorage::CreateSphere(EntityID _entity, PhysicsTransformID _t
 ColliderID ColliderStorage::CreateBox(EntityID _entity, PhysicsTransformID _transformID, const Vector3& _scale)
 {
 	// ColliderIDの作成(denseIndexに関しては、どの配列も同じサイズのためIDを使う)
-	ColliderID id{ GenerateColliderID(ColliderType::BOX, boxStorage->id.size(),aabbStorage->aabb.size(), _entity, _transformID) };
+	ColliderID id{ GenerateColliderID(ColliderType::BOX, boxStorage->CountID(),aabbStorage->aabb.size(), _entity, _transformID) };
 
 	// 実際のデータを追加
-	boxStorage->scale.push_back(_scale);
-	boxStorage->id.push_back(id);
+	boxStorage->Add(id, _scale);
 
 	// aabbを作成フラグを追加しておく(後からシステムが作ってくれる)
 	aabbStorage->dirty.emplace_back(AABBChangeDirtyFlag::MAKE);

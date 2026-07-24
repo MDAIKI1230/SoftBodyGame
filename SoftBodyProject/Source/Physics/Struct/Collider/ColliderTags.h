@@ -27,7 +27,7 @@ namespace
 	{
 		static Vector3 Support(ColliderStorage* _colliderStorage, ColliderID _id, PhysicsTransformStorage* _transformStorage, const Vector3& _dir)
 		{
-			Vector3 halfScale{ _colliderStorage->boxStorage->scale[_colliderStorage->GetDenseIndex(_id)] * 0.5f };
+			Vector3 halfScale{ _colliderStorage->GetBoxColliderScale(_id) * 0.5f };
 			uint32_t transformIndex{ _transformStorage->GetDenseIndex(_colliderStorage->GetTransformID(_id)) };
 			halfScale = SIMDVectorMath::Mul(halfScale, _transformStorage->GetScale(transformIndex));
 			Vector3 pos{ _transformStorage->GetPosition(transformIndex) };

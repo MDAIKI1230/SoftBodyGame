@@ -65,7 +65,7 @@ bool ContactFunction::SphereBox(ColliderID _colliderSphere, ColliderID _collider
 	float radius{ _colliderStorage->GetSphereColliderRadius(_colliderSphere) };
 	uint32_t transformIndexSphere{ _transformStorage->GetDenseIndex(_colliderStorage->GetTransformID(_colliderSphere)) };
 	// Boxの情報取得
-	Vector3 halfScaleBox{ _colliderStorage->boxStorage->scale[_colliderStorage->GetDenseIndex(_colliderBox)] * 0.5f };
+	Vector3 halfScaleBox{ _colliderStorage->GetBoxColliderScale(_colliderBox) * 0.5f };
 	uint32_t transformIndexBox{ _transformStorage->GetDenseIndex(_colliderStorage->GetTransformID(_colliderBox)) };
 	Quaternion rotBox{ _transformStorage->GetRotation(transformIndexBox) };
 
@@ -186,11 +186,11 @@ bool ContactFunction::SphereBox(ColliderID _colliderSphere, ColliderID _collider
 bool ContactFunction::BoxBox(ColliderID _colliderA, ColliderID _colliderB, ColliderStorage* _colliderStorage, PhysicsTransformStorage* _transformStorage, CollisionManifoldBuffer* _manifoldBuffer)
 {
 	// Aの情報取得
-	Vector3 halfScaleA{ _colliderStorage->boxStorage->scale[_colliderStorage->GetDenseIndex(_colliderA)] * 0.5f };
+	Vector3 halfScaleA{ _colliderStorage->GetBoxColliderScale(_colliderA) * 0.5f };
 	uint32_t transformIndexA{ _transformStorage->GetDenseIndex(_colliderStorage->GetTransformID(_colliderA)) };
 	Quaternion rotA{ _transformStorage->GetRotation(transformIndexA) };
 	// Bの情報取得
-	Vector3 halfScaleB{ _colliderStorage->boxStorage->scale[_colliderStorage->GetDenseIndex(_colliderB)] * 0.5f };
+	Vector3 halfScaleB{ _colliderStorage->GetBoxColliderScale(_colliderB) * 0.5f };
 	uint32_t transformIndexB{ _transformStorage->GetDenseIndex(_colliderStorage->GetTransformID(_colliderB)) };
 	Quaternion rotB{ _transformStorage->GetRotation(transformIndexB) };
 

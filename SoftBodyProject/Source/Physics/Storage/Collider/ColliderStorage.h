@@ -14,6 +14,9 @@ class ColliderStorage
     // 球コライダー
     MD_OWNED_STORAGE_READ_ONLY_ACCESSORS(ColliderID, ColliderID, SphereColliderID, sphereStorage, ID);
     MD_OWNED_STORAGE_READ_WRITE_ACCESSORS(ColliderID, float, SphereColliderRadius, sphereStorage, Radius);
+    // ボックスコライダー
+    MD_OWNED_STORAGE_READ_ONLY_ACCESSORS(ColliderID, ColliderID, BoxColliderID, boxStorage, ID);
+    MD_OWNED_STORAGE_READ_WRITE_ACCESSORS(ColliderID, Vector3, BoxColliderScale, boxStorage, Scale);
 public:
     // コンストラクタ
     ColliderStorage();
@@ -47,8 +50,7 @@ public:
     // AABBストレージ
     std::unique_ptr<AABBBroadPhaseColliderStorage> aabbStorage;
 
-    // 箱Storage
-    std::unique_ptr<BoxColliderStorage> boxStorage;
+
 private:
     ColliderID GenerateColliderID(ColliderType _type, uint32_t _denseIndex, uint32_t _aabbIndex, EntityID _ownerEntity, PhysicsTransformID _transformID);
 private:
@@ -57,6 +59,8 @@ private:
 
     // 球Storage
     std::unique_ptr<SphereColliderStorage> sphereStorage;
+    // ボックスStorage
+    std::unique_ptr<BoxColliderStorage> boxStorage;
 
     std::unordered_map<PhysicsTransformID, std::vector<ColliderID>> transformMap;
 };

@@ -72,7 +72,7 @@ void AABBUpdateSystem::ComputeBox(AABBBroadPhaseCollider& aabb, ColliderStorage*
 	Vector3 up = _transformStorage->GetRotation(transIndex).Rotate(Vector3::UP);
 	Vector3 forward = _transformStorage->GetRotation(transIndex).Rotate(Vector3::FORWARD);
 
-	Vector3 halfScale{ _colliderStorage->boxStorage->scale[_colliderStorage->GetDenseIndex(_id)] * 0.5f};
+	Vector3 halfScale{ _colliderStorage->GetBoxColliderScale(_id) * 0.5f};
 
 	// 各方向に倍
 	halfScale = SIMDVectorMath::Mul(halfScale, _transformStorage->GetScale(transIndex));
