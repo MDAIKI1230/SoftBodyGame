@@ -206,7 +206,21 @@ float Quaternion::Dot(const Quaternion& _rot1, const Quaternion& _rot2)
 
 Quaternion Quaternion::LookAt(const Vector3& _eye, const Vector3& _target, const Vector3& _up)
 {
-	return FromMatrix(MatGenerateFunc::LookAt(_eye, _target, _up));
+	const Vector3 forward{Vector3::Normalized(_target - _eye)};
+
+	const Vector3 right{Vector3::Normalized(Vector3::Cross(Vector3::UP, forward))};
+
+	const Vector3 up{Vector3::Cross(forward, right)};
+
+	const Matrix4x4 rotationMatrix
+	{
+		right.x, up.x, forward.x, 0.0f,
+		right.y, up.y, forward.y, 0.0f,
+		right.z, up.z, forward.z, 0.0f,
+		0.0f,    0.0f, 0.0f,      1.0f
+	};
+
+	return Quaternion::FromMatrix(rotationMatrix);
 }
 
 // 行列から四元数を作る

@@ -6,25 +6,8 @@
 
 void DxlibRenderer::SetCamera(const Camera& _camera)
 {
-    // DxLib::SetCameraPositionAndTargetAndUpVec(ToDxlib(_camera.GetPos()), ToDxlib(_camera.GetTarget()), ToDxlib(Vector3::UP));
 	// 位置と見る点を決める
-    VECTOR eye = ToDxlib(_camera.GetPos());
-    VECTOR target = ToDxlib(_camera.GetTarget());
-    VECTOR up = ToDxlib(Vector3::UP);
-
-    MATRIX view{};
-    DxLib::CreateLookAtMatrixRH(&view, &eye, &target, &up);
-    DxLib::SetCameraViewMatrix(view);
-
-    MATRIX projection{};
-    DxLib::CreatePerspectiveFovMatrixRH(
-        &projection,
-        DX_PI_F / 3.0f,
-        0.05f,
-        4000.0f
-    );
-
-    DxLib::SetupCamera_ProjectionMatrix(projection);
+    DxLib::SetCameraPositionAndTargetAndUpVec(ToDxlib(_camera.GetPos()), ToDxlib(_camera.GetTarget()), ToDxlib(Vector3::UP));
 }
 
 int DxlibRenderer::ClearDrawScreen()

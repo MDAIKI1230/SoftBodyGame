@@ -5,8 +5,6 @@
 // 初期化
 int DxlibSystem::Init()
 {
-    DxLib::SetUseRightHandClippingProcess(TRUE);
-
     const int result = DxLib::DxLib_Init();
 
     if (result < 0)
