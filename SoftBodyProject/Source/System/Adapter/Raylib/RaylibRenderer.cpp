@@ -151,7 +151,7 @@ void RaylibRenderer::DrawModel(int _handle)
 // 画像描画
 void RaylibRenderer::DrawGraph(const Vector2& _pos, int _handle, bool _transFlag)
 {
-    ::DrawTexture(textureMap[_handle], _pos.x, _pos.y, RlColor{ 255, 255, 255, 255 });
+    ::DrawTexture(textureMap[_handle], static_cast<int>(_pos.x), static_cast<int>(_pos.y), RlColor{ 255, 255, 255, 255 });
 }
 
 // 球描画

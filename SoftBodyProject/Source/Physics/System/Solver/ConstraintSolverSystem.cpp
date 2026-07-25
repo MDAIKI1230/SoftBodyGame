@@ -94,9 +94,6 @@ void ConstraintSolverSystem::PositionSolver(SolverBodyBuffer* _solverBodyBuffer,
 			continue;
 		}
 
-		// biasを求める
-		float bias{ ERP / ServiceLocator::GetTimeManager()->GetFixedDeltaTime() * constraint.error };
-
 		// 慣性テンソル求める
 		Matrix4x4 rotMat{ MatGenerateFunc::Rotate(solverBodyA.rotation) };
 		Matrix4x4 worldInertiaTnesorA{ rotMat * solverBodyA.localInverseInertiaTensor * rotMat.Transposed() };

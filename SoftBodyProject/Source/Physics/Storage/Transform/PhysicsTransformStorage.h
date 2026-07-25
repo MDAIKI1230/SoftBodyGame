@@ -42,7 +42,7 @@ public:
 	// EntityIDに対応したPhysicsTransformIDがあるか
 	bool TryGet(EntityID _entity,PhysicsTransformID& _output);
 private:
-	PhysicsTransformID GeneratePhysicsTransformID(size_t _denseIndex, EntityID _ownerEntity);
+	PhysicsTransformID GeneratePhysicsTransformID(uint32_t _denseIndex, EntityID _ownerEntity);
 private:
 	std::unordered_map<EntityID, PhysicsTransformID> entityMap;
 	std::vector<PhysicsTransformSlot> slots;

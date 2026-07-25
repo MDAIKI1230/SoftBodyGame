@@ -7,7 +7,7 @@
 void AABBUpdateSystem::FixedUpdate(PhysicsTransformStorage* _transformStorage, ColliderStorage* _colliderStorage)
 {
 	uint32_t size{ _colliderStorage->AABBCount() };
-	for (int i{ 0 }; i < size; i++)
+	for (uint32_t i{ 0 }; i < size; i++)
 	{
 		if (_colliderStorage->GetAABBDiaryFlag(i) & AABBChangeDiaryFlag::MAKE)
 		{

@@ -26,44 +26,44 @@ Matrix4x4 Matrix4x4::Zero()
 // 加算
 Matrix4x4 Matrix4x4::operator+(const Matrix4x4& _other)const
 {
-	Matrix4x4 m;
+	Matrix4x4 mat;
 
 	for (int i{ 0 }; i < 4; i++)
 	{
-		m.row[i] = SIMDVectorMath::Add(row[i], _other.row[i]);
+		mat.row[i] = SIMDVectorMath::Add(row[i], _other.row[i]);
 	}
 
-	return m;
+	return mat;
 }
 
 // 減算
 Matrix4x4 Matrix4x4::operator-(const Matrix4x4& _other)const
 {
-	Matrix4x4 m;
+	Matrix4x4 mat;
 
 	for (int i{ 0 }; i < 4; i++)
 	{
-		m.row[i] = SIMDVectorMath::Sub(row[i], _other.row[i]);
+		mat.row[i] = SIMDVectorMath::Sub(row[i], _other.row[i]);
 	}
 
-	return m;
+	return mat;
 }
 
 // 乗算
 Matrix4x4 Matrix4x4::operator*(const Matrix4x4& _other)const
 {
-	Matrix4x4 m;
+	Matrix4x4 mat;
 
 	Matrix4x4 tm{ _other.Transposed() };
 	for (int i{ 0 }; i < 4; i++)
 	{
 		for (int j{ 0 }; j < 4; j++)
 		{
-			m.m[i][j] = SIMDVectorMath::HorizontalAdd(SIMDVectorMath::Mul(row[i], tm.row[j]));
+			mat.m[i][j] = SIMDVectorMath::HorizontalAdd(SIMDVectorMath::Mul(row[i], tm.row[j]));
 		}
 	}
 
-	return m;
+	return mat;
 }
 
 // 加算
@@ -106,27 +106,27 @@ Matrix4x4& Matrix4x4::operator*=(const Matrix4x4& _other)
 // スカラー倍
 Matrix4x4 Matrix4x4::operator*(float _value) const
 {
-	Matrix4x4 m;
+	Matrix4x4 mat;
 
 	for (int i{ 0 }; i < 4; i++)
 	{
-		m.row[i] = SIMDVectorMath::MulScalar(row[i], _value);
+		mat.row[i] = SIMDVectorMath::MulScalar(row[i], _value);
 	}
 
-	return m;
+	return mat;
 }
 
 // スカラー割
 Matrix4x4 Matrix4x4::operator/(float _value) const
 {
-	Matrix4x4 m;
+	Matrix4x4 mat;
 
 	for (int i{ 0 }; i < 4; i++)
 	{
-		m.row[i] = SIMDVectorMath::DivScalar(row[i], _value);
+		mat.row[i] = SIMDVectorMath::DivScalar(row[i], _value);
 	}
 
-	return m;
+	return mat;
 }
 
 // スカラー倍

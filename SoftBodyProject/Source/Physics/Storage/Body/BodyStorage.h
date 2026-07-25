@@ -118,7 +118,7 @@ public:
 	bool Has(PhysicsTransformID _transformID) const;
 private:
 	// 一意なID発行関数
-	BodyID GenerateBodyID(size_t _denseIndex, BodyType _type, EntityID _ownerEntity, PhysicsTransformID _transformID);
+	BodyID GenerateBodyID(uint32_t _denseIndex, BodyType _type, EntityID _ownerEntity, PhysicsTransformID _transformID);
 private:
 	std::vector<BodySlot> slots;
 	std::vector<uint32_t> freeSlots;

@@ -57,19 +57,19 @@ void CollisionSystem::BroadPhase(PhysicsTransformStorage* _transformStorage, Col
 		else
 		{
 			// 最小値と最大値をそれぞれ追加する。(ColliderProjectionは値/エンティティID/最大値フラグ)
-			data.endpointIndex[ProjectionAxisType::MIN_X] = colliderProjectionXValues.size();
+			data.endpointIndex[ProjectionAxisType::MIN_X] = static_cast<uint32_t>(colliderProjectionXValues.size());
 			colliderProjectionXValues.push_back(ColliderProjection(data.min.x, colliderID, false, ProjectionAxisType::MIN_X));
-			data.endpointIndex[ProjectionAxisType::MAX_X] = colliderProjectionXValues.size();
+			data.endpointIndex[ProjectionAxisType::MAX_X] = static_cast<uint32_t>(colliderProjectionXValues.size());
 			colliderProjectionXValues.push_back(ColliderProjection(data.max.x, colliderID, true, ProjectionAxisType::MAX_X));
 
-			data.endpointIndex[ProjectionAxisType::MIN_Y] = colliderProjectionYValues.size();
+			data.endpointIndex[ProjectionAxisType::MIN_Y] = static_cast<uint32_t>(colliderProjectionYValues.size());
 			colliderProjectionYValues.push_back(ColliderProjection(data.min.y, colliderID, false, ProjectionAxisType::MIN_Y));
-			data.endpointIndex[ProjectionAxisType::MAX_Y] = colliderProjectionYValues.size();
+			data.endpointIndex[ProjectionAxisType::MAX_Y] = static_cast<uint32_t>(colliderProjectionYValues.size());
 			colliderProjectionYValues.push_back(ColliderProjection(data.max.y, colliderID, true, ProjectionAxisType::MAX_Y));
 
-			data.endpointIndex[ProjectionAxisType::MIN_Z] = colliderProjectionZValues.size();
+			data.endpointIndex[ProjectionAxisType::MIN_Z] = static_cast<uint32_t>(colliderProjectionZValues.size());
 			colliderProjectionZValues.push_back(ColliderProjection(data.min.z, colliderID, false, ProjectionAxisType::MIN_Z));
-			data.endpointIndex[ProjectionAxisType::MAX_Z] = colliderProjectionZValues.size();
+			data.endpointIndex[ProjectionAxisType::MAX_Z] = static_cast<uint32_t>(colliderProjectionZValues.size());
 			colliderProjectionZValues.push_back(ColliderProjection(data.max.z, colliderID, true, ProjectionAxisType::MAX_Z));
 
 			projectionDatas.push_back(data);
@@ -200,7 +200,7 @@ void CollisionSystem::CheckProjectionAxisValueCross(std::vector<ColliderProjecti
 				}
 			}
 			// 最小値なのでactiveリストに追加。
-			_projectionAxisValues[i].activeIndex = actives.size();
+			_projectionAxisValues[i].activeIndex = static_cast<uint32_t>(actives.size());
 			actives.push_back(i);
 		}
 		// 最大値

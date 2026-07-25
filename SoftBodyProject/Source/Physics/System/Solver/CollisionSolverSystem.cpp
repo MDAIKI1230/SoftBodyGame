@@ -226,9 +226,6 @@ void CollisionSolverSystem::PositionSolver(CollisionManifoldBuffer* _manifoldBuf
 			continue;
 		}
 
-		// biasを求める
-		float bias{ ERP / ServiceLocator::GetTimeManager()->GetFixedDeltaTime() * constraint.penetration };
-
 		// 重心から衝突点ベクトル
 		Vector3 rA{ solverBodyA.rotation.Rotate(constraint.positionLocalA) };
 		Vector3 rB{ solverBodyB.rotation.Rotate(constraint.positionLocalB) };

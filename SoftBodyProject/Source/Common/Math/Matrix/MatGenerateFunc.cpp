@@ -186,9 +186,9 @@ Matrix4x4 MatGenerateFunc::LookAt(const Vector3& _eye, const Vector3& _target, c
 	// 列ベクトル
 	return
 	{
-		 right.x, right.y, right.z, -Vector3::Dot(right, _eye),
-		 up.x,       up.y,    up.z, -Vector3::Dot(up, _eye),
-		-frwd.x,  -frwd.y, -frwd.z, Vector3::Dot(frwd, _eye),
+		 right.x, right.y, right.z, -dotR,
+		 up.x,       up.y,    up.z, -dotU,
+		-frwd.x,  -frwd.y, -frwd.z, dotF,
 		 0.0f,       0.0f,       0.0f,     1.0f
 	};
 }

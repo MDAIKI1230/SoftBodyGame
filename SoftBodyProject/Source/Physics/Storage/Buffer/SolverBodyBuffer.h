@@ -10,7 +10,7 @@ class SolverBodyBuffer
 public:
 	void AddSolverBody(PhysicsTransformID _transformID, const SolverBody& _body)
 	{
-		bodyMap[_transformID] = solverBodies.size();
+		bodyMap[_transformID] = static_cast<uint32_t>(solverBodies.size());
 		solverBodies.push_back(_body);
 	}
 	void Clear()

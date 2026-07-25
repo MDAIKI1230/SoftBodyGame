@@ -43,7 +43,7 @@ void RigidBodyStorage::Create(BodyID _id)
 	// 重力フラグ
 	isGravities.emplace_back(true);
 	// 重力加速度
-	gravities.emplace_back(0.0, -980.0f, 0.0f);
+	gravities.emplace_back(0.0f, -980.0f, 0.0f);
 
 	// --- 質量系 ---
 

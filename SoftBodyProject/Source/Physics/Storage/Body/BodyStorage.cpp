@@ -148,7 +148,7 @@ bool BodyStorage::Has(PhysicsTransformID _transformID) const
 }
 
 // 一意なID発行関数
-BodyID BodyStorage::GenerateBodyID(size_t _denseIndex, BodyType _type, EntityID _ownerEntity, PhysicsTransformID _transformID)
+BodyID BodyStorage::GenerateBodyID(uint32_t _denseIndex, BodyType _type, EntityID _ownerEntity, PhysicsTransformID _transformID)
 {
 	if (freeSlots.empty())
 	{

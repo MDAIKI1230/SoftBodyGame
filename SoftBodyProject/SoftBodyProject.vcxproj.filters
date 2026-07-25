@@ -595,9 +595,6 @@
     <ClInclude Include="Source\Physics\DebugRender\ConstraintDebugRenderSystem.h">
       <Filter>ソース ファイル\Physics\DebugRender</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Physics\Storage\Buffer\CollisionContactBuffer.h">
-      <Filter>ソース ファイル\Physics\Storage\Buffer</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Physics\Storage\Buffer\CollisionManifoldBuffer.h">
       <Filter>ソース ファイル\Physics\Storage\Buffer</Filter>
     </ClInclude>

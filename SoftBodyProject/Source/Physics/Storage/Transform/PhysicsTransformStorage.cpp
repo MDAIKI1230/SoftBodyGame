@@ -22,7 +22,7 @@ PhysicsTransformID PhysicsTransformStorage::GetOrCreateTransform(EntityID _entit
 	// 親ID
 	parentIDs.emplace_back();
 	// ID
-	ids.emplace_back(GeneratePhysicsTransformID(ids.size(), _entity));
+	ids.emplace_back(GeneratePhysicsTransformID(static_cast<uint32_t>(ids.size()), _entity));
 	// mapに追加
 	entityMap[_entity] = ids.back();
 	// IDを返してあげる
@@ -31,7 +31,52 @@ PhysicsTransformID PhysicsTransformStorage::GetOrCreateTransform(EntityID _entit
 
 void PhysicsTransformStorage::Destroy(PhysicsTransformID _id)
 {
+	uint32_t index{ GetDenseIndex(_id) };
 
+	if (ids.empty())
+	{
+		return;
+	}
+
+	size_t last = ids.size() - 1;
+	PhysicsTransformID movedId = ids[last];
+
+	if (index != last)
+	{
+		// 位置
+		positions[index] = positions[last];
+		// 回転
+		rotations[index] = rotations[last];
+		// スケール
+		scales[index] = scales[last];
+		// ローカル行列
+		localMatrices[index] = localMatrices[last];
+		// ワールド行列
+		worldMatrices[index] = worldMatrices[last];
+		// 親ID
+		parentIDs[index] = parentIDs[last];
+		// ID
+		ids[index] = ids[last];
+	}
+
+	positions.pop_back();
+	rotations.pop_back();
+	scales.pop_back();
+	localMatrices.pop_back();
+	worldMatrices.pop_back();
+	ids.pop_back();
+
+	auto it = entityMap.find(GetOwnerEntity(_id));
+
+	if (!entityMap.empty())
+	{
+		entityMap.erase(it);
+	}
+
+	if (!(movedId.GetIndex() == _id.GetIndex() && movedId.GetGeneration() == _id.GetGeneration()))
+	{
+		slots[movedId.GetIndex()].denseIndex = slots[_id.GetIndex()].denseIndex;
+	}
 }
 
 bool PhysicsTransformStorage::IsAlive(PhysicsTransformID _id) const
@@ -61,7 +106,7 @@ bool PhysicsTransformStorage::TryGet(EntityID _entity, PhysicsTransformID& _outp
 	return false;
 }
 
-PhysicsTransformID PhysicsTransformStorage::GeneratePhysicsTransformID(size_t _denseIndex, EntityID _ownerEntity)
+PhysicsTransformID PhysicsTransformStorage::GeneratePhysicsTransformID(uint32_t _denseIndex, EntityID _ownerEntity)
 {
 	if (freeSlots.empty())
 	{

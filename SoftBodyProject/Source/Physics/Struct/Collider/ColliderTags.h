@@ -15,11 +15,6 @@ namespace
 			uint32_t transformIndex{ _transformStorage->GetDenseIndex(_colliderStorage->GetTransformID(_id)) };
 			return _dir.Normalized() * _colliderStorage->GetSphereColliderRadius(_id) + _transformStorage->GetPosition(transformIndex);
 		}
-
-		static Vector3 GetContactPosition(ColliderStorage* _colliderStorage, ColliderID _id, PhysicsTransformStorage* _transformStorage, const Vector3& _normal)
-		{
-
-		}
 	};
 
 	// 箱
@@ -44,7 +39,7 @@ namespace
 				pos - rot.Rotate(Vector3{-halfScale.x,halfScale.y,halfScale.z})
 			};
 
-			char maxIndex{ 0 };
+			int maxIndex{ 0 };
 			float best{ -FLT_MAX };
 
 			for (int i{ 0 }; i < 8; i++)
