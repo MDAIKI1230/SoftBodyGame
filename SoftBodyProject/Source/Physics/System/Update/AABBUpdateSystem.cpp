@@ -6,48 +6,48 @@
 
 void AABBUpdateSystem::FixedUpdate(PhysicsTransformStorage* _transformStorage, ColliderStorage* _colliderStorage)
 {
-	AABBBroadPhaseColliderStorage* aabbStorage{ _colliderStorage->aabbStorage.get() };
-	for (int i{ 0 }; i < aabbStorage->diary.size(); i++)
+	uint32_t size{ _colliderStorage->AABBCount() };
+	for (int i{ 0 }; i < size; i++)
 	{
-		if (aabbStorage->diary[i] & AABBChangeDiaryFlag::MAKE)
+		if (_colliderStorage->GetAABBDiaryFlag(i) & AABBChangeDiaryFlag::MAKE)
 		{
-			ColliderID id{ _colliderStorage->aabbStorage->aabb[i].colliderID };
+			ColliderID id{ _colliderStorage->GetAABBBroadPhaseCollider(i).colliderID};
 
 			switch (_colliderStorage->GetType(id))
 			{
 			case ColliderType::SPHERE:
-				ComputeSphere(_colliderStorage->aabbStorage->aabb[i], _colliderStorage, id, _transformStorage);
+				ComputeSphere(_colliderStorage->EditAABBBroadPhaseCollider(i), _colliderStorage, id, _transformStorage);
 				break;
 			case ColliderType::BOX:
-				ComputeBox(_colliderStorage->aabbStorage->aabb[i], _colliderStorage, id, _transformStorage);
+				ComputeBox(_colliderStorage->EditAABBBroadPhaseCollider(i), _colliderStorage, id, _transformStorage);
 				break;
 			default:
 				break;
 			}
 
-			aabbStorage->diary[i] = AABBChangeDiaryFlag::NONE;
+			_colliderStorage->EditAABBDiaryFlag(i) = AABBChangeDiaryFlag::NONE;
 		}
 
-		if (aabbStorage->diary[i] & AABBChangeDiaryFlag::TRANSFORM)
+		if (_colliderStorage->GetAABBDiaryFlag(i) & AABBChangeDiaryFlag::TRANSFORM)
 		{
-			ColliderID id{ _colliderStorage->aabbStorage->aabb[i].colliderID };
+			ColliderID id{ _colliderStorage->GetAABBBroadPhaseCollider(i).colliderID };
 
 			switch (_colliderStorage->GetType(id))
 			{
 			case ColliderType::SPHERE:
-				ComputeSphere(_colliderStorage->aabbStorage->aabb[i], _colliderStorage, id, _transformStorage);
+				ComputeSphere(_colliderStorage->EditAABBBroadPhaseCollider(i), _colliderStorage, id, _transformStorage);
 				break;
 			case ColliderType::BOX:
-				ComputeBox(_colliderStorage->aabbStorage->aabb[i], _colliderStorage, id, _transformStorage);
+				ComputeBox(_colliderStorage->EditAABBBroadPhaseCollider(i), _colliderStorage, id, _transformStorage);
 				break;
 			default:
 				break;
 			}
 
-			aabbStorage->diary[i] = AABBChangeDiaryFlag::NONE;
+			_colliderStorage->EditAABBDiaryFlag(i) = AABBChangeDiaryFlag::NONE;
 		}
 
-		if (aabbStorage->diary[i] & AABBChangeDiaryFlag::SHAPE)
+		if (_colliderStorage->GetAABBDiaryFlag(i) & AABBChangeDiaryFlag::SHAPE)
 		{
 
 		}

@@ -17,6 +17,32 @@ class ColliderStorage
     // ボックスコライダー
     MD_OWNED_STORAGE_READ_ONLY_ACCESSORS(ColliderID, ColliderID, BoxColliderID, boxStorage, ID);
     MD_OWNED_STORAGE_READ_WRITE_ACCESSORS(ColliderID, Vector3, BoxColliderScale, boxStorage, Scale);
+    // AABB(特別処理)
+    // AABB取得関数
+    const AABBBroadPhaseCollider& GetAABBBroadPhaseCollider(uint32_t _index)
+    {
+        return aabbStorage->GetAABB(_index);
+    }
+    // Diary取得関数
+    AABBDiaryFlag GetAABBDiaryFlag(uint32_t _index)
+    {
+        return aabbStorage->GetDiary(_index);
+    }
+    // AABB参照返し関数
+    AABBBroadPhaseCollider& EditAABBBroadPhaseCollider(uint32_t _index)
+    {
+        return aabbStorage->EditAABB(_index);
+    }
+    // Diary参照返し関数
+    AABBDiaryFlag& EditAABBDiaryFlag(uint32_t _index)
+    {
+        return aabbStorage->EditDiary(_index);
+    }
+    // AABBの数
+    uint32_t AABBCount()
+    {
+        return aabbStorage->Count();
+    }
 public:
     // コンストラクタ
     ColliderStorage();
@@ -44,19 +70,14 @@ public:
 
     // TransformIDから対応したCollider取得
     std::vector<ColliderID>& GetColliderIDFromTransformID(PhysicsTransformID _id);
-public:
-
-
-    // AABBストレージ
-    std::unique_ptr<AABBBroadPhaseColliderStorage> aabbStorage;
-
-
 private:
     ColliderID GenerateColliderID(ColliderType _type, uint32_t _denseIndex, uint32_t _aabbIndex, EntityID _ownerEntity, PhysicsTransformID _transformID);
 private:
     std::vector<ColliderSlot> slots;
     std::vector<size_t> freeSlots;
 
+    // AABBストレージ
+    std::unique_ptr<AABBBroadPhaseColliderStorage> aabbStorage;
     // 球Storage
     std::unique_ptr<SphereColliderStorage> sphereStorage;
     // ボックスStorage

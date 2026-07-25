@@ -21,8 +21,7 @@ void CollisionSystem::FixedUpdate(PhysicsTransformStorage* _transformStorage, Co
 
 void CollisionSystem::BroadPhase(PhysicsTransformStorage* _transformStorage, ColliderStorage* _colliderStorage)
 {
-	AABBBroadPhaseColliderStorage* aabbStorage{ _colliderStorage->aabbStorage.get()};
-	size_t count = aabbStorage->aabb.size();
+	size_t count{ _colliderStorage->AABBCount() };
 
 	colliderProjectionXValues.reserve(count * 2);
 	colliderProjectionYValues.reserve(count * 2);
@@ -31,15 +30,18 @@ void CollisionSystem::BroadPhase(PhysicsTransformStorage* _transformStorage, Col
 	// すべてのコライダーのAABBの各軸の射影を保存する。
 	for (int i{ 0 }; i < count; i++)
 	{
-		uint32_t transformIndex{ _transformStorage->GetDenseIndex(_colliderStorage->aabbStorage->aabb[i].transformID) };
+		uint32_t transformIndex{ _transformStorage->GetDenseIndex(_colliderStorage->GetAABBBroadPhaseCollider(i).transformID)};
 
 		ColliderProjectionData data;
 
-		data.min = _colliderStorage->aabbStorage->aabb[i].min + _transformStorage->GetPosition(transformIndex);
-		data.max = _colliderStorage->aabbStorage->aabb[i].max + _transformStorage->GetPosition(transformIndex);
+		data.min = _colliderStorage->GetAABBBroadPhaseCollider(i).min + _transformStorage->GetPosition(transformIndex);
+		data.max = _colliderStorage->GetAABBBroadPhaseCollider(i).max + _transformStorage->GetPosition(transformIndex);
 
-		// コライダーハンドルのindex
-		size_t colliderIndex{ aabbStorage->aabb[i].colliderID.GetIndex()};
+		// AABBと紐づいたコライダーのID
+		ColliderID colliderID{ _colliderStorage->GetAABBBroadPhaseCollider(i).colliderID };
+
+		// コライダーIDのindex
+		size_t colliderIndex{ colliderID.GetIndex()};
 
 		if (projectionDatas.size() > colliderIndex)
 		{
@@ -56,19 +58,19 @@ void CollisionSystem::BroadPhase(PhysicsTransformStorage* _transformStorage, Col
 		{
 			// 最小値と最大値をそれぞれ追加する。(ColliderProjectionは値/エンティティID/最大値フラグ)
 			data.endpointIndex[ProjectionAxisType::MIN_X] = colliderProjectionXValues.size();
-			colliderProjectionXValues.push_back(ColliderProjection(data.min.x, aabbStorage->aabb[i].colliderID, false, ProjectionAxisType::MIN_X));
+			colliderProjectionXValues.push_back(ColliderProjection(data.min.x, colliderID, false, ProjectionAxisType::MIN_X));
 			data.endpointIndex[ProjectionAxisType::MAX_X] = colliderProjectionXValues.size();
-			colliderProjectionXValues.push_back(ColliderProjection(data.max.x, aabbStorage->aabb[i].colliderID, true, ProjectionAxisType::MAX_X));
+			colliderProjectionXValues.push_back(ColliderProjection(data.max.x, colliderID, true, ProjectionAxisType::MAX_X));
 
 			data.endpointIndex[ProjectionAxisType::MIN_Y] = colliderProjectionYValues.size();
-			colliderProjectionYValues.push_back(ColliderProjection(data.min.y, aabbStorage->aabb[i].colliderID, false, ProjectionAxisType::MIN_Y));
+			colliderProjectionYValues.push_back(ColliderProjection(data.min.y, colliderID, false, ProjectionAxisType::MIN_Y));
 			data.endpointIndex[ProjectionAxisType::MAX_Y] = colliderProjectionYValues.size();
-			colliderProjectionYValues.push_back(ColliderProjection(data.max.y, aabbStorage->aabb[i].colliderID, true, ProjectionAxisType::MAX_Y));
+			colliderProjectionYValues.push_back(ColliderProjection(data.max.y, colliderID, true, ProjectionAxisType::MAX_Y));
 
 			data.endpointIndex[ProjectionAxisType::MIN_Z] = colliderProjectionZValues.size();
-			colliderProjectionZValues.push_back(ColliderProjection(data.min.z, aabbStorage->aabb[i].colliderID, false, ProjectionAxisType::MIN_Z));
+			colliderProjectionZValues.push_back(ColliderProjection(data.min.z, colliderID, false, ProjectionAxisType::MIN_Z));
 			data.endpointIndex[ProjectionAxisType::MAX_Z] = colliderProjectionZValues.size();
-			colliderProjectionZValues.push_back(ColliderProjection(data.max.z, aabbStorage->aabb[i].colliderID, true, ProjectionAxisType::MAX_Z));
+			colliderProjectionZValues.push_back(ColliderProjection(data.max.z, colliderID, true, ProjectionAxisType::MAX_Z));
 
 			projectionDatas.push_back(data);
 		}

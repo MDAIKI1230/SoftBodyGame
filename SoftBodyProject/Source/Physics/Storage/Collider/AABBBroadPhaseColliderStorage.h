@@ -3,10 +3,42 @@
 #include <vector>
 #include "AABBBroadPhaseCollider.h"
 
-// EntityをColliderIDとする
 class AABBBroadPhaseColliderStorage
 {
 public:
+    // AABB取得関数
+    const AABBBroadPhaseCollider& GetAABB(uint32_t _index)
+    {
+        return aabb[_index];
+    }
+    // Diary取得関数
+    AABBDiaryFlag GetDiary(uint32_t _index)
+    {
+        return diary[_index];
+    }
+    // AABB参照返し関数
+    AABBBroadPhaseCollider& EditAABB(uint32_t _index)
+    {
+        return aabb[_index];
+    }
+    // Diary参照返し関数
+    AABBDiaryFlag& EditDiary(uint32_t _index)
+    {
+        return diary[_index];
+    }
+    // AABBの数
+    uint32_t Count()
+    {
+        return static_cast<uint32_t>(aabb.size());
+    }
+    // 追加関数
+    void Add(const AABBBroadPhaseCollider& _aabb, AABBDiaryFlag _diary)
+    {
+        aabb.push_back(_aabb);
+        diary.push_back(_diary);
+    }
+
+    // 除外関数
 	ColliderID Remove(uint32_t _index)
 	{
         if (aabb.empty())
@@ -28,7 +60,7 @@ public:
 
         return movedId;
 	}
-public:
+private:
 	std::vector<AABBBroadPhaseCollider> aabb;
 	std::vector<AABBDiaryFlag> diary;
 };

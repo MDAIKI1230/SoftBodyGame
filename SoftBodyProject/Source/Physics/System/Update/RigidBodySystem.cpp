@@ -118,7 +118,7 @@ void RigidBodySystem::End(BodyStorage* _bodyStorage, ColliderStorage* _colliderS
 			auto& colliders{ _colliderStorage->GetColliderIDFromTransformID(_bodyStorage->GetTransformID(bodyID)) };
 			for (auto& colliderID : colliders)
 			{
-				_colliderStorage->aabbStorage->diary[_colliderStorage->GetAABBIndex(colliderID)] |= AABBChangeDiaryFlag::TRANSFORM;
+				_colliderStorage->EditAABBDiaryFlag(_colliderStorage->GetAABBIndex(colliderID)) |= AABBChangeDiaryFlag::TRANSFORM;
 			}
 		}
 	}
