@@ -156,7 +156,7 @@ void DebugScene::Initialize()
 #ifdef USE_RAYLIB
 	RendererComponent renderer{ ServiceLocator::GetRenderer()->LoadModel(std::string{"Res/Model/Player.glb"}) };
 #else
-	RendererComponent renderer{ ServiceLocator::GetRenderer()->LoadModel(std::string{"Res/Model/M_001_player_095_01.mv1"}) };
+	RendererComponent renderer{ ServiceLocator::GetRenderer()->LoadModel(std::string{"Res/Model/Player.mv1"}) };
 #endif // PLAY_RAYLIB
 
 	
