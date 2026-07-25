@@ -357,7 +357,6 @@
     <ClInclude Include="Source\Physics\Storage\Body\Soft\ClothStorage.h" />
     <ClInclude Include="Source\Physics\Storage\Body\Soft\RopeStorage.h" />
     <ClInclude Include="Source\Physics\Storage\Body\Soft\SoftBodyStorage.h" />
-    <ClInclude Include="Source\Physics\Storage\Buffer\CollisionContactBuffer.h" />
     <ClInclude Include="Source\Physics\Storage\Buffer\CollisionManifoldBuffer.h" />
     <ClInclude Include="Source\Physics\Storage\Buffer\PhysicsCommandBuffer.h" />
     <ClInclude Include="Source\Physics\Storage\Buffer\ConstraintBuffer.h" />
