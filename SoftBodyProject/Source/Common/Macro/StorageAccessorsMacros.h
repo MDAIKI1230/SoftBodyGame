@@ -264,7 +264,8 @@ public:\
 	template<class... Args>\
 	void Emplace##_tag(Args&&... _args)\
 	{\
-		MD::Storage::Detail::Emplace(_member,　std::forward<Args>(_args)...);\
+		MD::Storage::Detail::Emplace(_member, std::forward<Args>(_args)...);\
+	}\
 	/* 追加 */\
 	void Add##_tag(const Type& _value)\
 	{\
