@@ -1,6 +1,6 @@
 ﻿#include "ServiceLocator.h"
 
-#include "TransformComponent.h"
+#include "TransformComponentStorage.h"
 #include "RendererComponentStorage.h"
 
 #include "ModelRenderingSystem.h"
@@ -8,27 +8,26 @@
 void ModelRenderingSystem::Draw(WorldStorage* _worldStorage, EventManager* _eventManager)
 {
 	// レンダラーコンポーネントストレージ
-	SparseSetStorageBase<RendererComponent>* rendererStorage{ _worldStorage->GetStorage<RendererComponent>() };
+	RendererComponentStorage* rendererStorage{ static_cast<RendererComponentStorage*>(_worldStorage->GetStorage<RendererComponent>()) };
 	// Transformストレージ
-	SparseSetStorageBase<TransformComponent>* transformStorage{ _worldStorage->GetStorage<TransformComponent>() };
-	// エンティティ
-	std::vector<EntityID>* entities{ rendererStorage->GetEntities() };
+	TransformComponentStorage* transformStorage{ static_cast<TransformComponentStorage*>(_worldStorage->GetStorage<TransformComponent>()) };
 	// トランスフォーム
-	TransformComponent trans{};
+	TransformComponent {};
 	// 全コンポーネントを描画
-	for (EntityID id : *entities)
+	for (EntityID id : rendererStorage->GetEntities())
 	{
+		auto trans{ transformStorage->TryGet(id) };
 		// 取得&チェック
-		if (!transformStorage->TryGet(id, trans))
+		if (trans == nullptr)
 		{
 			continue;
 		}
 
 		// レンダー
-		RendererComponent* renderer{ rendererStorage->Get(id) };
+		auto renderer{ rendererStorage->Get(id) };
 		// 行列をセット
-		ServiceLocator::GetRenderer()->ModelSetMatrix(renderer->GetHandle(), trans.GetWorldMatrix());
+		ServiceLocator::GetRenderer()->ModelSetMatrix(renderer.GetHandle(), trans->GetWorldMatrix());
 		// 描画
-		ServiceLocator::GetRenderer()->DrawModel(renderer->GetHandle());
+		ServiceLocator::GetRenderer()->DrawModel(renderer.GetHandle());
 	}
 }

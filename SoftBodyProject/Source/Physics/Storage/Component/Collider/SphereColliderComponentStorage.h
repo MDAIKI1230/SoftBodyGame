@@ -1,10 +1,11 @@
 ﻿#pragma once
 
-#include "SparseSetStorageBase.h"
+#include "UniqueComponentStorageBase.h"
 
 #include "SphereColliderComponent.h"
 
-class SphereColliderComponentStorage : public SparseSetStorageBase<SphereColliderComponent>
+class SphereColliderComponentStorage : public UniqueComponentStorageBase<SphereColliderComponent>
 {
 
 };
+

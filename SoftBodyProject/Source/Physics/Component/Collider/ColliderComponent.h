@@ -18,7 +18,7 @@ public:
 
 #ifdef _DEBUG
 	// 色取得
-	const Color& GetColor() { return color; }
+	const Color& GetColor() const { return color; }
 	// 色セット
 	void SetColor(const Color& _color) { color = _color; }
 #endif // DEBUG

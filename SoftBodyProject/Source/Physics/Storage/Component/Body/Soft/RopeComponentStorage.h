@@ -1,11 +1,11 @@
 ﻿#pragma once
 
-#include "SparseSetStorageBase.h"
+#include "UniqueComponentStorageBase.h"
 
 #include "RopeComponent.h"
 
 
-class RopeComponentStorage:public SparseSetStorageBase<RopeComponent>
+class RopeComponentStorage:public UniqueComponentStorageBase<RopeComponent>
 {
 private:
 	bool CanAdd(EntityID _entity) override;

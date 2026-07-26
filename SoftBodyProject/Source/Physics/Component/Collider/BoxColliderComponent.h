@@ -22,14 +22,14 @@ public:
 	BoxColliderComponent(EntityID _entity, float _size);
 
 	// X方向の長さ取得
-	float GetWidth();
+	float GetWidth() const;
 	// X方向の長さ変更
 	void SetWidth(float _width);
 	// Y方向の長さ取得
-	float GetHeight();
+	float GetHeight() const;
 	void SetHeight(float _heibht);
 	// Z方向の長さ取得
-	float GetDepth();
+	float GetDepth() const;
 	// Z方向の長さ変更
 	void SetDepth(float _depth);
 private:

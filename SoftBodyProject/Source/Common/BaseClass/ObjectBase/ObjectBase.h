@@ -38,7 +38,7 @@ public:
 	template<typename T,typename ... Args>
 	T* AddComponent(Args&&... args)
 	{
-		SparseSetStorageBase<T>* storage{ world->GetStorage<T>() };
+		ComponentStorageBase<T>* storage{ world->GetStorage<T>() };
 
 		if(storage != nullptr)
 		{
@@ -52,11 +52,11 @@ public:
 	template<typename T>
 	T* GetComponent()
 	{
-		SparseSetStorageBase<T>* storage{ world->GetStorage<T>() };
+		ComponentStorageBase<T>* storage{ world->GetStorage<T>() };
 
 		if (storage != nullptr)
 		{
-			return storage->Get(entity);
+			return storage->TryEdit(entity);
 		}
 
 		return nullptr;

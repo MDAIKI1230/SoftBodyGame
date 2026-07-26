@@ -2,8 +2,10 @@
 
 #include <typeindex>
 #include <memory>
+#include <unordered_map>
 
-#include "SparseSetStorageBase.h"
+#include "ComponentStorageBase.h"
+#include "UniqueComponentStorageBase.h"
 
 class WorldStorage
 {
@@ -14,7 +16,7 @@ public:
 	/// <typeparam name="T">取得したいストレージ</typeparam>
 	/// <returns></returns>
 	template<typename T>
-	SparseSetStorageBase<T>* GetStorage()
+	typename ComponentStorageBase<T>* GetStorage()
 	{
 		auto it{ storageMap.find(std::type_index(typeid(T))) };
 
@@ -23,7 +25,7 @@ public:
 			return nullptr;
 		}
 
-		return static_cast<SparseSetStorageBase<T>*>(storages[it->second].get());
+		return static_cast<ComponentStorageBase<T>*>(storages[it->second].get());
 	}
 
 	/// <summary>
@@ -31,7 +33,7 @@ public:
 	/// </summary>
 	/// <param name="storage">入れたいストレージ</param>
 	template<typename T>
-	void AddStorage(std::unique_ptr<SparseSetStorageBase<T>>&& _storage)
+	void AddStorage(std::unique_ptr<StorageBase>&& _storage)
 	{
 		// コンテナに追加
 		storages.push_back(std::move(_storage));

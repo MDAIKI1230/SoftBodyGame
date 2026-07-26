@@ -2,11 +2,11 @@
 
 #include "MDMath.h"
 
-#include "SparseSetStorageBase.h"
+#include "UniqueComponentStorageBase.h"
 
 #include "RigidBodyComponent.h"
 
-class RigidBodyComponentStorage :public SparseSetStorageBase<RigidBodyComponent>
+class RigidBodyComponentStorage :public UniqueComponentStorageBase<RigidBodyComponent>
 {
 private:
 	bool CanAdd(EntityID _entity) override;

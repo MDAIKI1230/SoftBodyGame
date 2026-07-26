@@ -227,6 +227,12 @@
     <Filter Include="ソース ファイル\Common\Macro">
       <UniqueIdentifier>{3aa8d424-0d44-4460-9723-b3d92630848a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Common\ECS\SparseSet">
+      <UniqueIdentifier>{90929fab-8059-4565-8cff-609035e3d0ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Common\ECS\SparseSet\Table">
+      <UniqueIdentifier>{f7f1a8ef-127c-4a97-a8f7-39c162b81a8d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Objects\Camera.h">
@@ -271,10 +277,7 @@
     <ClInclude Include="Source\Common\BaseClass\StorageBase.h">
       <Filter>ソース ファイル\Common\BaseClass</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Common\ECS\SparseSet.h">
-      <Filter>ソース ファイル\Common\ECS</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Common\ECS\SparseSetStorageBase.h">
+    <ClInclude Include="Source\Common\ECS\UniqueComponentStorageBase.h">
       <Filter>ソース ファイル\Common\ECS</Filter>
     </ClInclude>
     <ClInclude Include="Source\Common\BaseClass\RenderingSystem.h">
@@ -742,7 +745,19 @@
     <ClInclude Include="Source\Common\Struct\GenerationalID.h">
       <Filter>ソース ファイル\Common\Struct</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Common\ECS\SparseIndex.h">
+    <ClInclude Include="Source\Common\ECS\SparseSet\SparseIndex.h">
+      <Filter>ソース ファイル\Common\ECS\SparseSet</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Common\ECS\SparseSet\SparseSet.h">
+      <Filter>ソース ファイル\Common\ECS\SparseSet</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Common\ECS\SparseSet\Table\LinearTable.h">
+      <Filter>ソース ファイル\Common\ECS\SparseSet\Table</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Common\ECS\SparseSet\Table\SparseSetTableInterface.h">
+      <Filter>ソース ファイル\Common\ECS\SparseSet\Table</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Common\ECS\ComponentStorageBase.h">
       <Filter>ソース ファイル\Common\ECS</Filter>
     </ClInclude>
   </ItemGroup>
@@ -971,6 +986,9 @@
     </ClCompile>
     <ClCompile Include="Source\Physics\Component\Constraint\EndPointConstraintComponentBase.cpp">
       <Filter>ソース ファイル\Physics\Component\Constraint</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Common\ECS\SparseSet\Table\LinearTable.cpp">
+      <Filter>ソース ファイル\Common\ECS\SparseSet\Table</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

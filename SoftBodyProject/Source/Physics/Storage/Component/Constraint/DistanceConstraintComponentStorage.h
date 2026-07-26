@@ -1,10 +1,11 @@
 ﻿#pragma once
 
-#include "SparseSetStorageBase.h"
+#include "UniqueComponentStorageBase.h"
 
 #include "DistanceConstraintComponent.h"
 
-class DistanceConstraintComponentStorage :public SparseSetStorageBase<DistanceConstraintComponent>
+class DistanceConstraintComponentStorage :public UniqueComponentStorageBase<DistanceConstraintComponent>
 {
 
 };
+

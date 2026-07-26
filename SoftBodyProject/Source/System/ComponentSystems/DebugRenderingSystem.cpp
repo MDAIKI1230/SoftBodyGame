@@ -17,43 +17,39 @@ void DebugRenderingSystem::Draw(WorldStorage* _worldStorage, EventManager* _even
 
 void DebugRenderingSystem::DrawSphera(SphereColliderComponentStorage* _sphereStorage, TransformComponentStorage* _transformStorage)
 {
-	// 参照用
-	TransformComponent trans{};
-
 	// すべての球を描画していく
-	for (EntityID entity : *_sphereStorage->GetEntities())
+	for (EntityID entity : _sphereStorage->GetEntities())
 	{
+		auto trans{ _transformStorage->TryGet(entity) };
 		// Transformがあるかチェックないなら飛ばす
-		if (!_transformStorage->TryGet(entity, trans))
+		if (trans == nullptr)
 		{
 			continue;
 		}
 
-		SphereColliderComponent* col{ _sphereStorage->Get(entity) };
+		auto col{ _sphereStorage->Get(entity) };
 
-		ServiceLocator::GetRenderer()->DrawSphereMesh(trans.GetPosition(), col->GetRadius(), col->GetColor());
+		ServiceLocator::GetRenderer()->DrawSphereMesh(trans->GetPosition(), col.GetRadius(), col.GetColor());
 	}
 }
 
 void DebugRenderingSystem::DrawBox(BoxColliderComponentStorage* _boxStorage, TransformComponentStorage* _transformStorage)
 {
-	// 参照用
-	TransformComponent trans{};
-
 	// すべての球を描画していく
-	for (EntityID entity : *_boxStorage->GetEntities())
+	for (EntityID entity : _boxStorage->GetEntities())
 	{
+		auto trans{ _transformStorage->TryGet(entity) };
 		// Transformがあるかチェックないなら飛ばす
-		if (!_transformStorage->TryGet(entity, trans))
+		if (trans == nullptr)
 		{
 			continue;
 		}
 
-		BoxColliderComponent* box{ _boxStorage->Get(entity) };
+		const BoxColliderComponent& box{ _boxStorage->Get(entity) };
 
-		Vector3 scale{ box->GetWidth(),box->GetHeight(),box->GetDepth() };
+		Vector3 scale{ box.GetWidth(),box.GetHeight(),box.GetDepth() };
 
-		ServiceLocator::GetRenderer()->DrawBox(trans.GetWorldMatrix(), scale, box->GetColor());
+		ServiceLocator::GetRenderer()->DrawBox(trans->GetWorldMatrix(), scale, box.GetColor());
 	}
 }
 

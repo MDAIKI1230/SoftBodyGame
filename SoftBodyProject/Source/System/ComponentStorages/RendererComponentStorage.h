@@ -1,10 +1,10 @@
 ﻿#pragma once
 
-#include "SparseSetStorageBase.h"
+#include "UniqueComponentStorageBase.h"
 
 #include "RendererComponent.h"
 
-class RendererComponentStorage:public SparseSetStorageBase<RendererComponent>
+class RendererComponentStorage:public UniqueComponentStorageBase<RendererComponent>
 {
 
 };
