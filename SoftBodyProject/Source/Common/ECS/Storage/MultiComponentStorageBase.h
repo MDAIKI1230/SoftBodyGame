@@ -98,6 +98,49 @@ public:
 
 		return &dense[index];
 	}
+	// 取得できるかトライ
+	virtual ComponentView<T> TryEdits(EntityID _entity)override
+	{
+		// Entityが一個もComponentを持っていない
+		if (!idPool.Has(_entity))
+		{
+			// 空のViewを返す
+			return {};
+		}
+
+		using Self =
+			MultiComponentStorageBase<T, TABLE>;
+
+		// Componentの数
+		const std::size_t count{ idPool.GetComponentIDs(_entity).size() };
+
+		// Viewを作ってかえすぜぇ
+		return ComponentView<T>
+		{
+			// 0 ～ count未満の番号を生成
+			std::views::iota( std::size_t{ 0 },count ),
+			// 各番号からComponent参照を取得
+			ComponentViewGetter<T>
+			{
+				this,	// ストレージ
+				_entity,// ID
+				// 条件作成
+				[](void* storage, EntityID entity, std::size_t index) -> T&
+				{
+					Self* self{ static_cast<Self*>(storage) };
+
+					// Entityが持つN番目のComponentID
+					const auto componentID{ self->idPool.GetComponentIDs(entity)[index] };
+
+					// ComponentIDからDenseIndexを取得
+					const uint32_t denseIndex{ self->idPool.GetDenseIndex(componentID) };
+
+					// Component本体の参照を返す
+					return self->dense[denseIndex];
+				}
+			}
+		};
+	}
 	// 持っているか
 	bool Has(EntityID _entity) override
 	{ 

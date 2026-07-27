@@ -1,10 +1,13 @@
 ﻿#pragma once
 
 #include <span>
+#include <ranges>
 
 #include "EntityID.h"
 
 #include "StorageBase.h"
+
+#include "ComponentView.h"
 
 template<class T>
 class ComponentStorageBase : public StorageBase
@@ -73,6 +76,11 @@ public:
 	/// </summary>
 	/// <returns>無理やったらnullptr</returns>
 	virtual T* TryEdit(EntityID _entity) = 0;
+	/// <summary>
+	/// 取得できるかトライ
+	/// </summary>
+	/// <returns>無理やったらnullptr</returns>
+	virtual ComponentView<T> TryEdits(EntityID _entity) = 0;
 	/// <summary>
 	/// 持っているか
 	/// </summary>

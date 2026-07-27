@@ -367,6 +367,7 @@
     <ClInclude Include="Source\Common\ECS\SparseSet\Table\SparseSetTableInterface.h" />
     <ClInclude Include="Source\Common\ECS\Storage\ComponentIDPool.h" />
     <ClInclude Include="Source\Common\ECS\Storage\ComponentStorageBase.h" />
+    <ClInclude Include="Source\Common\ECS\Storage\ComponentView.h" />
     <ClInclude Include="Source\Common\ECS\Storage\MultiComponentStorageBase.h" />
     <ClInclude Include="Source\Common\ECS\Storage\UniqueComponentStorageBase.h" />
     <ClInclude Include="Source\Common\ECS\Storage\WorldStorage.h" />

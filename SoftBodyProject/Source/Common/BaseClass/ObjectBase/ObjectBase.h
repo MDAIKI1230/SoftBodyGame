@@ -62,6 +62,20 @@ public:
 		return nullptr;
 	}
 
+	// 取得
+	template<typename T>
+	ComponentView<T> GetComponents()
+	{
+		ComponentStorageBase<T>* storage{ world->GetStorage<T>() };
+
+		if (storage != nullptr)
+		{
+			return storage->TryEdits(entity);
+		}
+
+		return ComponentView<T>{};
+	}
+
 	// --- ゲッター　---
 	EntityID GetHandle() { return entity; }
 	// 仮想デストラクタ
