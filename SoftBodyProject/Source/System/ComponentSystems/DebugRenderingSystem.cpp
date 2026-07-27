@@ -45,11 +45,12 @@ void DebugRenderingSystem::DrawBox(BoxColliderComponentStorage* _boxStorage, Tra
 			continue;
 		}
 
-		const BoxColliderComponent& box{ _boxStorage->Get(entity) };
+		for (auto& box : _boxStorage->GetAll(entity))
+		{
+			Vector3 scale{ box.GetWidth(),box.GetHeight(),box.GetDepth() };
 
-		Vector3 scale{ box.GetWidth(),box.GetHeight(),box.GetDepth() };
-
-		ServiceLocator::GetRenderer()->DrawBox(trans->GetWorldMatrix(), scale, box.GetColor());
+			ServiceLocator::GetRenderer()->DrawBox(trans->GetWorldMatrix(), scale, box.GetColor());
+		}
 	}
 }
 

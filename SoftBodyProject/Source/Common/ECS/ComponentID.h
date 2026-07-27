@@ -2,10 +2,8 @@
 
 #include "GenerationalID.h"
 
-struct ComponentTag;
+template<class COMPONENT>
+struct ComponentTag {};
 
 template<class COMPONENT>
-struct ComponentID
-{
-	GenerationalID<ComponentTag>;
-};
+using ComponentID = GenerationalID<ComponentTag<COMPONENT>>;

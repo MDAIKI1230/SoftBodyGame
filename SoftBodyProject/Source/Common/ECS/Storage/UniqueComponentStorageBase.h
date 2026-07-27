@@ -65,8 +65,8 @@ protected:
 protected:
 	SparseSet<T, EntityID, TABLE> sparseSet{};
 private:
-	T* AddConstructed(EntityID entity, T&& component) override
+	T* AddConstructed(EntityID _entity, T&& _component) override
 	{
-		return sparseSet.Add(entity, std::move(component));
+		return sparseSet.Add(_entity, std::move(_component));
 	}
 };

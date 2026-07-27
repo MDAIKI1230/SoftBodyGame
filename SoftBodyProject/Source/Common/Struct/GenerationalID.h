@@ -34,6 +34,7 @@ public:
 	bool operator==(const GenerationalID&) const = default;
 public:
 	static constexpr Generation INVALID_GENERATION{ 0 };
+	static constexpr Index INVALID_INDEX{ UINT32_MAX };
 private:
 	Index index{ 0 };
 	Generation generation{ 0 };

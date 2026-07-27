@@ -5,6 +5,7 @@
 #include "TransformComponent.h"
 
 #include "SphereColliderComponent.h"
+#include "BoxColliderComponent.h"
 
 #include "RigidBodyComponent.h"
 

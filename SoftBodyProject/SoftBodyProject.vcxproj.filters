@@ -236,6 +236,9 @@
     <Filter Include="ソース ファイル\Common\ECS\Storage">
       <UniqueIdentifier>{32644aa6-86a4-4e21-95ca-1d7ef48aabbd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Common\ECS\Event">
+      <UniqueIdentifier>{1faeebf5-a210-4ad0-a728-6138db94a23b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Objects\Camera.h">
@@ -376,17 +379,8 @@
     <ClInclude Include="Source\Common\ECS\SystemManager.h">
       <Filter>ソース ファイル\Common\ECS</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Common\ECS\EventQueue.h">
-      <Filter>ソース ファイル\Common\ECS</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Common\Events\Physics\PhysicsEvent.h">
       <Filter>ソース ファイル\Common\Events\Physics</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Common\ECS\EventManager.h">
-      <Filter>ソース ファイル\Common\ECS</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Common\ECS\EventSystem.h">
-      <Filter>ソース ファイル\Common\ECS</Filter>
     </ClInclude>
     <ClInclude Include="Source\Physics\PhysicsWorld.h">
       <Filter>ソース ファイル\Physics</Filter>
@@ -763,6 +757,24 @@
     <ClInclude Include="Source\Common\ECS\Storage\WorldStorage.h">
       <Filter>ソース ファイル\Common\ECS\Storage</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Common\ECS\Event\EventManager.h">
+      <Filter>ソース ファイル\Common\ECS\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Common\ECS\Event\EventQueue.h">
+      <Filter>ソース ファイル\Common\ECS\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Common\ECS\Event\EventSystem.h">
+      <Filter>ソース ファイル\Common\ECS\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Common\ECS\ComponentID.h">
+      <Filter>ソース ファイル\Common\ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Common\ECS\Storage\MultiComponentStorageBase.h">
+      <Filter>ソース ファイル\Common\ECS\Storage</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Common\ECS\Storage\ComponentIDPool.h">
+      <Filter>ソース ファイル\Common\ECS\Storage</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\System\Scenes\DebugScene.cpp">
@@ -838,9 +850,6 @@
       <Filter>ソース ファイル\Physics\System</Filter>
     </ClCompile>
     <ClCompile Include="Source\Common\ECS\SystemManager.cpp">
-      <Filter>ソース ファイル\Common\ECS</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Common\ECS\EventSystem.cpp">
       <Filter>ソース ファイル\Common\ECS</Filter>
     </ClCompile>
     <ClCompile Include="Source\Physics\PhysicsWorld.cpp">
@@ -992,6 +1001,9 @@
     </ClCompile>
     <ClCompile Include="Source\Common\ECS\SparseSet\Table\LinearTable.cpp">
       <Filter>ソース ファイル\Common\ECS\SparseSet\Table</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Common\ECS\Event\EventSystem.cpp">
+      <Filter>ソース ファイル\Common\ECS\Event</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -89,17 +89,17 @@ public:
 	virtual ~ComponentStorageBase() = default;
 protected:
 	// 各種追加処理
-	virtual T* AddConstructed(EntityID entity,T&& component) = 0;
+	virtual T* AddConstructed(EntityID _entity,T&& _component) = 0;
 	// 追加後に即座に呼ばれる関数(追加後必要な処理がるのならここに)
 	virtual void OnAdded() {};
 	// 追加できるか関数(重複が許されない関数をこれでカットする)
 	virtual bool CanAdd(EntityID _entity) { return true; }
 private:
 	// 追加処理
-	T* AddPrepared(EntityID entity, T&& component)
+	T* AddPrepared(EntityID _entity, T&& _component)
 	{
 		// 各種追加処理を呼ぶ
-		T* result{ AddConstructed(entity, std::move(component)) };
+		T* result{ AddConstructed(_entity, std::move(_component)) };
 
 		if (result)
 		{

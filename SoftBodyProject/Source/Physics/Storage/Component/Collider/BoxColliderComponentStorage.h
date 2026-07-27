@@ -1,10 +1,10 @@
 ﻿#pragma once
 
-#include "UniqueComponentStorageBase.h"
+#include "MultiComponentStorageBase.h"
 
 #include "BoxColliderComponent.h"
 
-class BoxColliderComponentStorage:public UniqueComponentStorageBase<BoxColliderComponent>
+class BoxColliderComponentStorage:public MultiComponentStorageBase<BoxColliderComponent>
 {
 
 };
