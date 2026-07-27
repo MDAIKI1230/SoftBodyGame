@@ -57,8 +57,6 @@ void ConstraintStorage::Destory(ConstraintID _id)
 		break;
 	case ConstraintType::DISTANCE:
 		movedId = distanceConstraintStorage->Remove(GetDenseIndex(_id));
-	default:
-		break;
 	}
 
 	// 移動した奴の対応付けを戻す

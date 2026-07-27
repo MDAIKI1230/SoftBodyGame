@@ -26,5 +26,5 @@ public:
 	// 拘束のメンバー
 	std::vector<EndPoint> endPoints;
 	// 距離
-	float distance;
+	float distance{ 0.0f };
 };
