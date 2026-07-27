@@ -27,9 +27,10 @@ void DebugRenderingSystem::DrawSphera(SphereColliderComponentStorage* _sphereSto
 			continue;
 		}
 
-		auto col{ _sphereStorage->Get(entity) };
-
-		ServiceLocator::GetRenderer()->DrawSphereMesh(trans->GetPosition(), col.GetRadius(), col.GetColor());
+		for (auto& sphere : _sphereStorage->GetAll(entity))
+		{
+			ServiceLocator::GetRenderer()->DrawSphereMesh(trans->GetPosition(), sphere.GetRadius(), sphere.GetColor());
+		}
 	}
 }
 

@@ -20,7 +20,7 @@ public:
 	// 半径セット
 	void SetRadius(float _r);
 	// 半径取得
-	float GetRadius();
+	float GetRadius() const;
 private:
 	// 半径
 	float r{ 0 };
