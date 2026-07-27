@@ -781,6 +781,9 @@
     <ClInclude Include="Source\Physics\Storage\PhysicsStorageBase.h">
       <Filter>ソース ファイル\Physics\Storage</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Physics\Storage\Buffer\PhysicsBufferBase.h">
+      <Filter>ソース ファイル\Physics\Storage\Buffer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\System\Scenes\DebugScene.cpp">

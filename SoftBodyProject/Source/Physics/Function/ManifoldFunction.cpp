@@ -94,7 +94,7 @@ void ManifoldFunction::AddFaceAManifold(
         return;
     }
 
-    _manifoldBuffer->manifolds.push_back(manifold);
+    _manifoldBuffer->Add(manifold);
 }
 void ManifoldFunction::AddFaceBManifold(
     const Vector3& _positionA, const Quaternion& _rotationA, const Vector3* _candidateAxisA, const float* _halfsA,
@@ -147,7 +147,7 @@ void ManifoldFunction::AddFaceBManifold(
         return;
     }
 
-    _manifoldBuffer->manifolds.push_back(manifold);
+    _manifoldBuffer->Add(manifold);
 }
 
 void ManifoldFunction::AddEdgeManifold(
@@ -273,7 +273,7 @@ void ManifoldFunction::AddEdgeManifold(
     }
 
     // バッファに追加
-    _manifoldBuffer->manifolds.push_back(manifold);
+    _manifoldBuffer->Add(manifold);
 }
 
 

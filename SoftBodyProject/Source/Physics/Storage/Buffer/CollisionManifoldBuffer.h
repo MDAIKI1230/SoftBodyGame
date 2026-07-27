@@ -1,16 +1,10 @@
 ﻿#pragma once
 
-#include <vector>
+#include "PhysicsBufferBase.h"
 
 #include "Manifold.h"
 
-class CollisionManifoldBuffer
+class CollisionManifoldBuffer :public PhysicsBufferBase<Manifold>
 {
-public:
-	void Clear()
-	{
-		manifolds.clear();
-	}
-public:
-	std::vector<Manifold> manifolds;
+
 };

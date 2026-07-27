@@ -1,16 +1,10 @@
 ﻿#pragma once
 
-#include <vector>
+#include "PhysicsBufferBase.h"
 
 #include "Constraint.h"
 
-class ConstraintBuffer
+class ConstraintBuffer:public PhysicsBufferBase<Constraint>
 {
-public:
-	void Clear()
-	{
-		constraints.clear();
-	}
-public:
-	std::vector<Constraint> constraints;
+
 };

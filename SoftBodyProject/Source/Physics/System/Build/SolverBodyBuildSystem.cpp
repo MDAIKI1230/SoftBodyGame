@@ -3,22 +3,19 @@
 void SolverBodyBuildSystem::Build(PhysicsTransformStorage* _transformStorage, BodyStorage* _bodyStorage, SolverBodyBuffer* _solverBodyBuffer)
 {
 	// メモリの確保
-	_solverBodyBuffer->solverBodies.reserve(_transformStorage->CountID());
-	_solverBodyBuffer->bodyMap.reserve(_transformStorage->CountID());
+	_solverBodyBuffer->Reserve(_transformStorage->CountID());
 
 	// すべてのソルバ用Bodyの作成をする
 	for (auto& id : _transformStorage->GetIDRange())
 	{
-		uint32_t result;
-
 		BodyID bodyID;
 		// Bodyがあるかの確認
 		if (_bodyStorage->TryGetRigidBodyID(id, bodyID))
 		{
 			// MAPを確認してあったらそれを使う
-			if (_solverBodyBuffer->bodyMap.contains(id))
+			if (_solverBodyBuffer->Has(id))
 			{
-				result = _solverBodyBuffer->bodyMap[id];
+				_solverBodyBuffer->GetIndex(id);
 			}
 			else
 			{
@@ -26,27 +23,24 @@ void SolverBodyBuildSystem::Build(PhysicsTransformStorage* _transformStorage, Bo
 				if (_bodyStorage->IsAlive(bodyID))
 				{
 					// Bodyある版の作成
-					result = CreateSolverBody(_transformStorage, _bodyStorage, id, bodyID, _solverBodyBuffer);
-					_solverBodyBuffer->bodyMap[id] = result;
+					CreateSolverBody(_transformStorage, _bodyStorage, id, bodyID, _solverBodyBuffer);
 				}
 				else
 				{
 					// Bodyない版の作成
-					result = CreateSolverBody(_transformStorage, id, _solverBodyBuffer);
-					_solverBodyBuffer->bodyMap[id] = result;
+					CreateSolverBody(_transformStorage, id, _solverBodyBuffer);
 				}
 			}
 		}
 		else
 		{
 			// Bodyない版の作成
-			result = CreateSolverBody(_transformStorage, id, _solverBodyBuffer);
-			_solverBodyBuffer->bodyMap[id] = result;
+			CreateSolverBody(_transformStorage, id, _solverBodyBuffer);
 		}
 	}
 }
 
-uint32_t SolverBodyBuildSystem::CreateSolverBody(PhysicsTransformStorage* _transformStorage, BodyStorage* _bodyStorage, PhysicsTransformID _transformID, BodyID _bodyID, SolverBodyBuffer* _solverBodyBuffer)
+void SolverBodyBuildSystem::CreateSolverBody(PhysicsTransformStorage* _transformStorage, BodyStorage* _bodyStorage, PhysicsTransformID _transformID, BodyID _bodyID, SolverBodyBuffer* _solverBodyBuffer)
 {
 	SolverBody body;
 
@@ -63,13 +57,11 @@ uint32_t SolverBodyBuildSystem::CreateSolverBody(PhysicsTransformStorage* _trans
 	body.inverseMass = _bodyStorage->GetRigidBodyInverseMass(_bodyID);
 	body.localInverseInertiaTensor = _bodyStorage->GetRigidBodyLocalInverseInertiaTensor(_bodyID);
 
-	// インデックス取ってから追加
-	uint32_t result{ static_cast<uint32_t>(_solverBodyBuffer->solverBodies.size()) };
-	_solverBodyBuffer->solverBodies.push_back(body);
-	return result;
+	// 追加
+	_solverBodyBuffer->Add(_transformID, body);
 }
 
-uint32_t SolverBodyBuildSystem::CreateSolverBody(PhysicsTransformStorage* _transformStorage, PhysicsTransformID _transformID, SolverBodyBuffer* _solverBodyBuffer)
+void SolverBodyBuildSystem::CreateSolverBody(PhysicsTransformStorage* _transformStorage, PhysicsTransformID _transformID, SolverBodyBuffer* _solverBodyBuffer)
 {
 	SolverBody body;
 
@@ -85,8 +77,6 @@ uint32_t SolverBodyBuildSystem::CreateSolverBody(PhysicsTransformStorage* _trans
 	body.inverseMass = 0;
 	body.localInverseInertiaTensor = Matrix4x4::Zero();
 
-	// インデックス取ってから追加
-	uint32_t result{ static_cast<uint32_t>(_solverBodyBuffer->solverBodies.size()) };
-	_solverBodyBuffer->solverBodies.push_back(body);
-	return result;
+	// 追加
+	_solverBodyBuffer->Add(_transformID, body);
 }

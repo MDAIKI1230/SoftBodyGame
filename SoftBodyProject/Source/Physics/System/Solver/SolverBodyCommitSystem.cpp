@@ -3,7 +3,7 @@
 void SolverBodyCommitSystem::Commit(PhysicsTransformStorage* _transformStorage, BodyStorage* _bodyStorage, SolverBodyBuffer* _solverBodyBuffer)
 {
 	// 結果を反映していく
-	for (auto& result : _solverBodyBuffer->solverBodies)
+	for (auto& result : _solverBodyBuffer->GetAll())
 	{
 		// 質量が0ならBodyはないので書かない
 		if (result.inverseMass > 0)

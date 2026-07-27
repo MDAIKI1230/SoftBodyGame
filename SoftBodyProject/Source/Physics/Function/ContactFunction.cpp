@@ -51,7 +51,7 @@ bool ContactFunction::SphereSphere(ColliderID _colliderA, ColliderID _colliderB,
 
 		manifold.AddPoints(contactPoint);
 
-		_manifoldBuffer->manifolds.push_back(manifold);
+		_manifoldBuffer->Add(manifold);
 
 		return true;
 	}
@@ -126,7 +126,7 @@ bool ContactFunction::SphereBox(ColliderID _colliderSphere, ColliderID _collider
 		// 点追加
 		manifold.AddPoints(contactPoint);
 
-		_manifoldBuffer->manifolds.push_back(manifold);
+		_manifoldBuffer->Add(manifold);
 
 		return true;
 	}
@@ -178,7 +178,7 @@ bool ContactFunction::SphereBox(ColliderID _colliderSphere, ColliderID _collider
 	// 点追加
 	manifold.AddPoints(contactPoint);
 
-	_manifoldBuffer->manifolds.push_back(manifold);
+	_manifoldBuffer->Add(manifold);
 
 	return true;
 }

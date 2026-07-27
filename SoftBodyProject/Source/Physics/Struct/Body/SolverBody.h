@@ -18,6 +18,6 @@ struct SolverBody
     Quaternion pastRot;
     Vector3 angularVelocity;
 
-    float inverseMass;
+    float inverseMass{ 0.0f };
     Matrix4x4 localInverseInertiaTensor;
 };

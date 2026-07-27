@@ -13,12 +13,12 @@ ConstraintSolverSystem::ConstraintSolverSystem() :
 
 void ConstraintSolverSystem::VelocitySolver(SolverBodyBuffer* _solverBodyBuffer, ConstraintBuffer* _constraintBuffer)
 {
-	for (auto& constraint : _constraintBuffer->constraints)
+	for (auto& constraint : _constraintBuffer->EditAll())
 	{
 		// ボディA
-		SolverBody& solverBodyA{ _solverBodyBuffer->solverBodies[constraint.solverBodyAIndex] };
+		SolverBody& solverBodyA{ _solverBodyBuffer->Edit(constraint.solverBodyAIndex) };
 		// ボディB
-		SolverBody& solverBodyB{ _solverBodyBuffer->solverBodies[constraint.solverBodyBIndex] };
+		SolverBody& solverBodyB{ _solverBodyBuffer->Edit(constraint.solverBodyBIndex) };
 		// 質量から両者がBodyを持っているかの判定をする(どちらかがBodyを持っているなら合計は0じゃないはず)
 		float totalInvMass{ solverBodyA.inverseMass + solverBodyB.inverseMass };
 		if (totalInvMass <= 0)
@@ -81,12 +81,12 @@ void ConstraintSolverSystem::VelocitySolver(SolverBodyBuffer* _solverBodyBuffer,
 
 void ConstraintSolverSystem::PositionSolver(SolverBodyBuffer* _solverBodyBuffer, ConstraintBuffer* _constraintBuffer)
 {
-	for (auto& constraint : _constraintBuffer->constraints)
+	for (auto& constraint : _constraintBuffer->EditAll())
 	{
 		// ボディA
-		SolverBody& solverBodyA{ _solverBodyBuffer->solverBodies[constraint.solverBodyAIndex] };
+		SolverBody& solverBodyA{ _solverBodyBuffer->Edit(constraint.solverBodyAIndex) };
 		// ボディB
-		SolverBody& solverBodyB{ _solverBodyBuffer->solverBodies[constraint.solverBodyBIndex] };
+		SolverBody& solverBodyB{ _solverBodyBuffer->Edit(constraint.solverBodyBIndex) };
 		// 質量から両者がBodyを持っているかの判定をする(どちらかがBodyを持っているなら合計は0じゃないはず)
 		float totalInvMass{ solverBodyA.inverseMass + solverBodyB.inverseMass };
 		if (totalInvMass <= 0)

@@ -15,19 +15,19 @@ CollisionSolverSystem::CollisionSolverSystem() :
 void CollisionSolverSystem::StartUp(ColliderStorage* _colliderStorage, CollisionManifoldBuffer* _manifoldBuffer, SolverBodyBuffer* _solverBodyBuffer)
 {
 	// メモリの確保
-	contactConstraints.reserve(_manifoldBuffer->manifolds.size() * 2);
+	contactConstraints.reserve(_manifoldBuffer->GetSize() * 2);
 
 	// すべての衝突情報から拘束条件とソルバ用Bodyの作成をする
-	for (auto& manifold : _manifoldBuffer->manifolds)
+	for (auto& manifold : _manifoldBuffer->GetAll())
 	{
 		for (int i{ 0 }; i < manifold.pointCount; i++)
 		{
 			ContactConstraint contactConstraint;
 			// SolverBodyのIndexを取得
 			PhysicsTransformID transformID{ _colliderStorage->GetTransformID(manifold.colliderA) };
-			contactConstraint.solverBodyAIndex = _solverBodyBuffer->bodyMap[transformID];
+			contactConstraint.solverBodyAIndex = _solverBodyBuffer->GetIndex(transformID);
 			transformID = _colliderStorage->GetTransformID(manifold.colliderB);
-			contactConstraint.solverBodyBIndex = _solverBodyBuffer->bodyMap[transformID];
+			contactConstraint.solverBodyBIndex = _solverBodyBuffer->GetIndex(transformID);
 
 			contactConstraint.positionLocalA = manifold.points[i].positionLocalA;
 			contactConstraint.positionLocalB = manifold.points[i].positionLocalB;
@@ -44,9 +44,9 @@ void CollisionSolverSystem::VelocitySolver(CollisionManifoldBuffer* _manifoldBuf
 	for (auto& constraint : contactConstraints)
 	{
 		// ボディA
-		SolverBody& solverBodyA{ _solverBodyBuffer->solverBodies[constraint.solverBodyAIndex] };
+		SolverBody& solverBodyA{ _solverBodyBuffer->Edit(constraint.solverBodyAIndex) };
 		// ボディB
-		SolverBody &solverBodyB{ _solverBodyBuffer->solverBodies[constraint.solverBodyBIndex] };
+		SolverBody &solverBodyB{ _solverBodyBuffer->Edit(constraint.solverBodyBIndex) };
 		// 質量から両者がBodyを持っているかの判定をする(どちらかがBodyを持っているなら合計は0じゃないはず)
 		float totalInvMass{ solverBodyA.inverseMass + solverBodyB.inverseMass };
 		if (totalInvMass <= 0)
@@ -188,7 +188,7 @@ void CollisionSolverSystem::FrictionSolver(SolverBody& _bodyA, const Vector3& _r
 
 void CollisionSolverSystem::ReCalcPosRot(SolverBodyBuffer* _solverBodyBuffer)
 {
-	for (auto& body : _solverBodyBuffer->solverBodies)
+	for (auto& body : _solverBodyBuffer->EditAll())
 	{
 		if (body.inverseMass != 0.0f)
 		{
@@ -216,9 +216,9 @@ void CollisionSolverSystem::PositionSolver(CollisionManifoldBuffer* _manifoldBuf
 	for (auto& constraint : contactConstraints)
 	{
 		// ボディA
-		SolverBody& solverBodyA{ _solverBodyBuffer->solverBodies[constraint.solverBodyAIndex] };
+		SolverBody& solverBodyA{ _solverBodyBuffer->Edit(constraint.solverBodyAIndex) };
 		// ボディB
-		SolverBody& solverBodyB{ _solverBodyBuffer->solverBodies[constraint.solverBodyBIndex] };
+		SolverBody& solverBodyB{ _solverBodyBuffer->Edit(constraint.solverBodyBIndex) };
 		// 質量から両者がBodyを持っているかの判定をする(どちらかがBodyを持っているなら合計は0じゃないはず)
 		float totalInvMass{ solverBodyA.inverseMass + solverBodyB.inverseMass };
 		if (totalInvMass <= 0)

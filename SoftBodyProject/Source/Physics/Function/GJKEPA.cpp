@@ -259,7 +259,7 @@ void GJKEPA::EPA(
 			contactPoint.penetration = faces[minIndex].distance;
 			manifold.AddPoints(contactPoint);
 
-			_manifoldBuffer->manifolds.push_back(manifold);
+			_manifoldBuffer->Add(manifold);
 
 			return;
 		}
@@ -319,7 +319,7 @@ void GJKEPA::EPA(
 			contactPoint.penetration = faces[minIndex].distance;
 			manifold.AddPoints(contactPoint);
 
-			_manifoldBuffer->manifolds.push_back(manifold);
+			_manifoldBuffer->Add(manifold);
 
 			return;
 		}

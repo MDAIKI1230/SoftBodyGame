@@ -1,24 +1,48 @@
 ﻿#pragma once
 
-#include <vector>
 #include <unordered_map>
+
+#include "PhysicsBufferBase.h"
 
 #include "SolverBody.h"
 
-class SolverBodyBuffer
+class SolverBodyBuffer :public PhysicsBufferBase<SolverBody>
 {
 public:
-	void AddSolverBody(PhysicsTransformID _transformID, const SolverBody& _body)
+	// 対応付け版追加
+	uint32_t Add(PhysicsTransformID transformID, const SolverBody& body)
 	{
-		bodyMap[_transformID] = static_cast<uint32_t>(solverBodies.size());
-		solverBodies.push_back(_body);
+		const uint32_t index{ Emplace(body) };
+		bodyMap[transformID] = index;
+		return index;
 	}
-	void Clear()
+	// メモリ確保
+	void Reserve(uint32_t size) override
 	{
-		solverBodies.clear();
+		values.reserve(size);
+		bodyMap.reserve(size);
+	}
+	// IDからIndex取得
+	uint32_t GetIndex(PhysicsTransformID id) const
+	{
+		return bodyMap.at(id);
+	}
+	// IDに対応するものがあるか
+	bool Has(PhysicsTransformID id) const
+	{
+		return bodyMap.contains(id);
+	}
+	// 削除
+	void Clear() override
+	{
+		PhysicsBufferBase::Clear();
 		bodyMap.clear();
 	}
-public:
-	std::vector<SolverBody> solverBodies;
+private:
+	// 通常の追加関数をカプセル化
+	void Add(const SolverBody& _value) override
+	{
+	}
+private:
 	std::unordered_map<PhysicsTransformID, uint32_t> bodyMap;
 };
