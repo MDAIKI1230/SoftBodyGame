@@ -2,14 +2,17 @@
 
 #include "StorageAccessorsMacros.h"
 
+#include "PhysicsStorageBase.h"
+
 #include "ColliderSlot.h"
+#include "ColliderID.h"
 #include "EntityID.h"
 
 #include "AABBBroadPhaseColliderStorage.h"
 #include "SphereColliderStorage.h"
 #include "BoxColliderStorage.h"
 
-class ColliderStorage
+class ColliderStorage:public PhysicsStorageBase<ColliderID, ColliderSlot>
 {
     // 球コライダー
     MD_OWNED_STORAGE_READ_ONLY_ACCESSORS(ColliderID, ColliderID, SphereColliderID, sphereStorage, ID);
@@ -54,28 +57,18 @@ public:
 
     // 破棄
     void Destroy(ColliderID _id);
-
-    // 生存確認
-    bool IsAlive(ColliderID _id) const;
+  
     // タイプ取得
     ColliderType GetType(ColliderID _id) const;
-    // 実データのインデックス
-    uint32_t GetDenseIndex(ColliderID _id) const;
+
     // AABBのインデックス
     uint32_t GetAABBIndex(ColliderID _id) const;
-    // 持ってるEntity
-    EntityID GetOwnerEntity(ColliderID _id) const;
     // TransformID
     PhysicsTransformID GetTransformID(ColliderID _id) const;
 
     // TransformIDから対応したCollider取得
     std::vector<ColliderID>& GetColliderIDFromTransformID(PhysicsTransformID _id);
 private:
-    ColliderID GenerateColliderID(ColliderType _type, uint32_t _denseIndex, uint32_t _aabbIndex, EntityID _ownerEntity, PhysicsTransformID _transformID);
-private:
-    std::vector<ColliderSlot> slots;
-    std::vector<size_t> freeSlots;
-
     // AABBストレージ
     std::unique_ptr<AABBBroadPhaseColliderStorage> aabbStorage;
     // 球Storage

@@ -775,6 +775,12 @@
     <ClInclude Include="Source\Common\ECS\Storage\ComponentIDPool.h">
       <Filter>ソース ファイル\Common\ECS\Storage</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Physics\Storage\SlotPool.h">
+      <Filter>ソース ファイル\Physics\Storage</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Storage\PhysicsStorageBase.h">
+      <Filter>ソース ファイル\Physics\Storage</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\System\Scenes\DebugScene.cpp">

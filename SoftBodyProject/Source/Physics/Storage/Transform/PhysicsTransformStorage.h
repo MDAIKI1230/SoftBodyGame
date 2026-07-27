@@ -3,10 +3,12 @@
 #include "MDMath.h"
 #include "StorageAccessorsMacros.h"
 
+#include "PhysicsStorageBase.h"
+
 #include "PhysicsTransformSlot.h"
 #include "PhysicsTransformID.h"
 
-class PhysicsTransformStorage
+class PhysicsTransformStorage :public PhysicsStorageBase<PhysicsTransformID, PhysicsTransformSlot>
 {
 	// 位置
 	MD_STORAGE_READ_WRITE_COLUMN(Vector3, Position, positions);
@@ -32,19 +34,8 @@ public:
 	// 破棄
 	void Destroy(PhysicsTransformID _id);
 
-	// 生存確認
-	bool IsAlive(PhysicsTransformID _id) const;
-	// 実データのインデックス
-	uint32_t GetDenseIndex(PhysicsTransformID _id) const;
-	// 持ってるEntity
-	EntityID GetOwnerEntity(PhysicsTransformID _id) const;
-
 	// EntityIDに対応したPhysicsTransformIDがあるか
-	bool TryGet(EntityID _entity,PhysicsTransformID& _output);
-private:
-	PhysicsTransformID GeneratePhysicsTransformID(uint32_t _denseIndex, EntityID _ownerEntity);
+	bool TryGet(EntityID _entity, PhysicsTransformID& _output);
 private:
 	std::unordered_map<EntityID, PhysicsTransformID> entityMap;
-	std::vector<PhysicsTransformSlot> slots;
-	std::vector<uint32_t> freeSlots;
 };

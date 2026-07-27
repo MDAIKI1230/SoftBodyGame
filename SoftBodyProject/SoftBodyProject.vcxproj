@@ -442,6 +442,8 @@
     <ClInclude Include="Source\Physics\Storage\Constraint\ConstraintStorage.h" />
     <ClInclude Include="Source\Physics\Storage\Constraint\DistanceConstraintStorage.h" />
     <ClInclude Include="Source\Physics\Storage\Constraint\PointConstraintStorage.h" />
+    <ClInclude Include="Source\Physics\Storage\PhysicsStorageBase.h" />
+    <ClInclude Include="Source\Physics\Storage\SlotPool.h" />
     <ClInclude Include="Source\Physics\Storage\Transform\PhysicsTransformStorage.h" />
     <ClInclude Include="Source\Physics\Struct\Body\BodyID.h" />
     <ClInclude Include="Source\Physics\Struct\Body\BodySlot.h" />

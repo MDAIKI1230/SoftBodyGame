@@ -22,7 +22,7 @@ PhysicsTransformID PhysicsTransformStorage::GetOrCreateTransform(EntityID _entit
 	// 親ID
 	parentIDs.emplace_back();
 	// ID
-	ids.emplace_back(GeneratePhysicsTransformID(static_cast<uint32_t>(ids.size()), _entity));
+	ids.emplace_back(CreateID(static_cast<uint32_t>(ids.size()), _entity));
 	// mapに追加
 	entityMap[_entity] = ids.back();
 	// IDを返してあげる
@@ -75,23 +75,10 @@ void PhysicsTransformStorage::Destroy(PhysicsTransformID _id)
 
 	if (!(movedId.GetIndex() == _id.GetIndex() && movedId.GetGeneration() == _id.GetGeneration()))
 	{
-		slots[movedId.GetIndex()].denseIndex = slots[_id.GetIndex()].denseIndex;
+		EditDenseIndex(movedId) = GetDenseIndex(_id);
 	}
-}
 
-bool PhysicsTransformStorage::IsAlive(PhysicsTransformID _id) const
-{
-	return slots[_id.GetIndex()].alive && slots[_id.GetIndex()].generation == _id.GetGeneration();
-}
-
-uint32_t PhysicsTransformStorage::GetDenseIndex(PhysicsTransformID _id) const
-{
-	return slots[_id.GetIndex()].denseIndex;
-}
-
-EntityID PhysicsTransformStorage::GetOwnerEntity(PhysicsTransformID _id) const
-{
-	return slots[_id.GetIndex()].ownerEntity;
+	ReleaseID(_id);
 }
 
 bool PhysicsTransformStorage::TryGet(EntityID _entity, PhysicsTransformID& _output)
@@ -104,35 +91,4 @@ bool PhysicsTransformStorage::TryGet(EntityID _entity, PhysicsTransformID& _outp
 	}
 
 	return false;
-}
-
-PhysicsTransformID PhysicsTransformStorage::GeneratePhysicsTransformID(uint32_t _denseIndex, EntityID _ownerEntity)
-{
-	if (freeSlots.empty())
-	{
-		// --- フリーのスロットがないため新たにスロットを作成---
-
-		// IDを作成(初代判定で1)
-		PhysicsTransformID result{ static_cast<PhysicsTransformID::Index>(slots.size()),1 };
-		// Slotを増設
-		slots.emplace_back(_denseIndex, _ownerEntity);
-
-		return result;
-	}
-	else
-	{
-		// フリーのスロットがあるためそれを使用
-
-		// 最後を取る
-		size_t index{ freeSlots.back() };
-		freeSlots.pop_back();
-
-		// 世代は削除時に加算済み
-		slots[index].alive = true;
-		slots[index].denseIndex = _denseIndex;
-		slots[index].ownerEntity = _ownerEntity;
-
-		// IDを作成
-		return PhysicsTransformID{ (uint32_t)(index),slots[index].generation };
-	}
 }

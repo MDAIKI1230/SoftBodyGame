@@ -2,7 +2,10 @@
 
 #include "StorageAccessorsMacros.h"
 
+#include "PhysicsStorageBase.h"
+
 #include "BodySlot.h"
+#include "BodyID.h"
 
 #include "Rigid/RigidBodyStorage.h"
 
@@ -10,11 +13,9 @@
 #include "Soft/ClothStorage.h"
 #include "Soft/SoftBodyStorage.h"
 
-
-
 #include "SoftBodyUpdateInfo.h"
 
-class BodyStorage
+class BodyStorage : public PhysicsStorageBase<BodyID, BodySlot>
 {
 	// --- 剛体Body ---
 	// 力
@@ -102,14 +103,8 @@ public:
 	// 破棄
 	void Destroy(BodyID _id);
 
-	// 生存確認
-	bool IsAlive(BodyID _id) const;
 	// 種類取得
 	BodyType GetType(BodyID _id) const;
-	// 実データのインデックス
-	uint32_t GetDenseIndex(BodyID _id) const;
-	// 持ってるEntity
-	EntityID GetOwnerEntity(BodyID _id) const;
 	// 対応Transform
 	PhysicsTransformID GetTransformID(BodyID _id) const;
 	// RigidBodyのBodyID取得
@@ -117,12 +112,6 @@ public:
 	// TransformIDと紐づくBodyIDがあるか否か
 	bool Has(PhysicsTransformID _transformID) const;
 private:
-	// 一意なID発行関数
-	BodyID GenerateBodyID(uint32_t _denseIndex, BodyType _type, EntityID _ownerEntity, PhysicsTransformID _transformID);
-private:
-	std::vector<BodySlot> slots;
-	std::vector<uint32_t> freeSlots;
-
 	// 各種ボディストレージ
 
 	std::unique_ptr<RigidBodyStorage> rigidBodyStorage;
