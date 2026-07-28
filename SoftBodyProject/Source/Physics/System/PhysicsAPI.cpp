@@ -20,6 +20,11 @@ bool PhysicsAPI::CanAddBody(EntityID _entity)
 	return true;
 }
 
+// 破壊
+void PhysicsAPI::DestroyBody(BodyID _id)
+{
+	bodyStorage->Destroy(_id);
+}
 // --- RigidBody ---
 
 // 作成
@@ -239,6 +244,11 @@ void PhysicsAPI::SetSegmentCountZ(BodyID _id, int _segmentCountZ)
 
 // --- コライダー系 ---
 
+void PhysicsAPI::DestroyCollider(ColliderID _id)
+{
+	colliderStorage->Destroy(_id);
+}
+
 // 球作成
 ColliderID PhysicsAPI::CreateSphere(EntityID _entity, float _radius)
 {
@@ -301,6 +311,12 @@ ConstraintID PhysicsAPI::CreatePointConstraint(EntityID _entity, const Vector3& 
 ConstraintID PhysicsAPI::CreateDistanceConstraint(EntityID _entity, const Vector3& _localOffset, float _distance)
 {
 	return constraintStorage->CreateDistanceConstraint(_entity, transformStorage->GetOrCreateTransform(_entity), _localOffset, _distance);
+}
+
+// 破壊
+void PhysicsAPI::DestroyConstraint(ConstraintID _id)
+{
+	constraintStorage->Destory(_id);
 }
 
 // 距離拘束の距離取得

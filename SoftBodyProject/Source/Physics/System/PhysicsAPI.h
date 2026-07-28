@@ -11,6 +11,8 @@ public:
 
 	// 追加可否判定
 	static bool CanAddBody(EntityID _entity);
+	// 破壊
+	static void DestroyBody(BodyID _id);
 
 	// --- RigidBody ---
 
@@ -113,6 +115,8 @@ public:
 	static void SetSegmentCountZ(BodyID _id, int _segmentCountZ);
 
 	// --- コライダー系 ---
+	// 破壊
+	static void DestroyCollider(ColliderID _id);
 	// --- コライダー生成 ---
 
 	// 球作成
@@ -143,6 +147,8 @@ public:
 	static void SetDepth(ColliderID _id, float _depth);
 
 	// --- 拘束系 ---
+	// 破壊
+	static void DestroyConstraint(ConstraintID _id);
 
 	// 点拘束作成
 	static ConstraintID CreatePointConstraint(EntityID _entity, const Vector3& _localOffset);
