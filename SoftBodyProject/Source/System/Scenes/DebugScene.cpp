@@ -49,7 +49,7 @@ void DebugScene::Initialize()
 	std::unique_ptr<DebugBox> debugBox03{ std::make_unique<DebugBox>(worldStorage.get(), objectManager->GenerateNewID(), 30.0f) };
 	debugBox03->GetComponent<TransformComponent>()->SetPosition(Vector3{ 0,100,0 });
 	debugBox03->AddComponent<RigidBodyComponent>()->SetIsGravity(true);
-	distanceConstraint->AddEndPoint(debugBox03->GetHandle(), Vector3{ 15.0f,15.0f,15.0f });
+	distanceConstraint->AddEndPoint(debugBox03->GetID(), Vector3{ 15.0f,15.0f,15.0f });
 	objectManager->Add(std::move(debugBox03));*/
 
 	// 点拘束デバッグ
@@ -63,7 +63,7 @@ void DebugScene::Initialize()
 	std::unique_ptr<DebugBox> debugBox04{ std::make_unique<DebugBox>(worldStorage.get(), objectManager->GenerateNewID(), 30.0f) };
 	debugBox04->GetComponent<TransformComponent>()->SetPosition(Vector3{ 0,100,0 });
 	debugBox04->AddComponent<RigidBodyComponent>()->SetIsGravity(true);
-	pointConstraint->AddEndPoint(debugBox04->GetHandle(), Vector3{ 15.0f,15.0f,15.0f });
+	pointConstraint->AddEndPoint(debugBox04->GetID(), Vector3{ 15.0f,15.0f,15.0f });
 	objectManager->Add(std::move(debugBox04));
 
 	// 距離拘束によるロープの実装
@@ -85,7 +85,7 @@ void DebugScene::Initialize()
 		std::unique_ptr<DebugSphere> point{ std::make_unique<DebugSphere>(worldStorage.get(), objectManager->GenerateNewID()) };
 		point->GetComponent<SphereColliderComponent>()->SetRadius(2.0f);
 		point->GetComponent<TransformComponent>()->SetPosition(ropePosition + Vector3{ distanceRope * i,0.0f,0.0f });
-		distanceConstraintRope->AddEndPoint(point->GetHandle(), Vector3::ZERO);
+		distanceConstraintRope->AddEndPoint(point->GetID(), Vector3::ZERO);
 		distanceConstraintRope = point->AddComponent<DistanceConstraintComponent>(distanceRope);
 		objectManager->Add(std::move(point));
 	}*/
@@ -135,12 +135,12 @@ void DebugScene::Initialize()
 		// 横のつながり
 		if (i % width != (width - 1))
 		{
-			distanceConstraints[i]->AddEndPoint(objects[i + 1]->GetHandle(), Vector3::ZERO);
+			distanceConstraints[i]->AddEndPoint(objects[i + 1]->GetID(), Vector3::ZERO);
 		}
 		// 縦のつながり
 		if (i / width != (height - 1))
 		{
-			distanceConstraints[i]->AddEndPoint(objects[i + width]->GetHandle(), Vector3::ZERO);
+			distanceConstraints[i]->AddEndPoint(objects[i + width]->GetID(), Vector3::ZERO);
 		}
 	}
 

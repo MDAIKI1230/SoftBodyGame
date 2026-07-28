@@ -10,9 +10,9 @@ class ObjectBase
 {
 public:
 	// コンストラクタ
-	ObjectBase(WorldStorage* _world, EntityID _entity) :
+	ObjectBase(WorldStorage* _world, EntityID _entityID) :
 		world{ _world },
-		entity{ _entity }
+		id{ _entityID }
 	{
 	}
 
@@ -42,7 +42,7 @@ public:
 
 		if(storage != nullptr)
 		{
-			return storage->Add(entity, std::forward<Args>(args)...);
+			return storage->Add(id, std::forward<Args>(args)...);
 		}
 
 		return nullptr;
@@ -56,7 +56,7 @@ public:
 
 		if (storage != nullptr)
 		{
-			return storage->TryEdit(entity);
+			return storage->TryEdit(id);
 		}
 
 		return nullptr;
@@ -70,17 +70,41 @@ public:
 
 		if (storage != nullptr)
 		{
-			return storage->TryEdits(entity);
+			return storage->TryEdits(id);
 		}
 
 		return ComponentView<T>{};
 	}
 
+	// 除外
+	template<typename T>
+	void RemoveComponent()
+	{
+		ComponentStorageBase<T>* storage{ world->GetStorage<T>() };
+
+		if (storage != nullptr)
+		{
+			storage->Remove(id);
+		}
+	}
+
+	// 除外
+	template<typename T>
+	void RemoveComponents()
+	{
+		ComponentStorageBase<T>* storage{ world->GetStorage<T>() };
+
+		if (storage != nullptr)
+		{
+			storage->RemoveAll(id);
+		}
+	}
+
 	// --- ゲッター　---
-	EntityID GetHandle() { return entity; }
+	EntityID GetID() { return id; }
 	// 仮想デストラクタ
 	virtual ~ObjectBase() = default;
 private:
-	EntityID entity;
+	EntityID id;
 	WorldStorage* world;
 };

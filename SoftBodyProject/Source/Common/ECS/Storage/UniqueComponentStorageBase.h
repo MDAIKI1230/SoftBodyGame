@@ -17,7 +17,25 @@ public:
 	// 参照取得
 	T& Edit(EntityID _entity)override { return sparseSet.Edit(_entity); }
 	// 除外
-	virtual void Remove(EntityID _entity)override { sparseSet.Remove(_entity); }
+	virtual void Remove(EntityID _entity)override
+	{
+		const T* component{ TryGet(_entity) };
+		if (component != nullptr)
+		{
+			this->OnRemoving(_entity, *component);
+			sparseSet.Remove(_entity);
+		}
+	}
+	// 除外
+	virtual void RemoveAll(EntityID _entity)override
+	{
+		const T* component{ TryGet(_entity) };
+		if (component != nullptr)
+		{
+			this->OnRemoving(_entity, *component);
+			sparseSet.Remove(_entity);
+		}
+	}
 	// サイズ生成
 	virtual void Reserve(uint32_t _size)override { sparseSet.Reserve(_size); }
 	// 全削除

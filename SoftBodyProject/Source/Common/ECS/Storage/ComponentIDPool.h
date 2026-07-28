@@ -171,7 +171,7 @@ public:
 	// EntityID全取得
 	std::span<const EntityID> GetOwnerRange() const
 	{
-		return { ownerIDs.data(), ownerIDs.size() };
+		return entityComponentIDs.GetKeyRange();
 	}
 private:
 	std::vector<ComponentID<T>> pool;

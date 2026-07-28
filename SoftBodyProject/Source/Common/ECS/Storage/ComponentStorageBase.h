@@ -1,7 +1,6 @@
 ﻿#pragma once
 
 #include <span>
-#include <ranges>
 
 #include "EntityID.h"
 
@@ -62,6 +61,11 @@ public:
 	/// </summary>
 	/// <param name="entity">エンティティID</param>
 	virtual void Remove(EntityID _entity) = 0;
+	/// <summary>
+	/// 除外
+	/// </summary>
+	/// <param name="entity">エンティティID</param>
+	virtual void RemoveAll(EntityID _entity) = 0;
 	// サイズ生成
 	virtual void Reserve(uint32_t _size) = 0;
 	// 全削除
@@ -102,6 +106,8 @@ protected:
 	virtual void OnAdded() {};
 	// 追加できるか関数(重複が許されない関数をこれでカットする)
 	virtual bool CanAdd(EntityID _entity) { return true; }
+	// 削除後に呼ばれし関数
+	virtual void OnRemoving(EntityID _entity, const T& removeComponent) {};
 private:
 	// 追加処理
 	T* AddPrepared(EntityID _entity, T&& _component)

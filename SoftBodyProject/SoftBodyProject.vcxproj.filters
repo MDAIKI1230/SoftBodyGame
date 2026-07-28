@@ -787,6 +787,12 @@
     <ClInclude Include="Source\Common\ECS\Storage\ComponentView.h">
       <Filter>ソース ファイル\Common\ECS\Storage</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Common\ECS\SparseSet\Table\PageTable.h">
+      <Filter>ソース ファイル\Common\ECS\SparseSet\Table</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Common\ECS\SparseSet\Table\HashTable.h">
+      <Filter>ソース ファイル\Common\ECS\SparseSet\Table</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\System\Scenes\DebugScene.cpp">
@@ -1016,6 +1022,9 @@
     </ClCompile>
     <ClCompile Include="Source\Common\ECS\Event\EventSystem.cpp">
       <Filter>ソース ファイル\Common\ECS\Event</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Common\ECS\SparseSet\Table\HashTable.cpp">
+      <Filter>ソース ファイル\Common\ECS\SparseSet\Table</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -39,28 +39,18 @@ public:
 	}
 	// 除外
 	virtual void Remove(EntityID _entity)override
-	{ 
+	{
 		const auto id{ idPool.GetComponentIDs(_entity).back() };
 
-		Remove(id);
+		Remove(_entity, id);
 	}
 	// 除外
-	void Remove(ComponentID<T> _id)
+	virtual void RemoveAll(EntityID _entity)override
 	{
-		const uint32_t denseIndex{ idPool.Remove(_id) };
-		const uint32_t lastIndex{ static_cast<uint32_t>(dense.size() - 1) };
-
-		if (denseIndex == ComponentID<T>::INVALID_INDEX)
+		while (idPool.Has(_entity))
 		{
-			return;
+			Remove(_entity);
 		}
-
-		if (denseIndex != lastIndex)
-		{
-			dense[denseIndex] = std::move(dense.back());
-		}
-
-		dense.pop_back();
 	}
 	// サイズ生成
 	virtual void Reserve(uint32_t _size)override
@@ -174,5 +164,26 @@ private:
 		idPool.Add(index, _entity);
 
 		return &dense.back();
+	}
+
+	// 除外
+	void Remove(EntityID _entity, ComponentID<T> _id)
+	{
+		const uint32_t denseIndex{ idPool.Remove(_id) };
+		const uint32_t lastIndex{ static_cast<uint32_t>(dense.size() - 1) };
+
+		if (denseIndex == ComponentID<T>::INVALID_INDEX)
+		{
+			return;
+		}
+
+		this->OnRemoving(_entity, dense[denseIndex]);
+
+		if (denseIndex != lastIndex)
+		{
+			dense[denseIndex] = std::move(dense.back());
+		}
+
+		dense.pop_back();
 	}
 };
