@@ -3,10 +3,9 @@
 #include "RopeComponent.h"
 
 // コンストラクタ
-RopeComponent::RopeComponent(EntityID& _entity, int _handle) :
-	ComponentBase{ _handle }
+RopeComponent::RopeComponent(EntityID _entity) :
+	id{ PhysicsAPI::CreateRope(_entity, RopeUpdateInfo{}) }
 {
-	id = PhysicsAPI::CreateRope(_entity, RopeUpdateInfo{});
 }
 
 // 全体の長さ取得

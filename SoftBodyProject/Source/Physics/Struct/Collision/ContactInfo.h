@@ -20,7 +20,7 @@ struct BoxBoxContactInfo
     } type;
 
     // FaceAならAの面軸、EdgeEdgeならAの辺軸
-    int axisA;
+    int axisA{ -1 };
     // FaceBならBの面軸、EdgeEdgeならBの辺軸
-    int axisB;
+    int axisB{ -1 };
 };

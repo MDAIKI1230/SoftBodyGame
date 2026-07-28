@@ -8,7 +8,7 @@ struct ContactPoint
 {
 	Vector3 positionLocalA;
 	Vector3 positionLocalB;
-	float penetration;
+	float penetration{ 0.0f };
 };
 
 

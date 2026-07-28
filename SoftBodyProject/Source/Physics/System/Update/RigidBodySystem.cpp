@@ -15,73 +15,69 @@ void RigidBodySystem::FixedUpdate(PhysicsTransformStorage* _transformStorage, Bo
 
 void RigidBodySystem::UpdateGravity(BodyStorage* _bodyStorage)
 {
-	for (auto& bodyID : _bodyStorage->rigidBodyStorage->id)
+	for (auto& bodyID : _bodyStorage->GetRigidBodyIDRange())
 	{
 		// 実データインデックスの取得
-		uint32_t bodyIndex{ _bodyStorage->GetDenseIndex(bodyID) };
 		// フラグ判定
-		if (_bodyStorage->rigidBodyStorage->isGravity[bodyIndex])
+		if (_bodyStorage->GetRigidBodyIsGravity(bodyID))
 		{
 			// 質量×重力加速度(Δtに離散化)を力に加算
-			_bodyStorage->rigidBodyStorage->force[bodyIndex] += _bodyStorage->rigidBodyStorage->gravity[bodyIndex] * ServiceLocator::GetTimeManager()->GetFixedDeltaTime() * _bodyStorage->rigidBodyStorage->mass[bodyIndex];
+			_bodyStorage->EditRigidBodyForce(bodyID) += _bodyStorage->GetRigidBodyGravity(bodyID) * ServiceLocator::GetTimeManager()->GetFixedDeltaTime() * _bodyStorage->GetRigidBodyMass(bodyID);
 		}
 	}
 }
 
 void RigidBodySystem::UpdatePosition(PhysicsTransformStorage* _transformStorage, BodyStorage* _bodyStorage)
 {
-	for (auto& bodyID : _bodyStorage->rigidBodyStorage->id)
+	for (auto& bodyID : _bodyStorage->GetRigidBodyIDRange())
 	{
 		// 実データインデックスの取得
-		uint32_t bodyIndex{ _bodyStorage->GetDenseIndex(bodyID) };
 		PhysicsTransformID transformID{ _bodyStorage->GetTransformID(bodyID) };
 		uint32_t transIndex{ _transformStorage->GetDenseIndex(transformID) };
 		// 速度 + 加速度(力(Δt) * 質量の逆数)
-		_bodyStorage->rigidBodyStorage->velocity[bodyIndex] += _bodyStorage->rigidBodyStorage->force[bodyIndex] * ServiceLocator::GetTimeManager()->GetFixedDeltaTime() * _bodyStorage->rigidBodyStorage->inverseMass[bodyIndex];
+		_bodyStorage->EditRigidBodyVelocity(bodyID) += _bodyStorage->GetRigidBodyForce(bodyID) * ServiceLocator::GetTimeManager()->GetFixedDeltaTime() * _bodyStorage->GetRigidBodyInverseMass(bodyID);
 
 		// 位置保存
-		_bodyStorage->rigidBodyStorage->pastPos[bodyIndex] = _transformStorage->position[transIndex];
+		_bodyStorage->SetRigidBodyPastPosition(bodyID, _transformStorage->GetPosition(transIndex));
 
 		// 今の位置 + 速度
-		_transformStorage->position[transIndex] += _bodyStorage->rigidBodyStorage->velocity[bodyIndex] * ServiceLocator::GetTimeManager()->GetFixedDeltaTime();
+		_transformStorage->EditPosition(transIndex) += _bodyStorage->GetRigidBodyVelocity(bodyID) * ServiceLocator::GetTimeManager()->GetFixedDeltaTime();
 	}
 }
 
 void RigidBodySystem::UpdateRotation(PhysicsTransformStorage* _transformStorage, BodyStorage* _bodyStorage)
 {
-	for (auto& bodyID : _bodyStorage->rigidBodyStorage->id)
+	for (auto& bodyID : _bodyStorage->GetRigidBodyIDRange())
 	{
 		// 実データインデックスの取得
-		uint32_t bodyIndex{ _bodyStorage->GetDenseIndex(bodyID) };
 		PhysicsTransformID transformID{ _bodyStorage->GetTransformID(bodyID) };
 		uint32_t transIndex{ _transformStorage->GetDenseIndex(transformID) };
 		// 角速度＋ 角加速度(トルク×慣性テンソルの逆数)
-		_bodyStorage->rigidBodyStorage->angularVelocity[bodyIndex] += _bodyStorage->rigidBodyStorage->worldInverseInertiaTensor[bodyIndex] * _bodyStorage->rigidBodyStorage->torque[bodyIndex] * ServiceLocator::GetTimeManager()->GetFixedDeltaTime();
+		_bodyStorage->EditRigidBodyAngularVelocity(bodyID) += _bodyStorage->GetRigidBodyLocalInverseInertiaTensor(bodyID) * _bodyStorage->GetRigidBodyTorque(bodyID) * ServiceLocator::GetTimeManager()->GetFixedDeltaTime();
 
 		// 角速度と慣性テンソルの逆行列からΔt分の四元数を作成
 		// Δω
-		Vector3 deltaAngularVelocity{ _bodyStorage->rigidBodyStorage->angularVelocity[bodyIndex] * ServiceLocator::GetTimeManager()->GetFixedDeltaTime() };
+		Vector3 deltaAngularVelocity{ _bodyStorage->GetRigidBodyAngularVelocity(bodyID) * ServiceLocator::GetTimeManager()->GetFixedDeltaTime() };
 		// Δωの四元数を作る
 		Quaternion rotOmega{ Quaternion::AngleAxis(deltaAngularVelocity.Length(),deltaAngularVelocity) };
 
 		// 姿勢保存
-		_bodyStorage->rigidBodyStorage->pastRot[bodyIndex] = _transformStorage->rotation[transIndex];
+		_bodyStorage->SetRigidBodyPastRotation(bodyID, _transformStorage->GetRotation(transIndex));
 
 		// 今の回転＋トルク(Δtに離散化)×慣性テンソルの逆行列
-		_transformStorage->rotation[transIndex] = (rotOmega * _transformStorage->rotation[transIndex]).Normalized();
+		_transformStorage->EditRotation(transIndex) = (rotOmega * _transformStorage->GetRotation(transIndex)).Normalized();
 	}
 }
 
 void RigidBodySystem::UpdateInverseInertiaTensor(PhysicsTransformStorage* _transformStorage, BodyStorage* _bodyStorage, ColliderStorage* _colliderStorage)
 {
-	for (auto& bodyID:_bodyStorage->rigidBodyStorage->id)
+	for (auto& bodyID:_bodyStorage->GetRigidBodyIDRange())
 	{
 		// 実データインデックスの取得
-		uint32_t bodyIndex{ _bodyStorage->GetDenseIndex(bodyID) };
 		PhysicsTransformID transformID{ _bodyStorage->GetTransformID(bodyID) };
 		uint32_t transIndex{ _transformStorage->GetDenseIndex(transformID) };
 		// ローカル慣性テンソルの計算
-		if (_bodyStorage->rigidBodyStorage->localInertiaDirty[bodyIndex] == true)
+		if (_bodyStorage->GetRigidBodyLocalInertiaDiary(bodyID))
 		{
 			for (auto& colliderID : _colliderStorage->GetColliderIDFromTransformID(transformID))
 			{
@@ -89,55 +85,49 @@ void RigidBodySystem::UpdateInverseInertiaTensor(PhysicsTransformStorage* _trans
 				switch (_colliderStorage->GetType(colliderID))
 				{
 				case ColliderType::SPHERE:
-					_bodyStorage->rigidBodyStorage->localInverseInertiaTensor[bodyIndex] = GenerateSphereInverseInertiaTensor(transIndex, colliderID, _bodyStorage->rigidBodyStorage->mass[bodyIndex], _transformStorage, _colliderStorage);
+					_bodyStorage->SetRigidBodyLocalInverseInertiaTensor(
+						bodyID,
+						GenerateSphereInverseInertiaTensor(transIndex, colliderID, _bodyStorage->GetRigidBodyMass(bodyID), _transformStorage, _colliderStorage)
+					);
 					break;
 				case ColliderType::BOX:
-					_bodyStorage->rigidBodyStorage->localInverseInertiaTensor[bodyIndex] = GenerateBoxInverseInertiaTensor(transIndex, colliderID, _bodyStorage->rigidBodyStorage->mass[bodyIndex], _transformStorage, _colliderStorage);
+					_bodyStorage->SetRigidBodyLocalInverseInertiaTensor(
+						bodyID,
+						GenerateBoxInverseInertiaTensor(transIndex, colliderID, _bodyStorage->GetRigidBodyMass(bodyID), _transformStorage, _colliderStorage)
+					);
 					break;
 				}
 			}
 			// フラグを戻す
-			_bodyStorage->rigidBodyStorage->localInertiaDirty[bodyIndex] = false;
+			_bodyStorage->LocalInertiaCalcSucces(bodyID);
 		}
-		// 回転行列取得
-		Matrix4x4 rotMat{ MatGenerateFunc::Rotate(_transformStorage->rotation[transIndex]) };
-		_bodyStorage->rigidBodyStorage->worldInverseInertiaTensor[bodyIndex] = rotMat * _bodyStorage->rigidBodyStorage->localInverseInertiaTensor[bodyIndex] * rotMat.Transposed();
 	}
 }
 
 void RigidBodySystem::End(BodyStorage* _bodyStorage, ColliderStorage* _colliderStorage)
 {
-	for (auto& bodyID : _bodyStorage->rigidBodyStorage->id)
+	for (auto& bodyID : _bodyStorage->GetRigidBodyIDRange())
 	{
-		// 実データインデックスの取得
-		uint32_t bodyIndex{ _bodyStorage->GetDenseIndex(bodyID) };
-		_bodyStorage->rigidBodyStorage->force[bodyIndex] = Vector3::ZERO;
-		_bodyStorage->rigidBodyStorage->torque[bodyIndex] = Vector3::ZERO;
+		_bodyStorage->EditRigidBodyForce(bodyID) = Vector3::ZERO;
+		_bodyStorage->EditRigidBodyTorque(bodyID) = Vector3::ZERO;
 
 		// AABBのフラグを変更する
-		if (_bodyStorage->rigidBodyStorage->velocity[bodyIndex].LengthSqr() >= MathConstants::EPSILON ||
-			_bodyStorage->rigidBodyStorage->angularVelocity[bodyIndex].LengthSqr() >= MathConstants::EPSILON)
+		if (_bodyStorage->GetRigidBodyVelocity(bodyID).LengthSqr() >= MathConstants::EPSILON ||
+			_bodyStorage->GetRigidBodyAngularVelocity(bodyID).LengthSqr() >= MathConstants::EPSILON)
 		{
 			auto& colliders{ _colliderStorage->GetColliderIDFromTransformID(_bodyStorage->GetTransformID(bodyID)) };
 			for (auto& colliderID : colliders)
 			{
-				_colliderStorage->aabbStorage->dirty[_colliderStorage->GetAABBIndex(colliderID)] |= AABBChangeDirtyFlag::TRANSFORM;
+				_colliderStorage->EditAABBDiaryFlag(_colliderStorage->GetAABBIndex(colliderID)) |= AABBChangeDiaryFlag::TRANSFORM;
 			}
 		}
-	}
-
-	for (auto& aabbDirty : _colliderStorage->aabbStorage->dirty)
-	{
-
-		aabbDirty |= AABBChangeDirtyFlag::TRANSFORM;
 	}
 }
 
 
-Matrix4x4 RigidBodySystem::GenerateBoxInverseInertiaTensor(const uint32_t& _transformIndex, const ColliderID& _colliderID, float _mass, PhysicsTransformStorage* _transformStorage, ColliderStorage* _colliderStorage)
+Matrix4x4 RigidBodySystem::GenerateBoxInverseInertiaTensor(uint32_t _transformIndex, ColliderID _colliderID, float _mass, PhysicsTransformStorage* _transformStorage, ColliderStorage* _colliderStorage)
 {
-	uint32_t index{ _colliderStorage->GetDenseIndex(_colliderID) };
-	Vector3 size{ SIMDVectorMath::Mul(_colliderStorage->boxStorage->scale[index], _transformStorage->scale[_transformIndex]) };
+	Vector3 size{ SIMDVectorMath::Mul(_colliderStorage->GetBoxColliderScale(_colliderID), _transformStorage->GetScale(_transformIndex)) };
 
 	float ixx{ (1.0f / 12.0f) * _mass * (size.y * size.y + size.z * size.z) };
 	float iyy{ (1.0f / 12.0f) * _mass * (size.z * size.z + size.x * size.x) };
@@ -151,10 +141,10 @@ Matrix4x4 RigidBodySystem::GenerateBoxInverseInertiaTensor(const uint32_t& _tran
 	};
 }
 
-Matrix4x4 RigidBodySystem::GenerateSphereInverseInertiaTensor(const uint32_t& _transformIndex, const ColliderID& _colliderID, float _mass, PhysicsTransformStorage* _transformStorage, ColliderStorage* _colliderStorage)
+Matrix4x4 RigidBodySystem::GenerateSphereInverseInertiaTensor(uint32_t _transformIndex, ColliderID _colliderID, float _mass, PhysicsTransformStorage* _transformStorage, ColliderStorage* _colliderStorage)
 {
-	uint32_t index{ _colliderStorage->GetDenseIndex(_colliderID) };
-	float radius{ _colliderStorage->sphereStorage->radius[index] * std::max(std::max(_transformStorage->scale[_transformIndex].x, _transformStorage->scale[_transformIndex].y), _transformStorage->scale[_transformIndex].z) };
+	Vector3 scale{ _transformStorage->GetScale(_transformIndex) };
+	float radius{ _colliderStorage->GetSphereColliderRadius(_colliderID) * std::max(std::max(scale.x, scale.y), scale.z) };
 	float i{ (2.0f / 5.0f) * _mass * radius * radius };
 
 	return Matrix4x4{

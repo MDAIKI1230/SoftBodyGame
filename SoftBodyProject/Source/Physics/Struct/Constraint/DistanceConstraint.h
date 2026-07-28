@@ -8,7 +8,7 @@ struct DistanceConstraint
 {
 public:
 	// EndPoint削除処理
-	void RemoveEndpoint(PhysicsTransformID& _transformID)
+	void RemoveEndpoint(PhysicsTransformID _transformID)
 	{
 		for (int i{ 0 }; i < endPoints.size(); i++)
 		{
@@ -26,5 +26,5 @@ public:
 	// 拘束のメンバー
 	std::vector<EndPoint> endPoints;
 	// 距離
-	float distance;
+	float distance{ 0.0f };
 };

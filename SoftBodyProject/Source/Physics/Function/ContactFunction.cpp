@@ -2,27 +2,27 @@
 
 #include "ContactFunction.h"
 
-bool ContactFunction::SphereSphere(const ColliderID& _colliderA, const ColliderID& _colliderB, ColliderStorage* _colliderStorage, PhysicsTransformStorage* _transformStorage, CollisionManifoldBuffer* _manifoldBuffer)
+bool ContactFunction::SphereSphere(ColliderID _colliderA, ColliderID _colliderB, ColliderStorage* _colliderStorage, PhysicsTransformStorage* _transformStorage, CollisionManifoldBuffer* _manifoldBuffer)
 {
 	// Aの情報取得
-	float radiusA{ _colliderStorage->sphereStorage->radius[_colliderStorage->GetDenseIndex(_colliderA)] };
+	float radiusA{ _colliderStorage->GetSphereColliderRadius(_colliderA) };
 	uint32_t transformIndexA{ _transformStorage->GetDenseIndex(_colliderStorage->GetTransformID(_colliderA)) };
 	// Bの情報取得
-	float radiusB{ _colliderStorage->sphereStorage->radius[_colliderStorage->GetDenseIndex(_colliderB)] };
+	float radiusB{ _colliderStorage->GetSphereColliderRadius(_colliderB) };
 	uint32_t transformIndexB{ _transformStorage->GetDenseIndex(_colliderStorage->GetTransformID(_colliderB)) };
 
 	// スケールの適応(書く方向で最大を選ぶ)
-	Vector3 scale{ _transformStorage->scale[transformIndexA] };
+	Vector3 scale{ _transformStorage->GetScale(transformIndexA) };
 	radiusA *= std::max(std::max(scale.x, scale.y), scale.z);
 
-	scale = _transformStorage->scale[transformIndexB];
+	scale = _transformStorage->GetScale(transformIndexB);
 	radiusB *= std::max(std::max(scale.x, scale.y), scale.z);
 
 	// 半径の合計
 	float totalRadius{ radiusA + radiusB };
 
 	// 差
-	Vector3 diff{ _transformStorage->position[transformIndexB] - _transformStorage->position[transformIndexA] };
+	Vector3 diff{ _transformStorage->GetPosition(transformIndexB) - _transformStorage->GetPosition(transformIndexA) };
 
 	float distSqr{ diff.LengthSqr() };
 	// 判定
@@ -46,12 +46,12 @@ bool ContactFunction::SphereSphere(const ColliderID& _colliderA, const ColliderI
 
 		ContactPoint contactPoint;
 		contactPoint.penetration = totalRadius - std::sqrtf(distSqr);
-		contactPoint.positionLocalA = _transformStorage->rotation[transformIndexA].Conjugate().Rotate(manifold.normal * radiusA);
-		contactPoint.positionLocalB = _transformStorage->rotation[transformIndexB].Conjugate().Rotate(-manifold.normal * radiusB);
+		contactPoint.positionLocalA = _transformStorage->GetRotation(transformIndexA).Conjugate().Rotate(manifold.normal * radiusA);
+		contactPoint.positionLocalB = _transformStorage->GetRotation(transformIndexB).Conjugate().Rotate(-manifold.normal * radiusB);
 
 		manifold.AddPoints(contactPoint);
 
-		_manifoldBuffer->manifolds.push_back(manifold);
+		_manifoldBuffer->Add(manifold);
 
 		return true;
 	}
@@ -59,17 +59,17 @@ bool ContactFunction::SphereSphere(const ColliderID& _colliderA, const ColliderI
 	return false;
 }
 
-bool ContactFunction::SphereBox(const ColliderID& _colliderSphere, const ColliderID& _colliderBox, ColliderStorage* _colliderStorage, PhysicsTransformStorage* _transformStorage, CollisionManifoldBuffer* _manifoldBuffer)
+bool ContactFunction::SphereBox(ColliderID _colliderSphere, ColliderID _colliderBox, ColliderStorage* _colliderStorage, PhysicsTransformStorage* _transformStorage, CollisionManifoldBuffer* _manifoldBuffer)
 {
 	// Sphereの情報取得
-	float radius{ _colliderStorage->sphereStorage->radius[_colliderStorage->GetDenseIndex(_colliderSphere)] };
+	float radius{ _colliderStorage->GetSphereColliderRadius(_colliderSphere) };
 	uint32_t transformIndexSphere{ _transformStorage->GetDenseIndex(_colliderStorage->GetTransformID(_colliderSphere)) };
 	// Boxの情報取得
-	Vector3 halfScaleBox{ _colliderStorage->boxStorage->scale[_colliderStorage->GetDenseIndex(_colliderBox)] * 0.5f };
+	Vector3 halfScaleBox{ _colliderStorage->GetBoxColliderScale(_colliderBox) * 0.5f };
 	uint32_t transformIndexBox{ _transformStorage->GetDenseIndex(_colliderStorage->GetTransformID(_colliderBox)) };
-	Quaternion rotBox{ _transformStorage->rotation[transformIndexBox] };
+	Quaternion rotBox{ _transformStorage->GetRotation(transformIndexBox) };
 
-	halfScaleBox = SIMDVectorMath::Mul(halfScaleBox, _transformStorage->scale[transformIndexBox]);
+	halfScaleBox = SIMDVectorMath::Mul(halfScaleBox, _transformStorage->GetScale(transformIndexBox));
 
 	// 基底ベクトル
 	Vector3 axis[]
@@ -80,7 +80,7 @@ bool ContactFunction::SphereBox(const ColliderID& _colliderSphere, const Collide
 	};
 
 	// ローカル座標
-	Vector3 temp{ _transformStorage->position[transformIndexSphere] - _transformStorage->position[transformIndexBox] };
+	Vector3 temp{ _transformStorage->GetPosition(transformIndexSphere) - _transformStorage->GetPosition(transformIndexBox) };
 	Vector3 localCirclePosition{ Vector3::Dot(axis[0],temp),Vector3::Dot(axis[1],temp),Vector3::Dot(axis[2],temp) };
 
 	// 矩形内にクランプ
@@ -119,14 +119,14 @@ bool ContactFunction::SphereBox(const ColliderID& _colliderSphere, const Collide
 		manifold.normal = axis[0] * normalLocal.x + axis[1] * normalLocal.y + axis[2] * normalLocal.z;
 
 		// クランプしたのをワールドに直すして衝突点にする(BOX)
-		contactPoint.positionLocalA = _transformStorage->rotation[transformIndexSphere].Conjugate().Rotate(manifold.normal * radius);
+		contactPoint.positionLocalA = _transformStorage->GetRotation(transformIndexSphere).Conjugate().Rotate(manifold.normal * radius);
 		// 球は法線から求める
-		contactPoint.positionLocalB = _transformStorage->rotation[transformIndexBox].Conjugate().Rotate(axis[0] * latestPoint.x + axis[1] * latestPoint.y + axis[2] * latestPoint.z);
+		contactPoint.positionLocalB = _transformStorage->GetRotation(transformIndexBox).Conjugate().Rotate(axis[0] * latestPoint.x + axis[1] * latestPoint.y + axis[2] * latestPoint.z);
 
 		// 点追加
 		manifold.AddPoints(contactPoint);
 
-		_manifoldBuffer->manifolds.push_back(manifold);
+		_manifoldBuffer->Add(manifold);
 
 		return true;
 	}
@@ -171,33 +171,33 @@ bool ContactFunction::SphereBox(const ColliderID& _colliderSphere, const Collide
 	// 重なり深さ計算
 	contactPoint.penetration = distances[minIndex];
 	// クランプしたのをワールドに直すして衝突点にする(BOX)
-	contactPoint.positionLocalA = _transformStorage->rotation[transformIndexSphere].Conjugate().Rotate(manifold.normal * radius);
+	contactPoint.positionLocalA = _transformStorage->GetRotation(transformIndexSphere).Conjugate().Rotate(manifold.normal * radius);
 	// 球は法線から求める
-	contactPoint.positionLocalB = _transformStorage->rotation[transformIndexBox].Conjugate().Rotate(axis[0] * latestPoint.x + axis[1] * latestPoint.y + axis[2] * latestPoint.z);
+	contactPoint.positionLocalB = _transformStorage->GetRotation(transformIndexBox).Conjugate().Rotate(axis[0] * latestPoint.x + axis[1] * latestPoint.y + axis[2] * latestPoint.z);
 
 	// 点追加
 	manifold.AddPoints(contactPoint);
 
-	_manifoldBuffer->manifolds.push_back(manifold);
+	_manifoldBuffer->Add(manifold);
 
 	return true;
 }
 
-bool ContactFunction::BoxBox(const ColliderID& _colliderA, const ColliderID& _colliderB, ColliderStorage* _colliderStorage, PhysicsTransformStorage* _transformStorage, CollisionManifoldBuffer* _manifoldBuffer)
+bool ContactFunction::BoxBox(ColliderID _colliderA, ColliderID _colliderB, ColliderStorage* _colliderStorage, PhysicsTransformStorage* _transformStorage, CollisionManifoldBuffer* _manifoldBuffer)
 {
 	// Aの情報取得
-	Vector3 halfScaleA{ _colliderStorage->boxStorage->scale[_colliderStorage->GetDenseIndex(_colliderA)] * 0.5f };
+	Vector3 halfScaleA{ _colliderStorage->GetBoxColliderScale(_colliderA) * 0.5f };
 	uint32_t transformIndexA{ _transformStorage->GetDenseIndex(_colliderStorage->GetTransformID(_colliderA)) };
-	Quaternion rotA{ _transformStorage->rotation[transformIndexA] };
+	Quaternion rotA{ _transformStorage->GetRotation(transformIndexA) };
 	// Bの情報取得
-	Vector3 halfScaleB{ _colliderStorage->boxStorage->scale[_colliderStorage->GetDenseIndex(_colliderB)] * 0.5f };
+	Vector3 halfScaleB{ _colliderStorage->GetBoxColliderScale(_colliderB) * 0.5f };
 	uint32_t transformIndexB{ _transformStorage->GetDenseIndex(_colliderStorage->GetTransformID(_colliderB)) };
-	Quaternion rotB{ _transformStorage->rotation[transformIndexB] };
+	Quaternion rotB{ _transformStorage->GetRotation(transformIndexB) };
 
 	// スケールの適応
-	halfScaleA = SIMDVectorMath::Mul(halfScaleA, _transformStorage->scale[transformIndexA]);
+	halfScaleA = SIMDVectorMath::Mul(halfScaleA, _transformStorage->GetScale(transformIndexA));
 
-	halfScaleB = SIMDVectorMath::Mul(halfScaleB, _transformStorage->scale[transformIndexB]);
+	halfScaleB = SIMDVectorMath::Mul(halfScaleB, _transformStorage->GetScale(transformIndexB));
 
 	// 分離軸候補
 	Vector3 candidateAxisA[]
@@ -226,7 +226,7 @@ bool ContactFunction::BoxBox(const ColliderID& _colliderA, const ColliderID& _co
 	};
 
 	// 位置の差
-	Vector3 diff{ _transformStorage->position[transformIndexB] - _transformStorage->position[transformIndexA] };
+	Vector3 diff{ _transformStorage->GetPosition(transformIndexB) - _transformStorage->GetPosition(transformIndexA) };
 
 	BoxBoxContactInfo info;
 
@@ -274,14 +274,14 @@ bool ContactFunction::BoxBox(const ColliderID& _colliderA, const ColliderID& _co
 	}
 
 	ManifoldFunction::BoxBox(
-		_transformStorage->position[transformIndexA], _transformStorage->rotation[transformIndexA], candidateAxisA, halfsA,
-		_transformStorage->position[transformIndexB], _transformStorage->rotation[transformIndexB], candidateAxisB, halfsB,
+		_transformStorage->GetPosition(transformIndexA), _transformStorage->GetRotation(transformIndexA), candidateAxisA, halfsA,
+		_transformStorage->GetPosition(transformIndexB), _transformStorage->GetRotation(transformIndexB), candidateAxisB, halfsB,
 		info, _manifoldBuffer);
 
 	return true;
 }
 
-bool ContactFunction::CheckAxis(BoxBoxContactInfo& _info, BoxBoxContactInfo::Type _type, Vector3& _testAxis, Vector3& _diff, float _length, int _aIndex, int _bIndex)
+bool ContactFunction::CheckAxis(BoxBoxContactInfo& _info, BoxBoxContactInfo::Type _type, const Vector3& _testAxis, const Vector3& _diff, float _length, int _aIndex, int _bIndex)
 {
 	// 分離軸候補に射影した中心間の距離
 	float dist{ std::abs(Vector3::Dot(_testAxis, _diff)) };
@@ -324,7 +324,7 @@ bool ContactFunction::CheckAxis(BoxBoxContactInfo& _info, BoxBoxContactInfo::Typ
 	return true;
 }
 
-float ContactFunction::CalcLength(Vector3& _axis,Vector3* _candidateAxisA, Vector3* _candidateAxisB,float* _halfsA, float* _halfsB)
+float ContactFunction::CalcLength(const Vector3& _axis, const Vector3* _candidateAxisA, const Vector3* _candidateAxisB, const float* _halfsA, const float* _halfsB)
 {
 	float result{ 0 };
 	// 長さの計算

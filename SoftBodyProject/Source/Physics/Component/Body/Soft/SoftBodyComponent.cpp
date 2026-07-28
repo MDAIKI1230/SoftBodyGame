@@ -3,10 +3,9 @@
 #include "SoftBodyComponent.h"
 
 // コンストラクタ
-SoftBodyComponent::SoftBodyComponent(EntityID _entity, int _handle) :
-	ComponentBase{ _handle }
+SoftBodyComponent::SoftBodyComponent(EntityID _entity) :
+	id{ PhysicsAPI::CreateSoftBody(_entity, SoftBodyUpdateInfo{}) }
 {
-	id = PhysicsAPI::CreateSoftBody(_entity, SoftBodyUpdateInfo{});
 }
 
 // 横幅取得

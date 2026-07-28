@@ -1,15 +1,10 @@
 ﻿#pragma once
 
-#include "SparseSetStorageBase.h"
+#include "UniqueComponentStorageBase.h"
 
 #include "TransformComponent.h"
 
-class TransformComponentStorage :public SparseSetStorageBase<TransformComponent>
+class TransformComponentStorage :public UniqueComponentStorageBase<TransformComponent>
 {
-public:
-	TransformComponentStorage()
-	{
 
-		sparseSet.Reserve(50);
-	}
 };

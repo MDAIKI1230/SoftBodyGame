@@ -6,14 +6,14 @@
 
 struct ContactConstraint
 {
-	uint32_t solverBodyAIndex;
-	uint32_t solverBodyBIndex;
+	uint32_t solverBodyAIndex{ 0 };
+	uint32_t solverBodyBIndex{ 0 };
 
 	Vector3 positionLocalA;
 	Vector3 positionLocalB;
 
 	Vector3 normal;
-	float penetration;
+	float penetration{ 0.0f };
 
 	// 蓄積したλ
 	float accumulatedLambda{ 0 };

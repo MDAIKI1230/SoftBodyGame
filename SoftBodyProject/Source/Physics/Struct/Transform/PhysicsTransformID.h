@@ -1,24 +1,17 @@
 ﻿#pragma once
 
-#include <stdint.h>
+#include "GenerationalID.h"
 
-struct PhysicsTransformID
-{
-	uint32_t index{ 0 };
-	unsigned char generation{ 0 };
+struct PhysicsTransformTag;
 
-	bool operator==(const PhysicsTransformID& other) const
-	{
-		return index == other.index && generation == other.generation;
-	}
-};
+using PhysicsTransformID = GenerationalID<PhysicsTransformTag>;
 
 template<>
 struct std::hash<PhysicsTransformID>
 {
-	size_t operator()(const PhysicsTransformID& p) const
+	size_t operator()(PhysicsTransformID p) const
 	{
-		return std::hash<size_t>{}(p.index)
-			^ (std::hash<size_t>{}(p.generation) << 1);
+		return std::hash<size_t>{}(p.GetIndex())
+			^ (std::hash<size_t>{}(p.GetGeneration()) << 1);
 	}
 };

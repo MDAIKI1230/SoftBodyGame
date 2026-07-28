@@ -9,11 +9,11 @@ void ConstraintBuildSystem::FixedUpdate(ConstraintStorage* _constraintStorage, S
 void ConstraintBuildSystem::BuildPointConstraint(ConstraintStorage* _constraintStorage, SolverBodyBuffer* _solverBodyBuffer, ConstraintBuffer* _constraintBuffer)
 {
 	// 拘束が存在するかチェック
-	if (_constraintStorage->pointConstraintStorage->constraints.size() <= 0)
+	if (_constraintStorage->CountPointConstraint() <= 0)
 	{
 		return;
 	}
-	for (auto& pointConstraint : _constraintStorage->pointConstraintStorage->constraints)
+	for (auto& pointConstraint : _constraintStorage->GetPointConstraintRange())
 	{
 		// ポイントが2つ以上じゃないと拘束なんて発生しない
 		if (pointConstraint.endPoints.size() <= 1)
@@ -22,8 +22,8 @@ void ConstraintBuildSystem::BuildPointConstraint(ConstraintStorage* _constraintS
 		}
 
 		// 基準点となるボディから位置を持ってくる。
-		uint32_t basePointIndex{ _solverBodyBuffer->bodyMap[pointConstraint.endPoints[0].transformID] };
-		SolverBody& solverBodyBase{ _solverBodyBuffer->solverBodies[basePointIndex] };
+		uint32_t basePointIndex{ _solverBodyBuffer->GetIndex(pointConstraint.endPoints[0].transformID) };
+		const SolverBody& solverBodyBase{ _solverBodyBuffer->Get(basePointIndex) };
 		Vector3 basePoint{ solverBodyBase.position + solverBodyBase.rotation.Rotate(pointConstraint.endPoints[0].localPoint) };
 
 		for (int i{ 1 }; i < pointConstraint.endPoints.size(); i++)
@@ -31,8 +31,8 @@ void ConstraintBuildSystem::BuildPointConstraint(ConstraintStorage* _constraintS
 			Constraint constraint;
 
 			// 対象の位置を取得
-			uint32_t pointIndex{ _solverBodyBuffer->bodyMap[pointConstraint.endPoints[i].transformID] };
-			SolverBody& solverBody{ _solverBodyBuffer->solverBodies[pointIndex] };
+			uint32_t pointIndex{ _solverBodyBuffer->GetIndex(pointConstraint.endPoints[i].transformID) };
+			const SolverBody& solverBody{ _solverBodyBuffer->Get(pointIndex) };
 			Vector3 point{ solverBody.position + solverBody.rotation.Rotate(pointConstraint.endPoints[i].localPoint) };
 
 			constraint.solverBodyAIndex = basePointIndex;
@@ -54,7 +54,7 @@ void ConstraintBuildSystem::BuildPointConstraint(ConstraintStorage* _constraintS
 			constraint.jacobian[3] = -Vector3::Cross(rB, Vector3::RIGHT);
 
 			// 拘束として追加
-			_constraintBuffer->constraints.push_back(constraint);
+			_constraintBuffer->Add(constraint);
 
 			// 差をそのまま拘束Cの結果とする
 			constraint.error = diff.y;
@@ -67,7 +67,7 @@ void ConstraintBuildSystem::BuildPointConstraint(ConstraintStorage* _constraintS
 			constraint.jacobian[3] = -Vector3::Cross(rB, Vector3::UP);
 
 			// 拘束として追加
-			_constraintBuffer->constraints.push_back(constraint);
+			_constraintBuffer->Add(constraint);
 
 			// 差をそのまま拘束Cの結果とする
 			constraint.error = diff.z;
@@ -80,7 +80,7 @@ void ConstraintBuildSystem::BuildPointConstraint(ConstraintStorage* _constraintS
 			constraint.jacobian[3] = -Vector3::Cross(rB, Vector3::FORWARD);
 
 			// 拘束として追加
-			_constraintBuffer->constraints.push_back(constraint);
+			_constraintBuffer->Add(constraint);
 		}
 	}
 }
@@ -88,11 +88,11 @@ void ConstraintBuildSystem::BuildPointConstraint(ConstraintStorage* _constraintS
 void ConstraintBuildSystem::BuildDistanceConstraint(ConstraintStorage* _constraintStorage, SolverBodyBuffer* _solverBodyBuffer, ConstraintBuffer* _constraintBuffer)
 {
 	// 拘束が存在するかチェック
-	if (_constraintStorage->distanceConstraintStorage->constraints.size() <= 0)
+	if (_constraintStorage->CountDistanceConstraint() <= 0)
 	{
 		return;
 	}
-	for (auto& distanceConstraint : _constraintStorage->distanceConstraintStorage->constraints)
+	for (auto& distanceConstraint : _constraintStorage->GetDistanceConstraintRange())
 	{
 		// ポイントが2つ以上じゃないと拘束なんて発生しない
 		if (distanceConstraint.endPoints.size() <= 1)
@@ -101,8 +101,8 @@ void ConstraintBuildSystem::BuildDistanceConstraint(ConstraintStorage* _constrai
 		}
 
 		// 基準点となるボディから位置を持ってくる。
-		uint32_t basePointIndex{ _solverBodyBuffer->bodyMap[distanceConstraint.endPoints[0].transformID] };
-		SolverBody& solverBodyBase{ _solverBodyBuffer->solverBodies[basePointIndex] };
+		uint32_t basePointIndex{ _solverBodyBuffer->GetIndex(distanceConstraint.endPoints[0].transformID) };
+		const SolverBody& solverBodyBase{ _solverBodyBuffer->Get(basePointIndex) };
 		Vector3 basePoint{ solverBodyBase.position + solverBodyBase.rotation.Rotate(distanceConstraint.endPoints[0].localPoint) };
 
 		for (int i{ 1 }; i < distanceConstraint.endPoints.size(); i++)
@@ -110,8 +110,8 @@ void ConstraintBuildSystem::BuildDistanceConstraint(ConstraintStorage* _constrai
 			Constraint constraint;
 
 			// 対象の位置を取得
-			uint32_t pointIndex{ _solverBodyBuffer->bodyMap[distanceConstraint.endPoints[i].transformID] };
-			SolverBody& solverBody{ _solverBodyBuffer->solverBodies[pointIndex] };
+			uint32_t pointIndex{ _solverBodyBuffer->GetIndex(distanceConstraint.endPoints[i].transformID) };
+			const SolverBody& solverBody{ _solverBodyBuffer->Get(pointIndex) };
 			Vector3 point{ solverBody.position + solverBody.rotation.Rotate(distanceConstraint.endPoints[i].localPoint) };
 
 			constraint.solverBodyAIndex = basePointIndex;
@@ -144,7 +144,7 @@ void ConstraintBuildSystem::BuildDistanceConstraint(ConstraintStorage* _constrai
 			constraint.jacobian[3] = -Vector3::Cross(rB, normal);
 
 			// 拘束として追加
-			_constraintBuffer->constraints.push_back(constraint);
+			_constraintBuffer->Add(constraint);
 		}
 	}
 }

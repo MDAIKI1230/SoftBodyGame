@@ -10,15 +10,13 @@ ColliderStorage::ColliderStorage()
 ColliderID ColliderStorage::CreateSphere(EntityID _entity, PhysicsTransformID _transformID, float _radius)
 {
 	// ColliderIDの作成(denseIndexに関しては、どの配列も同じサイズのためIDを使う)
-	ColliderID id{ GenerateColliderID(ColliderType::SPHERE, sphereStorage->id.size(),aabbStorage->aabb.size(), _entity, _transformID) };
+	ColliderID id{ CreateID(ColliderType::SPHERE, sphereStorage->CountID(),aabbStorage->Count(), _entity, _transformID)};
 
 	// 実際のデータを追加
-	sphereStorage->radius.push_back(_radius);
-	sphereStorage->id.push_back(id);
+	sphereStorage->Add(id, _radius);
 
 	// aabbを作成フラグを追加しておく(後からシステムが作ってくれる)
-	aabbStorage->dirty.emplace_back(AABBChangeDirtyFlag::MAKE);
-	aabbStorage->aabb.emplace_back(id, _transformID);
+	aabbStorage->Add(AABBBroadPhaseCollider{ id, _transformID }, AABBChangeDiaryFlag::MAKE);
 
 	// mapに追加
 	transformMap[_transformID].push_back(id);
@@ -30,15 +28,13 @@ ColliderID ColliderStorage::CreateSphere(EntityID _entity, PhysicsTransformID _t
 ColliderID ColliderStorage::CreateBox(EntityID _entity, PhysicsTransformID _transformID, const Vector3& _scale)
 {
 	// ColliderIDの作成(denseIndexに関しては、どの配列も同じサイズのためIDを使う)
-	ColliderID id{ GenerateColliderID(ColliderType::BOX, boxStorage->id.size(),aabbStorage->aabb.size(), _entity, _transformID) };
+	ColliderID id{ CreateID(ColliderType::BOX, boxStorage->CountID(),aabbStorage->Count(), _entity, _transformID)};
 
 	// 実際のデータを追加
-	boxStorage->scale.push_back(_scale);
-	boxStorage->id.push_back(id);
+	boxStorage->Add(id, _scale);
 
 	// aabbを作成フラグを追加しておく(後からシステムが作ってくれる)
-	aabbStorage->dirty.emplace_back(AABBChangeDirtyFlag::MAKE);
-	aabbStorage->aabb.emplace_back(id, _transformID);
+	aabbStorage->Add(AABBBroadPhaseCollider{ id, _transformID }, AABBChangeDiaryFlag::MAKE);
 
 	// mapに追加
 	transformMap[_transformID].push_back(id);
@@ -54,14 +50,14 @@ void ColliderStorage::Destroy(ColliderID _id)
 	}
 
 	// Mapから削除
-	auto it = transformMap.find(slots[_id.index].transformID);
+	auto it = transformMap.find(GetTransformID(_id));
 	if (it != transformMap.end())
 	{
 		auto& list = it->second;
 
-		std::erase_if(list, [_id](const ColliderID& x)
+		std::erase_if(list, [_id](ColliderID x)
 			{
-				return x.index == _id.index && x.generation == _id.generation;
+				return x.GetIndex() == _id.GetIndex() && x.GetGeneration() == _id.GetGeneration();
 			});
 
 		if (list.empty())
@@ -73,99 +69,48 @@ void ColliderStorage::Destroy(ColliderID _id)
 	// 移動インデックス
 	ColliderID movedId{};
 
-	switch (slots[_id.index].type)
+	switch (GetType(_id))
 	{
 	case ColliderType::SPHERE:
-		movedId = sphereStorage->Remove(slots[_id.index].denseIndex);
+		movedId = sphereStorage->Remove(GetDenseIndex(_id));
 		break;
 
 	case ColliderType::BOX:
-		movedId = boxStorage->Remove(slots[_id.index].denseIndex);
+		movedId = boxStorage->Remove(GetDenseIndex(_id));
 		break;
 	}
 
-	if (!(movedId.index == _id.index && movedId.generation == _id.generation))
+	if (!(movedId.GetIndex() == _id.GetIndex() && movedId.GetGeneration() == _id.GetGeneration()))
 	{
-		slots[movedId.index].denseIndex = slots[_id.index].denseIndex;
+		EditDenseIndex(movedId) = GetDenseIndex(_id);
 	}
 
 	// aabbも消す
-	movedId = aabbStorage->Remove(slots[_id.index].aabbIndex);
-	if (!(movedId.index == _id.index && movedId.generation == _id.generation))
+	movedId = aabbStorage->Remove(GetAABBIndex(_id));
+	if (!(movedId.GetIndex() == _id.GetIndex() && movedId.GetGeneration() == _id.GetGeneration()))
 	{
-		slots[movedId.index].aabbIndex = slots[_id.index].aabbIndex;
+		EditSlotMember<&ColliderSlot::aabbIndex>(_id) = GetAABBIndex(_id);
 	}
 	// 削除
-	slots[_id.index].alive = false;
-	slots[_id.index].generation++;
-	freeSlots.push_back(_id.index);
-}
-
-bool ColliderStorage::IsAlive(ColliderID _id) const
-{
-	return slots[_id.index].alive && slots[_id.index].generation == _id.generation;
+	ReleaseID(_id);
 }
 
 ColliderType ColliderStorage::GetType(ColliderID _id) const
 {
-	return slots[_id.index].type;
-}
-
-uint32_t ColliderStorage::GetDenseIndex(ColliderID _id) const
-{
-	return slots[_id.index].denseIndex;
+	return GetSlot(_id).type;
 }
 
 uint32_t ColliderStorage::GetAABBIndex(ColliderID _id) const
 {
-	return slots[_id.index].aabbIndex;
-}
-
-EntityID ColliderStorage::GetOwnerEntity(ColliderID _id) const
-{
-	return slots[_id.index].ownerEntity;
+	return GetSlot(_id).aabbIndex;
 }
 
 PhysicsTransformID ColliderStorage::GetTransformID(ColliderID _id) const
 {
-	return slots[_id.index].transformID;
+	return GetSlot(_id).transformID;
 }
 
 std::vector<ColliderID>& ColliderStorage::GetColliderIDFromTransformID(PhysicsTransformID _id)
 {
 	return transformMap[_id];
-}
-
-ColliderID ColliderStorage::GenerateColliderID(ColliderType _type, uint32_t _denseIndex, uint32_t _aabbIndex,EntityID _ownerEntity, PhysicsTransformID _transformID)
-{
-	if (freeSlots.empty())
-	{
-		// --- フリーのスロットがないため新たにスロットを作成---
-		
-		// IDを作成(初代判定で1)
-		ColliderID result{ slots.size(),1 };
-		// Slotを増設
-		slots.emplace_back(_type, _denseIndex, _aabbIndex, _ownerEntity, _transformID);
-
-		return result;
-	}
-	else
-	{
-		// フリーのスロットがあるためそれを使用
-
-		// 最後を取る
-		size_t index{ freeSlots.back() };
-		freeSlots.pop_back();
-
-		// 世代は削除時に加算済み
-		slots[index].alive = true;
-		slots[index].type = _type;
-		slots[index].denseIndex = _denseIndex;
-		slots[index].aabbIndex = _aabbIndex;
-		slots[index].ownerEntity = _ownerEntity;
-		slots[index].transformID = _transformID;
-
-		// IDを作成(初代判定で1)
-		return ColliderID{ (uint32_t)(index),slots[index].generation };
-	}
 }

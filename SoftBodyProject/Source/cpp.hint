@@ -1,0 +1,7 @@
+#define MD_STORAGE_READ_WRITE_COLUMN(Type, _name, _member)
+#define MD_STORAGE_READ_ONLY_COLUMN(Type, _name, _member)
+#define MD_STORAGE_WRITE_ORIGINAL_COLUMN(Type, _name, _member)
+#define MD_STORAGE_BUFFER_COLUMN(Type, _name, _member)
+#define MD_OWNED_STORAGE_READ_WRITE_ACCESSORS(IDType, MemberType, _name, _storageName)
+#define MD_OWNED_STORAGE_READ_ONLY_ACCESSORS(IDType, MemberType, _name, _storageName)
+#define MD_OWNED_STORAGE_WRITE_ORIGINAL_ACCESSORS(IDType, MemberType, _name, _storageName)

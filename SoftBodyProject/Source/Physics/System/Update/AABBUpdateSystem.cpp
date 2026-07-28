@@ -6,48 +6,48 @@
 
 void AABBUpdateSystem::FixedUpdate(PhysicsTransformStorage* _transformStorage, ColliderStorage* _colliderStorage)
 {
-	AABBBroadPhaseColliderStorage* aabbStorage{ _colliderStorage->aabbStorage.get() };
-	for (int i{ 0 }; i < aabbStorage->dirty.size(); i++)
+	uint32_t size{ _colliderStorage->AABBCount() };
+	for (uint32_t i{ 0 }; i < size; i++)
 	{
-		if (aabbStorage->dirty[i] & AABBChangeDirtyFlag::MAKE)
+		if (_colliderStorage->GetAABBDiaryFlag(i) & AABBChangeDiaryFlag::MAKE)
 		{
-			ColliderID id{ _colliderStorage->aabbStorage->aabb[i].colliderID };
+			ColliderID id{ _colliderStorage->GetAABBBroadPhaseCollider(i).colliderID};
 
 			switch (_colliderStorage->GetType(id))
 			{
 			case ColliderType::SPHERE:
-				ComputeSphere(_colliderStorage->aabbStorage->aabb[i], _colliderStorage, id, _transformStorage);
+				ComputeSphere(_colliderStorage->EditAABBBroadPhaseCollider(i), _colliderStorage, id, _transformStorage);
 				break;
 			case ColliderType::BOX:
-				ComputeBox(_colliderStorage->aabbStorage->aabb[i], _colliderStorage, id, _transformStorage);
+				ComputeBox(_colliderStorage->EditAABBBroadPhaseCollider(i), _colliderStorage, id, _transformStorage);
 				break;
 			default:
 				break;
 			}
 
-			aabbStorage->dirty[i] = AABBChangeDirtyFlag::NONE;
+			_colliderStorage->EditAABBDiaryFlag(i) = AABBChangeDiaryFlag::NONE;
 		}
 
-		if (aabbStorage->dirty[i] & AABBChangeDirtyFlag::TRANSFORM)
+		if (_colliderStorage->GetAABBDiaryFlag(i) & AABBChangeDiaryFlag::TRANSFORM)
 		{
-			ColliderID id{ _colliderStorage->aabbStorage->aabb[i].colliderID };
+			ColliderID id{ _colliderStorage->GetAABBBroadPhaseCollider(i).colliderID };
 
 			switch (_colliderStorage->GetType(id))
 			{
 			case ColliderType::SPHERE:
-				ComputeSphere(_colliderStorage->aabbStorage->aabb[i], _colliderStorage, id, _transformStorage);
+				ComputeSphere(_colliderStorage->EditAABBBroadPhaseCollider(i), _colliderStorage, id, _transformStorage);
 				break;
 			case ColliderType::BOX:
-				ComputeBox(_colliderStorage->aabbStorage->aabb[i], _colliderStorage, id, _transformStorage);
+				ComputeBox(_colliderStorage->EditAABBBroadPhaseCollider(i), _colliderStorage, id, _transformStorage);
 				break;
 			default:
 				break;
 			}
 
-			aabbStorage->dirty[i] = AABBChangeDirtyFlag::NONE;
+			_colliderStorage->EditAABBDiaryFlag(i) = AABBChangeDiaryFlag::NONE;
 		}
 
-		if (aabbStorage->dirty[i] & AABBChangeDirtyFlag::SHAPE)
+		if (_colliderStorage->GetAABBDiaryFlag(i) & AABBChangeDiaryFlag::SHAPE)
 		{
 
 		}
@@ -56,11 +56,11 @@ void AABBUpdateSystem::FixedUpdate(PhysicsTransformStorage* _transformStorage, C
 
 void AABBUpdateSystem::ComputeSphere(AABBBroadPhaseCollider& aabb, ColliderStorage* _colliderStorage, ColliderID _id, PhysicsTransformStorage* _transformStorage)
 {
-	Vector3& scale{ _transformStorage->scale[_transformStorage->GetDenseIndex(_colliderStorage->GetTransformID(_id))] };
+	Vector3 scale{ _transformStorage->GetScale(_transformStorage->GetDenseIndex(_colliderStorage->GetTransformID(_id))) };
 	// 最大値で倍にする
 	float multiple{ std::max(std::max(scale.x,scale.y),scale.z) };
-	aabb.min = Vector3{ -_colliderStorage->sphereStorage->radius[_colliderStorage->GetDenseIndex(_id)] * multiple};
-	aabb.max = Vector3{ _colliderStorage->sphereStorage->radius[_colliderStorage->GetDenseIndex(_id)] * multiple };
+	aabb.min = Vector3{ -_colliderStorage->GetSphereColliderRadius(_id) * multiple };
+	aabb.max = Vector3{ _colliderStorage->GetSphereColliderRadius(_id) * multiple };
 }
 
 void AABBUpdateSystem::ComputeBox(AABBBroadPhaseCollider& aabb, ColliderStorage* _colliderStorage, ColliderID _id, PhysicsTransformStorage* _transformStorage)
@@ -68,14 +68,14 @@ void AABBUpdateSystem::ComputeBox(AABBBroadPhaseCollider& aabb, ColliderStorage*
 	uint32_t transIndex{ _transformStorage->GetDenseIndex(_colliderStorage->GetTransformID(_id)) };
 
 	// 行列から各方向を取得
-	Vector3 right = _transformStorage->rotation[transIndex].Rotate(Vector3::RIGHT);
-	Vector3 up = _transformStorage->rotation[transIndex].Rotate(Vector3::UP);
-	Vector3 forward = _transformStorage->rotation[transIndex].Rotate(Vector3::FORWARD);
+	Vector3 right = _transformStorage->GetRotation(transIndex).Rotate(Vector3::RIGHT);
+	Vector3 up = _transformStorage->GetRotation(transIndex).Rotate(Vector3::UP);
+	Vector3 forward = _transformStorage->GetRotation(transIndex).Rotate(Vector3::FORWARD);
 
-	Vector3 halfScale{ _colliderStorage->boxStorage->scale[_colliderStorage->GetDenseIndex(_id)] * 0.5f};
+	Vector3 halfScale{ _colliderStorage->GetBoxColliderScale(_id) * 0.5f};
 
 	// 各方向に倍
-	halfScale = SIMDVectorMath::Mul(halfScale, _transformStorage->scale[transIndex]);
+	halfScale = SIMDVectorMath::Mul(halfScale, _transformStorage->GetScale(transIndex));
 
 	Vector3 aabbScale;
 

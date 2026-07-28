@@ -17,9 +17,9 @@ void ManifoldFunction::AddUniquePoint(Manifold& _manifold, const ContactPoint& _
 }
 
 void ManifoldFunction::BoxBox(
-    Vector3& _positionA, Quaternion& _rotationA, Vector3* _candidateAxisA, float* _halfsA,
-    Vector3& _positionB, Quaternion& _rotationB, Vector3* _candidateAxisB, float* _halfsB,
-    BoxBoxContactInfo& _info, CollisionManifoldBuffer* _manifoldBuffer)
+    const Vector3& _positionA, const Quaternion& _rotationA, const Vector3* _candidateAxisA, const float* _halfsA,
+    const Vector3& _positionB, const Quaternion& _rotationB, const Vector3* _candidateAxisB, const float* _halfsB,
+    const BoxBoxContactInfo& _info, CollisionManifoldBuffer* _manifoldBuffer)
 {
     switch (_info.type)
     {
@@ -45,9 +45,9 @@ void ManifoldFunction::BoxBox(
 }
 
 void ManifoldFunction::AddFaceAManifold(
-    Vector3& _positionA, Quaternion& _rotationA, Vector3* _candidateAxisA, float* _halfsA,
-    Vector3& _positionB, Quaternion& _rotationB, Vector3* _candidateAxisB, float* _halfsB,
-    BoxBoxContactInfo& _info, CollisionManifoldBuffer* _manifoldBuffer)
+    const Vector3& _positionA, const Quaternion& _rotationA, const Vector3* _candidateAxisA, const float* _halfsA,
+    const Vector3& _positionB, const Quaternion& _rotationB, const Vector3* _candidateAxisB, const float* _halfsB,
+    const BoxBoxContactInfo& _info, CollisionManifoldBuffer* _manifoldBuffer)
 {
     Manifold manifold;
     manifold.colliderA = _info.colliderA;
@@ -94,12 +94,12 @@ void ManifoldFunction::AddFaceAManifold(
         return;
     }
 
-    _manifoldBuffer->manifolds.push_back(manifold);
+    _manifoldBuffer->Add(manifold);
 }
 void ManifoldFunction::AddFaceBManifold(
-    Vector3& _positionA, Quaternion& _rotationA, Vector3* _candidateAxisA, float* _halfsA,
-    Vector3& _positionB, Quaternion& _rotationB, Vector3* _candidateAxisB, float* _halfsB,
-    BoxBoxContactInfo& _info, CollisionManifoldBuffer* _manifoldBuffer)
+    const Vector3& _positionA, const Quaternion& _rotationA, const Vector3* _candidateAxisA, const float* _halfsA,
+    const Vector3& _positionB, const Quaternion& _rotationB, const Vector3* _candidateAxisB, const float* _halfsB,
+    const BoxBoxContactInfo& _info, CollisionManifoldBuffer* _manifoldBuffer)
 {
     Manifold manifold;
     manifold.colliderA = _info.colliderA;
@@ -147,13 +147,13 @@ void ManifoldFunction::AddFaceBManifold(
         return;
     }
 
-    _manifoldBuffer->manifolds.push_back(manifold);
+    _manifoldBuffer->Add(manifold);
 }
 
 void ManifoldFunction::AddEdgeManifold(
-    Vector3& _positionA, Quaternion& _rotationA, Vector3* _candidateAxisA, float* _halfsA,
-    Vector3& _positionB, Quaternion& _rotationB, Vector3* _candidateAxisB, float* _halfsB,
-    BoxBoxContactInfo& _info, CollisionManifoldBuffer* _manifoldBuffer)
+    const Vector3& _positionA, const Quaternion& _rotationA, const Vector3* _candidateAxisA, const float* _halfsA,
+    const Vector3& _positionB, const Quaternion& _rotationB, const Vector3* _candidateAxisB, const float* _halfsB,
+    const BoxBoxContactInfo& _info, CollisionManifoldBuffer* _manifoldBuffer)
 {
     Manifold manifold;
     manifold.colliderA = _info.colliderA;
@@ -273,14 +273,14 @@ void ManifoldFunction::AddEdgeManifold(
     }
 
     // バッファに追加
-    _manifoldBuffer->manifolds.push_back(manifold);
+    _manifoldBuffer->Add(manifold);
 }
 
 
 std::vector<Vector3> ManifoldFunction::GenerateFaceContact(
-    Vector3& _refarencePos, Vector3* _refarenceAxis, float* _refarenceHalfs,
-    Vector3& _incidentPos, Vector3* _incidentAxis, float* _incidentHalfs,
-    Vector3& _faceNormal, Vector3& _faceCenter, int _refarenceIndex)
+    const Vector3& _refarencePos, const Vector3* const _refarenceAxis, const  float* _refarenceHalfs,
+    const Vector3& _incidentPos, const Vector3* const _incidentAxis, const float* _incidentHalfs,
+    const Vector3& _faceNormal, const Vector3& _faceCenter, int _refarenceIndex)
 {
     // 基準面の横幅と縦幅の方向と大きさを用意
     int vIndex{ (_refarenceIndex + 1) % 3 };

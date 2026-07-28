@@ -16,7 +16,7 @@
 #include "UpdateSystem.h"
 #include "FixedUpdateSystem.h"
 #include "RenderingSystem.h"
-#include "SparseSetStorageBase.h"
+#include "UniqueComponentStorageBase.h"
 
 class SceneBase
 {
@@ -49,7 +49,7 @@ protected:
 	/// </summary>
 	/// <param name="storage">入れたいストレージ</param>
 	template<typename T>
-	void AddStorage(std::unique_ptr<SparseSetStorageBase<T>>&& _storage)
+	void AddStorage(std::unique_ptr<StorageBase>&& _storage)
 	{
 		worldStorage->AddStorage<T>(std::move(_storage));
 	}

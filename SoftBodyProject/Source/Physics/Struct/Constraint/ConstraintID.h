@@ -1,9 +1,7 @@
 ﻿#pragma once
 
-#include <cstdint>
+#include "GenerationalID.h"
 
-struct ConstraintID
-{
-	uint32_t index;
-	unsigned char generation;
-};
+struct ConstraintTag;
+
+using ConstraintID = GenerationalID<ConstraintTag>;

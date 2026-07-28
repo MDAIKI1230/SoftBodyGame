@@ -21,5 +21,5 @@ struct BodyUpdate
 	bool isGravity;
 	Vector3 gravity;
 
-	uint16_t dirty;
+	uint16_t diary;
 };

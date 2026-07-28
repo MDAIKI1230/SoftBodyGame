@@ -66,7 +66,7 @@ SceneBase::SceneBase()
 	// オブジェクトマネージャー
 	objectManager = std::make_unique<ObjectManager>();
 
-	PhysicsAPI::SetWorld(physicsWorld.get());
+	PhysicsAPI::BindWorld(*physicsWorld.get());
 
 #ifdef _DEBUG
 	AddSystem(std::make_unique<DebugRenderingSystem>());
@@ -95,6 +95,7 @@ void SceneBase::Execute()
 	case SceneState::TERMINATE:
 		// 終了
 		Terminate();
+		PhysicsAPI::UnbindWorld();
 		break;
 	case SceneState::FADEOUT:
 		// ロードシーンに移行
@@ -180,7 +181,7 @@ void SceneBase::LoadFile(std::string _filePath)
 	for (auto& objData : fileData.objectDatas)
 	{
 		// 対応オブジェクトを作成
-		std::unique_ptr<ObjectBase> obj{ std::move(ObjectFactory::CreateFuncs[objData.type](worldStorage.get(), objectManager->GetHandle())) };
+		std::unique_ptr<ObjectBase> obj{ std::move(ObjectFactory::CreateFuncs[objData.type](worldStorage.get(), objectManager->GenerateNewID())) };
 
 		for (auto& componentData : objData.components)
 		{

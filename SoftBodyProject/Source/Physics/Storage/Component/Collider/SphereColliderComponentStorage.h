@@ -1,10 +1,11 @@
 ﻿#pragma once
 
-#include "SparseSetStorageBase.h"
+#include "MultiComponentStorageBase.h"
 
 #include "SphereColliderComponent.h"
 
-class SphereColliderComponentStorage : public SparseSetStorageBase<SphereColliderComponent>
+class SphereColliderComponentStorage : public MultiComponentStorageBase<SphereColliderComponent>
 {
-
+	void OnRemoving(EntityID _entity, const SphereColliderComponent& _component) override;
 };
+

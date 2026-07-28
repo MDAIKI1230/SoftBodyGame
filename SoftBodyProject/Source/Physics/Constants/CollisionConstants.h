@@ -20,7 +20,7 @@ enum class ColliderType :char
 };
 
 // AABB変更日記
-enum AABBChangeDirtyFlag :uint8_t
+enum AABBChangeDiaryFlag :uint8_t
 {
 	NONE = 0,
 	MAKE = 1,
@@ -28,4 +28,4 @@ enum AABBChangeDirtyFlag :uint8_t
 	SHAPE = 1 << 2
 };
 
-using AABBDirtyFlag = uint8_t;
+using AABBDiaryFlag = uint8_t;

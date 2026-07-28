@@ -22,9 +22,9 @@ public:
 	ObjectBase* Get(EntityID _index);
 
 	// EntityHandle取得
-	uint32_t GetHandle()
+	EntityID GenerateNewID()
 	{
-		return static_cast<uint32_t>(objects.size());
+		return EntityID{ static_cast<EntityID::Index>(objects.size()),1 };
 	}
 private:
 	std::vector<std::unique_ptr<ObjectBase>> objects{};

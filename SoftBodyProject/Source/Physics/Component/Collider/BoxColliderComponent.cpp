@@ -2,33 +2,30 @@
 
 #include "BoxColliderComponent.h"
 
-BoxColliderComponent::BoxColliderComponent(EntityID _entity, int _handle) :
-	ColliderComponent{ _handle }
+BoxColliderComponent::BoxColliderComponent(EntityID _entity) :
+	ColliderComponent{ PhysicsAPI::CreateBox(_entity, Vector3::ONE) }
 {
-	colliderID = PhysicsAPI::CreateBox(_entity, Vector3::ONE);
 }
 
-BoxColliderComponent::BoxColliderComponent(EntityID _entity, int _handle, float _width, float _height, float _depth) :
-	ColliderComponent{ _handle }
+BoxColliderComponent::BoxColliderComponent(EntityID _entity, float _width, float _height, float _depth) :
+	ColliderComponent{ PhysicsAPI::CreateBox(_entity, Vector3{ _width,_height,_depth }) }
 {
-	colliderID = PhysicsAPI::CreateBox(_entity, Vector3{ _width,_height,_depth });
 }
 
-BoxColliderComponent::BoxColliderComponent(EntityID _entity, int _handle, float _size) :
-	ColliderComponent{ _handle }
+BoxColliderComponent::BoxColliderComponent(EntityID _entity, float _size) :
+	ColliderComponent{ PhysicsAPI::CreateBox(_entity, Vector3{ _size }) }
 {
-	colliderID = PhysicsAPI::CreateBox(_entity, Vector3{ _size });
 }
 
 
-float BoxColliderComponent::GetWidth() { return PhysicsAPI::GetWidth(colliderID); }
+float BoxColliderComponent::GetWidth() const { return PhysicsAPI::GetWidth(id); }
 
-void BoxColliderComponent::SetWidth(float _width) { PhysicsAPI::SetWidth(colliderID, _width); }
+void BoxColliderComponent::SetWidth(float _width) { PhysicsAPI::SetWidth(id, _width); }
 
-float BoxColliderComponent::GetHeight() { return PhysicsAPI::GetHeight(colliderID); }
+float BoxColliderComponent::GetHeight() const { return PhysicsAPI::GetHeight(id); }
 
-void BoxColliderComponent::SetHeight(float _heibht) { PhysicsAPI::SetHeight(colliderID, _heibht); }
+void BoxColliderComponent::SetHeight(float _heibht) { PhysicsAPI::SetHeight(id, _heibht); }
 
-float BoxColliderComponent::GetDepth() { return PhysicsAPI::GetDepth(colliderID); }
+float BoxColliderComponent::GetDepth() const { return PhysicsAPI::GetDepth(id); }
 
-void BoxColliderComponent::SetDepth(float _depth) { PhysicsAPI::SetDepth(colliderID, _depth); }
+void BoxColliderComponent::SetDepth(float _depth) { PhysicsAPI::SetDepth(id, _depth); }

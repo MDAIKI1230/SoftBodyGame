@@ -7,23 +7,7 @@
 void DxlibRenderer::SetCamera(const Camera& _camera)
 {
 	// 位置と見る点を決める
-    VECTOR eye = ToDxlib(_camera.GetPos());
-    VECTOR target = ToDxlib(_camera.GetTarget());
-    VECTOR up = DxLib::VGet(0.0f, 1.0f, 0.0f);
-
-    MATRIX view{};
-    DxLib::CreateLookAtMatrixRH(&view, &eye, &target, &up);
-    DxLib::SetCameraViewMatrix(view);
-
-    MATRIX projection{};
-    DxLib::CreatePerspectiveFovMatrixRH(
-        &projection,
-        DX_PI_F / 3.0f,
-        0.05f,
-        4000.0f
-    );
-
-    DxLib::SetupCamera_ProjectionMatrix(projection);
+    DxLib::SetCameraPositionAndTargetAndUpVec(ToDxlib(_camera.GetPos()), ToDxlib(_camera.GetTarget()), ToDxlib(Vector3::UP));
 }
 
 int DxlibRenderer::ClearDrawScreen()
@@ -86,16 +70,13 @@ void DxlibRenderer::ModelSetMatrix(int _handle, const Matrix4x4& _mat)
 // モデル描画
 void DxlibRenderer::DrawModel(int _handle)
 {
-	MV1SetUseZBuffer(_handle, true);
-	MV1SetWriteZBuffer(_handle, true);
-
 	DxLib::MV1DrawModel(_handle);
 }
 
 // 画像描画
 void DxlibRenderer::DrawGraph(const Vector2& _pos, int _handle, bool _transFlag)
 {
-	DxLib::DrawGraph(_pos.x, _pos.y, _handle, _transFlag);
+    DxLib::DrawGraph(static_cast<int>(_pos.x), static_cast<int>(_pos.y), _handle, _transFlag);
 }
 
 // 球描画
@@ -168,7 +149,7 @@ void DxlibRenderer::DrawLine(const Vector3& _pos1, const Vector3& _pos2, const C
 // モデル素材削除
 void DxlibRenderer::DeleteModel(int _handle)
 {
-	DxLib::DeleteGraph(_handle);
+	DxLib::MV1DeleteModel(_handle);
 }
 
 // 画像素材削除

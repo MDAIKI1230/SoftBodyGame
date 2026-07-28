@@ -8,13 +8,13 @@ void PhysicsCommitSystem::FixedUpdate(PhysicsTransformStorage* _physicsTransform
 	// Transformストレージ
 	TransformComponentStorage* transformStorage{ static_cast<TransformComponentStorage*>(_worldStorage->GetStorage<TransformComponent>()) };
 
-	for (auto& id : _physicsTransformStorage->id)
+	for (auto& id : _physicsTransformStorage->GetIDRange())
 	{
 		EntityID entity{ _physicsTransformStorage->GetOwnerEntity(id) };
 
 		uint32_t denseIndex{ _physicsTransformStorage->GetDenseIndex(id) };
 
-		transformStorage->Get(entity)->SetPosition(_physicsTransformStorage->position[denseIndex]);
-		transformStorage->Get(entity)->SetRotation(_physicsTransformStorage->rotation[denseIndex]);
+		transformStorage->Edit(entity).SetPosition(_physicsTransformStorage->GetPosition(denseIndex));
+		transformStorage->Edit(entity).SetRotation(_physicsTransformStorage->GetRotation(denseIndex));
 	}
 }

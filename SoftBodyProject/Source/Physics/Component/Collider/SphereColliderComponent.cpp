@@ -2,25 +2,23 @@
 
 #include "SphereColliderComponent.h"
 
-SphereColliderComponent::SphereColliderComponent(EntityID _entity, int _handle) :
-	ColliderComponent{ _handle }
+SphereColliderComponent::SphereColliderComponent(EntityID _entity) :
+	ColliderComponent{ PhysicsAPI::CreateSphere(_entity, 1.0f) }
 {
-	colliderID = PhysicsAPI::CreateSphere(_entity, 1.0f);
 }
 
-SphereColliderComponent::SphereColliderComponent(EntityID _entity, int _handle, float _r) :
-	ColliderComponent{ _handle },
+SphereColliderComponent::SphereColliderComponent(EntityID _entity, float _r) :
+	ColliderComponent{ PhysicsAPI::CreateSphere(_entity, _r) },
 	r{ _r }
 {
-	colliderID = PhysicsAPI::CreateSphere(_entity, _r);
 }
 
 void SphereColliderComponent::SetRadius(float _r)
 {
-	PhysicsAPI::SetRadius(colliderID, _r);
+	PhysicsAPI::SetRadius(id, _r);
 }
 
-float SphereColliderComponent::GetRadius()
+float SphereColliderComponent::GetRadius() const
 {
-	return PhysicsAPI::GetRadius(colliderID);
+	return PhysicsAPI::GetRadius(id);
 }

@@ -224,6 +224,21 @@
     <Filter Include="ソース ファイル\Physics\Storage\Component\Body\Soft">
       <UniqueIdentifier>{93733d9e-2408-4f50-b669-6e52f51323a6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Common\Macro">
+      <UniqueIdentifier>{3aa8d424-0d44-4460-9723-b3d92630848a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Common\ECS\SparseSet">
+      <UniqueIdentifier>{90929fab-8059-4565-8cff-609035e3d0ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Common\ECS\SparseSet\Table">
+      <UniqueIdentifier>{f7f1a8ef-127c-4a97-a8f7-39c162b81a8d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Common\ECS\Storage">
+      <UniqueIdentifier>{32644aa6-86a4-4e21-95ca-1d7ef48aabbd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Common\ECS\Event">
+      <UniqueIdentifier>{1faeebf5-a210-4ad0-a728-6138db94a23b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Objects\Camera.h">
@@ -267,12 +282,6 @@
     </ClInclude>
     <ClInclude Include="Source\Common\BaseClass\StorageBase.h">
       <Filter>ソース ファイル\Common\BaseClass</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Common\ECS\SparseSet.h">
-      <Filter>ソース ファイル\Common\ECS</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Common\ECS\SparseSetStorageBase.h">
-      <Filter>ソース ファイル\Common\ECS</Filter>
     </ClInclude>
     <ClInclude Include="Source\Common\BaseClass\RenderingSystem.h">
       <Filter>ソース ファイル\Common\BaseClass</Filter>
@@ -367,23 +376,11 @@
     <ClInclude Include="Source\Physics\System\PhysicsAPI.h">
       <Filter>ソース ファイル\Physics\System</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Common\ECS\WorldStorage.h">
-      <Filter>ソース ファイル\Common\ECS</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Common\ECS\SystemManager.h">
-      <Filter>ソース ファイル\Common\ECS</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Common\ECS\EventQueue.h">
       <Filter>ソース ファイル\Common\ECS</Filter>
     </ClInclude>
     <ClInclude Include="Source\Common\Events\Physics\PhysicsEvent.h">
       <Filter>ソース ファイル\Common\Events\Physics</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Common\ECS\EventManager.h">
-      <Filter>ソース ファイル\Common\ECS</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Common\ECS\EventSystem.h">
-      <Filter>ソース ファイル\Common\ECS</Filter>
     </ClInclude>
     <ClInclude Include="Source\Physics\PhysicsWorld.h">
       <Filter>ソース ファイル\Physics</Filter>
@@ -479,9 +476,6 @@
       <Filter>ソース ファイル\Physics\Struct\Constraint</Filter>
     </ClInclude>
     <ClInclude Include="Source\Physics\Struct\Collision\MinkowskiVertex.h">
-      <Filter>ソース ファイル\Physics\Struct\Collision</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Physics\Struct\Collision\ContactGenerator.h">
       <Filter>ソース ファイル\Physics\Struct\Collision</Filter>
     </ClInclude>
     <ClInclude Include="Source\Physics\Function\ContactFunction.h">
@@ -594,9 +588,6 @@
     </ClInclude>
     <ClInclude Include="Source\Physics\DebugRender\ConstraintDebugRenderSystem.h">
       <Filter>ソース ファイル\Physics\DebugRender</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Physics\Storage\Buffer\CollisionContactBuffer.h">
-      <Filter>ソース ファイル\Physics\Storage\Buffer</Filter>
     </ClInclude>
     <ClInclude Include="Source\Physics\Storage\Buffer\CollisionManifoldBuffer.h">
       <Filter>ソース ファイル\Physics\Storage\Buffer</Filter>
@@ -736,8 +727,71 @@
     <ClInclude Include="Source\Physics\Storage\Component\Body\Soft\SoftBodyComponentStorage.h">
       <Filter>ソース ファイル\Physics\Storage\Component\Body\Soft</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Common\BaseClass\ComponentBase.h">
-      <Filter>ソース ファイル\Common\BaseClass</Filter>
+    <ClInclude Include="Source\Common\Macro\StorageAccessorsMacros.h">
+      <Filter>ソース ファイル\Common\Macro</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Component\Constraint\EndPointConstraintComponentBase.h">
+      <Filter>ソース ファイル\Physics\Component\Constraint</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Common\Struct\GenerationalID.h">
+      <Filter>ソース ファイル\Common\Struct</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Common\ECS\SparseSet\SparseIndex.h">
+      <Filter>ソース ファイル\Common\ECS\SparseSet</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Common\ECS\SparseSet\SparseSet.h">
+      <Filter>ソース ファイル\Common\ECS\SparseSet</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Common\ECS\SparseSet\Table\LinearTable.h">
+      <Filter>ソース ファイル\Common\ECS\SparseSet\Table</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Common\ECS\SparseSet\Table\SparseSetTableInterface.h">
+      <Filter>ソース ファイル\Common\ECS\SparseSet\Table</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Common\ECS\Storage\ComponentStorageBase.h">
+      <Filter>ソース ファイル\Common\ECS\Storage</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Common\ECS\Storage\UniqueComponentStorageBase.h">
+      <Filter>ソース ファイル\Common\ECS\Storage</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Common\ECS\Storage\WorldStorage.h">
+      <Filter>ソース ファイル\Common\ECS\Storage</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Common\ECS\Event\EventManager.h">
+      <Filter>ソース ファイル\Common\ECS\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Common\ECS\Event\EventQueue.h">
+      <Filter>ソース ファイル\Common\ECS\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Common\ECS\Event\EventSystem.h">
+      <Filter>ソース ファイル\Common\ECS\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Common\ECS\ComponentID.h">
+      <Filter>ソース ファイル\Common\ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Common\ECS\Storage\MultiComponentStorageBase.h">
+      <Filter>ソース ファイル\Common\ECS\Storage</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Common\ECS\Storage\ComponentIDPool.h">
+      <Filter>ソース ファイル\Common\ECS\Storage</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Storage\SlotPool.h">
+      <Filter>ソース ファイル\Physics\Storage</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Storage\PhysicsStorageBase.h">
+      <Filter>ソース ファイル\Physics\Storage</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Storage\Buffer\PhysicsBufferBase.h">
+      <Filter>ソース ファイル\Physics\Storage\Buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Common\ECS\Storage\ComponentView.h">
+      <Filter>ソース ファイル\Common\ECS\Storage</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Common\ECS\SparseSet\Table\PageTable.h">
+      <Filter>ソース ファイル\Common\ECS\SparseSet\Table</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Common\ECS\SparseSet\Table\HashTable.h">
+      <Filter>ソース ファイル\Common\ECS\SparseSet\Table</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -814,9 +868,6 @@
       <Filter>ソース ファイル\Physics\System</Filter>
     </ClCompile>
     <ClCompile Include="Source\Common\ECS\SystemManager.cpp">
-      <Filter>ソース ファイル\Common\ECS</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Common\ECS\EventSystem.cpp">
       <Filter>ソース ファイル\Common\ECS</Filter>
     </ClCompile>
     <ClCompile Include="Source\Physics\PhysicsWorld.cpp">
@@ -962,6 +1013,18 @@
     </ClCompile>
     <ClCompile Include="Source\Physics\Storage\Component\Body\Soft\SoftBodyComponentStorage.cpp">
       <Filter>ソース ファイル\Physics\Storage\Component\Body\Soft</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Physics\Component\Constraint\EndPointConstraintComponentBase.cpp">
+      <Filter>ソース ファイル\Physics\Component\Constraint</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Common\ECS\SparseSet\Table\LinearTable.cpp">
+      <Filter>ソース ファイル\Common\ECS\SparseSet\Table</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Common\ECS\Event\EventSystem.cpp">
+      <Filter>ソース ファイル\Common\ECS\Event</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Common\ECS\SparseSet\Table\HashTable.cpp">
+      <Filter>ソース ファイル\Common\ECS\SparseSet\Table</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

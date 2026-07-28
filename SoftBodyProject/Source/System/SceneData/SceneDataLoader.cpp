@@ -102,4 +102,6 @@ bool SceneDataLoader::LoadJson(std::string _filePath, SceneFileData& _output)
 
 		_output.objectDatas.push_back(std::move(objData));
 	}
+
+	return true;
 }

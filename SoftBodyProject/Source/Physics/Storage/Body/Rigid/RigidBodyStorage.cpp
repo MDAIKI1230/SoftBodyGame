@@ -1,124 +1,128 @@
 ﻿#include "RigidBodyStorage.h"
 
 
-void RigidBodyStorage::CreateRigidBody(const EntityID& _entity, const PhysicsTransformID& _transformID, const BodyID& _id)
+// 質量の代入
+void RigidBodyStorage::SetMass(uint32_t _index, float _mass)
+{
+	// 0以下はダメ。
+	if (_mass <= 0)
+	{
+		return;
+	}
+	masses[_index] = _mass;
+	// 質量の逆数を計算
+	inverseMasses[_index] = 1 / _mass;
+	// 慣性テンソルの変化フラグも立てておく
+	localInertiaDiaries[_index] = true;
+}
+
+// 計算が完了したときに呼ぶ関数
+void RigidBodyStorage::LocalInertiaCalcSucces(uint32_t _index)
+{
+	localInertiaDiaries[_index] = false;
+}
+
+void RigidBodyStorage::Create(BodyID _id)
 {
 	// --- 速度系 ---
 
 	// 力
-	force.emplace_back();
+	forces.emplace_back();
 	// 速度
-	velocity.emplace_back();
+	velocities.emplace_back();
 
 	// --- 角速度系 ---
 
 	// トルク
-	torque.emplace_back();
+	torques.emplace_back();
 	// 角速度
-	angularVelocity.emplace_back();
+	angularVelocities.emplace_back();
 
 	// --- 重力系 ---
 
 	// 重力フラグ
-	isGravity.emplace_back(true);
+	isGravities.emplace_back(true);
 	// 重力加速度
-	gravity.emplace_back(0.0, -980.0f, 0.0f);
+	gravities.emplace_back(0.0f, -980.0f, 0.0f);
 
 	// --- 質量系 ---
 
 	// 質量(0除算を避けるため)
-	mass.emplace_back(1.0f);
+	masses.emplace_back(1.0f);
 	// 質量の逆数
-	inverseMass.emplace_back(1.0f);
+	inverseMasses.emplace_back(1.0f);
 	// 慣性テンソルの逆数
-	localInverseInertiaTensor.emplace_back();
-	// ワールド慣性テンソルの逆数
-	worldInverseInertiaTensor.emplace_back();
+	localInverseInertiaTensors.emplace_back();
 
 	// --- 衝突用 ---
 
 	// 推定移動位置
-	pastPos.emplace_back();
+	pastPositions.emplace_back();
 	// 推定姿勢
-	pastRot.emplace_back();
+	pastRotations.emplace_back();
 
-	// --- Dirty系 ---
+	// --- Diary系 ---
 
 	// ローカル慣性テンソル変更
-	localInertiaDirty.emplace_back(true);
-
-	// マテリアルID(一旦なし)
-	physicsMatrialID.emplace_back(-1);
+	localInertiaDiaries.emplace_back(true);
 
 	// ID
-	id.emplace_back(_id);
+	ids.emplace_back(_id);
 }
 
 BodyID RigidBodyStorage::Remove(uint32_t _index)
 {
 	// 力
-	force[_index] = std::move(force.back());
-	force.pop_back();
+	forces[_index] = std::move(forces.back());
+	forces.pop_back();
 	// 速度
-	velocity[_index] = std::move(velocity.back());
-	velocity.pop_back();
+	velocities[_index] = std::move(velocities.back());
+	velocities.pop_back();
 
 	// --- 角速度系 ---
 
 	// トルク
-	torque[_index] = std::move(torque.back());
-	torque.pop_back();
+	torques[_index] = std::move(torques.back());
+	torques.pop_back();
 	// 角速度
-	angularVelocity[_index] = std::move(angularVelocity.back());
-	angularVelocity.pop_back();
+	angularVelocities[_index] = std::move(angularVelocities.back());
+	angularVelocities.pop_back();
 
 	// --- 重力系 ---
 
 	// 重力フラグ
-	isGravity[_index] = std::move(isGravity.back());
-	isGravity.pop_back();
+	isGravities[_index] = std::move(isGravities.back());
+	isGravities.pop_back();
 	// 重力加速度
-	gravity[_index] = std::move(gravity.back());
-	gravity.pop_back();
+	gravities[_index] = std::move(gravities.back());
+	gravities.pop_back();
 
 	// --- 質量系 ---
 
 	// 質量(0除算を避けるため)
 	// 推定回転角度
-	mass[_index] = std::move(mass.back());
-	mass.pop_back();
+	masses[_index] = std::move(masses.back());
+	masses.pop_back();
 	// 質量の逆数
-	inverseMass[_index] = std::move(inverseMass.back());
-	inverseMass.pop_back();
+	inverseMasses[_index] = std::move(inverseMasses.back());
+	inverseMasses.pop_back();
 	// ローカル慣性テンソルの逆数
-	localInverseInertiaTensor[_index] = std::move(localInverseInertiaTensor.back());
-	localInverseInertiaTensor.pop_back();
-	// ワールド慣性テンソルの逆数
-	worldInverseInertiaTensor[_index] = std::move(worldInverseInertiaTensor.back());
-	worldInverseInertiaTensor.pop_back();
+	localInverseInertiaTensors[_index] = std::move(localInverseInertiaTensors.back());
+	localInverseInertiaTensors.pop_back();
 
 	// ローカル慣性テンソル変更
-	localInertiaDirty[_index] = std::move(localInertiaDirty.back());
-	localInertiaDirty.pop_back();
+	localInertiaDiaries[_index] = std::move(localInertiaDiaries.back());
+	localInertiaDiaries.pop_back();
 
 	// --- 衝突用 ---
 
 	// 推定移動位置
-	pastPos[_index] = std::move(pastPos.back());
-	pastPos.pop_back();
+	pastPositions[_index] = std::move(pastPositions.back());
+	pastPositions.pop_back();
 	// 推定姿勢
-	pastRot[_index] = std::move(pastRot.back());
-	pastRot.pop_back();
-
-	// マテリアルID(一旦なし)
-	physicsMatrialID[_index] = std::move(physicsMatrialID.back());
-	physicsMatrialID.pop_back();
+	pastRotations[_index] = std::move(pastRotations.back());
+	pastRotations.pop_back();
 
 	// swap-removeしたときの移動したID
-	BodyID movedId{ id[_index] };
-
-	// 移動後のIDの修正
-	slots[movedId.index].denseIndex = slots[_index].denseIndex;
-
-	return movedId;
+	return ids[_index];
 }

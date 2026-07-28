@@ -1,6 +1,5 @@
 ﻿#pragma once
 
-#include "ComponentBase.h"
 #include "ColliderID.h"
 #include "EntityID.h"
 
@@ -8,26 +7,29 @@
 #include "Color.h"
 #endif // DEBUG
 
-struct ColliderComponent : public ComponentBase
+struct ColliderComponent
 {
 public:
 	// コンストラクタ
-	ColliderComponent(int _handle) :
-		ComponentBase{ _handle }
+	ColliderComponent(ColliderID _id) :
+		id{ _id }
 	{
 	}
 
 #ifdef _DEBUG
 	// 色取得
-	const Color& GetColor() { return color; }
+	const Color& GetColor() const { return color; }
 	// 色セット
 	void SetColor(const Color& _color) { color = _color; }
 #endif // DEBUG
 
 	// 仮想デストラクタ
 	virtual ~ColliderComponent() = default;
+
+	// ID取得
+	ColliderID GetID() const { return id; }
 protected:
-	ColliderID colliderID{};
+	ColliderID id{};
 	// デバッグの色
 #ifdef _DEBUG
 	Color color;

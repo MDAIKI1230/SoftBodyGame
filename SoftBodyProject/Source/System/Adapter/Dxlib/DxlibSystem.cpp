@@ -12,7 +12,6 @@ int DxlibSystem::Init()
         return -1;
     }
 
-    DxLib::SetUseRightHandClippingProcess(TRUE);
     return 0;
 }
 

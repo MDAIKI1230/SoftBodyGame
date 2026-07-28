@@ -1,19 +1,17 @@
 ﻿#pragma once
 
-#include "ComponentBase.h"
-
 #include "EntityID.h"
 #include "BodyID.h"
 
-struct RigidBodyComponent:public ComponentBase
+struct RigidBodyComponent
 {
 public:
 	// --- コンストラクタ ---
 	
 	// デフォルトコンストラクタ(ストレージに追加できないよ)
-	RigidBodyComponent();
+	RigidBodyComponent() = default;
 
-	RigidBodyComponent(EntityID _entity, int _handle);
+	RigidBodyComponent(EntityID _entity);
 
 	// --- 力加算系 ---
 
@@ -48,7 +46,7 @@ public:
 	// 慣性テンソル取得
 	const Matrix4x4& GetInertiaTensor() const;
 	// 慣性テンソル変更
-	void SetInertiaTensor(Matrix4x4& _matrix);
+	void SetInertiaTensor(const Matrix4x4& _matrix);
 
 	// --- 重力系 ---
 
@@ -60,6 +58,9 @@ public:
 	const Vector3& GetGravity() const;
 	// 重力加速度変更
 	void SetGravity(const Vector3& _gravity);
+
+	// ID取得
+	BodyID GetID() const { return id; }
 private:
-	BodyID bodyId{};
+	BodyID id{};
 };

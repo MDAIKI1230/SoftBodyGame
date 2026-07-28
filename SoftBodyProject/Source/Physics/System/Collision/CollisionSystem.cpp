@@ -21,8 +21,7 @@ void CollisionSystem::FixedUpdate(PhysicsTransformStorage* _transformStorage, Co
 
 void CollisionSystem::BroadPhase(PhysicsTransformStorage* _transformStorage, ColliderStorage* _colliderStorage)
 {
-	AABBBroadPhaseColliderStorage* aabbStorage{ _colliderStorage->aabbStorage.get()};
-	size_t count = aabbStorage->aabb.size();
+	size_t count{ _colliderStorage->AABBCount() };
 
 	colliderProjectionXValues.reserve(count * 2);
 	colliderProjectionYValues.reserve(count * 2);
@@ -31,15 +30,18 @@ void CollisionSystem::BroadPhase(PhysicsTransformStorage* _transformStorage, Col
 	// すべてのコライダーのAABBの各軸の射影を保存する。
 	for (int i{ 0 }; i < count; i++)
 	{
-		uint32_t transformIndex{ _transformStorage->GetDenseIndex(_colliderStorage->aabbStorage->aabb[i].transformID) };
+		uint32_t transformIndex{ _transformStorage->GetDenseIndex(_colliderStorage->GetAABBBroadPhaseCollider(i).transformID)};
 
 		ColliderProjectionData data;
 
-		data.min = _colliderStorage->aabbStorage->aabb[i].min + _transformStorage->position[transformIndex];
-		data.max = _colliderStorage->aabbStorage->aabb[i].max + _transformStorage->position[transformIndex];
+		data.min = _colliderStorage->GetAABBBroadPhaseCollider(i).min + _transformStorage->GetPosition(transformIndex);
+		data.max = _colliderStorage->GetAABBBroadPhaseCollider(i).max + _transformStorage->GetPosition(transformIndex);
 
-		// コライダーハンドルのindex
-		size_t colliderIndex{ aabbStorage->aabb[i].colliderID.index };
+		// AABBと紐づいたコライダーのID
+		ColliderID colliderID{ _colliderStorage->GetAABBBroadPhaseCollider(i).colliderID };
+
+		// コライダーIDのindex
+		size_t colliderIndex{ colliderID.GetIndex()};
 
 		if (projectionDatas.size() > colliderIndex)
 		{
@@ -55,20 +57,20 @@ void CollisionSystem::BroadPhase(PhysicsTransformStorage* _transformStorage, Col
 		else
 		{
 			// 最小値と最大値をそれぞれ追加する。(ColliderProjectionは値/エンティティID/最大値フラグ)
-			data.endpointIndex[ProjectionAxisType::MIN_X] = colliderProjectionXValues.size();
-			colliderProjectionXValues.push_back(ColliderProjection(data.min.x, aabbStorage->aabb[i].colliderID, false, ProjectionAxisType::MIN_X));
-			data.endpointIndex[ProjectionAxisType::MAX_X] = colliderProjectionXValues.size();
-			colliderProjectionXValues.push_back(ColliderProjection(data.max.x, aabbStorage->aabb[i].colliderID, true, ProjectionAxisType::MAX_X));
+			data.endpointIndex[ProjectionAxisType::MIN_X] = static_cast<uint32_t>(colliderProjectionXValues.size());
+			colliderProjectionXValues.push_back(ColliderProjection(data.min.x, colliderID, false, ProjectionAxisType::MIN_X));
+			data.endpointIndex[ProjectionAxisType::MAX_X] = static_cast<uint32_t>(colliderProjectionXValues.size());
+			colliderProjectionXValues.push_back(ColliderProjection(data.max.x, colliderID, true, ProjectionAxisType::MAX_X));
 
-			data.endpointIndex[ProjectionAxisType::MIN_Y] = colliderProjectionYValues.size();
-			colliderProjectionYValues.push_back(ColliderProjection(data.min.y, aabbStorage->aabb[i].colliderID, false, ProjectionAxisType::MIN_Y));
-			data.endpointIndex[ProjectionAxisType::MAX_Y] = colliderProjectionYValues.size();
-			colliderProjectionYValues.push_back(ColliderProjection(data.max.y, aabbStorage->aabb[i].colliderID, true, ProjectionAxisType::MAX_Y));
+			data.endpointIndex[ProjectionAxisType::MIN_Y] = static_cast<uint32_t>(colliderProjectionYValues.size());
+			colliderProjectionYValues.push_back(ColliderProjection(data.min.y, colliderID, false, ProjectionAxisType::MIN_Y));
+			data.endpointIndex[ProjectionAxisType::MAX_Y] = static_cast<uint32_t>(colliderProjectionYValues.size());
+			colliderProjectionYValues.push_back(ColliderProjection(data.max.y, colliderID, true, ProjectionAxisType::MAX_Y));
 
-			data.endpointIndex[ProjectionAxisType::MIN_Z] = colliderProjectionZValues.size();
-			colliderProjectionZValues.push_back(ColliderProjection(data.min.z, aabbStorage->aabb[i].colliderID, false, ProjectionAxisType::MIN_Z));
-			data.endpointIndex[ProjectionAxisType::MAX_Z] = colliderProjectionZValues.size();
-			colliderProjectionZValues.push_back(ColliderProjection(data.max.z, aabbStorage->aabb[i].colliderID, true, ProjectionAxisType::MAX_Z));
+			data.endpointIndex[ProjectionAxisType::MIN_Z] = static_cast<uint32_t>(colliderProjectionZValues.size());
+			colliderProjectionZValues.push_back(ColliderProjection(data.min.z, colliderID, false, ProjectionAxisType::MIN_Z));
+			data.endpointIndex[ProjectionAxisType::MAX_Z] = static_cast<uint32_t>(colliderProjectionZValues.size());
+			colliderProjectionZValues.push_back(ColliderProjection(data.max.z, colliderID, true, ProjectionAxisType::MAX_Z));
 
 			projectionDatas.push_back(data);
 		}
@@ -107,7 +109,7 @@ void CollisionSystem::Dispatch(ColliderStorage* _colliderStorage)
 void CollisionSystem::NarrowPhase(PhysicsTransformStorage* _transformStorage, ColliderStorage* _colliderStorage, CollisionManifoldBuffer* _manifoldBuffer, EventManager* _eventManager)
 {
 	// 球VS球
-	Solve<ColliderTag::SphereTag, ColliderTag::SphereTag, CollisionPair::SphereSpherePair>
+	Solve<SphereTag, SphereTag, CollisionPair::SphereSpherePair>
 		(
 			narrowPhasePairBuilder.sphereSpherePair,
 			_transformStorage,
@@ -117,7 +119,7 @@ void CollisionSystem::NarrowPhase(PhysicsTransformStorage* _transformStorage, Co
 		);
 
 	// 箱VS球
-	Solve<ColliderTag::BoxTag, ColliderTag::SphereTag, CollisionPair::BoxSpherePair>
+	Solve<BoxTag, SphereTag, CollisionPair::BoxSpherePair>
 		(
 			narrowPhasePairBuilder.boxSpherePair,
 			_transformStorage,
@@ -127,7 +129,7 @@ void CollisionSystem::NarrowPhase(PhysicsTransformStorage* _transformStorage, Co
 		);
 
 	// 球VS箱
-	Solve<ColliderTag::SphereTag, ColliderTag::BoxTag, CollisionPair::SphereBoxPair>
+	Solve<SphereTag, BoxTag, CollisionPair::SphereBoxPair>
 		(
 			narrowPhasePairBuilder.sphereBoxPair,
 			_transformStorage,
@@ -137,7 +139,7 @@ void CollisionSystem::NarrowPhase(PhysicsTransformStorage* _transformStorage, Co
 		);
 
 	// 箱VS箱
-	Solve<ColliderTag::BoxTag, ColliderTag::BoxTag, CollisionPair::BoxBoxPair>
+	Solve<BoxTag, BoxTag, CollisionPair::BoxBoxPair>
 		(
 			narrowPhasePairBuilder.boxBoxPair,
 			_transformStorage,
@@ -186,7 +188,7 @@ void CollisionSystem::CheckProjectionAxisValueCross(std::vector<ColliderProjecti
 			for (size_t active : actives)
 			{
 				// 同ペア対策
-				if (_projectionAxisValues[i].colliderID.index > _projectionAxisValues[active].colliderID.index)
+				if (_projectionAxisValues[i].colliderID.GetIndex() > _projectionAxisValues[active].colliderID.GetIndex())
 				{
 					// 軸で交差しているので交差カウント増加
 					crossCountMap[CollisionPair::Pair(_projectionAxisValues[i].colliderID, _projectionAxisValues[active].colliderID)] += 1;
@@ -198,7 +200,7 @@ void CollisionSystem::CheckProjectionAxisValueCross(std::vector<ColliderProjecti
 				}
 			}
 			// 最小値なのでactiveリストに追加。
-			_projectionAxisValues[i].activeIndex = actives.size();
+			_projectionAxisValues[i].activeIndex = static_cast<uint32_t>(actives.size());
 			actives.push_back(i);
 		}
 		// 最大値
@@ -207,7 +209,7 @@ void CollisionSystem::CheckProjectionAxisValueCross(std::vector<ColliderProjecti
 			// activeリストから消す
 			ProjectionAxisType minAxis{ static_cast<ProjectionAxisType>(_projectionAxisValues[i].axisType - 1) };
 			// プロジェクションデータとColliderIDのIndexは紐づいているためこれで取得できる
-			uint32_t minAxisIndex{ projectionDatas[_projectionAxisValues[i].colliderID.index].endpointIndex[minAxis] };
+			uint32_t minAxisIndex{ projectionDatas[_projectionAxisValues[i].colliderID.GetIndex()].endpointIndex[minAxis]};
 
 			// 移動した奴のIndexの更新
 			_projectionAxisValues[actives.back()].activeIndex = _projectionAxisValues[minAxisIndex].activeIndex;
@@ -237,7 +239,7 @@ void CollisionSystem::Solve(
 }
 
 template<>
-void CollisionSystem::Solve<ColliderTag::BoxTag, ColliderTag::BoxTag, CollisionPair::BoxBoxPair>(
+void CollisionSystem::Solve<BoxTag, BoxTag, CollisionPair::BoxBoxPair>(
 	const std::vector<CollisionPair::BoxBoxPair>& pairList,
 	PhysicsTransformStorage* _transformStorage,
 	ColliderStorage* _colliderStorage,
@@ -254,7 +256,7 @@ void CollisionSystem::Solve<ColliderTag::BoxTag, ColliderTag::BoxTag, CollisionP
 }
 
 template<>
-void CollisionSystem::Solve<ColliderTag::SphereTag, ColliderTag::SphereTag, CollisionPair::SphereSpherePair>(
+void CollisionSystem::Solve<SphereTag, SphereTag, CollisionPair::SphereSpherePair>(
 	const std::vector<CollisionPair::SphereSpherePair>& pairList,
 	PhysicsTransformStorage* _transformStorage,
 	ColliderStorage* _colliderStorage,
@@ -271,7 +273,7 @@ void CollisionSystem::Solve<ColliderTag::SphereTag, ColliderTag::SphereTag, Coll
 }
 
 template<>
-void CollisionSystem::Solve<ColliderTag::SphereTag, ColliderTag::BoxTag, CollisionPair::SphereBoxPair>(
+void CollisionSystem::Solve<SphereTag, BoxTag, CollisionPair::SphereBoxPair>(
 	const std::vector<CollisionPair::SphereBoxPair>& pairList,
 	PhysicsTransformStorage* _transformStorage,
 	ColliderStorage* _colliderStorage,
@@ -287,7 +289,7 @@ void CollisionSystem::Solve<ColliderTag::SphereTag, ColliderTag::BoxTag, Collisi
 	}
 }
 template<>
-void CollisionSystem::Solve<ColliderTag::BoxTag, ColliderTag::SphereTag, CollisionPair::BoxSpherePair>(
+void CollisionSystem::Solve<BoxTag, SphereTag, CollisionPair::BoxSpherePair>(
 	const std::vector<CollisionPair::BoxSpherePair>& pairList,
 	PhysicsTransformStorage* _transformStorage,
 	ColliderStorage* _colliderStorage,
@@ -369,6 +371,6 @@ void CollisionSystem::Swap(std::vector<ColliderProjection>& _projectionValues, i
 	// 元の要素を入れ替えてその後の値を見て値を変える。
 	std::swap(_projectionValues[_a], _projectionValues[_b]);
 
-	projectionDatas[_projectionValues[_a].colliderID.index].endpointIndex[_projectionValues[_a].axisType] = _a;
-	projectionDatas[_projectionValues[_b].colliderID.index].endpointIndex[_projectionValues[_b].axisType] = _b;
+	projectionDatas[_projectionValues[_a].colliderID.GetIndex()].endpointIndex[_projectionValues[_a].axisType] = _a;
+	projectionDatas[_projectionValues[_b].colliderID.GetIndex()].endpointIndex[_projectionValues[_b].axisType] = _b;
 }

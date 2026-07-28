@@ -183,7 +183,7 @@ void Transform::SetParent(Transform* _parent, bool keepLocal)
 }
 
 // TRSに分解する関数
-void Transform::DecomposeTRS(Matrix4x4& _mat, Vector3& _pos, Quaternion& _rot, Vector3& _scale)
+void Transform::DecomposeTRS(const Matrix4x4& _mat, Vector3& _pos, Quaternion& _rot, Vector3& _scale)
 {
 	// 位置
 	_pos = Vector3{ _mat.m[0][3],_mat.m[1][3],_mat.m[2][3] };

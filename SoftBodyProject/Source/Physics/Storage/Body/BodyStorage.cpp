@@ -1,5 +1,17 @@
 ﻿#include "BodyStorage.h"
 
+// 質量の代入
+void BodyStorage::SetRigidBodyMass(BodyID _id, float _mass)
+{
+	rigidBodyStorage->SetMass(GetDenseIndex(_id), _mass);
+}
+
+// 計算が完了したときに呼ぶ関数
+void BodyStorage::LocalInertiaCalcSucces(BodyID _id)
+{
+	rigidBodyStorage->LocalInertiaCalcSucces(GetDenseIndex(_id));
+}
+
 // コンストラクタ
 BodyStorage::BodyStorage()
 {
@@ -10,11 +22,11 @@ BodyStorage::BodyStorage()
 }
 
 // RigidBody作成
-BodyID BodyStorage::CreateRigidBody(const EntityID& _entity, const PhysicsTransformID& _transformID)
+BodyID BodyStorage::CreateRigidBody(EntityID _entity, PhysicsTransformID _transformID)
 {
-	BodyID result{ GenerateBodyID(rigidBodyStorage->id.size(),BodyType::RIGID_BODY,_entity,_transformID) };
+	BodyID result{ CreateID(rigidBodyStorage->CountID(),BodyType::RIGID_BODY,_entity,_transformID) };
 
-	rigidBodyStorage->CreateRigidBody(_entity, _transformID, result);
+	rigidBodyStorage->Create(result);
 
 	// Map対応付け
 	transformMap[_transformID] = result;
@@ -22,50 +34,34 @@ BodyID BodyStorage::CreateRigidBody(const EntityID& _entity, const PhysicsTransf
 	return result;
 }
 // Rope作成
-BodyID BodyStorage::CreateRope(const EntityID& _entity, const PhysicsTransformID& _transformID, const RopeUpdateInfo& _info)
+BodyID BodyStorage::CreateRope(EntityID _entity, PhysicsTransformID _transformID, const RopeUpdateInfo& _info)
 {
-	BodyID result{ GenerateBodyID(ropeStorage->id.size(),BodyType::ROPE,_entity,_transformID) };
+	BodyID result{ CreateID(ropeStorage->CountID(),BodyType::ROPE,_entity,_transformID)};
 
-	ropeStorage->id.push_back(result);
-	ropeStorage->meta.emplace_back();
-	ropeStorage->length.emplace_back(_info.length);
-	ropeStorage->segmentCount.emplace_back(_info.segmentCount);
+	ropeStorage->CreateRope(result, _info);
 
 	return result;
 }
 // Cloth作成
-BodyID BodyStorage::CreateCloth(const EntityID& _entity, const PhysicsTransformID& _transformID, const ClothUpdateInfo& _info)
+BodyID BodyStorage::CreateCloth(EntityID _entity, PhysicsTransformID _transformID, const ClothUpdateInfo& _info)
 {
-	BodyID result{ GenerateBodyID(clothStorage->id.size(),BodyType::CLOTH,_entity,_transformID) };
+	BodyID result{ CreateID(clothStorage->CountID(),BodyType::CLOTH,_entity,_transformID)};
 
-	clothStorage->id.push_back(result);
-	clothStorage->meta.emplace_back();
-	clothStorage->width.emplace_back(_info.width);
-	clothStorage->height.emplace_back(_info.height);
-	clothStorage->rowCount.emplace_back(_info.rowCount);
-	clothStorage->columnCount.emplace_back(_info.columnCount);
+	clothStorage->Create(result, _info);
 
 	return result;
 }
 // SoftBody作成
-BodyID BodyStorage::CreateSoftBody(const EntityID& _entity, const PhysicsTransformID& _transformID, const SoftBodyUpdateInfo& _info)
+BodyID BodyStorage::CreateSoftBody(EntityID _entity, PhysicsTransformID _transformID, const SoftBodyUpdateInfo& _info)
 {
-	BodyID result{ GenerateBodyID(softBodyStorage->id.size(),BodyType::SOFT_BODY,_entity,_transformID) };
+	BodyID result{ CreateID(softBodyStorage->CountID(),BodyType::SOFT_BODY,_entity,_transformID) };
 
-	softBodyStorage->id.push_back(result);
-	softBodyStorage->meta.emplace_back();
-	softBodyStorage->width.emplace_back(_info.width);
-	softBodyStorage->height.emplace_back(_info.height);
-	softBodyStorage->depth.emplace_back(_info.depth);
-	softBodyStorage->segmentCountX.emplace_back(_info.segmentCountX);
-	softBodyStorage->segmentCountX.emplace_back(_info.segmentCountY);
-	softBodyStorage->segmentCountX.emplace_back(_info.segmentCountZ);
-
+	softBodyStorage->Create(result, _info);
 	return result;
 }
 
 // 破棄
-void BodyStorage::Destroy(const BodyID& _id)
+void BodyStorage::Destroy(BodyID _id)
 {
 	if (!IsAlive(_id))
 	{
@@ -75,66 +71,51 @@ void BodyStorage::Destroy(const BodyID& _id)
 	// swap-removeしたときの移動したID
 	BodyID movedId;
 
-	switch (slots[_id.index].type)
+	switch (GetType(_id))
 	{
 	case BodyType::RIGID_BODY:
-		movedId = rigidBodyStorage->Remove(slots[_id.index].denseIndex);
+		movedId = rigidBodyStorage->Remove(GetDenseIndex(_id));
 		break;
 	case BodyType::ROPE:
-		movedId = ropeStorage->Remove(slots[_id.index].denseIndex);
+		movedId = ropeStorage->Remove(GetDenseIndex(_id));
 		break;
 	case BodyType::CLOTH:
-		movedId = clothStorage->Remove(slots[_id.index].denseIndex);
+		movedId = clothStorage->Remove(GetDenseIndex(_id));
 		break;
 	case BodyType::SOFT_BODY:
-		movedId = softBodyStorage->Remove(slots[_id.index].denseIndex);
+		movedId = softBodyStorage->Remove(GetDenseIndex(_id));
 		break;
 	default:
 		break;
 	}
 
 	// Mapから削除
-	auto it = transformMap.find(slots[_id.index].transformID);
+	auto it = transformMap.find(GetTransformID(_id));
 	if (it != transformMap.end())
 	{
 		transformMap.erase(it);
 	}
 
 	// 移動後のIDの修正
-	slots[movedId.index].denseIndex = slots[_id.index].denseIndex;
+	EditDenseIndex(movedId) = GetDenseIndex(_id);
 
 	// フリーに追加
-	freeSlots.push_back(_id.index);
-	slots[_id.index].generation++;
+	ReleaseID(_id);
 }
 
-// 生存確認
-bool BodyStorage::IsAlive(const BodyID& _id) const
-{
-	return slots[_id.index].alive && slots[_id.index].generation == _id.generation;
-}
 // 種類取得
-BodyType BodyStorage::GetType(const BodyID& _id) const
+BodyType BodyStorage::GetType(BodyID _id) const
 {
-	return slots[_id.index].type;
+	return GetSlot(_id).type;
 }
-// 実データのインデックス
-uint32_t BodyStorage::GetDenseIndex(const BodyID& _id) const
-{
-	return slots[_id.index].denseIndex;
-}
-// 持ってるEntity
-EntityID BodyStorage::GetOwnerEntity(const BodyID& _id) const
-{
-	return slots[_id.index].ownerEntity;
-}
+
 // 対応Transform
-PhysicsTransformID BodyStorage::GetTransformID(const BodyID& _id) const
+PhysicsTransformID BodyStorage::GetTransformID(BodyID _id) const
 {
-	return slots[_id.index].transformID;
+	return GetSlot(_id).transformID;
 }
 // RigidBodyのBodyID取得
-bool BodyStorage::TryGetRigidBodyID(const PhysicsTransformID& _transformID, BodyID& _output)
+bool BodyStorage::TryGetRigidBodyID(PhysicsTransformID _transformID, BodyID& _output)
 {
 	if (transformMap.contains(_transformID))
 	{
@@ -146,42 +127,7 @@ bool BodyStorage::TryGetRigidBodyID(const PhysicsTransformID& _transformID, Body
 }
 
 // TransformIDと紐づくBodyIDがあるか否か
-bool BodyStorage::Has(const PhysicsTransformID& _transformID) const
+bool BodyStorage::Has(PhysicsTransformID _transformID) const
 {
 	return transformMap.contains(_transformID);
 }
-
-// 一意なID発行関数
-BodyID BodyStorage::GenerateBodyID(size_t _denseIndex, const BodyType& _type, const EntityID& _ownerEntity, const PhysicsTransformID& _transformID)
-{
-	if (freeSlots.empty())
-	{
-		// --- フリーのスロットがないため新たにスロットを作成---
-
-		// IDを作成(初代判定で1)
-		BodyID result{ slots.size(),1 };
-		// Slotを増設
-		slots.emplace_back(_denseIndex, _type, _ownerEntity, _transformID);
-
-		return result;
-	}
-	else
-	{
-		// フリーのスロットがあるためそれを使用
-
-		// 最後を取る
-		uint32_t index{ freeSlots.back() };
-		freeSlots.pop_back();
-
-		// 世代は削除時に加算済み
-		slots[index].alive = true;
-		slots[index].denseIndex = _denseIndex;
-		slots[index].type = _type;
-		slots[index].ownerEntity = _ownerEntity;
-		slots[index].transformID = _transformID;
-
-		// IDを作成(初代判定で1)
-		return BodyID{ (uint32_t)(index),slots[index].generation };
-	}
-}
-

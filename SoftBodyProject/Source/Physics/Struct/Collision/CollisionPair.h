@@ -10,7 +10,7 @@ namespace CollisionPair
 
 		bool operator==(const Pair& other) const
 		{
-			return a.index == other.a.index && b.index == other.b.index;
+			return a == other.a && b == other.b;
 		}
 	};
 
@@ -21,11 +21,9 @@ namespace CollisionPair
 
 		bool operator==(const CollPair& other) const
 		{
-			return a.index == other.a.index && b.index == other.b.index;
+			return a == other.a && b == other.b;
 		}
 	};
-
-	using namespace ColliderTag;
 
 	using SphereSpherePair = CollPair<SphereTag, SphereTag>;
 	using SphereBoxPair = CollPair<SphereTag, BoxTag>;
@@ -38,8 +36,8 @@ struct std::hash<CollisionPair::Pair>
 {
 	size_t operator()(const CollisionPair::Pair& p) const
 	{
-		return std::hash<size_t>{}(p.a.index)
-			^ (std::hash<size_t>{}(p.b.index) << 1);
+		return std::hash<size_t>{}(p.a.GetIndex())
+			^ (std::hash<size_t>{}(p.b.GetIndex()) << 1);
 	}
 };
 
@@ -48,7 +46,7 @@ struct std::hash<CollisionPair::CollPair<ATag, BTag>>
 {
 	size_t operator()(const CollisionPair::CollPair<ATag, BTag>& p) const
 	{
-		return std::hash<size_t>{}(p.a.index)
-			^ (std::hash<size_t>{}(p.b.index) << 1);
+		return std::hash<size_t>{}(p.a.GetIndex())
+			^ (std::hash<size_t>{}(p.b.GetIndex()) << 1);
 	}
 };
