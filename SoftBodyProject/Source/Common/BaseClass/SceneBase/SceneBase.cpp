@@ -66,7 +66,7 @@ SceneBase::SceneBase()
 	// オブジェクトマネージャー
 	objectManager = std::make_unique<ObjectManager>();
 
-	PhysicsAPI::SetWorld(physicsWorld.get());
+	PhysicsAPI::BindWorld(*physicsWorld.get());
 
 #ifdef _DEBUG
 	AddSystem(std::make_unique<DebugRenderingSystem>());
@@ -95,6 +95,7 @@ void SceneBase::Execute()
 	case SceneState::TERMINATE:
 		// 終了
 		Terminate();
+		PhysicsAPI::UnbindWorld();
 		break;
 	case SceneState::FADEOUT:
 		// ロードシーンに移行

@@ -165,14 +165,23 @@ public:
 	// 拘束からEndPoint除外
 	static void RemoveEndPoint(ConstraintID _id, EntityID _entity);
 
-	static void SetWorld(PhysicsWorld* _physicsWorld)
+	static void BindWorld(PhysicsWorld& _physicsWorld)
 	{
-		physicsWorld = _physicsWorld;
-		colliderStorage = _physicsWorld->GetColliderStorage();
-		bodyStorage = _physicsWorld->GetRigidBodyStorage();
-		transformStorage = _physicsWorld->GetPhysicsTransformStorage();
-		constraintStorage = _physicsWorld->GetConstraintStorage();
+		physicsWorld = &_physicsWorld;
+		colliderStorage = _physicsWorld.GetColliderStorage();
+		bodyStorage = _physicsWorld.GetRigidBodyStorage();
+		transformStorage = _physicsWorld.GetPhysicsTransformStorage();
+		constraintStorage = _physicsWorld.GetConstraintStorage();
 	}
+	static void UnbindWorld()
+	{
+		physicsWorld = nullptr;
+		colliderStorage = nullptr;
+		bodyStorage = nullptr;
+		transformStorage = nullptr;
+		constraintStorage = nullptr;
+	}
+	
 private:
 	static PhysicsWorld* physicsWorld;
 	static ColliderStorage* colliderStorage;
