@@ -11,8 +11,8 @@ struct ColliderComponent
 {
 public:
 	// コンストラクタ
-	ColliderComponent(ColliderID _colliderID) :
-		colliderID{ _colliderID }
+	ColliderComponent(ColliderID _id) :
+		id{ _id }
 	{
 	}
 
@@ -25,8 +25,11 @@ public:
 
 	// 仮想デストラクタ
 	virtual ~ColliderComponent() = default;
+
+	// ID取得
+	ColliderID GetID() const { return id; }
 protected:
-	ColliderID colliderID{};
+	ColliderID id{};
 	// デバッグの色
 #ifdef _DEBUG
 	Color color;

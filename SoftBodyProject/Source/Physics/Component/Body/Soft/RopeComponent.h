@@ -17,6 +17,9 @@ public:
 	int GetSegmentCount();
 	// 分割数変更
 	void SetSegmentCount(int _segmentCount);
+
+	// ID取得
+	BodyID GetID() const { return id; }
 private:
 	BodyID id;
 };

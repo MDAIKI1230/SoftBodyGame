@@ -573,6 +573,10 @@
     <ClCompile Include="Source\Physics\Storage\Component\Body\Soft\ClothComponentStorage.cpp" />
     <ClCompile Include="Source\Physics\Storage\Component\Body\Soft\RopeComponentStorage.cpp" />
     <ClCompile Include="Source\Physics\Storage\Component\Body\Soft\SoftBodyComponentStorage.cpp" />
+    <ClCompile Include="Source\Physics\Storage\Component\Collider\BoxColliderComponentStorage.cpp" />
+    <ClCompile Include="Source\Physics\Storage\Component\Collider\SphereColliderComponentStorage.cpp" />
+    <ClCompile Include="Source\Physics\Storage\Component\Constraint\DistanceConstraintComponentStorage.cpp" />
+    <ClCompile Include="Source\Physics\Storage\Component\Constraint\PointConstraintComponentStorage.cpp" />
     <ClCompile Include="Source\Physics\Storage\Constraint\ConstraintStorage.cpp" />
     <ClCompile Include="Source\Physics\Storage\Transform\PhysicsTransformStorage.cpp" />
     <ClCompile Include="Source\Physics\System\Build\ConstraintBuildSystem.cpp" />

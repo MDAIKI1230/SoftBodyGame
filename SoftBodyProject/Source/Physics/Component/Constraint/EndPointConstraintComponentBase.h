@@ -18,6 +18,9 @@ public:
 	void AddEndPoint(EntityID _entityID, const Vector3& _localOffset);
 	// 対応点削除
 	void RemoveEndPoint(EntityID _entityID);
+
+	// ID取得
+	ConstraintID GetID() const { return id; }
 protected:
 	ConstraintID id;
 };

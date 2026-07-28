@@ -6,6 +6,6 @@
 
 class PointConstraintComponentStorage :public UniqueComponentStorageBase<PointConstraintComponent>
 {
-
+	void OnRemoving(EntityID _entity, const  PointConstraintComponent& _component) override;
 };
 

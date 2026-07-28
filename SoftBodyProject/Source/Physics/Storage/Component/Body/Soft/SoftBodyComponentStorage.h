@@ -8,4 +8,5 @@ class SoftBodyComponentStorage :public UniqueComponentStorageBase<SoftBodyCompon
 {
 private:
 	bool CanAdd(EntityID _entity) override;
+	void OnRemoving(EntityID _entity, const SoftBodyComponent& _component) override;
 };

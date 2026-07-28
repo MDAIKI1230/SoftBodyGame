@@ -6,6 +6,6 @@
 
 class DistanceConstraintComponentStorage :public UniqueComponentStorageBase<DistanceConstraintComponent>
 {
-
+	void OnRemoving(EntityID _entity, const DistanceConstraintComponent& _component) override;
 };
 

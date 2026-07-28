@@ -10,4 +10,5 @@ class RigidBodyComponentStorage :public UniqueComponentStorageBase<RigidBodyComp
 {
 private:
 	bool CanAdd(EntityID _entity) override;
+	void OnRemoving(EntityID _entity, const RigidBodyComponent& _component) override;
 };

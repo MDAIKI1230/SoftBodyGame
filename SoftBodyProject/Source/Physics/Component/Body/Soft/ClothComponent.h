@@ -25,6 +25,9 @@ public:
 	int GetColumnCount();
 	// 縦分割変更
 	void SetColumnCount(int _columnCount);
+
+	// ID取得
+	BodyID GetID() const { return id; }
 private:
 	BodyID id;
 };

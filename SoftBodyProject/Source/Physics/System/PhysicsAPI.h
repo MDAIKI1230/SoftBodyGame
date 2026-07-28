@@ -179,4 +179,6 @@ private:
 	static BodyStorage* bodyStorage;
 	static PhysicsTransformStorage* transformStorage;
 	static ConstraintStorage* constraintStorage;
+
+	PhysicsAPI();
 };

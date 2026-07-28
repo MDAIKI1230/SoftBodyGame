@@ -18,14 +18,14 @@ BoxColliderComponent::BoxColliderComponent(EntityID _entity, float _size) :
 }
 
 
-float BoxColliderComponent::GetWidth() const { return PhysicsAPI::GetWidth(colliderID); }
+float BoxColliderComponent::GetWidth() const { return PhysicsAPI::GetWidth(id); }
 
-void BoxColliderComponent::SetWidth(float _width) { PhysicsAPI::SetWidth(colliderID, _width); }
+void BoxColliderComponent::SetWidth(float _width) { PhysicsAPI::SetWidth(id, _width); }
 
-float BoxColliderComponent::GetHeight() const { return PhysicsAPI::GetHeight(colliderID); }
+float BoxColliderComponent::GetHeight() const { return PhysicsAPI::GetHeight(id); }
 
-void BoxColliderComponent::SetHeight(float _heibht) { PhysicsAPI::SetHeight(colliderID, _heibht); }
+void BoxColliderComponent::SetHeight(float _heibht) { PhysicsAPI::SetHeight(id, _heibht); }
 
-float BoxColliderComponent::GetDepth() const { return PhysicsAPI::GetDepth(colliderID); }
+float BoxColliderComponent::GetDepth() const { return PhysicsAPI::GetDepth(id); }
 
-void BoxColliderComponent::SetDepth(float _depth) { PhysicsAPI::SetDepth(colliderID, _depth); }
+void BoxColliderComponent::SetDepth(float _depth) { PhysicsAPI::SetDepth(id, _depth); }

@@ -33,6 +33,9 @@ public:
 	int GetSegmentCountZ();
 	// 奥行き分割変更
 	void SetSegmentCountZ(int _segmentCountZ);
+
+	// ID取得
+	BodyID GetID() const { return id; }
 private:
 	BodyID id;
 };

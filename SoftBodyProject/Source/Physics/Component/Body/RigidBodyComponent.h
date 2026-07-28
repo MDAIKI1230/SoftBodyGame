@@ -58,6 +58,9 @@ public:
 	const Vector3& GetGravity() const;
 	// 重力加速度変更
 	void SetGravity(const Vector3& _gravity);
+
+	// ID取得
+	BodyID GetID() const { return id; }
 private:
-	BodyID bodyId{};
+	BodyID id{};
 };
