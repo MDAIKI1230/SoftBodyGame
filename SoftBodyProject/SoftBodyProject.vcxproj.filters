@@ -1026,5 +1026,17 @@
     <ClCompile Include="Source\Common\ECS\SparseSet\Table\HashTable.cpp">
       <Filter>ソース ファイル\Common\ECS\SparseSet\Table</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Physics\Storage\Component\Collider\BoxColliderComponentStorage.cpp">
+      <Filter>ソース ファイル\Physics\Component\Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Physics\Storage\Component\Collider\SphereColliderComponentStorage.cpp">
+      <Filter>ソース ファイル\Physics\Component\Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Physics\Storage\Component\Constraint\DistanceConstraintComponentStorage.cpp">
+      <Filter>ソース ファイル\Physics\Component\Constraint</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Physics\Storage\Component\Constraint\PointConstraintComponentStorage.cpp">
+      <Filter>ソース ファイル\Physics\Component\Constraint</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
