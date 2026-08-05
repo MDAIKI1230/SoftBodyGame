@@ -18,14 +18,23 @@ PhysicsWorld::PhysicsWorld()
 	solverBodyBuildSystem = std::make_unique<SolverBodyBuildSystem>();
 	collisionSolverSystem = std::make_unique<CollisionSolverSystem>();
 	constraintBuildSystem = std::make_unique<ConstraintBuildSystem>();
+	softSolverSystem = std::make_unique<SoftSolverSystem>();
 	constraintSolverSystem = std::make_unique<ConstraintSolverSystem>();
 	solverBodyCommitSystem = std::make_unique<SolverBodyCommitSystem>();
 	physicsCommitSystem = std::make_unique<PhysicsCommitSystem>();
 
 #ifdef _DEBUG
 	constraintDebugRenderSystem = std::make_unique<ConstraintDebugRenderSystem>();
+	softDebugRenderingSystem = std::make_unique<SoftDebugRenderingSystem>();
 #endif // _DEBUG
 
+}
+
+void PhysicsWorld::Initialize()
+{
+	softSolverSystem->Initialize();
+
+	softDebugRenderingSystem->Initialize();
 }
 
 void PhysicsWorld::FixedUpdate(WorldStorage* _worldStorage, EventManager* _eventManager)
@@ -40,10 +49,9 @@ void PhysicsWorld::FixedUpdate(WorldStorage* _worldStorage, EventManager* _event
 
 	// 衝突・拘束解消
 	Solver();
-	/*solverBodyBuildSystem->Build(transformStorage.get(), rigidBodyStorage.get(), solverBodyBuffer.get());
-	collisionSolverSystem->FixedUpdate(colliderStorage.get(), manifoldBuffer.get(), solverBodyBuffer.get());
-	solverBodyCommitSystem->Commit(transformStorage.get(), rigidBodyStorage.get(), solverBodyBuffer.get());
-	solverBodyBuffer->Clear();*/
+	
+	softSolverSystem->Solve(bodyStorage.get());
+
 	// シミュレーション結果反映
 	physicsCommitSystem->FixedUpdate(transformStorage.get(), _worldStorage);
 }
@@ -52,6 +60,7 @@ void PhysicsWorld::FixedUpdate(WorldStorage* _worldStorage, EventManager* _event
 void PhysicsWorld::DebugRender()
 {
 	constraintDebugRenderSystem->Render(constraintStorage.get(), transformStorage.get());
+	softDebugRenderingSystem->Render();
 }
 #endif // _DEBUG
 

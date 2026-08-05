@@ -417,6 +417,7 @@
     <ClInclude Include="Source\Physics\Constants\CommandConstraints.h" />
     <ClInclude Include="Source\Physics\Constants\ConstraintConstants.h" />
     <ClInclude Include="Source\Physics\DebugRender\ConstraintDebugRenderSystem.h" />
+    <ClInclude Include="Source\Physics\DebugRender\SoftDebugRenderingSystem.h" />
     <ClInclude Include="Source\Physics\Function\ContactFunction.h" />
     <ClInclude Include="Source\Physics\Function\GJKEPA.h" />
     <ClInclude Include="Source\Physics\Function\ManifoldFunction.h" />
@@ -486,6 +487,7 @@
     <ClInclude Include="Source\Physics\System\Simplex.h" />
     <ClInclude Include="Source\Physics\System\Solver\CollisionSolverSystem.h" />
     <ClInclude Include="Source\Physics\System\Solver\ConstraintSolverSystem.h" />
+    <ClInclude Include="Source\Physics\System\Solver\SoftSolverSystem.h" />
     <ClInclude Include="Source\Physics\System\Solver\SolverBodyCommitSystem.h" />
     <ClInclude Include="Source\Physics\System\Sync\PhysicsCommitSystem.h" />
     <ClInclude Include="Source\Physics\System\Sync\SynchronizationSystem.h" />
@@ -561,6 +563,7 @@
     <ClCompile Include="Source\Physics\Component\Constraint\EndPointConstraintComponentBase.cpp" />
     <ClCompile Include="Source\Physics\Component\Constraint\PointConstraintComponent.cpp" />
     <ClCompile Include="Source\Physics\DebugRender\ConstraintDebugRenderSystem.cpp" />
+    <ClCompile Include="Source\Physics\DebugRender\SoftDebugRenderingSystem.cpp" />
     <ClCompile Include="Source\Physics\Function\ContactFunction.cpp" />
     <ClCompile Include="Source\Physics\Function\GJKEPA.cpp" />
     <ClCompile Include="Source\Physics\Function\ManifoldFunction.cpp" />
@@ -587,6 +590,7 @@
     <ClCompile Include="Source\Physics\System\Simplex.cpp" />
     <ClCompile Include="Source\Physics\System\Solver\CollisionSolverSystem.cpp" />
     <ClCompile Include="Source\Physics\System\Solver\ConstraintSolverSystem.cpp" />
+    <ClCompile Include="Source\Physics\System\Solver\SoftSolverSystem.cpp" />
     <ClCompile Include="Source\Physics\System\Solver\SolverBodyCommitSystem.cpp" />
     <ClCompile Include="Source\Physics\System\Sync\PhysicsCommitSystem.cpp" />
     <ClCompile Include="Source\Physics\System\Sync\SynchronizationSystem.cpp" />
@@ -612,6 +616,38 @@
     <ClCompile Include="Source\System\SceneData\JsonLoadHelperFunc.cpp" />
     <ClCompile Include="Source\System\SceneData\SceneDataLoader.cpp" />
     <ClCompile Include="Source\System\Scenes\DebugScene.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Shader\SoftDebugFS.frag">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='DebugDxlib|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='DebugRaylib|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='ReleaseRaylib|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='ReleaseDxlib|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='DebugDxlib|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='DebugRaylib|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='ReleaseRaylib|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='ReleaseDxlib|x64'">true</ExcludedFromBuild>
+    </None>
+    <None Include="Shader\SoftDebugVS.vert">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='DebugDxlib|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='DebugRaylib|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='ReleaseRaylib|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='ReleaseDxlib|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='DebugDxlib|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='DebugRaylib|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='ReleaseRaylib|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='ReleaseDxlib|x64'">true</ExcludedFromBuild>
+    </None>
+    <None Include="Shader\SoftSolverCS.comp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='DebugDxlib|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='DebugRaylib|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='ReleaseRaylib|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='ReleaseDxlib|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='DebugDxlib|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='DebugRaylib|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='ReleaseRaylib|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='ReleaseDxlib|x64'">true</ExcludedFromBuild>
+    </None>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -59,6 +59,8 @@ public:
 	virtual void DrawBox(const Matrix4x4& _mat, const Vector3& _size, const Color& _color) = 0;
 	// 線描画
 	virtual void DrawLine(const Vector3& _pos1, const Vector3& _pos2, const Color& _color) = 0;
+	// 点描画
+	virtual void DrawPoint() = 0;
 
 	// ---リソース削除関数---
 

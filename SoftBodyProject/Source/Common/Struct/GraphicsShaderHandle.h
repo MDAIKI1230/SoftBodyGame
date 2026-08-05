@@ -1,9 +1,7 @@
 ﻿#pragma once
 
-#include <cstdint>
+#include "GenerationalID.h"
 
-struct GraphicsShaderHandle
-{
-	const uint32_t index;
-	const uint32_t generation;
-};
+struct GraphicsShaderTag;
+
+using GraphicsShaderHandle = GenerationalID<GraphicsShaderTag>;

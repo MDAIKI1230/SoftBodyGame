@@ -79,6 +79,7 @@ void SceneBase::Execute()
 	{
 	case SceneState::INITIALIZE:
 		// 初期化タスクの生成
+		physicsWorld->Initialize();
 		Initialize();
 		break;
 	case SceneState::LOADING:

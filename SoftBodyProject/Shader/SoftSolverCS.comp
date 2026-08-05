@@ -1,0 +1,82 @@
+﻿// バージョン
+#version 430 core
+
+/*
+    スレッド数を多次元配列風にIndexを付けている。
+    実際にはGPUメモリ上では一次元配列だが扱いやすいように多次元座標が割り当てられる。
+*/
+layout(local_size_x = 64, local_size_y = 1, local_size_z = 1) in;
+
+// 構造体
+struct Particle
+{
+    vec4 position;
+    vec4 velocity;
+};
+
+/*
+    SSBO
+    読み書き可能なGPUバッファ
+    std430      : GPU上でのデータ配置ルール
+    binding = 0 : C++側のBindShaderBuffer(buffer, 0)と対応
+    buffer      : 読み書き可能
+    particles[] : サイズが実行時に決まる配列
+*/ 
+layout(std430, binding = 0) buffer ParticleBuffer
+{
+    Particle particles[];
+};
+
+// エントリーポイント
+void main()
+{
+    /*
+        スレッド番号の種類
+        layout(local_size_x = 4) in;
+    として、
+    Dispatch(shader, 3, 1, 1);
+    を実行すると、4スレッドのグループが3個、合計12スレッド動きます。
+    ＜イメージ＞
+    グループ0：グローバル番号 0  1  2  3
+    グループ1：グローバル番号 4  5  6  7
+    グループ2：グローバル番号 8  9 10 11
+    gl_LocalInvocationID : グループ内で何番目か。上の例だと、各グループで0～3
+    gl_WorkGroupID       : 何番目のグループか。上の例だと、0～2
+    gl_GlobalInvocationID: 全グループを通して一意な番号。上の例だと0～11
+    gl_WorkGroupSize	 : 1グループのスレッド数
+    gl_NumWorkGroups	 : Dispatchされたグループ数
+
+    関係式
+    gl_GlobalInvocationID = gl_WorkGroupID * gl_WorkGroupSize + gl_LocalInvocationID;
+
+    型はuvec3でそれぞれ「layout(local_size_x = 64, local_size_y = 1, local_size_z = 1) in;」に対応する
+
+    */
+
+    // スレッド番号(mainを実行しているスレッドが何番目の担当なのかを表す番号/Indexとして使う場合が多い)
+    uint index = gl_GlobalInvocationID.x;
+    uint particleCount = uint(particles.length());
+
+    // 64の倍数でない余分なスレッドを止める
+    if (index >= particleCount)
+    {
+        return;
+    }
+
+    Particle particle = particles[index];
+
+    particle.position.xyz += particle.velocity.xyz * 0.02;
+
+    if (particle.position.x >= 150.0)
+    {
+        particle.position.x = 150.0;
+        particle.velocity.x = -abs(particle.velocity.x);
+    }
+    else if (particle.position.x <= -150.0)
+    {
+        particle.position.x = -150.0;
+        particle.velocity.x = abs(particle.velocity.x);
+    }
+
+    particles[index] = particle;
+}

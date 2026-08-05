@@ -21,12 +21,14 @@
 #include "SolverBodyBuildSystem.h"
 #include "CollisionSolverSystem.h"
 #include "ConstraintBuildSystem.h"
+#include "SoftSolverSystem.h"
 #include "ConstraintSolverSystem.h"
 #include "SolverBodyCommitSystem.h"
 #include "PhysicsCommitSystem.h"
 
 #ifdef _DEBUG
 #include "ConstraintDebugRenderSystem.h"
+#include "SoftDebugRenderingSystem.h"
 #endif // DEBUG
 
 
@@ -35,6 +37,9 @@ class PhysicsWorld
 public:
 	// コンストラクタ
 	PhysicsWorld();
+
+	// 初期化関数
+	void Initialize();
 
 	// 物理更新
 	void FixedUpdate(WorldStorage* _worldStorage, EventManager* _eventManager);
@@ -77,6 +82,7 @@ private:
 	std::unique_ptr<SolverBodyBuildSystem> solverBodyBuildSystem;
 	std::unique_ptr<CollisionSolverSystem> collisionSolverSystem;
 	std::unique_ptr<ConstraintBuildSystem> constraintBuildSystem;
+	std::unique_ptr<SoftSolverSystem> softSolverSystem;
 	std::unique_ptr<ConstraintSolverSystem> constraintSolverSystem;
 	std::unique_ptr<SolverBodyCommitSystem> solverBodyCommitSystem;
 	std::unique_ptr<PhysicsCommitSystem> physicsCommitSystem;
@@ -84,5 +90,6 @@ private:
 	// --- デバッグ用 ---
 #ifdef _DEBUG
 	std::unique_ptr<ConstraintDebugRenderSystem> constraintDebugRenderSystem;
+	std::unique_ptr<SoftDebugRenderingSystem> softDebugRenderingSystem;
 #endif // _DEBUG
 };

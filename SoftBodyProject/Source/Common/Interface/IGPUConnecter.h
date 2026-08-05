@@ -30,7 +30,7 @@ public:
 	// ピクセルシェーダ読み込み
 	virtual GraphicsShaderHandle LoadPixelShader(const std::string& _filePath) = 0;
 	// 頂点とピクセルシェーダ読み込み
-	virtual GraphicsShaderHandle LoadPixelShader(const std::string& _vertexShaderFilePath, const std::string& _pixelShaderFilePath) = 0;
+	virtual GraphicsShaderHandle LoadVertexPixelShader(const std::string& _vertexShaderFilePath, const std::string& _pixelShaderFilePath) = 0;
 	// 描画関連(頂点とピクセル)シェーダスタート
 	virtual void BeginGraphicsShader(GraphicsShaderHandle _shader) = 0;
 	// 描画関連(頂点とピクセル)シェーダ終了
