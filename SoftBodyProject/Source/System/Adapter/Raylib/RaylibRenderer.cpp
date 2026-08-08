@@ -208,12 +208,16 @@ void RaylibRenderer::DrawBox(const Matrix4x4& _mat, const Vector3& _size, const 
     L(2, 6);
     L(3, 7);
 }
-
+// 線描画
 void RaylibRenderer::DrawLine(const Vector3& _pos1, const Vector3& _pos2, const Color& _color)
 {
     ::DrawLine3D(ToRaylib(_pos1), ToRaylib(_pos2), ToRaylib(_color));
 }
-
+// カプセル描画
+void RaylibRenderer::DrawCapsule(const Vector3& _pos1, const Vector3& _pos2, float _radius, const Color& _color)
+{
+    ::DrawCapsuleWires(ToRaylib(_pos1), ToRaylib(_pos2), _radius, 8, 8, ToRaylib(_color));
+}
 // ---リソース削除関数---
 // モデル素材削除
 void RaylibRenderer::DeleteModel(int _handle)

@@ -11,6 +11,7 @@
 #include "AABBBroadPhaseColliderStorage.h"
 #include "SphereColliderStorage.h"
 #include "BoxColliderStorage.h"
+#include "CapsuleColliderStorage.h"
 
 class ColliderStorage:public PhysicsStorageBase<ColliderID, ColliderSlot>
 {
@@ -20,6 +21,10 @@ class ColliderStorage:public PhysicsStorageBase<ColliderID, ColliderSlot>
     // ボックスコライダー
     MD_OWNED_STORAGE_READ_ONLY_ACCESSORS(ColliderID, ColliderID, BoxColliderID, boxStorage, ID);
     MD_OWNED_STORAGE_READ_WRITE_ACCESSORS(ColliderID, Vector3, BoxColliderScale, boxStorage, Scale);
+    // カプセルコライダー
+    MD_OWNED_STORAGE_READ_ONLY_ACCESSORS(ColliderID, ColliderID, CapsuleColliderID, capsuleStorage, ID);
+    MD_OWNED_STORAGE_READ_WRITE_ACCESSORS(ColliderID, float, CapsuleColliderHeight, capsuleStorage, Height);
+    MD_OWNED_STORAGE_READ_WRITE_ACCESSORS(ColliderID, float, CapsuleColliderRadius, capsuleStorage, Radius);
     // AABB(特別処理)
     // AABB取得関数
     const AABBBroadPhaseCollider& GetAABBBroadPhaseCollider(uint32_t _index)
@@ -52,8 +57,10 @@ public:
 
     // 球作成
     ColliderID CreateSphere(EntityID _entity, PhysicsTransformID _transformID, float _radius);
-    // Box作成
+    // ボックス作成
     ColliderID CreateBox(EntityID _entity, PhysicsTransformID _transformID, const Vector3& _scale);
+    // カプセル作成
+    ColliderID CreateCapsule(EntityID _entity, PhysicsTransformID _transformID, float _height, float _radius);
 
     // 破棄
     void Destroy(ColliderID _id);
@@ -75,6 +82,8 @@ private:
     std::unique_ptr<SphereColliderStorage> sphereStorage;
     // ボックスStorage
     std::unique_ptr<BoxColliderStorage> boxStorage;
+    // カプセルStorage
+    std::unique_ptr<CapsuleColliderStorage> capsuleStorage;
 
     std::unordered_map<PhysicsTransformID, std::vector<ColliderID>> transformMap;
 };

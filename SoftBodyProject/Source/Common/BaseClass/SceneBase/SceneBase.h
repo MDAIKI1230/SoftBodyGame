@@ -16,7 +16,6 @@
 #include "UpdateSystem.h"
 #include "FixedUpdateSystem.h"
 #include "RenderingSystem.h"
-#include "UniqueComponentStorageBase.h"
 
 class SceneBase
 {

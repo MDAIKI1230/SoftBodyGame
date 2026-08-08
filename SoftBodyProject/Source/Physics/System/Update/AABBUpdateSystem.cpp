@@ -21,6 +21,9 @@ void AABBUpdateSystem::FixedUpdate(PhysicsTransformStorage* _transformStorage, C
 			case ColliderType::BOX:
 				ComputeBox(_colliderStorage->EditAABBBroadPhaseCollider(i), _colliderStorage, id, _transformStorage);
 				break;
+			case ColliderType::CAPSULE:
+				ComputeCapsule(_colliderStorage->EditAABBBroadPhaseCollider(i), _colliderStorage, id, _transformStorage);
+				break;
 			default:
 				break;
 			}
@@ -40,6 +43,9 @@ void AABBUpdateSystem::FixedUpdate(PhysicsTransformStorage* _transformStorage, C
 			case ColliderType::BOX:
 				ComputeBox(_colliderStorage->EditAABBBroadPhaseCollider(i), _colliderStorage, id, _transformStorage);
 				break;
+			case ColliderType::CAPSULE:
+				ComputeCapsule(_colliderStorage->EditAABBBroadPhaseCollider(i), _colliderStorage, id, _transformStorage);
+				break;
 			default:
 				break;
 			}
@@ -54,16 +60,16 @@ void AABBUpdateSystem::FixedUpdate(PhysicsTransformStorage* _transformStorage, C
 	}
 }
 
-void AABBUpdateSystem::ComputeSphere(AABBBroadPhaseCollider& aabb, ColliderStorage* _colliderStorage, ColliderID _id, PhysicsTransformStorage* _transformStorage)
+void AABBUpdateSystem::ComputeSphere(AABBBroadPhaseCollider& _aabb, ColliderStorage* _colliderStorage, ColliderID _id, PhysicsTransformStorage* _transformStorage)
 {
 	Vector3 scale{ _transformStorage->GetScale(_transformStorage->GetDenseIndex(_colliderStorage->GetTransformID(_id))) };
 	// 最大値で倍にする
 	float multiple{ std::max(std::max(scale.x,scale.y),scale.z) };
-	aabb.min = Vector3{ -_colliderStorage->GetSphereColliderRadius(_id) * multiple };
-	aabb.max = Vector3{ _colliderStorage->GetSphereColliderRadius(_id) * multiple };
+	_aabb.min = Vector3{ -_colliderStorage->GetSphereColliderRadius(_id) * multiple };
+	_aabb.max = Vector3{ _colliderStorage->GetSphereColliderRadius(_id) * multiple };
 }
 
-void AABBUpdateSystem::ComputeBox(AABBBroadPhaseCollider& aabb, ColliderStorage* _colliderStorage, ColliderID _id, PhysicsTransformStorage* _transformStorage)
+void AABBUpdateSystem::ComputeBox(AABBBroadPhaseCollider& _aabb, ColliderStorage* _colliderStorage, ColliderID _id, PhysicsTransformStorage* _transformStorage)
 {
 	uint32_t transIndex{ _transformStorage->GetDenseIndex(_colliderStorage->GetTransformID(_id)) };
 
@@ -95,6 +101,14 @@ void AABBUpdateSystem::ComputeBox(AABBBroadPhaseCollider& aabb, ColliderStorage*
 		std::abs(up.z) * halfScale.y +
 		std::abs(forward.z) * halfScale.z;
 
-	aabb.min = -aabbScale;
-	aabb.max = aabbScale;
+	_aabb.min = -aabbScale;
+	_aabb.max = aabbScale;
+}
+
+void AABBUpdateSystem::ComputeCapsule(AABBBroadPhaseCollider& _aabb, ColliderStorage* _colliderStorage, ColliderID _id, PhysicsTransformStorage* _transformStorage)
+{
+	float radius{ _colliderStorage->GetCapsuleColliderRadius(_id) };
+	float height{ _colliderStorage->GetCapsuleColliderHeight(_id) };
+	_aabb.min = Vector3{ -radius,-height / 2.0f,-radius };
+	_aabb.max = Vector3{ radius,height / 2.0f,radius };
 }

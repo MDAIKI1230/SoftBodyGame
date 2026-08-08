@@ -184,80 +184,11 @@ void ManifoldFunction::AddEdgeManifold(
     Vector3 startB = edgeCenterB - _candidateAxisB[_info.axisB] * _halfsB[_info.axisB];
     Vector3 endB = edgeCenterB + _candidateAxisB[_info.axisB] * _halfsB[_info.axisB];
 
-    // 辺ベクトル
-    Vector3 segmentA = endA - startA;
-    Vector3 segmentB = endB - startB;
-    // AとBのスタート点のベクトル
-    Vector3 r = startA - startB;
+    // 最近点を求める
+    const auto closestPoints{ MDMath::ClosestSegmentOnSegment(startA,endA,startB,endB) };
 
-    // 長さ
-    float lengthA = Vector3::Dot(segmentA, segmentA);
-    float lengthB = Vector3::Dot(segmentB, segmentB);
-    // スタート点をつなぐベクトルを射影
-    float dotB = Vector3::Dot(segmentB, r);
-    float dotA = Vector3::Dot(segmentA, r);
-
-    // 最近点用の係数
-    float s = 0.0f;
-    float t = 0.0f;
-
-    // 両方の長さが0に近いなら、スタート点を使う
-    if (lengthA <= MathConstants::EPSILON && lengthB <= MathConstants::EPSILON)
-    {
-        s = 0.0f;
-        t = 0.0f;
-    }
-    // Aの長さが0に近いなら、Aはスタート点Bは最近点
-    else if (lengthA <= MathConstants::EPSILON)
-    {
-        s = 0.0f;
-        t = std::clamp((dotB / lengthB), 0.0f, 1.0f);
-    }
-    // Bの長さが0に近いなら、Bはスタート点Aは最近点
-    else if (lengthB <= MathConstants::EPSILON)
-    {
-        t = 0.0f;
-        s = std::clamp((-dotA / lengthA), 0.0f, 1.0f);
-    }
-    // 両者長さが十分なら普通に最近点を求める
-    else
-    {
-        /*
-               最近点ということは、最近点同士を結んだベクトルとAとBの辺の内積は0になるはず
-                 dot(dotA A(s) - B(t)) = 0
-                 dot(dotB, A(s) - B(t)) = 0
-                 になるsとtを求める
-                 連立方程式として解いたら下のような式になる
-        */
-        float dotAB = Vector3::Dot(segmentA, segmentB);
-        float denom = lengthA * lengthB - dotAB * dotAB;
-
-        if (std::abs(denom) > MathConstants::EPSILON)
-        {
-            s = std::clamp(((dotAB * dotB - dotA * lengthB) / denom), 0.0f, 1.0f);
-        }
-        else
-        {
-            s = 0.0f;
-        }
-
-        t = (dotAB * s + dotB) / lengthB;
-
-        if (t < 0.0f)
-        {
-            t = 0.0f;
-            s = std::clamp((-dotA / lengthA), 0.0f, 1.0f);
-        }
-        else if (t > 1.0f)
-        {
-            t = 1.0f;
-            s = std::clamp(((dotAB - dotA) / lengthA), 0.0f, 1.0f);
-        }
-    }
-
-    // 求まったs.tから最近点を計算
-    Vector3 closestA = startA + segmentA * s;
-    Vector3 closestB = startB + segmentB * t;
+    const Vector3& closestA = closestPoints.pointA;
+    const Vector3& closestB = closestPoints.pointB;
 
     ContactPoint cp;
     cp.positionLocalA = _rotationA.Conjugate().Rotate(closestA - _positionA);

@@ -27,8 +27,15 @@ namespace CollisionPair
 
 	using SphereSpherePair = CollPair<SphereTag, SphereTag>;
 	using SphereBoxPair = CollPair<SphereTag, BoxTag>;
+	using SphereCapsulePair = CollPair<SphereTag, CapsuleTag>;
+
 	using BoxSpherePair = CollPair<BoxTag, SphereTag>;
 	using BoxBoxPair = CollPair<BoxTag, BoxTag>;
+	using BoxCapsulePair = CollPair<BoxTag, CapsuleTag>;
+
+	using CapsuleSpherePair = CollPair<CapsuleTag, SphereTag>;
+	using CapsuleBoxPair = CollPair<CapsuleTag, BoxTag>;
+	using CapsuleCapsulePair = CollPair<CapsuleTag, CapsuleTag>;
 }
 
 template<>

@@ -121,30 +121,43 @@ public:
 
 	// 球作成
 	static ColliderID CreateSphere(EntityID _entity, float _radius);
-	// Box作成
+	// ボックス作成
 	static ColliderID CreateBox(EntityID _entity, const Vector3& _scale);
+	// カプセル作成
+	static ColliderID CreateCapsule(EntityID _entity, float _height, float _radius);
 
 	// --- 球コライダー ---
 
 	// 半径取得
-	static float GetRadius(ColliderID _id);
+	static float GetSphereRadius(ColliderID _id);
 	// 半径変更
-	static void SetRadius(ColliderID _id, float _radius);
+	static void SetSphereRadius(ColliderID _id, float _radius);
 
 	// --- 箱コライダー ---
 
 	// X方向の長さ取得
-	static float GetWidth(ColliderID _id);
+	static float GetBoxWidth(ColliderID _id);
 	// X方向の長さ変更
-	static void SetWidth(ColliderID _id, float _width);
+	static void SetBoxWidth(ColliderID _id, float _width);
 	// Y方向の長さ取得
-	static float GetHeight(ColliderID _id);
+	static float GetBoxHeight(ColliderID _id);
 	// Y方向の長さ変更
-	static void SetHeight(ColliderID _id, float _height);
+	static void SetBoxHeight(ColliderID _id, float _height);
 	// Z方向の長さ取得
-	static float GetDepth(ColliderID _id);
+	static float GetBoxDepth(ColliderID _id);
 	// Z方向の長さ変更
-	static void SetDepth(ColliderID _id, float _depth);
+	static void SetBoxDepth(ColliderID _id, float _depth);
+
+	// --- カプセルコライダー ---
+
+	// Y方向の長さ取得
+	static float GetCapsuleHeight(ColliderID _id);
+	// Y方向の長さ変更
+	static void SetCapsuleHeight(ColliderID _id, float _height);
+	// 半径取得
+	static float GetCapsuleRadius(ColliderID _id);
+	// 半径変更
+	static void SetCapsuleRadius(ColliderID _id, float _radius);
 
 	// --- 拘束系 ---
 	// 破壊

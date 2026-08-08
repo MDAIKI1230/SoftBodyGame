@@ -55,4 +55,10 @@ namespace
 			return candidates[maxIndex];
 		}
 	};
+
+	// カプセル
+	struct CapsuleTag
+	{
+
+	};
 }

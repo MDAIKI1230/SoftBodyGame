@@ -139,12 +139,16 @@ void DxlibRenderer::DrawBox(const Matrix4x4& _mat, const Vector3& _size, const C
     L(2, 6);
     L(3, 7);
 }
-
+// 線描画
 void DxlibRenderer::DrawLine(const Vector3& _pos1, const Vector3& _pos2, const Color& _color)
 {
     DxLib::DrawLine3D(ToDxlib(_pos1), ToDxlib(_pos2), ToDxlib(_color));
 }
-
+// カプセル描画
+void DxlibRenderer::DrawCapsule(const Vector3& _pos1, const Vector3& _pos2, float _radius, const Color& _color)
+{
+    DxLib::DrawCapsule3D(ToDxlib(_pos1), ToDxlib(_pos2), _radius, 10, ToDxlib(_color), ToDxlib(_color), false);
+}
 // ---リソース削除関数---
 // モデル素材削除
 void DxlibRenderer::DeleteModel(int _handle)

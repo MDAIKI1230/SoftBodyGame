@@ -96,6 +96,11 @@ void RigidBodySystem::UpdateInverseInertiaTensor(PhysicsTransformStorage* _trans
 						GenerateBoxInverseInertiaTensor(transIndex, colliderID, _bodyStorage->GetRigidBodyMass(bodyID), _transformStorage, _colliderStorage)
 					);
 					break;
+				case ColliderType::CAPSULE:
+					_bodyStorage->SetRigidBodyLocalInverseInertiaTensor(
+						bodyID,
+						GenerateCapsuleInverseInertiaTensor(transIndex, colliderID, _bodyStorage->GetRigidBodyMass(bodyID), _transformStorage, _colliderStorage)
+					);
 				}
 			}
 			// フラグを戻す
@@ -152,5 +157,84 @@ Matrix4x4 RigidBodySystem::GenerateSphereInverseInertiaTensor(uint32_t _transfor
 		0.0f,1 / i,0.0f,0.0f,
 		0.0f,0.0f,1 / i,0.0f,
 		0.0f, 0.0f, 0.0f, 1.0f
+	};
+}
+
+Matrix4x4 RigidBodySystem::GenerateCapsuleInverseInertiaTensor(uint32_t _transformIndex, ColliderID _colliderID, float _mass, PhysicsTransformStorage* _transformStorage, ColliderStorage* _colliderStorage)
+{
+	const Vector3& scale{ _transformStorage->GetScale(_transformIndex) };
+
+	// カプセルはローカルY軸方向。
+	// 非一様スケール時も断面を円として扱うため、
+	// 半径にはX・Zの大きい方を使用する。
+	const float height{ std::abs(_colliderStorage->GetCapsuleColliderHeight(_colliderID) * scale.y) };
+
+	float radiusScale{ std::max(std::abs(scale.x), std::abs(scale.z)) };
+
+	float radius{ std::abs(_colliderStorage->GetCapsuleColliderRadius(_colliderID)) * radiusScale };
+
+	float radiusSqr{ radius * radius };
+
+	// πは円柱と球の質量比を求める際に打ち消し合うので省略可能。
+	float cylinderVolume{ radiusSqr * height };
+
+	// 上下の半球を合わせると1個の球と同じ体積。
+	float sphereVolume{ (4.0f / 3.0f) * radiusSqr * radius };
+
+	float totalVolume{ cylinderVolume + sphereVolume };
+
+	if (_mass <= MathConstants::EPSILON ||
+		totalVolume <= MathConstants::EPSILON)
+	{
+		return Matrix4x4{
+			0.0f, 0.0f, 0.0f, 0.0f,
+			0.0f, 0.0f, 0.0f, 0.0f,
+			0.0f, 0.0f, 0.0f, 0.0f,
+			0.0f, 0.0f, 0.0f, 1.0f
+		};
+	}
+
+	// 一様密度として、体積比から円柱部分と半球部分へ質量を分配。
+	float cylinderMass{ _mass * cylinderVolume / totalVolume };
+
+	// 上下2個の半球を合計した質量。
+	float capsMass{ _mass - cylinderMass };
+
+	// 円柱部分の慣性モーメント。
+	// Y軸が円柱の長軸。
+	float cylinderIxx{ (1.0f / 12.0f) * cylinderMass * (3.0f * radiusSqr + height * height) };
+
+	float cylinderIyy{ 0.5f * cylinderMass * radiusSqr };
+
+	// 各半球の重心は、平面部分から3r/8だけ外側にある。
+	float capCenterOffset{ height * 0.5f + radius * (3.0f / 8.0f) };
+
+	// 上下2個の半球を合わせた慣性モーメント。
+	float capsIxx{ capsMass * ((83.0f / 320.0f) * radiusSqr + capCenterOffset * capCenterOffset) };
+
+	float capsIyy{ (2.0f / 5.0f) * capsMass * radiusSqr };
+
+	// X軸とZ軸は対称。
+	float ixx{ cylinderIxx + capsIxx };
+	float iyy{ cylinderIyy + capsIyy };
+	float izz{ ixx };
+
+	float inverseIxx{
+		ixx > MathConstants::EPSILON ? 1.0f / ixx : 0.0f
+	};
+
+	float inverseIyy{
+		iyy > MathConstants::EPSILON ? 1.0f / iyy : 0.0f
+	};
+
+	float inverseIzz{
+		izz > MathConstants::EPSILON ? 1.0f / izz : 0.0f
+	};
+
+	return Matrix4x4{
+		inverseIxx, 0.0f,       0.0f,       0.0f,
+		0.0f,       inverseIyy, 0.0f,       0.0f,
+		0.0f,       0.0f,       inverseIzz, 0.0f,
+		0.0f,       0.0f,       0.0f,       1.0f
 	};
 }

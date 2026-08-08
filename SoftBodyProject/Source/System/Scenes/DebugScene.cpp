@@ -6,6 +6,7 @@
 
 #include "SphereColliderComponent.h"
 #include "BoxColliderComponent.h"
+#include "CapsuleColliderComponent.h"
 
 #include "RigidBodyComponent.h"
 
@@ -14,6 +15,7 @@
 
 #include "DebugSphere.h"
 #include "DebugBox.h"
+#include "DebugCapsule.h"
 #include "EmptyObject.h"
 
 #include "DebugScene.h"
@@ -38,6 +40,9 @@ void DebugScene::Initialize()
 	std::unique_ptr<DebugBox> debugBox01{ std::make_unique<DebugBox>(worldStorage.get(), objectManager->GenerateNewID(), 500.0f, 50.0f, 500.0f)};
 	debugBox01->GetComponent<TransformComponent>()->SetPosition(Vector3{ 0,-200,0 });
 	objectManager->Add(std::move(debugBox01));
+
+	objectManager->Add(std::make_unique<DebugCapsule>(worldStorage.get(), objectManager->GenerateNewID()));
+	objectManager->Add(std::make_unique<DebugCapsule>(worldStorage.get(), objectManager->GenerateNewID()));
 
 	// 距離拘束デバッグ(宙ぶらりんなせいで力が減衰する要素がほぼないので凄い動く)
 	/*std::unique_ptr<EmptyObject> emptyObject{ std::make_unique<EmptyObject>(worldStorage.get(), objectManager->GenerateNewID()) };
@@ -155,9 +160,9 @@ void DebugScene::Initialize()
 
 	// LoadFile("Res/Data/DebugSceneData.json");
 #ifdef USE_RAYLIB
-	RendererComponent renderer{ ServiceLocator::GetRenderer()->LoadModel(std::string{"Res/Model/Player.glb"}) };
+	RendererComponent renderer{ ServiceLocator::GetRenderer()->LoadModel(std::string{"Res/Model/A_001_player_neutral_01_01.glb"}) };
 #else
-	RendererComponent renderer{ ServiceLocator::GetRenderer()->LoadModel(std::string{"Res/Model/Player.mv1"}) };
+	RendererComponent renderer{ ServiceLocator::GetRenderer()->LoadModel(std::string{"Res/Model/A_001_player_neutral_01_01.mv1"}) };
 #endif // PLAY_RAYLIB
 
 	
