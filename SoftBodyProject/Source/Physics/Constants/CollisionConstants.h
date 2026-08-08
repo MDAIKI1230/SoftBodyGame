@@ -16,6 +16,7 @@ enum class ColliderType :char
 {
 	SPHERE,
 	BOX,
+	CAPSULE,
 	COUNT
 };
 

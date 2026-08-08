@@ -117,18 +117,7 @@ void CollisionSystem::NarrowPhase(PhysicsTransformStorage* _transformStorage, Co
 			_manifoldBuffer,
 			_eventManager
 		);
-
-	// 箱VS球
-	Solve<BoxTag, SphereTag, CollisionPair::BoxSpherePair>
-		(
-			narrowPhasePairBuilder.boxSpherePair,
-			_transformStorage,
-			_colliderStorage,
-			_manifoldBuffer,
-			_eventManager
-		);
-
-	// 球VS箱
+	// 球VSボックス
 	Solve<SphereTag, BoxTag, CollisionPair::SphereBoxPair>
 		(
 			narrowPhasePairBuilder.sphereBoxPair,
@@ -137,11 +126,66 @@ void CollisionSystem::NarrowPhase(PhysicsTransformStorage* _transformStorage, Co
 			_manifoldBuffer,
 			_eventManager
 		);
+	// 球VSカプセル
+	Solve<SphereTag, CapsuleTag, CollisionPair::SphereCapsulePair>
+		(
+			narrowPhasePairBuilder.sphereCapsulePair,
+			_transformStorage,
+			_colliderStorage,
+			_manifoldBuffer,
+			_eventManager
+		);
 
-	// 箱VS箱
+	// ボックスVS球
+	Solve<BoxTag, SphereTag, CollisionPair::BoxSpherePair>
+		(
+			narrowPhasePairBuilder.boxSpherePair,
+			_transformStorage,
+			_colliderStorage,
+			_manifoldBuffer,
+			_eventManager
+		);
+	// ボックスVSボックス
 	Solve<BoxTag, BoxTag, CollisionPair::BoxBoxPair>
 		(
 			narrowPhasePairBuilder.boxBoxPair,
+			_transformStorage,
+			_colliderStorage,
+			_manifoldBuffer,
+			_eventManager
+		);
+	// ボックスVSカプセル
+	Solve<BoxTag, CapsuleTag, CollisionPair::BoxCapsulePair>
+		(
+			narrowPhasePairBuilder.boxCapsulePair,
+			_transformStorage,
+			_colliderStorage,
+			_manifoldBuffer,
+			_eventManager
+		);
+
+	// カプセルVS球
+	Solve<CapsuleTag, SphereTag, CollisionPair::CapsuleSpherePair>
+		(
+			narrowPhasePairBuilder.capsuleSpherePair,
+			_transformStorage,
+			_colliderStorage,
+			_manifoldBuffer,
+			_eventManager
+		);
+	// カプセルVSボックス
+	Solve<CapsuleTag, BoxTag, CollisionPair::CapsuleBoxPair>
+		(
+			narrowPhasePairBuilder.capsuleBoxPair,
+			_transformStorage,
+			_colliderStorage,
+			_manifoldBuffer,
+			_eventManager
+		);
+	// カプセルVSカプセル
+	Solve<CapsuleTag, CapsuleTag, CollisionPair::CapsuleCapsulePair>
+		(
+			narrowPhasePairBuilder.capsuleCapsulePair,
 			_transformStorage,
 			_colliderStorage,
 			_manifoldBuffer,
@@ -238,23 +282,7 @@ void CollisionSystem::Solve(
 	}
 }
 
-template<>
-void CollisionSystem::Solve<BoxTag, BoxTag, CollisionPair::BoxBoxPair>(
-	const std::vector<CollisionPair::BoxBoxPair>& pairList,
-	PhysicsTransformStorage* _transformStorage,
-	ColliderStorage* _colliderStorage,
-	CollisionManifoldBuffer* _manifoldBuffer,
-	EventManager* _eventManager)
-{
-	for (auto& pair : pairList)
-	{
-		if (ContactFunction::BoxBox(pair.a, pair.b, _colliderStorage, _transformStorage, _manifoldBuffer))
-		{
-			RegisterEvent(pair.a, pair.b, _colliderStorage, _eventManager);
-		}
-	}
-}
-
+// 球VS球
 template<>
 void CollisionSystem::Solve<SphereTag, SphereTag, CollisionPair::SphereSpherePair>(
 	const std::vector<CollisionPair::SphereSpherePair>& pairList,
@@ -271,7 +299,7 @@ void CollisionSystem::Solve<SphereTag, SphereTag, CollisionPair::SphereSpherePai
 		}
 	}
 }
-
+// 球VSボックス
 template<>
 void CollisionSystem::Solve<SphereTag, BoxTag, CollisionPair::SphereBoxPair>(
 	const std::vector<CollisionPair::SphereBoxPair>& pairList,
@@ -288,6 +316,25 @@ void CollisionSystem::Solve<SphereTag, BoxTag, CollisionPair::SphereBoxPair>(
 		}
 	}
 }
+// 球VSカプセル
+template<>
+void CollisionSystem::Solve<SphereTag, CapsuleTag, CollisionPair::SphereCapsulePair>(
+	const std::vector<CollisionPair::SphereCapsulePair>& pairList,
+	PhysicsTransformStorage* _transformStorage,
+	ColliderStorage* _colliderStorage,
+	CollisionManifoldBuffer* _manifoldBuffer,
+	EventManager* _eventManager)
+{
+	for (auto& pair : pairList)
+	{
+		if (ContactFunction::SphereCapsule(pair.a, pair.b, _colliderStorage, _transformStorage, _manifoldBuffer))
+		{
+			RegisterEvent(pair.a, pair.b, _colliderStorage, _eventManager);
+		}
+	}
+}
+
+// ボックスVS球
 template<>
 void CollisionSystem::Solve<BoxTag, SphereTag, CollisionPair::BoxSpherePair>(
 	const std::vector<CollisionPair::BoxSpherePair>& pairList,
@@ -299,6 +346,92 @@ void CollisionSystem::Solve<BoxTag, SphereTag, CollisionPair::BoxSpherePair>(
 	for (auto& pair : pairList)
 	{
 		if (ContactFunction::SphereBox(pair.b, pair.a, _colliderStorage, _transformStorage, _manifoldBuffer))
+		{
+			RegisterEvent(pair.a, pair.b, _colliderStorage, _eventManager);
+		}
+	}
+}
+// ボックスVSボックス
+template<>
+void CollisionSystem::Solve<BoxTag, BoxTag, CollisionPair::BoxBoxPair>(
+	const std::vector<CollisionPair::BoxBoxPair>& pairList,
+	PhysicsTransformStorage* _transformStorage,
+	ColliderStorage* _colliderStorage,
+	CollisionManifoldBuffer* _manifoldBuffer,
+	EventManager* _eventManager)
+{
+	for (auto& pair : pairList)
+	{
+		if (ContactFunction::BoxBox(pair.a, pair.b, _colliderStorage, _transformStorage, _manifoldBuffer))
+		{
+			RegisterEvent(pair.a, pair.b, _colliderStorage, _eventManager);
+		}
+	}
+}
+// ボックスVSカプセル
+template<>
+void CollisionSystem::Solve<BoxTag, CapsuleTag, CollisionPair::BoxCapsulePair>(
+	const std::vector<CollisionPair::BoxCapsulePair>& pairList,
+	PhysicsTransformStorage* _transformStorage,
+	ColliderStorage* _colliderStorage,
+	CollisionManifoldBuffer* _manifoldBuffer,
+	EventManager* _eventManager)
+{
+	for (auto& pair : pairList)
+	{
+		if (ContactFunction::BoxCapsule(pair.a, pair.b, _colliderStorage, _transformStorage, _manifoldBuffer))
+		{
+			RegisterEvent(pair.a, pair.b, _colliderStorage, _eventManager);
+		}
+	}
+}
+
+// カプセルVS球
+template<>
+void CollisionSystem::Solve<CapsuleTag, SphereTag, CollisionPair::CapsuleSpherePair>(
+	const std::vector<CollisionPair::CapsuleSpherePair>& pairList,
+	PhysicsTransformStorage* _transformStorage,
+	ColliderStorage* _colliderStorage,
+	CollisionManifoldBuffer* _manifoldBuffer,
+	EventManager* _eventManager)
+{
+	for (auto& pair : pairList)
+	{
+		if (ContactFunction::SphereCapsule(pair.a, pair.b, _colliderStorage, _transformStorage, _manifoldBuffer))
+		{
+			RegisterEvent(pair.b, pair.a, _colliderStorage, _eventManager);
+		}
+	}
+}
+// カプセルVSボックス
+template<>
+void CollisionSystem::Solve<CapsuleTag, BoxTag, CollisionPair::CapsuleBoxPair>(
+	const std::vector<CollisionPair::CapsuleBoxPair>& pairList,
+	PhysicsTransformStorage* _transformStorage,
+	ColliderStorage* _colliderStorage,
+	CollisionManifoldBuffer* _manifoldBuffer,
+	EventManager* _eventManager)
+{
+	for (auto& pair : pairList)
+	{
+		if (ContactFunction::BoxCapsule(pair.b, pair.a, _colliderStorage, _transformStorage, _manifoldBuffer))
+		{
+			RegisterEvent(pair.b, pair.a, _colliderStorage, _eventManager);
+		}
+	}
+}
+// カプセルVSカプセル
+template<>
+void CollisionSystem::Solve<CapsuleTag, CapsuleTag, CollisionPair::CapsuleCapsulePair>(
+	const std::vector<CollisionPair::CapsuleCapsulePair>& pairList,
+	PhysicsTransformStorage* _transformStorage,
+	ColliderStorage* _colliderStorage,
+	CollisionManifoldBuffer* _manifoldBuffer,
+	EventManager* _eventManager)
+{
+	for (auto& pair : pairList)
+	{
+		if (ContactFunction::CapsuleCapsule(pair.a, pair.b, _colliderStorage, _transformStorage, _manifoldBuffer))
 		{
 			RegisterEvent(pair.a, pair.b, _colliderStorage, _eventManager);
 		}

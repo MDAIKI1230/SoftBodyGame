@@ -8,17 +8,16 @@ SphereColliderComponent::SphereColliderComponent(EntityID _entity) :
 }
 
 SphereColliderComponent::SphereColliderComponent(EntityID _entity, float _r) :
-	ColliderComponent{ PhysicsAPI::CreateSphere(_entity, _r) },
-	r{ _r }
+	ColliderComponent{ PhysicsAPI::CreateSphere(_entity, _r) }
 {
 }
 
 void SphereColliderComponent::SetRadius(float _r)
 {
-	PhysicsAPI::SetRadius(id, _r);
+	PhysicsAPI::SetSphereRadius(id, _r);
 }
 
 float SphereColliderComponent::GetRadius() const
 {
-	return PhysicsAPI::GetRadius(id);
+	return PhysicsAPI::GetSphereRadius(id);
 }

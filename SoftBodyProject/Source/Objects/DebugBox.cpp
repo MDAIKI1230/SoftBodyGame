@@ -1,6 +1,4 @@
-﻿#include "ServiceLocator.h"
-
-#include "TransformComponent.h"
+﻿#include "TransformComponent.h"
 
 #include "RigidBodyComponent.h"
 

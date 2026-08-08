@@ -10,7 +10,7 @@ struct BoxBoxContactInfo
     ColliderID colliderB;
 
     Vector3 normal;
-    float depth;
+    float depth{ 0.0f };
 
     enum Type
     {

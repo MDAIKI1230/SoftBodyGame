@@ -1,12 +1,15 @@
 ﻿#include "ColliderStorage.h"
 
+// コンストラクタ
 ColliderStorage::ColliderStorage()
 {
 	aabbStorage = std::make_unique<AABBBroadPhaseColliderStorage>();
 	sphereStorage = std::make_unique<SphereColliderStorage>();
 	boxStorage = std::make_unique<BoxColliderStorage>();
+	capsuleStorage = std::make_unique<CapsuleColliderStorage>();
 }
 
+// 球作成
 ColliderID ColliderStorage::CreateSphere(EntityID _entity, PhysicsTransformID _transformID, float _radius)
 {
 	// ColliderIDの作成(denseIndexに関しては、どの配列も同じサイズのためIDを使う)
@@ -25,6 +28,7 @@ ColliderID ColliderStorage::CreateSphere(EntityID _entity, PhysicsTransformID _t
 	return id;
 }
 
+// ボックス作成
 ColliderID ColliderStorage::CreateBox(EntityID _entity, PhysicsTransformID _transformID, const Vector3& _scale)
 {
 	// ColliderIDの作成(denseIndexに関しては、どの配列も同じサイズのためIDを使う)
@@ -32,6 +36,24 @@ ColliderID ColliderStorage::CreateBox(EntityID _entity, PhysicsTransformID _tran
 
 	// 実際のデータを追加
 	boxStorage->Add(id, _scale);
+
+	// aabbを作成フラグを追加しておく(後からシステムが作ってくれる)
+	aabbStorage->Add(AABBBroadPhaseCollider{ id, _transformID }, AABBChangeDiaryFlag::MAKE);
+
+	// mapに追加
+	transformMap[_transformID].push_back(id);
+
+	return id;
+}
+
+// カプセル作成
+ColliderID ColliderStorage::CreateCapsule(EntityID _entity, PhysicsTransformID _transformID, float _height, float _radius)
+{
+	// ColliderIDの作成(denseIndexに関しては、どの配列も同じサイズのためIDを使う)
+	ColliderID id{ CreateID(ColliderType::CAPSULE, capsuleStorage->CountID(),aabbStorage->Count(), _entity, _transformID) };
+
+	// 実際のデータを追加
+	capsuleStorage->Add(id, _height, _radius);
 
 	// aabbを作成フラグを追加しておく(後からシステムが作ってくれる)
 	aabbStorage->Add(AABBBroadPhaseCollider{ id, _transformID }, AABBChangeDiaryFlag::MAKE);
@@ -78,6 +100,8 @@ void ColliderStorage::Destroy(ColliderID _id)
 	case ColliderType::BOX:
 		movedId = boxStorage->Remove(GetDenseIndex(_id));
 		break;
+	case ColliderType::CAPSULE:
+		movedId = capsuleStorage->Remove(GetDenseIndex(_id));
 	}
 
 	if (!(movedId.GetIndex() == _id.GetIndex() && movedId.GetGeneration() == _id.GetGeneration()))
