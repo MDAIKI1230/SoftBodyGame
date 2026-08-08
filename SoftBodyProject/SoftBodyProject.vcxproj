@@ -400,6 +400,7 @@
     <ClInclude Include="Source\Common\Struct\ShaderBufferHandle.h" />
     <ClInclude Include="Source\Objects\Camera.h" />
     <ClInclude Include="Source\Objects\DebugBox.h" />
+    <ClInclude Include="Source\Objects\DebugCapsule.h" />
     <ClInclude Include="Source\Objects\DebugSphere.h" />
     <ClInclude Include="Source\Objects\EmptyObject.h" />
     <ClInclude Include="Source\Physics\Component\Body\RigidBodyComponent.h" />
@@ -407,6 +408,7 @@
     <ClInclude Include="Source\Physics\Component\Body\Soft\RopeComponent.h" />
     <ClInclude Include="Source\Physics\Component\Body\Soft\SoftBodyComponent.h" />
     <ClInclude Include="Source\Physics\Component\Collider\BoxColliderComponent.h" />
+    <ClInclude Include="Source\Physics\Component\Collider\CapsuleColliderComponent.h" />
     <ClInclude Include="Source\Physics\Component\Collider\ColliderComponent.h" />
     <ClInclude Include="Source\Physics\Component\Collider\SphereColliderComponent.h" />
     <ClInclude Include="Source\Physics\Component\Constraint\EndPointConstraintComponentBase.h" />
@@ -434,6 +436,7 @@
     <ClInclude Include="Source\Physics\Storage\Buffer\SolverBodyBuffer.h" />
     <ClInclude Include="Source\Physics\Storage\Collider\AABBBroadPhaseColliderStorage.h" />
     <ClInclude Include="Source\Physics\Storage\Collider\BoxColliderStorage.h" />
+    <ClInclude Include="Source\Physics\Storage\Collider\CapsuleColliderStorage.h" />
     <ClInclude Include="Source\Physics\Storage\Collider\ColliderStorage.h" />
     <ClInclude Include="Source\Physics\Storage\Collider\SphereColliderStorage.h" />
     <ClInclude Include="Source\Physics\Storage\Component\Body\RigidBodyComponentStorage.h" />
@@ -441,6 +444,7 @@
     <ClInclude Include="Source\Physics\Storage\Component\Body\Soft\RopeComponentStorage.h" />
     <ClInclude Include="Source\Physics\Storage\Component\Body\Soft\SoftBodyComponentStorage.h" />
     <ClInclude Include="Source\Physics\Storage\Component\Collider\BoxColliderComponentStorage.h" />
+    <ClInclude Include="Source\Physics\Storage\Component\Collider\CapsuleColliderComponentStorage.h" />
     <ClInclude Include="Source\Physics\Storage\Component\Collider\SphereColliderComponentStorage.h" />
     <ClInclude Include="Source\Physics\Storage\Component\Constraint\DistanceConstraintComponentStorage.h" />
     <ClInclude Include="Source\Physics\Storage\Component\Constraint\PointConstraintComponentStorage.h" />
@@ -538,6 +542,7 @@
     <ClCompile Include="Source\Common\ECS\SparseSet\Table\HashTable.cpp" />
     <ClCompile Include="Source\Common\ECS\SparseSet\Table\LinearTable.cpp" />
     <ClCompile Include="Source\Common\ECS\SystemManager.cpp" />
+    <ClCompile Include="Source\Common\Math\GeometryUtility.cpp" />
     <ClCompile Include="Source\Common\Math\Matrix\MatGenerateFunc.cpp" />
     <ClCompile Include="Source\Common\Math\Matrix\Matrix.cpp" />
     <ClCompile Include="Source\Common\Math\NamericalAnalysis\NamericalAnalysis.cpp" />
@@ -551,6 +556,7 @@
     <ClCompile Include="Source\Common\Math\Vector\Vector4\Vector4.cpp" />
     <ClCompile Include="Source\Main.cpp" />
     <ClCompile Include="Source\Objects\DebugBox.cpp" />
+    <ClCompile Include="Source\Objects\DebugCapsule.cpp" />
     <ClCompile Include="Source\Objects\DebugSphere.cpp" />
     <ClCompile Include="Source\Objects\EmptyObject.cpp" />
     <ClCompile Include="Source\Physics\Component\Body\RigidBodyComponent.cpp" />
@@ -558,6 +564,7 @@
     <ClCompile Include="Source\Physics\Component\Body\Soft\RopeComponent.cpp" />
     <ClCompile Include="Source\Physics\Component\Body\Soft\SoftBodyComponent.cpp" />
     <ClCompile Include="Source\Physics\Component\Collider\BoxColliderComponent.cpp" />
+    <ClCompile Include="Source\Physics\Component\Collider\CapsuleColliderComponent.cpp" />
     <ClCompile Include="Source\Physics\Component\Collider\SphereColliderComponent.cpp" />
     <ClCompile Include="Source\Physics\Component\Constraint\DistanceConstraintComponent.cpp" />
     <ClCompile Include="Source\Physics\Component\Constraint\EndPointConstraintComponentBase.cpp" />
@@ -577,6 +584,7 @@
     <ClCompile Include="Source\Physics\Storage\Component\Body\Soft\RopeComponentStorage.cpp" />
     <ClCompile Include="Source\Physics\Storage\Component\Body\Soft\SoftBodyComponentStorage.cpp" />
     <ClCompile Include="Source\Physics\Storage\Component\Collider\BoxColliderComponentStorage.cpp" />
+    <ClCompile Include="Source\Physics\Storage\Component\Collider\CapsuleColliderComponentStorage.cpp" />
     <ClCompile Include="Source\Physics\Storage\Component\Collider\SphereColliderComponentStorage.cpp" />
     <ClCompile Include="Source\Physics\Storage\Component\Constraint\DistanceConstraintComponentStorage.cpp" />
     <ClCompile Include="Source\Physics\Storage\Component\Constraint\PointConstraintComponentStorage.cpp" />

@@ -2,6 +2,7 @@
 
 #include "ContactFunction.h"
 
+// 球 VS 球
 bool ContactFunction::SphereSphere(ColliderID _colliderA, ColliderID _colliderB, ColliderStorage* _colliderStorage, PhysicsTransformStorage* _transformStorage, CollisionManifoldBuffer* _manifoldBuffer)
 {
 	// Aの情報取得
@@ -59,6 +60,7 @@ bool ContactFunction::SphereSphere(ColliderID _colliderA, ColliderID _colliderB,
 	return false;
 }
 
+// 球 VS ボックス
 bool ContactFunction::SphereBox(ColliderID _colliderSphere, ColliderID _colliderBox, ColliderStorage* _colliderStorage, PhysicsTransformStorage* _transformStorage, CollisionManifoldBuffer* _manifoldBuffer)
 {
 	// Sphereの情報取得
@@ -183,6 +185,7 @@ bool ContactFunction::SphereBox(ColliderID _colliderSphere, ColliderID _collider
 	return true;
 }
 
+// ボックス VS ボックス
 bool ContactFunction::BoxBox(ColliderID _colliderA, ColliderID _colliderB, ColliderStorage* _colliderStorage, PhysicsTransformStorage* _transformStorage, CollisionManifoldBuffer* _manifoldBuffer)
 {
 	// Aの情報取得
@@ -204,14 +207,14 @@ bool ContactFunction::BoxBox(ColliderID _colliderA, ColliderID _colliderB, Colli
 	{
 		rotA.Rotate(Vector3::RIGHT),
 		rotA.Rotate(Vector3::UP),
-		rotA.Rotate(Vector3::FORWARD),
+		rotA.Rotate(Vector3::FORWARD)
 	};
 
 	Vector3 candidateAxisB[]
 	{
 		rotB.Rotate(Vector3::RIGHT),
 		rotB.Rotate(Vector3::UP),
-		rotB.Rotate(Vector3::FORWARD),
+		rotB.Rotate(Vector3::FORWARD)
 	};
 
 
@@ -277,6 +280,435 @@ bool ContactFunction::BoxBox(ColliderID _colliderA, ColliderID _colliderB, Colli
 		_transformStorage->GetPosition(transformIndexA), _transformStorage->GetRotation(transformIndexA), candidateAxisA, halfsA,
 		_transformStorage->GetPosition(transformIndexB), _transformStorage->GetRotation(transformIndexB), candidateAxisB, halfsB,
 		info, _manifoldBuffer);
+
+	return true;
+}
+
+// カプセル VS カプセル
+bool ContactFunction::CapsuleCapsule(ColliderID _colliderA, ColliderID _colliderB, ColliderStorage* _colliderStorage, PhysicsTransformStorage* _transformStorage, CollisionManifoldBuffer* _manifoldBuffer)
+{
+	const uint32_t denseIndexA{ _transformStorage->GetDenseIndex(_colliderStorage->GetTransformID(_colliderA)) };
+	const uint32_t denseIndexB{ _transformStorage->GetDenseIndex(_colliderStorage->GetTransformID(_colliderB)) };
+
+	// 中心座標
+	Vector3 centers[]
+	{
+		_transformStorage->GetPosition(denseIndexA),
+		_transformStorage->GetPosition(denseIndexB)
+	};
+
+	// 軸の半分
+	Quaternion rotA{ _transformStorage->GetRotation(denseIndexA) };
+	Quaternion rotB{ _transformStorage->GetRotation(denseIndexB) };
+	Vector3 halfs[]
+	{
+		rotA.Rotate(Vector3::UP * _colliderStorage->GetCapsuleColliderHeight(_colliderA) / 2.0f),
+		rotB.Rotate(Vector3::UP * _colliderStorage->GetCapsuleColliderHeight(_colliderB) / 2.0f)
+	};
+
+	// 軸ベクトルの始点
+	Vector3 starts[]
+	{
+		centers[0] + halfs[0],
+		centers[1] + halfs[1]
+	};
+
+	// 軸ベクトルの終点
+	Vector3 ends[]
+	{
+		centers[0] - halfs[0],
+		centers[1] - halfs[1]
+	};
+
+	// 軸同士の最近点
+	const auto latestPoints{ MDMath::ClosestSegmentOnSegment(starts[0],ends[0],starts[1],ends[1]) };
+
+	// 半径の合計
+	float radiusA{ _colliderStorage->GetCapsuleColliderRadius(_colliderA) };
+	float radiusB{ _colliderStorage->GetCapsuleColliderRadius(_colliderB) };
+	float totalRadius{ radiusA + radiusB };
+
+	// 最近点から、最短距離を求める
+	// 最近点と点の差
+	Vector3 diff{ latestPoints.pointB - latestPoints.pointA };
+
+	// 長さ
+	float distSqr = diff.LengthSqr();
+
+	// 長さが半径の合計より大きいなら当たっていない
+	if (distSqr >= totalRadius * totalRadius)
+	{
+		return false;
+	}
+
+	Manifold manifold;
+	manifold.colliderA = _colliderA;
+	manifold.colliderB = _colliderB;
+	if (distSqr <= MathConstants::EPSILON * MathConstants::EPSILON)
+	{
+		manifold.normal = Vector3::UP;
+	}
+	else
+	{
+		// 最小距離の法線
+		manifold.normal = diff.Normalize();
+	}
+	ContactPoint contactPoint;
+	// 重なり深さ計算
+	contactPoint.penetration = totalRadius - sqrtf(distSqr);
+	// 接触点
+	Vector3 worldPointA{ latestPoints.pointA + manifold.normal * radiusA };
+
+	Vector3 worldPointB{ latestPoints.pointB - manifold.normal * radiusB };
+
+	contactPoint.positionLocalA = rotA.Conjugate().Rotate(worldPointA - centers[0]);
+
+	contactPoint.positionLocalB = rotB.Conjugate().Rotate(worldPointB - centers[1]);
+
+	// 点追加
+	manifold.AddPoints(contactPoint);
+
+	_manifoldBuffer->Add(manifold);
+
+	return true;
+}
+
+// ボックス VS カプセル
+bool ContactFunction::BoxCapsule(ColliderID _colliderBox, ColliderID _colliderCapsule, ColliderStorage* _colliderStorage, PhysicsTransformStorage* _transformStorage, CollisionManifoldBuffer* _manifoldBuffer)
+{
+	// TransformのDenseIndex
+	uint32_t denseIndexBox{ _transformStorage->GetDenseIndex(_colliderStorage->GetTransformID(_colliderBox)) };
+
+	uint32_t denseIndexCapsule{ _transformStorage->GetDenseIndex(_colliderStorage->GetTransformID(_colliderCapsule)) };
+
+	// 中心位置
+	Vector3 boxCenter{ _transformStorage->GetPosition(denseIndexBox) };
+
+	Vector3 capsuleCenter{ _transformStorage->GetPosition(denseIndexCapsule) };
+
+	// 回転
+	Quaternion boxRot{ _transformStorage->GetRotation(denseIndexBox) };
+
+	Quaternion capsuleRot{ _transformStorage->GetRotation(denseIndexCapsule) };
+
+	Quaternion inverseBoxRot{ boxRot.Conjugate() };
+
+	Quaternion inverseCapsuleRot{ capsuleRot.Conjugate() };
+
+	// BOXのサイズ
+	Vector3 boxSize{ _colliderStorage->GetBoxColliderScale(_colliderBox) };
+	// BOXのサイズの半分
+	Vector3 boxHalf{ boxSize * 0.5f };
+
+	// カプセルの軸線分
+	float capsuleHeight{ _colliderStorage->GetCapsuleColliderHeight(_colliderCapsule) };
+
+	float capsuleRadius{ _colliderStorage->GetCapsuleColliderRadius(_colliderCapsule) };
+
+	Vector3 capsuleAxisHalf{ capsuleRot.Rotate(Vector3::UP * (capsuleHeight * 0.5f)) };
+
+	Vector3 segmentStart{ capsuleCenter + capsuleAxisHalf };
+
+	Vector3 segmentEnd{ capsuleCenter - capsuleAxisHalf };
+
+	/*
+		カプセル軸線分とOBBの最近点を求める。
+
+		pointSegment : カプセル軸上の最近点
+		pointOBB     : Box上の最近点
+	*/
+	auto closest{ MDMath::ClosestPointsBetweenSegmentAndOBB(segmentStart,segmentEnd,boxCenter,boxRot,boxSize) };
+
+	/*
+		軸線分とBoxの距離がカプセル半径より大きいなら、
+		カプセル表面もBoxへ届かない。
+	*/
+	if (closest.distanceSqr > capsuleRadius * capsuleRadius)
+	{
+		return false;
+	}
+
+	Manifold manifold;
+	manifold.colliderA = _colliderCapsule;
+	manifold.colliderB = _colliderBox;
+
+	ContactPoint contactPoint;
+
+	/*
+		軸線分がBoxの外側にある場合。
+
+		2つの最近点に距離があるので、
+		その差から法線を作れる。
+	*/
+	if (closest.distanceSqr > MathConstants::EPSILON * MathConstants::EPSILON)
+	{
+		float distance{ std::sqrt(closest.distanceSqr) };
+
+		/*
+			カプセル軸からBoxへ向かう法線。
+		*/
+		manifold.normal = (closest.pointOBB - closest.pointSegment) / distance;
+
+		// カプセル半径と最近点距離の差が貫通量
+		contactPoint.penetration = capsuleRadius - distance;
+
+		/*
+			カプセル表面の接触点。
+
+			軸上最近点からBox方向へ
+			半径分進める。
+		*/
+		Vector3 capsuleContactWorld{ closest.pointSegment + manifold.normal * capsuleRadius };
+
+		// Box側はOBB上の最近点がそのまま接触点
+		Vector3 boxContactWorld{ closest.pointOBB };
+
+		// ワールド座標から各Colliderのローカル座標へ変換
+		contactPoint.positionLocalA = inverseCapsuleRot.Rotate(capsuleContactWorld - capsuleCenter);
+
+		contactPoint.positionLocalB = inverseBoxRot.Rotate(boxContactWorld - boxCenter);
+	}
+	else
+	{
+		/*
+			軸線分がBoxへ接触、または内部へ入っている場合。
+
+			最近点同士が同じ位置になるため、
+			差ベクトルから法線を作れない。
+
+			そこで、Boxの6面から最も近い面を選び、
+			その面を使って法線と接触点を作る。
+		*/
+
+		/*
+			まずBox中心に最も近い軸上の点を選ぶ。
+
+			軸がBox内部を通っている場合、
+			Box内部の代表点として使える。
+		*/
+		Vector3 pointOnAxisWorld{ MDMath::ClosestPointOnSegment(boxCenter,segmentStart,segmentEnd) };
+
+		Vector3 pointOnAxisLocal{ inverseBoxRot.Rotate(pointOnAxisWorld - boxCenter) };
+
+		/*
+			Box中心への最近点がBox内部にない場合がある。
+
+			例えば、線分がBoxの角だけに接触する場合。
+
+			その場合は、OBB最近点関数が返した
+			接触点を使用する。
+		*/
+		bool pointInsideBox{
+			pointOnAxisLocal.x >= -boxHalf.x - MathConstants::EPSILON && pointOnAxisLocal.x <= boxHalf.x + MathConstants::EPSILON &&
+			pointOnAxisLocal.y >= -boxHalf.y - MathConstants::EPSILON && pointOnAxisLocal.y <= boxHalf.y + MathConstants::EPSILON &&
+			pointOnAxisLocal.z >= -boxHalf.z - MathConstants::EPSILON && pointOnAxisLocal.z <= boxHalf.z + MathConstants::EPSILON
+		};
+
+		if (!pointInsideBox)
+		{
+			pointOnAxisWorld =closest.pointSegment;
+
+			pointOnAxisLocal = inverseBoxRot.Rotate(pointOnAxisWorld - boxCenter);
+		}
+
+		/*
+			軸上の点からBoxの各面までの距離。
+
+			0 : -X面
+			1 : +X面
+			2 : -Y面
+			3 : +Y面
+			4 : -Z面
+			5 : +Z面
+		*/
+		float distances[6]
+		{
+			pointOnAxisLocal.x + boxHalf.x,
+			boxHalf.x - pointOnAxisLocal.x,
+
+			pointOnAxisLocal.y + boxHalf.y,
+			boxHalf.y - pointOnAxisLocal.y,
+
+			pointOnAxisLocal.z + boxHalf.z,
+			boxHalf.z - pointOnAxisLocal.z
+		};
+
+		/*
+			浮動小数点誤差によって、
+			面上の距離がわずかに負になるのを防ぐ。
+		*/
+		for (float& distance : distances)
+		{
+			distance = std::max(distance, 0.0f);
+		}
+
+		// 一番近い面を探す
+		int minIndex{ 0 };
+
+		for (int i{ 1 }; i < 6; i++)
+		{
+			if (distances[i] <
+				distances[minIndex])
+			{
+				minIndex = i;
+			}
+		}
+
+		/*
+			CapsuleからBox内部へ向かうローカル法線。
+
+			SolverではAが-normal方向へ押されるため、
+			この向きにするとCapsuleがBoxの外へ出る。
+		*/
+		const Vector3 normalLocal[6]
+		{
+			 Vector3::RIGHT,   // -X面
+			-Vector3::RIGHT,   // +X面
+			 Vector3::UP,      // -Y面
+			-Vector3::UP,      // +Y面
+			 Vector3::FORWARD, // -Z面
+			-Vector3::FORWARD  // +Z面
+		};
+
+		manifold.normal = boxRot.Rotate(normalLocal[minIndex]);
+
+		/*
+			Box面上の接触点を作る。
+
+			軸上点をコピーし、
+			選択された軸だけBox面の位置へ移動する。
+		*/
+		Vector3 boxPointLocal{ pointOnAxisLocal };
+
+		switch (minIndex)
+		{
+		case 0:
+			boxPointLocal.x = -boxHalf.x;
+			break;
+
+		case 1:
+			boxPointLocal.x = boxHalf.x;
+			break;
+
+		case 2:
+			boxPointLocal.y = -boxHalf.y;
+			break;
+
+		case 3:
+			boxPointLocal.y = boxHalf.y;
+			break;
+
+		case 4:
+			boxPointLocal.z = -boxHalf.z;
+			break;
+
+		case 5:
+			boxPointLocal.z = boxHalf.z;
+			break;
+		}
+
+		/*
+			軸からBox面までの距離に、
+			カプセル半径を足したものが貫通量。
+
+			カプセル全体をBox外へ出すには、
+			軸をBox面まで移動したあと、
+			さらに半径分移動する必要がある。
+		*/
+		contactPoint.penetration = distances[minIndex] + capsuleRadius;
+
+		/*
+			内部時は法線がBox内部方向を向いている。
+
+			軸上点から法線方向へ半径分進めた点を
+			Capsule側接触点にする。
+		*/
+		Vector3 capsuleContactWorld{ pointOnAxisWorld + manifold.normal * capsuleRadius };
+
+		Vector3 boxContactWorld{ boxCenter + boxRot.Rotate(boxPointLocal) };
+
+		contactPoint.positionLocalA = inverseCapsuleRot.Rotate(capsuleContactWorld - capsuleCenter);
+
+		contactPoint.positionLocalB =inverseBoxRot.Rotate(boxContactWorld -boxCenter);
+	}
+
+	manifold.AddPoints(contactPoint);
+	_manifoldBuffer->Add(manifold);
+
+	return true;
+}
+
+// 球 VS カプセル
+bool ContactFunction::SphereCapsule(ColliderID _colliderSphere, ColliderID _colliderCapsule, ColliderStorage* _colliderStorage, PhysicsTransformStorage* _transformStorage, CollisionManifoldBuffer* _manifoldBuffer)
+{
+	const uint32_t denseIndexSphere{ _transformStorage->GetDenseIndex(_colliderStorage->GetTransformID(_colliderSphere)) };
+	const uint32_t denseIndexCapsule{ _transformStorage->GetDenseIndex(_colliderStorage->GetTransformID(_colliderCapsule)) };
+
+	// 中心座標
+	Vector3 sphereCenter{ _transformStorage->GetPosition(denseIndexSphere) };
+	Vector3 capsuleCenter{ _transformStorage->GetPosition(denseIndexCapsule) };
+
+	// 回転
+	Quaternion sphereRot{ _transformStorage->GetRotation(denseIndexSphere) };
+	Quaternion capsuleRot{ _transformStorage->GetRotation(denseIndexCapsule) };
+
+	// 軸の半分
+	Vector3 axisHalf{ capsuleRot.Rotate(Vector3::UP * _colliderStorage->GetCapsuleColliderHeight(_colliderCapsule) / 2.0f) };
+
+	// Capsuleの始点終点
+	Vector3 start{ capsuleCenter + axisHalf };
+	Vector3 end{ capsuleCenter - axisHalf };
+
+	// 最近点を求める
+	Vector3 latestPoint{ MDMath::ClosestPointOnSegment(sphereCenter,start, end) };
+
+	// 最近点と円の中心のベクトル
+	Vector3 diff = latestPoint - sphereCenter;
+
+	// 長さ
+	float distSqr = diff.LengthSqr();
+
+	// 半径の合計
+	float sphereRadius{ _colliderStorage->GetSphereColliderRadius(_colliderSphere) };
+	float capsuleRadius{ _colliderStorage->GetCapsuleColliderRadius(_colliderCapsule) };
+	float totalRadius = sphereRadius + capsuleRadius;
+
+	// 半径の合計が円の中心のベクトルの長さより小さいなら当たっていない
+	if (distSqr > totalRadius * totalRadius)
+	{
+		return false;
+	}
+
+	// 衝突情報の追加
+	Manifold manifold;
+	manifold.colliderA = _colliderSphere;
+	manifold.colliderB = _colliderCapsule;
+
+	// 長さが0なら正規化できないので上方向にする
+	if (distSqr >= MathConstants::EPSILON * MathConstants::EPSILON)
+	{
+		manifold.normal = diff.Normalized();
+	}
+	else
+	{
+		manifold.normal = Vector3::UP;
+	}
+
+
+	ContactPoint contactPoint;
+	contactPoint.penetration = totalRadius - std::sqrtf(distSqr);
+	// 接触点計算
+	Vector3 worldPointSphere{ sphereCenter + manifold.normal * sphereRadius };
+
+	Vector3 worldPointCapsule{ latestPoint - manifold.normal * capsuleRadius };
+
+	contactPoint.positionLocalA = sphereRot.Conjugate().Rotate(worldPointSphere - sphereCenter);
+
+	contactPoint.positionLocalB = capsuleRot.Conjugate().Rotate(worldPointCapsule - capsuleCenter);
+
+	manifold.AddPoints(contactPoint);
+
+	_manifoldBuffer->Add(manifold);
 
 	return true;
 }

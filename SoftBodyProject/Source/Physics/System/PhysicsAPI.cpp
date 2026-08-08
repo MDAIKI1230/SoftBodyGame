@@ -259,45 +259,73 @@ ColliderID PhysicsAPI::CreateBox(EntityID _entity, const Vector3& _scale)
 {
 	return colliderStorage->CreateBox(_entity, transformStorage->GetOrCreateTransform(_entity), _scale);
 }
+// カプセル作成
+ColliderID PhysicsAPI::CreateCapsule(EntityID _entity, float _height, float _radius)
+{
+	return colliderStorage->CreateCapsule(_entity, transformStorage->GetOrCreateTransform(_entity), _height, _radius);
+}
+
 // 半径取得
-float PhysicsAPI::GetRadius(ColliderID _id)
+float PhysicsAPI::GetSphereRadius(ColliderID _id)
 {
 	return colliderStorage->GetSphereColliderRadius(_id);
 }
 // 半径変更
-void PhysicsAPI::SetRadius(ColliderID _id, float _radius)
+void PhysicsAPI::SetSphereRadius(ColliderID _id, float _radius)
 {
 	colliderStorage->SetSphereColliderRadius(_id, _radius);
 }
+
 // X方向の長さ取得
-float PhysicsAPI::GetWidth(ColliderID _id)
+float PhysicsAPI::GetBoxWidth(ColliderID _id)
 {
 	return colliderStorage->GetBoxColliderScale(_id).x;
 }
 // X方向の長さ変更
-void PhysicsAPI::SetWidth(ColliderID _id, float _width)
+void PhysicsAPI::SetBoxWidth(ColliderID _id, float _width)
 {
 	colliderStorage->EditBoxColliderScale(_id).x = _width;
 }
 // Y方向の長さ取得
-float PhysicsAPI::GetHeight(ColliderID _id)
+float PhysicsAPI::GetBoxHeight(ColliderID _id)
 {
 	return colliderStorage->GetBoxColliderScale(_id).y;
 }
 // Y方向の長さ変更
-void PhysicsAPI::SetHeight(ColliderID _id, float _height)
+void PhysicsAPI::SetBoxHeight(ColliderID _id, float _height)
 {
 	colliderStorage->EditBoxColliderScale(_id).y = _height;
 }
 // Z方向の長さ取得
-float PhysicsAPI::GetDepth(ColliderID _id)
+float PhysicsAPI::GetBoxDepth(ColliderID _id)
 {
 	return colliderStorage->GetBoxColliderScale(_id).z;
 }
 // Z方向の長さ変更
-void PhysicsAPI::SetDepth(ColliderID _id, float _depth)
+void PhysicsAPI::SetBoxDepth(ColliderID _id, float _depth)
 {
 	colliderStorage->EditBoxColliderScale(_id).z = _depth;
+}
+
+// Y方向の長さ取得
+float PhysicsAPI::GetCapsuleHeight(ColliderID _id)
+{
+	return colliderStorage->GetCapsuleColliderHeight(_id);
+}
+// Y方向の長さ変更
+void PhysicsAPI::SetCapsuleHeight(ColliderID _id, float _height)
+{
+	colliderStorage->SetCapsuleColliderHeight(_id, _height);
+}
+// 半径取得
+float PhysicsAPI::GetCapsuleRadius(ColliderID _id)
+{
+	return colliderStorage->GetCapsuleColliderRadius(_id);
+}
+// 半径変更
+void PhysicsAPI::SetCapsuleRadius(ColliderID _id, float _radius)
+{
+	colliderStorage->SetCapsuleColliderRadius(_id, _radius);
 }
 
 // --- 拘束系 ---

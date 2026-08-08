@@ -239,9 +239,6 @@
     <Filter Include="ソース ファイル\Common\ECS\Event">
       <UniqueIdentifier>{1faeebf5-a210-4ad0-a728-6138db94a23b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="シェーダファイル">
-      <UniqueIdentifier>{ef04e6a2-b889-48ac-a8ed-1d0ee0fe6b8e}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Objects\Camera.h">
@@ -796,11 +793,17 @@
     <ClInclude Include="Source\Common\ECS\SparseSet\Table\HashTable.h">
       <Filter>ソース ファイル\Common\ECS\SparseSet\Table</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Physics\System\Solver\SoftSolverSystem.h">
-      <Filter>ソース ファイル\Physics\System\Solver</Filter>
+    <ClInclude Include="Source\Physics\Component\Collider\CapsuleColliderComponent.h">
+      <Filter>ソース ファイル\Physics\Component\Collider</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Physics\DebugRender\SoftDebugRenderingSystem.h">
-      <Filter>ソース ファイル\Physics\DebugRender</Filter>
+    <ClInclude Include="Source\Physics\Storage\Component\Collider\CapsuleColliderComponentStorage.h">
+      <Filter>ソース ファイル\Physics\Storage\Component\Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Storage\Collider\CapsuleColliderStorage.h">
+      <Filter>ソース ファイル\Physics\Storage\Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Objects\DebugCapsule.h">
+      <Filter>ソース ファイル\GameObject</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1035,34 +1038,29 @@
     <ClCompile Include="Source\Common\ECS\SparseSet\Table\HashTable.cpp">
       <Filter>ソース ファイル\Common\ECS\SparseSet\Table</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Physics\Storage\Component\Collider\BoxColliderComponentStorage.cpp">
+    <ClCompile Include="Source\Physics\Component\Collider\CapsuleColliderComponent.cpp">
       <Filter>ソース ファイル\Physics\Component\Collider</Filter>
     </ClCompile>
     <ClCompile Include="Source\Physics\Storage\Component\Collider\SphereColliderComponentStorage.cpp">
-      <Filter>ソース ファイル\Physics\Component\Collider</Filter>
+      <Filter>ソース ファイル\Physics\Storage\Component\Collider</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Physics\Storage\Component\Constraint\DistanceConstraintComponentStorage.cpp">
-      <Filter>ソース ファイル\Physics\Component\Constraint</Filter>
+    <ClCompile Include="Source\Physics\Storage\Component\Collider\BoxColliderComponentStorage.cpp">
+      <Filter>ソース ファイル\Physics\Storage\Component\Collider</Filter>
     </ClCompile>
     <ClCompile Include="Source\Physics\Storage\Component\Constraint\PointConstraintComponentStorage.cpp">
-      <Filter>ソース ファイル\Physics\Component\Constraint</Filter>
+      <Filter>ソース ファイル\Physics\Storage\Constraint</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Physics\System\Solver\SoftSolverSystem.cpp">
-      <Filter>ソース ファイル\Physics\System\Solver</Filter>
+    <ClCompile Include="Source\Physics\Storage\Component\Constraint\DistanceConstraintComponentStorage.cpp">
+      <Filter>ソース ファイル\Physics\Storage\Constraint</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Physics\DebugRender\SoftDebugRenderingSystem.cpp">
-      <Filter>ソース ファイル\Physics\DebugRender</Filter>
+    <ClCompile Include="Source\Common\Math\GeometryUtility.cpp">
+      <Filter>ソース ファイル\Common\Math</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Shader\SoftSolverCS.comp">
-      <Filter>シェーダファイル</Filter>
-    </None>
-    <None Include="Shader\SoftDebugVS.vert">
-      <Filter>シェーダファイル</Filter>
-    </None>
-    <None Include="Shader\SoftDebugFS.frag">
-      <Filter>シェーダファイル</Filter>
-    </None>
+    <ClCompile Include="Source\Physics\Storage\Component\Collider\CapsuleColliderComponentStorage.cpp">
+      <Filter>ソース ファイル\Physics\Storage\Component\Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Objects\DebugCapsule.cpp">
+      <Filter>ソース ファイル\GameObject</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

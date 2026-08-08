@@ -15,6 +15,7 @@
 // コライダー
 #include "SphereColliderComponentStorage.h"
 #include "BoxColliderComponentStorage.h"
+#include "CapsuleColliderComponentStorage.h"
 
 // ボディ
 #include "RigidBodyComponentStorage.h"
@@ -53,6 +54,7 @@ SceneBase::SceneBase()
 	// コライダー
 	AddStorage<SphereColliderComponent>(std::make_unique<SphereColliderComponentStorage>());
 	AddStorage<BoxColliderComponent>(std::make_unique<BoxColliderComponentStorage>());
+	AddStorage<CapsuleColliderComponent>(std::make_unique<CapsuleColliderComponentStorage>());
 
 	// ボディ
 	AddStorage<RigidBodyComponent>(std::make_unique<RigidBodyComponentStorage>());

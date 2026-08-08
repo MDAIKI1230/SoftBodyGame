@@ -32,6 +32,4 @@ public:
 	float GetDepth() const;
 	// Z方向の長さ変更
 	void SetDepth(float _depth);
-private:
-	float width{ 0.0f }, height{ 0.0f }, depth{ 0.0f };
 };

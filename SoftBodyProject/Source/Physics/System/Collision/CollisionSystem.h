@@ -44,13 +44,8 @@ private:
 		ColliderStorage* _colliderStorage,
 		CollisionManifoldBuffer* _manifoldBuffer,
 		EventManager* _eventManager);
-	template<>
-	void Solve<BoxTag, BoxTag, CollisionPair::BoxBoxPair>(
-		const std::vector<CollisionPair::BoxBoxPair>& pairList,
-		PhysicsTransformStorage* _transformStorage,
-		ColliderStorage* _colliderStorage,
-		CollisionManifoldBuffer* _manifoldBuffer,
-		EventManager* _eventManager);
+
+	// 球VS球
 	template<>
 	void Solve<SphereTag, SphereTag, CollisionPair::SphereSpherePair>(
 		const std::vector<CollisionPair::SphereSpherePair>& pairList,
@@ -58,6 +53,7 @@ private:
 		ColliderStorage* _colliderStorage,
 		CollisionManifoldBuffer* _manifoldBuffer,
 		EventManager* _eventManager);
+	// 球VSボックス
 	template<>
 	void Solve<SphereTag, BoxTag, CollisionPair::SphereBoxPair>(
 		const std::vector<CollisionPair::SphereBoxPair>& pairList,
@@ -65,9 +61,60 @@ private:
 		ColliderStorage* _colliderStorage,
 		CollisionManifoldBuffer* _manifoldBuffer,
 		EventManager* _eventManager);
+	// 球VSカプセル
+	template<>
+	void Solve<SphereTag, CapsuleTag, CollisionPair::SphereCapsulePair>(
+		const std::vector<CollisionPair::SphereCapsulePair>& pairList,
+		PhysicsTransformStorage* _transformStorage,
+		ColliderStorage* _colliderStorage,
+		CollisionManifoldBuffer* _manifoldBuffer,
+		EventManager* _eventManager);
+
+	// ボックスVS球
 	template<>
 	void Solve<BoxTag, SphereTag, CollisionPair::BoxSpherePair>(
 		const std::vector<CollisionPair::BoxSpherePair>& pairList,
+		PhysicsTransformStorage* _transformStorage,
+		ColliderStorage* _colliderStorage,
+		CollisionManifoldBuffer* _manifoldBuffer,
+		EventManager* _eventManager);
+	// ボックスVSボックス
+	template<>
+	void Solve<BoxTag, BoxTag, CollisionPair::BoxBoxPair>(
+		const std::vector<CollisionPair::BoxBoxPair>& pairList,
+		PhysicsTransformStorage* _transformStorage,
+		ColliderStorage* _colliderStorage,
+		CollisionManifoldBuffer* _manifoldBuffer,
+		EventManager* _eventManager);
+	// ボックスVSカプセル
+	template<>
+	void Solve<BoxTag, CapsuleTag, CollisionPair::BoxCapsulePair>(
+		const std::vector<CollisionPair::BoxCapsulePair>& pairList,
+		PhysicsTransformStorage* _transformStorage,
+		ColliderStorage* _colliderStorage,
+		CollisionManifoldBuffer* _manifoldBuffer,
+		EventManager* _eventManager);
+
+	// カプセルVS球
+	template<>
+	void Solve<CapsuleTag, SphereTag, CollisionPair::CapsuleSpherePair>(
+		const std::vector<CollisionPair::CapsuleSpherePair>& pairList,
+		PhysicsTransformStorage* _transformStorage,
+		ColliderStorage* _colliderStorage,
+		CollisionManifoldBuffer* _manifoldBuffer,
+		EventManager* _eventManager);
+	// カプセルVSボックス
+	template<>
+	void Solve<CapsuleTag, BoxTag, CollisionPair::CapsuleBoxPair>(
+		const std::vector<CollisionPair::CapsuleBoxPair>& pairList,
+		PhysicsTransformStorage* _transformStorage,
+		ColliderStorage* _colliderStorage,
+		CollisionManifoldBuffer* _manifoldBuffer,
+		EventManager* _eventManager);
+	// カプセルVSカプセル
+	template<>
+	void Solve<CapsuleTag, CapsuleTag, CollisionPair::CapsuleCapsulePair>(
+		const std::vector<CollisionPair::CapsuleCapsulePair>& pairList,
 		PhysicsTransformStorage* _transformStorage,
 		ColliderStorage* _colliderStorage,
 		CollisionManifoldBuffer* _manifoldBuffer,
@@ -97,12 +144,15 @@ private:
 
 	AddPairFunc AddPairTable[(int)ColliderType::COUNT][(int)ColliderType::COUNT]
 	{
-		// 　　　             球　　　               |　             　 箱
+		// 　　　             球　　　               |　             　 箱					|			　カプセル
 		{
-			&NarrowPhasePairBuilder::AddSphereSphere , &NarrowPhasePairBuilder::AddSphereBox // 球
+			&NarrowPhasePairBuilder::AddSphereSphere , &NarrowPhasePairBuilder::AddSphereBox, &NarrowPhasePairBuilder::AddSphereCapsule // 球
 		},
 		{
-			&NarrowPhasePairBuilder::AddBoxSphere,     &NarrowPhasePairBuilder::AddBoxBox    // 箱
+			&NarrowPhasePairBuilder::AddBoxSphere,     &NarrowPhasePairBuilder::AddBoxBox   , &NarrowPhasePairBuilder::AddSphereBox     // 箱
+		},
+		{
+			&NarrowPhasePairBuilder::AddCapsuleSphere, &NarrowPhasePairBuilder::AddCapsuleBox, &NarrowPhasePairBuilder::AddCapsuleBox     // カプセル
 		}
 	};
 

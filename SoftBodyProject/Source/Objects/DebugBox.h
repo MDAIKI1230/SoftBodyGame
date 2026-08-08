@@ -31,4 +31,3 @@ public:
 	void OnCollision() override;
 	void OnCollisionExit() override;
 };
-#pragma once
