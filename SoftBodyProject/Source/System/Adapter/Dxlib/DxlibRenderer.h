@@ -7,7 +7,7 @@ class DxlibRenderer : public IRenderer
 public:
 	// カメラ関連
 	// カメラセット
-	void SetCamera(const Camera& _camera) override;
+	void SetCamera(const Camera* _camera) override;
 	// ---ダブルバッファリング用---
 	
 	// 垂直同期信号を待つ

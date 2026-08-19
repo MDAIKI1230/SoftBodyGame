@@ -11,7 +11,7 @@ class IRenderer
 public:
 	// カメラ関連
 	// カメラセット
-	virtual void SetCamera(const Camera& _camera) = 0;
+	virtual void SetCamera(const Camera* _camera) = 0;
 	// ---ダブルバッファリング用---
 
 	// 垂直同期信号を待つ

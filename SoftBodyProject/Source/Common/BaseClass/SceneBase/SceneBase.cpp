@@ -5,7 +5,9 @@
 // 描画系
 #include "ModelRenderingSystem.h"
 #include "RendererComponentStorage.h"
+#include "CameraComponentStorage.h"
 #include "DebugRenderingSystem.h"
+#include "SkyRenderingSystem.h"
 
 // Transform
 #include "TransformComponentStorage.h"
@@ -46,8 +48,11 @@ SceneBase::SceneBase()
 
 	// レンダリングシステム追加
 	AddSystem(std::make_unique<ModelRenderingSystem>());
+	AddSystem(std::make_unique<SkyRenderingSystem>());
 	// レンダラーストレージ追加
 	AddStorage<RendererComponent>(std::make_unique<RendererComponentStorage>());
+	// カメラコンポーネントストレージ追加
+	AddStorage<CameraComponent>(std::make_unique<CameraComponentStorage>());
 	// Transformも同様
 	AddStorage<TransformComponent>(std::make_unique<TransformComponentStorage>());
 	// 物理関係
@@ -81,6 +86,7 @@ void SceneBase::Execute()
 	{
 	case SceneState::INITIALIZE:
 		// 初期化タスクの生成
+		systemManager->Initialize();
 		Initialize();
 		break;
 	case SceneState::LOADING:

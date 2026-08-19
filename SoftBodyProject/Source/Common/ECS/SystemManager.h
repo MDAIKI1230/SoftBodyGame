@@ -9,6 +9,8 @@
 class SystemManager
 {
 public:
+	// 初期化
+	void Initialize();
 	// 更新
 	void Update(WorldStorage* _worldStorage, EventManager* _eventManager);
 	// 物理更新

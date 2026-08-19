@@ -9,7 +9,7 @@ class RaylibRenderer :public IRenderer
 public:
 	// カメラ関連
 	// カメラセット
-	virtual void SetCamera(const Camera& _camera) override;
+	virtual void SetCamera(const Camera* _camera) override;
 	// ---ダブルバッファリング用---
 
 	// 垂直同期信号を待つ

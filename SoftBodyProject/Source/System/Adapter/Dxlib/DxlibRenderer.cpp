@@ -4,10 +4,11 @@
 
 #include "DxlibRenderer.h"
 
-void DxlibRenderer::SetCamera(const Camera& _camera)
+void DxlibRenderer::SetCamera(const Camera* _camera)
 {
 	// 位置と見る点を決める
-    DxLib::SetCameraPositionAndTargetAndUpVec(ToDxlib(_camera.GetPos()), ToDxlib(_camera.GetTarget()), ToDxlib(Vector3::UP));
+    DxLib::SetCameraPositionAndTargetAndUpVec(ToDxlib(_camera->GetPos()), ToDxlib(_camera->GetTarget()), ToDxlib(Vector3::UP));
+    DxLib::SetCameraNearFar(0.1f, 1000.0f);
 }
 
 int DxlibRenderer::ClearDrawScreen()

@@ -4,11 +4,11 @@
 
 #include "RaylibConvert.h"
 
-void RaylibRenderer::SetCamera(const Camera& _camera)
+void RaylibRenderer::SetCamera(const Camera* _camera)
 {
     // 位置と見る点を決める
-    raylibCamera.position = ToRaylib(_camera.GetPos());
-    raylibCamera.target = ToRaylib(_camera.GetTarget());
+    raylibCamera.position = ToRaylib(_camera->GetPos());
+    raylibCamera.target = ToRaylib(_camera->GetTarget());
 
     // 今の自作Cameraに存在しない値は固定
     raylibCamera.up = RlVector3{ 0.0f, 1.0f, 0.0f };

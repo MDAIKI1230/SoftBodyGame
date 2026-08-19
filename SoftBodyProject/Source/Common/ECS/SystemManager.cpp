@@ -1,5 +1,21 @@
 ﻿#include "SystemManager.h"
 
+void SystemManager::Initialize()
+{
+	// 更新
+	for (int i{ 0 }; i < updateSystems.size(); i++)
+	{
+		updateSystems[i]->Initialize();
+	}
+	for (int i{ 0 }; i < fixedUpdateSystems.size(); i++)
+	{
+		fixedUpdateSystems[i]->Initialize();
+	}
+	for (int i{ 0 }; i < renderingSystems.size(); i++)
+	{
+		renderingSystems[i]->Initialize();
+	}
+}
 
 void SystemManager::Update(WorldStorage* _worldStorage, EventManager* _eventManager)
 {

@@ -28,8 +28,9 @@ DebugScene::DebugScene()
 // 初期化
 void DebugScene::Initialize()
 {
-	Camera camera{ Vector3{0,-175,-500},Vector3{0,-175,0} };
-	ServiceLocator::GetRenderer()->SetCamera(camera);
+	std::unique_ptr<Camera> camera{ std::make_unique<Camera>(worldStorage.get(), objectManager->GenerateNewID(), Vector3{0,-175,-500},Vector3{0,-175,0}) };
+	ServiceLocator::GetRenderer()->SetCamera(camera.get());
+	objectManager->Add(std::move(camera));
 
 	objectManager->Add(std::make_unique<DebugSphere>(worldStorage.get(), objectManager->GenerateNewID()));
 

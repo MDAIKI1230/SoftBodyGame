@@ -9,52 +9,52 @@ struct CameraComponent
 {
 public:
 	// カメラ距離最近距離の取得
-	float GetNear() { return near; }
+	float GetNear() const noexcept { return nearClip; }
 	// カメラ距離最近距離の変更
-	void SetNear(float _near) { near = _near; }
+	void SetNear(float _near) noexcept { nearClip = _near; }
 	// カメラ距離最遠距離の取得
-	float GetFar() { return far; }
+	float GetFar() const noexcept { return farClip; }
 	// カメラ距離最遠距離の変更
-	void SetFar(float _far) { far = _far; }
+	void SetFar(float _far) noexcept { farClip = _far; }
 
 	// FOVの取得
-	float GetFov() { return fov; }
+	float GetFov() const noexcept { return fov; }
 	// FOVの変更
-	void SetFov(float _fov) { far = _fov; }
+	void SetFov(float _fov) noexcept { fov = _fov; }
 
 	// 優先度の取得
-	int GetPriority() { return priority; }
+	int GetPriority() const noexcept { return priority; }
 	// 優先度の変更
-	void SetPriority(int _priority) { priority = _priority; }
+	void SetPriority(int _priority) noexcept { priority = _priority; }
 
 	// 生存フラグの取得
-	bool GetIsActive() { return isActive; }
+	bool GetIsActive() const noexcept { return isActive; }
 	// 生存フラグの変更
-	void SetPriority(bool _isActive) { isActive = _isActive; }
+	void SetPriority(bool _isActive) noexcept { isActive = _isActive; }
 
 	// 投影方式の取得
-	ProjectionType GetProjectionType() { return projectionType; }
+	ProjectionType GetProjectionType() const noexcept { return projectionType; }
 	// 投影法式の変更
-	void SetProjectionType(ProjectionType _projectionType) { projectionType = _projectionType; }
+	void SetProjectionType(ProjectionType _projectionType) noexcept { projectionType = _projectionType; }
 
 	// 画面の消去法式の取得
-	ClearMode GetClearMode() { return clearMode; }
+	ClearMode GetClearMode() const noexcept { return clearMode; }
 	// 画面の消去法式の変更
-	void SetClearMode(ClearMode _clearMode) { clearMode = _clearMode; }
+	void SetClearMode(ClearMode _clearMode) noexcept { clearMode = _clearMode; }
 
 	// SolidModeの時の色の取得
-	const Color& GetSolidColor() { return solidColor; }
+	const Color& GetSolidColor() const noexcept { return solidColor; }
 	// SolidModeの時の色の変更
-	void SetSolidColor(Color& _solidColor) { solidColor = _solidColor; }
+	void SetSolidColor(Color& _solidColor) noexcept { solidColor = _solidColor; }
 
 	// 描画範囲矩形の取得
-	const ViewPort& GetViewPort() { return viewPort; }
+	const ViewPort& GetViewPort() const noexcept { return viewPort; }
 	// 描画範囲矩形の変更
-	void SetViewPort(ViewPort& _viewPort) { viewPort = _viewPort; }
+	void SetViewPort(ViewPort& _viewPort) noexcept { viewPort = _viewPort; }
 private:
 	// カメラ描画距離
-	float near{ 0.1f };
-	float far{ 1000.0f };
+	float nearClip{ 0.1f };
+	float farClip{ 1000.0f };
 
 	// FOV(度数法)
 	float fov{ 60.0f };
