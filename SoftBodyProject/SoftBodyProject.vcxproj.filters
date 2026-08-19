@@ -805,6 +805,18 @@
     <ClInclude Include="Source\Objects\DebugCapsule.h">
       <Filter>ソース ファイル\GameObject</Filter>
     </ClInclude>
+    <ClInclude Include="Source\System\Components\CameraComponent.h">
+      <Filter>ソース ファイル\System\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Common\Constants\CameraConstants.h">
+      <Filter>ソース ファイル\Common\Constants</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\System\struct\ViewPort.h">
+      <Filter>ソース ファイル\System\Struct</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\System\ComponentStorages\CameraComponentStorage.h">
+      <Filter>ソース ファイル\System\ComponentStorages</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\System\Scenes\DebugScene.cpp">

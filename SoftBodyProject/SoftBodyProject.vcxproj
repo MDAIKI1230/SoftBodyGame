@@ -354,6 +354,7 @@
     <ClInclude Include="Source\Common\BaseClass\UpdateSystem.h" />
     <ClInclude Include="Source\Common\Color\Color.h" />
     <ClInclude Include="Source\Common\Constants\BaseConstants.h" />
+    <ClInclude Include="Source\Common\Constants\CameraConstants.h" />
     <ClInclude Include="Source\Common\Constants\KeyConstants.h" />
     <ClInclude Include="Source\Common\Constants\SceneConstants.h" />
     <ClInclude Include="Source\Common\ECS\ComponentID.h" />
@@ -508,10 +509,12 @@
     <ClInclude Include="Source\System\Adapter\Raylib\RaylibRenderer.h" />
     <ClInclude Include="Source\System\Adapter\Raylib\RaylibSystem.h" />
     <ClInclude Include="Source\System\Adapter\Raylib\Storage\RaylibStorage.h" />
+    <ClInclude Include="Source\System\ComponentStorages\CameraComponentStorage.h" />
     <ClInclude Include="Source\System\ComponentStorages\RendererComponentStorage.h" />
     <ClInclude Include="Source\System\ComponentStorages\TransformComponentStorage.h" />
     <ClInclude Include="Source\System\ComponentSystems\DebugRenderingSystem.h" />
     <ClInclude Include="Source\System\ComponentSystems\ModelRenderingSystem.h" />
+    <ClInclude Include="Source\System\Components\CameraComponent.h" />
     <ClInclude Include="Source\System\Components\RendererComponent.h" />
     <ClInclude Include="Source\System\Components\TransformComponent.h" />
     <ClInclude Include="Source\System\Factory\BackEndFactory.h" />
@@ -533,6 +536,7 @@
     <ClInclude Include="Source\System\Scenes\DebugScene.h" />
     <ClInclude Include="Source\System\ServiceLocator.h" />
     <ClInclude Include="Source\System\struct\BackEnd.h" />
+    <ClInclude Include="Source\System\struct\ViewPort.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Common\BaseClass\SceneBase\SceneBase.cpp" />
