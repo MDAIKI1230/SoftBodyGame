@@ -12,7 +12,7 @@ public:
 	// static JobSystem* GetJobSystem() { return jobSystem; }
 	static IRenderer* GetRenderer() { return renderer; }
 	static IInput* GetInput() { return input; }
-	static IGPUConnecter* GetIGPUConnecter() { return gpuConnecter; }
+	static IGPUConnecter* GetGPUConnecter() { return gpuConnecter; }
 	static TimeManager* GetTimeManager() { return timeManager; }
 
 	// セット用関数

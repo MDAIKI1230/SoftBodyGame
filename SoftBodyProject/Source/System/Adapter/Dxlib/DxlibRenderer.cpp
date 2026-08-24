@@ -45,6 +45,21 @@ int DxlibRenderer::LoadGraph(const std::string& _fileName)
 	return DxLib::LoadGraph(std::wstring(_fileName.begin(), _fileName.end()).c_str());
 }
 
+// CubeTextureの読み込み
+int DxlibRenderer::LoadCubeTexture(const std::string& _fileName)
+{
+    const std::wstring filePath(_fileName.begin(),_fileName.end());
+
+    DxLib::SetCubeMapTextureCreateFlag(TRUE);
+
+    int handle{ DxLib::LoadGraph(std::wstring(_fileName.begin(), _fileName.end()).c_str()) };
+
+    // 元に戻す
+    DxLib::SetCubeMapTextureCreateFlag(FALSE);
+
+    return handle;
+}
+
 /// <summary>
 /// 画像の分割読み込み
 /// </summary>

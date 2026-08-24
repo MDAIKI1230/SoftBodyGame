@@ -14,6 +14,7 @@
 #include "Dxlib\DxlibRenderer.h"
 #include "Dxlib\DxlibInput.h"
 #include "Dxlib\DxlibSystem.h"
+#include "Dxlib\DxlibGPUConnecter.h"
 
 #endif //  USE_RAYLIB
 
@@ -30,6 +31,7 @@ BackEnd BackEndFactory::CreateBackEnd()
 	backend.renderer = std::make_unique<DxlibRenderer>();
 	backend.input = std::make_unique<DxlibInput>();
 	backend.system = std::make_unique<DxlibSystem>();
+	backend.gpuConnecter = std::make_unique<DxlibGPUConnecter>();
 #endif //  USE_RAYLIB
 
 	return backend;

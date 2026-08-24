@@ -119,6 +119,12 @@ int RaylibRenderer::LoadGraph(const std::string& _fileName)
     return nextResourceHandle;
 }
 
+// CubeTextureの読み込み
+int RaylibRenderer::LoadCubeTexture(const std::string& _fileName)
+{
+    return -1;
+}
+
 /// <summary>
 /// 画像の分割読み込み
 /// </summary>

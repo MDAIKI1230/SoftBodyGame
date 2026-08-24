@@ -13,7 +13,7 @@ DebugBox::DebugBox(WorldStorage* _world, EntityID _entity) :
 {
 	AddComponent<TransformComponent>();
 	BoxColliderComponent* collider{ AddComponent<BoxColliderComponent>(30.0f) };
-	Color c{ 255, 255, 255 };
+	Color c{ 1.0f, 1.0f, 1.0f };
 #ifdef _DEBUG
 	collider->SetColor(c);
 #endif // _DEBUG
@@ -25,7 +25,7 @@ DebugBox::DebugBox(WorldStorage* _world, EntityID _entity, float _size) :
 {
 	AddComponent<TransformComponent>();
 	BoxColliderComponent* collider{ AddComponent<BoxColliderComponent>(_size) };
-	Color c{ 255, 255, 255 };
+	Color c{ 1.0f, 1.0f, 1.0f };
 #ifdef _DEBUG
 	collider->SetColor(c);
 #endif // _DEBUG
@@ -37,7 +37,7 @@ DebugBox::DebugBox(WorldStorage* _world, EntityID _entity, float _width, float _
 {
 	AddComponent<TransformComponent>();
 	BoxColliderComponent* collider{ AddComponent<BoxColliderComponent>(_width,_height,_depth) };
-	Color c{ 255, 255, 255 };
+	Color c{ 1.0f, 1.0f, 1.0f };
 #ifdef _DEBUG
 	collider->SetColor(c);
 #endif // _DEBUG
@@ -67,7 +67,7 @@ void DebugBox::FixedUpdate()
 
 void DebugBox::OnCollisionEnter()
 {
-	Color c{ 255,0,0 };
+	Color c{ 1.0f,0,0 };
 #ifdef _DEBUG
 	GetComponent<BoxColliderComponent>()->SetColor(c);
 #endif // DEBUG
@@ -78,7 +78,7 @@ void DebugBox::OnCollision()
 }
 void DebugBox::OnCollisionExit()
 {
-	Color c{ 255,255,255 };
+	Color c{ 1.0f,1.0f,1.0f };
 #ifdef _DEBUG
 	GetComponent<BoxColliderComponent>()->SetColor(c);
 #endif // DEBUG

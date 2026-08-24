@@ -51,6 +51,11 @@ public:
 	const ViewPort& GetViewPort() const noexcept { return viewPort; }
 	// 描画範囲矩形の変更
 	void SetViewPort(ViewPort& _viewPort) noexcept { viewPort = _viewPort; }
+
+	// 描画範囲矩形の取得
+	int GetSkyTextureHandle() const noexcept { return skyTextureHandle; }
+	// 描画範囲矩形の変更
+	void SetSkyTextureHandle(int _skyTextureHandle) noexcept { skyTextureHandle = _skyTextureHandle; }
 private:
 	// カメラ描画距離
 	float nearClip{ 0.1f };
@@ -72,8 +77,11 @@ private:
 	ClearMode clearMode{ ClearMode::SOLID_COLOR };
 
 	// SolidModeの時の色
-	Color solidColor{ 255,255,255 };
+	Color solidColor{ 0.0f,0.0f,1.0f };
 
 	// 描画範囲矩形
 	ViewPort viewPort;
+
+	// SKYモードの時のテクスチャのハンドル
+	int skyTextureHandle{ -1 };
 };

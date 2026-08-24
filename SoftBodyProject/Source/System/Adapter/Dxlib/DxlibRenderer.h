@@ -27,6 +27,8 @@ public:
 	int LoadModel(const std::string& _fileName) override;
 	// 画像の読み込み
 	int LoadGraph(const std::string& _fileName) override;
+	// CubeTextureの読み込み
+	int LoadCubeTexture(const std::string& _fileName) override;
 	/// <summary>
 	/// 画像の分割読み込み
 	/// </summary>

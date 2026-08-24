@@ -30,6 +30,8 @@ void DebugScene::Initialize()
 {
 	std::unique_ptr<Camera> camera{ std::make_unique<Camera>(worldStorage.get(), objectManager->GenerateNewID(), Vector3{0,-175,-500},Vector3{0,-175,0}) };
 	ServiceLocator::GetRenderer()->SetCamera(camera.get());
+	camera->GetComponent<CameraComponent>()->SetSkyTextureHandle(ServiceLocator::GetRenderer()->LoadCubeTexture("Res/Texture/Sky/SkyDirectionTest.dds"));
+	camera->GetComponent<CameraComponent>()->SetClearMode(ClearMode::SKY);
 	objectManager->Add(std::move(camera));
 
 	objectManager->Add(std::make_unique<DebugSphere>(worldStorage.get(), objectManager->GenerateNewID()));

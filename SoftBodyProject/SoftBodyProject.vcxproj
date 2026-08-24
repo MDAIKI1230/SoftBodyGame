@@ -371,7 +371,9 @@
     <ClInclude Include="Source\Common\ECS\Storage\ComponentIDPool.h" />
     <ClInclude Include="Source\Common\ECS\Storage\ComponentStorageBase.h" />
     <ClInclude Include="Source\Common\ECS\Storage\ComponentView.h" />
+    <ClInclude Include="Source\Common\ECS\Storage\HandlePool.h" />
     <ClInclude Include="Source\Common\ECS\Storage\MultiComponentStorageBase.h" />
+    <ClInclude Include="Source\Common\ECS\Storage\ResourceStorage.h" />
     <ClInclude Include="Source\Common\ECS\Storage\UniqueComponentStorageBase.h" />
     <ClInclude Include="Source\Common\ECS\Storage\WorldStorage.h" />
     <ClInclude Include="Source\Common\ECS\SystemManager.h" />
@@ -395,6 +397,7 @@
     <ClInclude Include="Source\Common\Math\Vector\Vector3\Vector3.h" />
     <ClInclude Include="Source\Common\Math\Vector\Vector3\Vector3Int.h" />
     <ClInclude Include="Source\Common\Math\Vector\Vector4\Vector4.h" />
+    <ClInclude Include="Source\Common\Struct\ShaderConstantBufferHandle.h" />
     <ClInclude Include="Source\Common\Struct\ComputeShaderHandle.h" />
     <ClInclude Include="Source\Common\Struct\GenerationalID.h" />
     <ClInclude Include="Source\Common\Struct\GraphicsShaderHandle.h" />
@@ -498,9 +501,12 @@
     <ClInclude Include="Source\Physics\System\Update\RigidBodySystem.h" />
     <ClInclude Include="Source\System\Adapter\Dxlib\DxlibConstants.h" />
     <ClInclude Include="Source\System\Adapter\Dxlib\DxlibConvert.h" />
+    <ClInclude Include="Source\System\Adapter\Dxlib\DxlibGPUConnecter.h" />
     <ClInclude Include="Source\System\Adapter\Dxlib\DxlibInput.h" />
     <ClInclude Include="Source\System\Adapter\Dxlib\DxlibRenderer.h" />
     <ClInclude Include="Source\System\Adapter\Dxlib\DxlibSystem.h" />
+    <ClInclude Include="Source\System\Adapter\Dxlib\Struct\DxlibGraphicsShaderHandles.h" />
+    <ClInclude Include="Source\System\Adapter\Dxlib\Struct\DxlibShaderBufferResource.h" />
     <ClInclude Include="Source\System\Adapter\Raylib\RaylibConstants.h" />
     <ClInclude Include="Source\System\Adapter\Raylib\RaylibConvert.h" />
     <ClInclude Include="Source\System\Adapter\Raylib\RaylibGPUConnecter.h" />
@@ -508,7 +514,7 @@
     <ClInclude Include="Source\System\Adapter\Raylib\RaylibInput.h" />
     <ClInclude Include="Source\System\Adapter\Raylib\RaylibRenderer.h" />
     <ClInclude Include="Source\System\Adapter\Raylib\RaylibSystem.h" />
-    <ClInclude Include="Source\System\Adapter\Raylib\Storage\RaylibStorage.h" />
+    <ClInclude Include="Source\System\Adapter\Raylib\Struct\RaylibShaderBufferResource.h" />
     <ClInclude Include="Source\System\ComponentStorages\CameraComponentStorage.h" />
     <ClInclude Include="Source\System\ComponentStorages\RendererComponentStorage.h" />
     <ClInclude Include="Source\System\ComponentStorages\TransformComponentStorage.h" />
@@ -605,6 +611,7 @@
     <ClCompile Include="Source\Physics\System\Sync\SynchronizationSystem.cpp" />
     <ClCompile Include="Source\Physics\System\Update\AABBUpdateSystem.cpp" />
     <ClCompile Include="Source\Physics\System\Update\RigidBodySystem.cpp" />
+    <ClCompile Include="Source\System\Adapter\Dxlib\DxlibGPUConnecter.cpp" />
     <ClCompile Include="Source\System\Adapter\Dxlib\DxlibInput.cpp" />
     <ClCompile Include="Source\System\Adapter\Dxlib\DxlibRenderer.cpp" />
     <ClCompile Include="Source\System\Adapter\Dxlib\DxlibSystem.cpp" />
@@ -626,6 +633,44 @@
     <ClCompile Include="Source\System\SceneData\JsonLoadHelperFunc.cpp" />
     <ClCompile Include="Source\System\SceneData\SceneDataLoader.cpp" />
     <ClCompile Include="Source\System\Scenes\DebugScene.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Shader\HLSL\Sky\SkySolidPS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='DebugDxlib|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='DebugDxlib|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='ReleaseRaylib|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='ReleaseRaylib|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='ReleaseDxlib|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='ReleaseDxlib|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='DebugRaylib|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='DebugRaylib|x64'">Pixel</ShaderType>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='DebugDxlib|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='DebugRaylib|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='ReleaseRaylib|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='ReleaseDxlib|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='DebugDxlib|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='DebugRaylib|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='ReleaseRaylib|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='ReleaseDxlib|x64'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="Shader\HLSL\Sky\SkyVS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='DebugDxlib|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='DebugDxlib|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='ReleaseRaylib|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='ReleaseRaylib|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='ReleaseDxlib|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='ReleaseDxlib|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='DebugRaylib|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='DebugRaylib|x64'">Vertex</ShaderType>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='DebugDxlib|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='DebugRaylib|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='ReleaseRaylib|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='ReleaseDxlib|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='DebugDxlib|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='DebugRaylib|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='ReleaseRaylib|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='ReleaseDxlib|x64'">true</ExcludedFromBuild>
+    </FxCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

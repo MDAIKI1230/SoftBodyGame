@@ -1,4 +1,5 @@
-﻿#include "ServiceLocator.h"
+﻿#include "BaseConstants.h"
+#include "ServiceLocator.h"
 
 #include "TransformComponentStorage.h"
 #include "CameraComponentStorage.h"
@@ -8,9 +9,12 @@
 void SkyRenderingSystem::Initialize()
 {
 #ifdef USE_RAYLIB
-	sphereHandle = ServiceLocator::GetRenderer()->LoadModel("Res/Model/SkySphere/SkySphere.glb");
+	sphereHandle = ServiceLocator::GetRenderer()->LoadModel("Res/Model/SkyCube/SkyCube.glb");
 #else
-	sphereHandle = ServiceLocator::GetRenderer()->LoadModel("Res/Model/SkySphere/SkySphere.mv1");
+	sphereHandle = ServiceLocator::GetRenderer()->LoadModel("Res/Model/SkyCube/SkyCube.mv1");
+	solidSkyShader = ServiceLocator::GetGPUConnecter()->LoadGraphicsShader("Shader/HLSL/Sky/SkyVS.vso", "Shader/HLSL/Sky/SkySolidPS.pso");
+
+	constantBufferHandle = ServiceLocator::GetGPUConnecter()->CreateConstantBuffer(sizeof(SkySolidConstantBuffer));
 #endif // USE_RAYLIB
 }
 
@@ -22,12 +26,48 @@ void SkyRenderingSystem::Draw(WorldStorage* _worldStorage, EventManager* _eventM
 	// Cameraストレージ
 	CameraComponentStorage* cameraStorage{ static_cast<CameraComponentStorage*>(_worldStorage->GetStorage<CameraComponent>()) };
 
+	ServiceLocator::GetGPUConnecter()->BeginGraphicsShader(solidSkyShader);
+
 	for (auto cameraEntity : cameraStorage->GetEntities())
 	{
 		const TransformComponent& trns{ transformStorage->Get(cameraEntity) };
 
-		ServiceLocator::GetRenderer()->ModelSetMatrix(sphereHandle, trns.GetWorldMatrix());
+		SkySolidConstantBuffer cbData;
+
+		const CameraComponent& camera{ cameraStorage->Get(cameraEntity) };
+
+		cbData.world = Matrix4x4::Identity();
+		cbData.view = MatGenerateFunc::InverseTRS(trns.GetPosition(), trns.GetRotation(), Vector3{ 1.0f,1.0f, 1.0f });
+
+		// Projection行列作成
+		const ViewPort& vp{ camera.GetViewPort() };
+
+		float drawWidth{Config::WINDOW_SIZE_W * vp.width};
+
+		float drawHeight{ Config::WINDOW_SIZE_H * vp.height};
+
+		float aspect{drawWidth / drawHeight};
+
+		cbData.projection = MatGenerateFunc::Projection(camera.GetFov() * MathConstants::PI_FLT / 180.0f, aspect, camera.GetNear(), camera.GetFar());
+
+		cbData.skyColor = camera.GetSolidColor();
+
+		cbData.solidFlag = static_cast<uint32_t>(camera.GetClearMode());
+
+		ServiceLocator::GetGPUConnecter()->SetTexture(camera.GetSkyTextureHandle(), 0);
+
+		// 定数バッファに値渡して上げる
+		void* pBuffer{ ServiceLocator::GetGPUConnecter()->GetConstantBufferAddress(constantBufferHandle) };
+
+		memcpy(pBuffer, &cbData, sizeof(SkySolidConstantBuffer));
+
+		ServiceLocator::GetGPUConnecter()->UpdateConstantBuffer(constantBufferHandle, &cbData, sizeof(SkySolidConstantBuffer));
+		
+		ServiceLocator::GetGPUConnecter()->BindConstantBufferPixel(constantBufferHandle, 0);
+		ServiceLocator::GetGPUConnecter()->BindConstantBufferVertex(constantBufferHandle, 0);
 
 		ServiceLocator::GetRenderer()->DrawModel(sphereHandle);
 	}
+
+	ServiceLocator::GetGPUConnecter()->EndGraphicsShader();
 }

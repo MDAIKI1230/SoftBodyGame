@@ -1,10 +1,8 @@
 ﻿#pragma once
 
-#include <cstdint>
+#include "GenerationalID.h"
 
-struct ShaderBufferHandle
-{
-	const uint32_t index;
-	const uint32_t generation;
-	const uint32_t size;
-};
+struct ShaderBufferTag;
+
+using ShaderBufferHandle = GenerationalID<ShaderBufferTag>;
+

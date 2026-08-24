@@ -192,3 +192,24 @@ Matrix4x4 MatGenerateFunc::LookAt(const Vector3& _eye, const Vector3& _target, c
 		   0.0f,    0.0f,    0.0f,  1.0f
 	};
 }
+
+Matrix4x4 MatGenerateFunc::Projection(float _fovY, float _aspect, float _nearClip, float _farClip)
+{
+	float tanHalfFov{ tanf(_fovY * 0.5f) };
+
+	float yScale{ 1.0f / tanHalfFov };
+
+	float xScale{ yScale / _aspect };
+
+	float depthScale{ _farClip / (_farClip - _nearClip) };
+
+	float depthOffset{ -(_nearClip * _farClip) / (_farClip - _nearClip) };
+
+	return Matrix4x4
+	{
+		xScale, 0.0f,   0.0f,        0.0f,
+		0.0f,   yScale, 0.0f,        0.0f,
+		0.0f,   0.0f,   depthScale,  depthOffset,
+		0.0f,   0.0f,   1.0f,        0.0f
+	};
+}

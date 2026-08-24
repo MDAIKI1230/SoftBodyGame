@@ -2,6 +2,8 @@
 
 #include "RenderingSystem.h"
 
+#include "GraphicsShaderHandle.h"
+
 class SkyRenderingSystem :public RenderingSystem
 {
 public:
@@ -10,5 +12,16 @@ public:
 	// 描画
 	void Draw(WorldStorage* _worldStorage, EventManager* _eventManager) override;
 private:
+	struct SkySolidConstantBuffer
+	{
+		Matrix4x4 world;
+		Matrix4x4 view;
+		Matrix4x4 projection;
+		Color skyColor;
+		uint32_t solidFlag;
+	};
+
 	int sphereHandle{ -1 };
+	ShaderConstantBufferHandle constantBufferHandle;
+	GraphicsShaderHandle solidSkyShader;
 };

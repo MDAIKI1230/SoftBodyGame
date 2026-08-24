@@ -6,7 +6,7 @@ enum class ProjectionType
 	ORTHOGRAPHIC
 };
 
-enum class ClearMode
+enum class ClearMode :uint32_t
 {
 	SOLID_COLOR,
 	SKY

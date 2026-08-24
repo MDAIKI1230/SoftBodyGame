@@ -197,9 +197,6 @@
     <Filter Include="ソース ファイル\Common\Struct">
       <UniqueIdentifier>{5d02ebba-dc11-44e2-80e5-988d230cc36a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\System\Adapter\Raylib\Storage">
-      <UniqueIdentifier>{aeeb51f4-1169-4fc5-95d3-845a1610e4a6}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ソース ファイル\Physics\Component\Body\Soft">
       <UniqueIdentifier>{fd9b9a12-8c42-4fb0-a0df-0c02d9f334ca}</UniqueIdentifier>
     </Filter>
@@ -238,6 +235,21 @@
     </Filter>
     <Filter Include="ソース ファイル\Common\ECS\Event">
       <UniqueIdentifier>{1faeebf5-a210-4ad0-a728-6138db94a23b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shader">
+      <UniqueIdentifier>{615c05a0-7507-44c8-90c8-fc293e9557ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shader\HLSL">
+      <UniqueIdentifier>{22888344-1fcf-47f9-afe6-c04edfe119aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shader\GLSL">
+      <UniqueIdentifier>{177b9a4d-ecc2-4a82-8c65-82ac89e3beb9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\System\Adapter\Dxlib\Struct">
+      <UniqueIdentifier>{deb0ee4a-78ba-4bcf-8f5a-9407cf437c88}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\System\Adapter\Raylib\Struct">
+      <UniqueIdentifier>{1c0f982e-77da-465d-9e31-a371ea1f50dd}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -661,9 +673,6 @@
     <ClInclude Include="Source\System\Adapter\Raylib\RaylibGPUConnecter.h">
       <Filter>ソース ファイル\System\Adapter\Raylib</Filter>
     </ClInclude>
-    <ClInclude Include="Source\System\Adapter\Raylib\Storage\RaylibStorage.h">
-      <Filter>ソース ファイル\System\Adapter\Raylib\Storage</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Physics\Component\Body\Soft\ClothComponent.h">
       <Filter>ソース ファイル\Physics\Component\Body\Soft</Filter>
     </ClInclude>
@@ -819,6 +828,27 @@
     </ClInclude>
     <ClInclude Include="Source\System\ComponentSystems\SkyRenderingSystem.h">
       <Filter>ソース ファイル\System\ComponentSystems</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\System\Adapter\Dxlib\DxlibGPUConnecter.h">
+      <Filter>ソース ファイル\System\Adapter\Dxlib</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\System\Adapter\Dxlib\Struct\DxlibGraphicsShaderHandles.h">
+      <Filter>ソース ファイル\System\Adapter\Dxlib\Struct</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Common\ECS\Storage\ResourceStorage.h">
+      <Filter>ソース ファイル\Common\ECS\Storage</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Common\ECS\Storage\HandlePool.h">
+      <Filter>ソース ファイル\Common\ECS\Storage</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\System\Adapter\Dxlib\Struct\DxlibShaderBufferResource.h">
+      <Filter>ソース ファイル\System\Adapter\Dxlib\Struct</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Common\Struct\ShaderConstantBufferHandle.h">
+      <Filter>ソース ファイル\Common\Struct</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\System\Adapter\Raylib\Struct\RaylibShaderBufferResource.h">
+      <Filter>ソース ファイル\System\Adapter\Raylib\Struct</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1080,5 +1110,16 @@
     <ClCompile Include="Source\System\ComponentSystems\SkyRenderingSystem.cpp">
       <Filter>ソース ファイル\System\ComponentSystems</Filter>
     </ClCompile>
+    <ClCompile Include="Source\System\Adapter\Dxlib\DxlibGPUConnecter.cpp">
+      <Filter>ソース ファイル\System\Adapter\Dxlib</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Shader\HLSL\Sky\SkyVS.hlsl">
+      <Filter>Shader\HLSL</Filter>
+    </FxCompile>
+    <FxCompile Include="Shader\HLSL\Sky\SkySolidPS.hlsl">
+      <Filter>Shader\HLSL</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

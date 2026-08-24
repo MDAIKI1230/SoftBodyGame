@@ -2,12 +2,11 @@
 
 #include "IGPUConnecter.h"
 
-#include "RaylibInclude.h"
-
 #include "ResourceStorage.h"
-#include "Struct/RaylibShaderBufferResource.h"
+#include "Struct/DxlibGraphicsShaderHandles.h"
+#include "Struct/DxlibShaderBufferResource.h"
 
-class RaylibGPUConnecter :public IGPUConnecter
+class DxlibGPUConnecter :public IGPUConnecter
 {
 public:
 	// 初期化関数
@@ -42,6 +41,8 @@ public:
 
 	// バッファ作成
 	ShaderBufferHandle CreateShaderBuffer(uint32_t _size, const void* _initialData) override;
+	// 定数バッファにCPUからデータを書き込むためのアドレスを取得する関数
+	void* GetConstantBufferAddress(ShaderConstantBufferHandle _handle) override;
 	// バッファ更新
 	void UpdateShaderBuffer(ShaderBufferHandle _buffer, const void* _data, uint32_t _size, uint32_t _offset = 0) override;
 	// シェーダとバッファバインド
@@ -52,17 +53,15 @@ public:
 	void DestroyShaderBuffer(ShaderBufferHandle _buffer) override;
 
 	// 定数バッファ作成
-	ShaderConstantBufferHandle CreateConstantBuffer(uint32_t _size) override;
+	ShaderConstantBufferHandle CreateConstantBuffer(uint32_t _size);
 	// 定数バッファ更新
-	void UpdateConstantBuffer(ShaderConstantBufferHandle _handle, const void* _data, uint32_t _size) override;
+	void UpdateConstantBuffer(ShaderConstantBufferHandle _handle, const void* _data, uint32_t _size);
 	// 定数バッファバインド(頂点)
-	void BindConstantBufferVertex(ShaderConstantBufferHandle _handle, uint32_t _slot) override;
+	void BindConstantBufferVertex(ShaderConstantBufferHandle _handle, uint32_t _slot);
 	// 定数バッファバインド(ピクセル)
-	void BindConstantBufferPixel(ShaderConstantBufferHandle _handle, uint32_t _slot) override;
+	void BindConstantBufferPixel(ShaderConstantBufferHandle _handle, uint32_t _slot);
 	// 定数バッファ破棄
 	void DestroyConstantBuffer(ShaderConstantBufferHandle _buffer);
-	// 定数バッファにCPUからデータを書き込むためのアドレスを取得する関数
-	void* GetConstantBufferAddress(ShaderConstantBufferHandle _handle) override;
 
 	// --- テクスチャ関連 ---
 	// テクスチャをShaderに渡す。
@@ -71,23 +70,11 @@ public:
 	// --- 同期 ---
 
 	void ShaderBufferBarrier() override;
-
-private:
-	static constexpr int SHADER_STORAGE_BARRIER_BIT{ 0x00002000 };
-
 private:
 	// 描画系シェーダストレージ
-	ResourceStorage<GraphicsShaderHandle, Shader> graphicsShaderStorage;
+	ResourceStorage<GraphicsShaderHandle, DxlibGraphicsShaderHandles> graphicsShaderStorage;
 	// コンピュートシェーダストレージ
-	ResourceStorage<ComputeShaderHandle, unsigned int> computeShaderStorage;
+	ResourceStorage<ComputeShaderHandle, int> computeShaderStorage;
 	// バッファストレージ
-	ResourceStorage<ShaderBufferHandle, RaylibShaderBufferResource> bufferStorage;
-	// バッファストレージ
-	ResourceStorage<ShaderConstantBufferHandle, RaylibShaderBufferResource> constantBufferStorage;
-
-	// Windowsのみの奴やで―
-	using MemoryBarrierFunction = void(__stdcall*)(unsigned int);
-
-	MemoryBarrierFunction memoryBarrierFunction{ nullptr };
-
+	ResourceStorage<ShaderConstantBufferHandle, int> bufferStorage;
 };

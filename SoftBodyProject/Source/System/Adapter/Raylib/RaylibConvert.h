@@ -46,5 +46,9 @@ RlVector3 ToRaylib(const Vector3& _vec)
 // 色
 RlColor ToRaylib(const Color& _color)
 {
-	return RlColor{ (unsigned char)_color.r,(unsigned char)_color.g, (unsigned char)_color.b,(unsigned char)_color.a };
+	return RlColor{ 
+		static_cast<unsigned char>(_color.r * 255),
+		static_cast<unsigned char>(_color.g * 255),
+		static_cast<unsigned char>(_color.b * 255),
+		static_cast<unsigned char>(_color.a * 255) };
 }
