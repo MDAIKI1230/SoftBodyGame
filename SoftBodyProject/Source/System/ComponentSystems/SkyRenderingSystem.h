@@ -2,7 +2,9 @@
 
 #include "RenderingSystem.h"
 
-#include "GraphicsShaderHandle.h"
+#include "ModelHandle.h"
+#include "VertexShaderHandle.h"
+#include "PixelShaderHandle.h"
 
 class SkyRenderingSystem :public RenderingSystem
 {
@@ -21,7 +23,8 @@ private:
 		uint32_t solidFlag;
 	};
 
-	int sphereHandle{ -1 };
+	ModelHandle sphereHandle;
 	ShaderConstantBufferHandle constantBufferHandle;
-	GraphicsShaderHandle solidSkyShader;
+	VertexShaderHandle solidSkyVertexShader;
+	PixelShaderHandle solidSkyPixelShader;
 };

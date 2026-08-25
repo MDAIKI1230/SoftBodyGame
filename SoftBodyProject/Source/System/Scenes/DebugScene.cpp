@@ -30,7 +30,8 @@ void DebugScene::Initialize()
 {
 	std::unique_ptr<Camera> camera{ std::make_unique<Camera>(worldStorage.get(), objectManager->GenerateNewID(), Vector3{0,-175,-500},Vector3{0,-175,0}) };
 	ServiceLocator::GetRenderer()->SetCamera(camera.get());
-	camera->GetComponent<CameraComponent>()->SetSkyTextureHandle(ServiceLocator::GetRenderer()->LoadCubeTexture("Res/Texture/Sky/SkyDirectionTest.dds"));
+	ServiceLocator::GetResourceManager()->LoadCubeTexture("Res/Texture/Sky/SkyDirectionTest.dds");
+	camera->GetComponent<CameraComponent>()->SetSkyTextureHandle(ServiceLocator::GetResourceManager()->GetCubeTexture("SkyDirectionTest.dds"));
 	camera->GetComponent<CameraComponent>()->SetClearMode(ClearMode::SKY);
 	objectManager->Add(std::move(camera));
 
@@ -162,11 +163,9 @@ void DebugScene::Initialize()
 	*/
 
 	// LoadFile("Res/Data/DebugSceneData.json");
-#ifdef USE_RAYLIB
-	RendererComponent renderer{ ServiceLocator::GetRenderer()->LoadModel(std::string{"Res/Model/A_001_player_neutral_01_01.glb"}) };
-#else
-	RendererComponent renderer{ ServiceLocator::GetRenderer()->LoadModel(std::string{"Res/Model/A_001_player_neutral_01_01.mv1"}) };
-#endif // PLAY_RAYLIB
+
+	ServiceLocator::GetResourceManager()->LoadModel(std::string{ "Res/Model/A_001_player_neutral_01_01.mv1" });
+	RendererComponent renderer{ ServiceLocator::GetResourceManager()->GetModel("A_001_player_neutral_01_01.mv1") };
 
 	
 	EntityID id{ objectManager->GenerateNewID() };

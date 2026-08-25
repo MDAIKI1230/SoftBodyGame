@@ -661,9 +661,6 @@
     <ClInclude Include="Source\Common\Interface\IGPUConnecter.h">
       <Filter>ソース ファイル\Common\Interface</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Common\Struct\GraphicsShaderHandle.h">
-      <Filter>ソース ファイル\Common\Struct</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Common\Struct\ComputeShaderHandle.h">
       <Filter>ソース ファイル\Common\Struct</Filter>
     </ClInclude>
@@ -832,9 +829,6 @@
     <ClInclude Include="Source\System\Adapter\Dxlib\DxlibGPUConnecter.h">
       <Filter>ソース ファイル\System\Adapter\Dxlib</Filter>
     </ClInclude>
-    <ClInclude Include="Source\System\Adapter\Dxlib\Struct\DxlibGraphicsShaderHandles.h">
-      <Filter>ソース ファイル\System\Adapter\Dxlib\Struct</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Common\ECS\Storage\ResourceStorage.h">
       <Filter>ソース ファイル\Common\ECS\Storage</Filter>
     </ClInclude>
@@ -849,6 +843,21 @@
     </ClInclude>
     <ClInclude Include="Source\System\Adapter\Raylib\Struct\RaylibShaderBufferResource.h">
       <Filter>ソース ファイル\System\Adapter\Raylib\Struct</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Common\Struct\ModelHandle.h">
+      <Filter>ソース ファイル\Common\Struct</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Common\Struct\TextureHandle.h">
+      <Filter>ソース ファイル\Common\Struct</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Common\Struct\CubeTextureHandle.h">
+      <Filter>ソース ファイル\Common\Struct</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Common\Struct\VertexShaderHandle.h">
+      <Filter>ソース ファイル\Common\Struct</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Common\Struct\PixelShaderHandle.h">
+      <Filter>ソース ファイル\Common\Struct</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1118,7 +1127,7 @@
     <FxCompile Include="Shader\HLSL\Sky\SkyVS.hlsl">
       <Filter>Shader\HLSL</Filter>
     </FxCompile>
-    <FxCompile Include="Shader\HLSL\Sky\SkySolidPS.hlsl">
+    <FxCompile Include="Shader\HLSL\Sky\SkyPS.hlsl">
       <Filter>Shader\HLSL</Filter>
     </FxCompile>
   </ItemGroup>

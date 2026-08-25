@@ -2,6 +2,8 @@
 
 #include "CameraConstants.h"
 
+#include "CubeTextureHandle.h"
+
 #include "ViewPort.h"
 #include "Color.h"
 
@@ -53,9 +55,9 @@ public:
 	void SetViewPort(ViewPort& _viewPort) noexcept { viewPort = _viewPort; }
 
 	// 描画範囲矩形の取得
-	int GetSkyTextureHandle() const noexcept { return skyTextureHandle; }
+	CubeTextureHandle GetSkyTextureHandle() const noexcept { return skyTextureHandle; }
 	// 描画範囲矩形の変更
-	void SetSkyTextureHandle(int _skyTextureHandle) noexcept { skyTextureHandle = _skyTextureHandle; }
+	void SetSkyTextureHandle(CubeTextureHandle _skyTextureHandle) noexcept { skyTextureHandle = _skyTextureHandle; }
 private:
 	// カメラ描画距離
 	float nearClip{ 0.1f };
@@ -83,5 +85,5 @@ private:
 	ViewPort viewPort;
 
 	// SKYモードの時のテクスチャのハンドル
-	int skyTextureHandle{ -1 };
+	CubeTextureHandle skyTextureHandle;
 };

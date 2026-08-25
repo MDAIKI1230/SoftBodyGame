@@ -11,8 +11,12 @@ void SkyRenderingSystem::Initialize()
 #ifdef USE_RAYLIB
 	sphereHandle = ServiceLocator::GetRenderer()->LoadModel("Res/Model/SkyCube/SkyCube.glb");
 #else
-	sphereHandle = ServiceLocator::GetRenderer()->LoadModel("Res/Model/SkyCube/SkyCube.mv1");
-	solidSkyShader = ServiceLocator::GetGPUConnecter()->LoadGraphicsShader("Shader/HLSL/Sky/SkyVS.vso", "Shader/HLSL/Sky/SkySolidPS.pso");
+	ServiceLocator::GetResourceManager()->LoadModel("Res/Model/SkyCube/SkyCube.mv1");
+	sphereHandle = ServiceLocator::GetResourceManager()->GetModel("SkyCube.mv1");
+	ServiceLocator::GetResourceManager()->LoadVertexShader("Shader/HLSL/Sky/SkyVS.vso");
+	ServiceLocator::GetResourceManager()->LoadPixelShader("Shader/HLSL/Sky/SkyPS.pso");
+	solidSkyVertexShader = ServiceLocator::GetResourceManager()->GetVertexShader("SkyVS.vso");
+	solidSkyPixelShader = ServiceLocator::GetResourceManager()->GetPixelShader("SkyPS.pso");
 
 	constantBufferHandle = ServiceLocator::GetGPUConnecter()->CreateConstantBuffer(sizeof(SkySolidConstantBuffer));
 #endif // USE_RAYLIB
@@ -26,7 +30,8 @@ void SkyRenderingSystem::Draw(WorldStorage* _worldStorage, EventManager* _eventM
 	// Cameraストレージ
 	CameraComponentStorage* cameraStorage{ static_cast<CameraComponentStorage*>(_worldStorage->GetStorage<CameraComponent>()) };
 
-	ServiceLocator::GetGPUConnecter()->BeginGraphicsShader(solidSkyShader);
+	ServiceLocator::GetGPUConnecter()->BeginVertexShader(solidSkyVertexShader);
+	ServiceLocator::GetGPUConnecter()->BeginPixelShader(solidSkyPixelShader);
 
 	for (auto cameraEntity : cameraStorage->GetEntities())
 	{
@@ -54,7 +59,7 @@ void SkyRenderingSystem::Draw(WorldStorage* _worldStorage, EventManager* _eventM
 
 		cbData.solidFlag = static_cast<uint32_t>(camera.GetClearMode());
 
-		ServiceLocator::GetGPUConnecter()->SetTexture(camera.GetSkyTextureHandle(), 0);
+		ServiceLocator::GetRenderer()->BindCubeTexture(camera.GetSkyTextureHandle(), 0);
 
 		// 定数バッファに値渡して上げる
 		void* pBuffer{ ServiceLocator::GetGPUConnecter()->GetConstantBufferAddress(constantBufferHandle) };

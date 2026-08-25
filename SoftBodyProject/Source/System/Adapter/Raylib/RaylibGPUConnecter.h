@@ -23,20 +23,7 @@ public:
 	void DestroyComputeShader(ComputeShaderHandle _shader) override;
 
 
-	// --- 描画系シェーダ関連 ---
 
-	// 頂点シェーダ読み込み
-	GraphicsShaderHandle LoadVertexShader(const std::string& _filePath) override;
-	// ピクセルシェーダ読み込み
-	GraphicsShaderHandle LoadPixelShader(const std::string& _filePath) override;
-	// 頂点とピクセルシェーダ読み込み
-	GraphicsShaderHandle LoadGraphicsShader(const std::string& _vertexShaderFilePath, const std::string& _pixelShaderFilePath) override;
-	// 描画関連(頂点とピクセル)シェーダスタート
-	void BeginGraphicsShader(GraphicsShaderHandle _shader) override;
-	// 描画関連(頂点とピクセル)シェーダ終了
-	void EndGraphicsShader() override;
-	// 描画関連(頂点とピクセル)シェーダ破棄
-	void DestroyGraphicsShader(GraphicsShaderHandle _shader) override;
 
 	// --- バッファ関連 ---
 
@@ -64,9 +51,7 @@ public:
 	// 定数バッファにCPUからデータを書き込むためのアドレスを取得する関数
 	void* GetConstantBufferAddress(ShaderConstantBufferHandle _handle) override;
 
-	// --- テクスチャ関連 ---
-	// テクスチャをShaderに渡す。
-	void SetTexture(int _textureHandle, uint32_t _slot) override;
+
 
 	// --- 同期 ---
 
@@ -77,7 +62,7 @@ private:
 
 private:
 	// 描画系シェーダストレージ
-	ResourceStorage<GraphicsShaderHandle, Shader> graphicsShaderStorage;
+	ResourceStorage<VertexShaderHandle, Shader> graphicsShaderStorage;
 	// コンピュートシェーダストレージ
 	ResourceStorage<ComputeShaderHandle, unsigned int> computeShaderStorage;
 	// バッファストレージ

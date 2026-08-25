@@ -25,39 +25,35 @@ void DxlibGPUConnecter::DestroyComputeShader(ComputeShaderHandle _shader)
 }
 
 // 頂点シェーダ読み込み
-GraphicsShaderHandle DxlibGPUConnecter::LoadVertexShader(const std::string& _filePath)
+VertexShaderHandle DxlibGPUConnecter::LoadVertexShader(const std::string& _filePath)
 {
-	DxlibGraphicsShaderHandles shader{ DxLib::LoadVertexShader(std::wstring(_filePath.begin(), _filePath.end()).c_str()),-1 };
-
-	return graphicsShaderStorage.Add(shader);
+	return vertexShaderStorage.Add(DxLib::LoadVertexShader(std::wstring(_filePath.begin(), _filePath.end()).c_str()));
 }
 // ピクセルシェーダ読み込み
-GraphicsShaderHandle DxlibGPUConnecter::LoadPixelShader(const std::string& _filePath)
+PixelShaderHandle DxlibGPUConnecter::LoadPixelShader(const std::string& _filePath)
 {
-	DxlibGraphicsShaderHandles shader{ -1 ,DxLib::LoadPixelShader(std::wstring(_filePath.begin(), _filePath.end()).c_str()) };
-
-	return graphicsShaderStorage.Add(shader);
+	return pixelShaderStorage.Add(DxLib::LoadPixelShader(std::wstring(_filePath.begin(), _filePath.end()).c_str()));
 }
-// 頂点とピクセルシェーダ読み込み
-GraphicsShaderHandle DxlibGPUConnecter::LoadGraphicsShader(const std::string& _vertexShaderFilePath, const std::string& _pixelShaderFilePath)
+// 頂点シェーダスタート
+void DxlibGPUConnecter::BeginVertexShader(VertexShaderHandle _shader)
 {
-	DxlibGraphicsShaderHandles shader{
-		DxLib::LoadVertexShader(std::wstring(_vertexShaderFilePath.begin(), _vertexShaderFilePath.end()).c_str()),
-		DxLib::LoadPixelShader(std::wstring(_pixelShaderFilePath.begin(), _pixelShaderFilePath.end()).c_str()) };
+	DxLib::MV1SetUseOrigShader(TRUE);
 
-	return graphicsShaderStorage.Add(shader);
-}
-// 描画関連(頂点とピクセル)シェーダスタート
-void DxlibGPUConnecter::BeginGraphicsShader(GraphicsShaderHandle _shader)
-{
-	DxlibGraphicsShaderHandles shader;
-
-	if(graphicsShaderStorage.TryGet(_shader,shader))
+	int nativeHandle;
+	if (vertexShaderStorage.TryGet(_shader, nativeHandle))
 	{
-		DxLib::MV1SetUseOrigShader(TRUE);
+		DxLib::SetUseVertexShader(nativeHandle);
+	}
+}
+// ピクセルシェーダスタート
+void DxlibGPUConnecter::BeginPixelShader(PixelShaderHandle _shader)
+{
+	DxLib::MV1SetUseOrigShader(TRUE);
 
-		DxLib::SetUseVertexShader(shader.vertexHandle);
-		DxLib::SetUsePixelShader(shader.pixelShader);
+	int nativeHandle;
+	if (pixelShaderStorage.TryGet(_shader, nativeHandle))
+	{
+		DxLib::SetUsePixelShader(nativeHandle);
 	}
 }
 // 描画関連(頂点とピクセル)シェーダ終了
@@ -65,17 +61,22 @@ void DxlibGPUConnecter::EndGraphicsShader()
 {
 	DxLib::MV1SetUseOrigShader(FALSE);
 }
-// 描画関連(頂点とピクセル)シェーダ破棄
-void DxlibGPUConnecter::DestroyGraphicsShader(GraphicsShaderHandle _shader)
+// 頂点シェーダ破棄
+void DxlibGPUConnecter::DestroyVertexShader(VertexShaderHandle _shader)
 {
-	DxlibGraphicsShaderHandles shader;
-
-	if (graphicsShaderStorage.TryGet(_shader, shader))
+	int nativeHandle;
+	if (vertexShaderStorage.TryGet(_shader, nativeHandle))
 	{
-		DxLib::DeleteShader(shader.vertexHandle);
-		DxLib::DeleteShader(shader.pixelShader);
-
-		graphicsShaderStorage.Remove(_shader);
+		DxLib::DeleteShader(nativeHandle);
+	}
+}
+// ピクセルシェーダ破棄
+void DxlibGPUConnecter::DestroyPixelShader(PixelShaderHandle _shader)
+{
+	int nativeHandle;
+	if (pixelShaderStorage.TryGet(_shader, nativeHandle))
+	{
+		DxLib::DeleteShader(nativeHandle);
 	}
 }
 
@@ -164,12 +165,6 @@ void DxlibGPUConnecter::DestroyConstantBuffer(ShaderConstantBufferHandle _buffer
 		DxLib::DeleteShaderConstantBuffer(bufferHandle);
 		bufferStorage.Remove(_buffer);
 	}
-}
-
-// テクスチャをShaderに渡す。
-void DxlibGPUConnecter::SetTexture(int _textureHandle, uint32_t _slot)
-{
-	DxLib::SetUseTextureToShader(_slot, _textureHandle);
 }
 
 // --- 同期 ---

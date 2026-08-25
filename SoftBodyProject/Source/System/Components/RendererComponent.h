@@ -1,18 +1,20 @@
 ﻿#pragma once
 
+#include "ModelHandle.h"
+
 struct RendererComponent
 {
 public:
-	RendererComponent(int _handle) :
+	RendererComponent(ModelHandle _handle) :
 		handle{_handle}
 	{
 	}
 
-	int GetHandle()
+	ModelHandle GetHandle()
 	{
 		return handle;
 	}
 
 private:
-	int handle;
+	ModelHandle handle;
 };

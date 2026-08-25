@@ -3,7 +3,6 @@
 #include "IGPUConnecter.h"
 
 #include "ResourceStorage.h"
-#include "Struct/DxlibGraphicsShaderHandles.h"
 #include "Struct/DxlibShaderBufferResource.h"
 
 class DxlibGPUConnecter :public IGPUConnecter
@@ -24,18 +23,13 @@ public:
 
 	// --- 描画系シェーダ関連 ---
 
-	// 頂点シェーダ読み込み
-	GraphicsShaderHandle LoadVertexShader(const std::string& _filePath) override;
-	// ピクセルシェーダ読み込み
-	GraphicsShaderHandle LoadPixelShader(const std::string& _filePath) override;
-	// 頂点とピクセルシェーダ読み込み
-	GraphicsShaderHandle LoadGraphicsShader(const std::string& _vertexShaderFilePath, const std::string& _pixelShaderFilePath) override;
-	// 描画関連(頂点とピクセル)シェーダスタート
-	void BeginGraphicsShader(GraphicsShaderHandle _shader) override;
+	
+	// 頂点シェーダスタート
+	void BeginVertexShader(VertexShaderHandle _shader) override;
+	// ピクセルシェーダスタート
+	void BeginPixelShader(PixelShaderHandle _shader) override;
 	// 描画関連(頂点とピクセル)シェーダ終了
 	void EndGraphicsShader() override;
-	// 描画関連(頂点とピクセル)シェーダ破棄
-	void DestroyGraphicsShader(GraphicsShaderHandle _shader) override;
 
 	// --- バッファ関連 ---
 
@@ -63,16 +57,24 @@ public:
 	// 定数バッファ破棄
 	void DestroyConstantBuffer(ShaderConstantBufferHandle _buffer);
 
-	// --- テクスチャ関連 ---
-	// テクスチャをShaderに渡す。
-	void SetTexture(int _textureHandle, uint32_t _slot) override;
-
 	// --- 同期 ---
 
 	void ShaderBufferBarrier() override;
+
 private:
-	// 描画系シェーダストレージ
-	ResourceStorage<GraphicsShaderHandle, DxlibGraphicsShaderHandles> graphicsShaderStorage;
+	// 頂点シェーダ読み込み
+	VertexShaderHandle LoadVertexShader(const std::string& _filePath) override;
+	// ピクセルシェーダ読み込み
+	PixelShaderHandle LoadPixelShader(const std::string& _filePath) override;
+	// 頂点シェーダ破棄
+	void DestroyVertexShader(VertexShaderHandle _shader) override;
+	// ピクセルシェーダ破棄
+	void DestroyPixelShader(PixelShaderHandle _shader) override;
+private:
+	// 頂点シェーダストレージ
+	ResourceStorage<VertexShaderHandle, int> vertexShaderStorage;
+	// ピクセルシェーダストレージ
+	ResourceStorage<PixelShaderHandle, int> pixelShaderStorage;
 	// コンピュートシェーダストレージ
 	ResourceStorage<ComputeShaderHandle, int> computeShaderStorage;
 	// バッファストレージ

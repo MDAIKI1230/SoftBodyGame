@@ -41,45 +41,7 @@ void RaylibGPUConnecter::DestroyComputeShader(ComputeShaderHandle _shader)
 
 // --- 描画系シェーダ関連 ---
 
-// 頂点シェーダ読み込み
-GraphicsShaderHandle RaylibGPUConnecter::LoadVertexShader(const std::string& _filePath)
-{
-	return graphicsShaderStorage.Add(::LoadShader(_filePath.c_str(), nullptr));
-}
-// ピクセルシェーダ読み込み
-GraphicsShaderHandle RaylibGPUConnecter::LoadPixelShader(const std::string& _filePath)
-{
-	return graphicsShaderStorage.Add(::LoadShader(nullptr, _filePath.c_str()));
-}
-// 頂点とピクセルシェーダ読み込み
-GraphicsShaderHandle RaylibGPUConnecter::LoadGraphicsShader(const std::string& _vertexShaderFilePath, const std::string& _pixelShaderFilePath)
-{
-	return graphicsShaderStorage.Add(::LoadShader(_vertexShaderFilePath.c_str(), _pixelShaderFilePath.c_str()));
-}
-// 描画関連(頂点とピクセル)シェーダスタート
-void RaylibGPUConnecter::BeginGraphicsShader(GraphicsShaderHandle _shader)
-{
-	Shader shader;
-	if (graphicsShaderStorage.TryGet(_shader, shader))
-	{
-		::BeginShaderMode(shader);
-	}
-}
-// 描画関連(頂点とピクセル)シェーダ終了
-void RaylibGPUConnecter::EndGraphicsShader()
-{
-	::EndShaderMode();
-}
-// 描画関連(頂点とピクセル)シェーダ破棄
-void RaylibGPUConnecter::DestroyGraphicsShader(GraphicsShaderHandle _shader)
-{
-	Shader shader;
-	if (graphicsShaderStorage.TryGet(_shader, shader))
-	{
-		::UnloadShader(shader);
-		graphicsShaderStorage.Remove(_shader);
-	}
-}
+
 
 // --- バッファ関連 ---
 
@@ -174,13 +136,6 @@ void RaylibGPUConnecter::DestroyConstantBuffer(ShaderConstantBufferHandle _buffe
 void* RaylibGPUConnecter::GetConstantBufferAddress(ShaderConstantBufferHandle _handle)
 {
 	return nullptr;
-}
-
-
-// テクスチャをShaderに渡す。
-void RaylibGPUConnecter::SetTexture(int _textureHandle, uint32_t _slot)
-{
-	
 }
 
 // --- 同期 ---

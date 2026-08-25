@@ -16,15 +16,15 @@ ApplicationManager::ApplicationManager(BackEnd&& _backEnd):
 	system->SetGraphMode(Config::WINDOW_SIZE_W, Config::WINDOW_SIZE_H, Config::COLOR_BIT);
 
 	timeManager = std::make_unique<TimeManager>();
+	resourceManager = std::make_unique<ResourceManager>();
 
 	// サービスロケータに登録
 	ServiceLocator::SetRenderer(renderer.get());
 	ServiceLocator::SetInput(input.get());
 	ServiceLocator::SetGPUConnecter(gpuConnecter.get());
 	ServiceLocator::SetTimeManager(timeManager.get());
+	ServiceLocator::SetResourceManager(resourceManager.get());
 
-
-	// 時間を使って初期化系のために後から作る
 	sceneManager = std::make_unique<SceneManager>();
 }
 

@@ -34,19 +34,30 @@ int DxlibRenderer::SetWriteZDepth(bool _flag)
 }
 
 // モデルの読み込み
-int DxlibRenderer::LoadModel(const std::string& _fileName)
+ModelHandle DxlibRenderer::LoadModel(const std::string& _fileName)
 {
-	return DxLib::MV1LoadModel(std::wstring(_fileName.begin(), _fileName.end()).c_str());
+    return modelStorage.Add(DxLib::MV1LoadModel(std::wstring(_fileName.begin(), _fileName.end()).c_str()));
+}
+
+// モデル複製
+ModelHandle DxlibRenderer::DuplicateModel(ModelHandle _handle)
+{
+    int nativeHandle;
+
+    if (modelStorage.TryGet(_handle, nativeHandle))
+    {
+        return modelStorage.Add(DxLib::MV1DuplicateModel(nativeHandle));
+    }
 }
 
 // 画像の読み込み
-int DxlibRenderer::LoadGraph(const std::string& _fileName)
+TextureHandle DxlibRenderer::LoadTexture(const std::string& _fileName)
 {
-	return DxLib::LoadGraph(std::wstring(_fileName.begin(), _fileName.end()).c_str());
+    return textureStorage.Add(DxLib::LoadGraph(std::wstring(_fileName.begin(), _fileName.end()).c_str()));
 }
 
 // CubeTextureの読み込み
-int DxlibRenderer::LoadCubeTexture(const std::string& _fileName)
+CubeTextureHandle DxlibRenderer::LoadCubeTexture(const std::string& _fileName)
 {
     const std::wstring filePath(_fileName.begin(),_fileName.end());
 
@@ -57,7 +68,7 @@ int DxlibRenderer::LoadCubeTexture(const std::string& _fileName)
     // 元に戻す
     DxLib::SetCubeMapTextureCreateFlag(FALSE);
 
-    return handle;
+    return cubeTextureStorage.Add(handle);
 }
 
 /// <summary>
@@ -70,29 +81,44 @@ int DxlibRenderer::LoadCubeTexture(const std::string& _fileName)
 /// <param name="_xSize">分割した一つの横幅</param>
 /// <param name="_ySize">分割した一つの縦幅</param>
 /// <param name="handleBuf">配列のアドレス</param>
-void DxlibRenderer::LoadDivGraph(const std::string& _fileName, int _allNum, int _xNum, int _yNum, int _xSize, int _ySize, int* _handleBuf)
+void DxlibRenderer::LoadDivTexture(const std::string& _fileName, int _allNum, int _xNum, int _yNum, int _xSize, int _ySize, int* _handleBuf)
 {
 	DxLib::LoadDivGraph(std::wstring(_fileName.begin(), _fileName.end()).c_str(), _allNum, _xNum, _yNum, _xSize, _ySize, _handleBuf);
 }
 
 // モデル情報セット系
 // 行列セット
-void DxlibRenderer::ModelSetMatrix(int _handle, const Matrix4x4& _mat)
+void DxlibRenderer::ModelSetMatrix(ModelHandle _handle, const Matrix4x4& _mat)
 {
-	DxLib::MV1SetMatrix(_handle, ToDxlib(_mat));
+    int nativeHandle;
+
+    if (modelStorage.TryGet(_handle, nativeHandle))
+    {
+        DxLib::MV1SetMatrix(nativeHandle, ToDxlib(_mat));
+    }
 }
 
 // ---描画関数---
 // モデル描画
-void DxlibRenderer::DrawModel(int _handle)
+void DxlibRenderer::DrawModel(ModelHandle _handle)
 {
-	DxLib::MV1DrawModel(_handle);
+    int nativeHandle;
+
+    if (modelStorage.TryGet(_handle, nativeHandle))
+    {
+        DxLib::MV1DrawModel(nativeHandle);
+    }
 }
 
 // 画像描画
-void DxlibRenderer::DrawGraph(const Vector2& _pos, int _handle, bool _transFlag)
+void DxlibRenderer::DrawTexture(TextureHandle _handle, const Vector2& _pos, bool _transFlag)
 {
-    DxLib::DrawGraph(static_cast<int>(_pos.x), static_cast<int>(_pos.y), _handle, _transFlag);
+    int nativeHandle;
+
+    if (textureStorage.TryGet(_handle, nativeHandle))
+    {
+        DxLib::DrawGraph(static_cast<int>(_pos.x), static_cast<int>(_pos.y), nativeHandle, _transFlag);
+    }
 }
 
 // 球描画
@@ -165,15 +191,63 @@ void DxlibRenderer::DrawCapsule(const Vector3& _pos1, const Vector3& _pos2, floa
 {
     DxLib::DrawCapsule3D(ToDxlib(_pos1), ToDxlib(_pos2), _radius, 10, ToDxlib(_color), ToDxlib(_color), false);
 }
-// ---リソース削除関数---
-// モデル素材削除
-void DxlibRenderer::DeleteModel(int _handle)
+
+// テクスチャをShaderに渡す。
+void DxlibRenderer::BindTexture(TextureHandle _handle, uint32_t _slot)
 {
-	DxLib::MV1DeleteModel(_handle);
+    int nativeHandle;
+
+    if (textureStorage.TryGet(_handle, nativeHandle))
+    {
+        DxLib::SetUseTextureToShader(_slot, nativeHandle);
+    }
+}
+// キューブテクスチャをShaderに渡す。
+void DxlibRenderer::BindCubeTexture(CubeTextureHandle _handle, uint32_t _slot)
+{
+    int nativeHandle;
+
+    if (cubeTextureStorage.TryGet(_handle, nativeHandle))
+    {
+        DxLib::SetUseTextureToShader(_slot, nativeHandle);
+    }
+}
+
+// モデル素材削除
+void DxlibRenderer::DeleteModel(ModelHandle _handle)
+{
+    int nativeHandle;
+
+    if (modelStorage.TryGet(_handle, nativeHandle))
+    {
+        DxLib::MV1DeleteModel(nativeHandle);
+
+        modelStorage.Remove(_handle);
+    }
 }
 
 // 画像素材削除
-void DxlibRenderer::DeleteGraph(int _handle)
+void DxlibRenderer::DeleteTexture(TextureHandle _handle)
 {
-	DxLib::DeleteGraph(_handle);
+    int nativeHandle;
+
+    if (textureStorage.TryGet(_handle, nativeHandle))
+    {
+        DxLib::DeleteGraph(nativeHandle);
+
+        textureStorage.Remove(_handle);
+    }
+}
+
+// キューブテクスチャ削除
+void DxlibRenderer::DeleteCubeTexture(CubeTextureHandle _handle)
+{
+    int nativeHandle;
+
+    if (cubeTextureStorage.TryGet(_handle, nativeHandle))
+    {
+        DxLib::DeleteGraph(nativeHandle);
+
+        cubeTextureStorage.Remove(_handle);
+    }
 }

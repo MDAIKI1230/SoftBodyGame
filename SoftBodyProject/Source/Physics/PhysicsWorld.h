@@ -33,9 +33,6 @@
 class PhysicsWorld
 {
 public:
-	// コンストラクタ
-	PhysicsWorld();
-
 	// 物理更新
 	void FixedUpdate(WorldStorage* _worldStorage, EventManager* _eventManager);
 
@@ -45,13 +42,13 @@ public:
 #endif // _DEBUG
 
 	// コライダーストレージ取得
-	ColliderStorage* GetColliderStorage() { return colliderStorage.get(); }
+	ColliderStorage* GetColliderStorage() { return &colliderStorage; }
 	// RigidBodyストレージ取得
-	BodyStorage* GetRigidBodyStorage() { return bodyStorage.get(); }
+	BodyStorage* GetRigidBodyStorage() { return &bodyStorage; }
 	// PhysicsTransformストレージ取得
-	PhysicsTransformStorage* GetPhysicsTransformStorage() { return transformStorage.get(); }
+	PhysicsTransformStorage* GetPhysicsTransformStorage() { return &transformStorage; }
 	// Constraintストレージ取得
-	ConstraintStorage* GetConstraintStorage() { return constraintStorage.get(); }
+	ConstraintStorage* GetConstraintStorage() { return &constraintStorage; }
 private:
 	void Solver();
 private:
@@ -60,29 +57,29 @@ private:
 	// 位置/姿勢解消回数
 	static constexpr float POS_ROT_SOLVER_TIMES{ 4 };
 private:
-	std::unique_ptr<CollisionManifoldBuffer> manifoldBuffer;
-	std::unique_ptr<SolverBodyBuffer> solverBodyBuffer;
-	std::unique_ptr<ConstraintBuffer> constraintBuffer;
+	CollisionManifoldBuffer manifoldBuffer;
+	SolverBodyBuffer solverBodyBuffer;
+	ConstraintBuffer constraintBuffer;
 
 
-	std::unique_ptr<ColliderStorage> colliderStorage;
-	std::unique_ptr<BodyStorage> bodyStorage;
-	std::unique_ptr< PhysicsTransformStorage> transformStorage;
-	std::unique_ptr< ConstraintStorage> constraintStorage;
+	ColliderStorage colliderStorage;
+	BodyStorage bodyStorage;
+	PhysicsTransformStorage transformStorage;
+	ConstraintStorage constraintStorage;
 
-	std::unique_ptr<SynchronizationSystem> synchronizationSystem;
-	std::unique_ptr<RigidBodySystem> rigidBodySystem;
-	std::unique_ptr<AABBUpdateSystem> aabbUpdateSystem;
-	std::unique_ptr<CollisionSystem> collisionSystem;
-	std::unique_ptr<SolverBodyBuildSystem> solverBodyBuildSystem;
-	std::unique_ptr<CollisionSolverSystem> collisionSolverSystem;
-	std::unique_ptr<ConstraintBuildSystem> constraintBuildSystem;
-	std::unique_ptr<ConstraintSolverSystem> constraintSolverSystem;
-	std::unique_ptr<SolverBodyCommitSystem> solverBodyCommitSystem;
-	std::unique_ptr<PhysicsCommitSystem> physicsCommitSystem;
+	SynchronizationSystem synchronizationSystem;
+	RigidBodySystem rigidBodySystem;
+	AABBUpdateSystem aabbUpdateSystem;
+	CollisionSystem collisionSystem;
+	SolverBodyBuildSystem solverBodyBuildSystem;
+	CollisionSolverSystem collisionSolverSystem;
+	ConstraintBuildSystem constraintBuildSystem;
+	ConstraintSolverSystem constraintSolverSystem;
+	SolverBodyCommitSystem solverBodyCommitSystem;
+	PhysicsCommitSystem physicsCommitSystem;
 
 	// --- デバッグ用 ---
 #ifdef _DEBUG
-	std::unique_ptr<ConstraintDebugRenderSystem> constraintDebugRenderSystem;
+	ConstraintDebugRenderSystem constraintDebugRenderSystem;
 #endif // _DEBUG
 };
