@@ -4,6 +4,7 @@
 #include "IInput.h"
 #include "IGPUConnecter.h"
 #include "TimeManager.h"
+#include "ResourceManager.h"
 
 class ServiceLocator
 {
@@ -12,8 +13,9 @@ public:
 	// static JobSystem* GetJobSystem() { return jobSystem; }
 	static IRenderer* GetRenderer() { return renderer; }
 	static IInput* GetInput() { return input; }
-	static IGPUConnecter* GetIGPUConnecter() { return gpuConnecter; }
+	static IGPUConnecter* GetGPUConnecter() { return gpuConnecter; }
 	static TimeManager* GetTimeManager() { return timeManager; }
+	static ResourceManager* GetResourceManager() { return resourceManager; }
 
 	// セット用関数
 	// static void SetJobSystem(JobSystem* _jobSystem) { jobSystem = _jobSystem; }
@@ -21,10 +23,12 @@ public:
 	static void SetInput(IInput* _input) { input = _input; }
 	static void SetGPUConnecter(IGPUConnecter* _gpuConnecter) { gpuConnecter = _gpuConnecter; }
 	static void SetTimeManager(TimeManager* _timeManager) { timeManager = _timeManager; }
+	static void SetResourceManager(ResourceManager* _resourceManager) { resourceManager = _resourceManager; }
 private:
 	// static JobSystem* jobSystem;
 	inline static IRenderer* renderer{ nullptr };
 	inline static IInput* input{ nullptr };
 	inline static IGPUConnecter* gpuConnecter{ nullptr };
 	inline static TimeManager* timeManager{ nullptr };
+	inline static ResourceManager* resourceManager{ nullptr };
 };

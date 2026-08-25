@@ -43,5 +43,5 @@ DxLib::VECTOR ToDxlib(const Vector3& _vec)
 // 色
 unsigned int ToDxlib(const Color& _color)
 {
-	return DxLib::GetColor(_color.r, _color.g, _color.b);
+	return DxLib::GetColor(static_cast<int>(_color.r * 255), static_cast<int>(_color.g * 255), static_cast<int>(_color.b * 255));
 }

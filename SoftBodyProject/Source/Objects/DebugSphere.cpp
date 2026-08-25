@@ -15,7 +15,7 @@ DebugSphere::DebugSphere(WorldStorage* world, EntityID _entity) :
 {
 	AddComponent<TransformComponent>();
 	SphereColliderComponent* collider{ AddComponent<SphereColliderComponent>(30.0f) };
-	Color c{ 255, 255, 255 };
+	Color c{ 1.0f, 1.0f, 1.0f };
 	RigidBodyComponent* body{ AddComponent<RigidBodyComponent>() };
 	// body->SetIsGravity(false);
 #ifdef _DEBUG
@@ -38,7 +38,7 @@ void DebugSphere::FixedUpdate()
 
 void DebugSphere::OnCollisionEnter()
 {
-	Color c{ 255,0,0 };
+	Color c{ 1.0f,0,0 };
 #ifdef _DEBUG
 	GetComponent<SphereColliderComponent>()->SetColor(c);
 #endif // DEBUG
@@ -49,7 +49,7 @@ void DebugSphere::OnCollision()
 }
 void DebugSphere::OnCollisionExit()
 {
-	Color c{ 255,255,255 };
+	Color c{ 1.0f,1.0f,1.0f };
 #ifdef _DEBUG
 	GetComponent<SphereColliderComponent>()->SetColor(c);
 #endif // DEBUG

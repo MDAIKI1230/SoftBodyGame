@@ -4,11 +4,11 @@
 
 #include "RaylibConvert.h"
 
-void RaylibRenderer::SetCamera(const Camera& _camera)
+void RaylibRenderer::SetCamera(const Camera* _camera)
 {
     // 位置と見る点を決める
-    raylibCamera.position = ToRaylib(_camera.GetPos());
-    raylibCamera.target = ToRaylib(_camera.GetTarget());
+    raylibCamera.position = ToRaylib(_camera->GetPos());
+    raylibCamera.target = ToRaylib(_camera->GetTarget());
 
     // 今の自作Cameraに存在しない値は固定
     raylibCamera.up = RlVector3{ 0.0f, 1.0f, 0.0f };
@@ -91,68 +91,10 @@ int RaylibRenderer::SetWriteZDepth(bool _flag)
     return 0;
 }
 
-// モデルの読み込み
-int RaylibRenderer::LoadModel(const std::string& _fileName)
-{
-    if (!FileExists(_fileName.c_str()))
-    {
-        return -1;
-    }
 
-    Model model = ::LoadModel(_fileName.c_str());
 
-    if (!IsModelValid(model))
-    {
-        return -1;
-    }
 
-    const int handle = ++nextResourceHandle;
-    modelMap.emplace(handle, model);
-    return handle;
-}
 
-// 画像の読み込み
-int RaylibRenderer::LoadGraph(const std::string& _fileName)
-{
-    nextResourceHandle++;
-    textureMap[nextResourceHandle] = ::LoadTexture(_fileName.c_str());
-    return nextResourceHandle;
-}
-
-/// <summary>
-/// 画像の分割読み込み
-/// </summary>
-/// <param name="_fileName">ファイル名</param>
-/// <param name="_allNum">分割全体数</param>
-/// <param name="_xNum">横の数</param>
-/// <param name="_yNum">縦の数</param>
-/// <param name="_xSize">分割した一つの横幅</param>
-/// <param name="_ySize">分割した一つの縦幅</param>
-/// <param name="handleBuf">配列のアドレス</param>
-void RaylibRenderer::LoadDivGraph(const std::string& _fileName, int _allNum, int _xNum, int _yNum, int _xSize, int _ySize, int* _handleBuf)
-{
-    
-}
-
-// モデル情報セット系
-// 行列セット
-void RaylibRenderer::ModelSetMatrix(int _handle, const Matrix4x4& _mat)
-{
-    modelMap[_handle].transform = ToRaylib(_mat);
-}
-
-// ---描画関数---
-// モデル描画
-void RaylibRenderer::DrawModel(int _handle)
-{
-    ::DrawModel(modelMap[_handle], RlVector3{ 0.0f, 0.0f, 0.0f }, 1.0f, RlColor{ 255, 255, 255, 255 });
-}
-
-// 画像描画
-void RaylibRenderer::DrawGraph(const Vector2& _pos, int _handle, bool _transFlag)
-{
-    ::DrawTexture(textureMap[_handle], static_cast<int>(_pos.x), static_cast<int>(_pos.y), RlColor{ 255, 255, 255, 255 });
-}
 
 // 球描画
 void RaylibRenderer::DrawSphere(const Vector3& _pos, float _radius, const Color& _color)
@@ -218,15 +160,4 @@ void RaylibRenderer::DrawCapsule(const Vector3& _pos1, const Vector3& _pos2, flo
 {
     ::DrawCapsuleWires(ToRaylib(_pos1), ToRaylib(_pos2), _radius, 8, 8, ToRaylib(_color));
 }
-// ---リソース削除関数---
-// モデル素材削除
-void RaylibRenderer::DeleteModel(int _handle)
-{
-    ::UnloadModel(modelMap[_handle]);
-}
 
-// 画像素材削除
-void RaylibRenderer::DeleteGraph(int _handle)
-{
-    ::UnloadTexture(textureMap[_handle]);
-}

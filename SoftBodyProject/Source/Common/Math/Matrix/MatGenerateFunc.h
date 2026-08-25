@@ -29,4 +29,13 @@ namespace MatGenerateFunc
 	/// <param name="_up">上</param>
 	/// <returns></returns>
 	Matrix4x4 LookAt(const Vector3& _eye, const Vector3& _target, const Vector3& _up);
+	/// <summary>
+	/// プロジェクション行列
+	/// </summary>
+	/// <param name="_fovY">縦方向のFOV(弧度法)</param>
+	/// <param name="_aspect">アスペクト比</param>
+	/// <param name="nearClip">カメラクリップ距離最近点</param>
+	/// <param name="_farClip">カメラクリップ距離最遠点</param>
+	/// <returns></returns>
+	Matrix4x4 Projection(float _fovY, float _aspect, float _nearClip, float _farClip);
 }

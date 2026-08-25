@@ -1,19 +1,15 @@
 ﻿#pragma once
 
-#include <memory>
-
 #include "IGPUConnecter.h"
 
 #include "RaylibInclude.h"
 
-#include "Storage/RaylibStorage.h"
+#include "ResourceStorage.h"
+#include "Struct/RaylibShaderBufferResource.h"
 
 class RaylibGPUConnecter :public IGPUConnecter
 {
 public:
-	// コンストラクタ
-	RaylibGPUConnecter();
-
 	// 初期化関数
 	void Initialize() override;
 
@@ -27,20 +23,7 @@ public:
 	void DestroyComputeShader(ComputeShaderHandle _shader) override;
 
 
-	// --- 描画系シェーダ関連 ---
 
-	// 頂点シェーダ読み込み
-	GraphicsShaderHandle LoadVertexShader(const std::string& _filePath) override;
-	// ピクセルシェーダ読み込み
-	GraphicsShaderHandle LoadPixelShader(const std::string& _filePath) override;
-	// 頂点とピクセルシェーダ読み込み
-	GraphicsShaderHandle LoadPixelShader(const std::string& _vertexShaderFilePath, const std::string& _pixelShaderFilePath) override;
-	// 描画関連(頂点とピクセル)シェーダスタート
-	void BeginGraphicsShader(GraphicsShaderHandle _shader) override;
-	// 描画関連(頂点とピクセル)シェーダ終了
-	void EndGraphicsShader() override;
-	// 描画関連(頂点とピクセル)シェーダ破棄
-	void DestroyGraphicsShader(GraphicsShaderHandle _shader) override;
 
 	// --- バッファ関連 ---
 
@@ -55,6 +38,21 @@ public:
 	// バッファ破棄
 	void DestroyShaderBuffer(ShaderBufferHandle _buffer) override;
 
+	// 定数バッファ作成
+	ShaderConstantBufferHandle CreateConstantBuffer(uint32_t _size) override;
+	// 定数バッファ更新
+	void UpdateConstantBuffer(ShaderConstantBufferHandle _handle, const void* _data, uint32_t _size) override;
+	// 定数バッファバインド(頂点)
+	void BindConstantBufferVertex(ShaderConstantBufferHandle _handle, uint32_t _slot) override;
+	// 定数バッファバインド(ピクセル)
+	void BindConstantBufferPixel(ShaderConstantBufferHandle _handle, uint32_t _slot) override;
+	// 定数バッファ破棄
+	void DestroyConstantBuffer(ShaderConstantBufferHandle _buffer);
+	// 定数バッファにCPUからデータを書き込むためのアドレスを取得する関数
+	void* GetConstantBufferAddress(ShaderConstantBufferHandle _handle) override;
+
+
+
 	// --- 同期 ---
 
 	void ShaderBufferBarrier() override;
@@ -64,11 +62,13 @@ private:
 
 private:
 	// 描画系シェーダストレージ
-	std::unique_ptr<RaylibStorage<GraphicsShaderHandle, Shader>> graphicsShaderStorage;
+	ResourceStorage<VertexShaderHandle, Shader> graphicsShaderStorage;
 	// コンピュートシェーダストレージ
-	std::unique_ptr<RaylibStorage<ComputeShaderHandle, unsigned int>> computeShaderStorage;
+	ResourceStorage<ComputeShaderHandle, unsigned int> computeShaderStorage;
 	// バッファストレージ
-	std::unique_ptr<RaylibStorage<ShaderBufferHandle, unsigned int>> bufferStorage;
+	ResourceStorage<ShaderBufferHandle, RaylibShaderBufferResource> bufferStorage;
+	// バッファストレージ
+	ResourceStorage<ShaderConstantBufferHandle, RaylibShaderBufferResource> constantBufferStorage;
 
 	// Windowsのみの奴やで―
 	using MemoryBarrierFunction = void(__stdcall*)(unsigned int);

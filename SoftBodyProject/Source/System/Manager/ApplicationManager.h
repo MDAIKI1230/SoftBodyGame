@@ -3,6 +3,7 @@
 #include "BackEnd.h"
 #include "SceneManager.h"
 #include "TimeManager.h"
+#include "ResourceManager.h"
 
 class ApplicationManager
 {
@@ -16,4 +17,5 @@ private:
 	std::unique_ptr<IGPUConnecter> gpuConnecter;
 	std::unique_ptr<SceneManager> sceneManager;
 	std::unique_ptr<TimeManager> timeManager;
+	std::unique_ptr<ResourceManager> resourceManager;
 };

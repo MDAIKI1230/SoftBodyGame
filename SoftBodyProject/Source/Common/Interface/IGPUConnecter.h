@@ -4,11 +4,16 @@
 #include <string>
 
 #include "ComputeShaderHandle.h"
-#include "GraphicsShaderHandle.h"
+#include "VertexShaderHandle.h"
+#include "PixelShaderHandle.h"
 #include "ShaderBufferHandle.h"
+#include "ShaderConstantBufferHandle.h"
+#include "TextureHandle.h"
 
 class IGPUConnecter
 {
+	friend class ResourceManager;
+
 public:
 	// 初期化関数
 	virtual void Initialize() = 0;
@@ -25,18 +30,12 @@ public:
 
 	// --- 描画系シェーダ関連 ---
 
-	// 頂点シェーダ読み込み
-	virtual GraphicsShaderHandle LoadVertexShader(const std::string& _filePath) = 0;
-	// ピクセルシェーダ読み込み
-	virtual GraphicsShaderHandle LoadPixelShader(const std::string& _filePath) = 0;
-	// 頂点とピクセルシェーダ読み込み
-	virtual GraphicsShaderHandle LoadPixelShader(const std::string& _vertexShaderFilePath, const std::string& _pixelShaderFilePath) = 0;
-	// 描画関連(頂点とピクセル)シェーダスタート
-	virtual void BeginGraphicsShader(GraphicsShaderHandle _shader) = 0;
+	// 頂点シェーダスタート
+	virtual void BeginVertexShader(VertexShaderHandle _shader) = 0;
+	// ピクセルシェーダスタート
+	virtual void BeginPixelShader(PixelShaderHandle _shader) = 0;
 	// 描画関連(頂点とピクセル)シェーダ終了
 	virtual void EndGraphicsShader() = 0;
-	// 描画関連(頂点とピクセル)シェーダ破棄
-	virtual void DestroyGraphicsShader(GraphicsShaderHandle _shader) = 0;
 
 	// --- バッファ関連 ---
 
@@ -51,10 +50,34 @@ public:
 	// バッファ破棄
 	virtual void DestroyShaderBuffer(ShaderBufferHandle _buffer) = 0;
 
+	// 定数バッファ作成
+	virtual ShaderConstantBufferHandle CreateConstantBuffer(uint32_t _size) = 0;
+	// 定数バッファにCPUからデータを書き込むためのアドレスを取得する関数
+	virtual void* GetConstantBufferAddress(ShaderConstantBufferHandle _handle) = 0;
+	// 定数バッファ更新
+	virtual void UpdateConstantBuffer(ShaderConstantBufferHandle _handle, const void* _data, uint32_t _size) = 0;
+	// 定数バッファバインド(頂点)
+	virtual void BindConstantBufferVertex(ShaderConstantBufferHandle _handle, uint32_t _slot) = 0;
+	// 定数バッファバインド(ピクセル)
+	virtual void BindConstantBufferPixel(ShaderConstantBufferHandle _handle, uint32_t _slot) = 0;
+	// 定数バッファ破棄
+	virtual void DestroyConstantBuffer(ShaderConstantBufferHandle _buffer) = 0;
+
 	// --- 同期 ---
 
 	virtual void ShaderBufferBarrier() = 0;
 
 	// 仮想デストラクタ
 	virtual ~IGPUConnecter() = default;
+
+private:
+	// 頂点シェーダ読み込み
+	virtual VertexShaderHandle LoadVertexShader(const std::string& _filePath) = 0;
+	// ピクセルシェーダ読み込み
+	virtual PixelShaderHandle LoadPixelShader(const std::string& _filePath) = 0;
+
+	// 頂点シェーダ破棄
+	virtual void DestroyVertexShader(VertexShaderHandle _shader) = 0;
+	// ピクセルシェーダ破棄
+	virtual void DestroyPixelShader(PixelShaderHandle _shader) = 0;
 };

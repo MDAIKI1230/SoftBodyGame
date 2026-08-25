@@ -16,7 +16,6 @@ class CollisionSolverSystem
 public:
 	// コンストラクタ
 	CollisionSolverSystem();
-
 	// 準備
 	void StartUp(ColliderStorage* _colliderStorage, CollisionManifoldBuffer* _manifoldBuffer, SolverBodyBuffer* _solverBodyBuffer);
 	// 速度/角速度解決

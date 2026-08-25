@@ -6,14 +6,14 @@ public:
 	// コンストラクタ
 	Color() = default;
 	// コンストラクタ
-	Color(unsigned int _r, unsigned int _g, unsigned int _b) :
+	Color(float _r, float _g, float _b) :
 		r{ _r },
 		g{ _g },
 		b{ _b }
 	{
 	}
 	// コンストラクタ
-	Color(unsigned int _r, unsigned int _g, unsigned int _b, unsigned int _a) :
+	Color(float _r, float _g, float _b, float _a) :
 		r{ _r },
 		g{ _g },
 		b{ _b },
@@ -21,5 +21,5 @@ public:
 	{
 	}
 public:
-	unsigned int r{ 0 }, g{ 0 }, b{ 0 }, a{ 255 };
+	float r{ 0 }, g{ 0 }, b{ 0 }, a{ 1.0f };
 };

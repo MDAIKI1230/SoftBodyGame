@@ -15,6 +15,6 @@ public:
 	// デストラクタ
 	virtual ~IInput() = default;
 protected:
-	char pastKeyState[256];
-	char currentKeyState[256];
+	char pastKeyState[256]{};
+	char currentKeyState[256]{};
 };
