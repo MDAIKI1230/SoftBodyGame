@@ -251,6 +251,12 @@
     <Filter Include="ソース ファイル\System\Adapter\Raylib\Struct">
       <UniqueIdentifier>{1c0f982e-77da-465d-9e31-a371ea1f50dd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\System\Input">
+      <UniqueIdentifier>{5383834d-326d-4d9e-9bb8-cdfd33e706c0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\System\Input\Struct">
+      <UniqueIdentifier>{24094d33-35f2-4320-a8fe-c0e612e17c01}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Objects\Camera.h">
@@ -858,6 +864,9 @@
     </ClInclude>
     <ClInclude Include="Source\Common\Struct\PixelShaderHandle.h">
       <Filter>ソース ファイル\Common\Struct</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\System\Input\Struct\InputActionAssetData.h">
+      <Filter>ソース ファイル\System\Input\Struct</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

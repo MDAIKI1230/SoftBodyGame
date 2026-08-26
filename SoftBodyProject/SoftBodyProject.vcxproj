@@ -530,6 +530,7 @@
     <ClInclude Include="Source\System\Factory\BackEndFactory.h" />
     <ClInclude Include="Source\System\Factory\ComponentFactory.h" />
     <ClInclude Include="Source\System\Factory\ObjectFactory.h" />
+    <ClInclude Include="Source\System\Input\Struct\InputActionAssetData.h" />
     <ClInclude Include="Source\System\Manager\ApplicationManager.h" />
     <ClInclude Include="Source\System\Manager\ObjectManager.h" />
     <ClInclude Include="Source\System\Manager\ResourceManager.h" />
