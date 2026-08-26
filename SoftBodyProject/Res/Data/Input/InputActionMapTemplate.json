@@ -1,0 +1,105 @@
+{
+　別種類のJSONを誤って読まないための識別
+  "Format": "InputActionAsset",
+  "Version": 1,
+
+  プログラム用不変ID(0ならば、初期前としてプログラム側でIDを入れる)
+  "ID": 0,
+  名前(ネーム変更時、IDは変更しない)
+  "Name": "DefaultCharacterInput",
+
+  --- デバイスの組み合わせ ---
+  "ControlSchemes": [
+    {
+      "ID": 0,
+      "Name": "KeyboardAndMouse",
+      "Devices": [
+        "<Keyboard>",
+        "<Mouse>"
+      ]
+    },
+    {
+      "ID": 0,
+      "Name": "Gamepad",
+      "Devices": [
+        "<Gamepad>"
+      ]
+    }
+  ],
+
+  
+  "ActionMaps": [
+    {
+      "ID": 0,
+      "Name": "Character",
+
+      --- 入力コンテキスト ---
+      "Actions": [
+        {
+          "ID": 0,
+          "Name": "Move",
+          入力の扱い方
+          Button       押した・離したを扱う
+          Value        現在の代表値を扱う
+          PassThrough  入力元ごとに値を通知する
+          "Type": "Value",
+          入力値の設定
+          Bool
+          Float
+          Vector2
+          "ValueType": "Vector2",
+
+          "Bindings": [
+            {
+              "ID": 0,
+              "Name": "WASD",
+              Partsの数
+              Composite : 複数のPartから一つの値を合成する
+              Control   : 単一ControlをActionへ結び付ける
+              "Kind": "Composite",
+              入力値の設定
+              "CompositeType": "Vector2",
+              操作方式キーボードやコントローラーなど(ID・０の時は無効値生成時にちゃんとしたIDを入れる)
+              "SchemeIDs": [
+                0
+              ],
+
+              複数の時だけParts
+              "Parts": [
+                {
+                  "ID": 0,
+                  "Name": "Up",
+                  "Path": "<Keyboard>/w"
+                },
+                {
+                  "ID": 0,
+                  "Name": "Down",
+                  "Path": "<Keyboard>/s"
+                },
+                {
+                  "ID": 0,
+                  "Name": "Left",
+                  "Path": "<Keyboard>/a"
+                },
+                {
+                  "ID": 0,
+                  "Name": "Right",
+                  "Path": "<Keyboard>/d"
+                }
+              ]
+            },
+            {
+              "ID": 0,
+              "Name": "Left Stick",
+              "Kind": "Control",
+              "Path": "<Gamepad>/leftStick",
+              "SchemeIDs": [
+                0
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
