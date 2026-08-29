@@ -188,9 +188,6 @@
     <Filter Include="ソース ファイル\System\Adapter\Dxlib">
       <UniqueIdentifier>{d720879d-64f8-443d-9ef0-efe5bdec64b2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\System\Adapter\Raylib">
-      <UniqueIdentifier>{3087f53b-58c0-4352-8597-ab3dafdd1b32}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ソース ファイル\System\Struct">
       <UniqueIdentifier>{6992a724-6b3e-46bc-94c8-826b9c9a2a5b}</UniqueIdentifier>
     </Filter>
@@ -247,9 +244,6 @@
     </Filter>
     <Filter Include="ソース ファイル\System\Adapter\Dxlib\Struct">
       <UniqueIdentifier>{deb0ee4a-78ba-4bcf-8f5a-9407cf437c88}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\System\Adapter\Raylib\Struct">
-      <UniqueIdentifier>{1c0f982e-77da-465d-9e31-a371ea1f50dd}</UniqueIdentifier>
     </Filter>
     <Filter Include="ソース ファイル\System\Input">
       <UniqueIdentifier>{5383834d-326d-4d9e-9bb8-cdfd33e706c0}</UniqueIdentifier>
@@ -640,24 +634,6 @@
     <ClInclude Include="Source\System\Adapter\Dxlib\DxlibSystem.h">
       <Filter>ソース ファイル\System\Adapter\Dxlib</Filter>
     </ClInclude>
-    <ClInclude Include="Source\System\Adapter\Raylib\RaylibInput.h">
-      <Filter>ソース ファイル\System\Adapter\Raylib</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\System\Adapter\Raylib\RaylibRenderer.h">
-      <Filter>ソース ファイル\System\Adapter\Raylib</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\System\Adapter\Raylib\RaylibSystem.h">
-      <Filter>ソース ファイル\System\Adapter\Raylib</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\System\Adapter\Raylib\RaylibInclude.h">
-      <Filter>ソース ファイル\System\Adapter\Raylib</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\System\Adapter\Raylib\RaylibConvert.h">
-      <Filter>ソース ファイル\System\Adapter\Raylib</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\System\Adapter\Raylib\RaylibConstants.h">
-      <Filter>ソース ファイル\System\Adapter\Raylib</Filter>
-    </ClInclude>
     <ClInclude Include="Source\System\Factory\BackEndFactory.h">
       <Filter>ソース ファイル\System\Factory</Filter>
     </ClInclude>
@@ -672,9 +648,6 @@
     </ClInclude>
     <ClInclude Include="Source\Common\Struct\ShaderBufferHandle.h">
       <Filter>ソース ファイル\Common\Struct</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\System\Adapter\Raylib\RaylibGPUConnecter.h">
-      <Filter>ソース ファイル\System\Adapter\Raylib</Filter>
     </ClInclude>
     <ClInclude Include="Source\Physics\Component\Body\Soft\ClothComponent.h">
       <Filter>ソース ファイル\Physics\Component\Body\Soft</Filter>
@@ -847,9 +820,6 @@
     <ClInclude Include="Source\Common\Struct\ShaderConstantBufferHandle.h">
       <Filter>ソース ファイル\Common\Struct</Filter>
     </ClInclude>
-    <ClInclude Include="Source\System\Adapter\Raylib\Struct\RaylibShaderBufferResource.h">
-      <Filter>ソース ファイル\System\Adapter\Raylib\Struct</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Common\Struct\ModelHandle.h">
       <Filter>ソース ファイル\Common\Struct</Filter>
     </ClInclude>
@@ -866,6 +836,39 @@
       <Filter>ソース ファイル\Common\Struct</Filter>
     </ClInclude>
     <ClInclude Include="Source\System\Input\Struct\InputActionAssetData.h">
+      <Filter>ソース ファイル\System\Input\Struct</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\System\Input\InputAssetDataLoader.h">
+      <Filter>ソース ファイル\System\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\System\Input\InputSystem.h">
+      <Filter>ソース ファイル\System\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\System\Input\InputAssetDataLoadHelper.h">
+      <Filter>ソース ファイル\System\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\System\Input\Struct\InputActionRuntimeData.h">
+      <Filter>ソース ファイル\System\Input\Struct</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\System\Input\Struct\InputValue.h">
+      <Filter>ソース ファイル\System\Input\Struct</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Common\Constants\GamePadConstants.h">
+      <Filter>ソース ファイル\Common\Constants</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Common\Constants\MouseConstants.h">
+      <Filter>ソース ファイル\Common\Constants</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Common\Struct\GamePadState.h">
+      <Filter>ソース ファイル\Common\Struct</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\System\Input\InputActionContext.h">
+      <Filter>ソース ファイル\System\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\System\Input\InputAction.h">
+      <Filter>ソース ファイル\System\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\System\Input\Struct\InputInteractionEvents.h">
       <Filter>ソース ファイル\System\Input\Struct</Filter>
     </ClInclude>
   </ItemGroup>
@@ -1047,20 +1050,8 @@
     <ClCompile Include="Source\System\Adapter\Dxlib\DxlibSystem.cpp">
       <Filter>ソース ファイル\System\Adapter\Dxlib</Filter>
     </ClCompile>
-    <ClCompile Include="Source\System\Adapter\Raylib\RaylibInput.cpp">
-      <Filter>ソース ファイル\System\Adapter\Raylib</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\System\Adapter\Raylib\RaylibRenderer.cpp">
-      <Filter>ソース ファイル\System\Adapter\Raylib</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\System\Adapter\Raylib\RaylibSystem.cpp">
-      <Filter>ソース ファイル\System\Adapter\Raylib</Filter>
-    </ClCompile>
     <ClCompile Include="Source\System\Factory\BackEndFactory.cpp">
       <Filter>ソース ファイル\System\Factory</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\System\Adapter\Raylib\RaylibGPUConnecter.cpp">
-      <Filter>ソース ファイル\System\Adapter\Raylib</Filter>
     </ClCompile>
     <ClCompile Include="Source\Physics\Component\Body\Soft\ClothComponent.cpp">
       <Filter>ソース ファイル\Physics\Component\Body\Soft</Filter>
@@ -1130,6 +1121,18 @@
     </ClCompile>
     <ClCompile Include="Source\System\Adapter\Dxlib\DxlibGPUConnecter.cpp">
       <Filter>ソース ファイル\System\Adapter\Dxlib</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\System\Input\InputAssetDataLoader.cpp">
+      <Filter>ソース ファイル\System\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\System\Input\InputSystem.cpp">
+      <Filter>ソース ファイル\System\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\System\Input\InputAssetDataLoadHelper.cpp">
+      <Filter>ソース ファイル\System\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\System\Input\InputAction.cpp">
+      <Filter>ソース ファイル\System\Input</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -8,9 +8,6 @@
 
 void SkyRenderingSystem::Initialize()
 {
-#ifdef USE_RAYLIB
-	sphereHandle = ServiceLocator::GetRenderer()->LoadModel("Res/Model/SkyCube/SkyCube.glb");
-#else
 	ServiceLocator::GetResourceManager()->LoadModel("Res/Model/SkyCube/SkyCube.mv1");
 	sphereHandle = ServiceLocator::GetResourceManager()->GetModel("SkyCube.mv1");
 	ServiceLocator::GetResourceManager()->LoadVertexShader("Shader/HLSL/Sky/SkyVS.vso");
@@ -19,7 +16,6 @@ void SkyRenderingSystem::Initialize()
 	solidSkyPixelShader = ServiceLocator::GetResourceManager()->GetPixelShader("SkyPS.pso");
 
 	constantBufferHandle = ServiceLocator::GetGPUConnecter()->CreateConstantBuffer(sizeof(SkySolidConstantBuffer));
-#endif // USE_RAYLIB
 }
 
 // 描画

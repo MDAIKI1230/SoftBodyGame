@@ -20,9 +20,9 @@
     },
     {
       "ID": 0,
-      "Name": "Gamepad",
+      "Name": "GamePad",
       "Devices": [
-        "<Gamepad>"
+        "<GamePad>"
       ]
     }
   ],
@@ -48,6 +48,15 @@
           Float
           Vector2
           "ValueType": "Vector2",
+          
+          どのフェーズで実行するか
+          Press : 押した瞬間にPerformed
+          Hold  : 指定時間押し続けたらPerformed
+          Tap   : 指定時間以内に離したらPerformed
+          "Interaction": {
+            "Type": "Hold",
+            "Duration": 0.5
+          },
 
           "Bindings": [
             {
@@ -58,7 +67,7 @@
               Control   : 単一ControlをActionへ結び付ける
               "Kind": "Composite",
               複数のPartをどの値にするか
-              "CompositeType": "Vector2",
+              "CompositeType": "Axis2d",
               操作方式キーボードやコントローラーなど(ID・０の時は無効値生成時にちゃんとしたIDを入れる)
               "SchemeIDs": [
                 0
@@ -68,22 +77,22 @@
               "Parts": [
                 {
                   "ID": 0,
-                  "Name": "Up",
+                  "Role": "Up",
                   "Path": "<Keyboard>/w"
                 },
                 {
                   "ID": 0,
-                  "Name": "Down",
+                  "Role": "Down",
                   "Path": "<Keyboard>/s"
                 },
                 {
                   "ID": 0,
-                  "Name": "Left",
+                  "Role": "Left",
                   "Path": "<Keyboard>/a"
                 },
                 {
                   "ID": 0,
-                  "Name": "Right",
+                  "Role": "Right",
                   "Path": "<Keyboard>/d"
                 }
               ]
@@ -92,7 +101,8 @@
               "ID": 0,
               "Name": "Left Stick",
               "Kind": "Control",
-              "Path": "<Gamepad>/leftStick",
+              "Path": "<GamePad>/leftStick",
+              "DeadZone" : 0,
               "SchemeIDs": [
                 0
               ]

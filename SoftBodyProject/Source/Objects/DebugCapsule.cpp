@@ -12,7 +12,9 @@ DebugCapsule::DebugCapsule(WorldStorage* world, EntityID _entity):
 {
 	AddComponent<TransformComponent>();
 	CapsuleColliderComponent* collider{ AddComponent<CapsuleColliderComponent>(20.0f,5.0f) };
+#ifdef _DEBUG
 	Color c{ 1.0f, 1.0f, 1.0f };
+#endif // DEBUG
 	RigidBodyComponent* body{ AddComponent<RigidBodyComponent>() };
 	// body->SetIsGravity(false);
 #ifdef _DEBUG
@@ -35,8 +37,8 @@ void DebugCapsule::FixedUpdate()
 
 void DebugCapsule::OnCollisionEnter()
 {
-	Color c{ 1.0f,0,0 };
 #ifdef _DEBUG
+	Color c{ 1.0f,0,0 };
 	GetComponent<CapsuleColliderComponent>()->SetColor(c);
 #endif // DEBUG
 }
@@ -46,8 +48,8 @@ void DebugCapsule::OnCollision()
 }
 void DebugCapsule::OnCollisionExit()
 {
-	Color c{ 1.0f,1.0f,1.0f };
 #ifdef _DEBUG
+	Color c{ 1.0f,1.0f,1.0f };
 	GetComponent<CapsuleColliderComponent>()->SetColor(c);
 #endif // DEBUG
 }

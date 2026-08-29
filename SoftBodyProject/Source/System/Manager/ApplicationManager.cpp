@@ -38,11 +38,9 @@ int ApplicationManager::ApplicationMain()
 	renderer->SetUseZDepth(true);
 	renderer->SetWriteZDepth(true);
 
-#ifdef USE_RAYLIB
-	gpuConnecter->Initialize();
-#endif // USE_RAYLIB
+	input->Initialize();
 
-	while (system->ProcessMessage() == 0 && input->GetKeyPress(KeyConstants::ESCAPE) == 0)
+	while (system->ProcessMessage() == 0)
 	{
 		input->Update();
 		timeManager->Update();

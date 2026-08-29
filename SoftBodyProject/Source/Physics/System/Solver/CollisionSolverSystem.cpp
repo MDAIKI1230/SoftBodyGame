@@ -12,11 +12,6 @@ CollisionSolverSystem::CollisionSolverSystem() :
 {
 }
 
-// 初期化
-void Initialize()
-{
-}
-
 void CollisionSolverSystem::StartUp(ColliderStorage* _colliderStorage, CollisionManifoldBuffer* _manifoldBuffer, SolverBodyBuffer* _solverBodyBuffer)
 {
 	// メモリの確保
