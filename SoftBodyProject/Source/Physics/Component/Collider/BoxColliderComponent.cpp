@@ -1,31 +1,31 @@
-﻿#include "PhysicsAPI.h"
+﻿#include "PhysicsComponentAPI.h"
 
 #include "BoxColliderComponent.h"
 
 BoxColliderComponent::BoxColliderComponent(EntityID _entity) :
-	ColliderComponent{ PhysicsAPI::CreateBox(_entity, Vector3::ONE) }
+	ColliderComponent{ PhysicsComponentAPI::CreateBox(_entity, Vector3::ONE) }
 {
 }
 
 BoxColliderComponent::BoxColliderComponent(EntityID _entity, float _width, float _height, float _depth) :
-	ColliderComponent{ PhysicsAPI::CreateBox(_entity, Vector3{ _width,_height,_depth }) }
+	ColliderComponent{ PhysicsComponentAPI::CreateBox(_entity, Vector3{ _width,_height,_depth }) }
 {
 }
 
 BoxColliderComponent::BoxColliderComponent(EntityID _entity, float _size) :
-	ColliderComponent{ PhysicsAPI::CreateBox(_entity, Vector3{ _size }) }
+	ColliderComponent{ PhysicsComponentAPI::CreateBox(_entity, Vector3{ _size }) }
 {
 }
 
 
-float BoxColliderComponent::GetWidth() const { return PhysicsAPI::GetBoxWidth(id); }
+float BoxColliderComponent::GetWidth() const { return PhysicsComponentAPI::GetBoxWidth(id); }
 
-void BoxColliderComponent::SetWidth(float _width) { PhysicsAPI::SetBoxWidth(id, _width); }
+void BoxColliderComponent::SetWidth(float _width) { PhysicsComponentAPI::SetBoxWidth(id, _width); }
 
-float BoxColliderComponent::GetHeight() const { return PhysicsAPI::GetBoxHeight(id); }
+float BoxColliderComponent::GetHeight() const { return PhysicsComponentAPI::GetBoxHeight(id); }
 
-void BoxColliderComponent::SetHeight(float _heibht) { PhysicsAPI::SetBoxHeight(id, _heibht); }
+void BoxColliderComponent::SetHeight(float _heibht) { PhysicsComponentAPI::SetBoxHeight(id, _heibht); }
 
-float BoxColliderComponent::GetDepth() const { return PhysicsAPI::GetBoxDepth(id); }
+float BoxColliderComponent::GetDepth() const { return PhysicsComponentAPI::GetBoxDepth(id); }
 
-void BoxColliderComponent::SetDepth(float _depth) { PhysicsAPI::SetBoxDepth(id, _depth); }
+void BoxColliderComponent::SetDepth(float _depth) { PhysicsComponentAPI::SetBoxDepth(id, _depth); }

@@ -48,6 +48,8 @@ ModelHandle DxlibRenderer::DuplicateModel(ModelHandle _handle)
     {
         return modelStorage.Add(DxLib::MV1DuplicateModel(nativeHandle));
     }
+
+    return{};
 }
 
 // 画像の読み込み

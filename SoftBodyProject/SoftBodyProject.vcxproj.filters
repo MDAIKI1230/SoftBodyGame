@@ -251,6 +251,12 @@
     <Filter Include="ソース ファイル\System\Input\Struct">
       <UniqueIdentifier>{24094d33-35f2-4320-a8fe-c0e612e17c01}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Physics\Struct\Ray">
+      <UniqueIdentifier>{bfbeeac6-363b-48fd-9750-44d9239b8487}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Physics\System\Query">
+      <UniqueIdentifier>{469bbaca-5b6a-4938-9411-5666fe3ef278}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Objects\Camera.h">
@@ -385,7 +391,7 @@
     <ClInclude Include="Source\Physics\System\Update\RigidBodySystem.h">
       <Filter>ソース ファイル\Physics\System\Update</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Physics\System\PhysicsAPI.h">
+    <ClInclude Include="Source\Physics\System\PhysicsComponentAPI.h">
       <Filter>ソース ファイル\Physics\System</Filter>
     </ClInclude>
     <ClInclude Include="Source\Common\ECS\SystemManager.h">
@@ -670,7 +676,7 @@
     <ClInclude Include="Source\Physics\Struct\Body\Soft\SolveGPUMeta.h">
       <Filter>ソース ファイル\Physics\Struct\Body\Soft</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Physics\Constants\BodyConstraints.h">
+    <ClInclude Include="Source\Physics\Constants\BodyConstants.h">
       <Filter>ソース ファイル\Physics\Constants</Filter>
     </ClInclude>
     <ClInclude Include="Source\Physics\Storage\Body\BodyStorage.h">
@@ -871,6 +877,21 @@
     <ClInclude Include="Source\System\Input\Struct\InputInteractionEvents.h">
       <Filter>ソース ファイル\System\Input\Struct</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Physics\Struct\Ray\Ray.h">
+      <Filter>ソース ファイル\Physics\Struct\Ray</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Struct\Ray\RayCastHitInfo.h">
+      <Filter>ソース ファイル\Physics\Struct\Ray</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\System\Query\PhysicsQuerySystem.h">
+      <Filter>ソース ファイル\Physics\System\Query</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Function\RayCastFunction.h">
+      <Filter>ソース ファイル\Physics\Function</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\System\PhysicsAPI.h">
+      <Filter>ソース ファイル\Physics\System</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\System\Scenes\DebugScene.cpp">
@@ -942,7 +963,7 @@
     <ClCompile Include="Source\Physics\System\Update\RigidBodySystem.cpp">
       <Filter>ソース ファイル\Physics\System\Update</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Physics\System\PhysicsAPI.cpp">
+    <ClCompile Include="Source\Physics\System\PhysicsComponentAPI.cpp">
       <Filter>ソース ファイル\Physics\System</Filter>
     </ClCompile>
     <ClCompile Include="Source\Common\ECS\SystemManager.cpp">
@@ -1133,6 +1154,15 @@
     </ClCompile>
     <ClCompile Include="Source\System\Input\InputAction.cpp">
       <Filter>ソース ファイル\System\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Physics\System\Query\PhysicsQuerySystem.cpp">
+      <Filter>ソース ファイル\Physics\System\Query</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Physics\Function\RaycastFunction.cpp">
+      <Filter>ソース ファイル\Physics\Function</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Physics\System\PhysicsAPI.cpp">
+      <Filter>ソース ファイル\Physics\System</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

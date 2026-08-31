@@ -56,6 +56,8 @@ void SolverBodyBuildSystem::CreateSolverBody(PhysicsTransformStorage* _transform
 	body.angularVelocity = _bodyStorage->GetRigidBodyAngularVelocity(_bodyID);
 	body.inverseMass = _bodyStorage->GetRigidBodyInverseMass(_bodyID);
 	body.localInverseInertiaTensor = _bodyStorage->GetRigidBodyLocalInverseInertiaTensor(_bodyID);
+	body.linearFactor = _bodyStorage->GetRigidBodyPositionLock(_bodyID);
+	body.angularFactor = _bodyStorage->GetRigidBodyRotationLock(_bodyID);
 
 	// 追加
 	_solverBodyBuffer->Add(_transformID, body);

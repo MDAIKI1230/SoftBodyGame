@@ -1,8 +1,8 @@
-﻿#include "PhysicsAPI.h"
+﻿#include "PhysicsComponentAPI.h"
 
 #include "BoxColliderComponentStorage.h"
 
 void BoxColliderComponentStorage::OnRemoving(EntityID _entity, const BoxColliderComponent& _component)
 {
-	PhysicsAPI::DestroyCollider(_component.GetID());
+	PhysicsComponentAPI::DestroyCollider(_component.GetID());
 }

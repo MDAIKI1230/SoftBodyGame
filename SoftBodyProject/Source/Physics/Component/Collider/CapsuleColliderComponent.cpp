@@ -1,36 +1,36 @@
-﻿#include "PhysicsAPI.h"
+﻿#include "PhysicsComponentAPI.h"
 
 #include "CapsuleColliderComponent.h"
 
 // コンストラクタ
 CapsuleColliderComponent::CapsuleColliderComponent(EntityID _entity) :
-	ColliderComponent{ PhysicsAPI::CreateCapsule(_entity,1.0f,0.5f) }
+	ColliderComponent{ PhysicsComponentAPI::CreateCapsule(_entity,1.0f,0.5f) }
 {
 }
 
 // コンストラクタ
 CapsuleColliderComponent::CapsuleColliderComponent(EntityID _entity, float _height, float _radius) :
-	ColliderComponent{ PhysicsAPI::CreateCapsule(_entity,_height,_radius) }
+	ColliderComponent{ PhysicsComponentAPI::CreateCapsule(_entity,_height,_radius) }
 {
 }
 
 // 高さ取得
 float CapsuleColliderComponent::GetHeight() const
 {
-	return PhysicsAPI::GetCapsuleHeight(id);
+	return PhysicsComponentAPI::GetCapsuleHeight(id);
 }
 // 高さ変更
 void CapsuleColliderComponent::SetHeight(float _heibht)
 {
-	PhysicsAPI::SetCapsuleHeight(id, _heibht);
+	PhysicsComponentAPI::SetCapsuleHeight(id, _heibht);
 }
 // 半径取得
 float CapsuleColliderComponent::GetRadius() const
 {
-	return PhysicsAPI::GetCapsuleRadius(id);
+	return PhysicsComponentAPI::GetCapsuleRadius(id);
 }
 // 半径変更
 void CapsuleColliderComponent::SetRadius(float _radius)
 {
-	PhysicsAPI::SetCapsuleRadius(id, _radius);
+	PhysicsComponentAPI::SetCapsuleRadius(id, _radius);
 }

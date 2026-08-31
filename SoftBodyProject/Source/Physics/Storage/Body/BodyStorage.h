@@ -46,6 +46,14 @@ class BodyStorage : public PhysicsStorageBase<BodyID, BodySlot>
 	MD_OWNED_STORAGE_READ_ONLY_ACCESSORS(BodyID, bool, RigidBodyLocalInertiaDiary, rigidBodyStorage, LocalInertiaDiary);
 	// 計算が完了したときに呼ぶ関数
 	void LocalInertiaCalcSucces(BodyID _id);
+	// 回転制限
+	MD_OWNED_STORAGE_READ_ONLY_ACCESSORS(BodyID, Vector3, RigidBodyRotationLock, rigidBodyStorage, RotationLock);
+	// 回転制限マスク変更関数
+	void SetRigidBodyRotationLock(BodyID _id, RigidBodyRotationLock _lock);
+	// 移動制限
+	MD_OWNED_STORAGE_READ_ONLY_ACCESSORS(BodyID, Vector3, RigidBodyPositionLock, rigidBodyStorage, PositionLock);
+	// 移動制限マスク変更関数
+	void SetRigidBodyPositionLock(BodyID _id, RigidBodyPositionLock _lock);
 	// ID
 	MD_OWNED_STORAGE_READ_ONLY_ACCESSORS(BodyID, BodyID, RigidBodyID, rigidBodyStorage, ID);
 	// --- RopeBody ---
@@ -99,6 +107,11 @@ public:
 	BodyID CreateCloth(EntityID _entity, PhysicsTransformID _transformID, const ClothUpdateInfo& _info);
 	// SoftBody作成
 	BodyID CreateSoftBody(EntityID _entity, PhysicsTransformID _transformID, const SoftBodyUpdateInfo& _info);
+
+	// 回転制限マスク適応済み逆慣性テンソル適応角速度計算関数
+	static Vector3 ApplyAngularInverseInertia(const Matrix4x4& _worldInverseInertia, const Vector3& _angularImpulse, const Vector3& _angularFactor);
+	// 移動制限マスク適応済み逆質量適応速度計算関数
+	static Vector3 ApplyLinearInverseMass(const Vector3& _impulse, float _inverseMass, const Vector3& _linearFactor);
 
 	// 破棄
 	void Destroy(BodyID _id);

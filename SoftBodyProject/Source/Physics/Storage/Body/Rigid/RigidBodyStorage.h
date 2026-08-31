@@ -3,6 +3,8 @@
 #include "MDMath.h"
 #include "StorageAccessorsMacros.h"
 
+#include "BodyConstants.h"
+
 #include "BodyID.h"
 #include "PhysicsTransformID.h"
 
@@ -45,9 +47,19 @@ public:
 	// 計算が完了したときに呼ぶ関数
 	void LocalInertiaCalcSucces(uint32_t _index);
 
+	// 回転制限
+	MD_STORAGE_READ_ONLY_COLUMN(Vector3, RotationLock, rotationLockFactors);
+public:
+	// 回転制限マスク変更関数
+	void SetRotationLock(uint32_t _index, RigidBodyRotationLock _lock);
+	// 移動制限
+	MD_STORAGE_READ_ONLY_COLUMN(Vector3, PositionLock, positionLockFactors);
+public:
+	// 移動制限マスク変更関数
+	void SetPositionLock(uint32_t _index, RigidBodyPositionLock _lock);
+
 	// ID
 	MD_STORAGE_READ_ONLY_COLUMN(BodyID, ID, ids);
-
 public:
 	// コンストラクタ
 	RigidBodyStorage() = default;

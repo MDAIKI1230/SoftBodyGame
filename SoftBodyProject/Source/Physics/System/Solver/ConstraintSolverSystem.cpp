@@ -1,5 +1,7 @@
 ﻿#include "ServiceLocator.h"
 
+#include "BodyStorage.h"
+
 #include "ConstraintSolverSystem.h"
 
 ConstraintSolverSystem::ConstraintSolverSystem() :
@@ -11,7 +13,7 @@ ConstraintSolverSystem::ConstraintSolverSystem() :
 {
 }
 
-void ConstraintSolverSystem::VelocitySolver(SolverBodyBuffer* _solverBodyBuffer, ConstraintBuffer* _constraintBuffer)
+void ConstraintSolverSystem::Solve(SolverBodyBuffer* _solverBodyBuffer, ConstraintBuffer* _constraintBuffer)
 {
 	for (auto& constraint : _constraintBuffer->EditAll())
 	{
@@ -26,8 +28,44 @@ void ConstraintSolverSystem::VelocitySolver(SolverBodyBuffer* _solverBodyBuffer,
 			continue;
 		}
 
+		// 慣性テンソル求める
+		Matrix4x4 rotMat{ MatGenerateFunc::Rotate(solverBodyA.rotation) };
+		Matrix4x4 worldInverseInertiaTnesorA{ rotMat * solverBodyA.localInverseInertiaTensor * rotMat.Transposed() };
+
+		rotMat = MatGenerateFunc::Rotate(solverBodyB.rotation);
+		Matrix4x4 worldInverseInertiaTnesorB{ rotMat * solverBodyB.localInverseInertiaTensor * rotMat.Transposed() };
+
 		// biasを求める
 		const float bias{ ERP / ServiceLocator::GetTimeManager()->GetFixedDeltaTime() * constraint.error };
+
+		// Factorを計算した各種速度計算
+		Vector3 linearResponseA{
+			BodyStorage::ApplyLinearInverseMass(
+				constraint.jacobian[0],
+				solverBodyA.inverseMass,
+				solverBodyA.linearFactor)
+		};
+
+		Vector3 angularResponseA{
+			BodyStorage::ApplyAngularInverseInertia(
+				worldInverseInertiaTnesorA,
+				constraint.jacobian[1],
+				solverBodyA.angularFactor)
+		};
+
+		Vector3 linearResponseB{
+			BodyStorage::ApplyLinearInverseMass(
+				constraint.jacobian[2],
+				solverBodyB.inverseMass,
+				solverBodyB.linearFactor)
+		};
+
+		Vector3 angularResponseB{
+			BodyStorage::ApplyAngularInverseInertia(
+				worldInverseInertiaTnesorB,
+				constraint.jacobian[3],
+				solverBodyB.angularFactor)
+		};
 
 		// 変化量ベクトル
 		Vector3 deltaVector[4]{
@@ -44,20 +82,19 @@ void ConstraintSolverSystem::VelocitySolver(SolverBodyBuffer* _solverBodyBuffer,
 			jv += Vector3::Dot(constraint.jacobian[i], deltaVector[i]);
 		}
 
-		// 慣性テンソル求める
-		Matrix4x4 rotMat{ MatGenerateFunc::Rotate(solverBodyA.rotation) };
-		Matrix4x4 worldInertiaTnesorA{ rotMat * solverBodyA.localInverseInertiaTensor * rotMat.Transposed() };
-
-		rotMat = MatGenerateFunc::Rotate(solverBodyB.rotation);
-		Matrix4x4 worldInertiaTnesorB{ rotMat * solverBodyB.localInverseInertiaTensor * rotMat.Transposed() };
-
 		// 質量と慣性テンソルが速度に影響する度合い
 		float effectiveMass{
-			solverBodyA.inverseMass +
-			Vector3::Dot(constraint.jacobian[1],worldInertiaTnesorA * constraint.jacobian[1]) +
-			solverBodyB.inverseMass +
-			Vector3::Dot(constraint.jacobian[3],worldInertiaTnesorB * constraint.jacobian[3])
+			Vector3::Dot(constraint.jacobian[0], linearResponseA) +
+			Vector3::Dot(constraint.jacobian[1], angularResponseA) +
+			Vector3::Dot(constraint.jacobian[2], linearResponseB) +
+			Vector3::Dot(constraint.jacobian[3], angularResponseB)
 		};
+
+		// 0チェック
+		if (effectiveMass <= MathConstants::EPSILON)
+		{
+			continue;
+		}
 
 		// λ計算(CFMも適応)
 		float lambda{ (jv + bias) / (effectiveMass + GAMMA) };
@@ -70,12 +107,12 @@ void ConstraintSolverSystem::VelocitySolver(SolverBodyBuffer* _solverBodyBuffer,
 		float applyLambda{ constraint.accumulatedLambda - oldLambda };
 
 		// A速度の解消
-		solverBodyA.velocity -= constraint.jacobian[0] * applyLambda * solverBodyA.inverseMass;
-		solverBodyA.angularVelocity -= worldInertiaTnesorA * constraint.jacobian[1] * applyLambda;
+		solverBodyA.velocity -= linearResponseA * applyLambda;
+		solverBodyA.angularVelocity -= angularResponseA * applyLambda;
 
 		// B速度の解消
-		solverBodyB.velocity -= constraint.jacobian[2] * applyLambda * solverBodyB.inverseMass;
-		solverBodyB.angularVelocity -= worldInertiaTnesorB * constraint.jacobian[3] * applyLambda;
+		solverBodyB.velocity -= linearResponseB * applyLambda;
+		solverBodyB.angularVelocity -= angularResponseB * applyLambda;
 	}
 }
 

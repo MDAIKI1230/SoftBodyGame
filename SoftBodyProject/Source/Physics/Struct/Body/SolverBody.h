@@ -17,6 +17,8 @@ struct SolverBody
     Quaternion rotation;
     Quaternion pastRot;
     Vector3 angularVelocity;
+    Vector3 linearFactor{ Vector3::ZERO };
+    Vector3 angularFactor{ Vector3::ZERO };
 
     float inverseMass{ 0.0f };
     Matrix4x4 localInverseInertiaTensor;

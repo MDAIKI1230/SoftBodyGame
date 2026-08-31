@@ -2,7 +2,7 @@
 
 #include <stdint.h>
 
-#include "BodyConstraints.h"
+#include "BodyConstants.h"
 
 #include "EntityID.h"
 #include "PhysicsTransformID.h"

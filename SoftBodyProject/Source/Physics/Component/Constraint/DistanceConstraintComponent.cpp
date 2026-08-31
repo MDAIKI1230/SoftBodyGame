@@ -1,34 +1,34 @@
-﻿#include "PhysicsAPI.h"
+﻿#include "PhysicsComponentAPI.h"
 
 #include "DistanceConstraintComponent.h"
 
 
 DistanceConstraintComponent::DistanceConstraintComponent(EntityID _entity) :
-	EndPointConstraintComponentBase{ PhysicsAPI::CreateDistanceConstraint(_entity, Vector3::ZERO, 0.0f) }
+	EndPointConstraintComponentBase{ PhysicsComponentAPI::CreateDistanceConstraint(_entity, Vector3::ZERO, 0.0f) }
 {
 }
 
 DistanceConstraintComponent::DistanceConstraintComponent(EntityID _entity, Vector3 _localOffset) :
-	EndPointConstraintComponentBase{ PhysicsAPI::CreateDistanceConstraint(_entity, _localOffset, 0.0f) }
+	EndPointConstraintComponentBase{ PhysicsComponentAPI::CreateDistanceConstraint(_entity, _localOffset, 0.0f) }
 {
 }
 
 DistanceConstraintComponent::DistanceConstraintComponent(EntityID _entity, float _distance) :
-	EndPointConstraintComponentBase{ PhysicsAPI::CreateDistanceConstraint(_entity, Vector3::ZERO, _distance) }
+	EndPointConstraintComponentBase{ PhysicsComponentAPI::CreateDistanceConstraint(_entity, Vector3::ZERO, _distance) }
 {
 }
 
 DistanceConstraintComponent::DistanceConstraintComponent(EntityID _entity, Vector3 _localOffset, float _distance) :
-	EndPointConstraintComponentBase{ PhysicsAPI::CreateDistanceConstraint(_entity, _localOffset, _distance) }
+	EndPointConstraintComponentBase{ PhysicsComponentAPI::CreateDistanceConstraint(_entity, _localOffset, _distance) }
 {
 }
 
 float DistanceConstraintComponent::GetDistance()
 {
-	return PhysicsAPI::GetDistance(id);
+	return PhysicsComponentAPI::GetDistance(id);
 }
 
 void DistanceConstraintComponent::SetDistance(float _distance)
 {
-	PhysicsAPI::SetDistance(id, _distance);
+	PhysicsComponentAPI::SetDistance(id, _distance);
 }

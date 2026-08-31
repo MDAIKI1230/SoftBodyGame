@@ -30,6 +30,7 @@
 #include "DistanceConstraintComponentStorage.h"
 
 // API
+#include "PhysicsComponentAPI.h"
 #include "PhysicsAPI.h"
 
 #include "SceneDataLoader.h"
@@ -73,6 +74,7 @@ SceneBase::SceneBase()
 	// オブジェクトマネージャー
 	objectManager = std::make_unique<ObjectManager>();
 
+	PhysicsComponentAPI::BindWorld(*physicsWorld.get());
 	PhysicsAPI::BindWorld(*physicsWorld.get());
 
 #ifdef _DEBUG
@@ -103,6 +105,7 @@ void SceneBase::Execute()
 	case SceneState::TERMINATE:
 		// 終了
 		Terminate();
+		PhysicsComponentAPI::UnbindWorld();
 		PhysicsAPI::UnbindWorld();
 		break;
 	case SceneState::FADEOUT:
