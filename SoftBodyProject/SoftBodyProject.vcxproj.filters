@@ -257,6 +257,15 @@
     <Filter Include="ソース ファイル\Physics\System\Query">
       <UniqueIdentifier>{469bbaca-5b6a-4938-9411-5666fe3ef278}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Physics\Component\CharacterController">
+      <UniqueIdentifier>{6afe458a-72e7-479a-8ede-fe94b3b0ac3b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Physics\Storage\CharacterController">
+      <UniqueIdentifier>{c8d5f340-664c-4332-9e87-0a40aa937b95}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Physics\Struct\CharacterController">
+      <UniqueIdentifier>{8a711579-6892-4046-876c-e6268a95b38c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Objects\Camera.h">
@@ -892,6 +901,18 @@
     <ClInclude Include="Source\Physics\System\PhysicsAPI.h">
       <Filter>ソース ファイル\Physics\System</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Physics\Component\Common\CharacterController.h">
+      <Filter>ソース ファイル\Physics\Component\CharacterController</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Storage\CharacterController\CharacterControllerStorage.h">
+      <Filter>ソース ファイル\Physics\Storage\CharacterController</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Struct\CharacterController\CharacterControllerID.h">
+      <Filter>ソース ファイル\Physics\Struct\CharacterController</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Struct\CharacterController\CharacterControllerrSlot.h">
+      <Filter>ソース ファイル\Physics\Struct\CharacterController</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\System\Scenes\DebugScene.cpp">
@@ -1163,6 +1184,12 @@
     </ClCompile>
     <ClCompile Include="Source\Physics\System\PhysicsAPI.cpp">
       <Filter>ソース ファイル\Physics\System</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Physics\Component\Common\CharacterController.cpp">
+      <Filter>ソース ファイル\Physics\Component\CharacterController</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Physics\Storage\CharacterController\CharacterControllerStorage.cpp">
+      <Filter>ソース ファイル\Physics\Storage\CharacterController</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

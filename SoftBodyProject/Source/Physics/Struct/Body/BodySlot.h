@@ -21,7 +21,7 @@ public:
 
 public:
     // 世代
-    unsigned char generation{ 1 };
+    uint32_t generation{ 1 };
     // 生存フラグ
     bool alive{ true };
 
