@@ -2,6 +2,8 @@
 
 #include "ColliderComponent.h"
 
+#include "EntityID.h"
+
 struct SphereColliderComponent :public ColliderComponent
 {
 public:

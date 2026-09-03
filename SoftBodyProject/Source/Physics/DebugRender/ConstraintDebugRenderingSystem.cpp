@@ -1,14 +1,14 @@
 ﻿#include "ServiceLocator.h"
 
-#include "ConstraintDebugRenderSystem.h"
+#include "ConstraintDebugRenderingSystem.h"
 
-void ConstraintDebugRenderSystem::Render(ConstraintStorage* _constraintStorage, PhysicsTransformStorage* _transformStorage)
+void ConstraintDebugRenderingSystem::Render(PhysicsTransformStorage* _transformStorage, ConstraintStorage* _constraintStorage)
 {
-	PointConstraintRender(_constraintStorage, _transformStorage);
-	DistanceConstraintRender(_constraintStorage, _transformStorage);
+	PointConstraintRender(_transformStorage, _constraintStorage);
+	DistanceConstraintRender(_transformStorage, _constraintStorage);
 }
 
-void ConstraintDebugRenderSystem::PointConstraintRender(ConstraintStorage* _constraintStorage, PhysicsTransformStorage* _transformStorage)
+void ConstraintDebugRenderingSystem::PointConstraintRender(PhysicsTransformStorage* _transformStorage, ConstraintStorage* _constraintStorage)
 {
 	for (auto& pointConstraint : _constraintStorage->GetPointConstraintRange())
 	{
@@ -29,7 +29,7 @@ void ConstraintDebugRenderSystem::PointConstraintRender(ConstraintStorage* _cons
 	}
 }
 
-void ConstraintDebugRenderSystem::DistanceConstraintRender(ConstraintStorage* _constraintStorage, PhysicsTransformStorage* _transformStorage)
+void ConstraintDebugRenderingSystem::DistanceConstraintRender(PhysicsTransformStorage* _transformStorage, ConstraintStorage* _constraintStorage)
 {
 	for (auto& pointConstraint : _constraintStorage->GetDistanceConstraintRange())
 	{

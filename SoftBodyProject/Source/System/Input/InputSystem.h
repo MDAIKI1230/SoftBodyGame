@@ -32,6 +32,8 @@ public:
 		nativeInput{ std::move(_nativeInput) }
 	{
 	}
+	// 初期化
+	void Initialize();
 	// アセットの読み込み
 	bool LoadAsset(std::string _path);
 	// 更新処理

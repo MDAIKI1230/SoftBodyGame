@@ -1,0 +1,37 @@
+﻿#pragma once
+
+#include "CharacterControllerComponent.h"
+
+#include "InputActionContext.h"
+
+#include "ObjectBase.h"
+
+class Player :public ObjectBase
+{
+public:
+	// コンストラクタ
+	Player(WorldStorage* _world, EntityID _entityID);
+
+	// --- 更新系 ---
+
+	// 更新処理
+	void Update() override;
+	// 物理更新処理
+	void FixedUpdate() override;
+
+	// --- 衝突系 ---
+
+	// 衝突始め
+	void OnCollisionEnter() override;
+	// 衝突中ずっと
+	 void OnCollision() override;
+	// 衝突終わり
+	void OnCollisionExit() override;
+private:
+	void Move(InputActionContext _input);
+	void Stop(InputActionContext _input);
+	void Jump(InputActionContext _input);
+
+private:
+	CharacterControllerComponent* cc;
+};

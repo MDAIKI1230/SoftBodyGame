@@ -149,10 +149,10 @@ private:
 			&NarrowPhasePairBuilder::AddSphereSphere , &NarrowPhasePairBuilder::AddSphereBox, &NarrowPhasePairBuilder::AddSphereCapsule // 球
 		},
 		{
-			&NarrowPhasePairBuilder::AddBoxSphere,     &NarrowPhasePairBuilder::AddBoxBox   , &NarrowPhasePairBuilder::AddSphereBox     // 箱
+			&NarrowPhasePairBuilder::AddBoxSphere,     &NarrowPhasePairBuilder::AddBoxBox   , &NarrowPhasePairBuilder::AddBoxCapsule     // 箱
 		},
 		{
-			&NarrowPhasePairBuilder::AddCapsuleSphere, &NarrowPhasePairBuilder::AddCapsuleBox, &NarrowPhasePairBuilder::AddCapsuleBox     // カプセル
+			&NarrowPhasePairBuilder::AddCapsuleSphere, &NarrowPhasePairBuilder::AddCapsuleBox, &NarrowPhasePairBuilder::AddCapsuleCapsule     // カプセル
 		}
 	};
 

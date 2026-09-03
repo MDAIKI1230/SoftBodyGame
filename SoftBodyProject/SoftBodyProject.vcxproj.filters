@@ -266,6 +266,9 @@
     <Filter Include="ソース ファイル\Physics\Struct\CharacterController">
       <UniqueIdentifier>{8a711579-6892-4046-876c-e6268a95b38c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Physics\Storage\Component\CharacterController">
+      <UniqueIdentifier>{724de3b5-c382-4a7d-9d3a-f18665eb452d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Objects\Camera.h">
@@ -381,9 +384,6 @@
     </ClInclude>
     <ClInclude Include="Source\Objects\DebugSphere.h">
       <Filter>ソース ファイル\GameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\System\ComponentSystems\DebugRenderingSystem.h">
-      <Filter>ソース ファイル\System\ComponentSystems</Filter>
     </ClInclude>
     <ClInclude Include="Source\Common\Color\Color.h">
       <Filter>ソース ファイル\Common\Color</Filter>
@@ -613,7 +613,7 @@
     <ClInclude Include="Source\Objects\EmptyObject.h">
       <Filter>ソース ファイル\GameObject</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Physics\DebugRender\ConstraintDebugRenderSystem.h">
+    <ClInclude Include="Source\Physics\DebugRender\ConstraintDebugRenderingSystem.h">
       <Filter>ソース ファイル\Physics\DebugRender</Filter>
     </ClInclude>
     <ClInclude Include="Source\Physics\Storage\Buffer\CollisionManifoldBuffer.h">
@@ -901,17 +901,35 @@
     <ClInclude Include="Source\Physics\System\PhysicsAPI.h">
       <Filter>ソース ファイル\Physics\System</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Physics\Component\Common\CharacterController.h">
-      <Filter>ソース ファイル\Physics\Component\CharacterController</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Physics\Storage\CharacterController\CharacterControllerStorage.h">
       <Filter>ソース ファイル\Physics\Storage\CharacterController</Filter>
     </ClInclude>
     <ClInclude Include="Source\Physics\Struct\CharacterController\CharacterControllerID.h">
       <Filter>ソース ファイル\Physics\Struct\CharacterController</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Physics\Struct\CharacterController\CharacterControllerrSlot.h">
+    <ClInclude Include="Source\Physics\Storage\Component\CharacterController\CharacterControllerComponentStorage.h">
+      <Filter>ソース ファイル\Physics\Storage\Component\CharacterController</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Component\CharacterController\CharacterControllerComponent.h">
+      <Filter>ソース ファイル\Physics\Component\CharacterController</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Struct\CharacterController\CharacterControllerSlot.h">
       <Filter>ソース ファイル\Physics\Struct\CharacterController</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\System\Update\CharacterControllerSystem.h">
+      <Filter>ソース ファイル\Physics\System\Update</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Struct\Ray\RayCastQueryHitInfo.h">
+      <Filter>ソース ファイル\Physics\Struct\Ray</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Constants\CharacterControllerConstants.h">
+      <Filter>ソース ファイル\Physics\Constants</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Objects\Player.h">
+      <Filter>ソース ファイル\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\DebugRender\ColliderDebugRenderingSystem.h">
+      <Filter>ソース ファイル\Physics\DebugRender</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -971,9 +989,6 @@
     </ClCompile>
     <ClCompile Include="Source\Physics\System\Simplex.cpp">
       <Filter>ソース ファイル\Physics\System</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\System\ComponentSystems\DebugRenderingSystem.cpp">
-      <Filter>ソース ファイル\System\ComponentSystems</Filter>
     </ClCompile>
     <ClCompile Include="Source\Objects\DebugSphere.cpp">
       <Filter>ソース ファイル\GameObject</Filter>
@@ -1077,7 +1092,7 @@
     <ClCompile Include="Source\Objects\EmptyObject.cpp">
       <Filter>ソース ファイル\GameObject</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Physics\DebugRender\ConstraintDebugRenderSystem.cpp">
+    <ClCompile Include="Source\Physics\DebugRender\ConstraintDebugRenderingSystem.cpp">
       <Filter>ソース ファイル\Physics\DebugRender</Filter>
     </ClCompile>
     <ClCompile Include="Source\Physics\Storage\Buffer\PhysicsCommandBuffer.cpp">
@@ -1185,11 +1200,26 @@
     <ClCompile Include="Source\Physics\System\PhysicsAPI.cpp">
       <Filter>ソース ファイル\Physics\System</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Physics\Component\Common\CharacterController.cpp">
-      <Filter>ソース ファイル\Physics\Component\CharacterController</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Physics\Storage\CharacterController\CharacterControllerStorage.cpp">
       <Filter>ソース ファイル\Physics\Storage\CharacterController</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Physics\Storage\Component\CharacterController\CharacterControllerComponentStorage.cpp">
+      <Filter>ソース ファイル\Physics\Storage\Component\CharacterController</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Physics\Component\CharacterController\CharacterControllerComponent.cpp">
+      <Filter>ソース ファイル\Physics\Component\CharacterController</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Physics\System\Update\CharacterControllerSystem.cpp">
+      <Filter>ソース ファイル\Physics\System\Update</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Objects\Player.cpp">
+      <Filter>ソース ファイル\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Physics\DebugRender\ColliderDebugRenderingSystem.cpp">
+      <Filter>ソース ファイル\Physics\DebugRender</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Physics\Component\Collider\ColliderComponent.cpp">
+      <Filter>ソース ファイル\Physics\Component\Collider</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

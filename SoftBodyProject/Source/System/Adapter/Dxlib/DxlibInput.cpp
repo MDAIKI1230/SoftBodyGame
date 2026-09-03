@@ -27,50 +27,12 @@ void DxlibInput::Update()
 		// 切断時や取得失敗時に古い値を残さない
 		gamePadState = {};
 
-		// 状態の取得
-		DxLib::XINPUT_STATE state{};
-
-		int inputType{ DX_INPUT_PAD1 + i };
-
-		if (DxLib::GetJoypadXInputState(inputType, &state) == -1)
+		if (UpdateJoypadXInputState(gamePadState, DX_INPUT_PAD1 + i))
 		{
 			continue;
 		}
 
-		gamePadState.connected = true;
 
-		// ボタン
-		for (std::size_t buttonIndex{ 0 }; buttonIndex < (size_t)GamePadButton::Count; buttonIndex++)
-		{
-			// ボタンの列挙体すべての入力値を写す
-			int nativeButtonIndex{ DxlibConstants::DxlibXInputButtonTable[buttonIndex] };
-
-			if (nativeButtonIndex == DxlibConstants::DXLIB_INVALID_INPUT)
-			{
-				continue;
-			}
-
-			gamePadState.buttons[buttonIndex] = state.Buttons[nativeButtonIndex];
-		}
-
-		// トリガー
-		for (std::size_t axisIndex{ 0 }; axisIndex < (size_t)GamePadAxis1D::Count; axisIndex++)
-		{
-			auto member{ DxlibConstants::DxlibXInputAxis1DTable[axisIndex] };
-
-			gamePadState.axis1D[axisIndex] = NormalizeXInputTrigger(state.*member);
-		}
-
-		// スティック
-		for (std::size_t axisIndex{ 0 }; axisIndex < (size_t)GamePadAxis2D::Count; axisIndex++)
-		{
-			auto& members{ DxlibConstants::DxlibXInputAxis2DTable[axisIndex] };
-
-			gamePadState.axis2D[axisIndex] = Vector2{
-				NormalizeXInputStick(state.*members.x),
-				NormalizeXInputStick(state.*members.y)
-			};
-		}
 	}
 
 	// マウスポインタの位置情報更新
@@ -195,4 +157,128 @@ float DxlibInput::NormalizeXInputStick(const short _value)
 	}
 
 	return static_cast<float>(_value) / 32767.0f;
+}
+
+float DxlibInput::NormalizeDirectInputTrigger(const unsigned char _value)
+{
+	return 0;
+}
+
+float DxlibInput::NormalizeDirectInputStick(const int _value)
+{
+	if (_value < 0)
+	{
+		return static_cast<float>(_value) / 1000.0f;
+	}
+
+	return static_cast<float>(_value) / 1000.0f;
+}
+
+bool DxlibInput::UpdateJoypadXInputState(GamePadState& _state, int _inputType)
+{
+	// 状態の取得
+	DxLib::XINPUT_STATE state{};
+
+	if (DxLib::GetJoypadXInputState(_inputType, &state) == -1)
+	{
+		return false;
+	}
+
+	_state.connected = true;
+
+	// ボタン
+	for (std::size_t buttonIndex{ 0 }; buttonIndex < (size_t)GamePadButton::Count; buttonIndex++)
+	{
+		// ボタンの列挙体すべての入力値を写す
+		int nativeButtonIndex{ DxlibConstants::DxlibXInputButtonTable[buttonIndex] };
+
+		if (nativeButtonIndex == DxlibConstants::DXLIB_INVALID_INPUT)
+		{
+			continue;
+		}
+
+		_state.buttons[buttonIndex] = state.Buttons[nativeButtonIndex];
+	}
+
+	// トリガー
+	for (std::size_t axisIndex{ 0 }; axisIndex < (size_t)GamePadAxis1D::Count; axisIndex++)
+	{
+		auto member{ DxlibConstants::DxlibXInputAxis1DTable[axisIndex] };
+
+		_state.axis1D[axisIndex] = NormalizeXInputTrigger(state.*member);
+	}
+
+	// スティック
+	for (std::size_t axisIndex{ 0 }; axisIndex < (size_t)GamePadAxis2D::Count; axisIndex++)
+	{
+		auto& members{ DxlibConstants::DxlibXInputAxis2DTable[axisIndex] };
+
+		_state.axis2D[axisIndex] = Vector2{
+			NormalizeXInputStick(state.*members.x),
+			NormalizeXInputStick(state.*members.y)
+		};
+	}
+
+	return true;
+}
+
+bool DxlibInput::UpdateJoypadDirectInputState(GamePadState& _state, int _inputType)
+{
+	switch (DxLib::GetJoypadType(_inputType))
+	{
+	case DX_PADTYPE_SWITCH_PRO_CTRL:
+		return UpdateSwitchProCtrl(_state, _inputType);
+	default:
+		break;
+	}
+
+	return false;
+}
+// スイッチプロコン入力読み込み
+bool DxlibInput::UpdateSwitchProCtrl(GamePadState& _state, int _inputType)
+{
+	// 状態の取得
+	DxLib::DINPUT_JOYSTATE state{};
+
+	if (DxLib::GetJoypadDirectInputState(_inputType, &state))
+	{
+		return false;
+	}
+
+	_state.connected = true;
+
+	// ボタン
+	for (std::size_t buttonIndex{ 0 }; buttonIndex < (size_t)GamePadButton::Count; buttonIndex++)
+	{
+		// ボタンの列挙体すべての入力値を写す
+		int nativeButtonIndex{ DxlibConstants::DxlibXInputButtonTable[buttonIndex] };
+
+		if (nativeButtonIndex == DxlibConstants::DXLIB_INVALID_INPUT)
+		{
+			continue;
+		}
+
+		_state.buttons[buttonIndex] = state.Buttons[nativeButtonIndex];
+	}
+
+	// トリガー
+	for (std::size_t axisIndex{ 0 }; axisIndex < (size_t)GamePadAxis1D::Count; axisIndex++)
+	{
+		auto member{ DxlibConstants::DxlibXInputAxis1DTable[axisIndex] };
+
+		_state.axis1D[axisIndex] = NormalizeXInputTrigger(state.Rx);
+	}
+
+	// スティック
+	for (std::size_t axisIndex{ 0 }; axisIndex < (size_t)GamePadAxis2D::Count; axisIndex++)
+	{
+		auto& members{ DxlibConstants::DxlibXInputAxis2DTable[axisIndex] };
+
+		_state.axis2D[axisIndex] = Vector2{
+			NormalizeDirectInputStick(state.X),
+			NormalizeDirectInputStick(state.Y)
+		};
+	}
+
+	return true;
 }

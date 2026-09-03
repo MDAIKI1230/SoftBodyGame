@@ -17,6 +17,7 @@
 #include "DebugBox.h"
 #include "DebugCapsule.h"
 #include "EmptyObject.h"
+#include "Player.h"
 
 #include "DebugScene.h"
 
@@ -28,12 +29,16 @@ DebugScene::DebugScene()
 // 初期化
 void DebugScene::Initialize()
 {
+	ServiceLocator::GetInputSytem()->LoadAsset("Res/Data/Input/CharacterInput.json");
+
 	std::unique_ptr<Camera> camera{ std::make_unique<Camera>(worldStorage.get(), objectManager->GenerateNewID(), Vector3{0,-175,-500},Vector3{0,-175,0}) };
 	ServiceLocator::GetRenderer()->SetCamera(camera.get());
 	ServiceLocator::GetResourceManager()->LoadCubeTexture("Res/Texture/Sky/NaturalDayMeadow_Cubemap.dds");
 	camera->GetComponent<CameraComponent>()->SetSkyTextureHandle(ServiceLocator::GetResourceManager()->GetCubeTexture("NaturalDayMeadow_Cubemap.dds"));
 	camera->GetComponent<CameraComponent>()->SetClearMode(ClearMode::SKY);
 	objectManager->Add(std::move(camera));
+
+	objectManager->Add(std::make_unique<Player>(worldStorage.get(), objectManager->GenerateNewID()));
 
 	objectManager->Add(std::make_unique<DebugSphere>(worldStorage.get(), objectManager->GenerateNewID()));
 

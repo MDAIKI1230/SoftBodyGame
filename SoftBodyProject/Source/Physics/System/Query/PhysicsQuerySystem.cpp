@@ -4,9 +4,24 @@
 
 bool PhysicsQuerySystem::RayCastHit(const Ray& _ray, RayCastHitInfo& _hitInfo, ColliderStorage* _colliderStorage, PhysicsTransformStorage* _transformStorage)
 {
+	RayCastQueryHitInfo info;
+	if (RayCastHit(_ray, info, _colliderStorage, _transformStorage))
+	{
+		_hitInfo.point = info.point;
+		_hitInfo.normal = info.normal;
+		_hitInfo.distance = info.distance;
+
+		return true;
+	}
+
+	return false;
+}
+
+bool PhysicsQuerySystem::RayCastHit(const Ray& _ray, RayCastQueryHitInfo& _hitInfo, ColliderStorage* _colliderStorage, PhysicsTransformStorage* _transformStorage)
+{
 	bool found{ false };
 	float bestDistance{ _ray.maxDistance };
-	RayCastHitInfo bestHit{};
+	RayCastQueryHitInfo bestHit{};
 
 	Ray ray{ _ray };
 	ray.direction.Normalize();
@@ -43,7 +58,7 @@ bool PhysicsQuerySystem::RayCastHit(const Ray& _ray, RayCastHitInfo& _hitInfo, C
 		if (hitInfo.distance < bestDistance)
 		{
 			bestDistance = hitInfo.distance;
-			bestHit = hitInfo;
+			bestHit = RayCastQueryHitInfo{ hitInfo.point,hitInfo.normal,hitInfo.distance,aabb.colliderID };
 			found = true;
 		}
 	}

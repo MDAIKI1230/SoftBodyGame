@@ -4,6 +4,11 @@
 
 #include "PhysicsWorld.h"
 
+#include "TransformComponent.h"
+#include "ColliderComponent.h"
+
+#include "WorldStorage.h"
+
 class PhysicsComponentAPI
 {
 public:
@@ -77,7 +82,7 @@ public:
 	static int GetSegmentCount(BodyID _id);
 	// 分割数変更
 	static void SetSegmentCount(BodyID _id, int _segmentCount);
-	
+
 	// --- クロス系 ---
 
 	// 横幅取得
@@ -188,15 +193,134 @@ public:
 	// 拘束からEndPoint除外
 	static void RemoveEndPoint(ConstraintID _id, EntityID _entity);
 
-	static void BindWorld(PhysicsWorld& _physicsWorld);
+	// --- キャラクターコントローラー ---
+
+	// 作成
+	static CharacterControllerID CreateCharacterController(EntityID _entity);
+	// 破壊
+	static void DestroyCharacterController(CharacterControllerID _id);
+	// 追加可否判定
+	static bool CanAddCharacterController(EntityID _entity);
+
+	// --- 回転 ---
+
+	// 現在の回転取得
+	static Quaternion GetCharacterControllerRotation(CharacterControllerID _id);
+	// 回転設定
+	static void SetCharacterControllerRotation(CharacterControllerID _id, const Quaternion& _rotation);
+	// 現在の回転へ加算
+	static void RotateCharacterController(CharacterControllerID _id, const Quaternion& _rotation);
+
+	// --- 操作要求 ---
+
+	// ワールド空間の移動入力取得
+	static const Vector3& GetCharacterControllerMoveInput(CharacterControllerID _id);
+	// ワールド空間の移動入力設定
+	static void SetCharacterControllerMoveInput(CharacterControllerID _id, const Vector3& _moveInput);
+
+	// ジャンプ要求取得
+	static bool GetCharacterControllerJumpRequest(CharacterControllerID _id);
+	// ジャンプ要求設定
+	static void SetCharacterControllerJumpRequest(CharacterControllerID _id, bool _request);
+
+	// 標準移動制御の有効状態取得
+	static bool GetCharacterControllerMotorEnabled(CharacterControllerID _id);
+	// 標準移動制御の有効状態設定
+	static void SetCharacterControllerMotorEnabled(CharacterControllerID _id, bool _enabled);
+
+	// --- Collider設定 ---
+
+	// カプセル中央部分の高さ取得
+	static float GetCharacterControllerColliderHeight(CharacterControllerID _id);
+	// カプセル中央部分の高さ設定
+	static void SetCharacterControllerColliderHeight(CharacterControllerID _id, float _height);
+
+	// カプセル半径取得
+	static float GetCharacterControllerColliderRadius(CharacterControllerID _id);
+	// カプセル半径設定
+	static void SetCharacterControllerColliderRadius(CharacterControllerID _id, float _radius);
+
+	// --- 移動設定 ---
+
+	// 最大移動速度取得
+	static float GetCharacterControllerMaxSpeed(CharacterControllerID _id);
+	// 最大移動速度設定
+	static void SetCharacterControllerMaxSpeed(CharacterControllerID _id, float _maxSpeed);
+
+	// 地上での最大加速度取得
+	static float GetCharacterControllerGroundAcceleration(CharacterControllerID _id);
+	// 地上での最大加速度設定
+	static void SetCharacterControllerGroundAcceleration(CharacterControllerID _id, float _acceleration);
+
+	// 地上での最大減速度取得
+	static float GetCharacterControllerGroundDeceleration(CharacterControllerID _id);
+	// 地上での最大減速度設定
+	static void SetCharacterControllerGroundDeceleration(CharacterControllerID _id, float _deceleration);
+
+	// 空中での最大加速度取得
+	static float GetCharacterControllerAirAcceleration(CharacterControllerID _id);
+	// 空中での最大加速度設定
+	static void SetCharacterControllerAirAcceleration(CharacterControllerID _id, float _acceleration);
+
+	// ジャンプ速度取得
+	static float GetCharacterControllerJumpSpeed(CharacterControllerID _id);
+	// ジャンプ速度設定
+	static void SetCharacterControllerJumpSpeed(CharacterControllerID _id, float _jumpSpeed);
+
+	// 急斜面での滑り加速度取得
+	static float GetCharacterControllerSlopeAcceleration(CharacterControllerID _id);
+	// 急斜面での滑り加速度設定
+	static void SetCharacterControllerSlopeAcceleration(CharacterControllerID _id, float _acceleration);
+
+	// --- 接地設定 ---
+
+	// 地面探索距離取得
+	static float GetCharacterControllerGroundProbeDistance(CharacterControllerID _id);
+	// 地面探索距離設定
+	static void SetCharacterControllerGroundProbeDistance(CharacterControllerID _id, float _distance);
+
+	// 歩行可能判定の最小法線内積取得
+	static float GetCharacterControllerMinGroundDot(CharacterControllerID _id);
+	// 歩行可能判定の最小法線内積設定
+	static void SetCharacterControllerMinGroundDot(CharacterControllerID _id, float _minGroundDot);
+
+	// --- 接地状態 ---
+
+	// 接地状態取得
+	static CharacterGroundState GetCharacterControllerGroundState(CharacterControllerID _id);
+	// 検出した地面法線取得
+	static const Vector3& GetCharacterControllerGroundNormal(CharacterControllerID _id);
+	// 検出した地面位置取得
+	static const Vector3& GetCharacterControllerGroundPoint(CharacterControllerID _id);
+	// カプセル底面から地面までの距離取得
+	static float GetCharacterControllerGroundDistance(CharacterControllerID _id);
+	// 検出した地面Collider取得
+	static ColliderComponent GetCharacterControllerGroundCollider(CharacterControllerID _id);
+
+	static void BindWorld(PhysicsWorld& _physicsWorld, WorldStorage& _componentWorld);
 	static void UnbindWorld();
-	
+
 private:
+	friend struct ColliderComponent;
+
+	// ColliderComponent内部用
+	static bool IsColliderAlive(ColliderID _id);
+	static ColliderType GetColliderType(ColliderID _id);
+
+	// CharacterController内部情報取得
+	static ColliderID GetCharacterControllerColliderID(CharacterControllerID _id);
+	static TransformComponent* TryGetCharacterControllerTransform(CharacterControllerID _id);
+
+	// ColliderのAABB変更通知
+	static void MarkColliderDirty(ColliderID _id, AABBChangeDiaryFlag _flag);
+
+	static WorldStorage* componentWorld;
 	static PhysicsWorld* physicsWorld;
 	static ColliderStorage* colliderStorage;
 	static BodyStorage* bodyStorage;
 	static PhysicsTransformStorage* transformStorage;
 	static ConstraintStorage* constraintStorage;
+	static CharacterControllerStorage* characterControllerStorage;
 
 	PhysicsComponentAPI();
 };

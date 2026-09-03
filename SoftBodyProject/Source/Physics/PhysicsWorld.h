@@ -13,8 +13,10 @@
 #include "BodyStorage.h"
 #include "PhysicsTransformStorage.h"
 #include "ConstraintStorage.h"
+#include "CharacterControllerStorage.h"
 
 #include "SynchronizationSystem.h"
+#include "CharacterControllerSystem.h"
 #include "RigidBodySystem.h"
 #include "AABBUpdateSystem.h"
 #include "CollisionSystem.h"
@@ -25,15 +27,17 @@
 #include "SolverBodyCommitSystem.h"
 #include "PhysicsCommitSystem.h"
 
-#include "System/Query/PhysicsQuerySystem.h"
-
 #ifdef _DEBUG
-#include "ConstraintDebugRenderSystem.h"
+#include "ConstraintDebugRenderingSystem.h"
+#include "ColliderDebugRenderingSystem.h"
 #endif // DEBUG
 
 
 class PhysicsWorld
 {
+	friend class PhysicsAPI;
+	friend class PhysicsComponentAPI;
+
 public:
 	// 物理更新
 	void FixedUpdate(WorldStorage* _worldStorage, EventManager* _eventManager);
@@ -43,6 +47,7 @@ public:
 	void DebugRender();
 #endif // _DEBUG
 
+private:
 	// コライダーストレージ取得
 	ColliderStorage* GetColliderStorage() { return &colliderStorage; }
 	// RigidBodyストレージ取得
@@ -51,7 +56,9 @@ public:
 	PhysicsTransformStorage* GetPhysicsTransformStorage() { return &transformStorage; }
 	// Constraintストレージ取得
 	ConstraintStorage* GetConstraintStorage() { return &constraintStorage; }
-private:
+	// CharacterControllerストレージ取得
+	CharacterControllerStorage* GetCharacterControllerStorage() { return &characterControllerStorage; }
+
 	void Solver();
 private:
 	// 解消回数
@@ -60,14 +67,15 @@ private:
 	CollisionManifoldBuffer manifoldBuffer;
 	SolverBodyBuffer solverBodyBuffer;
 	ConstraintBuffer constraintBuffer;
-
-
+	CharacterControllerSystem characterControllerSystem;
 	ColliderStorage colliderStorage;
 	BodyStorage bodyStorage;
 	PhysicsTransformStorage transformStorage;
 	ConstraintStorage constraintStorage;
+	CharacterControllerStorage characterControllerStorage;
 
 	SynchronizationSystem synchronizationSystem;
+	
 	RigidBodySystem rigidBodySystem;
 	AABBUpdateSystem aabbUpdateSystem;
 	CollisionSystem collisionSystem;
@@ -80,6 +88,7 @@ private:
 
 	// --- デバッグ用 ---
 #ifdef _DEBUG
-	ConstraintDebugRenderSystem constraintDebugRenderSystem;
+	ConstraintDebugRenderingSystem constraintDebugRenderingSystem;
+	ColliderDebugRenderingSystem colliderDebugRenderingSystem;
 #endif // _DEBUG
 };

@@ -4,6 +4,8 @@ void PhysicsWorld::FixedUpdate(WorldStorage* _worldStorage, EventManager* _event
 {
 	// 更新処理
 	synchronizationSystem.Sync(_worldStorage, &transformStorage);
+	aabbUpdateSystem.FixedUpdate(&transformStorage, &colliderStorage);
+	characterControllerSystem.FixedUpdate(&characterControllerStorage, &transformStorage, &bodyStorage, &colliderStorage);
 	rigidBodySystem.FixedUpdate(&transformStorage, &bodyStorage, &colliderStorage);
 	aabbUpdateSystem.FixedUpdate(&transformStorage, &colliderStorage);
 
@@ -20,7 +22,8 @@ void PhysicsWorld::FixedUpdate(WorldStorage* _worldStorage, EventManager* _event
 #ifdef _DEBUG
 void PhysicsWorld::DebugRender()
 {
-	constraintDebugRenderSystem.Render(&constraintStorage, &transformStorage);
+	constraintDebugRenderingSystem.Render(&transformStorage, &constraintStorage);
+	colliderDebugRenderingSystem.Render(&transformStorage, &colliderStorage);
 }
 #endif // _DEBUG
 

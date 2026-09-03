@@ -6,7 +6,6 @@
 #include "ModelRenderingSystem.h"
 #include "RendererComponentStorage.h"
 #include "CameraComponentStorage.h"
-#include "DebugRenderingSystem.h"
 #include "SkyRenderingSystem.h"
 
 // Transform
@@ -28,6 +27,9 @@
 // 拘束
 #include "PointConstraintComponentStorage.h"
 #include "DistanceConstraintComponentStorage.h"
+
+// キャラクターコントローラー
+#include "CharacterControllerComponentStorage.h"
 
 // API
 #include "PhysicsComponentAPI.h"
@@ -71,15 +73,15 @@ SceneBase::SceneBase()
 	// 拘束
 	AddStorage<PointConstraintComponent>(std::make_unique<PointConstraintComponentStorage>());
 	AddStorage<DistanceConstraintComponent>(std::make_unique<DistanceConstraintComponentStorage>());
+
+	// キャラクターコントローラー
+	AddStorage<CharacterControllerComponent>(std::make_unique<CharacterControllerComponentStorage>());
+
 	// オブジェクトマネージャー
 	objectManager = std::make_unique<ObjectManager>();
 
-	PhysicsComponentAPI::BindWorld(*physicsWorld.get());
+	PhysicsComponentAPI::BindWorld(*physicsWorld.get(), *worldStorage.get());
 	PhysicsAPI::BindWorld(*physicsWorld.get());
-
-#ifdef _DEBUG
-	AddSystem(std::make_unique<DebugRenderingSystem>());
-#endif // _DEBUG
 }
 
 void SceneBase::Execute()

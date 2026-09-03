@@ -22,7 +22,7 @@ void RigidBodySystem::UpdateGravity(BodyStorage* _bodyStorage)
 		if (_bodyStorage->GetRigidBodyIsGravity(bodyID))
 		{
 			// 質量×重力加速度(Δtに離散化)を力に加算
-			_bodyStorage->EditRigidBodyForce(bodyID) += _bodyStorage->GetRigidBodyGravity(bodyID) * ServiceLocator::GetTimeManager()->GetFixedDeltaTime() * _bodyStorage->GetRigidBodyMass(bodyID);
+			_bodyStorage->EditRigidBodyForce(bodyID) += _bodyStorage->GetRigidBodyGravity(bodyID) * _bodyStorage->GetRigidBodyMass(bodyID);
 		}
 	}
 }

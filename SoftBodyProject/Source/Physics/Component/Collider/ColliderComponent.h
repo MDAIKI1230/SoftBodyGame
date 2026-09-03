@@ -1,37 +1,49 @@
 ﻿#pragma once
 
 #include "ColliderID.h"
-#include "EntityID.h"
 
-#ifdef _DEBUG
-#include "Color.h"
-#endif // DEBUG
+#include "CollisionConstants.h"
 
 struct ColliderComponent
 {
 public:
-	// コンストラクタ
+	// 無効なColliderComponentを作成
+	ColliderComponent() = default;
+
+	// 派生ColliderComponent生成用
 	ColliderComponent(ColliderID _id) :
 		id{ _id }
 	{
 	}
 
-#ifdef _DEBUG
-	// 色取得
-	const Color& GetColor() const { return color; }
-	// 色セット
-	void SetColor(const Color& _color) { color = _color; }
-#endif // DEBUG
-
 	// 仮想デストラクタ
 	virtual ~ColliderComponent() = default;
 
-	// ID取得
+	// Colliderが現在も有効か
+	bool IsValid() const;
+
+	// Colliderが有効ならtrue
+	explicit operator bool() const;
+
+	// Colliderの種類取得
+	ColliderType GetType() const;
+
+	// Sphereか
+	bool IsSphere() const;
+
+	// Boxか
+	bool IsBox() const;
+
+	// Capsuleか
+	bool IsCapsule() const;
+
+	// 同じColliderか比較
+	bool operator==(const ColliderComponent& _other) const;
+
+	// Storage内部用ID取得
 	ColliderID GetID() const { return id; }
+
 protected:
+	// 派生ColliderComponent内部用
 	ColliderID id{};
-	// デバッグの色
-#ifdef _DEBUG
-	Color color;
-#endif // _DEBUG
 };

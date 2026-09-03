@@ -3,27 +3,24 @@
 #include <cstdint>
 
 #include "EntityID.h"
-#include "PhysicsTransformID.h"
-#include "ColliderID.h"
 
 struct CharacterControllerSlot
 {
 public:
-	CharacterControllerSlot(uint32_t _denseIndex, EntityID _ownerEntity, PhysicsTransformID _transformID, ColliderID _colliderID) :
+	CharacterControllerSlot(uint32_t _denseIndex, EntityID _ownerEntity) :
 		denseIndex{ _denseIndex },
-		ownerEntity{ _ownerEntity },
-		transformID{ _transformID },
-		colliderID{ _colliderID }
+		ownerEntity{ _ownerEntity }
 	{
 	}
 
-private:
+public:
+	// 世代
+	uint32_t generation{ 1 };
+	// 生存フラグ
+	bool alive{ true };
+
 	// 実データ上のインデックス
 	uint32_t denseIndex;
 	// オブジェクトエンティティ
 	EntityID ownerEntity;
-	// Transform
-	PhysicsTransformID transformID;
-	// Collider
-	ColliderID colliderID;
 };

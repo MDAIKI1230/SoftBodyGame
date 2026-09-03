@@ -4,6 +4,12 @@
 
 #include "InputSystem.h"
 
+// 初期化
+void InputSystem::Initialize()
+{
+	nativeInput->Initialize();
+}
+
 bool InputSystem::LoadAsset(std::string _path)
 {
 	if (InputAssetDataLoader::LoadAsset(_path, data))

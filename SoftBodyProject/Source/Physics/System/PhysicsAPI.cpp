@@ -1,4 +1,6 @@
-﻿#include "PhysicsAPI.h"
+﻿#include "Query/PhysicsQuerySystem.h"
+
+#include "PhysicsAPI.h"
 
 bool PhysicsAPI::RayCastHit(const Ray& _ray, RayCastHitInfo& _hitInfo)
 {

@@ -34,6 +34,17 @@ private:
 
 	float NormalizeXInputTrigger(const unsigned char _value);
 	float NormalizeXInputStick(const short _value);
+
+	float NormalizeDirectInputTrigger(const unsigned char _value);
+	float NormalizeDirectInputStick(const int _value);
+
+	// --- ゲームパッド更新関数 ---
+
+	bool UpdateJoypadXInputState(GamePadState& _state, int _inputType);
+	bool UpdateJoypadDirectInputState(GamePadState& _state, int _inputType);
+
+	// スイッチプロコン入力読み込み
+	bool UpdateSwitchProCtrl(GamePadState& _state, int _inputType);
 private:
 	static constexpr int MAX_GAMEPAD_COUNT{ 16 };
 private:

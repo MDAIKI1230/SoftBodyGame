@@ -2,6 +2,9 @@
 
 #include "PhysicsWorld.h"
 
+#include "Ray.h"
+#include "RayCastHitInfo.h"
+
 class PhysicsAPI
 {
 public:
