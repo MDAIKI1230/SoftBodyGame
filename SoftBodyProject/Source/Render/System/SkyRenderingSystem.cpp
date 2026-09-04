@@ -9,7 +9,7 @@
 void SkyRenderingSystem::Initialize()
 {
 	ServiceLocator::GetResourceManager()->LoadModel("Res/Model/SkyCube/SkyCube.mv1");
-	sphereHandle = ServiceLocator::GetResourceManager()->GetModel("SkyCube.mv1");
+	boxHandle = ServiceLocator::GetResourceManager()->GetModel("SkyCube.mv1");
 	ServiceLocator::GetResourceManager()->LoadVertexShader("Shader/HLSL/Sky/SkyVS.vso");
 	ServiceLocator::GetResourceManager()->LoadPixelShader("Shader/HLSL/Sky/SkyPS.pso");
 	solidSkyVertexShader = ServiceLocator::GetResourceManager()->GetVertexShader("SkyVS.vso");
@@ -31,14 +31,17 @@ void SkyRenderingSystem::Draw(WorldStorage* _worldStorage, EventManager* _eventM
 
 	for (auto cameraEntity : cameraStorage->GetEntities())
 	{
-		const TransformComponent& trns{ transformStorage->Get(cameraEntity) };
+		const TransformComponent& trans{ transformStorage->Get(cameraEntity) };
 
 		SkySolidConstantBuffer cbData;
 
 		const CameraComponent& camera{ cameraStorage->Get(cameraEntity) };
 
+		// モデルをカメラの位置に持ってくる。
+		ServiceLocator::GetRenderer()->ModelSetMatrix(boxHandle, trans.GetWorldMatrix());
+
 		cbData.world = Matrix4x4::Identity();
-		cbData.view = MatGenerateFunc::InverseTRS(trns.GetPosition(), trns.GetRotation(), Vector3{ 1.0f,1.0f, 1.0f });
+		cbData.view = MatGenerateFunc::InverseTRS(trans.GetPosition(), trans.GetRotation(), Vector3{ 1.0f,1.0f, 1.0f });
 
 		// Projection行列作成
 		const ViewPort& vp{ camera.GetViewPort() };
@@ -64,10 +67,10 @@ void SkyRenderingSystem::Draw(WorldStorage* _worldStorage, EventManager* _eventM
 
 		ServiceLocator::GetGPUConnecter()->UpdateConstantBuffer(constantBufferHandle, &cbData, sizeof(SkySolidConstantBuffer));
 		
-		ServiceLocator::GetGPUConnecter()->BindConstantBufferPixel(constantBufferHandle, 0);
-		ServiceLocator::GetGPUConnecter()->BindConstantBufferVertex(constantBufferHandle, 0);
+		ServiceLocator::GetGPUConnecter()->BindConstantBufferPixel(constantBufferHandle, 4);
+		ServiceLocator::GetGPUConnecter()->BindConstantBufferVertex(constantBufferHandle, 4);
 
-		ServiceLocator::GetRenderer()->DrawModel(sphereHandle);
+		ServiceLocator::GetRenderer()->DrawModel(boxHandle);
 	}
 
 	ServiceLocator::GetGPUConnecter()->EndGraphicsShader();

@@ -512,10 +512,10 @@ InputInteractionEvents InputSystem::UpdateInteractionPress(InputActionRuntimeSta
 			result.performed = true;
 		}
 		break;
-
 	case InputActionPhase::PERFORMED:
 		if (currentActuated)
 		{
+			result.performed = true;
 			_state.interactionTime += ServiceLocator::GetTimeManager()->GetDeltaTime();
 		}
 
@@ -525,7 +525,6 @@ InputInteractionEvents InputSystem::UpdateInteractionPress(InputActionRuntimeSta
 			result.canceled = true;
 		}
 		break;
-
 	case InputActionPhase::STARTED:
 	case InputActionPhase::CANCELED:
 	default:

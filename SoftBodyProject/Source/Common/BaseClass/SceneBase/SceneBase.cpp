@@ -31,6 +31,11 @@
 // キャラクターコントローラー
 #include "CharacterControllerComponentStorage.h"
 
+// カメラ
+#include "CameraRigSystem.h"
+#include "CameraBindSystem.h"
+#include "CameraRigComponentStorage.h"
+
 // API
 #include "PhysicsComponentAPI.h"
 #include "PhysicsAPI.h"
@@ -77,6 +82,11 @@ SceneBase::SceneBase()
 	// キャラクターコントローラー
 	AddStorage<CharacterControllerComponent>(std::make_unique<CharacterControllerComponentStorage>());
 
+	// カメラ
+	AddSystem(std::make_unique<CameraRigSystem>());
+	AddSystem(std::make_unique<CameraBindSystem>());
+	AddStorage<CameraRigComponent>(std::make_unique<CameraRigComponentStorage>());
+
 	// オブジェクトマネージャー
 	objectManager = std::make_unique<ObjectManager>();
 
@@ -119,33 +129,6 @@ void SceneBase::Execute()
 	}
 }
 
-/// <summary>
-/// システムの追加(moveされる)
-/// </summary>
-/// <param name="system">入れたいシステム</param>
-void SceneBase::AddSystem(std::unique_ptr<UpdateSystem>&& _system)
-{
-	systemManager->AddSystem(std::move(_system));
-}
-
-/// <summary>
-/// システムの追加(moveされる)
-/// </summary>
-/// <param name="system">入れたいシステム</param>
-void SceneBase::AddSystem(std::unique_ptr<FixedUpdateSystem>&& _system)
-{
-	systemManager->AddSystem(std::move(_system));
-}
-
-/// <summary>
-/// システムの追加(moveされる)
-/// </summary>
-/// <param name="system">入れたいシステム</param>
-void SceneBase::AddSystem(std::unique_ptr<RenderingSystem>&& _system)
-{
-	systemManager->AddSystem(std::move(_system));
-}
-
 void SceneBase::FadeIn()
 {
 	
@@ -176,6 +159,9 @@ void SceneBase::Update()
 
 		physicsWorld->FixedUpdate(worldStorage.get(), eventManager.get());
 	}
+
+	// 物理更新終わり描画までのタイミングで更新
+	systemManager->LateUpdate(worldStorage.get(), eventManager.get());
 }
 
 void SceneBase::Render()

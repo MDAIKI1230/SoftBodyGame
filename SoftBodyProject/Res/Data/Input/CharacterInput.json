@@ -6,9 +6,10 @@
   "ControlSchemes": [
     {
       "ID": 1000000000000000002,
-      "Name": "Keyboard",
+      "Name": "KeyboardAndMouse",
       "Devices": [
-        "<Keyboard>"
+        "<Keyboard>",
+        "<Mouse>"
       ]
     },
     {
@@ -99,6 +100,53 @@
               "Name": "SouthButton",
               "Kind": "Control",
               "Path": "<GamePad>/buttonSouth",
+              "SchemeIDs": [
+                1000000000000000003
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "ID": 1000000000000000015,
+      "Name": "Camera",
+      "Actions": [
+        {
+          "ID": 1000000000000000016,
+          "Name": "LookMouse",
+          "Type": "Value",
+          "ValueType": "Vector2",
+          "Interaction": {
+            "Type": "Press"
+          },
+          "Bindings": [
+            {
+              "ID": 1000000000000000017,
+              "Name": "MouseDelta",
+              "Kind": "Control",
+              "Path": "<Mouse>/delta",
+              "SchemeIDs": [
+                1000000000000000002
+              ]
+            }
+          ]
+        },
+        {
+          "ID": 1000000000000000018,
+          "Name": "LookGamePad",
+          "Type": "Value",
+          "ValueType": "Vector2",
+          "Interaction": {
+            "Type": "Press"
+          },
+          "Bindings": [
+            {
+              "ID": 1000000000000000019,
+              "Name": "RightStick",
+              "Kind": "Control",
+              "Path": "<GamePad>/rightStick",
+              "DeadZone": 0.15,
               "SchemeIDs": [
                 1000000000000000003
               ]

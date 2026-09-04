@@ -5,23 +5,18 @@
 
 #include "TransformComponent.h"
 #include "CameraComponent.h"
+#include "CameraRigComponent.h"
 
 class Camera:public ObjectBase
 {
 public:
-	Camera(WorldStorage* _world, EntityID _entity, const Vector3& _position, const Vector3& _target) :
-		ObjectBase{ _world,_entity },
-		target{ _target }
+	Camera(WorldStorage* _world, EntityID _entity) :
+		ObjectBase{ _world,_entity }
 	{
 		trans = AddComponent<TransformComponent>();
-		trans->SetPosition(_position);
 		AddComponent<CameraComponent>();
+		AddComponent<CameraRigComponent>();
 	}
-
-	// 位置取得
-	const Vector3& GetPos()const { return trans->GetPosition(); }
-	// ターゲット位置取得
-	const Vector3& GetTarget()const { return target; }
 
 	// --- 更新系 ---
 
@@ -34,8 +29,5 @@ public:
 	void OnCollision() override {}
 	void OnCollisionExit() override {}
 private:
-	// 見るオブジェクト
-	Vector3 target{};
-
 	TransformComponent* trans;
 };

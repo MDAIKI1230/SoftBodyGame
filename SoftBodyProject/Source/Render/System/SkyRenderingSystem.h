@@ -20,10 +20,10 @@ private:
 		Matrix4x4 view;
 		Matrix4x4 projection;
 		Color skyColor;
-		uint32_t solidFlag;
+		uint32_t solidFlag{ 0 };
 	};
 
-	ModelHandle sphereHandle;
+	ModelHandle boxHandle;
 	ShaderConstantBufferHandle constantBufferHandle;
 	VertexShaderHandle solidSkyVertexShader;
 	PixelShaderHandle solidSkyPixelShader;

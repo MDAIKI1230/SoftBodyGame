@@ -32,17 +32,11 @@ protected:
 	/// システムの追加(moveされる)
 	/// </summary>
 	/// <param name="system">入れたいシステム</param>
-	void AddSystem(std::unique_ptr<UpdateSystem>&& _system);
-	/// <summary>
-	/// システムの追加(moveされる)
-	/// </summary>
-	/// <param name="system">入れたいシステム</param>
-	void AddSystem(std::unique_ptr<RenderingSystem>&& _system);
-	/// <summary>
-	/// システムの追加(moveされる)
-	/// </summary>
-	/// <param name="_system">入れたいシステム</param>
-	void AddSystem(std::unique_ptr<FixedUpdateSystem>&& _system);
+	template<class T>
+	void AddSystem(T&& _system)
+	{
+		systemManager->AddSystem(std::move(_system));
+	}
 	/// <summary>
 	/// ストレージの追加(moveされる)
 	/// </summary>

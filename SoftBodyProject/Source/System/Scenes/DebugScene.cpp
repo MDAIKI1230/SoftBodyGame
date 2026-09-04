@@ -31,14 +31,18 @@ void DebugScene::Initialize()
 {
 	ServiceLocator::GetInputSytem()->LoadAsset("Res/Data/Input/CharacterInput.json");
 
-	std::unique_ptr<Camera> camera{ std::make_unique<Camera>(worldStorage.get(), objectManager->GenerateNewID(), Vector3{0,-175,-500},Vector3{0,-175,0}) };
-	ServiceLocator::GetRenderer()->SetCamera(camera.get());
+	std::unique_ptr<Camera> camera{ std::make_unique<Camera>(worldStorage.get(), objectManager->GenerateNewID()) };
 	ServiceLocator::GetResourceManager()->LoadCubeTexture("Res/Texture/Sky/NaturalDayMeadow_Cubemap.dds");
 	camera->GetComponent<CameraComponent>()->SetSkyTextureHandle(ServiceLocator::GetResourceManager()->GetCubeTexture("NaturalDayMeadow_Cubemap.dds"));
 	camera->GetComponent<CameraComponent>()->SetClearMode(ClearMode::SKY);
+
+	Camera* cameraPtr{ camera.get() };
+
 	objectManager->Add(std::move(camera));
 
-	objectManager->Add(std::make_unique<Player>(worldStorage.get(), objectManager->GenerateNewID()));
+	std::unique_ptr<Player> player{ std::make_unique<Player>(worldStorage.get(), objectManager->GenerateNewID(), cameraPtr) };
+
+	objectManager->Add(std::move(player));
 
 	objectManager->Add(std::make_unique<DebugSphere>(worldStorage.get(), objectManager->GenerateNewID()));
 

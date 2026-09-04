@@ -11,3 +11,9 @@ enum class ClearMode :uint32_t
 	SOLID_COLOR,
 	SKY
 };
+
+enum class CameraMode
+{
+	FPS,
+	TPS
+};
