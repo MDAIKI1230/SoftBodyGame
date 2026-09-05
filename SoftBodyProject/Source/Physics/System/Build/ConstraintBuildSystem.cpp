@@ -1,4 +1,6 @@
-﻿#include "ConstraintBuildSystem.h"
+﻿#include "ServiceLocator.h"
+
+#include "ConstraintBuildSystem.h"
 
 void ConstraintBuildSystem::FixedUpdate(ConstraintStorage* _constraintStorage, SolverBodyBuffer* _solverBodyBuffer, ConstraintBuffer* _constraintBuffer)
 {
@@ -53,6 +55,8 @@ void ConstraintBuildSystem::BuildPointConstraint(ConstraintStorage* _constraintS
 			constraint.jacobian[2] = -Vector3::RIGHT;
 			constraint.jacobian[3] = -Vector3::Cross(rB, Vector3::RIGHT);
 
+			MakeConstraintInfo(constraint, pointConstraint);
+
 			// 拘束として追加
 			_constraintBuffer->Add(constraint);
 
@@ -66,6 +70,8 @@ void ConstraintBuildSystem::BuildPointConstraint(ConstraintStorage* _constraintS
 			constraint.jacobian[2] = -Vector3::UP;
 			constraint.jacobian[3] = -Vector3::Cross(rB, Vector3::UP);
 
+			MakeConstraintInfo(constraint, pointConstraint);
+
 			// 拘束として追加
 			_constraintBuffer->Add(constraint);
 
@@ -78,6 +84,8 @@ void ConstraintBuildSystem::BuildPointConstraint(ConstraintStorage* _constraintS
 			constraint.jacobian[1] = Vector3::Cross(rA, Vector3::FORWARD);
 			constraint.jacobian[2] = -Vector3::FORWARD;
 			constraint.jacobian[3] = -Vector3::Cross(rB, Vector3::FORWARD);
+
+			MakeConstraintInfo(constraint, pointConstraint);
 
 			// 拘束として追加
 			_constraintBuffer->Add(constraint);
@@ -143,8 +151,29 @@ void ConstraintBuildSystem::BuildDistanceConstraint(ConstraintStorage* _constrai
 			constraint.jacobian[2] = -normal;
 			constraint.jacobian[3] = -Vector3::Cross(rB, normal);
 
+			MakeConstraintInfo(constraint, distanceConstraint);
+
 			// 拘束として追加
 			_constraintBuffer->Add(constraint);
 		}
 	}
+}
+
+template<class T>
+void ConstraintBuildSystem::MakeConstraintInfo(Constraint& _constraint, const T& _base)
+{
+	float deltaTime{ ServiceLocator::GetTimeManager()->GetFixedDeltaTime() };
+
+	float denominator = _base.tuning.damping + deltaTime * _base.tuning.stiffness;
+
+	_constraint.softness = 1.0f / denominator;
+
+	float erp{ deltaTime * _base.tuning.stiffness / denominator };
+
+	_constraint.bias = erp / deltaTime * _constraint.error;
+
+	_constraint.targetVelocity = 0.0f;
+
+	_constraint.minLambda = -_base.tuning.maxForce * deltaTime;
+	_constraint.maxLambda = _base.tuning.maxForce * deltaTime;
 }

@@ -35,9 +35,6 @@ void ConstraintSolverSystem::Solve(SolverBodyBuffer* _solverBodyBuffer, Constrai
 		rotMat = MatGenerateFunc::Rotate(solverBodyB.rotation);
 		Matrix4x4 worldInverseInertiaTnesorB{ rotMat * solverBodyB.localInverseInertiaTensor * rotMat.Transposed() };
 
-		// biasを求める
-		const float bias{ ERP / ServiceLocator::GetTimeManager()->GetFixedDeltaTime() * constraint.error };
-
 		// Factorを計算した各種速度計算
 		Vector3 linearResponseA{
 			BodyStorage::ApplyLinearInverseMass(
@@ -97,13 +94,28 @@ void ConstraintSolverSystem::Solve(SolverBodyBuffer* _solverBodyBuffer, Constrai
 		}
 
 		// λ計算(CFMも適応)
-		float lambda{ (jv + bias) / (effectiveMass + GAMMA) };
+		float lambda{ (jv + constraint.bias) / (effectiveMass + GAMMA) };
 
 		float oldLambda{ constraint.accumulatedLambda };
 
-		// 0未満にしない
-		constraint.accumulatedLambda = oldLambda + lambda;
+		float denominator{ effectiveMass + constraint.softness };
 
+		if (denominator <= MathConstants::EPSILON)
+		{
+			continue;
+		}
+
+		// 今回のiterationで加えるλ
+		float deltaLambda{ (jv - constraint.targetVelocity + constraint.bias - constraint.softness * oldLambda) / denominator };
+
+		// 蓄積λ全体をClampする
+		constraint.accumulatedLambda = std::clamp(
+			oldLambda + deltaLambda,
+			constraint.minLambda,
+			constraint.maxLambda
+		);
+
+		// Clampによって実際に変化した分だけ適用
 		float applyLambda{ constraint.accumulatedLambda - oldLambda };
 
 		// A速度の解消

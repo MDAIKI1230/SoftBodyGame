@@ -33,18 +33,18 @@ void PhysicsWorld::Solver()
 	// 解消準備
 	collisionSolverSystem.StartUp(&colliderStorage, &manifoldBuffer, &solverBodyBuffer);
 
+	// 拘束生成
+	constraintBuildSystem.FixedUpdate(&constraintStorage, &solverBodyBuffer, &constraintBuffer);
+
 	// 速度解消を指定回数分回す
 	for (int i{ 0 }; i < SOLVER_TIMES; i++)
 	{
 		collisionSolverSystem.Solve(&manifoldBuffer, &solverBodyBuffer);
 
-		// 拘束生成
-		constraintBuildSystem.FixedUpdate(&constraintStorage, &solverBodyBuffer, &constraintBuffer);
-
 		constraintSolverSystem.Solve(&solverBodyBuffer, &constraintBuffer);
-
-		constraintBuffer.Clear();
 	}
+
+	constraintBuffer.Clear();
 
 	// 修正された速度で位置を再計算
 	collisionSolverSystem.ReCalcPosRot(&solverBodyBuffer);

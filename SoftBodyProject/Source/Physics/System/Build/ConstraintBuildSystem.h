@@ -12,4 +12,7 @@ public:
 private:
 	void BuildPointConstraint(ConstraintStorage* _constraintStorage, SolverBodyBuffer* _solverBodyBuffer, ConstraintBuffer* _constraintBuffer);
 	void BuildDistanceConstraint(ConstraintStorage* _constraintStorage, SolverBodyBuffer* _solverBodyBuffer, ConstraintBuffer* _constraintBuffer);
+
+	template<class T>
+	void MakeConstraintInfo(Constraint& _constraint, const T& _base);
 };

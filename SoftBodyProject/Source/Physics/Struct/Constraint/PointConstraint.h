@@ -3,6 +3,7 @@
 #include <vector>
 
 #include "EndPoint.h"
+#include "ConstraintTuning.h"
 
 struct PointConstraint
 {
@@ -25,4 +26,7 @@ public:
 public:
 	// 拘束のメンバー
 	std::vector<EndPoint> endPoints;
+
+	// 柔らかさなどの調整用数値
+	ConstraintTuning tuning;
 };

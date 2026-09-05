@@ -92,8 +92,11 @@ void CollisionSystem::BroadPhase(PhysicsTransformStorage* _transformStorage, Col
 		// 3軸すべてで交差しているなら
 		if (checkPair.second == 3)
 		{
-			// ナローフェーズに行けるペアとして追加
-			broadClearPairs.push_back(checkPair.first);
+			if (CanCollide(checkPair.first.a, checkPair.first.b, _colliderStorage))
+			{
+				// ナローフェーズに行けるペアとして追加
+				broadClearPairs.push_back(checkPair.first);
+			}
 		}
 	}
 }
@@ -506,4 +509,23 @@ void CollisionSystem::Swap(std::vector<ColliderProjection>& _projectionValues, i
 
 	projectionDatas[_projectionValues[_a].colliderID.GetIndex()].endpointIndex[_projectionValues[_a].axisType] = _a;
 	projectionDatas[_projectionValues[_b].colliderID.GetIndex()].endpointIndex[_projectionValues[_b].axisType] = _b;
+}
+
+bool CollisionSystem::CanCollide(ColliderID _a, ColliderID _b, ColliderStorage* _colliderStorage)
+{
+	// 同じPhysics BodyのCollider同士
+	if (_colliderStorage->GetTransformID(_a) ==
+		_colliderStorage->GetTransformID(_b))
+	{
+		return false;
+	}
+
+	// 今回は同一Entity内の自己衝突をすべて無効化
+	if (_colliderStorage->GetOwnerEntity(_a) ==
+		_colliderStorage->GetOwnerEntity(_b))
+	{
+		return false;
+	}
+
+	return true;
 }

@@ -281,6 +281,21 @@
     <Filter Include="ソース ファイル\Render\Storage">
       <UniqueIdentifier>{c6058d0a-0ee3-43d3-ad71-b9f65335fed7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Animation">
+      <UniqueIdentifier>{00fcc2b6-a452-436a-8c67-5591587dc19e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Animation\Component">
+      <UniqueIdentifier>{20dd96eb-594e-4a5f-89ba-91869fa9717f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Animation\Storage">
+      <UniqueIdentifier>{557d5555-fc57-4e66-9a94-35498c7bef58}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Animation\Storage\Component">
+      <UniqueIdentifier>{b46e6864-1e80-4225-911c-86e31d485be4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Animation\Struct">
+      <UniqueIdentifier>{1632145f-fac1-4a26-88cf-c483035160df}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Objects\Camera.h">
@@ -958,6 +973,21 @@
     <ClInclude Include="Source\Render\System\CameraRigSystem.h">
       <Filter>ソース ファイル\Render\System</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Animation\AnimationWorld.h">
+      <Filter>ソース ファイル\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Animation\Component\RagdollComponent.h">
+      <Filter>ソース ファイル\Animation\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Animation\Storage\Component\RagdollComponentStorage.h">
+      <Filter>ソース ファイル\Animation\Storage\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Animation\Struct\RagdollID.h">
+      <Filter>ソース ファイル\Animation\Struct</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Struct\Constraint\ConstraintTuning.h">
+      <Filter>ソース ファイル\Physics\Struct\Constraint</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\System\Scenes\DebugScene.cpp">
@@ -1182,12 +1212,6 @@
     <ClCompile Include="Source\Physics\Storage\Component\Collider\BoxColliderComponentStorage.cpp">
       <Filter>ソース ファイル\Physics\Storage\Component\Collider</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Physics\Storage\Component\Constraint\PointConstraintComponentStorage.cpp">
-      <Filter>ソース ファイル\Physics\Storage\Constraint</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Physics\Storage\Component\Constraint\DistanceConstraintComponentStorage.cpp">
-      <Filter>ソース ファイル\Physics\Storage\Constraint</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Common\Math\GeometryUtility.cpp">
       <Filter>ソース ファイル\Common\Math</Filter>
     </ClCompile>
@@ -1253,6 +1277,21 @@
     </ClCompile>
     <ClCompile Include="Source\Render\System\CameraBindSystem.cpp">
       <Filter>ソース ファイル\Render\System</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Animation\AnimationWorld.cpp">
+      <Filter>ソース ファイル\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Animation\Component\RagdollComponent.cpp">
+      <Filter>ソース ファイル\Animation\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Animation\Storage\Component\RagdollComponentStorage.cpp">
+      <Filter>ソース ファイル\Animation\Storage\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Physics\Storage\Component\Constraint\DistanceConstraintComponentStorage.cpp">
+      <Filter>ソース ファイル\Physics\Storage\Component\Constraint</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Physics\Storage\Component\Constraint\PointConstraintComponentStorage.cpp">
+      <Filter>ソース ファイル\Physics\Storage\Component\Constraint</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

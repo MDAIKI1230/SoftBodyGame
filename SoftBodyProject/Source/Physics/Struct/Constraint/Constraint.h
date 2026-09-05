@@ -17,4 +17,15 @@ struct Constraint
 	// 蓄積したλ
 	float accumulatedLambda{ 0 };
 	float accumulatedFrictionLambda{ 0 };
+
+	// 目標速度
+	float targetVelocity{ 0.0f };
+	// ERPから作られるバイアス
+	float bias{ 0.0f };
+	// 柔らかさ
+	float softness{ 0.0f };
+	// 加えれる力の最小値
+	float minLambda{ -FLT_MAX };
+	// 加えれる力の最大値
+	float maxLambda{ FLT_MAX };
 };
