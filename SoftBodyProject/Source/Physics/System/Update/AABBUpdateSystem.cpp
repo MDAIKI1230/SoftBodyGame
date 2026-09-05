@@ -64,7 +64,7 @@ void AABBUpdateSystem::ComputeSphere(AABBBroadPhaseCollider& _aabb, ColliderStor
 {
 	Vector3 scale{ _transformStorage->GetScale(_transformStorage->GetDenseIndex(_colliderStorage->GetTransformID(_id))) };
 	// 最大値で倍にする
-	float multiple{ std::max(std::max(scale.x,scale.y),scale.z) };
+	float multiple{ std::max(std::max(std::abs(scale.x),std::abs(scale.y)),std::abs(scale.z)) };
 	_aabb.min = Vector3{ -_colliderStorage->GetSphereColliderRadius(_id) * multiple };
 	_aabb.max = Vector3{ _colliderStorage->GetSphereColliderRadius(_id) * multiple };
 }
@@ -80,8 +80,10 @@ void AABBUpdateSystem::ComputeBox(AABBBroadPhaseCollider& _aabb, ColliderStorage
 
 	Vector3 halfScale{ _colliderStorage->GetBoxColliderScale(_id) * 0.5f};
 
+	const Vector3& scale{ _transformStorage->GetScale(transIndex) };
+	Vector3 absScale{ std::abs(scale.x),std::abs(scale.y),std::abs(scale.z) };
 	// 各方向に倍
-	halfScale = SIMDVectorMath::Mul(halfScale, _transformStorage->GetScale(transIndex));
+	halfScale = SIMDVectorMath::Mul(halfScale, absScale);
 
 	Vector3 aabbScale;
 
@@ -109,6 +111,17 @@ void AABBUpdateSystem::ComputeCapsule(AABBBroadPhaseCollider& _aabb, ColliderSto
 {
 	float radius{ _colliderStorage->GetCapsuleColliderRadius(_id) };
 	float height{ _colliderStorage->GetCapsuleColliderHeight(_id) };
-	_aabb.min = Vector3{ -radius,-height / 2.0f,-radius };
-	_aabb.max = Vector3{ radius,height / 2.0f,radius };
+	uint32_t transIndex{ _transformStorage->GetDenseIndex(_colliderStorage->GetTransformID(_id)) };
+	const Quaternion& rotation{ _transformStorage->GetRotation(transIndex) };
+
+	Vector3 axisHalf{ rotation.Rotate(Vector3::UP * (height * 0.5f)) };
+
+	Vector3 extent{
+		std::abs(axisHalf.x) + radius,
+		std::abs(axisHalf.y) + radius,
+		std::abs(axisHalf.z) + radius
+	};
+
+	_aabb.min = -extent;
+	_aabb.max = extent;
 }

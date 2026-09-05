@@ -22,7 +22,7 @@ void RigidBodySystem::UpdateGravity(BodyStorage* _bodyStorage)
 		if (_bodyStorage->GetRigidBodyIsGravity(bodyID))
 		{
 			// 質量×重力加速度(Δtに離散化)を力に加算
-			_bodyStorage->EditRigidBodyForce(bodyID) += _bodyStorage->GetRigidBodyGravity(bodyID) * ServiceLocator::GetTimeManager()->GetFixedDeltaTime() * _bodyStorage->GetRigidBodyMass(bodyID);
+			_bodyStorage->EditRigidBodyForce(bodyID) += _bodyStorage->GetRigidBodyGravity(bodyID) * _bodyStorage->GetRigidBodyMass(bodyID);
 		}
 	}
 }
@@ -35,7 +35,16 @@ void RigidBodySystem::UpdatePosition(PhysicsTransformStorage* _transformStorage,
 		PhysicsTransformID transformID{ _bodyStorage->GetTransformID(bodyID) };
 		uint32_t transIndex{ _transformStorage->GetDenseIndex(transformID) };
 		// 速度 + 加速度(力(Δt) * 質量の逆数)
-		_bodyStorage->EditRigidBodyVelocity(bodyID) += _bodyStorage->GetRigidBodyForce(bodyID) * ServiceLocator::GetTimeManager()->GetFixedDeltaTime() * _bodyStorage->GetRigidBodyInverseMass(bodyID);
+		Vector3& velocity{ _bodyStorage->EditRigidBodyVelocity(bodyID) };
+		
+		velocity += BodyStorage::ApplyLinearInverseMass(
+			_bodyStorage->GetRigidBodyForce(bodyID) * ServiceLocator::GetTimeManager()->GetFixedDeltaTime(),
+			_bodyStorage->GetRigidBodyInverseMass(bodyID),
+			_bodyStorage->GetRigidBodyPositionLock(bodyID));
+
+		velocity = SIMDVectorMath::Mul(
+			velocity,
+			_bodyStorage->GetRigidBodyPositionLock(bodyID));
 
 		// 位置保存
 		_bodyStorage->SetRigidBodyPastPosition(bodyID, _transformStorage->GetPosition(transIndex));
@@ -53,7 +62,19 @@ void RigidBodySystem::UpdateRotation(PhysicsTransformStorage* _transformStorage,
 		PhysicsTransformID transformID{ _bodyStorage->GetTransformID(bodyID) };
 		uint32_t transIndex{ _transformStorage->GetDenseIndex(transformID) };
 		// 角速度＋ 角加速度(トルク×慣性テンソルの逆数)
-		_bodyStorage->EditRigidBodyAngularVelocity(bodyID) += _bodyStorage->GetRigidBodyLocalInverseInertiaTensor(bodyID) * _bodyStorage->GetRigidBodyTorque(bodyID) * ServiceLocator::GetTimeManager()->GetFixedDeltaTime();
+		Vector3& angularVelocity{ _bodyStorage->EditRigidBodyAngularVelocity(bodyID) };
+
+		Matrix4x4 rotMat{ MatGenerateFunc::Rotate(_transformStorage->GetRotation(transIndex)) };
+
+		angularVelocity +=
+			BodyStorage::ApplyAngularInverseInertia(
+				rotMat * _bodyStorage->GetRigidBodyLocalInverseInertiaTensor(bodyID) * rotMat.Transposed(),
+				_bodyStorage->GetRigidBodyTorque(bodyID) * ServiceLocator::GetTimeManager()->GetFixedDeltaTime(),
+				_bodyStorage->GetRigidBodyRotationLock(bodyID));
+
+		angularVelocity = SIMDVectorMath::Mul(
+			angularVelocity,
+			_bodyStorage->GetRigidBodyRotationLock(bodyID));
 
 		// 角速度と慣性テンソルの逆行列からΔt分の四元数を作成
 		// Δω

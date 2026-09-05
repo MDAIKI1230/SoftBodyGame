@@ -1,9 +1,7 @@
 <Solution>
   <Configurations>
     <BuildType Name="DebugDxlib" />
-    <BuildType Name="DebugRaylib" />
     <BuildType Name="ReleaseDxlib" />
-    <BuildType Name="ReleaseRaylib" />
     <Platform Name="x64" />
     <Platform Name="x86" />
   </Configurations>

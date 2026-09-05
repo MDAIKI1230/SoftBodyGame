@@ -1,25 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
-    <ProjectConfiguration Include="DebugRaylib|Win32">
-      <Configuration>DebugRaylib</Configuration>
-      <Platform>Win32</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="DebugRaylib|x64">
-      <Configuration>DebugRaylib</Configuration>
-      <Platform>x64</Platform>
-    </ProjectConfiguration>
     <ProjectConfiguration Include="DebugDxlib|Win32">
       <Configuration>DebugDxlib</Configuration>
       <Platform>Win32</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="ReleaseRaylib|Win32">
-      <Configuration>ReleaseRaylib</Configuration>
-      <Platform>Win32</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="ReleaseRaylib|x64">
-      <Configuration>ReleaseRaylib</Configuration>
-      <Platform>x64</Platform>
     </ProjectConfiguration>
     <ProjectConfiguration Include="ReleaseDxlib|Win32">
       <Configuration>ReleaseDxlib</Configuration>
@@ -48,20 +32,7 @@
     <PlatformToolset>v145</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugRaylib|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
-    <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v145</PlatformToolset>
-    <CharacterSet>Unicode</CharacterSet>
-  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseDxlib|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
-    <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v145</PlatformToolset>
-    <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>Unicode</CharacterSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseRaylib|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v145</PlatformToolset>
@@ -74,20 +45,7 @@
     <PlatformToolset>v145</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugRaylib|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
-    <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v145</PlatformToolset>
-    <CharacterSet>Unicode</CharacterSet>
-  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseDxlib|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
-    <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v145</PlatformToolset>
-    <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>Unicode</CharacterSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseRaylib|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v145</PlatformToolset>
@@ -102,60 +60,36 @@
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='DebugDxlib|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='DebugRaylib|Win32'" Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-  </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='ReleaseDxlib|Win32'">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-  </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseRaylib|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='DebugDxlib|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='DebugRaylib|x64'" Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-  </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='ReleaseDxlib|x64'">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-  </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseRaylib|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugDxlib|Win32'">
-    <ExternalIncludePath>$(ProjectDir)ThirdParty\rapidjson;$(ProjectDir)ThirdParty\Raylib\Include;$(ProjectDir)ThirdParty\プロジェクトに追加すべきファイル_VC用;$(ExternalIncludePath)</ExternalIncludePath>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugRaylib|Win32'">
-    <ExternalIncludePath>$(ProjectDir)ThirdParty\rapidjson;$(ProjectDir)ThirdParty\Raylib\Include;$(ProjectDir)ThirdParty\プロジェクトに追加すべきファイル_VC用;$(ExternalIncludePath)</ExternalIncludePath>
+    <ExternalIncludePath>$(ProjectDir)ThirdParty\rapidjson;$(ProjectDir)ThirdParty\プロジェクトに追加すべきファイル_VC用;$(ExternalIncludePath)</ExternalIncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseDxlib|Win32'">
-    <ExternalIncludePath>$(ProjectDir)ThirdParty\rapidjson;$(ProjectDir)ThirdParty\Raylib\Include;$(ProjectDir)ThirdParty\プロジェクトに追加すべきファイル_VC用;$(ExternalIncludePath)</ExternalIncludePath>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseRaylib|Win32'">
-    <ExternalIncludePath>$(ProjectDir)ThirdParty\rapidjson;$(ProjectDir)ThirdParty\Raylib\Include;$(ProjectDir)ThirdParty\プロジェクトに追加すべきファイル_VC用;$(ExternalIncludePath)</ExternalIncludePath>
+    <ExternalIncludePath>$(ProjectDir)ThirdParty\rapidjson;$(ProjectDir)ThirdParty\プロジェクトに追加すべきファイル_VC用;$(ExternalIncludePath)</ExternalIncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugDxlib|x64'">
-    <ExternalIncludePath>$(ProjectDir)ThirdParty\rapidjson;$(ProjectDir)ThirdParty\Raylib\Include;$(ProjectDir)ThirdParty\プロジェクトに追加すべきファイル_VC用;$(ExternalIncludePath)</ExternalIncludePath>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugRaylib|x64'">
-    <ExternalIncludePath>$(ProjectDir)ThirdParty\rapidjson;$(ProjectDir)ThirdParty\Raylib\Include;$(ProjectDir)ThirdParty\プロジェクトに追加すべきファイル_VC用;$(ExternalIncludePath)</ExternalIncludePath>
+    <ExternalIncludePath>$(ProjectDir)ThirdParty\rapidjson;$(ProjectDir)ThirdParty\プロジェクトに追加すべきファイル_VC用;$(ExternalIncludePath)</ExternalIncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseDxlib|x64'">
-    <ExternalIncludePath>$(ProjectDir)ThirdParty\rapidjson;$(ProjectDir)ThirdParty\Raylib\Include;$(ProjectDir)ThirdParty\プロジェクトに追加すべきファイル_VC用;$(ExternalIncludePath)</ExternalIncludePath>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseRaylib|x64'">
-    <ExternalIncludePath>$(ProjectDir)ThirdParty\rapidjson;$(ProjectDir)ThirdParty\Raylib\Include;$(ProjectDir)ThirdParty\プロジェクトに追加すべきファイル_VC用;$(ExternalIncludePath)</ExternalIncludePath>
+    <ExternalIncludePath>$(ProjectDir)ThirdParty\rapidjson;$(ProjectDir)ThirdParty\プロジェクトに追加すべきファイル_VC用;$(ExternalIncludePath)</ExternalIncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugDxlib|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)GRAPHICS_API_OPENGL_43;PLATFORM_DESKTOP;%(PreprocessorDefinitions)USE_RAYLIB;GRAPHICS_API_OPENGL_43;PLATFORM_DESKTOP;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(ProjectDir)Source\;$(ProjectDir)Source\Common;$(ProjectDir)Source\Objects;$(ProjectDir)Source\System;$(ProjectDir)Source\Common\Math;$(ProjectDir)Source\Common\BaseClass;$(ProjectDir)Source\Common\Constants;$(ProjectDir)Source\Common\ECS;$(ProjectDir)Source\Common\Interface;$(ProjectDir)Source\Common\BaseClass\SceneBase;$(ProjectDir)Source\System\Adapter;$(ProjectDir)Source\System\Components;$(ProjectDir)Source\System\ComponentStorages;$(ProjectDir)Source\System\ComponentSystems;$(ProjectDir)Source\System\Scenes;$(ProjectDir)Source\System\Manager;$(ProjectDir)Source\Physics;$(ProjectDir)Source\Physics\Storage;$(ProjectDir)Source\Physics\System;$(ProjectDir)Source\Physics\Struct;$(ProjectDir)Source\Common\BaseClass\ObjectBase;$(ProjectDir)Source\Common\Color;$(ProjectDir)Source\Physics\Constants\;$(ProjectDir)Source\Physics\System\Collision;$(ProjectDir)Source\Physics\System\Update;$(ProjectDir)Source\Physics\System\Sync;$(ProjectDir)Source\Common\Events;$(ProjectDir)Source\Common\Events\Physics;$(ProjectDir)Source\Common\ECS\Struct;$(ProjectDir)Source\Physics\Storage\Collider;$(ProjectDir)Source\Physics\Storage\Component;$(ProjectDir)Source\Physics\Storage\Body;$(ProjectDir)Source\Physics\Storage\Transform;$(ProjectDir)Source\Common\Math\NamericalAnalysis;$(ProjectDir)Source\Physics\Struct\Collision;$(ProjectDir)Source\Physics\Struct\Body;$(ProjectDir)Source\Physics\Struct\Transform;$(ProjectDir)Source\Physics\Struct\Collider;$(ProjectDir)Source\Physics\Struct\Constraint;$(ProjectDir)Source\Physics\Function;$(ProjectDir)Source\System\SceneData\Struct;$(ProjectDir)Source\System\SceneData\Struct\Component;$(ProjectDir)Source\System\SceneData;$(ProjectDir)Source\System\Factory;$(ProjectDir)Source\Physics\Component\Body;$(ProjectDir)Source\Physics\Component\Collider;$(ProjectDir)Source\Physics\Storage\Constraint;$(ProjectDir)Source\Physics\System\Solver;$(ProjectDir)Source\Physics\System\Build;$(ProjectDir)Source\Physics\Component\Constraint;$(ProjectDir)Source\Physics\DebugRender;$(ProjectDir)Source\Physics\Storage\Buffer;$(ProjectDir)Source\Physics\Struct\Command;$(ProjectDir)Source\Physics\Component\Body\Soft;$(ProjectDir)Source\Common\Struct;$(ProjectDir)Source\System\Struct;$(ProjectDir)Source\Physics\Struct\Body\Soft;$(ProjectDir)Source\Physics\Storage\Component\Body;$(ProjectDir)Source\Physics\Storage\Component\Collider;$(ProjectDir)Source\Physics\Storage\Component\Constraint;$(ProjectDir)Source\Physics\Storage\Component\Body\Soft;$(ProjectDir)Source\Common\Macro;$(ProjectDir)Source\Common\ECS\SparseSet;$(ProjectDir)Source\Common\ECS\SparseSet\Table;$(ProjectDir)Source\Common\ECS\Storage;$(ProjectDir)Source\Common\ECS\Event;$(ProjectDir)Source\Common\Struct\Resource</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Source\;$(ProjectDir)Source\Common;$(ProjectDir)Source\Objects;$(ProjectDir)Source\System;$(ProjectDir)Source\Common\Math;$(ProjectDir)Source\Common\BaseClass;$(ProjectDir)Source\Common\Constants;$(ProjectDir)Source\Common\ECS;$(ProjectDir)Source\Common\Interface;$(ProjectDir)Source\Common\BaseClass\SceneBase;$(ProjectDir)Source\System\Adapter;$(ProjectDir)Source\System\Components;$(ProjectDir)Source\System\ComponentStorages;$(ProjectDir)Source\System\ComponentSystems;$(ProjectDir)Source\System\Scenes;$(ProjectDir)Source\System\Manager;$(ProjectDir)Source\Physics;$(ProjectDir)Source\Physics\Storage;$(ProjectDir)Source\Physics\System;$(ProjectDir)Source\Physics\Struct;$(ProjectDir)Source\Common\BaseClass\ObjectBase;$(ProjectDir)Source\Common\Color;$(ProjectDir)Source\Physics\Constants\;$(ProjectDir)Source\Physics\System\Collision;$(ProjectDir)Source\Physics\System\Update;$(ProjectDir)Source\Physics\System\Sync;$(ProjectDir)Source\Common\Events;$(ProjectDir)Source\Common\Events\Physics;$(ProjectDir)Source\Common\ECS\Struct;$(ProjectDir)Source\Physics\Storage\Collider;$(ProjectDir)Source\Physics\Storage\Component;$(ProjectDir)Source\Physics\Storage\Body;$(ProjectDir)Source\Physics\Storage\Transform;$(ProjectDir)Source\Common\Math\NamericalAnalysis;$(ProjectDir)Source\Physics\Struct\Collision;$(ProjectDir)Source\Physics\Struct\Body;$(ProjectDir)Source\Physics\Struct\Transform;$(ProjectDir)Source\Physics\Struct\Collider;$(ProjectDir)Source\Physics\Struct\Constraint;$(ProjectDir)Source\Physics\Function;$(ProjectDir)Source\System\SceneData\Struct;$(ProjectDir)Source\System\SceneData\Struct\Component;$(ProjectDir)Source\System\SceneData;$(ProjectDir)Source\System\Factory;$(ProjectDir)Source\Physics\Component\Body;$(ProjectDir)Source\Physics\Component\Collider;$(ProjectDir)Source\Physics\Storage\Constraint;$(ProjectDir)Source\Physics\System\Solver;$(ProjectDir)Source\Physics\System\Build;$(ProjectDir)Source\Physics\Component\Constraint;$(ProjectDir)Source\Physics\DebugRender;$(ProjectDir)Source\Physics\Storage\Buffer;$(ProjectDir)Source\Physics\Struct\Command;$(ProjectDir)Source\Physics\Component\Body\Soft;$(ProjectDir)Source\Common\Struct;$(ProjectDir)Source\System\Struct;$(ProjectDir)Source\Physics\Struct\Body\Soft;$(ProjectDir)Source\Physics\Storage\Component\Body;$(ProjectDir)Source\Physics\Storage\Component\Collider;$(ProjectDir)Source\Physics\Storage\Component\Constraint;$(ProjectDir)Source\Physics\Storage\Component\Body\Soft;$(ProjectDir)Source\Common\Macro;$(ProjectDir)Source\Common\ECS\SparseSet;$(ProjectDir)Source\Common\ECS\SparseSet\Table;$(ProjectDir)Source\Common\ECS\Storage;$(ProjectDir)Source\Common\ECS\Event;$(ProjectDir)Source\Common\Struct\Resource;$(ProjectDir)Source\System\Input;$(ProjectDir)Source\Physics\Struct\Ray;$(ProjectDir)Source\Physics\Struct\CharacterController;$(ProjectDir)Source\Physics\Storage\Component\CharacterController;$(ProjectDir)Source\Physics\Component\CharacterController;$(ProjectDir)Source\Physics\Storage\CharacterController;$(ProjectDir)Source\Render\Component;$(ProjectDir)Source\Render\System;$(ProjectDir)Source\Render\Storage</AdditionalIncludeDirectories>
       <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
       <TreatAngleIncludeAsExternal>false</TreatAngleIncludeAsExternal>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
@@ -166,33 +100,8 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(ProjectDir)ThirdParty\プロジェクトに追加すべきファイル_VC用;$(ProjectDir)ThirdParty\Raylib\bin\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>raylib.lib;opengl32.lib;winmm.lib;gdi32.lib;user32.lib;shell32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-    </Link>
-    <Manifest>
-      <EnableSegmentHeap>true</EnableSegmentHeap>
-    </Manifest>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugRaylib|Win32'">
-    <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
-      <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)GRAPHICS_API_OPENGL_43;PLATFORM_DESKTOP;%(PreprocessorDefinitions)USE_RAYLIB;GRAPHICS_API_OPENGL_43;PLATFORM_DESKTOP;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(ProjectDir)Source\;$(ProjectDir)Source\Common;$(ProjectDir)Source\Objects;$(ProjectDir)Source\System;$(ProjectDir)Source\Common\Math;$(ProjectDir)Source\Common\BaseClass;$(ProjectDir)Source\Common\Constants;$(ProjectDir)Source\Common\ECS;$(ProjectDir)Source\Common\Interface;$(ProjectDir)Source\Common\BaseClass\SceneBase;$(ProjectDir)Source\System\Adapter;$(ProjectDir)Source\System\Components;$(ProjectDir)Source\System\ComponentStorages;$(ProjectDir)Source\System\ComponentSystems;$(ProjectDir)Source\System\Scenes;$(ProjectDir)Source\System\Manager;$(ProjectDir)Source\Physics;$(ProjectDir)Source\Physics\Storage;$(ProjectDir)Source\Physics\System;$(ProjectDir)Source\Physics\Struct;$(ProjectDir)Source\Common\BaseClass\ObjectBase;$(ProjectDir)Source\Common\Color;$(ProjectDir)Source\Physics\Constants\;$(ProjectDir)Source\Physics\System\Collision;$(ProjectDir)Source\Physics\System\Update;$(ProjectDir)Source\Physics\System\Sync;$(ProjectDir)Source\Common\Events;$(ProjectDir)Source\Common\Events\Physics;$(ProjectDir)Source\Common\ECS\Struct;$(ProjectDir)Source\Physics\Storage\Collider;$(ProjectDir)Source\Physics\Storage\Component;$(ProjectDir)Source\Physics\Storage\Body;$(ProjectDir)Source\Physics\Storage\Transform;$(ProjectDir)Source\Common\Math\NamericalAnalysis;$(ProjectDir)Source\Physics\Struct\Collision;$(ProjectDir)Source\Physics\Struct\Body;$(ProjectDir)Source\Physics\Struct\Transform;$(ProjectDir)Source\Physics\Struct\Collider;$(ProjectDir)Source\Physics\Struct\Constraint;$(ProjectDir)Source\Physics\Function;$(ProjectDir)Source\System\SceneData\Struct;$(ProjectDir)Source\System\SceneData\Struct\Component;$(ProjectDir)Source\System\SceneData;$(ProjectDir)Source\System\Factory;$(ProjectDir)Source\Physics\Component\Body;$(ProjectDir)Source\Physics\Component\Collider;$(ProjectDir)Source\Physics\Storage\Constraint;$(ProjectDir)Source\Physics\System\Solver;$(ProjectDir)Source\Physics\System\Build;$(ProjectDir)Source\Physics\Component\Constraint;$(ProjectDir)Source\Physics\DebugRender;$(ProjectDir)Source\Physics\Storage\Buffer;$(ProjectDir)Source\Physics\Struct\Command;$(ProjectDir)Source\Physics\Component\Body\Soft;$(ProjectDir)Source\Common\Struct;$(ProjectDir)Source\System\Struct;$(ProjectDir)Source\Physics\Struct\Body\Soft;$(ProjectDir)Source\Physics\Storage\Component\Body;$(ProjectDir)Source\Physics\Storage\Component\Collider;$(ProjectDir)Source\Physics\Storage\Component\Constraint;$(ProjectDir)Source\Physics\Storage\Component\Body\Soft;$(ProjectDir)Source\Common\Macro;$(ProjectDir)Source\Common\ECS\SparseSet;$(ProjectDir)Source\Common\ECS\SparseSet\Table;$(ProjectDir)Source\Common\ECS\Storage;$(ProjectDir)Source\Common\ECS\Event;$(ProjectDir)Source\Common\Struct\Resource</AdditionalIncludeDirectories>
-      <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
-      <TreatAngleIncludeAsExternal>false</TreatAngleIncludeAsExternal>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <Optimization>MaxSpeed</Optimization>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
-    </ClCompile>
-    <Link>
-      <SubSystem>Windows</SubSystem>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(ProjectDir)ThirdParty\プロジェクトに追加すべきファイル_VC用;$(ProjectDir)ThirdParty\Raylib\bin\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>raylib.lib;opengl32.lib;winmm.lib;gdi32.lib;user32.lib;shell32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)ThirdParty\プロジェクトに追加すべきファイル_VC用;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Manifest>
       <EnableSegmentHeap>true</EnableSegmentHeap>
@@ -204,10 +113,10 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)GRAPHICS_API_OPENGL_43;PLATFORM_DESKTOP;%(PreprocessorDefinitions)USE_RAYLIB;GRAPHICS_API_OPENGL_43;PLATFORM_DESKTOP;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(ProjectDir)Source\;$(ProjectDir)Source\Common;$(ProjectDir)Source\Objects;$(ProjectDir)Source\System;$(ProjectDir)Source\Common\Math;$(ProjectDir)Source\Common\BaseClass;$(ProjectDir)Source\Common\Constants;$(ProjectDir)Source\Common\ECS;$(ProjectDir)Source\Common\Interface;$(ProjectDir)Source\Common\BaseClass\SceneBase;$(ProjectDir)Source\System\Adapter;$(ProjectDir)Source\System\Components;$(ProjectDir)Source\System\ComponentStorages;$(ProjectDir)Source\System\ComponentSystems;$(ProjectDir)Source\System\Scenes;$(ProjectDir)Source\System\Manager;$(ProjectDir)Source\Physics;$(ProjectDir)Source\Physics\Storage;$(ProjectDir)Source\Physics\System;$(ProjectDir)Source\Physics\Struct;$(ProjectDir)Source\Common\BaseClass\ObjectBase;$(ProjectDir)Source\Common\Color;$(ProjectDir)Source\Physics\Constants\;$(ProjectDir)Source\Physics\System\Collision;$(ProjectDir)Source\Physics\System\Update;$(ProjectDir)Source\Physics\System\Sync;$(ProjectDir)Source\Common\Events;$(ProjectDir)Source\Common\Events\Physics;$(ProjectDir)Source\Common\ECS\Struct;$(ProjectDir)Source\Physics\Storage\Collider;$(ProjectDir)Source\Physics\Storage\Component;$(ProjectDir)Source\Physics\Storage\Body;$(ProjectDir)Source\Physics\Storage\Transform;$(ProjectDir)Source\Common\Math\NamericalAnalysis;$(ProjectDir)Source\Physics\Struct\Collision;$(ProjectDir)Source\Physics\Struct\Body;$(ProjectDir)Source\Physics\Struct\Transform;$(ProjectDir)Source\Physics\Struct\Collider;$(ProjectDir)Source\Physics\Struct\Constraint;$(ProjectDir)Source\Physics\Function;$(ProjectDir)Source\System\SceneData\Struct;$(ProjectDir)Source\System\SceneData\Struct\Component;$(ProjectDir)Source\System\SceneData;$(ProjectDir)Source\System\Factory;$(ProjectDir)Source\Physics\Component\Body;$(ProjectDir)Source\Physics\Component\Collider;$(ProjectDir)Source\Physics\Storage\Constraint;$(ProjectDir)Source\Physics\System\Solver;$(ProjectDir)Source\Physics\System\Build;$(ProjectDir)Source\Physics\Component\Constraint;$(ProjectDir)Source\Physics\DebugRender;$(ProjectDir)Source\Physics\Storage\Buffer;$(ProjectDir)Source\Physics\Struct\Command;$(ProjectDir)Source\Physics\Component\Body\Soft;$(ProjectDir)Source\Common\Struct;$(ProjectDir)Source\System\Struct;$(ProjectDir)Source\Physics\Struct\Body\Soft;$(ProjectDir)Source\Physics\Storage\Component\Body;$(ProjectDir)Source\Physics\Storage\Component\Collider;$(ProjectDir)Source\Physics\Storage\Component\Constraint;$(ProjectDir)Source\Physics\Storage\Component\Body\Soft;$(ProjectDir)Source\Common\Macro;$(ProjectDir)Source\Common\ECS\SparseSet;$(ProjectDir)Source\Common\ECS\SparseSet\Table;$(ProjectDir)Source\Common\ECS\Storage;$(ProjectDir)Source\Common\ECS\Event;$(ProjectDir)Source\Common\Struct\Resource</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Source\;$(ProjectDir)Source\Common;$(ProjectDir)Source\Objects;$(ProjectDir)Source\System;$(ProjectDir)Source\Common\Math;$(ProjectDir)Source\Common\BaseClass;$(ProjectDir)Source\Common\Constants;$(ProjectDir)Source\Common\ECS;$(ProjectDir)Source\Common\Interface;$(ProjectDir)Source\Common\BaseClass\SceneBase;$(ProjectDir)Source\System\Adapter;$(ProjectDir)Source\System\Components;$(ProjectDir)Source\System\ComponentStorages;$(ProjectDir)Source\System\ComponentSystems;$(ProjectDir)Source\System\Scenes;$(ProjectDir)Source\System\Manager;$(ProjectDir)Source\Physics;$(ProjectDir)Source\Physics\Storage;$(ProjectDir)Source\Physics\System;$(ProjectDir)Source\Physics\Struct;$(ProjectDir)Source\Common\BaseClass\ObjectBase;$(ProjectDir)Source\Common\Color;$(ProjectDir)Source\Physics\Constants\;$(ProjectDir)Source\Physics\System\Collision;$(ProjectDir)Source\Physics\System\Update;$(ProjectDir)Source\Physics\System\Sync;$(ProjectDir)Source\Common\Events;$(ProjectDir)Source\Common\Events\Physics;$(ProjectDir)Source\Common\ECS\Struct;$(ProjectDir)Source\Physics\Storage\Collider;$(ProjectDir)Source\Physics\Storage\Component;$(ProjectDir)Source\Physics\Storage\Body;$(ProjectDir)Source\Physics\Storage\Transform;$(ProjectDir)Source\Common\Math\NamericalAnalysis;$(ProjectDir)Source\Physics\Struct\Collision;$(ProjectDir)Source\Physics\Struct\Body;$(ProjectDir)Source\Physics\Struct\Transform;$(ProjectDir)Source\Physics\Struct\Collider;$(ProjectDir)Source\Physics\Struct\Constraint;$(ProjectDir)Source\Physics\Function;$(ProjectDir)Source\System\SceneData\Struct;$(ProjectDir)Source\System\SceneData\Struct\Component;$(ProjectDir)Source\System\SceneData;$(ProjectDir)Source\System\Factory;$(ProjectDir)Source\Physics\Component\Body;$(ProjectDir)Source\Physics\Component\Collider;$(ProjectDir)Source\Physics\Storage\Constraint;$(ProjectDir)Source\Physics\System\Solver;$(ProjectDir)Source\Physics\System\Build;$(ProjectDir)Source\Physics\Component\Constraint;$(ProjectDir)Source\Physics\DebugRender;$(ProjectDir)Source\Physics\Storage\Buffer;$(ProjectDir)Source\Physics\Struct\Command;$(ProjectDir)Source\Physics\Component\Body\Soft;$(ProjectDir)Source\Common\Struct;$(ProjectDir)Source\System\Struct;$(ProjectDir)Source\Physics\Struct\Body\Soft;$(ProjectDir)Source\Physics\Storage\Component\Body;$(ProjectDir)Source\Physics\Storage\Component\Collider;$(ProjectDir)Source\Physics\Storage\Component\Constraint;$(ProjectDir)Source\Physics\Storage\Component\Body\Soft;$(ProjectDir)Source\Common\Macro;$(ProjectDir)Source\Common\ECS\SparseSet;$(ProjectDir)Source\Common\ECS\SparseSet\Table;$(ProjectDir)Source\Common\ECS\Storage;$(ProjectDir)Source\Common\ECS\Event;$(ProjectDir)Source\Common\Struct\Resource;$(ProjectDir)Source\System\Input;$(ProjectDir)Source\Physics\Struct\Ray;$(ProjectDir)Source\Physics\Struct\CharacterController;$(ProjectDir)Source\Physics\Storage\Component\CharacterController;$(ProjectDir)Source\Physics\Component\CharacterController;$(ProjectDir)Source\Physics\Storage\CharacterController</AdditionalIncludeDirectories>
       <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
       <TreatAngleIncludeAsExternal>false</TreatAngleIncludeAsExternal>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
@@ -215,32 +124,8 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(ProjectDir)ThirdParty\プロジェクトに追加すべきファイル_VC用;$(ProjectDir)ThirdParty\Raylib\bin\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>raylib.lib;opengl32.lib;winmm.lib;gdi32.lib;user32.lib;shell32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-    </Link>
-    <Manifest>
-      <EnableSegmentHeap>true</EnableSegmentHeap>
-    </Manifest>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseRaylib|Win32'">
-    <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
-      <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)GRAPHICS_API_OPENGL_43;PLATFORM_DESKTOP;%(PreprocessorDefinitions)USE_RAYLIB;GRAPHICS_API_OPENGL_43;PLATFORM_DESKTOP;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(ProjectDir)Source\;$(ProjectDir)Source\Common;$(ProjectDir)Source\Objects;$(ProjectDir)Source\System;$(ProjectDir)Source\Common\Math;$(ProjectDir)Source\Common\BaseClass;$(ProjectDir)Source\Common\Constants;$(ProjectDir)Source\Common\ECS;$(ProjectDir)Source\Common\Interface;$(ProjectDir)Source\Common\BaseClass\SceneBase;$(ProjectDir)Source\System\Adapter;$(ProjectDir)Source\System\Components;$(ProjectDir)Source\System\ComponentStorages;$(ProjectDir)Source\System\ComponentSystems;$(ProjectDir)Source\System\Scenes;$(ProjectDir)Source\System\Manager;$(ProjectDir)Source\Physics;$(ProjectDir)Source\Physics\Storage;$(ProjectDir)Source\Physics\System;$(ProjectDir)Source\Physics\Struct;$(ProjectDir)Source\Common\BaseClass\ObjectBase;$(ProjectDir)Source\Common\Color;$(ProjectDir)Source\Physics\Constants\;$(ProjectDir)Source\Physics\System\Collision;$(ProjectDir)Source\Physics\System\Update;$(ProjectDir)Source\Physics\System\Sync;$(ProjectDir)Source\Common\Events;$(ProjectDir)Source\Common\Events\Physics;$(ProjectDir)Source\Common\ECS\Struct;$(ProjectDir)Source\Physics\Storage\Collider;$(ProjectDir)Source\Physics\Storage\Component;$(ProjectDir)Source\Physics\Storage\Body;$(ProjectDir)Source\Physics\Storage\Transform;$(ProjectDir)Source\Common\Math\NamericalAnalysis;$(ProjectDir)Source\Physics\Struct\Collision;$(ProjectDir)Source\Physics\Struct\Body;$(ProjectDir)Source\Physics\Struct\Transform;$(ProjectDir)Source\Physics\Struct\Collider;$(ProjectDir)Source\Physics\Struct\Constraint;$(ProjectDir)Source\Physics\Function;$(ProjectDir)Source\System\SceneData\Struct;$(ProjectDir)Source\System\SceneData\Struct\Component;$(ProjectDir)Source\System\SceneData;$(ProjectDir)Source\System\Factory;$(ProjectDir)Source\Physics\Component\Body;$(ProjectDir)Source\Physics\Component\Collider;$(ProjectDir)Source\Physics\Storage\Constraint;$(ProjectDir)Source\Physics\System\Solver;$(ProjectDir)Source\Physics\System\Build;$(ProjectDir)Source\Physics\Component\Constraint;$(ProjectDir)Source\Physics\DebugRender;$(ProjectDir)Source\Physics\Storage\Buffer;$(ProjectDir)Source\Physics\Struct\Command;$(ProjectDir)Source\Physics\Component\Body\Soft;$(ProjectDir)Source\Common\Struct;$(ProjectDir)Source\System\Struct;$(ProjectDir)Source\Physics\Struct\Body\Soft;$(ProjectDir)Source\Physics\Storage\Component\Body;$(ProjectDir)Source\Physics\Storage\Component\Collider;$(ProjectDir)Source\Physics\Storage\Component\Constraint;$(ProjectDir)Source\Physics\Storage\Component\Body\Soft;$(ProjectDir)Source\Common\Macro;$(ProjectDir)Source\Common\ECS\SparseSet;$(ProjectDir)Source\Common\ECS\SparseSet\Table;$(ProjectDir)Source\Common\ECS\Storage;$(ProjectDir)Source\Common\ECS\Event;$(ProjectDir)Source\Common\Struct\Resource</AdditionalIncludeDirectories>
-      <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
-      <TreatAngleIncludeAsExternal>false</TreatAngleIncludeAsExternal>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
-    </ClCompile>
-    <Link>
-      <SubSystem>Windows</SubSystem>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(ProjectDir)ThirdParty\プロジェクトに追加すべきファイル_VC用;$(ProjectDir)ThirdParty\Raylib\bin\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>raylib.lib;opengl32.lib;winmm.lib;gdi32.lib;user32.lib;shell32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)ThirdParty\プロジェクトに追加すべきファイル_VC用;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Manifest>
       <EnableSegmentHeap>true</EnableSegmentHeap>
@@ -253,7 +138,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(ProjectDir)Source\;$(ProjectDir)Source\Common;$(ProjectDir)Source\Objects;$(ProjectDir)Source\System;$(ProjectDir)Source\Common\Math;$(ProjectDir)Source\Common\BaseClass;$(ProjectDir)Source\Common\Constants;$(ProjectDir)Source\Common\ECS;$(ProjectDir)Source\Common\Interface;$(ProjectDir)Source\Common\BaseClass\SceneBase;$(ProjectDir)Source\System\Adapter;$(ProjectDir)Source\System\Components;$(ProjectDir)Source\System\ComponentStorages;$(ProjectDir)Source\System\ComponentSystems;$(ProjectDir)Source\System\Scenes;$(ProjectDir)Source\System\Manager;$(ProjectDir)Source\Physics;$(ProjectDir)Source\Physics\Storage;$(ProjectDir)Source\Physics\System;$(ProjectDir)Source\Physics\Struct;$(ProjectDir)Source\Common\BaseClass\ObjectBase;$(ProjectDir)Source\Common\Color;$(ProjectDir)Source\Physics\Constants\;$(ProjectDir)Source\Physics\System\Collision;$(ProjectDir)Source\Physics\System\Update;$(ProjectDir)Source\Physics\System\Sync;$(ProjectDir)Source\Common\Events;$(ProjectDir)Source\Common\Events\Physics;$(ProjectDir)Source\Common\ECS\Struct;$(ProjectDir)Source\Physics\Storage\Collider;$(ProjectDir)Source\Physics\Storage\Component;$(ProjectDir)Source\Physics\Storage\Body;$(ProjectDir)Source\Physics\Storage\Transform;$(ProjectDir)Source\Common\Math\NamericalAnalysis;$(ProjectDir)Source\Physics\Struct\Collision;$(ProjectDir)Source\Physics\Struct\Body;$(ProjectDir)Source\Physics\Struct\Transform;$(ProjectDir)Source\Physics\Struct\Collider;$(ProjectDir)Source\Physics\Struct\Constraint;$(ProjectDir)Source\Physics\Function;$(ProjectDir)Source\System\SceneData\Struct;$(ProjectDir)Source\System\SceneData\Struct\Component;$(ProjectDir)Source\System\SceneData;$(ProjectDir)Source\System\Factory;$(ProjectDir)Source\Physics\Component\Body;$(ProjectDir)Source\Physics\Component\Collider;$(ProjectDir)Source\Physics\Storage\Constraint;$(ProjectDir)Source\Physics\System\Solver;$(ProjectDir)Source\Physics\System\Build;$(ProjectDir)Source\Physics\Component\Constraint;$(ProjectDir)Source\Physics\DebugRender;$(ProjectDir)Source\Physics\Storage\Buffer;$(ProjectDir)Source\Physics\Struct\Command;$(ProjectDir)Source\Physics\Component\Body\Soft;$(ProjectDir)Source\Common\Struct;$(ProjectDir)Source\System\Struct;$(ProjectDir)Source\Physics\Struct\Body\Soft;$(ProjectDir)Source\Physics\Storage\Component\Body;$(ProjectDir)Source\Physics\Storage\Component\Collider;$(ProjectDir)Source\Physics\Storage\Component\Constraint;$(ProjectDir)Source\Physics\Storage\Component\Body\Soft;$(ProjectDir)Source\Common\Macro;$(ProjectDir)Source\Common\ECS\SparseSet;$(ProjectDir)Source\Common\ECS\SparseSet\Table;$(ProjectDir)Source\Common\ECS\Storage;$(ProjectDir)Source\Common\ECS\Event;$(ProjectDir)Source\Common\Struct\Resource</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Source\;$(ProjectDir)Source\Common;$(ProjectDir)Source\Objects;$(ProjectDir)Source\System;$(ProjectDir)Source\Common\Math;$(ProjectDir)Source\Common\BaseClass;$(ProjectDir)Source\Common\Constants;$(ProjectDir)Source\Common\ECS;$(ProjectDir)Source\Common\Interface;$(ProjectDir)Source\Common\BaseClass\SceneBase;$(ProjectDir)Source\System\Adapter;$(ProjectDir)Source\System\Components;$(ProjectDir)Source\System\ComponentStorages;$(ProjectDir)Source\System\ComponentSystems;$(ProjectDir)Source\System\Scenes;$(ProjectDir)Source\System\Manager;$(ProjectDir)Source\Physics;$(ProjectDir)Source\Physics\Storage;$(ProjectDir)Source\Physics\System;$(ProjectDir)Source\Physics\Struct;$(ProjectDir)Source\Common\BaseClass\ObjectBase;$(ProjectDir)Source\Common\Color;$(ProjectDir)Source\Physics\Constants\;$(ProjectDir)Source\Physics\System\Collision;$(ProjectDir)Source\Physics\System\Update;$(ProjectDir)Source\Physics\System\Sync;$(ProjectDir)Source\Common\Events;$(ProjectDir)Source\Common\Events\Physics;$(ProjectDir)Source\Common\ECS\Struct;$(ProjectDir)Source\Physics\Storage\Collider;$(ProjectDir)Source\Physics\Storage\Component;$(ProjectDir)Source\Physics\Storage\Body;$(ProjectDir)Source\Physics\Storage\Transform;$(ProjectDir)Source\Common\Math\NamericalAnalysis;$(ProjectDir)Source\Physics\Struct\Collision;$(ProjectDir)Source\Physics\Struct\Body;$(ProjectDir)Source\Physics\Struct\Transform;$(ProjectDir)Source\Physics\Struct\Collider;$(ProjectDir)Source\Physics\Struct\Constraint;$(ProjectDir)Source\Physics\Function;$(ProjectDir)Source\System\SceneData\Struct;$(ProjectDir)Source\System\SceneData\Struct\Component;$(ProjectDir)Source\System\SceneData;$(ProjectDir)Source\System\Factory;$(ProjectDir)Source\Physics\Component\Body;$(ProjectDir)Source\Physics\Component\Collider;$(ProjectDir)Source\Physics\Storage\Constraint;$(ProjectDir)Source\Physics\System\Solver;$(ProjectDir)Source\Physics\System\Build;$(ProjectDir)Source\Physics\Component\Constraint;$(ProjectDir)Source\Physics\DebugRender;$(ProjectDir)Source\Physics\Storage\Buffer;$(ProjectDir)Source\Physics\Struct\Command;$(ProjectDir)Source\Physics\Component\Body\Soft;$(ProjectDir)Source\Common\Struct;$(ProjectDir)Source\System\Struct;$(ProjectDir)Source\Physics\Struct\Body\Soft;$(ProjectDir)Source\Physics\Storage\Component\Body;$(ProjectDir)Source\Physics\Storage\Component\Collider;$(ProjectDir)Source\Physics\Storage\Component\Constraint;$(ProjectDir)Source\Physics\Storage\Component\Body\Soft;$(ProjectDir)Source\Common\Macro;$(ProjectDir)Source\Common\ECS\SparseSet;$(ProjectDir)Source\Common\ECS\SparseSet\Table;$(ProjectDir)Source\Common\ECS\Storage;$(ProjectDir)Source\Common\ECS\Event;$(ProjectDir)Source\Common\Struct\Resource;$(ProjectDir)Source\System\Input;$(ProjectDir)Source\Physics\Struct\Ray;$(ProjectDir)Source\Physics\Struct\CharacterController;$(ProjectDir)Source\Physics\Storage\Component\CharacterController;$(ProjectDir)Source\Physics\Component\CharacterController;$(ProjectDir)Source\Physics\Storage\CharacterController;$(ProjectDir)Source\Render\Component;$(ProjectDir)Source\Render\System;$(ProjectDir)Source\Render\Storage</AdditionalIncludeDirectories>
       <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
       <TreatAngleIncludeAsExternal>false</TreatAngleIncludeAsExternal>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
@@ -264,33 +149,8 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(ProjectDir)ThirdParty\プロジェクトに追加すべきファイル_VC用;$(ProjectDir)ThirdParty\Raylib\bin\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>raylib.lib;opengl32.lib;winmm.lib;gdi32.lib;user32.lib;shell32.lib</AdditionalDependencies>
-    </Link>
-    <Manifest>
-      <EnableSegmentHeap>true</EnableSegmentHeap>
-    </Manifest>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugRaylib|x64'">
-    <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
-      <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;USE_RAYLIB;GRAPHICS_API_OPENGL_43;PLATFORM_DESKTOP;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(ProjectDir)Source\;$(ProjectDir)Source\Common;$(ProjectDir)Source\Objects;$(ProjectDir)Source\System;$(ProjectDir)Source\Common\Math;$(ProjectDir)Source\Common\BaseClass;$(ProjectDir)Source\Common\Constants;$(ProjectDir)Source\Common\ECS;$(ProjectDir)Source\Common\Interface;$(ProjectDir)Source\Common\BaseClass\SceneBase;$(ProjectDir)Source\System\Adapter;$(ProjectDir)Source\System\Components;$(ProjectDir)Source\System\ComponentStorages;$(ProjectDir)Source\System\ComponentSystems;$(ProjectDir)Source\System\Scenes;$(ProjectDir)Source\System\Manager;$(ProjectDir)Source\Physics;$(ProjectDir)Source\Physics\Storage;$(ProjectDir)Source\Physics\System;$(ProjectDir)Source\Physics\Struct;$(ProjectDir)Source\Common\BaseClass\ObjectBase;$(ProjectDir)Source\Common\Color;$(ProjectDir)Source\Physics\Constants\;$(ProjectDir)Source\Physics\System\Collision;$(ProjectDir)Source\Physics\System\Update;$(ProjectDir)Source\Physics\System\Sync;$(ProjectDir)Source\Common\Events;$(ProjectDir)Source\Common\Events\Physics;$(ProjectDir)Source\Common\ECS\Struct;$(ProjectDir)Source\Physics\Storage\Collider;$(ProjectDir)Source\Physics\Storage\Component;$(ProjectDir)Source\Physics\Storage\Body;$(ProjectDir)Source\Physics\Storage\Transform;$(ProjectDir)Source\Common\Math\NamericalAnalysis;$(ProjectDir)Source\Physics\Struct\Collision;$(ProjectDir)Source\Physics\Struct\Body;$(ProjectDir)Source\Physics\Struct\Transform;$(ProjectDir)Source\Physics\Struct\Collider;$(ProjectDir)Source\Physics\Struct\Constraint;$(ProjectDir)Source\Physics\Function;$(ProjectDir)Source\System\SceneData\Struct;$(ProjectDir)Source\System\SceneData\Struct\Component;$(ProjectDir)Source\System\SceneData;$(ProjectDir)Source\System\Factory;$(ProjectDir)Source\Physics\Component\Body;$(ProjectDir)Source\Physics\Component\Collider;$(ProjectDir)Source\Physics\Storage\Constraint;$(ProjectDir)Source\Physics\System\Solver;$(ProjectDir)Source\Physics\System\Build;$(ProjectDir)Source\Physics\Component\Constraint;$(ProjectDir)Source\Physics\DebugRender;$(ProjectDir)Source\Physics\Storage\Buffer;$(ProjectDir)Source\Physics\Struct\Command;$(ProjectDir)Source\Physics\Component\Body\Soft;$(ProjectDir)Source\Common\Struct;$(ProjectDir)Source\System\Struct;$(ProjectDir)Source\Physics\Struct\Body\Soft;$(ProjectDir)Source\Physics\Storage\Component\Body;$(ProjectDir)Source\Physics\Storage\Component\Collider;$(ProjectDir)Source\Physics\Storage\Component\Constraint;$(ProjectDir)Source\Physics\Storage\Component\Body\Soft;$(ProjectDir)Source\Common\Macro;$(ProjectDir)Source\Common\ECS\SparseSet;$(ProjectDir)Source\Common\ECS\SparseSet\Table;$(ProjectDir)Source\Common\ECS\Storage;$(ProjectDir)Source\Common\ECS\Event;$(ProjectDir)Source\Common\Struct\Resource</AdditionalIncludeDirectories>
-      <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
-      <TreatAngleIncludeAsExternal>false</TreatAngleIncludeAsExternal>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <Optimization>MaxSpeed</Optimization>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
-    </ClCompile>
-    <Link>
-      <SubSystem>Windows</SubSystem>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(ProjectDir)ThirdParty\プロジェクトに追加すべきファイル_VC用;$(ProjectDir)ThirdParty\Raylib\bin\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>raylib.lib;opengl32.lib;winmm.lib;gdi32.lib;user32.lib;shell32.lib;%(AdditionalDependencies)raylib.lib;opengl32.lib;winmm.lib;gdi32.lib;user32.lib;shell32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)ThirdParty\プロジェクトに追加すべきファイル_VC用;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Manifest>
       <EnableSegmentHeap>true</EnableSegmentHeap>
@@ -305,7 +165,7 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(ProjectDir)Source\;$(ProjectDir)Source\Common;$(ProjectDir)Source\Objects;$(ProjectDir)Source\System;$(ProjectDir)Source\Common\Math;$(ProjectDir)Source\Common\BaseClass;$(ProjectDir)Source\Common\Constants;$(ProjectDir)Source\Common\ECS;$(ProjectDir)Source\Common\Interface;$(ProjectDir)Source\Common\BaseClass\SceneBase;$(ProjectDir)Source\System\Adapter;$(ProjectDir)Source\System\Components;$(ProjectDir)Source\System\ComponentStorages;$(ProjectDir)Source\System\ComponentSystems;$(ProjectDir)Source\System\Scenes;$(ProjectDir)Source\System\Manager;$(ProjectDir)Source\Physics;$(ProjectDir)Source\Physics\Storage;$(ProjectDir)Source\Physics\System;$(ProjectDir)Source\Physics\Struct;$(ProjectDir)Source\Common\BaseClass\ObjectBase;$(ProjectDir)Source\Common\Color;$(ProjectDir)Source\Physics\Constants\;$(ProjectDir)Source\Physics\System\Collision;$(ProjectDir)Source\Physics\System\Update;$(ProjectDir)Source\Physics\System\Sync;$(ProjectDir)Source\Common\Events;$(ProjectDir)Source\Common\Events\Physics;$(ProjectDir)Source\Common\ECS\Struct;$(ProjectDir)Source\Physics\Storage\Collider;$(ProjectDir)Source\Physics\Storage\Component;$(ProjectDir)Source\Physics\Storage\Body;$(ProjectDir)Source\Physics\Storage\Transform;$(ProjectDir)Source\Common\Math\NamericalAnalysis;$(ProjectDir)Source\Physics\Struct\Collision;$(ProjectDir)Source\Physics\Struct\Body;$(ProjectDir)Source\Physics\Struct\Transform;$(ProjectDir)Source\Physics\Struct\Collider;$(ProjectDir)Source\Physics\Struct\Constraint;$(ProjectDir)Source\Physics\Function;$(ProjectDir)Source\System\SceneData\Struct;$(ProjectDir)Source\System\SceneData\Struct\Component;$(ProjectDir)Source\System\SceneData;$(ProjectDir)Source\System\Factory;$(ProjectDir)Source\Physics\Component\Body;$(ProjectDir)Source\Physics\Component\Collider;$(ProjectDir)Source\Physics\Storage\Constraint;$(ProjectDir)Source\Physics\System\Solver;$(ProjectDir)Source\Physics\System\Build;$(ProjectDir)Source\Physics\Component\Constraint;$(ProjectDir)Source\Physics\DebugRender;$(ProjectDir)Source\Physics\Storage\Buffer;$(ProjectDir)Source\Physics\Struct\Command;$(ProjectDir)Source\Physics\Component\Body\Soft;$(ProjectDir)Source\Common\Struct;$(ProjectDir)Source\System\Struct;$(ProjectDir)Source\Physics\Struct\Body\Soft;$(ProjectDir)Source\Physics\Storage\Component\Body;$(ProjectDir)Source\Physics\Storage\Component\Collider;$(ProjectDir)Source\Physics\Storage\Component\Constraint;$(ProjectDir)Source\Physics\Storage\Component\Body\Soft;$(ProjectDir)Source\Common\Macro;$(ProjectDir)Source\Common\ECS\SparseSet;$(ProjectDir)Source\Common\ECS\SparseSet\Table;$(ProjectDir)Source\Common\ECS\Storage;$(ProjectDir)Source\Common\ECS\Event;$(ProjectDir)Source\Common\Struct\Resource</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Source\;$(ProjectDir)Source\Common;$(ProjectDir)Source\Objects;$(ProjectDir)Source\System;$(ProjectDir)Source\Common\Math;$(ProjectDir)Source\Common\BaseClass;$(ProjectDir)Source\Common\Constants;$(ProjectDir)Source\Common\ECS;$(ProjectDir)Source\Common\Interface;$(ProjectDir)Source\Common\BaseClass\SceneBase;$(ProjectDir)Source\System\Adapter;$(ProjectDir)Source\System\Components;$(ProjectDir)Source\System\ComponentStorages;$(ProjectDir)Source\System\ComponentSystems;$(ProjectDir)Source\System\Scenes;$(ProjectDir)Source\System\Manager;$(ProjectDir)Source\Physics;$(ProjectDir)Source\Physics\Storage;$(ProjectDir)Source\Physics\System;$(ProjectDir)Source\Physics\Struct;$(ProjectDir)Source\Common\BaseClass\ObjectBase;$(ProjectDir)Source\Common\Color;$(ProjectDir)Source\Physics\Constants\;$(ProjectDir)Source\Physics\System\Collision;$(ProjectDir)Source\Physics\System\Update;$(ProjectDir)Source\Physics\System\Sync;$(ProjectDir)Source\Common\Events;$(ProjectDir)Source\Common\Events\Physics;$(ProjectDir)Source\Common\ECS\Struct;$(ProjectDir)Source\Physics\Storage\Collider;$(ProjectDir)Source\Physics\Storage\Component;$(ProjectDir)Source\Physics\Storage\Body;$(ProjectDir)Source\Physics\Storage\Transform;$(ProjectDir)Source\Common\Math\NamericalAnalysis;$(ProjectDir)Source\Physics\Struct\Collision;$(ProjectDir)Source\Physics\Struct\Body;$(ProjectDir)Source\Physics\Struct\Transform;$(ProjectDir)Source\Physics\Struct\Collider;$(ProjectDir)Source\Physics\Struct\Constraint;$(ProjectDir)Source\Physics\Function;$(ProjectDir)Source\System\SceneData\Struct;$(ProjectDir)Source\System\SceneData\Struct\Component;$(ProjectDir)Source\System\SceneData;$(ProjectDir)Source\System\Factory;$(ProjectDir)Source\Physics\Component\Body;$(ProjectDir)Source\Physics\Component\Collider;$(ProjectDir)Source\Physics\Storage\Constraint;$(ProjectDir)Source\Physics\System\Solver;$(ProjectDir)Source\Physics\System\Build;$(ProjectDir)Source\Physics\Component\Constraint;$(ProjectDir)Source\Physics\DebugRender;$(ProjectDir)Source\Physics\Storage\Buffer;$(ProjectDir)Source\Physics\Struct\Command;$(ProjectDir)Source\Physics\Component\Body\Soft;$(ProjectDir)Source\Common\Struct;$(ProjectDir)Source\System\Struct;$(ProjectDir)Source\Physics\Struct\Body\Soft;$(ProjectDir)Source\Physics\Storage\Component\Body;$(ProjectDir)Source\Physics\Storage\Component\Collider;$(ProjectDir)Source\Physics\Storage\Component\Constraint;$(ProjectDir)Source\Physics\Storage\Component\Body\Soft;$(ProjectDir)Source\Common\Macro;$(ProjectDir)Source\Common\ECS\SparseSet;$(ProjectDir)Source\Common\ECS\SparseSet\Table;$(ProjectDir)Source\Common\ECS\Storage;$(ProjectDir)Source\Common\ECS\Event;$(ProjectDir)Source\Common\Struct\Resource;$(ProjectDir)Source\System\Input;$(ProjectDir)Source\Physics\Struct\Ray;$(ProjectDir)Source\Physics\Struct\CharacterController;$(ProjectDir)Source\Physics\Storage\Component\CharacterController;$(ProjectDir)Source\Physics\Component\CharacterController;$(ProjectDir)Source\Physics\Storage\CharacterController</AdditionalIncludeDirectories>
       <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
       <TreatAngleIncludeAsExternal>false</TreatAngleIncludeAsExternal>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
@@ -313,32 +173,8 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(ProjectDir)ThirdParty\プロジェクトに追加すべきファイル_VC用;$(ProjectDir)ThirdParty\Raylib\bin\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>raylib.lib;opengl32.lib;winmm.lib;gdi32.lib;user32.lib;shell32.lib</AdditionalDependencies>
-    </Link>
-    <Manifest>
-      <EnableSegmentHeap>true</EnableSegmentHeap>
-    </Manifest>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseRaylib|x64'">
-    <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
-      <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;USE_RAYLIB;GRAPHICS_API_OPENGL_43;PLATFORM_DESKTOP;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(ProjectDir)Source\;$(ProjectDir)Source\Common;$(ProjectDir)Source\Objects;$(ProjectDir)Source\System;$(ProjectDir)Source\Common\Math;$(ProjectDir)Source\Common\BaseClass;$(ProjectDir)Source\Common\Constants;$(ProjectDir)Source\Common\ECS;$(ProjectDir)Source\Common\Interface;$(ProjectDir)Source\Common\BaseClass\SceneBase;$(ProjectDir)Source\System\Adapter;$(ProjectDir)Source\System\Components;$(ProjectDir)Source\System\ComponentStorages;$(ProjectDir)Source\System\ComponentSystems;$(ProjectDir)Source\System\Scenes;$(ProjectDir)Source\System\Manager;$(ProjectDir)Source\Physics;$(ProjectDir)Source\Physics\Storage;$(ProjectDir)Source\Physics\System;$(ProjectDir)Source\Physics\Struct;$(ProjectDir)Source\Common\BaseClass\ObjectBase;$(ProjectDir)Source\Common\Color;$(ProjectDir)Source\Physics\Constants\;$(ProjectDir)Source\Physics\System\Collision;$(ProjectDir)Source\Physics\System\Update;$(ProjectDir)Source\Physics\System\Sync;$(ProjectDir)Source\Common\Events;$(ProjectDir)Source\Common\Events\Physics;$(ProjectDir)Source\Common\ECS\Struct;$(ProjectDir)Source\Physics\Storage\Collider;$(ProjectDir)Source\Physics\Storage\Component;$(ProjectDir)Source\Physics\Storage\Body;$(ProjectDir)Source\Physics\Storage\Transform;$(ProjectDir)Source\Common\Math\NamericalAnalysis;$(ProjectDir)Source\Physics\Struct\Collision;$(ProjectDir)Source\Physics\Struct\Body;$(ProjectDir)Source\Physics\Struct\Transform;$(ProjectDir)Source\Physics\Struct\Collider;$(ProjectDir)Source\Physics\Struct\Constraint;$(ProjectDir)Source\Physics\Function;$(ProjectDir)Source\System\SceneData\Struct;$(ProjectDir)Source\System\SceneData\Struct\Component;$(ProjectDir)Source\System\SceneData;$(ProjectDir)Source\System\Factory;$(ProjectDir)Source\Physics\Component\Body;$(ProjectDir)Source\Physics\Component\Collider;$(ProjectDir)Source\Physics\Storage\Constraint;$(ProjectDir)Source\Physics\System\Solver;$(ProjectDir)Source\Physics\System\Build;$(ProjectDir)Source\Physics\Component\Constraint;$(ProjectDir)Source\Physics\DebugRender;$(ProjectDir)Source\Physics\Storage\Buffer;$(ProjectDir)Source\Physics\Struct\Command;$(ProjectDir)Source\Physics\Component\Body\Soft;$(ProjectDir)Source\Common\Struct;$(ProjectDir)Source\System\Struct;$(ProjectDir)Source\Physics\Struct\Body\Soft;$(ProjectDir)Source\Physics\Storage\Component\Body;$(ProjectDir)Source\Physics\Storage\Component\Collider;$(ProjectDir)Source\Physics\Storage\Component\Constraint;$(ProjectDir)Source\Physics\Storage\Component\Body\Soft;$(ProjectDir)Source\Common\Macro;$(ProjectDir)Source\Common\ECS\SparseSet;$(ProjectDir)Source\Common\ECS\SparseSet\Table;$(ProjectDir)Source\Common\ECS\Storage;$(ProjectDir)Source\Common\ECS\Event;$(ProjectDir)Source\Common\Struct\Resource</AdditionalIncludeDirectories>
-      <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
-      <TreatAngleIncludeAsExternal>false</TreatAngleIncludeAsExternal>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
-    </ClCompile>
-    <Link>
-      <SubSystem>Windows</SubSystem>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(ProjectDir)ThirdParty\プロジェクトに追加すべきファイル_VC用;$(ProjectDir)ThirdParty\Raylib\bin\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>raylib.lib;opengl32.lib;winmm.lib;gdi32.lib;user32.lib;shell32.lib;%(AdditionalDependencies)raylib.lib;opengl32.lib;winmm.lib;gdi32.lib;user32.lib;shell32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)ThirdParty\プロジェクトに追加すべきファイル_VC用;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Manifest>
       <EnableSegmentHeap>true</EnableSegmentHeap>
@@ -346,6 +182,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Source\Common\BaseClass\FixedUpdateSystem.h" />
+    <ClInclude Include="Source\Common\BaseClass\LateUpdateSystem.h" />
     <ClInclude Include="Source\Common\BaseClass\ObjectBase\ObjectBase.h" />
     <ClInclude Include="Source\Common\BaseClass\RenderingSystem.h" />
     <ClInclude Include="Source\Common\BaseClass\SceneBase\SceneBase.h" />
@@ -355,7 +192,9 @@
     <ClInclude Include="Source\Common\Color\Color.h" />
     <ClInclude Include="Source\Common\Constants\BaseConstants.h" />
     <ClInclude Include="Source\Common\Constants\CameraConstants.h" />
+    <ClInclude Include="Source\Common\Constants\GamePadConstants.h" />
     <ClInclude Include="Source\Common\Constants\KeyConstants.h" />
+    <ClInclude Include="Source\Common\Constants\MouseConstants.h" />
     <ClInclude Include="Source\Common\Constants\SceneConstants.h" />
     <ClInclude Include="Source\Common\ECS\ComponentID.h" />
     <ClInclude Include="Source\Common\ECS\EntityID.h" />
@@ -398,6 +237,7 @@
     <ClInclude Include="Source\Common\Math\Vector\Vector3\Vector3Int.h" />
     <ClInclude Include="Source\Common\Math\Vector\Vector4\Vector4.h" />
     <ClInclude Include="Source\Common\Struct\CubeTextureHandle.h" />
+    <ClInclude Include="Source\Common\Struct\GamePadState.h" />
     <ClInclude Include="Source\Common\Struct\ModelHandle.h" />
     <ClInclude Include="Source\Common\Struct\PixelShaderHandle.h" />
     <ClInclude Include="Source\Common\Struct\ShaderConstantBufferHandle.h" />
@@ -411,10 +251,12 @@
     <ClInclude Include="Source\Objects\DebugCapsule.h" />
     <ClInclude Include="Source\Objects\DebugSphere.h" />
     <ClInclude Include="Source\Objects\EmptyObject.h" />
+    <ClInclude Include="Source\Objects\Player.h" />
     <ClInclude Include="Source\Physics\Component\Body\RigidBodyComponent.h" />
     <ClInclude Include="Source\Physics\Component\Body\Soft\ClothComponent.h" />
     <ClInclude Include="Source\Physics\Component\Body\Soft\RopeComponent.h" />
     <ClInclude Include="Source\Physics\Component\Body\Soft\SoftBodyComponent.h" />
+    <ClInclude Include="Source\Physics\Component\CharacterController\CharacterControllerComponent.h" />
     <ClInclude Include="Source\Physics\Component\Collider\BoxColliderComponent.h" />
     <ClInclude Include="Source\Physics\Component\Collider\CapsuleColliderComponent.h" />
     <ClInclude Include="Source\Physics\Component\Collider\ColliderComponent.h" />
@@ -422,14 +264,17 @@
     <ClInclude Include="Source\Physics\Component\Constraint\EndPointConstraintComponentBase.h" />
     <ClInclude Include="Source\Physics\Component\Constraint\DistanceConstraintComponent.h" />
     <ClInclude Include="Source\Physics\Component\Constraint\PointConstraintComponent.h" />
-    <ClInclude Include="Source\Physics\Constants\BodyConstraints.h" />
+    <ClInclude Include="Source\Physics\Constants\BodyConstants.h" />
+    <ClInclude Include="Source\Physics\Constants\CharacterControllerConstants.h" />
     <ClInclude Include="Source\Physics\Constants\CollisionConstants.h" />
     <ClInclude Include="Source\Physics\Constants\CommandConstraints.h" />
     <ClInclude Include="Source\Physics\Constants\ConstraintConstants.h" />
-    <ClInclude Include="Source\Physics\DebugRender\ConstraintDebugRenderSystem.h" />
+    <ClInclude Include="Source\Physics\DebugRender\ColliderDebugRenderingSystem.h" />
+    <ClInclude Include="Source\Physics\DebugRender\ConstraintDebugRenderingSystem.h" />
     <ClInclude Include="Source\Physics\Function\ContactFunction.h" />
     <ClInclude Include="Source\Physics\Function\GJKEPA.h" />
     <ClInclude Include="Source\Physics\Function\ManifoldFunction.h" />
+    <ClInclude Include="Source\Physics\Function\RayCastFunction.h" />
     <ClInclude Include="Source\Physics\PhysicsWorld.h" />
     <ClInclude Include="Source\Physics\Storage\Body\BodyStorage.h" />
     <ClInclude Include="Source\Physics\Storage\Body\Rigid\RigidBodyStorage.h" />
@@ -441,6 +286,7 @@
     <ClInclude Include="Source\Physics\Storage\Buffer\PhysicsCommandBuffer.h" />
     <ClInclude Include="Source\Physics\Storage\Buffer\ConstraintBuffer.h" />
     <ClInclude Include="Source\Physics\Storage\Buffer\SolverBodyBuffer.h" />
+    <ClInclude Include="Source\Physics\Storage\CharacterController\CharacterControllerStorage.h" />
     <ClInclude Include="Source\Physics\Storage\Collider\AABBBroadPhaseColliderStorage.h" />
     <ClInclude Include="Source\Physics\Storage\Collider\BoxColliderStorage.h" />
     <ClInclude Include="Source\Physics\Storage\Collider\CapsuleColliderStorage.h" />
@@ -450,6 +296,7 @@
     <ClInclude Include="Source\Physics\Storage\Component\Body\Soft\ClothComponentStorage.h" />
     <ClInclude Include="Source\Physics\Storage\Component\Body\Soft\RopeComponentStorage.h" />
     <ClInclude Include="Source\Physics\Storage\Component\Body\Soft\SoftBodyComponentStorage.h" />
+    <ClInclude Include="Source\Physics\Storage\Component\CharacterController\CharacterControllerComponentStorage.h" />
     <ClInclude Include="Source\Physics\Storage\Component\Collider\BoxColliderComponentStorage.h" />
     <ClInclude Include="Source\Physics\Storage\Component\Collider\CapsuleColliderComponentStorage.h" />
     <ClInclude Include="Source\Physics\Storage\Component\Collider\SphereColliderComponentStorage.h" />
@@ -468,6 +315,8 @@
     <ClInclude Include="Source\Physics\Struct\Body\Soft\SoftBodyUpdateInfo.h" />
     <ClInclude Include="Source\Physics\Struct\Body\Soft\SolveGPUMeta.h" />
     <ClInclude Include="Source\Physics\Struct\Body\SolverBody.h" />
+    <ClInclude Include="Source\Physics\Struct\CharacterController\CharacterControllerID.h" />
+    <ClInclude Include="Source\Physics\Struct\CharacterController\CharacterControllerSlot.h" />
     <ClInclude Include="Source\Physics\Struct\Collider\AABBBroadPhaseCollider.h" />
     <ClInclude Include="Source\Physics\Struct\Collider\ColliderID.h" />
     <ClInclude Include="Source\Physics\Struct\Collider\ColliderProjection.h" />
@@ -488,6 +337,9 @@
     <ClInclude Include="Source\Physics\Struct\Constraint\DistanceConstraint.h" />
     <ClInclude Include="Source\Physics\Struct\Constraint\EndPoint.h" />
     <ClInclude Include="Source\Physics\Struct\Constraint\PointConstraint.h" />
+    <ClInclude Include="Source\Physics\Struct\Ray\Ray.h" />
+    <ClInclude Include="Source\Physics\Struct\Ray\RayCastHitInfo.h" />
+    <ClInclude Include="Source\Physics\Struct\Ray\RayCastQueryHitInfo.h" />
     <ClInclude Include="Source\Physics\Struct\Transform\PhysicsTransformID.h" />
     <ClInclude Include="Source\Physics\Struct\Transform\PhysicsTransformSlot.h" />
     <ClInclude Include="Source\Physics\System\Build\ConstraintBuildSystem.h" />
@@ -495,6 +347,8 @@
     <ClInclude Include="Source\Physics\System\Collision\CollisionSystem.h" />
     <ClInclude Include="Source\Physics\System\Collision\NarrowPhasePairBuilder.h" />
     <ClInclude Include="Source\Physics\System\PhysicsAPI.h" />
+    <ClInclude Include="Source\Physics\System\PhysicsComponentAPI.h" />
+    <ClInclude Include="Source\Physics\System\Query\PhysicsQuerySystem.h" />
     <ClInclude Include="Source\Physics\System\Simplex.h" />
     <ClInclude Include="Source\Physics\System\Solver\CollisionSolverSystem.h" />
     <ClInclude Include="Source\Physics\System\Solver\ConstraintSolverSystem.h" />
@@ -502,7 +356,18 @@
     <ClInclude Include="Source\Physics\System\Sync\PhysicsCommitSystem.h" />
     <ClInclude Include="Source\Physics\System\Sync\SynchronizationSystem.h" />
     <ClInclude Include="Source\Physics\System\Update\AABBUpdateSystem.h" />
+    <ClInclude Include="Source\Physics\System\Update\CharacterControllerSystem.h" />
     <ClInclude Include="Source\Physics\System\Update\RigidBodySystem.h" />
+    <ClInclude Include="Source\Render\Component\CameraComponent.h" />
+    <ClInclude Include="Source\Render\Component\CameraRigComponent.h" />
+    <ClInclude Include="Source\Render\Component\RendererComponent.h" />
+    <ClInclude Include="Source\Render\Storage\CameraComponentStorage.h" />
+    <ClInclude Include="Source\Render\Storage\CameraRigComponentStorage.h" />
+    <ClInclude Include="Source\Render\Storage\RendererComponentStorage.h" />
+    <ClInclude Include="Source\Render\System\CameraBindSystem.h" />
+    <ClInclude Include="Source\Render\System\CameraRigSystem.h" />
+    <ClInclude Include="Source\Render\System\ModelRenderingSystem.h" />
+    <ClInclude Include="Source\Render\System\SkyRenderingSystem.h" />
     <ClInclude Include="Source\System\Adapter\Dxlib\DxlibConstants.h" />
     <ClInclude Include="Source\System\Adapter\Dxlib\DxlibConvert.h" />
     <ClInclude Include="Source\System\Adapter\Dxlib\DxlibGPUConnecter.h" />
@@ -510,26 +375,20 @@
     <ClInclude Include="Source\System\Adapter\Dxlib\DxlibRenderer.h" />
     <ClInclude Include="Source\System\Adapter\Dxlib\DxlibSystem.h" />
     <ClInclude Include="Source\System\Adapter\Dxlib\Struct\DxlibShaderBufferResource.h" />
-    <ClInclude Include="Source\System\Adapter\Raylib\RaylibConstants.h" />
-    <ClInclude Include="Source\System\Adapter\Raylib\RaylibConvert.h" />
-    <ClInclude Include="Source\System\Adapter\Raylib\RaylibGPUConnecter.h" />
-    <ClInclude Include="Source\System\Adapter\Raylib\RaylibInclude.h" />
-    <ClInclude Include="Source\System\Adapter\Raylib\RaylibInput.h" />
-    <ClInclude Include="Source\System\Adapter\Raylib\RaylibRenderer.h" />
-    <ClInclude Include="Source\System\Adapter\Raylib\RaylibSystem.h" />
-    <ClInclude Include="Source\System\Adapter\Raylib\Struct\RaylibShaderBufferResource.h" />
-    <ClInclude Include="Source\System\ComponentStorages\CameraComponentStorage.h" />
-    <ClInclude Include="Source\System\ComponentStorages\RendererComponentStorage.h" />
     <ClInclude Include="Source\System\ComponentStorages\TransformComponentStorage.h" />
-    <ClInclude Include="Source\System\ComponentSystems\DebugRenderingSystem.h" />
-    <ClInclude Include="Source\System\ComponentSystems\ModelRenderingSystem.h" />
-    <ClInclude Include="Source\System\ComponentSystems\SkyRenderingSystem.h" />
-    <ClInclude Include="Source\System\Components\CameraComponent.h" />
-    <ClInclude Include="Source\System\Components\RendererComponent.h" />
     <ClInclude Include="Source\System\Components\TransformComponent.h" />
     <ClInclude Include="Source\System\Factory\BackEndFactory.h" />
     <ClInclude Include="Source\System\Factory\ComponentFactory.h" />
     <ClInclude Include="Source\System\Factory\ObjectFactory.h" />
+    <ClInclude Include="Source\System\Input\InputAction.h" />
+    <ClInclude Include="Source\System\Input\InputActionContext.h" />
+    <ClInclude Include="Source\System\Input\InputAssetDataLoader.h" />
+    <ClInclude Include="Source\System\Input\InputAssetDataLoadHelper.h" />
+    <ClInclude Include="Source\System\Input\InputSystem.h" />
+    <ClInclude Include="Source\System\Input\Struct\InputActionAssetData.h" />
+    <ClInclude Include="Source\System\Input\Struct\InputActionRuntimeData.h" />
+    <ClInclude Include="Source\System\Input\Struct\InputInteractionEvents.h" />
+    <ClInclude Include="Source\System\Input\Struct\InputValue.h" />
     <ClInclude Include="Source\System\Manager\ApplicationManager.h" />
     <ClInclude Include="Source\System\Manager\ObjectManager.h" />
     <ClInclude Include="Source\System\Manager\ResourceManager.h" />
@@ -571,29 +430,36 @@
     <ClCompile Include="Source\Objects\DebugCapsule.cpp" />
     <ClCompile Include="Source\Objects\DebugSphere.cpp" />
     <ClCompile Include="Source\Objects\EmptyObject.cpp" />
+    <ClCompile Include="Source\Objects\Player.cpp" />
     <ClCompile Include="Source\Physics\Component\Body\RigidBodyComponent.cpp" />
     <ClCompile Include="Source\Physics\Component\Body\Soft\ClothComponent.cpp" />
     <ClCompile Include="Source\Physics\Component\Body\Soft\RopeComponent.cpp" />
     <ClCompile Include="Source\Physics\Component\Body\Soft\SoftBodyComponent.cpp" />
+    <ClCompile Include="Source\Physics\Component\CharacterController\CharacterControllerComponent.cpp" />
     <ClCompile Include="Source\Physics\Component\Collider\BoxColliderComponent.cpp" />
     <ClCompile Include="Source\Physics\Component\Collider\CapsuleColliderComponent.cpp" />
+    <ClCompile Include="Source\Physics\Component\Collider\ColliderComponent.cpp" />
     <ClCompile Include="Source\Physics\Component\Collider\SphereColliderComponent.cpp" />
     <ClCompile Include="Source\Physics\Component\Constraint\DistanceConstraintComponent.cpp" />
     <ClCompile Include="Source\Physics\Component\Constraint\EndPointConstraintComponentBase.cpp" />
     <ClCompile Include="Source\Physics\Component\Constraint\PointConstraintComponent.cpp" />
-    <ClCompile Include="Source\Physics\DebugRender\ConstraintDebugRenderSystem.cpp" />
+    <ClCompile Include="Source\Physics\DebugRender\ColliderDebugRenderingSystem.cpp" />
+    <ClCompile Include="Source\Physics\DebugRender\ConstraintDebugRenderingSystem.cpp" />
     <ClCompile Include="Source\Physics\Function\ContactFunction.cpp" />
     <ClCompile Include="Source\Physics\Function\GJKEPA.cpp" />
     <ClCompile Include="Source\Physics\Function\ManifoldFunction.cpp" />
+    <ClCompile Include="Source\Physics\Function\RaycastFunction.cpp" />
     <ClCompile Include="Source\Physics\PhysicsWorld.cpp" />
     <ClCompile Include="Source\Physics\Storage\Body\BodyStorage.cpp" />
     <ClCompile Include="Source\Physics\Storage\Body\Rigid\RigidBodyStorage.cpp" />
     <ClCompile Include="Source\Physics\Storage\Buffer\PhysicsCommandBuffer.cpp" />
+    <ClCompile Include="Source\Physics\Storage\CharacterController\CharacterControllerStorage.cpp" />
     <ClCompile Include="Source\Physics\Storage\Collider\ColliderStorage.cpp" />
     <ClCompile Include="Source\Physics\Storage\Component\Body\RigidBodyComponentStorage.cpp" />
     <ClCompile Include="Source\Physics\Storage\Component\Body\Soft\ClothComponentStorage.cpp" />
     <ClCompile Include="Source\Physics\Storage\Component\Body\Soft\RopeComponentStorage.cpp" />
     <ClCompile Include="Source\Physics\Storage\Component\Body\Soft\SoftBodyComponentStorage.cpp" />
+    <ClCompile Include="Source\Physics\Storage\Component\CharacterController\CharacterControllerComponentStorage.cpp" />
     <ClCompile Include="Source\Physics\Storage\Component\Collider\BoxColliderComponentStorage.cpp" />
     <ClCompile Include="Source\Physics\Storage\Component\Collider\CapsuleColliderComponentStorage.cpp" />
     <ClCompile Include="Source\Physics\Storage\Component\Collider\SphereColliderComponentStorage.cpp" />
@@ -606,6 +472,8 @@
     <ClCompile Include="Source\Physics\System\Collision\CollisionSystem.cpp" />
     <ClCompile Include="Source\Physics\System\Collision\NarrowPhasePairBuilder.cpp" />
     <ClCompile Include="Source\Physics\System\PhysicsAPI.cpp" />
+    <ClCompile Include="Source\Physics\System\PhysicsComponentAPI.cpp" />
+    <ClCompile Include="Source\Physics\System\Query\PhysicsQuerySystem.cpp" />
     <ClCompile Include="Source\Physics\System\Simplex.cpp" />
     <ClCompile Include="Source\Physics\System\Solver\CollisionSolverSystem.cpp" />
     <ClCompile Include="Source\Physics\System\Solver\ConstraintSolverSystem.cpp" />
@@ -613,21 +481,23 @@
     <ClCompile Include="Source\Physics\System\Sync\PhysicsCommitSystem.cpp" />
     <ClCompile Include="Source\Physics\System\Sync\SynchronizationSystem.cpp" />
     <ClCompile Include="Source\Physics\System\Update\AABBUpdateSystem.cpp" />
+    <ClCompile Include="Source\Physics\System\Update\CharacterControllerSystem.cpp" />
     <ClCompile Include="Source\Physics\System\Update\RigidBodySystem.cpp" />
+    <ClCompile Include="Source\Render\System\CameraBindSystem.cpp" />
+    <ClCompile Include="Source\Render\System\CameraRigSystem.cpp" />
+    <ClCompile Include="Source\Render\System\ModelRenderingSystem.cpp" />
+    <ClCompile Include="Source\Render\System\SkyRenderingSystem.cpp" />
     <ClCompile Include="Source\System\Adapter\Dxlib\DxlibGPUConnecter.cpp" />
     <ClCompile Include="Source\System\Adapter\Dxlib\DxlibInput.cpp" />
     <ClCompile Include="Source\System\Adapter\Dxlib\DxlibRenderer.cpp" />
     <ClCompile Include="Source\System\Adapter\Dxlib\DxlibSystem.cpp" />
-    <ClCompile Include="Source\System\Adapter\Raylib\RaylibGPUConnecter.cpp" />
-    <ClCompile Include="Source\System\Adapter\Raylib\RaylibInput.cpp" />
-    <ClCompile Include="Source\System\Adapter\Raylib\RaylibRenderer.cpp" />
-    <ClCompile Include="Source\System\Adapter\Raylib\RaylibSystem.cpp" />
-    <ClCompile Include="Source\System\ComponentSystems\DebugRenderingSystem.cpp" />
-    <ClCompile Include="Source\System\ComponentSystems\ModelRenderingSystem.cpp" />
-    <ClCompile Include="Source\System\ComponentSystems\SkyRenderingSystem.cpp" />
     <ClCompile Include="Source\System\Factory\BackEndFactory.cpp" />
     <ClCompile Include="Source\System\Factory\ComponentFactory.cpp" />
     <ClCompile Include="Source\System\Factory\ObjectFactory.cpp" />
+    <ClCompile Include="Source\System\Input\InputAction.cpp" />
+    <ClCompile Include="Source\System\Input\InputAssetDataLoader.cpp" />
+    <ClCompile Include="Source\System\Input\InputAssetDataLoadHelper.cpp" />
+    <ClCompile Include="Source\System\Input\InputSystem.cpp" />
     <ClCompile Include="Source\System\Manager\ApplicationManager.cpp" />
     <ClCompile Include="Source\System\Manager\ObjectManager.cpp" />
     <ClCompile Include="Source\System\Manager\ResourceManager.cpp" />
@@ -641,37 +511,21 @@
     <FxCompile Include="Shader\HLSL\Sky\SkyPS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='DebugDxlib|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='DebugDxlib|Win32'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='ReleaseRaylib|x64'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='ReleaseRaylib|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='ReleaseDxlib|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='ReleaseDxlib|Win32'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='DebugRaylib|Win32'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='DebugRaylib|x64'">Pixel</ShaderType>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='DebugDxlib|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='DebugRaylib|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='ReleaseRaylib|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='ReleaseDxlib|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='DebugDxlib|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='DebugRaylib|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='ReleaseRaylib|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='ReleaseDxlib|x64'">true</ExcludedFromBuild>
     </FxCompile>
     <FxCompile Include="Shader\HLSL\Sky\SkyVS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='DebugDxlib|x64'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='DebugDxlib|Win32'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='ReleaseRaylib|x64'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='ReleaseRaylib|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='ReleaseDxlib|x64'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='ReleaseDxlib|Win32'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='DebugRaylib|Win32'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='DebugRaylib|x64'">Vertex</ShaderType>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='DebugDxlib|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='DebugRaylib|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='ReleaseRaylib|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='ReleaseDxlib|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='DebugDxlib|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='DebugRaylib|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='ReleaseRaylib|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='ReleaseDxlib|x64'">true</ExcludedFromBuild>
     </FxCompile>
   </ItemGroup>

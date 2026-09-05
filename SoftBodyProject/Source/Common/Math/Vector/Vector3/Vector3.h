@@ -18,6 +18,8 @@ public:
 
 		// SIMD計算用
 		SIMDVectorFloat simd;
+
+		float components[4];
 	};
 
 public:
@@ -57,6 +59,10 @@ public:
 	{
 		return simd;
 	}
+
+	// []アクセス
+	float& operator[](int _index);
+	const float& operator[](int _index) const;
 
 	// 加算
 	Vector3 operator+(const Vector3& _other)const;

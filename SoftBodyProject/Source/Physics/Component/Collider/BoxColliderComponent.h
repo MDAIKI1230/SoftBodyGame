@@ -2,6 +2,8 @@
 
 #include "ColliderComponent.h"
 
+#include "EntityID.h"
+
 struct BoxColliderComponent :public ColliderComponent
 {
 public:

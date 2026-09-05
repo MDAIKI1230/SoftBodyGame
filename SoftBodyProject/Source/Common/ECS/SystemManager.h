@@ -4,6 +4,7 @@
 
 #include "UpdateSystem.h"
 #include "FixedUpdateSystem.h"
+#include "LateUpdateSystem.h"
 #include "RenderingSystem.h"
 
 class SystemManager
@@ -15,6 +16,8 @@ public:
 	void Update(WorldStorage* _worldStorage, EventManager* _eventManager);
 	// 物理更新
 	void FixedUpdate(WorldStorage* _worldStorage, EventManager* _eventManager);
+	// 物理更新終わり描画までのタイミングで更新
+	void LateUpdate(WorldStorage* _worldStorage, EventManager* _eventManager);
 	// 描画
 	void Render(WorldStorage* _worldStorage, EventManager* _eventManager);
 
@@ -32,12 +35,19 @@ public:
 	/// システムの追加(moveされる)
 	/// </summary>
 	/// <param name="system">入れたいシステム</param>
+	void AddSystem(std::unique_ptr<LateUpdateSystem>&& _system);
+	/// <summary>
+	/// システムの追加(moveされる)
+	/// </summary>
+	/// <param name="system">入れたいシステム</param>
 	void AddSystem(std::unique_ptr<RenderingSystem>&& _system);
 private:
 	// 更新系システム
 	std::vector<std::unique_ptr<UpdateSystem>> updateSystems;
 	// 物理ステップ更新系システム
 	std::vector<std::unique_ptr<FixedUpdateSystem>> fixedUpdateSystems;
+	// 物理更新終わり描画までのタイミングで更新系システム
+	std::vector<std::unique_ptr<LateUpdateSystem>> lateUpdateSystems;
 	// 描画系システム
 	std::vector<std::unique_ptr<RenderingSystem>> renderingSystems;
 };

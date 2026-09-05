@@ -1,4 +1,4 @@
-cbuffer SkyConstantBuffer : register(b0)
+cbuffer SkyConstantBuffer : register(b4)
 {
     float4x4 world;
     float4x4 view;

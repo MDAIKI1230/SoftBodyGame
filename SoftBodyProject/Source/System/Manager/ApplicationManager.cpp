@@ -7,7 +7,7 @@
 
 ApplicationManager::ApplicationManager(BackEnd&& _backEnd):
 	renderer{ std::move(_backEnd.renderer) },
-	input{ std::move(_backEnd.input) },
+	inputSystem{ std::move(_backEnd.inputSystem) },
 	system{ std::move(_backEnd.system) },
 	gpuConnecter{ std::move(_backEnd.gpuConnecter) }
 
@@ -20,7 +20,7 @@ ApplicationManager::ApplicationManager(BackEnd&& _backEnd):
 
 	// サービスロケータに登録
 	ServiceLocator::SetRenderer(renderer.get());
-	ServiceLocator::SetInput(input.get());
+	ServiceLocator::SetInputSystemt(inputSystem.get());
 	ServiceLocator::SetGPUConnecter(gpuConnecter.get());
 	ServiceLocator::SetTimeManager(timeManager.get());
 	ServiceLocator::SetResourceManager(resourceManager.get());
@@ -38,13 +38,11 @@ int ApplicationManager::ApplicationMain()
 	renderer->SetUseZDepth(true);
 	renderer->SetWriteZDepth(true);
 
-#ifdef USE_RAYLIB
-	gpuConnecter->Initialize();
-#endif // USE_RAYLIB
+	inputSystem->Initialize();
 
-	while (system->ProcessMessage() == 0 && input->GetKeyPress(KeyConstants::ESCAPE) == 0)
+	while (system->ProcessMessage() == 0)
 	{
-		input->Update();
+		inputSystem->Update();
 		timeManager->Update();
 		sceneManager->Update();
 

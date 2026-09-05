@@ -3,13 +3,45 @@
 // 質量の代入
 void BodyStorage::SetRigidBodyMass(BodyID _id, float _mass)
 {
+	if (!IsAlive(_id))
+	{
+		return;
+	}
+
 	rigidBodyStorage->SetMass(GetDenseIndex(_id), _mass);
 }
 
 // 計算が完了したときに呼ぶ関数
 void BodyStorage::LocalInertiaCalcSucces(BodyID _id)
 {
+	if (!IsAlive(_id))
+	{
+		return;
+	}
+
 	rigidBodyStorage->LocalInertiaCalcSucces(GetDenseIndex(_id));
+}
+
+// 回転制限マスク変更関数
+void BodyStorage::SetRigidBodyRotationLock(BodyID _id, RigidBodyRotationLock _lock)
+{
+	if (!IsAlive(_id))
+	{
+		return;
+	}
+
+	rigidBodyStorage->SetRotationLock(GetDenseIndex(_id), _lock);
+}
+
+// 移動制限マスク変更関数
+void BodyStorage::SetRigidBodyPositionLock(BodyID _id, RigidBodyPositionLock _lock)
+{
+	if (!IsAlive(_id))
+	{
+		return;
+	}
+
+	rigidBodyStorage->SetPositionLock(GetDenseIndex(_id), _lock);
 }
 
 // コンストラクタ
@@ -58,6 +90,22 @@ BodyID BodyStorage::CreateSoftBody(EntityID _entity, PhysicsTransformID _transfo
 
 	softBodyStorage->Create(result, _info);
 	return result;
+}
+
+// 回転制限マスク適応済み逆慣性テンソル適応角速度関数
+Vector3 BodyStorage::ApplyAngularInverseInertia(const Matrix4x4& _worldInverseInertia, const Vector3& _angularImpulse, const Vector3& _rotationLockMasks)
+{
+	const Vector3 maskedImpulse{ SIMDVectorMath::Mul(_angularImpulse,_rotationLockMasks) };
+
+	const Vector3 response{ _worldInverseInertia * maskedImpulse };
+
+	return SIMDVectorMath::Mul(response, _rotationLockMasks);
+}
+
+// 移動制限マスク適応済み逆質量適応速度計算関数
+Vector3 BodyStorage::ApplyLinearInverseMass(const Vector3& _impulse, float _inverseMass, const Vector3& _linearFactor)
+{
+	return SIMDVectorMath::Mul(_impulse * _inverseMass, _linearFactor);
 }
 
 // 破棄

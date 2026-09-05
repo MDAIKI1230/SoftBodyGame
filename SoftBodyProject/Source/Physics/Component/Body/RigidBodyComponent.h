@@ -3,6 +3,8 @@
 #include "EntityID.h"
 #include "BodyID.h"
 
+#include "BodyConstants.h"
+
 struct RigidBodyComponent
 {
 public:
@@ -41,13 +43,6 @@ public:
 	// 質量変更
 	void SetMass(float _mass);
 
-	// --- 慣性テンソル系 ---
-
-	// 慣性テンソル取得
-	const Matrix4x4& GetInertiaTensor() const;
-	// 慣性テンソル変更
-	void SetInertiaTensor(const Matrix4x4& _matrix);
-
 	// --- 重力系 ---
 
 	// isGravity取得
@@ -58,6 +53,15 @@ public:
 	const Vector3& GetGravity() const;
 	// 重力加速度変更
 	void SetGravity(const Vector3& _gravity);
+
+	// 回転制限取得
+	RigidBodyRotationLock GetRotationLock() const;
+	// 回転制限変更
+	void SetRotationLock(RigidBodyRotationLock _lock);
+	// 移動制限取得
+	RigidBodyPositionLock GetPositionLock() const;
+	// 移動制限変更
+	void SetPositionLock(RigidBodyPositionLock _lock);
 
 	// ID取得
 	BodyID GetID() const { return id; }

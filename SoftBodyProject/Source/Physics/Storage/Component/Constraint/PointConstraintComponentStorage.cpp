@@ -1,8 +1,8 @@
-﻿#include "PhysicsAPI.h"
+﻿#include "PhysicsComponentAPI.h"
 
 #include "PointConstraintComponentStorage.h"
 
 void PointConstraintComponentStorage::OnRemoving(EntityID _entity, const  PointConstraintComponent& _component)
 {
-	PhysicsAPI::DestroyConstraint(_component.GetID());
+	PhysicsComponentAPI::DestroyConstraint(_component.GetID());
 }

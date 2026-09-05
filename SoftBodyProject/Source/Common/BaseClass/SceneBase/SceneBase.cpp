@@ -6,7 +6,6 @@
 #include "ModelRenderingSystem.h"
 #include "RendererComponentStorage.h"
 #include "CameraComponentStorage.h"
-#include "DebugRenderingSystem.h"
 #include "SkyRenderingSystem.h"
 
 // Transform
@@ -29,7 +28,16 @@
 #include "PointConstraintComponentStorage.h"
 #include "DistanceConstraintComponentStorage.h"
 
+// キャラクターコントローラー
+#include "CharacterControllerComponentStorage.h"
+
+// カメラ
+#include "CameraRigSystem.h"
+#include "CameraBindSystem.h"
+#include "CameraRigComponentStorage.h"
+
 // API
+#include "PhysicsComponentAPI.h"
 #include "PhysicsAPI.h"
 
 #include "SceneDataLoader.h"
@@ -70,14 +78,20 @@ SceneBase::SceneBase()
 	// 拘束
 	AddStorage<PointConstraintComponent>(std::make_unique<PointConstraintComponentStorage>());
 	AddStorage<DistanceConstraintComponent>(std::make_unique<DistanceConstraintComponentStorage>());
+
+	// キャラクターコントローラー
+	AddStorage<CharacterControllerComponent>(std::make_unique<CharacterControllerComponentStorage>());
+
+	// カメラ
+	AddSystem(std::make_unique<CameraRigSystem>());
+	AddSystem(std::make_unique<CameraBindSystem>());
+	AddStorage<CameraRigComponent>(std::make_unique<CameraRigComponentStorage>());
+
 	// オブジェクトマネージャー
 	objectManager = std::make_unique<ObjectManager>();
 
+	PhysicsComponentAPI::BindWorld(*physicsWorld.get(), *worldStorage.get());
 	PhysicsAPI::BindWorld(*physicsWorld.get());
-
-#ifdef _DEBUG
-	AddSystem(std::make_unique<DebugRenderingSystem>());
-#endif // _DEBUG
 }
 
 void SceneBase::Execute()
@@ -103,6 +117,7 @@ void SceneBase::Execute()
 	case SceneState::TERMINATE:
 		// 終了
 		Terminate();
+		PhysicsComponentAPI::UnbindWorld();
 		PhysicsAPI::UnbindWorld();
 		break;
 	case SceneState::FADEOUT:
@@ -112,33 +127,6 @@ void SceneBase::Execute()
 	default:
 		break;
 	}
-}
-
-/// <summary>
-/// システムの追加(moveされる)
-/// </summary>
-/// <param name="system">入れたいシステム</param>
-void SceneBase::AddSystem(std::unique_ptr<UpdateSystem>&& _system)
-{
-	systemManager->AddSystem(std::move(_system));
-}
-
-/// <summary>
-/// システムの追加(moveされる)
-/// </summary>
-/// <param name="system">入れたいシステム</param>
-void SceneBase::AddSystem(std::unique_ptr<FixedUpdateSystem>&& _system)
-{
-	systemManager->AddSystem(std::move(_system));
-}
-
-/// <summary>
-/// システムの追加(moveされる)
-/// </summary>
-/// <param name="system">入れたいシステム</param>
-void SceneBase::AddSystem(std::unique_ptr<RenderingSystem>&& _system)
-{
-	systemManager->AddSystem(std::move(_system));
 }
 
 void SceneBase::FadeIn()
@@ -171,6 +159,9 @@ void SceneBase::Update()
 
 		physicsWorld->FixedUpdate(worldStorage.get(), eventManager.get());
 	}
+
+	// 物理更新終わり描画までのタイミングで更新
+	systemManager->LateUpdate(worldStorage.get(), eventManager.get());
 }
 
 void SceneBase::Render()

@@ -2,7 +2,7 @@
 
 #include <stdint.h>
 
-#include "BodyConstraints.h"
+#include "BodyConstants.h"
 
 #include "EntityID.h"
 #include "PhysicsTransformID.h"
@@ -21,7 +21,7 @@ public:
 
 public:
     // 世代
-    unsigned char generation{ 1 };
+    uint32_t generation{ 1 };
     // 生存フラグ
     bool alive{ true };
 

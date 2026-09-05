@@ -1,6 +1,9 @@
 ﻿#include <algorithm>
 
 #include "ServiceLocator.h"
+
+#include "BodyStorage.h"
+
 #include "CollisionSolverSystem.h"
 
 CollisionSolverSystem::CollisionSolverSystem() :
@@ -9,11 +12,6 @@ CollisionSolverSystem::CollisionSolverSystem() :
 	C{ 0.4f },
 	ERP{ K_DELTA_TIME / (K_DELTA_TIME + C) },
 	GAMMA{ 1 / (C + K_DELTA_TIME) }
-{
-}
-
-// 初期化
-void Initialize()
 {
 }
 
@@ -44,7 +42,7 @@ void CollisionSolverSystem::StartUp(ColliderStorage* _colliderStorage, Collision
 	}
 }
 
-void CollisionSolverSystem::VelocitySolver(CollisionManifoldBuffer* _manifoldBuffer, SolverBodyBuffer* _solverBodyBuffer)
+void CollisionSolverSystem::Solve(CollisionManifoldBuffer* _manifoldBuffer, SolverBodyBuffer* _solverBodyBuffer)
 {
 	for (auto& constraint : contactConstraints)
 	{
@@ -78,6 +76,42 @@ void CollisionSolverSystem::VelocitySolver(CollisionManifoldBuffer* _manifoldBuf
 
 		constraint.penetration = std::max(-sep, 0.0f);
 
+		// 慣性テンソル求める
+		Matrix4x4 rotMat{ MatGenerateFunc::Rotate(solverBodyA.rotation) };
+		Matrix4x4 worldInverseInertiaTnesorA{ rotMat * solverBodyA.localInverseInertiaTensor * rotMat.Transposed() };
+
+		rotMat = MatGenerateFunc::Rotate(solverBodyB.rotation);
+		Matrix4x4 worldInverseInertiaTnesorB{ rotMat * solverBodyB.localInverseInertiaTensor * rotMat.Transposed() };
+
+		// Factorを計算した各種速度計算
+		Vector3 linearResponseA{
+			BodyStorage::ApplyLinearInverseMass(
+				constraint.normal,
+				solverBodyA.inverseMass,
+				solverBodyA.linearFactor)
+		};
+
+		Vector3 angularResponseA{
+			BodyStorage::ApplyAngularInverseInertia(
+				worldInverseInertiaTnesorA,
+				rACross,
+				solverBodyA.angularFactor)
+		};
+
+		Vector3 linearResponseB{
+			BodyStorage::ApplyLinearInverseMass(
+				constraint.normal,
+				solverBodyB.inverseMass,
+				solverBodyB.linearFactor)
+		};
+
+		Vector3 angularResponseB{
+			BodyStorage::ApplyAngularInverseInertia(
+				worldInverseInertiaTnesorB,
+				rBCross,
+				solverBodyB.angularFactor)
+		};
+
 		// ヤコビアン
 		Vector3 jacobian[4]{ constraint.normal,rACross,-constraint.normal,-rBCross };
 		// 変化量ベクトル
@@ -85,7 +119,7 @@ void CollisionSolverSystem::VelocitySolver(CollisionManifoldBuffer* _manifoldBuf
 			solverBodyA.velocity,
 			solverBodyA.angularVelocity,
 			solverBodyB.velocity,
-			solverBodyB.angularVelocity,
+			solverBodyB.angularVelocity
 		};
 		// λを求める λ = -Jv - bias / M^-1
 		// ヤコビアンと変化量ベクトルから速度拘束条件Jv = 0のJv作成
@@ -95,20 +129,19 @@ void CollisionSolverSystem::VelocitySolver(CollisionManifoldBuffer* _manifoldBuf
 			jv += Vector3::Dot(jacobian[i], deltaVector[i]);
 		}
 
-		// 慣性テンソル求める
-		Matrix4x4 rotMat{ MatGenerateFunc::Rotate(solverBodyA.rotation) };
-		Matrix4x4 worldInertiaTnesorA{ rotMat * solverBodyA.localInverseInertiaTensor * rotMat.Transposed() };
-
-		rotMat = MatGenerateFunc::Rotate(solverBodyB.rotation);
-		Matrix4x4 worldInertiaTnesorB{ rotMat * solverBodyB.localInverseInertiaTensor * rotMat.Transposed() };
-
 		// 質量と慣性テンソルが速度に影響する度合い
 		float effectiveMass{
-			solverBodyA.inverseMass +
-			Vector3::Dot(rACross,worldInertiaTnesorA * rACross) +
-			solverBodyB.inverseMass +
-			Vector3::Dot(rBCross,worldInertiaTnesorB * rBCross)
+			Vector3::Dot(constraint.normal, linearResponseA) +
+			Vector3::Dot(rACross, angularResponseA) +
+			Vector3::Dot(constraint.normal, linearResponseB) +
+			Vector3::Dot(rBCross, angularResponseB)
 		};
+
+		// 0チェック
+		if (effectiveMass <= MathConstants::EPSILON)
+		{
+			continue;
+		}
 
 		// λ計算(CFMも適応)
 		float lambda{ (jv + bias) / (effectiveMass + GAMMA) };
@@ -121,12 +154,12 @@ void CollisionSolverSystem::VelocitySolver(CollisionManifoldBuffer* _manifoldBuf
 		float applyLambda{ constraint.accumulatedLambda - oldLambda };
 
 		// A速度の解消
-		solverBodyA.velocity -= constraint.normal * applyLambda * solverBodyA.inverseMass;
-		solverBodyA.angularVelocity -= worldInertiaTnesorA * rACross * applyLambda;
+		solverBodyA.velocity -= linearResponseA * applyLambda;
+		solverBodyA.angularVelocity -= angularResponseA * applyLambda;
 
 		// B速度の解消
-		solverBodyB.velocity += constraint.normal * applyLambda * solverBodyB.inverseMass;
-		solverBodyB.angularVelocity += worldInertiaTnesorB * rBCross * applyLambda;
+		solverBodyB.velocity += linearResponseB * applyLambda;
+		solverBodyB.angularVelocity += angularResponseB * applyLambda;
 
 		// 摩擦
 		FrictionSolver(solverBodyA, rA, solverBodyB, rB, constraint);
@@ -151,7 +184,7 @@ void CollisionSolverSystem::FrictionSolver(SolverBody& _bodyA, const Vector3& _r
 		return;
 	}
 
-	Vector3 tangent = tangentVelocity.Normalized();
+	Vector3 tangent{ tangentVelocity.Normalized() };
 
 	// 重心から衝突点ベクトルAと法線の外積
 	Vector3 rACross{ Vector3::Cross(_rA,tangent) };
@@ -160,35 +193,70 @@ void CollisionSolverSystem::FrictionSolver(SolverBody& _bodyA, const Vector3& _r
 
 	// 慣性テンソル求める
 	Matrix4x4 rotMat{ MatGenerateFunc::Rotate(_bodyA.rotation) };
-	Matrix4x4 worldInertiaTnesorA{ rotMat * _bodyA.localInverseInertiaTensor * rotMat.Transposed() };
+	Matrix4x4 worldInverseInertiaTnesorA{ rotMat * _bodyA.localInverseInertiaTensor * rotMat.Transposed() };
 
 	rotMat = MatGenerateFunc::Rotate(_bodyB.rotation);
-	Matrix4x4 worldInertiaTnesorB{ rotMat * _bodyB.localInverseInertiaTensor * rotMat.Transposed() };
+	Matrix4x4 worldInverseInertiaTnesorB{ rotMat * _bodyB.localInverseInertiaTensor * rotMat.Transposed() };
 
-	float effectiveMass{
-			_bodyA.inverseMass +
-			Vector3::Dot(rACross,worldInertiaTnesorA * rACross) +
-			_bodyB.inverseMass +
-			Vector3::Dot(rBCross,worldInertiaTnesorB * rBCross)
+	// Factorを計算した各種速度計算
+	Vector3 linearResponseA{
+		BodyStorage::ApplyLinearInverseMass(
+			tangent,
+			_bodyA.inverseMass,
+			_bodyA.linearFactor)
 	};
 
-	float lambda = Vector3::Dot(relativeVelocity, tangent) / effectiveMass;
+	Vector3 angularResponseA{
+		BodyStorage::ApplyAngularInverseInertia(
+			worldInverseInertiaTnesorA,
+			rACross,
+			_bodyA.angularFactor)
+	};
 
-	float maxFrictionLambda = _constraint.accumulatedLambda;
+	Vector3 linearResponseB{
+		BodyStorage::ApplyLinearInverseMass(
+			tangent,
+			_bodyB.inverseMass,
+			_bodyB.linearFactor)
+	};
 
-	float oldLambda = _constraint.accumulatedFrictionLambda;
+	Vector3 angularResponseB{
+		BodyStorage::ApplyAngularInverseInertia(
+			worldInverseInertiaTnesorB,
+			rBCross,
+			_bodyB.angularFactor)
+	};
+
+	float effectiveMass{
+			Vector3::Dot(tangent, linearResponseA) +
+			Vector3::Dot(rACross, angularResponseA) +
+			Vector3::Dot(tangent, linearResponseB) +
+			Vector3::Dot(rBCross, angularResponseB)
+	};
+
+	// 0チェック
+	if (effectiveMass <= MathConstants::EPSILON)
+	{
+		return;
+	}
+
+	float lambda{ Vector3::Dot(relativeVelocity, tangent) / effectiveMass };
+
+	float maxFrictionLambda{ _constraint.accumulatedLambda };
+
+	float oldLambda{ _constraint.accumulatedFrictionLambda };
 	_constraint.accumulatedFrictionLambda =
 		std::clamp(oldLambda + lambda, -maxFrictionLambda, maxFrictionLambda);
 
 	float applyLambda = _constraint.accumulatedFrictionLambda - oldLambda;
 
 	// A速度の摩擦
-	_bodyA.velocity -= tangent * applyLambda * _bodyA.inverseMass;
-	_bodyA.angularVelocity -= worldInertiaTnesorA * rACross * applyLambda;
+	_bodyA.velocity -= linearResponseA * applyLambda;
+	_bodyA.angularVelocity -= angularResponseA * applyLambda;
 
 	// B速度の摩擦
-	_bodyB.velocity += tangent * applyLambda * _bodyB.inverseMass;
-	_bodyB.angularVelocity += worldInertiaTnesorB * rBCross * applyLambda;
+	_bodyB.velocity += linearResponseB * applyLambda;
+	_bodyB.angularVelocity += angularResponseB * applyLambda;
 }
 
 void CollisionSolverSystem::ReCalcPosRot(SolverBodyBuffer* _solverBodyBuffer)

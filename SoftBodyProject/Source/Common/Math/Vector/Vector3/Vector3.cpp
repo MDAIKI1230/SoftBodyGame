@@ -13,6 +13,16 @@ const Vector3 Vector3::RIGHT{ 1.0f,0.0f,0.0f };
 // 上(y)
 const Vector3 Vector3::UP{ 0.0f,1.0f,0.0f };
 
+// []アクセス
+float& Vector3::operator[](int _index)
+{
+	return components[_index];
+}
+const float& Vector3::operator[](int _index) const
+{
+	return components[_index];
+}
+
 // 加算
 Vector3 Vector3::operator+(const Vector3& _other) const
 {
