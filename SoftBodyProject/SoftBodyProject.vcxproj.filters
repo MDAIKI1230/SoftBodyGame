@@ -296,6 +296,9 @@
     <Filter Include="ソース ファイル\Animation\Struct">
       <UniqueIdentifier>{1632145f-fac1-4a26-88cf-c483035160df}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Animation\Storage\Buffer">
+      <UniqueIdentifier>{9d79273f-e87c-4980-ae55-ea948f048a0f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Objects\Camera.h">
@@ -987,6 +990,24 @@
     </ClInclude>
     <ClInclude Include="Source\Physics\Struct\Constraint\ConstraintTuning.h">
       <Filter>ソース ファイル\Physics\Struct\Constraint</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Animation\Storage\SkeletonStorage.h">
+      <Filter>ソース ファイル\Animation\Storage</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Animation\Struct\SkeletonData.h">
+      <Filter>ソース ファイル\Animation\Struct</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Animation\Storage\Buffer\PoseBuffer.h">
+      <Filter>ソース ファイル\Animation\Storage\Buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Animation\Storage\SkeletonInstanceStorage.h">
+      <Filter>ソース ファイル\Animation\Storage</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Animation\Struct\SkeletonInstanceData.h">
+      <Filter>ソース ファイル\Animation\Struct</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Animation\Struct\SkeletonID.h">
+      <Filter>ソース ファイル\Animation\Struct</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

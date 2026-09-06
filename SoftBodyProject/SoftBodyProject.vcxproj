@@ -183,8 +183,14 @@
   <ItemGroup>
     <ClInclude Include="Source\Animation\AnimationWorld.h" />
     <ClInclude Include="Source\Animation\Component\RagdollComponent.h" />
+    <ClInclude Include="Source\Animation\Storage\Buffer\PoseBuffer.h" />
     <ClInclude Include="Source\Animation\Storage\Component\RagdollComponentStorage.h" />
+    <ClInclude Include="Source\Animation\Storage\SkeletonInstanceStorage.h" />
+    <ClInclude Include="Source\Animation\Storage\SkeletonStorage.h" />
     <ClInclude Include="Source\Animation\Struct\RagdollID.h" />
+    <ClInclude Include="Source\Animation\Struct\SkeletonData.h" />
+    <ClInclude Include="Source\Animation\Struct\SkeletonID.h" />
+    <ClInclude Include="Source\Animation\Struct\SkeletonInstanceData.h" />
     <ClInclude Include="Source\Common\BaseClass\FixedUpdateSystem.h" />
     <ClInclude Include="Source\Common\BaseClass\LateUpdateSystem.h" />
     <ClInclude Include="Source\Common\BaseClass\ObjectBase\ObjectBase.h" />
