@@ -185,11 +185,13 @@
     <ClInclude Include="Source\Animation\Component\RagdollComponent.h" />
     <ClInclude Include="Source\Animation\Storage\Buffer\PoseBuffer.h" />
     <ClInclude Include="Source\Animation\Storage\Component\RagdollComponentStorage.h" />
+    <ClInclude Include="Source\Animation\Storage\RagdollStorage.h" />
     <ClInclude Include="Source\Animation\Storage\SkeletonInstanceStorage.h" />
     <ClInclude Include="Source\Animation\Struct\RagdollID.h" />
     <ClInclude Include="Source\Animation\Struct\SkeletonData.h" />
     <ClInclude Include="Source\Animation\Struct\SkeletonHandle.h" />
     <ClInclude Include="Source\Animation\Struct\SkeletonInstanceData.h" />
+    <ClInclude Include="Source\Animation\System\RagdollSystem.h" />
     <ClInclude Include="Source\Common\BaseClass\FixedUpdateSystem.h" />
     <ClInclude Include="Source\Common\BaseClass\LateUpdateSystem.h" />
     <ClInclude Include="Source\Common\BaseClass\ObjectBase\ObjectBase.h" />
@@ -292,6 +294,7 @@
     <ClInclude Include="Source\Physics\Storage\Body\Soft\ClothStorage.h" />
     <ClInclude Include="Source\Physics\Storage\Body\Soft\RopeStorage.h" />
     <ClInclude Include="Source\Physics\Storage\Body\Soft\SoftBodyStorage.h" />
+    <ClInclude Include="Source\Physics\Storage\Buffer\BodySnapShotBuffer.h" />
     <ClInclude Include="Source\Physics\Storage\Buffer\CollisionManifoldBuffer.h" />
     <ClInclude Include="Source\Physics\Storage\Buffer\PhysicsBufferBase.h" />
     <ClInclude Include="Source\Physics\Storage\Buffer\PhysicsCommandBuffer.h" />
@@ -354,6 +357,7 @@
     <ClInclude Include="Source\Physics\Struct\Ray\RayCastQueryHitInfo.h" />
     <ClInclude Include="Source\Physics\Struct\Transform\PhysicsTransformID.h" />
     <ClInclude Include="Source\Physics\Struct\Transform\PhysicsTransformSlot.h" />
+    <ClInclude Include="Source\Physics\System\Build\BodySnapShotBuildSystem.h" />
     <ClInclude Include="Source\Physics\System\Build\ConstraintBuildSystem.h" />
     <ClInclude Include="Source\Physics\System\Build\SolverBodyBuildSystem.h" />
     <ClInclude Include="Source\Physics\System\Collision\CollisionSystem.h" />
@@ -424,6 +428,8 @@
     <ClCompile Include="Source\Animation\AnimationWorld.cpp" />
     <ClCompile Include="Source\Animation\Component\RagdollComponent.cpp" />
     <ClCompile Include="Source\Animation\Storage\Component\RagdollComponentStorage.cpp" />
+    <ClCompile Include="Source\Animation\Storage\RagdollStorage.cpp" />
+    <ClCompile Include="Source\Animation\System\RagdollSystem.cpp" />
     <ClCompile Include="Source\Common\BaseClass\SceneBase\SceneBase.cpp" />
     <ClCompile Include="Source\Common\ECS\Event\EventSystem.cpp" />
     <ClCompile Include="Source\Common\ECS\SparseSet\Table\HashTable.cpp" />
@@ -483,6 +489,7 @@
     <ClCompile Include="Source\Physics\Storage\Component\Constraint\PointConstraintComponentStorage.cpp" />
     <ClCompile Include="Source\Physics\Storage\Constraint\ConstraintStorage.cpp" />
     <ClCompile Include="Source\Physics\Storage\Transform\PhysicsTransformStorage.cpp" />
+    <ClCompile Include="Source\Physics\System\Build\BodySnapShotBuildSystem.cpp" />
     <ClCompile Include="Source\Physics\System\Build\ConstraintBuildSystem.cpp" />
     <ClCompile Include="Source\Physics\System\Build\SolverBodyBuildSystem.cpp" />
     <ClCompile Include="Source\Physics\System\Collision\CollisionSystem.cpp" />
