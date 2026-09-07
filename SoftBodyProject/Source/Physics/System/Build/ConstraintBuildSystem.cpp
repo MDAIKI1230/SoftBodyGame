@@ -1,4 +1,4 @@
-﻿#include "ServiceLocator.h"
+﻿#include "TimeManager.h"
 
 #include "ConstraintBuildSystem.h"
 
@@ -162,7 +162,7 @@ void ConstraintBuildSystem::BuildDistanceConstraint(ConstraintStorage* _constrai
 template<class T>
 void ConstraintBuildSystem::MakeConstraintInfo(Constraint& _constraint, const T& _base)
 {
-	float deltaTime{ ServiceLocator::GetTimeManager()->GetFixedDeltaTime() };
+	float deltaTime{ TimeManager::GetFixedDeltaTime() };
 
 	float denominator = _base.tuning.damping + deltaTime * _base.tuning.stiffness;
 

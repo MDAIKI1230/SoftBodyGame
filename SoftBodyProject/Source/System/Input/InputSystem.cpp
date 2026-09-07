@@ -1,16 +1,23 @@
-﻿#include "ServiceLocator.h"
+﻿#include "TimeManager.h"
 
 #include "InputAssetDataLoader.h"
 
 #include "InputSystem.h"
 
+// --- 外に公開する関数の実装部分 ---
+// 入力のアダプターを入れる
+void InputSystem::SetNativeInputImpl(std::unique_ptr<IInput>&& _nativeInput)
+{
+	nativeInput = std::move(_nativeInput);
+}
 // 初期化
-void InputSystem::Initialize()
+void InputSystem::InitializeImpl()
 {
 	nativeInput->Initialize();
 }
 
-bool InputSystem::LoadAsset(std::string _path)
+// アセットの読み込み
+bool InputSystem::LoadAssetImpl(std::string _path)
 {
 	if (InputAssetDataLoader::LoadAsset(_path, data))
 	{
@@ -22,7 +29,8 @@ bool InputSystem::LoadAsset(std::string _path)
 	}
 }
 
-void InputSystem::Update()
+// 更新処理
+void InputSystem::UpdateImpl()
 {
 	ApplyInputAction();
 	nativeInput->Update();
@@ -31,7 +39,7 @@ void InputSystem::Update()
 }
 
 // InputAction取得関数
-InputAction InputSystem::GetInputAction(std::string_view _actionMapName, std::string_view _inputActionName)
+InputAction InputSystem::GetInputActionImpl(std::string_view _actionMapName, std::string_view _inputActionName)
 {
 	for (const auto& actionMap : data.actionMaps)
 	{
@@ -52,6 +60,100 @@ InputAction InputSystem::GetInputAction(std::string_view _actionMapName, std::st
 	}
 
 	return InputAction{};
+}
+
+// Startedの追加待ちに追加
+bool InputSystem::QueueStartedCallbackAddImpl(InputDataID _id, InputCallbackEntry::InputActionCallbackFunc _func, void* _user)
+{
+	if (!_id.IsValid())
+	{
+		return false;
+	}
+
+	return AddCallback(pendingAddLists[_id.value].started, _func, _user);
+}
+
+// Performedの追加待ちに追加
+bool InputSystem::QueuePerformedCallbackAddImpl(InputDataID _id, InputCallbackEntry::InputActionCallbackFunc _func, void* _user)
+{
+	if (!_id.IsValid())
+	{
+		return false;
+	}
+
+	return AddCallback(pendingAddLists[_id.value].performed, _func, _user);
+}
+
+// Canceledの追加待ちに追加
+bool InputSystem::QueueCanceledCallbackAddImpl(InputDataID _id, InputCallbackEntry::InputActionCallbackFunc _func, void* _user)
+{
+	if (!_id.IsValid())
+	{
+		return false;
+	}
+
+	return AddCallback(pendingAddLists[_id.value].canceled, _func, _user);
+}
+
+
+// Startedの解除待ちにする
+bool InputSystem::StartedCallbackRemoveImpl(InputDataID _id, InputCallbackEntry::InputActionCallbackFunc _func, void* _user)
+{
+	if (!_id.IsValid())
+	{
+		return false;
+	}
+
+	if (RemoveCallback(runtimeDatas[_id.value].callbacks.started, _func, _user))
+	{
+		return true;
+	}
+
+	if (RemoveCallback(pendingAddLists[_id.value].started, _func, _user))
+	{
+		return true;
+	}
+	return false;
+}
+
+// Performedの解除待ちにする
+bool InputSystem::PerformedCallbackRemoveImpl(InputDataID _id, InputCallbackEntry::InputActionCallbackFunc _func, void* _user)
+{
+	if (!_id.IsValid())
+	{
+		return false;
+	}
+
+	if (RemoveCallback(runtimeDatas[_id.value].callbacks.performed, _func, _user))
+	{
+		return true;
+	}
+
+	if (RemoveCallback(pendingAddLists[_id.value].performed, _func, _user))
+	{
+		return true;
+	}
+	return false;
+}
+
+// Canceledの解除待ちにする
+bool InputSystem::CanceledCallbackRemoveImpl(InputDataID _id, InputCallbackEntry::InputActionCallbackFunc _func, void* _user)
+{
+	if (!_id.IsValid())
+	{
+		return false;
+	}
+
+	if (RemoveCallback(runtimeDatas[_id.value].callbacks.canceled, _func, _user))
+	{
+		return true;
+	}
+
+	if (RemoveCallback(pendingAddLists[_id.value].canceled, _func, _user))
+	{
+		return true;
+	}
+	return false;
 }
 
 // InputAction達のApplyを呼ぶ
@@ -516,7 +618,7 @@ InputInteractionEvents InputSystem::UpdateInteractionPress(InputActionRuntimeSta
 		if (currentActuated)
 		{
 			result.performed = true;
-			_state.interactionTime += ServiceLocator::GetTimeManager()->GetDeltaTime();
+			_state.interactionTime += TimeManager::GetDeltaTime();
 		}
 
 		if (!currentActuated && previousActuated)
@@ -533,6 +635,7 @@ InputInteractionEvents InputSystem::UpdateInteractionPress(InputActionRuntimeSta
 
 	return result;
 }
+
 // HOLDの評価関数
 InputInteractionEvents InputSystem::UpdateInteractionHold(InputActionRuntimeState& _state, float _duration)
 {
@@ -568,7 +671,7 @@ InputInteractionEvents InputSystem::UpdateInteractionHold(InputActionRuntimeStat
 	case InputActionPhase::STARTED:
 		if (currentActuated && previousActuated)
 		{
-			_state.interactionTime += ServiceLocator::GetTimeManager()->GetDeltaTime();
+			_state.interactionTime += TimeManager::GetDeltaTime();
 		}
 		// 秒数判定
 		if (_state.interactionTime >= _duration)
@@ -587,7 +690,7 @@ InputInteractionEvents InputSystem::UpdateInteractionHold(InputActionRuntimeStat
 	case InputActionPhase::PERFORMED:
 		if (currentActuated)
 		{
-			_state.interactionTime += ServiceLocator::GetTimeManager()->GetDeltaTime();
+			_state.interactionTime += TimeManager::GetDeltaTime();
 		}
 
 		if (!currentActuated && previousActuated)
@@ -644,7 +747,7 @@ InputInteractionEvents InputSystem::UpdateInteractionTap(InputActionRuntimeState
 	case InputActionPhase::STARTED:
 		if (currentActuated)
 		{
-			_state.interactionTime += ServiceLocator::GetTimeManager()->GetDeltaTime();
+			_state.interactionTime += TimeManager::GetDeltaTime();
 		}
 
 		// 離された判定
@@ -734,37 +837,6 @@ void InputSystem::InvokeCallbacks(std::vector<InputCallbackEntry>& _callbacks, I
 	}
 }
 
-// Startedの追加待ちに追加
-bool InputSystem::QueueStartedCallbackAdd(CallbackAccessKey, InputDataID _id, InputCallbackEntry::InputActionCallbackFunc _func, void* _user)
-{
-	if (!_id.IsValid())
-	{
-		return false;
-	}
-
-	return AddCallback(pendingAddLists[_id.value].started, _func, _user);
-}
-// Performedの追加待ちに追加
-bool InputSystem::QueuePerformedCallbackAdd(CallbackAccessKey, InputDataID _id, InputCallbackEntry::InputActionCallbackFunc _func, void* _user)
-{
-	if (!_id.IsValid())
-	{
-		return false;
-	}
-
-	return AddCallback(pendingAddLists[_id.value].performed, _func, _user);
-}
-// Canceledの追加待ちに追加
-bool InputSystem::QueueCanceledCallbackAdd(CallbackAccessKey, InputDataID _id, InputCallbackEntry::InputActionCallbackFunc _func, void* _user)
-{
-	if (!_id.IsValid())
-	{
-		return false;
-	}
-
-	return AddCallback(pendingAddLists[_id.value].canceled, _func, _user);
-}
-
 bool InputSystem::AddCallback(std::vector<InputCallbackEntry>& _pendingAddList, InputCallbackEntry::InputActionCallbackFunc _function, void* _userData)
 {
 	if (_function == nullptr)
@@ -775,64 +847,6 @@ bool InputSystem::AddCallback(std::vector<InputCallbackEntry>& _pendingAddList, 
 	_pendingAddList.push_back({ _function,_userData });
 
 	return true;
-}
-
-// Startedの解除待ちにする
-bool InputSystem::StartedCallbackRemove(CallbackAccessKey, InputDataID _id, InputCallbackEntry::InputActionCallbackFunc _func, void* _userData)
-{
-	if (!_id.IsValid())
-	{
-		return false;
-	}
-
-	if (RemoveCallback(runtimeDatas[_id.value].callbacks.started, _func, _userData))
-	{
-		return true;
-	}
-
-	if (RemoveCallback(pendingAddLists[_id.value].started, _func, _userData))
-	{
-		return true;
-	}
-	return false;
-}
-// Performedの解除待ちにする
-bool InputSystem::PerformedCallbackRemove(CallbackAccessKey, InputDataID _id, InputCallbackEntry::InputActionCallbackFunc _func, void* _userData)
-{
-	if (!_id.IsValid())
-	{
-		return false;
-	}
-
-	if (RemoveCallback(runtimeDatas[_id.value].callbacks.performed, _func, _userData))
-	{
-		return true;
-	}
-
-	if (RemoveCallback(pendingAddLists[_id.value].performed, _func, _userData))
-	{
-		return true;
-	}
-	return false;
-}
-// Canceledの解除待ちにする
-bool InputSystem::CanceledCallbackRemove(CallbackAccessKey, InputDataID _id, InputCallbackEntry::InputActionCallbackFunc _func, void* _userData)
-{
-	if (!_id.IsValid())
-	{
-		return false;
-	}
-
-	if (RemoveCallback(runtimeDatas[_id.value].callbacks.canceled, _func, _userData))
-	{
-		return true;
-	}
-
-	if (RemoveCallback(pendingAddLists[_id.value].canceled, _func, _userData))
-	{
-		return true;
-	}
-	return false;
 }
 
 bool InputSystem::RemoveCallback(std::vector<InputCallbackEntry>& _callbacks, InputCallbackEntry::InputActionCallbackFunc _function, void* _userData)

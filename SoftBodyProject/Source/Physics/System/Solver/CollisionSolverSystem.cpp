@@ -1,6 +1,6 @@
 ﻿#include <algorithm>
 
-#include "ServiceLocator.h"
+#include "TimeManager.h"
 
 #include "BodyStorage.h"
 
@@ -8,7 +8,7 @@
 
 CollisionSolverSystem::CollisionSolverSystem() :
 	K{ 0.3f },
-	K_DELTA_TIME{ K * ServiceLocator::GetTimeManager()->GetFixedDeltaTime() },
+	K_DELTA_TIME{ K * TimeManager::GetFixedDeltaTime() },
 	C{ 0.4f },
 	ERP{ K_DELTA_TIME / (K_DELTA_TIME + C) },
 	GAMMA{ 1 / (C + K_DELTA_TIME) }
@@ -58,7 +58,7 @@ void CollisionSolverSystem::Solve(CollisionManifoldBuffer* _manifoldBuffer, Solv
 		}
 
 		// biasを求める
-		const float bias{ ERP / ServiceLocator::GetTimeManager()->GetFixedDeltaTime() * constraint.penetration };
+		const float bias{ ERP / TimeManager::GetFixedDeltaTime() * constraint.penetration };
 
 		// 重心から衝突点ベクトル
 		Vector3 rA{ solverBodyA.rotation.Rotate(constraint.positionLocalA) };
@@ -267,10 +267,10 @@ void CollisionSolverSystem::ReCalcPosRot(SolverBodyBuffer* _solverBodyBuffer)
 		{
 			// 変化した速度から位置を再計算
 			// 位置 + 修正後のベクトル
-			body.position = body.pastPos + body.velocity * ServiceLocator::GetTimeManager()->GetFixedDeltaTime();
+			body.position = body.pastPos + body.velocity * TimeManager::GetFixedDeltaTime();
 
 			// Δω
-			Vector3 deltaAngularVelocity{ body.angularVelocity * ServiceLocator::GetTimeManager()->GetFixedDeltaTime() };
+			Vector3 deltaAngularVelocity{ body.angularVelocity * TimeManager::GetFixedDeltaTime() };
 			// Δωの四元数を作る
 			Quaternion rotOmega{ Quaternion::AngleAxis(deltaAngularVelocity.Length(),deltaAngularVelocity) };
 			// 回転＋修正後の角速度の回転

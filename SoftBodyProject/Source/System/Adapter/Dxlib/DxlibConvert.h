@@ -10,7 +10,7 @@ DxLib::MATRIX ToDxlib(const Matrix4x4& _mat)
 {
 	DxLib::MATRIX r{};
 
-	// 行優先に変換
+	// 転置
 	r.m[0][0] = _mat.m[0][0];
 	r.m[0][1] = _mat.m[1][0];
 	r.m[0][2] = _mat.m[2][0];
@@ -44,4 +44,34 @@ DxLib::VECTOR ToDxlib(const Vector3& _vec)
 unsigned int ToDxlib(const Color& _color)
 {
 	return DxLib::GetColor(static_cast<int>(_color.r * 255), static_cast<int>(_color.g * 255), static_cast<int>(_color.b * 255));
+}
+
+Matrix4x4 ToMDMath(const DxLib::MATRIX _mat)
+{
+	// 転置
+	DxLib::MATRIX transpose{ DxLib::MTranspose(_mat) };
+
+	Matrix4x4 r{};
+	
+	r.m[0][0] = transpose.m[0][0];
+	r.m[0][1] = transpose.m[0][1];
+	r.m[0][2] = transpose.m[0][2];
+	r.m[0][3] = transpose.m[0][3];
+
+	r.m[1][0] = transpose.m[1][0];
+	r.m[1][1] = transpose.m[1][1];
+	r.m[1][2] = transpose.m[1][2];
+	r.m[1][3] = transpose.m[1][3];
+
+	r.m[2][0] = transpose.m[2][0];
+	r.m[2][1] = transpose.m[2][1];
+	r.m[2][2] = transpose.m[2][2];
+	r.m[2][3] = transpose.m[2][3];
+
+	r.m[3][0] = transpose.m[3][0];
+	r.m[3][1] = transpose.m[3][1];
+	r.m[3][2] = transpose.m[3][2];
+	r.m[3][3] = transpose.m[3][3];
+
+	return r;
 }

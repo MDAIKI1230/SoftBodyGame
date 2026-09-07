@@ -1,4 +1,4 @@
-﻿#include "ServiceLocator.h"
+﻿#include "InputSystem.h"
 
 #include "Player.h"
 
@@ -12,10 +12,10 @@ Player::Player(WorldStorage* _world, EntityID _entityID, Camera* _camera) :
 
 	GetComponent<TransformComponent>()->SetPosition(Vector3{ 0,0,0 });
 
-	ServiceLocator::GetInputSytem()->GetInputAction("Character", "Move").AddPerformedCallback<&Player::Move>(this);
-	ServiceLocator::GetInputSytem()->GetInputAction("Character", "Move").AddCanceledCallback<&Player::Move>(this);
-	ServiceLocator::GetInputSytem()->GetInputAction("Character", "Jump").AddPerformedCallback<&Player::Jump>(this);
-	ServiceLocator::GetInputSytem()->GetInputAction("Camera", "LookMouse").AddPerformedCallback<&Player::CameraMove>(this);
+	InputSystem::GetInputAction("Character", "Move").AddPerformedCallback<&Player::Move>(this);
+	InputSystem::GetInputAction("Character", "Move").AddCanceledCallback<&Player::Move>(this);
+	InputSystem::GetInputAction("Character", "Jump").AddPerformedCallback<&Player::Jump>(this);
+	InputSystem::GetInputAction("Camera", "LookMouse").AddPerformedCallback<&Player::CameraMove>(this);
 
 	cc->SetGroundDeceleration(2000.0f);
 	cc->SetJumpSpeed(100.0f);

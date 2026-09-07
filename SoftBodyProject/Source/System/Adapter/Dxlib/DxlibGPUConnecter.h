@@ -7,7 +7,7 @@
 
 class DxlibGPUConnecter :public IGPUConnecter
 {
-public:
+private:
 	// 初期化関数
 	void Initialize() override;
 
@@ -23,6 +23,10 @@ public:
 
 	// --- 描画系シェーダ関連 ---
 
+	// 頂点シェーダ読み込み
+	VertexShaderHandle LoadVertexShader(const std::string& _filePath) override;
+	// ピクセルシェーダ読み込み
+	PixelShaderHandle LoadPixelShader(const std::string& _filePath) override;
 	
 	// 頂点シェーダスタート
 	void BeginVertexShader(VertexShaderHandle _shader) override;
@@ -30,6 +34,11 @@ public:
 	void BeginPixelShader(PixelShaderHandle _shader) override;
 	// 描画関連(頂点とピクセル)シェーダ終了
 	void EndGraphicsShader() override;
+
+	// 頂点シェーダ破棄
+	void DestroyVertexShader(VertexShaderHandle _shader) override;
+	// ピクセルシェーダ破棄
+	void DestroyPixelShader(PixelShaderHandle _shader) override;
 
 	// --- バッファ関連 ---
 
@@ -61,15 +70,6 @@ public:
 
 	void ShaderBufferBarrier() override;
 
-private:
-	// 頂点シェーダ読み込み
-	VertexShaderHandle LoadVertexShader(const std::string& _filePath) override;
-	// ピクセルシェーダ読み込み
-	PixelShaderHandle LoadPixelShader(const std::string& _filePath) override;
-	// 頂点シェーダ破棄
-	void DestroyVertexShader(VertexShaderHandle _shader) override;
-	// ピクセルシェーダ破棄
-	void DestroyPixelShader(PixelShaderHandle _shader) override;
 private:
 	// 頂点シェーダストレージ
 	ResourceStorage<VertexShaderHandle, int> vertexShaderStorage;

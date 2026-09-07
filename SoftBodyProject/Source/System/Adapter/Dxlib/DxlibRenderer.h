@@ -1,12 +1,14 @@
 ﻿#pragma once
 
+#include <limits>
+
 #include "IRenderer.h"
 
-#include "ResourceManager.h"
+#include "ResourceStorage.h"
 
 class DxlibRenderer : public IRenderer
 {
-public:
+private:
 	// カメラ関連
 	// カメラセット
 	void SetCamera(const Matrix4x4& _view, float _near, float _far) override;
@@ -49,7 +51,15 @@ public:
 	// カプセル描画
 	void DrawCapsule(const Vector3& _pos1, const Vector3& _pos2, float _radius, const Color& _color);
 
-private:
+	// --- アニメーション関連 ---
+
+	// モデルのスケルトンデータの取得
+	bool GetSkeletonData(ModelHandle _handle, SkeletonData& _output) override;
+	// 現在のスケルトンのポーズ情報の取得
+	bool GetCurrentPose(ModelHandle _handle, PoseBuffer& _output) override;
+	// モデルに、ポーズを適応する
+	bool ApplyPose(ModelHandle _handle, const PoseBuffer& _pose) override;
+
 	// ---読み込み関数---
 
 	// モデルの読み込み
@@ -82,6 +92,12 @@ private:
 	void DeleteCubeTexture(CubeTextureHandle _handle) override;
 
 private:
+	static constexpr uint32_t INVALID_BONE{ UINT32_MAX };
+
+private:
+	/*
+		ライブラリによるハンドルの型の違いをResourceStorageで受け止める
+	*/
 	ResourceStorage<ModelHandle, int> modelStorage;
 	ResourceStorage<TextureHandle, int> textureStorage;
 	ResourceStorage<CubeTextureHandle, int> cubeTextureStorage;

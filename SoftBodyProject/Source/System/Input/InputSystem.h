@@ -3,7 +3,8 @@
 #include <memory>
 #include <string>
 #include <unordered_map>
-#include <optional>
+
+#include "SingleTonMacros.h"
 
 #include "KeyConstants.h"
 #include "MouseConstants.h"
@@ -20,7 +21,7 @@
 class InputSystem
 {
 public:
-	class CallbackAccessKey
+	struct CallbackAccessKey
 	{
 		friend class InputAction;
 
@@ -28,35 +29,53 @@ public:
 		CallbackAccessKey() = default;
 	};
 public:
-	InputSystem(std::unique_ptr<IInput>&& _nativeInput) :
-		nativeInput{ std::move(_nativeInput) }
-	{
-	}
+	// 入力のアダプターを入れる
+	static void SetNativeInput(std::unique_ptr<IInput>&& _nativeInput)
+	SingletonPublicFunction(void, SetNativeInput, (std::unique_ptr<IInput>&& _nativeInput), (std::move(_nativeInput)))
 	// 初期化
-	void Initialize();
+	static void Initialize()
+	SingletonPublicFunction(void, Initialize, (), ())
 	// アセットの読み込み
-	bool LoadAsset(std::string _path);
+	static bool LoadAsset(std::string _path)
+	SingletonPublicFunction(bool, LoadAsset, (std::string _path), (_path))
 	// 更新処理
-	void Update();
+	static void Update()
+	SingletonPublicFunction(void, Update, (), ())
 	// InputAction取得関数
-	InputAction GetInputAction(std::string_view _actionMapName, std::string_view _inputActionName);
+	static InputAction GetInputAction(std::string_view _actionMapName, std::string_view _inputActionName)
+	SingletonPublicFunction(InputAction, GetInputAction, (std::string_view _actionMapName, std::string_view _inputActionName), (_actionMapName, _inputActionName))
 
 
 	// Startedの追加待ちに追加
-	bool QueueStartedCallbackAdd(CallbackAccessKey, InputDataID _id, InputCallbackEntry::InputActionCallbackFunc _func, void* _user);
+	static bool QueueStartedCallbackAdd(CallbackAccessKey, InputDataID _id, InputCallbackEntry::InputActionCallbackFunc _func, void* _user)
+	SingletonPublicFunction(bool, QueueStartedCallbackAdd, (InputDataID _id, InputCallbackEntry::InputActionCallbackFunc _func, void* _user), (_id, _func, _user))
 	// Performedの追加待ちに追加
-	bool QueuePerformedCallbackAdd(CallbackAccessKey, InputDataID _id, InputCallbackEntry::InputActionCallbackFunc _func, void* _user);
+	static bool QueuePerformedCallbackAdd(CallbackAccessKey, InputDataID _id, InputCallbackEntry::InputActionCallbackFunc _func, void* _user)
+	SingletonPublicFunction(bool, QueuePerformedCallbackAdd, (InputDataID _id, InputCallbackEntry::InputActionCallbackFunc _func, void* _user), (_id, _func, _user))
 	// Canceledの追加待ちに追加
-	bool QueueCanceledCallbackAdd(CallbackAccessKey, InputDataID _id, InputCallbackEntry::InputActionCallbackFunc _func, void* _user);
+	static bool QueueCanceledCallbackAdd(CallbackAccessKey, InputDataID _id, InputCallbackEntry::InputActionCallbackFunc _func, void* _user)
+	SingletonPublicFunction(bool, QueueCanceledCallbackAdd, (InputDataID _id, InputCallbackEntry::InputActionCallbackFunc _func, void* _user), (_id, _func, _user))
 
 	// Startedの解除待ちにする
-	bool StartedCallbackRemove(CallbackAccessKey, InputDataID _id, InputCallbackEntry::InputActionCallbackFunc _func, void* _userData);
+	static bool StartedCallbackRemove(CallbackAccessKey, InputDataID _id, InputCallbackEntry::InputActionCallbackFunc _func, void* _user)
+	SingletonPublicFunction(bool, StartedCallbackRemove, (InputDataID _id, InputCallbackEntry::InputActionCallbackFunc _func, void* _user), (_id, _func, _user))
 	// Performedの解除待ちにする
-	bool PerformedCallbackRemove(CallbackAccessKey, InputDataID _id, InputCallbackEntry::InputActionCallbackFunc _func, void* _userData);
+	static bool PerformedCallbackRemove(CallbackAccessKey, InputDataID _id, InputCallbackEntry::InputActionCallbackFunc _func, void* _user)
+	SingletonPublicFunction(bool, PerformedCallbackRemove, (InputDataID _id, InputCallbackEntry::InputActionCallbackFunc _func, void* _user), (_id, _func, _user))
 	// Canceledの解除待ちにする
-	bool CanceledCallbackRemove(CallbackAccessKey, InputDataID _id, InputCallbackEntry::InputActionCallbackFunc _func, void* _userData);
+	static bool CanceledCallbackRemove(CallbackAccessKey, InputDataID _id, InputCallbackEntry::InputActionCallbackFunc _func, void* _user)
+	SingletonPublicFunction(bool, CanceledCallbackRemove, (InputDataID _id, InputCallbackEntry::InputActionCallbackFunc _func, void* _user), (_id, _func, _user))
 
 private:
+	// シングルトンにする
+	InputSystem() = default;
+
+	static InputSystem& Instance()
+	{
+		static InputSystem instance;
+		return instance;
+	}
+
 	// InputAction達のApplyを呼ぶ
 	void ApplyInputAction();
 	// ロードしたデータから状態管理用構造体を作る関数

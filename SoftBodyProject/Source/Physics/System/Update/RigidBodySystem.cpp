@@ -1,4 +1,4 @@
-﻿#include "ServiceLocator.h"
+﻿#include "TimeManager.h"
 
 #include "RigidBodySystem.h"
 
@@ -38,7 +38,7 @@ void RigidBodySystem::UpdatePosition(PhysicsTransformStorage* _transformStorage,
 		Vector3& velocity{ _bodyStorage->EditRigidBodyVelocity(bodyID) };
 		
 		velocity += BodyStorage::ApplyLinearInverseMass(
-			_bodyStorage->GetRigidBodyForce(bodyID) * ServiceLocator::GetTimeManager()->GetFixedDeltaTime(),
+			_bodyStorage->GetRigidBodyForce(bodyID) * TimeManager::GetFixedDeltaTime(),
 			_bodyStorage->GetRigidBodyInverseMass(bodyID),
 			_bodyStorage->GetRigidBodyPositionLock(bodyID));
 
@@ -50,7 +50,7 @@ void RigidBodySystem::UpdatePosition(PhysicsTransformStorage* _transformStorage,
 		_bodyStorage->SetRigidBodyPastPosition(bodyID, _transformStorage->GetPosition(transIndex));
 
 		// 今の位置 + 速度
-		_transformStorage->EditPosition(transIndex) += _bodyStorage->GetRigidBodyVelocity(bodyID) * ServiceLocator::GetTimeManager()->GetFixedDeltaTime();
+		_transformStorage->EditPosition(transIndex) += _bodyStorage->GetRigidBodyVelocity(bodyID) * TimeManager::GetFixedDeltaTime();
 	}
 }
 
@@ -69,7 +69,7 @@ void RigidBodySystem::UpdateRotation(PhysicsTransformStorage* _transformStorage,
 		angularVelocity +=
 			BodyStorage::ApplyAngularInverseInertia(
 				rotMat * _bodyStorage->GetRigidBodyLocalInverseInertiaTensor(bodyID) * rotMat.Transposed(),
-				_bodyStorage->GetRigidBodyTorque(bodyID) * ServiceLocator::GetTimeManager()->GetFixedDeltaTime(),
+				_bodyStorage->GetRigidBodyTorque(bodyID) * TimeManager::GetFixedDeltaTime(),
 				_bodyStorage->GetRigidBodyRotationLock(bodyID));
 
 		angularVelocity = SIMDVectorMath::Mul(
@@ -78,7 +78,7 @@ void RigidBodySystem::UpdateRotation(PhysicsTransformStorage* _transformStorage,
 
 		// 角速度と慣性テンソルの逆行列からΔt分の四元数を作成
 		// Δω
-		Vector3 deltaAngularVelocity{ _bodyStorage->GetRigidBodyAngularVelocity(bodyID) * ServiceLocator::GetTimeManager()->GetFixedDeltaTime() };
+		Vector3 deltaAngularVelocity{ _bodyStorage->GetRigidBodyAngularVelocity(bodyID) * TimeManager::GetFixedDeltaTime() };
 		// Δωの四元数を作る
 		Quaternion rotOmega{ Quaternion::AngleAxis(deltaAngularVelocity.Length(),deltaAngularVelocity) };
 

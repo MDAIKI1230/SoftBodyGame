@@ -1,4 +1,4 @@
-﻿#include "ServiceLocator.h"
+﻿#include "Renderer.h"
 
 #include "ConstraintDebugRenderingSystem.h"
 
@@ -24,7 +24,7 @@ void ConstraintDebugRenderingSystem::PointConstraintRender(PhysicsTransformStora
 			uint32_t basePointIndex{ _transformStorage->GetDenseIndex(pointConstraint.endPoints[i].transformID) };
 			Vector3 basePoint{ _transformStorage->GetPosition(basePointIndex) + _transformStorage->GetRotation(basePointIndex).Rotate(pointConstraint.endPoints[i].localPoint) };
 
-			ServiceLocator::GetRenderer()->DrawSphereMesh(basePoint, 3.0f, Color{ 0,1.0f,0 });
+			Renderer::DrawSphereMesh(basePoint, 3.0f, Color{ 0,1.0f,0 });
 		}
 	}
 }
@@ -49,7 +49,7 @@ void ConstraintDebugRenderingSystem::DistanceConstraintRender(PhysicsTransformSt
 			uint32_t pointIndex{ _transformStorage->GetDenseIndex(pointConstraint.endPoints[i].transformID) };
 			Vector3 point{ _transformStorage->GetPosition(pointIndex) + _transformStorage->GetRotation(pointIndex).Rotate(pointConstraint.endPoints[i].localPoint) };
 
-			ServiceLocator::GetRenderer()->DrawLine(basePoint, point, Color{ 0,1.0f,0 });
+			Renderer::DrawLine(basePoint, point, Color{ 0,1.0f,0 });
 		}
 	}
 }

@@ -1,6 +1,6 @@
 ﻿#include <algorithm>
 
-#include "ServiceLocator.h"
+#include "TimeManager.h"
 #include "../Query/PhysicsQuerySystem.h"
 
 #include "CharacterControllerSystem.h"
@@ -91,13 +91,13 @@ void CharacterControllerSystem::UpdateMovement(CharacterControllerStorage* _char
 		switch (_characterControllerStorage->GetGroundState(indexCC))
 		{
 		case CharacterGroundState::AIRBORNE:
-			UpdateAirboneState(indexCC, _characterControllerStorage, _bodyStorage, ServiceLocator::GetTimeManager()->GetFixedDeltaTime());
+			UpdateAirboneState(indexCC, _characterControllerStorage, _bodyStorage, TimeManager::GetFixedDeltaTime());
 			break;
 		case CharacterGroundState::WALKABLE:
-			UpdateWalkableState(indexCC, _characterControllerStorage, _bodyStorage, ServiceLocator::GetTimeManager()->GetFixedDeltaTime());
+			UpdateWalkableState(indexCC, _characterControllerStorage, _bodyStorage, TimeManager::GetFixedDeltaTime());
 			break;
 		case CharacterGroundState::STEEP_SLOPE:
-			UpdateSteepSlopeState(indexCC, _characterControllerStorage, _bodyStorage, ServiceLocator::GetTimeManager()->GetFixedDeltaTime());
+			UpdateSteepSlopeState(indexCC, _characterControllerStorage, _bodyStorage, TimeManager::GetFixedDeltaTime());
 			break;
 		default:
 			break;

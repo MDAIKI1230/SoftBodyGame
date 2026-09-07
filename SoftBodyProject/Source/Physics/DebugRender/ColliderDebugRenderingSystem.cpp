@@ -1,4 +1,4 @@
-﻿#include "ServiceLocator.h"
+﻿#include "Renderer.h"
 
 #include "ColliderDebugRenderingSystem.h"
 
@@ -19,7 +19,7 @@ void ColliderDebugRenderingSystem::RenderSphera(PhysicsTransformStorage* _transf
 
 		uint32_t indexTrans{ _transformStorage->GetDenseIndex(transID) };
 
-		ServiceLocator::GetRenderer()->DrawSphereMesh(
+		Renderer::DrawSphereMesh(
 			_transformStorage->GetPosition(indexTrans),
 			_colliderStorage->GetSphereColliderRadius(id),
 			Color{ 0.0f,1.0f, 0.0f });
@@ -36,7 +36,7 @@ void ColliderDebugRenderingSystem::RenderBox(PhysicsTransformStorage* _transform
 
 		uint32_t indexTrans{ _transformStorage->GetDenseIndex(transID) };
 
-		ServiceLocator::GetRenderer()->DrawBox(
+		Renderer::DrawBox(
 			_transformStorage->GetWorldMatrix(indexTrans),
 			_colliderStorage->GetBoxColliderScale(id),
 			Color{ 0.0f,1.0f, 0.0f });
@@ -61,7 +61,7 @@ void ColliderDebugRenderingSystem::RenderCapsule(PhysicsTransformStorage* _trans
 		// Capsuleの始点終点
 		Vector3 start{ pos + axisHalf };
 		Vector3 end{ pos - axisHalf };
-		ServiceLocator::GetRenderer()->DrawCapsule(
+		Renderer::DrawCapsule(
 			start,
 			end,
 			_colliderStorage->GetCapsuleColliderRadius(id),

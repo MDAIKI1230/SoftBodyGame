@@ -3,7 +3,7 @@
 
 #include "PhysicsAPI.h"
 
-#include "ServiceLocator.h"
+#include "TimeManager.h"
 
 #include "CameraRigSystem.h"
 
@@ -101,7 +101,7 @@ void CameraRigSystem::UpdateTPS(CameraRigComponent& _cameraRig, TransformCompone
 		Vector3 delta{ targetPos - _trans.GetPosition() };
 
 		float t{ 1.0f - 
-			std::exp(-ServiceLocator::GetTimeManager()->GetDeltaTime() / _cameraRig.GetPositionDamping()) };
+			std::exp(-TimeManager::GetDeltaTime() / _cameraRig.GetPositionDamping()) };
 
 		_trans.SetPosition(_trans.GetPosition() + delta * t);
 	}

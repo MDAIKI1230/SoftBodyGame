@@ -27,13 +27,28 @@ void DxlibGPUConnecter::DestroyComputeShader(ComputeShaderHandle _shader)
 // 頂点シェーダ読み込み
 VertexShaderHandle DxlibGPUConnecter::LoadVertexShader(const std::string& _filePath)
 {
-	return vertexShaderStorage.Add(DxLib::LoadVertexShader(std::wstring(_filePath.begin(), _filePath.end()).c_str()));
+	int nativeHandle{ DxLib::LoadVertexShader(std::wstring(_filePath.begin(), _filePath.end()).c_str()) };
+
+	if (nativeHandle == -1)
+	{
+		return {};
+	}
+
+	return vertexShaderStorage.Add(nativeHandle);
 }
 // ピクセルシェーダ読み込み
 PixelShaderHandle DxlibGPUConnecter::LoadPixelShader(const std::string& _filePath)
 {
-	return pixelShaderStorage.Add(DxLib::LoadPixelShader(std::wstring(_filePath.begin(), _filePath.end()).c_str()));
+	int nativeHandle{ DxLib::LoadPixelShader(std::wstring(_filePath.begin(), _filePath.end()).c_str()) };
+
+	if (nativeHandle == -1)
+	{
+		return {};
+	}
+
+	return pixelShaderStorage.Add(nativeHandle);
 }
+
 // 頂点シェーダスタート
 void DxlibGPUConnecter::BeginVertexShader(VertexShaderHandle _shader)
 {
@@ -61,6 +76,7 @@ void DxlibGPUConnecter::EndGraphicsShader()
 {
 	DxLib::MV1SetUseOrigShader(FALSE);
 }
+
 // 頂点シェーダ破棄
 void DxlibGPUConnecter::DestroyVertexShader(VertexShaderHandle _shader)
 {

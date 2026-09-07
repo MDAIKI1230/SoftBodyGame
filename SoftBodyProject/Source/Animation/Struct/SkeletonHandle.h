@@ -4,4 +4,4 @@
 
 struct SkeletonTag;
 
-using SkeletonID = GenerationalID <SkeletonTag>;
+using SkeletonHandle = GenerationalID <SkeletonTag>;

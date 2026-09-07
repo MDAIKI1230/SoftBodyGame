@@ -2,28 +2,22 @@
 #include "KeyConstants.h"
 
 #include "ServiceLocator.h"
+#include "TimeManager.h"
+#include "InputSystem.h"
 
 #include "ApplicationManager.h"
 
 ApplicationManager::ApplicationManager(BackEnd&& _backEnd):
 	renderer{ std::move(_backEnd.renderer) },
-	inputSystem{ std::move(_backEnd.inputSystem) },
 	system{ std::move(_backEnd.system) },
 	gpuConnecter{ std::move(_backEnd.gpuConnecter) }
-
 {
 	system->ChangeWindowMode(true);
 	system->SetGraphMode(Config::WINDOW_SIZE_W, Config::WINDOW_SIZE_H, Config::COLOR_BIT);
 
-	timeManager = std::make_unique<TimeManager>();
-	resourceManager = std::make_unique<ResourceManager>();
-
 	// サービスロケータに登録
 	ServiceLocator::SetRenderer(renderer.get());
-	ServiceLocator::SetInputSystemt(inputSystem.get());
 	ServiceLocator::SetGPUConnecter(gpuConnecter.get());
-	ServiceLocator::SetTimeManager(timeManager.get());
-	ServiceLocator::SetResourceManager(resourceManager.get());
 
 	sceneManager = std::make_unique<SceneManager>();
 }
@@ -38,12 +32,12 @@ int ApplicationManager::ApplicationMain()
 	renderer->SetUseZDepth(true);
 	renderer->SetWriteZDepth(true);
 
-	inputSystem->Initialize();
+	InputSystem::Initialize();
 
 	while (system->ProcessMessage() == 0)
 	{
-		inputSystem->Update();
-		timeManager->Update();
+		InputSystem::Update();
+		TimeManager::Update();
 		sceneManager->Update();
 
 		renderer->ClearDrawScreen();
@@ -52,7 +46,7 @@ int ApplicationManager::ApplicationMain()
 
 		renderer->ScreenFlip();
 
-		timeManager->WaitNextFrame();
+		TimeManager::WaitNextFrame();
 	}
 
 	system->End();				// ＤＸライブラリ使用の終了処理

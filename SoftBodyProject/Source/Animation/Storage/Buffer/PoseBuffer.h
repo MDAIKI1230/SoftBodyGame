@@ -9,8 +9,19 @@
 	場合によって目標のポーズにしたり、出力されたポーズにしたりされる。
 	使う時、SkeletonDataのBoneの順番と同じにして使う。
 */
-class PoseBuffer
+struct PoseBuffer
 {
+public:
+	void ReSize(size_t _size)
+	{
+		localPositions.resize(_size);
+		localRotations.resize(_size);
+		localScales.resize(_size);
+
+		localMatrices.resize(_size);
+	}
+
+public:
 	std::vector<Vector3> localPositions;
 	std::vector<Quaternion> localRotations;
 	std::vector<Vector3> localScales;

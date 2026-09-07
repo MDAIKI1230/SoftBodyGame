@@ -3,6 +3,7 @@
 #include "CharacterControllerComponent.h"
 
 #include "InputActionContext.h"
+#include "InputAction.h"
 
 #include "ObjectBase.h"
 

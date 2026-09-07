@@ -5,3 +5,4 @@
 #define MD_OWNED_STORAGE_READ_WRITE_ACCESSORS(IDType, MemberType, _name, _storageName)
 #define MD_OWNED_STORAGE_READ_ONLY_ACCESSORS(IDType, MemberType, _name, _storageName)
 #define MD_OWNED_STORAGE_WRITE_ORIGINAL_ACCESSORS(IDType, MemberType, _name, _storageName)
+#define SingletonPublicFunction(Type,FuncName,declaration,arguments)

@@ -11,7 +11,10 @@ TimeManager::TimeManager() :
 {
 }
 
-void TimeManager::Update()
+// --- 外に公開する関数の実装部分 ---
+
+// 更新用関数
+void TimeManager::UpdateImpl()
 {
 	pastTime = nowTime;
 	nowTime = std::chrono::steady_clock::now();
@@ -20,7 +23,8 @@ void TimeManager::Update()
 	fixedTimer += deltaTime;
 }
 
-void TimeManager::WaitNextFrame()
+// 次のフレーム始まるの待ち関数
+void TimeManager::WaitNextFrameImpl()
 {
 	// 目標終了時刻を求める
 	nextFrameTime += std::chrono::duration_cast<std::chrono::steady_clock::duration>(timePerFps);
@@ -41,22 +45,26 @@ void TimeManager::WaitNextFrame()
 	}
 }
 
-float TimeManager::GetDeltaTime()
+// 経過時間取得
+float TimeManager::GetDeltaTimeImpl()
 {
 	return static_cast<float>(deltaTime);
 }
 
-float TimeManager::GetFixedDeltaTime()
+// 経過時間取得
+float TimeManager::GetFixedDeltaTimeImpl()
 {
-	return static_cast<float>(FIXED_TIME);
+	return FIXED_TIME;
 }
 
-float  TimeManager::GetFixedAlpha()
+// 描画と物理の補間用α値
+float TimeManager::GetFixedAlphaImpl()
 {
 	return static_cast<float>(fixedTimer / FIXED_TIME);
 }
 
-bool TimeManager::IsFixedUpdateTime()
+// FixedUpdateを呼び出すタイミングか
+bool TimeManager::IsFixedUpdateTimeImpl()
 {
 	if (fixedTimer >= FIXED_TIME)
 	{
@@ -65,3 +73,5 @@ bool TimeManager::IsFixedUpdateTime()
 	}
 	return false;
 }
+
+

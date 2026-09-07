@@ -8,7 +8,7 @@
 
 class DxlibInput:public IInput
 {
-public:
+private:
 	// 更新
 	void Update() override;
 	// 初期化
@@ -29,7 +29,7 @@ public:
 	float GetCurrentValue(GamePadAxis1D _axis, std::size_t _gamePadIndex) const override;
 	// -1(左/下)～1(右/上)
 	Vector2 GetCurrentValue(GamePadAxis2D _axis, std::size_t _gamePadIndex) const override;
-private:
+
 	// --- 正規化関数 ---
 
 	float NormalizeXInputTrigger(const unsigned char _value);

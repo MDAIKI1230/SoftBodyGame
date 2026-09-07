@@ -991,9 +991,6 @@
     <ClInclude Include="Source\Physics\Struct\Constraint\ConstraintTuning.h">
       <Filter>ソース ファイル\Physics\Struct\Constraint</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Animation\Storage\SkeletonStorage.h">
-      <Filter>ソース ファイル\Animation\Storage</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Animation\Struct\SkeletonData.h">
       <Filter>ソース ファイル\Animation\Struct</Filter>
     </ClInclude>
@@ -1006,8 +1003,17 @@
     <ClInclude Include="Source\Animation\Struct\SkeletonInstanceData.h">
       <Filter>ソース ファイル\Animation\Struct</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Animation\Struct\SkeletonID.h">
+    <ClInclude Include="Source\Animation\Struct\SkeletonHandle.h">
       <Filter>ソース ファイル\Animation\Struct</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Common\Macro\SingletonMacros.h">
+      <Filter>ソース ファイル\Common\Macro</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Render\Renderer.h">
+      <Filter>ソース ファイル\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Common\Struct\Material.h">
+      <Filter>ソース ファイル\Common\Struct</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1313,6 +1319,9 @@
     </ClCompile>
     <ClCompile Include="Source\Physics\Storage\Component\Constraint\PointConstraintComponentStorage.cpp">
       <Filter>ソース ファイル\Physics\Storage\Component\Constraint</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Render\Renderer.cpp">
+      <Filter>ソース ファイル\Render</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

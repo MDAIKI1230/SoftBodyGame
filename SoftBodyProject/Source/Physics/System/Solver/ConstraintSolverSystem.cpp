@@ -1,4 +1,6 @@
-﻿#include "ServiceLocator.h"
+﻿#include <algorithm>
+
+#include "TimeManager.h"
 
 #include "BodyStorage.h"
 
@@ -6,7 +8,7 @@
 
 ConstraintSolverSystem::ConstraintSolverSystem() :
 	K{ 0.4f },
-	K_DELTA_TIME{ K * ServiceLocator::GetTimeManager()->GetFixedDeltaTime() },
+	K_DELTA_TIME{ K * TimeManager::GetFixedDeltaTime() },
 	C{ 0.4f },
 	ERP{ K_DELTA_TIME / (K_DELTA_TIME + C) },
 	GAMMA{ 1 / (C + K_DELTA_TIME) }

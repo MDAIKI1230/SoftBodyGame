@@ -1,4 +1,5 @@
-﻿#include "ServiceLocator.h"
+﻿#include "InputSystem.h"
+#include "ResourceManager.h"
 
 #include "RendererComponent.h"
 
@@ -29,11 +30,11 @@ DebugScene::DebugScene()
 // 初期化
 void DebugScene::Initialize()
 {
-	ServiceLocator::GetInputSytem()->LoadAsset("Res/Data/Input/CharacterInput.json");
+	InputSystem::LoadAsset("Res/Data/Input/CharacterInput.json");
 
 	std::unique_ptr<Camera> camera{ std::make_unique<Camera>(worldStorage.get(), objectManager->GenerateNewID()) };
-	ServiceLocator::GetResourceManager()->LoadCubeTexture("Res/Texture/Sky/NaturalDayMeadow_Cubemap.dds");
-	camera->GetComponent<CameraComponent>()->SetSkyTextureHandle(ServiceLocator::GetResourceManager()->GetCubeTexture("NaturalDayMeadow_Cubemap.dds"));
+	ResourceManager::LoadCubeTexture("Res/Texture/Sky/NaturalDayMeadow_Cubemap.dds");
+	camera->GetComponent<CameraComponent>()->SetSkyTextureHandle(ResourceManager::GetCubeTexture("NaturalDayMeadow_Cubemap.dds"));
 	camera->GetComponent<CameraComponent>()->SetClearMode(ClearMode::SKY);
 
 	Camera* cameraPtr{ camera.get() };
@@ -173,8 +174,8 @@ void DebugScene::Initialize()
 
 	// LoadFile("Res/Data/DebugSceneData.json");
 
-	ServiceLocator::GetResourceManager()->LoadModel(std::string{ "Res/Model/A_001_player_neutral_01_01.mv1" });
-	RendererComponent renderer{ ServiceLocator::GetResourceManager()->GetModel("A_001_player_neutral_01_01.mv1") };
+	ResourceManager::LoadModel(std::string{ "Res/Model/A_001_player_neutral_01_01.mv1" });
+	RendererComponent renderer{ ResourceManager::GetModel("A_001_player_neutral_01_01.mv1") };
 
 	
 	EntityID id{ objectManager->GenerateNewID() };

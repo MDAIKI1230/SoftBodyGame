@@ -4,7 +4,8 @@
 
 #include "MDMath.h"
 #include "Color.h"
-#include "Camera.h"
+#include "SkeletonData.h"
+#include "Buffer/PoseBuffer.h"
 
 #include "ModelHandle.h"
 #include "TextureHandle.h"
@@ -13,8 +14,15 @@
 class IRenderer
 {
 	friend class ResourceManager;
-
+	friend class Renderer;
+	friend class ApplicationManager;
 public:
+	// コンストラクタ
+	IRenderer() = default;
+	// デストラクタ
+	virtual ~IRenderer() = default;
+
+protected:
 	// カメラ関連
 	// カメラセット
 	virtual void SetCamera(const Matrix4x4& _view, float _near, float _far) = 0;
@@ -57,10 +65,15 @@ public:
 	// カプセル描画
 	virtual void DrawCapsule(const Vector3& _pos1, const Vector3& _pos2, float _radius, const Color& _color) = 0;
 
-	// デストラクタ
-	virtual ~IRenderer() = default;
+	// --- アニメーション関連 ---
 
-private:
+	// モデルのスケルトンデータの取得
+	virtual bool GetSkeletonData(ModelHandle _handle, SkeletonData& _output) = 0;
+	// 現在のスケルトンのポーズ情報の取得
+	virtual bool GetCurrentPose(ModelHandle _handle, PoseBuffer& _output) = 0;
+	// モデルに、ポーズを適応する
+	virtual bool ApplyPose(ModelHandle _handle, const PoseBuffer& _pose) = 0;
+
 	// ---読み込み関数---
 
 	// モデルの読み込み

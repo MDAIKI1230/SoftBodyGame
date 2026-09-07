@@ -1,6 +1,6 @@
 ﻿#include <algorithm>
 
-#include "ServiceLocator.h"
+#include "TimeManager.h"
 
 // 描画系
 #include "ModelRenderingSystem.h"
@@ -151,7 +151,7 @@ void SceneBase::Update()
 	eventSystem->Update(eventManager.get(), objectManager.get());
 
 	// 物理更新
-	while (ServiceLocator::GetTimeManager()->IsFixedUpdateTime())
+	while (TimeManager::IsFixedUpdateTime())
 	{
 		objectManager->FixedUpdate();
 
