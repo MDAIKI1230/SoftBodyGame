@@ -2,6 +2,8 @@
 
 void PhysicsWorld::FixedUpdate(WorldStorage* _worldStorage, EventManager* _eventManager)
 {
+	// コマンドバッファ処理
+	applyPhysicsCommandBufferSystem.Apply(&commandBuffer, &transformStorage, &bodyStorage);
 	// 更新処理
 	synchronizationSystem.Sync(_worldStorage, &transformStorage);
 	aabbUpdateSystem.FixedUpdate(&transformStorage, &colliderStorage);

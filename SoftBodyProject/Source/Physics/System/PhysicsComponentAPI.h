@@ -321,6 +321,7 @@ private:
 	static PhysicsTransformStorage* transformStorage;
 	static ConstraintStorage* constraintStorage;
 	static CharacterControllerStorage* characterControllerStorage;
+	static PhysicsCommandBuffer* commandBuffer;
 
 	PhysicsComponentAPI();
 };

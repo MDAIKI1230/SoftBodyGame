@@ -8,6 +8,7 @@
 #include "CollisionManifoldBuffer.h"
 #include "SolverBodyBuffer.h"
 #include "ConstraintBuffer.h"
+#include "PhysicsCommandBuffer.h"
 
 #include "ColliderStorage.h"
 #include "BodyStorage.h"
@@ -15,6 +16,7 @@
 #include "ConstraintStorage.h"
 #include "CharacterControllerStorage.h"
 
+#include "ApplyPhysicsCommandBufferSystem.h"
 #include "SynchronizationSystem.h"
 #include "CharacterControllerSystem.h"
 #include "RigidBodySystem.h"
@@ -67,15 +69,18 @@ private:
 	CollisionManifoldBuffer manifoldBuffer;
 	SolverBodyBuffer solverBodyBuffer;
 	ConstraintBuffer constraintBuffer;
-	CharacterControllerSystem characterControllerSystem;
+	PhysicsCommandBuffer commandBuffer;
+
 	ColliderStorage colliderStorage;
 	BodyStorage bodyStorage;
 	PhysicsTransformStorage transformStorage;
 	ConstraintStorage constraintStorage;
 	CharacterControllerStorage characterControllerStorage;
 
+	ApplyPhysicsCommandBufferSystem applyPhysicsCommandBufferSystem;
 	SynchronizationSystem synchronizationSystem;
 	
+	CharacterControllerSystem characterControllerSystem;
 	RigidBodySystem rigidBodySystem;
 	AABBUpdateSystem aabbUpdateSystem;
 	CollisionSystem collisionSystem;

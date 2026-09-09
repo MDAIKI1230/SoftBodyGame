@@ -4,8 +4,14 @@
 
 #include "MDMath.h"
 
+#include "BodyID.h"
+
+#include "CommandConstants.h"
+
 struct BodyUpdate
 {
+	BodyID target;
+
 	Vector3 position;
 	Vector3 velocity;
 	Vector3 force;
@@ -16,10 +22,8 @@ struct BodyUpdate
 
 	float mass;
 
-	Matrix4x4 inertiaTensor;
-
 	bool isGravity;
 	Vector3 gravity;
 
-	uint16_t diary;
+	RigidBodyUpdateFlag flags;
 };
