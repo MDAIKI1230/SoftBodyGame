@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "SlotPool.h"
+#include "PhysicsSlotPool.h"
 
 #include "EntityID.h"
 

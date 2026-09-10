@@ -10,12 +10,15 @@ void SynchronizationSystem::Sync(WorldStorage* _worldStorage,  PhysicsTransformS
 	// PhysicsTransformの変更
 	for (auto& id : _physicsTransformStorage->GetIDRange())
 	{
-		TransformComponent& trans{ transformStorage->Edit(_physicsTransformStorage->GetOwnerEntity(id)) };
-		uint32_t index{ _physicsTransformStorage->GetDenseIndex(id) };
-		_physicsTransformStorage->EditPosition(index) = trans.GetPosition();
-		_physicsTransformStorage->EditRotation(index) = trans.GetRotation();
-		_physicsTransformStorage->EditScale(index) = trans.GetScale();
-		_physicsTransformStorage->EditLocalMatrix(index) = trans.GetLocalMatrix();
-		_physicsTransformStorage->EditWorldMatrix(index) = trans.GetWorldMatrix();
+		if (HasFlag(_physicsTransformStorage->GetSyncPolicy(id), PhysicsTransformSyncPolicy::READ_FROM_ECS))
+		{
+			TransformComponent& trans{ transformStorage->Edit(_physicsTransformStorage->GetOwnerEntity(id)) };
+
+			_physicsTransformStorage->EditPosition(id) = trans.GetPosition();
+			_physicsTransformStorage->EditRotation(id) = trans.GetRotation();
+			_physicsTransformStorage->EditScale(id) = trans.GetScale();
+			_physicsTransformStorage->EditLocalMatrix(id) = trans.GetLocalMatrix();
+			_physicsTransformStorage->EditWorldMatrix(id) = trans.GetWorldMatrix();
+		}
 	}
 }

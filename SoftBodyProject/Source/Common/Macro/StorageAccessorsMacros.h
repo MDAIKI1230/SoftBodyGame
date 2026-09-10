@@ -401,3 +401,117 @@ public:\
 /// @warning 対応したStorageじゃない場合エラーになるときがあります。
 #define MD_OWNED_STORAGE_WRITE_ORIGINAL_ACCESSORS(IDType, MemberType, _tag, _storageName, _memberTag)\
 	MD_OWNED_STORAGE_READ_ONLY_ACCESSORS(IDType, MemberType, _tag, _storageName, _memberTag);
+
+
+/// @def MD_STORAGE_ID_READ_WRITE_COLUMN(IDType, Type, _tag, _member)
+/// @brief 読み書き可能なStorage Columnを用意します。
+///
+/// 次の関数を生成します。
+/// - GetName
+/// - EditName
+/// - SetName
+/// - GetNameRange
+/// - EditNameRange
+/// - CountName
+/// - EmptyName
+///
+/// @param Type 格納する要素型
+/// @param _tag 変数が何か(関数名に使用される)
+/// @param _member 内部メンバー変数名
+///
+/// @warning 取得した参照やRangeは再確保後に無効になります。
+#define MD_STORAGE_ID_READ_WRITE_COLUMN(IDType, Type, _tag, _member)\
+public:\
+	/* 値読み取り */\
+	[[nodiscard("戻り値が無視されています")]] decltype(auto) Get##_tag(IDType _id) const\
+	{\
+		return MD::Storage::Detail::Get(_member, GetDenseIndex(_id));\
+	}\
+	/* 値参照渡しで変更できる */\
+	[[nodiscard("戻り値が無視されています")]] decltype(auto) Edit##_tag(IDType _id)\
+	{\
+		return MD::Storage::Detail::Edit(_member, GetDenseIndex(_id));\
+	}\
+	/* 値代入 */\
+	void Set##_tag(IDType _id, const Type& _value)\
+	{\
+		MD::Storage::Detail::Set(_member, GetDenseIndex(_id), _value);\
+	}\
+	/* 配列の要素数 */\
+	[[nodiscard("戻り値が無視されています")]] uint32_t Count##_tag() const noexcept\
+	{\
+		return MD::Storage::Detail::Count(_member);\
+	}\
+	/* 空チェック */\
+	[[nodiscard("戻り値が無視されています")]] bool Empty##_tag() const noexcept\
+	{\
+		return MD::Storage::Detail::Empty(_member);\
+	}\
+	/* 変化不可配列取得(全探査用) */\
+	[[nodiscard("戻り値が無視されています")]] auto Get##_tag##Range() const noexcept\
+	{\
+		return MD::Storage::Detail::GetRange(_member);\
+	}\
+	/* 変化可能配列取得(全探査用) */\
+	[[nodiscard("戻り値が無視されています")]] auto Edit##_tag##Range() noexcept\
+	{\
+		return MD::Storage::Detail::EditRange(_member);\
+	}\
+private:\
+	std::vector<Type> _member;
+
+/// @def MD_STORAGE_ID_READ_ONLY_COLUMN(IDType, Type, _tag, _member)
+/// @brief 読み込み可能なStorage Columnを用意します。
+///
+/// 次の関数を生成します。
+/// - GetName
+/// - GetNameRange
+/// - CountName
+/// - EmptyName
+///
+/// @param Type 格納する要素型
+/// @param _tag 変数が何か(関数名に使用される)
+/// @param _member 内部メンバー変数名
+///
+/// @warning 取得した参照やRangeは再確保後に無効になります。
+#define MD_STORAGE_ID_READ_ONLY_COLUMN(IDType, Type, _tag, _member)\
+public:\
+	/* 値読み取り */\
+	[[nodiscard("戻り値が無視されています")]] decltype(auto) Get##_tag(IDType _id) const\
+	{\
+		return MD::Storage::Detail::Get(_member, GetDenseIndex(_id));\
+	}\
+	/* 配列の要素数 */\
+	[[nodiscard("戻り値が無視されています")]] uint32_t Count##_tag() const\
+	{\
+		return MD::Storage::Detail::Count(_member);\
+	}\
+	/* 空チェック */\
+	[[nodiscard("戻り値が無視されています")]] bool Empty##_tag() const noexcept\
+	{\
+		return MD::Storage::Detail::Empty(_member);\
+	}\
+	/* 変化不可配列取得(全探査用) */\
+	[[nodiscard("戻り値が無視されています")]] auto Get##_tag##Range() const noexcept\
+	{\
+		return MD::Storage::Detail::GetRange(_member);\
+	}\
+private:\
+	std::vector<Type> _member;
+
+/// @def MD_STORAGE_ID_WRITE_ORIGINAL_COLUMN(IDType, Type, _tag, _member)
+/// @brief 独自にSetterを作成可能なStorage Columnを用意します。
+///
+/// 次の関数を生成します。
+/// - GetName
+/// - GetNameRange
+/// - CountName
+/// - EmptyName
+///
+/// @param Type 格納する要素型
+/// @param _tag 変数が何か(関数名に使用される)
+/// @param _member 内部メンバー変数名
+///
+/// @warning 取得した参照やRangeは再確保後に無効になります。
+#define MD_STORAGE_ID_WRITE_ORIGINAL_COLUMN(IDType, Type, _tag, _member)\
+	MD_STORAGE_ID_READ_ONLY_COLUMN(IDType, Type, _tag, _member);

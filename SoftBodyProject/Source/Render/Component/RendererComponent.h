@@ -10,7 +10,7 @@ public:
 	{
 	}
 
-	ModelHandle GetHandle()
+	ModelHandle GetHandle() const
 	{
 		return handle;
 	}

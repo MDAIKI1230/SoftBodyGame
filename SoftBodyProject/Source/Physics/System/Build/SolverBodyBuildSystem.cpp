@@ -47,12 +47,12 @@ void SolverBodyBuildSystem::CreateSolverBody(PhysicsTransformStorage* _transform
 	// 情報をひとつづつ埋めていく
 	body.bodyID = _bodyID;
 	body.transformID = _transformID;
-	uint32_t transformIndex{ _transformStorage->GetDenseIndex(_transformID) };
+
 	body.pastPos = _bodyStorage->GetRigidBodyPastPosition(_bodyID);
-	body.position = _transformStorage->GetPosition(transformIndex);
+	body.position = _transformStorage->GetPosition(_transformID);
 	body.velocity = _bodyStorage->GetRigidBodyVelocity(_bodyID);
 	body.pastRot = _bodyStorage->GetRigidBodyPastRotation(_bodyID);
-	body.rotation = _transformStorage->GetRotation(transformIndex);
+	body.rotation = _transformStorage->GetRotation(_transformID);
 	body.angularVelocity = _bodyStorage->GetRigidBodyAngularVelocity(_bodyID);
 	body.inverseMass = _bodyStorage->GetRigidBodyInverseMass(_bodyID);
 	body.localInverseInertiaTensor = _bodyStorage->GetRigidBodyLocalInverseInertiaTensor(_bodyID);
@@ -69,12 +69,12 @@ void SolverBodyBuildSystem::CreateSolverBody(PhysicsTransformStorage* _transform
 
 	// 情報をひとつづつ埋めていく(Bodyが存在しない版)
 	body.transformID = _transformID;
-	uint32_t transformIndex{ _transformStorage->GetDenseIndex(_transformID) };
-	body.pastPos = _transformStorage->GetPosition(transformIndex);
-	body.position = _transformStorage->GetPosition(transformIndex);
+
+	body.pastPos = _transformStorage->GetPosition(_transformID);
+	body.position = _transformStorage->GetPosition(_transformID);
 	body.velocity = Vector3::ZERO;
-	body.pastRot = _transformStorage->GetRotation(transformIndex);
-	body.rotation = _transformStorage->GetRotation(transformIndex);
+	body.pastRot = _transformStorage->GetRotation(_transformID);
+	body.rotation = _transformStorage->GetRotation(_transformID);
 	body.angularVelocity = Vector3::ZERO;;
 	body.inverseMass = 0;
 	body.localInverseInertiaTensor = Matrix4x4::Zero();

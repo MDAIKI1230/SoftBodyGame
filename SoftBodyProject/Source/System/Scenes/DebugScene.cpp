@@ -32,58 +32,58 @@ void DebugScene::Initialize()
 {
 	InputSystem::LoadAsset("Res/Data/Input/CharacterInput.json");
 
-	std::unique_ptr<Camera> camera{ std::make_unique<Camera>(worldStorage.get(), objectManager->GenerateNewID()) };
+	std::unique_ptr<Camera> camera{ std::make_unique<Camera>(&worldStorage, objectManager.GenerateNewID()) };
 	ResourceManager::LoadCubeTexture("Res/Texture/Sky/NaturalDayMeadow_Cubemap.dds");
 	camera->GetComponent<CameraComponent>()->SetSkyTextureHandle(ResourceManager::GetCubeTexture("NaturalDayMeadow_Cubemap.dds"));
 	camera->GetComponent<CameraComponent>()->SetClearMode(ClearMode::SKY);
 
-	Camera* cameraPtr{ camera.get() };
+	Camera* cameraPtr{ camera.get()};
 
-	objectManager->Add(std::move(camera));
+	objectManager.Add(std::move(camera));
 
-	std::unique_ptr<Player> player{ std::make_unique<Player>(worldStorage.get(), objectManager->GenerateNewID(), cameraPtr) };
+	std::unique_ptr<Player> player{ std::make_unique<Player>(&worldStorage, objectManager.GenerateNewID(), cameraPtr) };
 
-	objectManager->Add(std::move(player));
+	objectManager.Add(std::move(player));
 
-	objectManager->Add(std::make_unique<DebugSphere>(worldStorage.get(), objectManager->GenerateNewID()));
+	objectManager.Add(std::make_unique<DebugSphere>(&worldStorage, objectManager.GenerateNewID()));
 
-	//std::unique_ptr<DebugSphere> sphere{ std::make_unique<DebugSphere>(worldStorage.get(), objectManager->GenerateNewID()) };
+	//std::unique_ptr<DebugSphere> sphere{ std::make_unique<DebugSphere>(worldStorage, objectManager.GenerateNewID()) };
 	//// sphere->AddComponent<PointConstraintComponent>();
-	//objectManager->Add(std::move(sphere));
+	//objectManager.Add(std::move(sphere));
 
-	std::unique_ptr<DebugBox> debugBox01{ std::make_unique<DebugBox>(worldStorage.get(), objectManager->GenerateNewID(), 500.0f, 50.0f, 500.0f)};
+	std::unique_ptr<DebugBox> debugBox01{ std::make_unique<DebugBox>(&worldStorage, objectManager.GenerateNewID(), 500.0f, 50.0f, 500.0f)};
 	debugBox01->GetComponent<TransformComponent>()->SetPosition(Vector3{ 0,-200,0 });
-	objectManager->Add(std::move(debugBox01));
+	objectManager.Add(std::move(debugBox01));
 
-	objectManager->Add(std::make_unique<DebugCapsule>(worldStorage.get(), objectManager->GenerateNewID()));
-	objectManager->Add(std::make_unique<DebugCapsule>(worldStorage.get(), objectManager->GenerateNewID()));
+	objectManager.Add(std::make_unique<DebugCapsule>(&worldStorage, objectManager.GenerateNewID()));
+	objectManager.Add(std::make_unique<DebugCapsule>(&worldStorage, objectManager.GenerateNewID()));
 
 	// 距離拘束デバッグ(宙ぶらりんなせいで力が減衰する要素がほぼないので凄い動く)
-	/*std::unique_ptr<EmptyObject> emptyObject{ std::make_unique<EmptyObject>(worldStorage.get(), objectManager->GenerateNewID()) };
+	/*std::unique_ptr<EmptyObject> emptyObject{ std::make_unique<EmptyObject>(worldStorage, objectManager.GenerateNewID()) };
 	emptyObject->GetComponent<TransformComponent>()->SetPosition(Vector3{ 200.0f,0.0f,0.0f });
 	DistanceConstraintComponent* distanceConstraint{ emptyObject->AddComponent<DistanceConstraintComponent>(Vector3{ 15.0f,15.0f,15.0f },100.0f) };
-	objectManager->Add(std::move(emptyObject));
+	objectManager.Add(std::move(emptyObject));
 
 
-	std::unique_ptr<DebugBox> debugBox03{ std::make_unique<DebugBox>(worldStorage.get(), objectManager->GenerateNewID(), 30.0f) };
+	std::unique_ptr<DebugBox> debugBox03{ std::make_unique<DebugBox>(worldStorage, objectManager.GenerateNewID(), 30.0f) };
 	debugBox03->GetComponent<TransformComponent>()->SetPosition(Vector3{ 0,100,0 });
 	debugBox03->AddComponent<RigidBodyComponent>()->SetIsGravity(true);
 	distanceConstraint->AddEndPoint(debugBox03->GetID(), Vector3{ 15.0f,15.0f,15.0f });
-	objectManager->Add(std::move(debugBox03));*/
+	objectManager.Add(std::move(debugBox03));*/
 
 	// 点拘束デバッグ
-	std::unique_ptr<DebugBox> debugBox02{ std::make_unique<DebugBox>(worldStorage.get(), objectManager->GenerateNewID(), 30.0f) };
+	std::unique_ptr<DebugBox> debugBox02{ std::make_unique<DebugBox>(&worldStorage, objectManager.GenerateNewID(), 30.0f) };
 	debugBox02->GetComponent<TransformComponent>()->SetPosition(Vector3{ 0,50,0 });
 	debugBox02->GetComponent<TransformComponent>()->Rotate(Quaternion::AngleAxis((3.141592f / 4.0f), Vector3{ 0,1,1 }));
 	debugBox02->AddComponent<RigidBodyComponent>()->SetIsGravity(true);
 	PointConstraintComponent* pointConstraint{ debugBox02->AddComponent<PointConstraintComponent>(Vector3{ 15.0f,15.0f,15.0f }) };
-	objectManager->Add(std::move(debugBox02));
+	objectManager.Add(std::move(debugBox02));
 
-	std::unique_ptr<DebugBox> debugBox04{ std::make_unique<DebugBox>(worldStorage.get(), objectManager->GenerateNewID(), 30.0f) };
+	std::unique_ptr<DebugBox> debugBox04{ std::make_unique<DebugBox>(&worldStorage, objectManager.GenerateNewID(), 30.0f) };
 	debugBox04->GetComponent<TransformComponent>()->SetPosition(Vector3{ 0,100,0 });
 	debugBox04->AddComponent<RigidBodyComponent>()->SetIsGravity(true);
 	pointConstraint->AddEndPoint(debugBox04->GetID(), Vector3{ 15.0f,15.0f,15.0f });
-	objectManager->Add(std::move(debugBox04));
+	objectManager.Add(std::move(debugBox04));
 
 	// 距離拘束によるロープの実装
 	/*
@@ -94,19 +94,19 @@ void DebugScene::Initialize()
 
 	Vector3 ropePosition{ -200.0f,0.0f,0.0f };
 
-	std::unique_ptr<EmptyObject> empty1{ std::make_unique<EmptyObject>(worldStorage.get(), objectManager->GenerateNewID()) };
+	std::unique_ptr<EmptyObject> empty1{ std::make_unique<EmptyObject>(worldStorage, objectManager.GenerateNewID()) };
 	empty1->GetComponent<TransformComponent>()->SetPosition(ropePosition);
 	DistanceConstraintComponent* distanceConstraintRope = empty1->AddComponent<DistanceConstraintComponent>(distanceRope);
-	objectManager->Add(std::move(empty1));
+	objectManager.Add(std::move(empty1));
 
 	for (int i{ 0 }; i < 10; i++)
 	{
-		std::unique_ptr<DebugSphere> point{ std::make_unique<DebugSphere>(worldStorage.get(), objectManager->GenerateNewID()) };
+		std::unique_ptr<DebugSphere> point{ std::make_unique<DebugSphere>(worldStorage, objectManager.GenerateNewID()) };
 		point->GetComponent<SphereColliderComponent>()->SetRadius(2.0f);
 		point->GetComponent<TransformComponent>()->SetPosition(ropePosition + Vector3{ distanceRope * i,0.0f,0.0f });
 		distanceConstraintRope->AddEndPoint(point->GetID(), Vector3::ZERO);
 		distanceConstraintRope = point->AddComponent<DistanceConstraintComponent>(distanceRope);
-		objectManager->Add(std::move(point));
+		objectManager.Add(std::move(point));
 	}*/
 
 	// 布のテスト
@@ -121,21 +121,21 @@ void DebugScene::Initialize()
 
 	int width{ 8 };
 	int height{ 6};
-	EntityID handle{ objectManager->GenerateNewID() };
+	EntityID handle{ objectManager.GenerateNewID() };
 	for (int i{ 0 }; i < height; i++)
 	{
 		for (int j{ 0 }; j < width; j++)
 		{
 			if ((i == 0 && j == 0) || (i == 0 && j == (width - 1)))
 			{
-				std::unique_ptr<EmptyObject> point{ std::make_unique<EmptyObject>(worldStorage.get(), EntityID{handle.GetIndex() + static_cast<uint32_t>(objects.size()),1}) };
+				std::unique_ptr<EmptyObject> point{ std::make_unique<EmptyObject>(&worldStorage, EntityID{handle.GetIndex() + static_cast<uint32_t>(objects.size()),1}) };
 				point->GetComponent<TransformComponent>()->SetPosition(Vector3{ distanceCloth * j,0.0f,distanceCloth * i });
 				point->AddComponent<DistanceConstraintComponent>(distanceCloth);
 				objects.push_back(std::move(point));
 			}
 			else
 			{
-				std::unique_ptr<DebugSphere> point{ std::make_unique<DebugSphere>(worldStorage.get(),EntityID{handle.GetIndex() + static_cast<uint32_t>(objects.size()),1}) };
+				std::unique_ptr<DebugSphere> point{ std::make_unique<DebugSphere>(&worldStorage,EntityID{handle.GetIndex() + static_cast<uint32_t>(objects.size()),1}) };
 				point->GetComponent<SphereColliderComponent>()->SetRadius(2.0f);
 				point->GetComponent<TransformComponent>()->SetPosition(Vector3{ distanceCloth * j,0.0f,distanceCloth * i });
 				point->AddComponent<DistanceConstraintComponent>(distanceCloth);
@@ -165,7 +165,7 @@ void DebugScene::Initialize()
 
 	for (auto& obj : objects)
 	{
-		objectManager->Add(std::move(obj));
+		objectManager.Add(std::move(obj));
 	}
 
 	/*
@@ -178,18 +178,11 @@ void DebugScene::Initialize()
 	RendererComponent renderer{ ResourceManager::GetModel("A_001_player_neutral_01_01.mv1") };
 
 	
-	EntityID id{ objectManager->GenerateNewID() };
-	worldStorage->GetStorage<RendererComponent>()->Add(id, renderer);
+	EntityID id{ objectManager.GenerateNewID() };
+	worldStorage.GetStorage<RendererComponent>()->Add(id, renderer);
 
 	TransformComponent trans{};
 	trans.SetPosition(Vector3{ 0,0,0 });
 
-	worldStorage->GetStorage<TransformComponent>()->Add(id,trans);
-
-	state = SceneState::UPDATE;
-}
-// 終了
-void DebugScene::Terminate()
-{
-
+	worldStorage.GetStorage<TransformComponent>()->Add(id,trans);
 }

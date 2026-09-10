@@ -188,3 +188,9 @@ void DxlibGPUConnecter::ShaderBufferBarrier()
 {
 	
 }
+
+// すべてのリソースの削除
+void DxlibGPUConnecter::DeleteAll()
+{
+	DxLib::InitShader();
+}

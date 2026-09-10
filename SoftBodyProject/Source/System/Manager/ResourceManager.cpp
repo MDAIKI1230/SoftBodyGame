@@ -17,7 +17,7 @@ bool ResourceManager::LoadModelImpl(std::filesystem::path _path)
 
 	if (ServiceLocator::GetRenderer()->GetSkeletonData(modelMasters[key], skeleton))
 	{
-		skeletonMasters[key] = std::move(skeleton);
+		skeletonMasters[modelMasters[key]] = std::move(skeleton);
 	}
 
 	return modelMasters[key].GetGeneration() != 0;
@@ -120,12 +120,12 @@ PixelShaderHandle ResourceManager::GetPixelShaderImpl(std::filesystem::path _pat
 	return {};
 }
 
-// モデルのパスからスケルトンのデータを取得する
-const SkeletonData* ResourceManager::GetSkeletonDataImpl(std::filesystem::path _path)
+// モデルのハンドルからスケルトンのデータを取得する
+const SkeletonData* ResourceManager::GetSkeletonDataImpl(ModelHandle _model)
 {
-	if (skeletonMasters.contains(_path))
+	if (skeletonMasters.contains(_model))
 	{
-		return &skeletonMasters[_path];
+		return &skeletonMasters[_model];
 	}
 
 	return nullptr;
@@ -183,7 +183,7 @@ void ResourceManager::UnLoadModelImpl(std::filesystem::path _path)
 	}
 
 	// スケルトンも消す
-	skeletonMasters.erase(_path);
+	skeletonMasters.erase(modelMasters[_path]);
 
 	ServiceLocator::GetRenderer()->DeleteModel(modelMasters[_path]);
 
@@ -223,4 +223,11 @@ void ResourceManager::UnLoadPixelShaderImpl(std::filesystem::path _path)
 void ResourceManager::UnLoadConstantBufferImpl(ShaderConstantBufferHandle _handle)
 {
 	ServiceLocator::GetGPUConnecter()->DestroyConstantBuffer(_handle);
+}
+
+// すべてのリソースを破棄する
+void ResourceManager::UnLoadAllImpl()
+{
+	ServiceLocator::GetGPUConnecter()->DeleteAll();
+	ServiceLocator::GetRenderer()->DeleteAll();
 }

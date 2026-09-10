@@ -62,7 +62,7 @@ void AABBUpdateSystem::FixedUpdate(PhysicsTransformStorage* _transformStorage, C
 
 void AABBUpdateSystem::ComputeSphere(AABBBroadPhaseCollider& _aabb, ColliderStorage* _colliderStorage, ColliderID _id, PhysicsTransformStorage* _transformStorage)
 {
-	Vector3 scale{ _transformStorage->GetScale(_transformStorage->GetDenseIndex(_colliderStorage->GetTransformID(_id))) };
+	Vector3 scale{ _transformStorage->GetScale(_colliderStorage->GetTransformID(_id)) };
 	// 最大値で倍にする
 	float multiple{ std::max(std::max(std::abs(scale.x),std::abs(scale.y)),std::abs(scale.z)) };
 	_aabb.min = Vector3{ -_colliderStorage->GetSphereColliderRadius(_id) * multiple };
@@ -71,16 +71,16 @@ void AABBUpdateSystem::ComputeSphere(AABBBroadPhaseCollider& _aabb, ColliderStor
 
 void AABBUpdateSystem::ComputeBox(AABBBroadPhaseCollider& _aabb, ColliderStorage* _colliderStorage, ColliderID _id, PhysicsTransformStorage* _transformStorage)
 {
-	uint32_t transIndex{ _transformStorage->GetDenseIndex(_colliderStorage->GetTransformID(_id)) };
+	PhysicsTransformID transID{ _colliderStorage->GetTransformID(_id) };
 
 	// 行列から各方向を取得
-	Vector3 right = _transformStorage->GetRotation(transIndex).Rotate(Vector3::RIGHT);
-	Vector3 up = _transformStorage->GetRotation(transIndex).Rotate(Vector3::UP);
-	Vector3 forward = _transformStorage->GetRotation(transIndex).Rotate(Vector3::FORWARD);
+	Vector3 right = _transformStorage->GetRotation(transID).Rotate(Vector3::RIGHT);
+	Vector3 up = _transformStorage->GetRotation(transID).Rotate(Vector3::UP);
+	Vector3 forward = _transformStorage->GetRotation(transID).Rotate(Vector3::FORWARD);
 
 	Vector3 halfScale{ _colliderStorage->GetBoxColliderScale(_id) * 0.5f};
 
-	const Vector3& scale{ _transformStorage->GetScale(transIndex) };
+	const Vector3& scale{ _transformStorage->GetScale(transID) };
 	Vector3 absScale{ std::abs(scale.x),std::abs(scale.y),std::abs(scale.z) };
 	// 各方向に倍
 	halfScale = SIMDVectorMath::Mul(halfScale, absScale);
@@ -111,8 +111,8 @@ void AABBUpdateSystem::ComputeCapsule(AABBBroadPhaseCollider& _aabb, ColliderSto
 {
 	float radius{ _colliderStorage->GetCapsuleColliderRadius(_id) };
 	float height{ _colliderStorage->GetCapsuleColliderHeight(_id) };
-	uint32_t transIndex{ _transformStorage->GetDenseIndex(_colliderStorage->GetTransformID(_id)) };
-	const Quaternion& rotation{ _transformStorage->GetRotation(transIndex) };
+	PhysicsTransformID transID{ _colliderStorage->GetTransformID(_id) };
+	const Quaternion& rotation{ _transformStorage->GetRotation(transID) };
 
 	Vector3 axisHalf{ rotation.Rotate(Vector3::UP * (height * 0.5f)) };
 

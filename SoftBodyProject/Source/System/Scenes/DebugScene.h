@@ -8,7 +8,5 @@ public:
 	// コンストラクタ
 	DebugScene();
 	// 初期化
-	void Initialize();
-	// 終了
-	void Terminate();
+	void Initialize() override;
 };

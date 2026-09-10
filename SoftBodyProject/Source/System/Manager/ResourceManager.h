@@ -95,11 +95,11 @@ public:
 	static PixelShaderHandle GetPixelShader(std::filesystem::path _path)
 	SingletonPublicFunction(PixelShaderHandle, GetPixelShader, (std::filesystem::path _path), (_path))
 	/// <summary>
-	/// モデルのパスからスケルトンのデータを取得する
+	/// モデルのハンドルからスケルトンのデータを取得する
 	/// </summary>
-	/// // <param name="_path">データの名前</param>
-	static const SkeletonData* GetSkeletonData(std::filesystem::path _path)
-	SingletonPublicFunction(const SkeletonData*, GetSkeletonData, (std::filesystem::path _path), (_path))
+	/// <param name="_path">モデルハンドル</param>
+	static const SkeletonData* GetSkeletonData(ModelHandle _model)
+	SingletonPublicFunction(const SkeletonData*, GetSkeletonData, (ModelHandle _model), (_model))
 	/// <summary>
 	/// モデルの現在のポーズを取得する
 	/// </summary>
@@ -175,6 +175,11 @@ public:
 	/// <param name="_handle">定数バッファハンドル</param>
 	static void UnLoadConstantBuffer(ShaderConstantBufferHandle _handle)
 	SingletonPublicFunction(void, UnLoadConstantBuffer, (ShaderConstantBufferHandle _handle), (_handle))
+	/// <summary>
+	/// すべてのリソースを破棄する
+	/// </summary>
+	static void UnLoadAll()
+	SingletonPublicFunction(void, UnLoadAll, (), ())
 private:
 	// シングルトン
 	// コンストラクタ
@@ -193,7 +198,8 @@ private:
 	std::unordered_map <std::filesystem::path, CubeTextureHandle> cubeTextureMasters;
 	std::unordered_map <std::filesystem::path, VertexShaderHandle> vertexShaderMasters;
 	std::unordered_map <std::filesystem::path, PixelShaderHandle> pixelShaderMasters;
-	std::unordered_map <std::filesystem::path, SkeletonData> skeletonMasters;
+
+	std::unordered_map <ModelHandle, SkeletonData> skeletonMasters;
 
 
 	// --- 共有データ ---

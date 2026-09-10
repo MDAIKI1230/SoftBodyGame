@@ -19,6 +19,7 @@ public:
 		localScales.resize(_size);
 
 		localMatrices.resize(_size);
+		modelFromBoneMatrices.resize(_size);
 	}
 
 public:
@@ -26,5 +27,10 @@ public:
 	std::vector<Quaternion> localRotations;
 	std::vector<Vector3> localScales;
 
+	// それぞれの親ボーンを基準としたローカル姿勢
 	std::vector<Matrix4x4> localMatrices;
+
+	// localMatricesを親階層順に累積した、
+	// BoneのLocal空間からModel空間へ変換する行列
+	std::vector<Matrix4x4> modelFromBoneMatrices;
 };

@@ -82,4 +82,7 @@ protected:
 	// --- 同期 ---
 
 	virtual void ShaderBufferBarrier() = 0;
+
+	// すべてのリソースの削除
+	virtual void DeleteAll() = 0;
 };

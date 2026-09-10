@@ -20,9 +20,9 @@ private:
 	void UpdateJump(CharacterControllerStorage* _characterControllerStorage, BodyStorage* _bodyStorage);
 
 	// 空中にいる時の移動更新関数
-	void UpdateAirboneState(uint32_t _indexCC, CharacterControllerStorage* _characterControllerStorage, BodyStorage* _bodyStorage, float _deltaTime);
+	void UpdateAirboneState(CharacterControllerID _id, CharacterControllerStorage* _characterControllerStorage, BodyStorage* _bodyStorage, float _deltaTime);
 	// 歩ける状態の時の移動更新関数
-	void UpdateWalkableState(uint32_t _indexCC, CharacterControllerStorage* _characterControllerStorage, BodyStorage* _bodyStorage, float _deltaTime);
+	void UpdateWalkableState(CharacterControllerID _id, CharacterControllerStorage* _characterControllerStorage, BodyStorage* _bodyStorage, float _deltaTime);
 	// 滑る地面の上にいる時の移動更新関数
-	void UpdateSteepSlopeState(uint32_t _indexCC, CharacterControllerStorage* _characterControllerStorage, BodyStorage* _bodyStorage, float _deltaTime);
+	void UpdateSteepSlopeState(CharacterControllerID _id, CharacterControllerStorage* _characterControllerStorage, BodyStorage* _bodyStorage, float _deltaTime);
 };

@@ -104,4 +104,7 @@ protected:
 	virtual void DeleteTexture(TextureHandle _handle) = 0;
 	// キューブテクスチャ削除
 	virtual void DeleteCubeTexture(CubeTextureHandle _handle) = 0;
+
+	// すべてのリソースを削除
+	virtual void DeleteAll() = 0;
 };

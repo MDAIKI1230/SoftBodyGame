@@ -22,26 +22,22 @@ void CharacterControllerSystem::UpdateGroundState(
 {
 	for (auto id : _characterControllerStorage->GetIDRange())
 	{
-		uint32_t indexCC{ _characterControllerStorage->GetDenseIndex(id) };
+		PhysicsTransformID transformID{ _characterControllerStorage->GetTransformID(id) };
 
-		PhysicsTransformID transformID{ _characterControllerStorage->GetTransformID(indexCC) };
+		BodyID bodyID{ _characterControllerStorage->GetRigidBodyID(id) };
 
-		uint32_t indexTransform{ _transformStorage->GetDenseIndex(transformID) };
+		ColliderID colliderID{ _characterControllerStorage->GetCapsuleColliderID(id) };
 
-		BodyID bodyID{ _characterControllerStorage->GetRigidBodyID(indexCC) };
-
-		ColliderID colliderID{ _characterControllerStorage->GetCapsuleColliderID(indexCC) };
-
-		const Vector3& position{ _transformStorage->GetPosition(indexTransform) };
+		const Vector3& position{ _transformStorage->GetPosition(transformID) };
 		const Vector3& gravity{ _bodyStorage->GetRigidBodyGravity(bodyID) };
 
 		// リセット
 		// ヒット情報
-		_characterControllerStorage->SetGroundNormal(indexCC, Vector3::ZERO);
-		_characterControllerStorage->SetGroundPoint(indexCC, Vector3::ZERO);
-		_characterControllerStorage->SetGroundDistance(indexCC, 0.0f);
-		_characterControllerStorage->SetGroundColliderID(indexCC, ColliderID{});
-		_characterControllerStorage->SetGroundState(indexCC, CharacterGroundState::AIRBORNE);
+		_characterControllerStorage->SetGroundNormal(id, Vector3::ZERO);
+		_characterControllerStorage->SetGroundPoint(id, Vector3::ZERO);
+		_characterControllerStorage->SetGroundDistance(id, 0.0f);
+		_characterControllerStorage->SetGroundColliderID(id, ColliderID{});
+		_characterControllerStorage->SetGroundState(id, CharacterGroundState::AIRBORNE);
 
 		if (gravity.LengthSqr() <= MathConstants::EPSILON * MathConstants::EPSILON)
 		{
@@ -52,7 +48,7 @@ void CharacterControllerSystem::UpdateGroundState(
 		float height{ _colliderStorage->GetCapsuleColliderHeight(colliderID) };
 		float radius{ _colliderStorage->GetCapsuleColliderRadius(colliderID) };
 		// 滑る角度の判定値
-		float minGroundDots{ _characterControllerStorage->GetMinGroundDot(indexCC) };
+		float minGroundDots{ _characterControllerStorage->GetMinGroundDot(id) };
 		// カプセルの下側。
 		float capsuleBottom{ height * 0.5f + radius };
 
@@ -60,23 +56,23 @@ void CharacterControllerSystem::UpdateGroundState(
 		Ray ray;
 		ray.origin = position;
 		ray.direction = gravity.Normalized();
-		ray.maxDistance = capsuleBottom + _characterControllerStorage->GetGroundProbeDistance(indexCC);
+		ray.maxDistance = capsuleBottom + _characterControllerStorage->GetGroundProbeDistance(id);
 
 		if (PhysicsQuerySystem::RayCastHit(ray, hitInfo, _colliderStorage, _transformStorage))
 		{
 			// ヒット情報を残す
-			_characterControllerStorage->SetGroundNormal(indexCC, hitInfo.normal);
-			_characterControllerStorage->SetGroundPoint(indexCC, hitInfo.point);
-			_characterControllerStorage->SetGroundDistance(indexCC, hitInfo.distance - capsuleBottom);
-			_characterControllerStorage->SetGroundColliderID(indexCC, hitInfo.colliderID);
+			_characterControllerStorage->SetGroundNormal(id, hitInfo.normal);
+			_characterControllerStorage->SetGroundPoint(id, hitInfo.point);
+			_characterControllerStorage->SetGroundDistance(id, hitInfo.distance - capsuleBottom);
+			_characterControllerStorage->SetGroundColliderID(id, hitInfo.colliderID);
 
 			// 地面にいる判定
-			_characterControllerStorage->SetGroundState(indexCC, CharacterGroundState::WALKABLE);
+			_characterControllerStorage->SetGroundState(id, CharacterGroundState::WALKABLE);
 
 			// 滑るか判定
 			if (Vector3::Dot(hitInfo.normal, -ray.direction) < minGroundDots)
 			{
-				_characterControllerStorage->SetGroundState(indexCC, CharacterGroundState::STEEP_SLOPE);
+				_characterControllerStorage->SetGroundState(id, CharacterGroundState::STEEP_SLOPE);
 			}
 		}
 	}
@@ -86,18 +82,16 @@ void CharacterControllerSystem::UpdateMovement(CharacterControllerStorage* _char
 {
 	for (auto id : _characterControllerStorage->GetIDRange())
 	{
-		uint32_t indexCC{ _characterControllerStorage->GetDenseIndex(id) };
-
-		switch (_characterControllerStorage->GetGroundState(indexCC))
+		switch (_characterControllerStorage->GetGroundState(id))
 		{
 		case CharacterGroundState::AIRBORNE:
-			UpdateAirboneState(indexCC, _characterControllerStorage, _bodyStorage, TimeManager::GetFixedDeltaTime());
+			UpdateAirboneState(id, _characterControllerStorage, _bodyStorage, TimeManager::GetFixedDeltaTime());
 			break;
 		case CharacterGroundState::WALKABLE:
-			UpdateWalkableState(indexCC, _characterControllerStorage, _bodyStorage, TimeManager::GetFixedDeltaTime());
+			UpdateWalkableState(id, _characterControllerStorage, _bodyStorage, TimeManager::GetFixedDeltaTime());
 			break;
 		case CharacterGroundState::STEEP_SLOPE:
-			UpdateSteepSlopeState(indexCC, _characterControllerStorage, _bodyStorage, TimeManager::GetFixedDeltaTime());
+			UpdateSteepSlopeState(id, _characterControllerStorage, _bodyStorage, TimeManager::GetFixedDeltaTime());
 			break;
 		default:
 			break;
@@ -109,15 +103,13 @@ void CharacterControllerSystem::UpdateJump(CharacterControllerStorage* _characte
 {
 	for (auto id : _characterControllerStorage->GetIDRange())
 	{
-		uint32_t indexCC{ _characterControllerStorage->GetDenseIndex(id) };
-
-		BodyID bodyID{ _characterControllerStorage->GetRigidBodyID(indexCC) };
+		BodyID bodyID{ _characterControllerStorage->GetRigidBodyID(id) };
 
 		// ジャンプリクエストあり地面にいるなら地面の法線方向
-		if (_characterControllerStorage->GetJumpRequest(indexCC))
+		if (_characterControllerStorage->GetJumpRequest(id))
 		{
-			_characterControllerStorage->SetJumpRequest(indexCC, false);
-			if (_characterControllerStorage->GetGroundState(indexCC) == CharacterGroundState::WALKABLE)
+			_characterControllerStorage->SetJumpRequest(id, false);
+			if (_characterControllerStorage->GetGroundState(id) == CharacterGroundState::WALKABLE)
 			{
 				const Vector3& gravity{ _bodyStorage->GetRigidBodyGravity(bodyID) };
 
@@ -126,7 +118,7 @@ void CharacterControllerSystem::UpdateJump(CharacterControllerStorage* _characte
 
 				Vector3& velocity{ _bodyStorage->EditRigidBodyVelocity(bodyID) };
 
-				float jumpSpeed{ _characterControllerStorage->GetJumpSpeed(indexCC) };
+				float jumpSpeed{ _characterControllerStorage->GetJumpSpeed(id) };
 
 				float currentJumpSpeed{ Vector3::Dot(velocity, jumpDirection) };
 
@@ -135,23 +127,23 @@ void CharacterControllerSystem::UpdateJump(CharacterControllerStorage* _characte
 					velocity += jumpDirection * (jumpSpeed - currentJumpSpeed);
 				}
 
-				_characterControllerStorage->SetGroundState(indexCC, CharacterGroundState::AIRBORNE);
+				_characterControllerStorage->SetGroundState(id, CharacterGroundState::AIRBORNE);
 			}
 		}
 	}
 }
 
 // 空中にいる時の移動更新関数
-void CharacterControllerSystem::UpdateAirboneState(uint32_t _indexCC, CharacterControllerStorage* _characterControllerStorage, BodyStorage* _bodyStorage, float _deltaTime)
+void CharacterControllerSystem::UpdateAirboneState(CharacterControllerID _id, CharacterControllerStorage* _characterControllerStorage, BodyStorage* _bodyStorage, float _deltaTime)
 {
 	// 入力
-	const Vector3& input{ _characterControllerStorage->GetMoveInput(_indexCC) };
+	const Vector3& input{ _characterControllerStorage->GetMoveInput(_id) };
 	// 加速度
-	float acc{ _characterControllerStorage->GetAirAcceleration(_indexCC) };
+	float acc{ _characterControllerStorage->GetAirAcceleration(_id) };
 	// 最大速度
-	float maxSpeed{ _characterControllerStorage->GetMaxSpeed(_indexCC) };
+	float maxSpeed{ _characterControllerStorage->GetMaxSpeed(_id) };
 	// BodyID
-	BodyID bodyID{ _characterControllerStorage->GetRigidBodyID(_indexCC) };
+	BodyID bodyID{ _characterControllerStorage->GetRigidBodyID(_id) };
 
 	// 速度
 	Vector3& velocity{ _bodyStorage->EditRigidBodyVelocity(bodyID) };
@@ -210,20 +202,20 @@ void CharacterControllerSystem::UpdateAirboneState(uint32_t _indexCC, CharacterC
 }
 
 // 歩ける状態の時の移動更新関数
-void CharacterControllerSystem::UpdateWalkableState(uint32_t _indexCC, CharacterControllerStorage* _characterControllerStorage, BodyStorage* _bodyStorage, float _deltaTime)
+void CharacterControllerSystem::UpdateWalkableState(CharacterControllerID _id, CharacterControllerStorage* _characterControllerStorage, BodyStorage* _bodyStorage, float _deltaTime)
 {
 	// 入力
-	const Vector3& input{ _characterControllerStorage->GetMoveInput(_indexCC) };
+	const Vector3& input{ _characterControllerStorage->GetMoveInput(_id) };
 	// 地面の法線
-	const Vector3& groundNormal{ _characterControllerStorage->GetGroundNormal(_indexCC) };
+	const Vector3& groundNormal{ _characterControllerStorage->GetGroundNormal(_id) };
 	// 加速度
-	float acc{ _characterControllerStorage->GetGroundAcceleration(_indexCC) };
+	float acc{ _characterControllerStorage->GetGroundAcceleration(_id) };
 	// 減速度
-	float dec{ _characterControllerStorage->GetGroundDeceleration(_indexCC) };
+	float dec{ _characterControllerStorage->GetGroundDeceleration(_id) };
 	// 最大速度
-	float maxSpeed{ _characterControllerStorage->GetMaxSpeed(_indexCC) };
+	float maxSpeed{ _characterControllerStorage->GetMaxSpeed(_id) };
 	// BodyID
-	BodyID bodyID{ _characterControllerStorage->GetRigidBodyID(_indexCC) };
+	BodyID bodyID{ _characterControllerStorage->GetRigidBodyID(_id) };
 
 	// 速度
 	Vector3& velocity{ _bodyStorage->EditRigidBodyVelocity(bodyID) };
@@ -293,14 +285,14 @@ void CharacterControllerSystem::UpdateWalkableState(uint32_t _indexCC, Character
 }
 
 // 滑る地面の上にいる時の移動更新関数
-void CharacterControllerSystem::UpdateSteepSlopeState(uint32_t _indexCC, CharacterControllerStorage* _characterControllerStorage, BodyStorage* _bodyStorage, float _deltaTime)
+void CharacterControllerSystem::UpdateSteepSlopeState(CharacterControllerID _id, CharacterControllerStorage* _characterControllerStorage, BodyStorage* _bodyStorage, float _deltaTime)
 {
 	// 地面の法線
-	const Vector3& groundNormal{ _characterControllerStorage->GetGroundNormal(_indexCC) };
+	const Vector3& groundNormal{ _characterControllerStorage->GetGroundNormal(_id) };
 	// 滑り強めル加速度
-	float slopeAcc{ _characterControllerStorage->GetSlopeAcceleration(_indexCC) };
+	float slopeAcc{ _characterControllerStorage->GetSlopeAcceleration(_id) };
 	// BodyID
-	BodyID bodyID{ _characterControllerStorage->GetRigidBodyID(_indexCC) };
+	BodyID bodyID{ _characterControllerStorage->GetRigidBodyID(_id) };
 
 	// 力
 	Vector3& force{ _bodyStorage->EditRigidBodyForce(bodyID) };
@@ -311,7 +303,7 @@ void CharacterControllerSystem::UpdateSteepSlopeState(uint32_t _indexCC, Charact
 	// 重力の有無
 	bool isGravity{ _bodyStorage->GetRigidBodyIsGravity(bodyID) };
 
-	UpdateAirboneState(_indexCC, _characterControllerStorage, _bodyStorage, _deltaTime);
+	UpdateAirboneState(_id, _characterControllerStorage, _bodyStorage, _deltaTime);
 
 	// 重力による滑りを強める
 	if (isGravity)

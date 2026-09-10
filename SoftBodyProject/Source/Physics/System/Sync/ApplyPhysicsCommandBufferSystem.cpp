@@ -15,11 +15,10 @@ void ApplyPhysicsCommandBufferSystem::ApplyBodyCommand(PhysicsCommandBuffer* _co
 
 		BodyID bodyID{ update.target };
 		PhysicsTransformID transformID{ _bodyStorage->GetTransformID(bodyID) };
-		uint32_t transIndex{ _transformStorage->GetDenseIndex(transformID) };
 
 		if (HasFlag(update.flags, RigidBodyUpdateFlag::POSITION))
 		{
-			_transformStorage->EditPosition(transIndex) = update.position;
+			_transformStorage->EditPosition(transformID) = update.position;
 		}
 		if (HasFlag(update.flags, RigidBodyUpdateFlag::VELOCITY))
 		{
@@ -31,7 +30,7 @@ void ApplyPhysicsCommandBufferSystem::ApplyBodyCommand(PhysicsCommandBuffer* _co
 		}
 		if (HasFlag(update.flags, RigidBodyUpdateFlag::ROTATION))
 		{
-			_transformStorage->EditRotation(transIndex) = update.rotation;
+			_transformStorage->EditRotation(transformID) = update.rotation;
 		}
 		if (HasFlag(update.flags, RigidBodyUpdateFlag::ANGULAR_VELOCITY))
 		{

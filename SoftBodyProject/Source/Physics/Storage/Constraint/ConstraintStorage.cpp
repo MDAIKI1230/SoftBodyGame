@@ -18,6 +18,9 @@ ConstraintID ConstraintStorage::CreatePointConstraint(EntityID _entity, PhysicsT
 	// 追加
 	pointConstraintStorage->Add(id, pointConstraint);
 
+	// 対応表
+	transformMap[_transformID] = id;
+
 	// ID返して終了
 	return id;
 }
@@ -34,6 +37,9 @@ ConstraintID ConstraintStorage::CreateDistanceConstraint(EntityID _entity, Physi
 
 	// 追加
 	distanceConstraintStorage->Add(id, distanceConstraint);
+
+	// 対応表
+	transformMap[_transformID] = id;
 
 	// ID返して終了
 	return id;
@@ -59,6 +65,9 @@ void ConstraintStorage::Destory(ConstraintID _id)
 		movedId = distanceConstraintStorage->Remove(GetDenseIndex(_id));
 	}
 
+	// 対応表からも消す
+	transformMap.erase(GetTransformID(_id));
+
 	// 移動した奴の対応付けを戻す
 	if (!(movedId.GetIndex() == _id.GetIndex() && movedId.GetGeneration() == _id.GetGeneration()))
 	{
@@ -77,4 +86,17 @@ ConstraintType ConstraintStorage::GetType(ConstraintID _id) const
 PhysicsTransformID ConstraintStorage::GetTransformID(ConstraintID _id) const
 {
 	return GetSlot(_id).transformID;
+}
+
+// TransformIDから対応した拘束取得
+bool ConstraintStorage::TryGetConstraintIDFromTransformID(PhysicsTransformID _id, ConstraintID& _output)
+{
+	if (transformMap.contains(_id))
+	{
+		return false;
+	}
+
+	_output = transformMap[_id];
+
+	return true;
 }

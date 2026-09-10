@@ -10,6 +10,7 @@
 #include "EventManager.h"
 #include "EventSystem.h"
 #include "PhysicsWorld.h"
+#include "AnimationWorld.h"
 
 #include "ObjectManager.h"
 
@@ -24,9 +25,14 @@ public:
 	SceneBase();
 	// 更新
 	void Execute();
+	// 描画
 	void Render();
+	// 終了
+	void End();
+	// 切り替えていいよフラグ
+	bool CompleteEnding();
 	// 仮想デストラクタ
-	virtual ~SceneBase() = default;
+	virtual ~SceneBase();
 protected:
 	/// <summary>
 	/// システムの追加(moveされる)
@@ -35,7 +41,7 @@ protected:
 	template<class T>
 	void AddSystem(T&& _system)
 	{
-		systemManager->AddSystem(std::move(_system));
+		systemManager.AddSystem(std::move(_system));
 	}
 	/// <summary>
 	/// ストレージの追加(moveされる)
@@ -44,24 +50,28 @@ protected:
 	template<typename T>
 	void AddStorage(std::unique_ptr<StorageBase>&& _storage)
 	{
-		worldStorage->AddStorage<T>(std::move(_storage));
+		worldStorage.AddStorage<T>(std::move(_storage));
 	}
 
 	void FadeIn();
 	void FadeOut();
 	virtual void Initialize() = 0;
 	virtual void Update();
-	virtual void Terminate() = 0;
+	void Terminate();
 
 	void LoadFile(std::string _filePath);
 protected:
-	std::unique_ptr<WorldStorage> worldStorage;
-	std::unique_ptr<PhysicsWorld> physicsWorld;
-	std::unique_ptr<SystemManager> systemManager;
-	std::unique_ptr<EventManager> eventManager;
-	std::unique_ptr<EventSystem> eventSystem;
+	WorldStorage worldStorage;
+	PhysicsWorld physicsWorld;
+	AnimationWorld animationWorld;
+	SystemManager systemManager;
+	EventManager eventManager;
+	EventSystem eventSystem;
 	// シーンの状態
 	SceneState state{ SceneState::INITIALIZE };
 	// オブジェクトマネージャー
-	std::unique_ptr<ObjectManager> objectManager;
+	ObjectManager objectManager;
+
+	//シーン切り替えていいよフラグ
+	bool isCompleteEnding{ false };
 };

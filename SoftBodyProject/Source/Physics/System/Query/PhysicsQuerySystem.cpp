@@ -31,9 +31,9 @@ bool PhysicsQuerySystem::RayCastHit(const Ray& _ray, RayCastQueryHitInfo& _hitIn
 		// AABBの判定
 		const auto& aabb{ _colliderStorage->GetAABBBroadPhaseCollider(i) };
 
-		uint32_t transformIndex{ _transformStorage->GetDenseIndex(aabb.transformID) };
+		PhysicsTransformID transformID{ aabb.transformID };
 
-		Vector3 position{ _transformStorage->GetPosition(transformIndex) };
+		Vector3 position{ _transformStorage->GetPosition(transformID) };
 
 		Vector3 worldMin{ aabb.min + position };
 		Vector3 worldMax{ aabb.max + position };
@@ -49,7 +49,7 @@ bool PhysicsQuerySystem::RayCastHit(const Ray& _ray, RayCastQueryHitInfo& _hitIn
 
 		RayCastHitInfo hitInfo{};
 
-		if (!RayCastCollider(ray, hitInfo, aabb.colliderID, transformIndex, _colliderStorage, _transformStorage))
+		if (!RayCastCollider(ray, hitInfo, aabb.colliderID, transformID, _colliderStorage, _transformStorage))
 		{
 			continue;
 		}
@@ -73,14 +73,14 @@ bool PhysicsQuerySystem::RayCastHit(const Ray& _ray, RayCastQueryHitInfo& _hitIn
 }
 
 bool PhysicsQuerySystem::RayCastCollider(
-	const Ray& _ray, RayCastHitInfo& _hitInfo, ColliderID _colliderID, uint32_t transformIndex,
+	const Ray& _ray, RayCastHitInfo& _hitInfo, ColliderID _colliderID, PhysicsTransformID transformID,
 	ColliderStorage* _colliderStorage, PhysicsTransformStorage* _transformStorage)
 {
 	ColliderType type{ _colliderStorage->GetType(_colliderID) };
 
-	const Vector3& position{ _transformStorage->GetPosition(transformIndex) };
-	const Quaternion& rotation{ _transformStorage->GetRotation(transformIndex) };
-	const Vector3& scale{ _transformStorage->GetScale(transformIndex) };
+	const Vector3& position{ _transformStorage->GetPosition(transformID) };
+	const Quaternion& rotation{ _transformStorage->GetRotation(transformID) };
+	const Vector3& scale{ _transformStorage->GetScale(transformID) };
 	switch (type)
 	{
 	case ColliderType::SPHERE:

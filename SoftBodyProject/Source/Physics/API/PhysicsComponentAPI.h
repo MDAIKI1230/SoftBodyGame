@@ -9,6 +9,11 @@
 
 #include "WorldStorage.h"
 
+/*
+	コンポーネントの内部用のAPI
+	各種コンポーネントが実データを変更する時などに使う
+	物理系のコンポーネントだけでなく他のコンポーネントの内部で使ってもよい
+*/
 class PhysicsComponentAPI
 {
 public:
@@ -23,6 +28,16 @@ public:
 
 	// 作成
 	static BodyID CreateRigidBody(EntityID _entity);
+
+	// 位置取得
+	static Vector3 GetRigidBodyPosition(BodyID _id);
+	// 位置変更
+	static void SetRigidBodyPosition(BodyID _id, const Vector3& _position);
+
+	// 回転取得
+	static Quaternion GetRigidBodyRoatation(BodyID _id);
+	// 回転変更
+	static void SetRigidBodyRoatation(BodyID _id, const Quaternion& _rotation);
 
 	// 力加算
 	static void AddForce(BodyID _id, const Vector3& _force);
@@ -296,6 +311,23 @@ public:
 	static float GetCharacterControllerGroundDistance(CharacterControllerID _id);
 	// 検出した地面Collider取得
 	static ColliderComponent GetCharacterControllerGroundCollider(CharacterControllerID _id);
+
+	// --- 内部計算用関数 ---
+	
+	// 内部用のPhysicsTransform作成(寿命管理をちゃんを忘れない)
+	static PhysicsTransformID CreateInternalPhysicsTransformID(EntityID _entity, const Vector3& _position, const Quaternion& _rotation, const Vector3& _scale);
+	// 内部用のRigidBody作成(寿命管理をちゃんを忘れない)
+	static BodyID CreateInternalRigidBody(EntityID _entity, PhysicsTransformID _transformID);
+	// 内部用のカプセルコライダー作成(寿命管理をちゃんを忘れない)
+	static ColliderID CreateInternalCapsuleCollider(EntityID _entity, PhysicsTransformID _transformID, float _height, float _radius);
+	// 内部用の点拘束作成(寿命管理をちゃんを忘れない)
+	static ConstraintID CreateInternalPointConstraint(EntityID _entity, PhysicsTransformID _transformID, const Vector3& _localOffset);
+
+	// PhysicsTransform破棄(対応する他の奴も破棄する)
+	static void DestroyPhysicsTransform(PhysicsTransformID _transformID);
+
+	// 内部用拘束の点追加
+	static void AddInternalEndPoint(ConstraintID _constraintID, PhysicsTransformID _transformID, const Vector3& _localOffset);
 
 	static void BindWorld(PhysicsWorld& _physicsWorld, WorldStorage& _componentWorld);
 	static void UnbindWorld();

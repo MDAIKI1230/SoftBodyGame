@@ -10,7 +10,7 @@ CharacterControllerID CharacterControllerStorage::Create(EntityID _entity, Physi
 
 	uint32_t denseIndex{ static_cast<uint32_t>(ids.size()) };
 
-	CharacterControllerID id{ CreateID(denseIndex, _entity) };
+	CharacterControllerID id{ CreateID(denseIndex) };
 
 	// --- 操作要求 ---
 
@@ -46,6 +46,7 @@ CharacterControllerID CharacterControllerStorage::Create(EntityID _entity, Physi
 	transformIDs.emplace_back(_transformID);
 	rigidBodyIDs.emplace_back(_rigidBodyID);
 	capsuleColliderIDs.emplace_back(_capsuleColliderID);
+	ownerEntities.push_back(_entity);
 
 	// MAPに登録
 	entityMap.emplace(_entity, id);
@@ -101,6 +102,7 @@ void CharacterControllerStorage::Destroy(CharacterControllerID _id)
 		transformIDs[denseIndex] = transformIDs[lastIndex];
 		rigidBodyIDs[denseIndex] = rigidBodyIDs[lastIndex];
 		capsuleColliderIDs[denseIndex] = capsuleColliderIDs[lastIndex];
+		ownerEntities[denseIndex] = ownerEntities[lastIndex];
 	}
 
 	// --- 操作要求 ---

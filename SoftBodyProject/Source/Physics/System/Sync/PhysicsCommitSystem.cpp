@@ -10,11 +10,12 @@ void PhysicsCommitSystem::FixedUpdate(PhysicsTransformStorage* _physicsTransform
 
 	for (auto& id : _physicsTransformStorage->GetIDRange())
 	{
-		EntityID entity{ _physicsTransformStorage->GetOwnerEntity(id) };
+		if (HasFlag(_physicsTransformStorage->GetSyncPolicy(id), PhysicsTransformSyncPolicy::WRITE_TO_ECS))
+		{
+			EntityID entity{ _physicsTransformStorage->GetOwnerEntity(id) };
 
-		uint32_t denseIndex{ _physicsTransformStorage->GetDenseIndex(id) };
-
-		transformStorage->Edit(entity).SetPosition(_physicsTransformStorage->GetPosition(denseIndex));
-		transformStorage->Edit(entity).SetRotation(_physicsTransformStorage->GetRotation(denseIndex));
+			transformStorage->Edit(entity).SetPosition(_physicsTransformStorage->GetPosition(id));
+			transformStorage->Edit(entity).SetRotation(_physicsTransformStorage->GetRotation(id));
+		}
 	}
 }

@@ -32,6 +32,33 @@ BodyID PhysicsComponentAPI::CreateRigidBody(EntityID _entity)
 {
 	return bodyStorage->CreateRigidBody(_entity, transformStorage->GetOrCreateTransform(_entity));
 }
+
+// 位置取得
+Vector3 PhysicsComponentAPI::GetRigidBodyPosition(BodyID _id)
+{
+	PhysicsTransformID transformID{ bodyStorage->GetTransformID(_id) };
+	return transformStorage->GetPosition(transformID);
+}
+// 位置変更
+void PhysicsComponentAPI::SetRigidBodyPosition(BodyID _id, const Vector3& _position)
+{
+	PhysicsTransformID transformID{ bodyStorage->GetTransformID(_id) };
+	transformStorage->SetPosition(transformID, _position);
+}
+
+// 回転取得
+Quaternion PhysicsComponentAPI::GetRigidBodyRoatation(BodyID _id)
+{
+	PhysicsTransformID transformID{ bodyStorage->GetTransformID(_id) };
+	return transformStorage->GetRotation(transformID);
+}
+// 回転変更
+void PhysicsComponentAPI::SetRigidBodyRoatation(BodyID _id, const Quaternion& _rotation)
+{
+	PhysicsTransformID transformID{ bodyStorage->GetTransformID(_id) };
+	transformStorage->SetRotation(transformID, _rotation);
+}
+
 // 力加算
 void PhysicsComponentAPI::AddForce(BodyID _id, const Vector3& _force)
 {
@@ -467,9 +494,8 @@ void PhysicsComponentAPI::DestroyCharacterController(CharacterControllerID _id)
 		return;
 	}
 
-	uint32_t index{ characterControllerStorage->GetDenseIndex(_id) };
-	BodyID bodyID{ characterControllerStorage->GetRigidBodyID(index) };
-	ColliderID colliderID{ characterControllerStorage->GetCapsuleColliderID(index) };
+	BodyID bodyID{ characterControllerStorage->GetRigidBodyID(_id) };
+	ColliderID colliderID{ characterControllerStorage->GetCapsuleColliderID(_id) };
 
 	bodyStorage->Destroy(bodyID);
 	colliderStorage->Destroy(colliderID);
@@ -530,37 +556,37 @@ void PhysicsComponentAPI::RotateCharacterController(CharacterControllerID _id, c
 // ワールド空間の移動入力取得
 const Vector3& PhysicsComponentAPI::GetCharacterControllerMoveInput(CharacterControllerID _id)
 {
-	return characterControllerStorage->GetMoveInput(characterControllerStorage->GetDenseIndex(_id));
+	return characterControllerStorage->GetMoveInput(_id);
 }
 
 // ワールド空間の移動入力設定
 void PhysicsComponentAPI::SetCharacterControllerMoveInput(CharacterControllerID _id, const Vector3& _moveInput)
 {
-	characterControllerStorage->SetMoveInput(characterControllerStorage->GetDenseIndex(_id), _moveInput);
+	characterControllerStorage->SetMoveInput(_id, _moveInput);
 }
 
 // ジャンプ要求取得
 bool PhysicsComponentAPI::GetCharacterControllerJumpRequest(CharacterControllerID _id)
 {
-	return characterControllerStorage->GetJumpRequest(characterControllerStorage->GetDenseIndex(_id));
+	return characterControllerStorage->GetJumpRequest(_id);
 }
 
 // ジャンプ要求設定
 void PhysicsComponentAPI::SetCharacterControllerJumpRequest(CharacterControllerID _id, bool _request)
 {
-	characterControllerStorage->SetJumpRequest(characterControllerStorage->GetDenseIndex(_id), _request);
+	characterControllerStorage->SetJumpRequest(_id, _request);
 }
 
 // 標準移動制御の有効状態取得
 bool PhysicsComponentAPI::GetCharacterControllerMotorEnabled(CharacterControllerID _id)
 {
-	return characterControllerStorage->GetMotorEnabled(characterControllerStorage->GetDenseIndex(_id));
+	return characterControllerStorage->GetMotorEnabled(_id);
 }
 
 // 標準移動制御の有効状態設定
 void PhysicsComponentAPI::SetCharacterControllerMotorEnabled(CharacterControllerID _id, bool _enabled)
 {
-	characterControllerStorage->SetMotorEnabled(characterControllerStorage->GetDenseIndex(_id), _enabled);
+	characterControllerStorage->SetMotorEnabled(_id, _enabled);
 }
 
 // --- Collider設定 ---
@@ -600,73 +626,73 @@ void PhysicsComponentAPI::SetCharacterControllerColliderRadius(CharacterControll
 // 最大移動速度取得
 float PhysicsComponentAPI::GetCharacterControllerMaxSpeed(CharacterControllerID _id)
 {
-	return characterControllerStorage->GetMaxSpeed(characterControllerStorage->GetDenseIndex(_id));
+	return characterControllerStorage->GetMaxSpeed(_id);
 }
 
 // 最大移動速度設定
 void PhysicsComponentAPI::SetCharacterControllerMaxSpeed(CharacterControllerID _id, float _maxSpeed)
 {
-	characterControllerStorage->SetMaxSpeed(characterControllerStorage->GetDenseIndex(_id), _maxSpeed);
+	characterControllerStorage->SetMaxSpeed(_id, _maxSpeed);
 }
 
 // 地上での最大加速度取得
 float PhysicsComponentAPI::GetCharacterControllerGroundAcceleration(CharacterControllerID _id)
 {
-	return characterControllerStorage->GetGroundAcceleration(characterControllerStorage->GetDenseIndex(_id));
+	return characterControllerStorage->GetGroundAcceleration(_id);
 }
 
 // 地上での最大加速度設定
 void PhysicsComponentAPI::SetCharacterControllerGroundAcceleration(CharacterControllerID _id, float _acceleration)
 {
-	characterControllerStorage->SetGroundAcceleration(characterControllerStorage->GetDenseIndex(_id), _acceleration);
+	characterControllerStorage->SetGroundAcceleration(_id, _acceleration);
 }
 
 // 地上での最大減速度取得
 float PhysicsComponentAPI::GetCharacterControllerGroundDeceleration(CharacterControllerID _id)
 {
-	return characterControllerStorage->GetGroundDeceleration(characterControllerStorage->GetDenseIndex(_id));
+	return characterControllerStorage->GetGroundDeceleration(_id);
 }
 
 // 地上での最大減速度設定
 void PhysicsComponentAPI::SetCharacterControllerGroundDeceleration(CharacterControllerID _id, float _deceleration)
 {
-	characterControllerStorage->SetGroundDeceleration(characterControllerStorage->GetDenseIndex(_id), _deceleration);
+	characterControllerStorage->SetGroundDeceleration(_id, _deceleration);
 }
 
 // 空中での最大加速度取得
 float PhysicsComponentAPI::GetCharacterControllerAirAcceleration(CharacterControllerID _id)
 {
-	return characterControllerStorage->GetAirAcceleration(characterControllerStorage->GetDenseIndex(_id));
+	return characterControllerStorage->GetAirAcceleration(_id);
 }
 
 // 空中での最大加速度設定
 void PhysicsComponentAPI::SetCharacterControllerAirAcceleration(CharacterControllerID _id, float _acceleration)
 {
-	characterControllerStorage->SetAirAcceleration(characterControllerStorage->GetDenseIndex(_id), _acceleration);
+	characterControllerStorage->SetAirAcceleration(_id, _acceleration);
 }
 
 // ジャンプ速度取得
 float PhysicsComponentAPI::GetCharacterControllerJumpSpeed(CharacterControllerID _id)
 {
-	return characterControllerStorage->GetJumpSpeed(characterControllerStorage->GetDenseIndex(_id));
+	return characterControllerStorage->GetJumpSpeed(_id);
 }
 
 // ジャンプ速度設定
 void PhysicsComponentAPI::SetCharacterControllerJumpSpeed(CharacterControllerID _id, float _jumpSpeed)
 {
-	characterControllerStorage->SetJumpSpeed(characterControllerStorage->GetDenseIndex(_id), _jumpSpeed);
+	characterControllerStorage->SetJumpSpeed(_id, _jumpSpeed);
 }
 
 // 急斜面での滑り加速度取得
 float PhysicsComponentAPI::GetCharacterControllerSlopeAcceleration(CharacterControllerID _id)
 {
-	return characterControllerStorage->GetSlopeAcceleration(characterControllerStorage->GetDenseIndex(_id));
+	return characterControllerStorage->GetSlopeAcceleration(_id);
 }
 
 // 急斜面での滑り加速度設定
 void PhysicsComponentAPI::SetCharacterControllerSlopeAcceleration(CharacterControllerID _id, float _acceleration)
 {
-	characterControllerStorage->SetSlopeAcceleration(characterControllerStorage->GetDenseIndex(_id), _acceleration);
+	characterControllerStorage->SetSlopeAcceleration(_id, _acceleration);
 }
 
 // --- 接地設定 ---
@@ -674,25 +700,25 @@ void PhysicsComponentAPI::SetCharacterControllerSlopeAcceleration(CharacterContr
 // 地面探索距離取得
 float PhysicsComponentAPI::GetCharacterControllerGroundProbeDistance(CharacterControllerID _id)
 {
-	return characterControllerStorage->GetGroundProbeDistance(characterControllerStorage->GetDenseIndex(_id));
+	return characterControllerStorage->GetGroundProbeDistance(_id);
 }
 
 // 地面探索距離設定
 void PhysicsComponentAPI::SetCharacterControllerGroundProbeDistance(CharacterControllerID _id, float _distance)
 {
-	characterControllerStorage->SetGroundProbeDistance(characterControllerStorage->GetDenseIndex(_id), _distance);
+	characterControllerStorage->SetGroundProbeDistance(_id, _distance);
 }
 
 // 歩行可能判定の最小法線内積取得
 float PhysicsComponentAPI::GetCharacterControllerMinGroundDot(CharacterControllerID _id)
 {
-	return characterControllerStorage->GetMinGroundDot(characterControllerStorage->GetDenseIndex(_id));
+	return characterControllerStorage->GetMinGroundDot(_id);
 }
 
 // 歩行可能判定の最小法線内積設定
 void PhysicsComponentAPI::SetCharacterControllerMinGroundDot(CharacterControllerID _id, float _minGroundDot)
 {
-	characterControllerStorage->SetMinGroundDot(characterControllerStorage->GetDenseIndex(_id), _minGroundDot);
+	characterControllerStorage->SetMinGroundDot(_id, _minGroundDot);
 }
 
 // --- 接地状態 ---
@@ -700,31 +726,97 @@ void PhysicsComponentAPI::SetCharacterControllerMinGroundDot(CharacterController
 // 接地状態取得
 CharacterGroundState PhysicsComponentAPI::GetCharacterControllerGroundState(CharacterControllerID _id)
 {
-	return characterControllerStorage->GetGroundState(characterControllerStorage->GetDenseIndex(_id));
+	return characterControllerStorage->GetGroundState(_id);
 }
 
 // 検出した地面法線取得
 const Vector3& PhysicsComponentAPI::GetCharacterControllerGroundNormal(CharacterControllerID _id)
 {
-	return characterControllerStorage->GetGroundNormal(characterControllerStorage->GetDenseIndex(_id));
+	return characterControllerStorage->GetGroundNormal(_id);
 }
 
 // 検出した地面位置取得
 const Vector3& PhysicsComponentAPI::GetCharacterControllerGroundPoint(CharacterControllerID _id)
 {
-	return characterControllerStorage->GetGroundPoint(characterControllerStorage->GetDenseIndex(_id));
+	return characterControllerStorage->GetGroundPoint(_id);
 }
 
 // カプセル底面から地面までの距離取得
 float PhysicsComponentAPI::GetCharacterControllerGroundDistance(CharacterControllerID _id)
 {
-	return characterControllerStorage->GetGroundDistance(characterControllerStorage->GetDenseIndex(_id));
+	return characterControllerStorage->GetGroundDistance(_id);
 }
 
 // 検出した地面Collider取得
 ColliderComponent PhysicsComponentAPI::GetCharacterControllerGroundCollider(CharacterControllerID _id)
 {
-	return ColliderComponent{ characterControllerStorage->GetGroundColliderID(characterControllerStorage->GetDenseIndex(_id)) };
+	return ColliderComponent{ characterControllerStorage->GetGroundColliderID(_id) };
+}
+
+// --- 内部計算用生成関数 ---
+
+// 内部用のPhysicsTransform作成(寿命管理をちゃんを忘れない)
+PhysicsTransformID PhysicsComponentAPI::CreateInternalPhysicsTransformID(EntityID _entity, const Vector3& _position, const Quaternion& _rotation, const Vector3& _scale)
+{
+	return transformStorage->CreateInternalTransform(_entity, _position, _rotation, _scale);
+}
+
+// 内部用のRigidBody作成(寿命管理をちゃんを忘れない)
+BodyID PhysicsComponentAPI::CreateInternalRigidBody(EntityID _entity, PhysicsTransformID _transformID)
+{
+	return bodyStorage->CreateRigidBody(_entity, _transformID);
+}
+
+// 内部用のカプセルコライダー作成(寿命管理をちゃんを忘れない)
+ColliderID PhysicsComponentAPI::CreateInternalCapsuleCollider(EntityID _entity, PhysicsTransformID _transformID, float _height, float _radius)
+{
+	return colliderStorage->CreateCapsule(_entity, _transformID, _height, _radius);
+}
+
+// 内部用の点拘束作成(寿命管理をちゃんを忘れない)
+ConstraintID PhysicsComponentAPI::CreateInternalPointConstraint(EntityID _entity, PhysicsTransformID _transformID, const Vector3& _localOffset)
+{
+	return constraintStorage->CreatePointConstraint(_entity, _transformID, _localOffset);
+}
+
+// PhysicsTransform破棄(対応する他の奴も破棄する)
+void PhysicsComponentAPI::DestroyPhysicsTransform(PhysicsTransformID _transformID)
+{
+	BodyID bodyID;
+	if (bodyStorage->TryGetRigidBodyID(_transformID, bodyID))
+	{
+		bodyStorage->Destroy(bodyID);
+	}
+	
+	for (auto colliderID : colliderStorage->GetColliderIDFromTransformID(_transformID))
+	{
+		colliderStorage->Destroy(colliderID);
+	}
+
+	ConstraintID constraintID;
+	if (constraintStorage->TryGetConstraintIDFromTransformID(_transformID, constraintID))
+	{
+		constraintStorage->Destory(constraintID);
+	}
+
+	transformStorage->Destroy(_transformID);
+}
+
+// 内部用拘束の点追加
+void PhysicsComponentAPI::AddInternalEndPoint(ConstraintID _constraintID, PhysicsTransformID _transformID, const Vector3& _localOffset)
+{
+	// エンティティに対応したTransformがあるならそれを追加ないなら何もしない
+	switch (constraintStorage->GetType(_constraintID))
+	{
+	case ConstraintType::POINTS:
+		constraintStorage->EditPointConstraint(_constraintID).endPoints.emplace_back(_transformID, _localOffset);
+		break;
+	case ConstraintType::DISTANCE:
+		constraintStorage->EditDistanceConstraint(_constraintID).endPoints.emplace_back(_transformID, _localOffset);
+		break;
+	default:
+		break;
+	}
 }
 
 // --- World接続 ---
@@ -773,7 +865,7 @@ ColliderType PhysicsComponentAPI::GetColliderType(ColliderID _id)
 // CharacterController内部Collider取得
 ColliderID PhysicsComponentAPI::GetCharacterControllerColliderID(CharacterControllerID _id)
 {
-	return characterControllerStorage->GetCapsuleColliderID(characterControllerStorage->GetDenseIndex(_id));
+	return characterControllerStorage->GetCapsuleColliderID(_id);
 }
 
 // CharacterControllerのTransform取得

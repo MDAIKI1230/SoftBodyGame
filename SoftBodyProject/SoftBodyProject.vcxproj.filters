@@ -236,12 +236,6 @@
     <Filter Include="Shader">
       <UniqueIdentifier>{615c05a0-7507-44c8-90c8-fc293e9557ff}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Shader\HLSL">
-      <UniqueIdentifier>{22888344-1fcf-47f9-afe6-c04edfe119aa}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Shader\GLSL">
-      <UniqueIdentifier>{177b9a4d-ecc2-4a82-8c65-82ac89e3beb9}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ソース ファイル\System\Adapter\Dxlib\Struct">
       <UniqueIdentifier>{deb0ee4a-78ba-4bcf-8f5a-9407cf437c88}</UniqueIdentifier>
     </Filter>
@@ -304,6 +298,39 @@
     </Filter>
     <Filter Include="ソース ファイル\Physics\Struct\SnapShot">
       <UniqueIdentifier>{9a09c338-7820-4ff3-9479-2ebf7f7af372}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Animation\Struct\Ragdoll">
+      <UniqueIdentifier>{9bb35a89-90fe-4f14-854b-26d31b61f18e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Animation\Struct\Skeleton">
+      <UniqueIdentifier>{be5879d8-4221-40b4-a59e-50971aaf30ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Common\ECS\Storage\DataStorage">
+      <UniqueIdentifier>{e03f3312-bcc0-4c8e-abc1-454639fc8739}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Common\ECS\Storage\Component">
+      <UniqueIdentifier>{b83b65c1-97d1-4c8d-a60b-7e996d956505}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Animation\Storage\Ragdoll">
+      <UniqueIdentifier>{f7a9a702-09fd-4950-8e17-cd84e482f8bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Animation\Storage\Skeleton">
+      <UniqueIdentifier>{6ab612bd-16de-4f23-8595-ef9d27990ca7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Animation\System\Sync">
+      <UniqueIdentifier>{8fc4a77b-39eb-4b8f-8121-ea1c83f99d46}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Physics\API">
+      <UniqueIdentifier>{45a9976b-e592-42bf-8114-87e881c20c91}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shader\Sky">
+      <UniqueIdentifier>{07970a55-a609-4143-b563-b9c2fded9b2a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Animation\System\Update">
+      <UniqueIdentifier>{fca15150-40aa-42c4-ac4f-bdfbb0be35a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Animation\API">
+      <UniqueIdentifier>{e4da09f0-9ebb-47ba-a69d-3fb463199b83}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -403,9 +430,6 @@
     <ClInclude Include="Source\Common\BaseClass\FixedUpdateSystem.h">
       <Filter>ソース ファイル\Common\BaseClass</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Physics\System\Simplex.h">
-      <Filter>ソース ファイル\Physics\System</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Objects\DebugSphere.h">
       <Filter>ソース ファイル\GameObject</Filter>
     </ClInclude>
@@ -423,9 +447,6 @@
     </ClInclude>
     <ClInclude Include="Source\Physics\System\Update\RigidBodySystem.h">
       <Filter>ソース ファイル\Physics\System\Update</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Physics\System\PhysicsComponentAPI.h">
-      <Filter>ソース ファイル\Physics\System</Filter>
     </ClInclude>
     <ClInclude Include="Source\Common\ECS\SystemManager.h">
       <Filter>ソース ファイル\Common\ECS</Filter>
@@ -494,9 +515,6 @@
       <Filter>ソース ファイル\Physics\Struct\Collider</Filter>
     </ClInclude>
     <ClInclude Include="Source\Physics\Struct\Transform\PhysicsTransformID.h">
-      <Filter>ソース ファイル\Physics\Struct\Transform</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Physics\Struct\Transform\PhysicsTransformSlot.h">
       <Filter>ソース ファイル\Physics\Struct\Transform</Filter>
     </ClInclude>
     <ClInclude Include="Source\Physics\Struct\Body\BodyID.h">
@@ -772,12 +790,6 @@
     <ClInclude Include="Source\Common\ECS\SparseSet\Table\SparseSetTableInterface.h">
       <Filter>ソース ファイル\Common\ECS\SparseSet\Table</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Common\ECS\Storage\ComponentStorageBase.h">
-      <Filter>ソース ファイル\Common\ECS\Storage</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Common\ECS\Storage\UniqueComponentStorageBase.h">
-      <Filter>ソース ファイル\Common\ECS\Storage</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Common\ECS\Storage\WorldStorage.h">
       <Filter>ソース ファイル\Common\ECS\Storage</Filter>
     </ClInclude>
@@ -793,13 +805,7 @@
     <ClInclude Include="Source\Common\ECS\ComponentID.h">
       <Filter>ソース ファイル\Common\ECS</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Common\ECS\Storage\MultiComponentStorageBase.h">
-      <Filter>ソース ファイル\Common\ECS\Storage</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Common\ECS\Storage\ComponentIDPool.h">
-      <Filter>ソース ファイル\Common\ECS\Storage</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Physics\Storage\SlotPool.h">
+    <ClInclude Include="Source\Physics\Storage\PhysicsSlotPool.h">
       <Filter>ソース ファイル\Physics\Storage</Filter>
     </ClInclude>
     <ClInclude Include="Source\Physics\Storage\PhysicsStorageBase.h">
@@ -807,9 +813,6 @@
     </ClInclude>
     <ClInclude Include="Source\Physics\Storage\Buffer\PhysicsBufferBase.h">
       <Filter>ソース ファイル\Physics\Storage\Buffer</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Common\ECS\Storage\ComponentView.h">
-      <Filter>ソース ファイル\Common\ECS\Storage</Filter>
     </ClInclude>
     <ClInclude Include="Source\Common\ECS\SparseSet\Table\PageTable.h">
       <Filter>ソース ファイル\Common\ECS\SparseSet\Table</Filter>
@@ -913,9 +916,6 @@
     <ClInclude Include="Source\Physics\Function\RayCastFunction.h">
       <Filter>ソース ファイル\Physics\Function</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Physics\System\PhysicsAPI.h">
-      <Filter>ソース ファイル\Physics\System</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Physics\Storage\CharacterController\CharacterControllerStorage.h">
       <Filter>ソース ファイル\Physics\Storage\CharacterController</Filter>
     </ClInclude>
@@ -927,9 +927,6 @@
     </ClInclude>
     <ClInclude Include="Source\Physics\Component\CharacterController\CharacterControllerComponent.h">
       <Filter>ソース ファイル\Physics\Component\CharacterController</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Physics\Struct\CharacterController\CharacterControllerSlot.h">
-      <Filter>ソース ファイル\Physics\Struct\CharacterController</Filter>
     </ClInclude>
     <ClInclude Include="Source\Physics\System\Update\CharacterControllerSystem.h">
       <Filter>ソース ファイル\Physics\System\Update</Filter>
@@ -991,26 +988,11 @@
     <ClInclude Include="Source\Animation\Storage\Component\RagdollComponentStorage.h">
       <Filter>ソース ファイル\Animation\Storage\Component</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Animation\Struct\RagdollID.h">
-      <Filter>ソース ファイル\Animation\Struct</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Physics\Struct\Constraint\ConstraintTuning.h">
       <Filter>ソース ファイル\Physics\Struct\Constraint</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Animation\Struct\SkeletonData.h">
-      <Filter>ソース ファイル\Animation\Struct</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Animation\Storage\Buffer\PoseBuffer.h">
       <Filter>ソース ファイル\Animation\Storage\Buffer</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Animation\Storage\SkeletonInstanceStorage.h">
-      <Filter>ソース ファイル\Animation\Storage</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Animation\Struct\SkeletonInstanceData.h">
-      <Filter>ソース ファイル\Animation\Struct</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Animation\Struct\SkeletonHandle.h">
-      <Filter>ソース ファイル\Animation\Struct</Filter>
     </ClInclude>
     <ClInclude Include="Source\Common\Macro\SingletonMacros.h">
       <Filter>ソース ファイル\Common\Macro</Filter>
@@ -1020,12 +1002,6 @@
     </ClInclude>
     <ClInclude Include="Source\Common\Struct\Material.h">
       <Filter>ソース ファイル\Common\Struct</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Animation\Storage\RagdollStorage.h">
-      <Filter>ソース ファイル\Animation\Storage</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Animation\System\RagdollSystem.h">
-      <Filter>ソース ファイル\Animation\System</Filter>
     </ClInclude>
     <ClInclude Include="Source\Physics\System\Build\BodySnapshotBuildSystem.h">
       <Filter>ソース ファイル\Physics\System\Build</Filter>
@@ -1038,6 +1014,84 @@
     </ClInclude>
     <ClInclude Include="Source\Physics\Struct\SnapShot\RigidBodySnapshot.h">
       <Filter>ソース ファイル\Physics\Struct\SnapShot</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Struct\SnapShot\RigidBodySnapshotFrame.h">
+      <Filter>ソース ファイル\Physics\Struct\SnapShot</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Animation\Struct\Ragdoll\Ragdoll.h">
+      <Filter>ソース ファイル\Animation\Struct\Ragdoll</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Animation\Struct\Ragdoll\RagdollBodyLink.h">
+      <Filter>ソース ファイル\Animation\Struct\Ragdoll</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Animation\Struct\Skeleton\SkeletonInstanceData.h">
+      <Filter>ソース ファイル\Animation\Struct\Skeleton</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Common\Struct\SkeletonData.h">
+      <Filter>ソース ファイル\Common\Struct</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Common\ECS\Storage\DataStorageBase.h">
+      <Filter>ソース ファイル\Common\ECS\Storage</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Common\ECS\Storage\DataStorage\DataStorageBase.h">
+      <Filter>ソース ファイル\Common\ECS\Storage\DataStorage</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Common\ECS\Storage\DataStorage\SlotPool.h">
+      <Filter>ソース ファイル\Common\ECS\Storage\DataStorage</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Common\ECS\Storage\Component\ComponentIDPool.h">
+      <Filter>ソース ファイル\Common\ECS\Storage\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Common\ECS\Storage\Component\ComponentStorageBase.h">
+      <Filter>ソース ファイル\Common\ECS\Storage\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Common\ECS\Storage\Component\ComponentView.h">
+      <Filter>ソース ファイル\Common\ECS\Storage\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Common\ECS\Storage\Component\MultiComponentStorageBase.h">
+      <Filter>ソース ファイル\Common\ECS\Storage\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Common\ECS\Storage\Component\UniqueComponentStorageBase.h">
+      <Filter>ソース ファイル\Common\ECS\Storage\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Common\ECS\Storage\DataStorage\Slot.h">
+      <Filter>ソース ファイル\Common\ECS\Storage\DataStorage</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Animation\Storage\Ragdoll\RagdollStorage.h">
+      <Filter>ソース ファイル\Animation\Storage\Ragdoll</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Animation\Storage\Skeleton\SkeletonInstanceStorage.h">
+      <Filter>ソース ファイル\Animation\Storage\Skeleton</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Animation\System\Sync\AnimationCommitSystem.h">
+      <Filter>ソース ファイル\Animation\System\Sync</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Animation\System\Sync\AnimationSyncSystem.h">
+      <Filter>ソース ファイル\Animation\System\Sync</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\API\PhysicsAPI.h">
+      <Filter>ソース ファイル\Physics\API</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\API\PhysicsComponentAPI.h">
+      <Filter>ソース ファイル\Physics\API</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\System\Collision\Simplex.h">
+      <Filter>ソース ファイル\Physics\System\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Constants\SyncConstants.h">
+      <Filter>ソース ファイル\Physics\Constants</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Animation\Struct\Ragdoll\RagdollID.h">
+      <Filter>ソース ファイル\Animation\Struct\Ragdoll</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Animation\Struct\Skeleton\SkeletonID.h">
+      <Filter>ソース ファイル\Animation\Struct\Skeleton</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Animation\System\Update\RagdollSystem.h">
+      <Filter>ソース ファイル\Animation\System\Update</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Animation\API\AnimationComponentAPI.h">
+      <Filter>ソース ファイル\Animation\API</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1092,9 +1146,6 @@
     <ClCompile Include="Source\Main.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Physics\System\Simplex.cpp">
-      <Filter>ソース ファイル\Physics\System</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Objects\DebugSphere.cpp">
       <Filter>ソース ファイル\GameObject</Filter>
     </ClCompile>
@@ -1103,9 +1154,6 @@
     </ClCompile>
     <ClCompile Include="Source\Physics\System\Update\RigidBodySystem.cpp">
       <Filter>ソース ファイル\Physics\System\Update</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Physics\System\PhysicsComponentAPI.cpp">
-      <Filter>ソース ファイル\Physics\System</Filter>
     </ClCompile>
     <ClCompile Include="Source\Common\ECS\SystemManager.cpp">
       <Filter>ソース ファイル\Common\ECS</Filter>
@@ -1293,9 +1341,6 @@
     <ClCompile Include="Source\Physics\Function\RaycastFunction.cpp">
       <Filter>ソース ファイル\Physics\Function</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Physics\System\PhysicsAPI.cpp">
-      <Filter>ソース ファイル\Physics\System</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Physics\Storage\CharacterController\CharacterControllerStorage.cpp">
       <Filter>ソース ファイル\Physics\Storage\CharacterController</Filter>
     </ClCompile>
@@ -1347,12 +1392,6 @@
     <ClCompile Include="Source\Render\Renderer.cpp">
       <Filter>ソース ファイル\Render</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Animation\Storage\RagdollStorage.cpp">
-      <Filter>ソース ファイル\Animation\Storage</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Animation\System\RagdollSystem.cpp">
-      <Filter>ソース ファイル\Animation\System</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Physics\System\Build\BodySnapshotBuildSystem.cpp">
       <Filter>ソース ファイル\Physics\System\Build</Filter>
     </ClCompile>
@@ -1362,13 +1401,40 @@
     <ClCompile Include="Source\Physics\Storage\Buffer\BodySnapshotBuffer.cpp">
       <Filter>ソース ファイル\Physics\Storage\Buffer</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Animation\Storage\Ragdoll\RagdollStorage.cpp">
+      <Filter>ソース ファイル\Animation\Storage\Ragdoll</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Animation\Storage\Skeleton\SkeletonInstanceStorage.cpp">
+      <Filter>ソース ファイル\Animation\Storage\Skeleton</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Animation\System\Sync\AnimationCommitSystem.cpp">
+      <Filter>ソース ファイル\Animation\System\Sync</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Animation\System\Sync\AnimationSyncSystem.cpp">
+      <Filter>ソース ファイル\Animation\System\Sync</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Physics\API\PhysicsAPI.cpp">
+      <Filter>ソース ファイル\Physics\API</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Physics\API\PhysicsComponentAPI.cpp">
+      <Filter>ソース ファイル\Physics\API</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Physics\System\Collision\Simplex.cpp">
+      <Filter>ソース ファイル\Physics\System\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Animation\System\Update\RagdollSystem.cpp">
+      <Filter>ソース ファイル\Animation\System\Update</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Animation\API\AnimationComponentAPI.cpp">
+      <Filter>ソース ファイル\Animation\API</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="Shader\HLSL\Sky\SkyVS.hlsl">
-      <Filter>Shader\HLSL</Filter>
+    <FxCompile Include="Shader\Sky\SkyVS.hlsl">
+      <Filter>Shader\Sky</Filter>
     </FxCompile>
-    <FxCompile Include="Shader\HLSL\Sky\SkyPS.hlsl">
-      <Filter>Shader\HLSL</Filter>
+    <FxCompile Include="Shader\Sky\SkyPS.hlsl">
+      <Filter>Shader\Sky</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

@@ -1,6 +1,7 @@
 ﻿#include <algorithm>
 
 #include "TimeManager.h"
+#include "ResourceManager.h"
 
 // 描画系
 #include "ModelRenderingSystem.h"
@@ -10,7 +11,6 @@
 
 // Transform
 #include "TransformComponentStorage.h"
-
 
 // 物理系
 // コライダー
@@ -40,6 +40,8 @@
 #include "PhysicsComponentAPI.h"
 #include "PhysicsAPI.h"
 
+#include "AnimationComponentAPI.h"
+
 #include "SceneDataLoader.h"
 #include "ObjectFactory.h"
 #include "ComponentFactory.h"
@@ -48,12 +50,6 @@
 
 SceneBase::SceneBase()
 {
-	worldStorage = std::make_unique<WorldStorage>();
-	systemManager = std::make_unique<SystemManager>();
-	eventManager = std::make_unique<EventManager>();
-	eventSystem = std::make_unique<EventSystem>();
-	physicsWorld = std::make_unique<PhysicsWorld>();
-
 	// レンダリングシステム追加
 	AddSystem(std::make_unique<ModelRenderingSystem>());
 	AddSystem(std::make_unique<SkyRenderingSystem>());
@@ -87,11 +83,10 @@ SceneBase::SceneBase()
 	AddSystem(std::make_unique<CameraBindSystem>());
 	AddStorage<CameraRigComponent>(std::make_unique<CameraRigComponentStorage>());
 
-	// オブジェクトマネージャー
-	objectManager = std::make_unique<ObjectManager>();
+	PhysicsComponentAPI::BindWorld(physicsWorld, worldStorage);
+	PhysicsAPI::BindWorld(physicsWorld);
 
-	PhysicsComponentAPI::BindWorld(*physicsWorld.get(), *worldStorage.get());
-	PhysicsAPI::BindWorld(*physicsWorld.get());
+	AnimationComponentAPI::BindWorld(&animationWorld);
 }
 
 void SceneBase::Execute()
@@ -100,8 +95,9 @@ void SceneBase::Execute()
 	{
 	case SceneState::INITIALIZE:
 		// 初期化タスクの生成
-		systemManager->Initialize();
+		systemManager.Initialize();
 		Initialize();
+		state = SceneState::UPDATE;
 		break;
 	case SceneState::LOADING:
 		// wait処理
@@ -142,34 +138,57 @@ void SceneBase::FadeOut()
 void SceneBase::Update()
 {
 	// オブジェクトマネージャー更新
-	objectManager->Update();
+	objectManager.Update();
 	// システムマネージャー更新
-	systemManager->Update(worldStorage.get(), eventManager.get());
+	systemManager.Update(&worldStorage, &eventManager);
+	// アニメーションの更新
+	animationWorld.Update(&worldStorage);
 
-	eventManager->Swap();
+	eventManager.Swap();
 
-	eventSystem->Update(eventManager.get(), objectManager.get());
+	eventSystem.Update(&eventManager, &objectManager);
 
 	// 物理更新
 	while (TimeManager::IsFixedUpdateTime())
 	{
-		objectManager->FixedUpdate();
+		// アニメーションの物理更新前更新
+		animationWorld.PrePhysicsFixedUpdate();
 
-		systemManager->FixedUpdate(worldStorage.get(), eventManager.get());
+		objectManager.FixedUpdate();
 
-		physicsWorld->FixedUpdate(worldStorage.get(), eventManager.get());
+		systemManager.FixedUpdate(&worldStorage, &eventManager);
+
+		physicsWorld.FixedUpdate(&worldStorage, &eventManager);
+
+		// アニメーションの物理更新後更新
+		animationWorld.PostPhysicsFixedUpdate();
 	}
 
 	// 物理更新終わり描画までのタイミングで更新
-	systemManager->LateUpdate(worldStorage.get(), eventManager.get());
+	systemManager.LateUpdate(&worldStorage, &eventManager);
+
+	// アニメーションの物理更新後更新
+	animationWorld.PreRenderUpdate(&worldStorage);
 }
 
 void SceneBase::Render()
 {
-	systemManager->Render(worldStorage.get(), eventManager.get());
+	systemManager.Render(&worldStorage, &eventManager);
 #ifdef _DEBUG
-	physicsWorld->DebugRender();
+	physicsWorld.DebugRender();
 #endif // _DEBUG
+}
+
+// 終了
+void SceneBase::End()
+{
+	state = SceneState::TERMINATE;
+}
+
+// 切り替えていいよフラグ
+bool SceneBase::CompleteEnding()
+{
+	return isCompleteEnding;
 }
 
 void SceneBase::LoadFile(std::string _filePath)
@@ -180,13 +199,24 @@ void SceneBase::LoadFile(std::string _filePath)
 	for (auto& objData : fileData.objectDatas)
 	{
 		// 対応オブジェクトを作成
-		std::unique_ptr<ObjectBase> obj{ std::move(ObjectFactory::CreateFuncs[objData.type](worldStorage.get(), objectManager->GenerateNewID())) };
+		std::unique_ptr<ObjectBase> obj{ std::move(ObjectFactory::CreateFuncs[objData.type](&worldStorage, objectManager.GenerateNewID())) };
 
 		for (auto& componentData : objData.components)
 		{
 			ComponentFactory::CreateFuncs[componentData->GetName()](obj.get(), componentData.get());
 		}
 
-		objectManager->Add(std::move(obj));
+		objectManager.Add(std::move(obj));
 	}
+}
+
+void SceneBase::Terminate()
+{
+	ResourceManager::UnLoadAll();
+}
+
+// 仮想デストラクタ
+SceneBase::~SceneBase()
+{
+	ResourceManager::UnLoadAll();
 }

@@ -54,7 +54,7 @@ float TimeManager::GetDeltaTimeImpl()
 // 経過時間取得
 float TimeManager::GetFixedDeltaTimeImpl()
 {
-	return FIXED_TIME;
+	return static_cast<float>(FIXED_TIME);
 }
 
 // 描画と物理の補間用α値

@@ -70,6 +70,9 @@ private:
 
 	void ShaderBufferBarrier() override;
 
+	// すべてのリソースの削除
+	void DeleteAll() override;
+
 private:
 	// 頂点シェーダストレージ
 	ResourceStorage<VertexShaderHandle, int> vertexShaderStorage;

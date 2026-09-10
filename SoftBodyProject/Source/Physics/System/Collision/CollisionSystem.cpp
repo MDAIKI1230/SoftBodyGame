@@ -30,12 +30,12 @@ void CollisionSystem::BroadPhase(PhysicsTransformStorage* _transformStorage, Col
 	// すべてのコライダーのAABBの各軸の射影を保存する。
 	for (int i{ 0 }; i < count; i++)
 	{
-		uint32_t transformIndex{ _transformStorage->GetDenseIndex(_colliderStorage->GetAABBBroadPhaseCollider(i).transformID)};
+		PhysicsTransformID transformID{ _colliderStorage->GetAABBBroadPhaseCollider(i).transformID };
 
 		ColliderProjectionData data;
 
-		data.min = _colliderStorage->GetAABBBroadPhaseCollider(i).min + _transformStorage->GetPosition(transformIndex);
-		data.max = _colliderStorage->GetAABBBroadPhaseCollider(i).max + _transformStorage->GetPosition(transformIndex);
+		data.min = _colliderStorage->GetAABBBroadPhaseCollider(i).min + _transformStorage->GetPosition(transformID);
+		data.max = _colliderStorage->GetAABBBroadPhaseCollider(i).max + _transformStorage->GetPosition(transformID);
 
 		// AABBと紐づいたコライダーのID
 		ColliderID colliderID{ _colliderStorage->GetAABBBroadPhaseCollider(i).colliderID };

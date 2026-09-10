@@ -8,13 +8,12 @@ void BodySnapshotBuildSystem::Build(BodySnapshotBuffer* _bodySnapshotBuffer, Phy
     {
         auto& output = _bodySnapshotBuffer->Edit(bodyID);
         PhysicsTransformID transformID{ _bodyStorage->GetTransformID(bodyID) };
-        uint32_t transIndex{ _transformStorage->GetDenseIndex(transformID) };
 
         output.id = bodyID;
         output.previousPosition = _bodyStorage->GetRigidBodyPastPosition(bodyID);
         output.previousRotation = _bodyStorage->GetRigidBodyPastRotation(bodyID);
-        output.currentPosition = _transformStorage->GetPosition(transIndex);
-        output.currentRotation = _transformStorage->GetRotation(transIndex);
+        output.currentPosition = _transformStorage->GetPosition(transformID);
+        output.currentRotation = _transformStorage->GetRotation(transformID);
         output.velocity = _bodyStorage->GetRigidBodyVelocity(bodyID);
         output.angularVelocity = _bodyStorage->GetRigidBodyVelocity(bodyID);
 

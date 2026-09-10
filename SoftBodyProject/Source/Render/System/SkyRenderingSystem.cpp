@@ -12,8 +12,8 @@ void SkyRenderingSystem::Initialize()
 {
 	ResourceManager::LoadModel("Res/Model/SkyCube/SkyCube.mv1");
 	boxHandle = ResourceManager::GetModel("SkyCube.mv1");
-	ResourceManager::LoadVertexShader("Shader/HLSL/Sky/SkyVS.vso");
-	ResourceManager::LoadPixelShader("Shader/HLSL/Sky/SkyPS.pso");
+	ResourceManager::LoadVertexShader("Shader/Sky/SkyVS.vso");
+	ResourceManager::LoadPixelShader("Shader/Sky/SkyPS.pso");
 	material.SetVertex(ResourceManager::GetVertexShader("SkyVS.vso"));
 	material.SetPixel(ResourceManager::GetPixelShader("SkyPS.pso"));
 

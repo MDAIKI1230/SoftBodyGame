@@ -34,9 +34,15 @@ public:
 	ConstraintType GetType(ConstraintID _id) const;
 	// TransformID
 	PhysicsTransformID GetTransformID(ConstraintID _id) const;
+
+	// TransformIDから対応した拘束取得
+	bool TryGetConstraintIDFromTransformID(PhysicsTransformID _id, ConstraintID& _output);
 private:
 	// --- 各種拘束ストレージ ---
 
 	std::unique_ptr<PointConstraintStorage> pointConstraintStorage;
 	std::unique_ptr<DistanceConstraintStorage> distanceConstraintStorage;
+
+	// PhysicsTransformIDとの対応表
+	std::unordered_map<PhysicsTransformID, ConstraintID> transformMap;
 };

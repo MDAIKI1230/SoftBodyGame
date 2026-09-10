@@ -304,6 +304,29 @@ bool DxlibRenderer::GetCurrentPose(ModelHandle _handle, PoseBuffer& _output)
 			_output.localScales[frame]);
 	}
 
+	// 全BoneのModel行列を作る
+	for (uint32_t bone{ 0 }; bone < frameCount; bone++)
+	{
+		Matrix4x4 localMatrix{ MatGenerateFunc::TRS(
+			_output.localPositions[bone],
+			_output.localRotations[bone],
+			_output.localScales[bone]) };
+
+		int parent{ MV1GetFrameParent(nativeHandle, bone) };
+
+		// 無効値が-2らしいので-2の時は無効値にしておく
+		if (parent == -2)
+		{
+			// 親がいないので上で求めた行列を等しくなる
+			_output.modelFromBoneMatrices[bone] = localMatrix;
+		}
+		else
+		{
+			// 親との計算をする
+			_output.modelFromBoneMatrices[bone] = _output.modelFromBoneMatrices[static_cast<uint32_t>(parent)] * localMatrix;
+		}
+	}
+
 	return true;
 }
 
@@ -391,4 +414,10 @@ void DxlibRenderer::DeleteCubeTexture(CubeTextureHandle _handle)
 
 		cubeTextureStorage.Remove(_handle);
 	}
+}
+
+// すべてのリソースを削除
+void DxlibRenderer::DeleteAll()
+{
+	InitGraph();
 }

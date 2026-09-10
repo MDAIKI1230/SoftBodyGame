@@ -91,6 +91,8 @@ private:
 	// キューブテクスチャ削除
 	void DeleteCubeTexture(CubeTextureHandle _handle) override;
 
+	// すべてのリソースを削除
+	void DeleteAll() override;
 private:
 	static constexpr uint32_t INVALID_BONE{ UINT32_MAX };
 
