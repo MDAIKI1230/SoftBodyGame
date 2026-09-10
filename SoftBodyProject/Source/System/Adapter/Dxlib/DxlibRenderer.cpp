@@ -307,23 +307,30 @@ bool DxlibRenderer::GetCurrentPose(ModelHandle _handle, PoseBuffer& _output)
 	// 全BoneのModel行列を作る
 	for (uint32_t bone{ 0 }; bone < frameCount; bone++)
 	{
-		Matrix4x4 localMatrix{ MatGenerateFunc::TRS(
+		const Matrix4x4& localMatrix{ _output.localMatrices[bone] };
+
+		int parent{ MV1GetFrameParent(nativeHandle, bone) };
+
+		// 逆行列も用意する
+		const Matrix4x4& inverseLocalMatrix{ MatGenerateFunc::InverseTRS(
 			_output.localPositions[bone],
 			_output.localRotations[bone],
 			_output.localScales[bone]) };
 
-		int parent{ MV1GetFrameParent(nativeHandle, bone) };
-
 		// 無効値が-2らしいので-2の時は無効値にしておく
 		if (parent == -2)
 		{
-			// 親がいないので上で求めた行列を等しくなる
+			// 親がいないので上で求めた行列と等しくなる
 			_output.modelFromBoneMatrices[bone] = localMatrix;
+
+			_output.boneFromModelMatrices[bone] = inverseLocalMatrix;
 		}
 		else
 		{
 			// 親との計算をする
 			_output.modelFromBoneMatrices[bone] = _output.modelFromBoneMatrices[static_cast<uint32_t>(parent)] * localMatrix;
+
+			_output.boneFromModelMatrices[bone] = inverseLocalMatrix * _output.boneFromModelMatrices[static_cast<uint32_t>(parent)];
 		}
 	}
 

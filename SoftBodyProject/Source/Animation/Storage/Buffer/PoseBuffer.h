@@ -20,6 +20,7 @@ public:
 
 		localMatrices.resize(_size);
 		modelFromBoneMatrices.resize(_size);
+		boneFromModelMatrices.resize(_size);
 	}
 
 public:
@@ -33,4 +34,7 @@ public:
 	// localMatricesを親階層順に累積した、
 	// BoneのLocal空間からModel空間へ変換する行列
 	std::vector<Matrix4x4> modelFromBoneMatrices;
+
+	// 自身が親の時、子のローカル姿勢を求めるときに使う行列
+	std::vector<Matrix4x4> boneFromModelMatrices;
 };

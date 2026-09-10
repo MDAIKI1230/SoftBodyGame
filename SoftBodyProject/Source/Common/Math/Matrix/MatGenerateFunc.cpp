@@ -165,9 +165,7 @@ Matrix4x4 MatGenerateFunc::InverseTRS(const Vector3& _pos, const Quaternion& _ro
 	Vector3 invScale = SIMDVectorMath::Reciprocal(_scale);
 	Quaternion invRot = _rot.Conjugate();
 
-	Vector3 invPos = invRot.Rotate(-Vector3{ SIMDVectorMath::Mul(_pos, invScale) });
-
-	return MatGenerateFunc::TRS(invPos, invRot, invScale);
+	return Scale(invScale) * Rotate(invRot) * Translate(-_pos);
 }
 
 Matrix4x4 MatGenerateFunc::LookAt(const Vector3& _eye, const Vector3& _target, const Vector3& _up)
