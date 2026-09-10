@@ -767,10 +767,22 @@ BodyID PhysicsComponentAPI::CreateInternalRigidBody(EntityID _entity, PhysicsTra
 	return bodyStorage->CreateRigidBody(_entity, _transformID);
 }
 
+// 内部用の球コライダー作成(寿命管理をちゃんを忘れない)
+ColliderID PhysicsComponentAPI::CreateInternalSphereCollider(EntityID _entity, PhysicsTransformID _transformID, float _radius)
+{
+	return colliderStorage->CreateSphere(_entity, _transformID, _radius);
+}
+
 // 内部用のカプセルコライダー作成(寿命管理をちゃんを忘れない)
 ColliderID PhysicsComponentAPI::CreateInternalCapsuleCollider(EntityID _entity, PhysicsTransformID _transformID, float _height, float _radius)
 {
 	return colliderStorage->CreateCapsule(_entity, _transformID, _height, _radius);
+}
+
+// 内部用のボックスコライダー作成(寿命管理をちゃんを忘れない)
+ColliderID PhysicsComponentAPI::CreateInternalBoxCollider(EntityID _entity, PhysicsTransformID _transformID, const Vector3& _scale)
+{
+	return colliderStorage->CreateBox(_entity, _transformID, _scale);
 }
 
 // 内部用の点拘束作成(寿命管理をちゃんを忘れない)

@@ -332,6 +332,9 @@
     <Filter Include="ソース ファイル\Animation\API">
       <UniqueIdentifier>{e4da09f0-9ebb-47ba-a69d-3fb463199b83}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Animation\Constants">
+      <UniqueIdentifier>{c7129919-d6a4-482a-bc28-07f60d14d796}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Objects\Camera.h">
@@ -1092,6 +1095,21 @@
     </ClInclude>
     <ClInclude Include="Source\Animation\API\AnimationComponentAPI.h">
       <Filter>ソース ファイル\Animation\API</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Animation\Constants\RagdollConstants.h">
+      <Filter>ソース ファイル\Animation\Constants</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Animation\Struct\Ragdoll\RagdollDefinition.h">
+      <Filter>ソース ファイル\Animation\Struct\Ragdoll</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Animation\Struct\Ragdoll\RagdollBodyDefinition.h">
+      <Filter>ソース ファイル\Animation\Struct\Ragdoll</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Animation\Struct\Ragdoll\RagdollJointDefinition.h">
+      <Filter>ソース ファイル\Animation\Struct\Ragdoll</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Animation\Struct\Ragdoll\RagdollColliderDefinition.h">
+      <Filter>ソース ファイル\Animation\Struct\Ragdoll</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

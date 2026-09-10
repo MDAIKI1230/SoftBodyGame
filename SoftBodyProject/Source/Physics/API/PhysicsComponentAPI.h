@@ -318,8 +318,12 @@ public:
 	static PhysicsTransformID CreateInternalPhysicsTransformID(EntityID _entity, const Vector3& _position, const Quaternion& _rotation, const Vector3& _scale);
 	// 内部用のRigidBody作成(寿命管理をちゃんを忘れない)
 	static BodyID CreateInternalRigidBody(EntityID _entity, PhysicsTransformID _transformID);
+	// 内部用の球コライダー作成(寿命管理をちゃんを忘れない)
+	static ColliderID CreateInternalSphereCollider(EntityID _entity, PhysicsTransformID _transformID, float _radius);
 	// 内部用のカプセルコライダー作成(寿命管理をちゃんを忘れない)
 	static ColliderID CreateInternalCapsuleCollider(EntityID _entity, PhysicsTransformID _transformID, float _height, float _radius);
+	// 内部用のボックスコライダー作成(寿命管理をちゃんを忘れない)
+	static ColliderID CreateInternalBoxCollider(EntityID _entity, PhysicsTransformID _transformID, const Vector3& _scale);
 	// 内部用の点拘束作成(寿命管理をちゃんを忘れない)
 	static ConstraintID CreateInternalPointConstraint(EntityID _entity, PhysicsTransformID _transformID, const Vector3& _localOffset);
 

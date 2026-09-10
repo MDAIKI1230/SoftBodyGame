@@ -39,11 +39,11 @@ PhysicsTransformID PhysicsTransformStorage::CreateInternalTransform(EntityID _en
 	// --- 実際のデータを追加 ---
 
 	// 位置
-	positions.emplace_back();
+	positions.push_back(_position);
 	// 回転
-	rotations.emplace_back();
+	rotations.push_back(_rotation);
 	// スケール
-	scales.emplace_back();
+	scales.push_back(_scale);
 	// ローカル行列
 	localMatrices.emplace_back();
 	// ワールド行列
