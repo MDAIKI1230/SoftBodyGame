@@ -25,9 +25,9 @@ public:
 	// 拘束のメンバー
 	std::vector<DirectionEndPoint> directionEndPoints;
 
-	// 制限角度の内積値
-	float angleMaxDot{ 0.0f };
-	float angleMinDot{ 0.0f };
+	// 制限角度
+	float angleMax{ 0.0f };
+	float angleMin{ 0.0f };
 
 	// 柔らかさなどの調整用数値
 	ConstraintTuning tuning;

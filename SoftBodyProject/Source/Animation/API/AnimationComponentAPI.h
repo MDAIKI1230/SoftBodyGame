@@ -9,7 +9,7 @@ public:
 	// --- ラグドール ---
 
 	// 作成
-	static RagdollID CreateRagdoll(EntityID _entityID, const RendererComponent& _rendererComponent);
+	static RagdollID CreateRagdoll(EntityID _entityID, const RendererComponent& _rendererComponent, const RagdollDefinition& _definition);
 	// 破棄
 	static void DestroyRagdoll(RagdollID _id);
 

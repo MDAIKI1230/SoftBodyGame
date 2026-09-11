@@ -6,11 +6,16 @@
 */
 union RagdollColliderDefinition
 {
-	struct Sphere { float radius; };
-	struct Capsule { float height, radius; };
-	struct Box { float width, height, depth; };
+	struct Sphere { float radius{ 0.0f }; };
+	struct Capsule { float height{ 0.0f }, radius{ 0.0f }; };
+	struct Box { float width{ 0.0f }, height{ 0.0f }, depth{ 0.0f }; };
 
 	Sphere sphere;
 	Capsule capsule;
 	Box box;
+	// デフォルトコンストラクタ(カプセルの場合が多いと思うからカプセル)
+	RagdollColliderDefinition()
+		: capsule{}
+	{
+	}
 };

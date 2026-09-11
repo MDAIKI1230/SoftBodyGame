@@ -1153,6 +1153,9 @@
     <ClInclude Include="Source\Physics\Struct\Constraint\AngleLimitHingeEndPoint.h">
       <Filter>ソース ファイル\Physics\Struct\Constraint</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Physics\Component\Constraint\DirectionEndPointConstraintComponentBase.h">
+      <Filter>ソース ファイル\Physics\Component\Constraint</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\System\Scenes\DebugScene.cpp">
@@ -1505,6 +1508,9 @@
     </ClCompile>
     <ClCompile Include="Source\Physics\Storage\Component\Constraint\AngleLimitHingeConstraintComponentStorage.cpp">
       <Filter>ソース ファイル\Physics\Storage\Component\Constraint</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Physics\Component\Constraint\DirectionEndPointConstraintComponentBase.cpp">
+      <Filter>ソース ファイル\Physics\Component\Constraint</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

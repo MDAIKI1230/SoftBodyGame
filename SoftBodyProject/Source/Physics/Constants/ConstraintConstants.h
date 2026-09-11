@@ -3,5 +3,8 @@
 enum class ConstraintType
 {
 	POINTS,
-	DISTANCE
+	DISTANCE,
+	HINGE,
+	ANGLE_LIMIT_POINT,
+	ANGLE_LIMIT_HINGE
 };

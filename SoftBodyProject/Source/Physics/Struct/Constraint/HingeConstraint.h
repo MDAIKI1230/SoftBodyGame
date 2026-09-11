@@ -3,6 +3,10 @@
 #include "DirectionEndPoint.h"
 #include "ConstraintTuning.h"
 
+/*
+	コンポーネントの所有者自身が基盤となる軸を持ち
+	追加された奴らは、その軸を元に拘束をされる
+*/
 struct HingeConstraint
 {
 public:

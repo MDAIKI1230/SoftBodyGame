@@ -12,7 +12,7 @@ public:
 	MD_STORAGE_READ_WRITE_COLUMN(AngleLimitHingeConstraint, Constraint, constraints);
 public:
 	// 追加関数
-	void Add(ConstraintID _id, AngleLimitHingeConstraint&& _constraint)
+	void Add(ConstraintID _id, AngleLimitHingeConstraint& _constraint)
 	{
 		ids.push_back(_id);
 		constraints.push_back(std::move(_constraint));

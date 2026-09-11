@@ -13,10 +13,10 @@ public:
 	MD_STORAGE_READ_WRITE_COLUMN(HingeConstraint, Constraint, constraints);
 public:
 	// 追加関数
-	void Add(ConstraintID _id, const HingeConstraint& _constraint)
+	void Add(ConstraintID _id, HingeConstraint& _constraint)
 	{
 		ids.push_back(_id);
-		constraints.push_back(_constraint);
+		constraints.push_back(std::move(_constraint));
 	}
 
 	// 除外関数

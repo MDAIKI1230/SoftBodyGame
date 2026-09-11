@@ -3,10 +3,14 @@
 // --- ラグドール ---
 
 // ラグドール作成
-RagdollID AnimationComponentAPI::CreateRagdoll(EntityID _entityID, const RendererComponent& _rendererComponent)
+RagdollID AnimationComponentAPI::CreateRagdoll(EntityID _entityID, const RendererComponent& _rendererComponent, const RagdollDefinition& _definition)
 {
 	SkeletonID skeletonID{ skeletonStorage->Create(_entityID,_rendererComponent.GetHandle()) };
-	return ragdollStorage->Create(_entityID, skeletonID, _rendererComponent.GetHandle());
+	return ragdollStorage->Create(
+		_entityID, skeletonID,
+		_rendererComponent.GetHandle(),
+		skeletonStorage->GetSkeletonInstanceData(skeletonID),
+		_definition);
 }
 
 // 破棄

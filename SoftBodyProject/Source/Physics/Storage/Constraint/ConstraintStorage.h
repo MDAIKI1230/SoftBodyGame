@@ -38,6 +38,12 @@ public:
 	ConstraintID CreatePointConstraint(EntityID _entity, PhysicsTransformID _transformID, const Vector3& _localOffset);
 	// 距離拘束作成関数
 	ConstraintID CreateDistanceConstraint(EntityID _entity, PhysicsTransformID _transformID, const Vector3& _localOffset, float _distance);
+	// ヒンジ拘束作成関数
+	ConstraintID CreateHingeConstraint(EntityID _entity, PhysicsTransformID _transformID, const Vector3& _localOffset);
+	// 距離拘束作成関数
+	ConstraintID CreateAngleLimitPointConstraint(EntityID _entity, PhysicsTransformID _transformID, const Vector3& _localOffset);
+	// 距離拘束作成関数
+	ConstraintID CreateAngleLimitHingeConstraint(EntityID _entity, PhysicsTransformID _transformID, const Vector3& _localOffset);
 
 	// 破棄
 	void Destory(ConstraintID _id);

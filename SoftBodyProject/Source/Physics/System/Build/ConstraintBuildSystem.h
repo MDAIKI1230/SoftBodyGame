@@ -21,6 +21,18 @@ private:
 	// 角度制限付きヒンジ拘束の解く用の拘束構造体を作る
 	void BuildAngleLimitHingeConstraint(ConstraintStorage* _constraintStorage, SolverBodyBuffer* _solverBodyBuffer, ConstraintBuffer* _constraintBuffer);
 
-	template<class T>
-	void MakeConstraintInfo(Constraint& _constraint, const T& _base);
+	void MakeConstraintInfo(Constraint& _constraint, const ConstraintTuning& _tuning);
+
+	// 点拘束を情報からソルバ用拘束に変換してバッファに入れる(ソルバボディの情報だけ入れた奴を渡す)
+	void AddPointConstraint(
+		Constraint _constraint, const ConstraintTuning& _tuning,
+		const Vector3& _rA, const Vector3& _pointA,
+		const Vector3& _rB, const Vector3& _pointB,
+		ConstraintBuffer* _constraintBuffer);
+
+	// 軸合わせ用Angular Row追加(ソルバボディの情報だけ入れた奴を渡す)
+	void AddAxisConstraint(
+		Constraint _constraint, const ConstraintTuning& _tuning,
+		const Vector3& _tangent, const Vector3& _axisError,
+		ConstraintBuffer* _constraintBuffer);
 };

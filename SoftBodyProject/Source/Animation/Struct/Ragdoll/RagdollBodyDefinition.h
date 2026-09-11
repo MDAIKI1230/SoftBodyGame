@@ -17,7 +17,7 @@ struct RagdollBodyDefinition
 	Quaternion bodyLocalRotation;
 
 	// Collider
-	ColliderType colliderShape;
+	ColliderType colliderShape{ ColliderType::CAPSULE };
 	RagdollColliderDefinition colliderDefinition;
 
 	// 質量

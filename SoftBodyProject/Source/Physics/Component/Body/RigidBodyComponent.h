@@ -9,10 +9,6 @@ struct RigidBodyComponent
 {
 public:
 	// --- コンストラクタ ---
-	
-	// デフォルトコンストラクタ(ストレージに追加できないよ)
-	RigidBodyComponent() = default;
-
 	RigidBodyComponent(EntityID _entity);
 
 	// --- 力加算系 ---

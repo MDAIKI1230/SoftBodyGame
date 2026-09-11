@@ -11,10 +11,10 @@ class DistanceConstraintStorage
     MD_STORAGE_READ_WRITE_COLUMN(DistanceConstraint, Constraint, constraints);
 public:
     // 追加関数
-    void Add(ConstraintID _id, const DistanceConstraint& _constraint)
+    void Add(ConstraintID _id, DistanceConstraint& _constraint)
     {
         ids.push_back(_id);
-        constraints.push_back(_constraint);
+        constraints.push_back(std::move(_constraint));
     }
 
     // 除外関数

@@ -12,6 +12,8 @@
 struct RagdollDefinition
 {
 public:
+	// コンストラクタ
+	RagdollDefinition() = default;
 	// 存在の確認
 	bool Contains(const std::string& _boneName) const
 	{
