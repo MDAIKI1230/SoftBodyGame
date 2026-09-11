@@ -1111,6 +1111,42 @@
     <ClInclude Include="Source\Animation\Struct\Ragdoll\RagdollColliderDefinition.h">
       <Filter>ソース ファイル\Animation\Struct\Ragdoll</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Physics\Storage\Constraint\AngleLimitPointConstraintStorage.h">
+      <Filter>ソース ファイル\Physics\Storage\Constraint</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Storage\Constraint\HingeConstraintStorage.h">
+      <Filter>ソース ファイル\Physics\Storage\Constraint</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Storage\Constraint\AngleLimitHingeConstraintStorage.h">
+      <Filter>ソース ファイル\Physics\Storage\Constraint</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Component\Constraint\AngleLimitPointConstraintComponent.h">
+      <Filter>ソース ファイル\Physics\Component\Constraint</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Component\Constraint\HingeConstraintComponent.h">
+      <Filter>ソース ファイル\Physics\Component\Constraint</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Component\Constraint\AngleLimitHingeConstraintComponent.h">
+      <Filter>ソース ファイル\Physics\Component\Constraint</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Storage\Component\Constraint\AngleLimitPointConstraintComponentStorage.h">
+      <Filter>ソース ファイル\Physics\Storage\Component\Constraint</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Storage\Component\Constraint\HingeConstraintComponentStorage.h">
+      <Filter>ソース ファイル\Physics\Storage\Component\Constraint</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Storage\Component\Constraint\AngleLimitHingeConstraintComponentStorage.h">
+      <Filter>ソース ファイル\Physics\Storage\Component\Constraint</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Struct\Constraint\AngleLimitPointConstraint.h">
+      <Filter>ソース ファイル\Physics\Struct\Constraint</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Struct\Constraint\HingeConstraint.h">
+      <Filter>ソース ファイル\Physics\Struct\Constraint</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Struct\Constraint\AngleLimitHingeConstraint.h">
+      <Filter>ソース ファイル\Physics\Struct\Constraint</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\System\Scenes\DebugScene.cpp">
@@ -1445,6 +1481,24 @@
     </ClCompile>
     <ClCompile Include="Source\Animation\API\AnimationComponentAPI.cpp">
       <Filter>ソース ファイル\Animation\API</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Physics\Component\Constraint\AngleLimitPointConstraintComponent.cpp">
+      <Filter>ソース ファイル\Physics\Component\Constraint</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Physics\Component\Constraint\HingeConstraintComponent.cpp">
+      <Filter>ソース ファイル\Physics\Component\Constraint</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Physics\Component\Constraint\AngleLimitHingeConstraintComponent.cpp">
+      <Filter>ソース ファイル\Physics\Component\Constraint</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Physics\Storage\Component\Constraint\AngleLimitPointConstraintComponentStorage.cpp">
+      <Filter>ソース ファイル\Physics\Storage\Component\Constraint</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Physics\Storage\Component\Constraint\HingeConstraintComponentStorage.cpp">
+      <Filter>ソース ファイル\Physics\Storage\Component\Constraint</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Physics\Storage\Component\Constraint\AngleLimitHingeConstraintComponentStorage.cpp">
+      <Filter>ソース ファイル\Physics\Storage\Component\Constraint</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
