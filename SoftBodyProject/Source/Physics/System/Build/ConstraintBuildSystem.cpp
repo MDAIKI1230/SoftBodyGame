@@ -6,8 +6,12 @@ void ConstraintBuildSystem::FixedUpdate(ConstraintStorage* _constraintStorage, S
 {
 	BuildPointConstraint(_constraintStorage, _solverBodyBuffer, _constraintBuffer);
 	BuildDistanceConstraint(_constraintStorage, _solverBodyBuffer, _constraintBuffer);
+	BuildHingeConstraint(_constraintStorage, _solverBodyBuffer, _constraintBuffer);
+	BuildAngleLimitPointConstraint(_constraintStorage, _solverBodyBuffer, _constraintBuffer);
+	BuildAngleLimitHingeConstraint(_constraintStorage, _solverBodyBuffer, _constraintBuffer);
 }
 
+// 点拘束の解く用の拘束構造体を作る
 void ConstraintBuildSystem::BuildPointConstraint(ConstraintStorage* _constraintStorage, SolverBodyBuffer* _solverBodyBuffer, ConstraintBuffer* _constraintBuffer)
 {
 	// 拘束が存在するかチェック
@@ -93,6 +97,7 @@ void ConstraintBuildSystem::BuildPointConstraint(ConstraintStorage* _constraintS
 	}
 }
 
+// 距離拘束の解く用の拘束構造体を作る
 void ConstraintBuildSystem::BuildDistanceConstraint(ConstraintStorage* _constraintStorage, SolverBodyBuffer* _solverBodyBuffer, ConstraintBuffer* _constraintBuffer)
 {
 	// 拘束が存在するかチェック
@@ -158,6 +163,47 @@ void ConstraintBuildSystem::BuildDistanceConstraint(ConstraintStorage* _constrai
 		}
 	}
 }
+
+// ヒンジ拘束の解く用の拘束構造体を作る
+void ConstraintBuildSystem::BuildHingeConstraint(ConstraintStorage* _constraintStorage, SolverBodyBuffer* _solverBodyBuffer, ConstraintBuffer* _constraintBuffer)
+{
+
+}
+
+// 角度制限付き点拘束の解く用の拘束構造体を作る
+void ConstraintBuildSystem::BuildAngleLimitPointConstraint(ConstraintStorage* _constraintStorage, SolverBodyBuffer* _solverBodyBuffer, ConstraintBuffer* _constraintBuffer)
+{
+	// 拘束が存在するかチェック
+	if (_constraintStorage->CountAngleLimitPointConstraint() <= 0)
+	{
+		return;
+	}
+	for (auto& angleLimitPointConstraint : _constraintStorage->EditAngleLimitPointConstraintRange())
+	{
+		// ポイントが2つ以上じゃないと拘束なんて発生しない
+		if (!angleLimitPointConstraint.directionEndPoints.size() <= 1)
+		{
+			continue;
+		}
+
+		// 基準点となるボディから位置を持ってくる。
+		uint32_t basePointIndex{ _solverBodyBuffer->GetIndex(angleLimitPointConstraint.directionEndPoints[0].transformID) };
+		const SolverBody& solverBodyBase{ _solverBodyBuffer->Get(basePointIndex) };
+		Vector3 basePoint{ solverBodyBase.position + solverBodyBase.rotation.Rotate(angleLimitPointConstraint.directionEndPoints[0].localPosition) };
+
+		for (int i{ 1 }; i < angleLimitPointConstraint.directionEndPoints.size(); i++)
+		{
+
+		}
+	}
+}
+
+// 角度制限付きヒンジ拘束の解く用の拘束構造体を作る
+void ConstraintBuildSystem::BuildAngleLimitHingeConstraint(ConstraintStorage* _constraintStorage, SolverBodyBuffer* _solverBodyBuffer, ConstraintBuffer* _constraintBuffer)
+{
+
+}
+
 
 template<class T>
 void ConstraintBuildSystem::MakeConstraintInfo(Constraint& _constraint, const T& _base)

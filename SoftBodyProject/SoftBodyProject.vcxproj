@@ -370,12 +370,14 @@
     <ClInclude Include="Source\Physics\Struct\Collision\Manifold.h" />
     <ClInclude Include="Source\Physics\Struct\Command\BodyUpdate.h" />
     <ClInclude Include="Source\Physics\Struct\Constraint\AngleLimitHingeConstraint.h" />
+    <ClInclude Include="Source\Physics\Struct\Constraint\AngleLimitHingeEndPoint.h" />
     <ClInclude Include="Source\Physics\Struct\Constraint\AngleLimitPointConstraint.h" />
     <ClInclude Include="Source\Physics\Struct\Constraint\Constraint.h" />
     <ClInclude Include="Source\Physics\Struct\Constraint\ConstraintID.h" />
     <ClInclude Include="Source\Physics\Struct\Constraint\ConstraintSlot.h" />
     <ClInclude Include="Source\Physics\Struct\Constraint\ConstraintTuning.h" />
     <ClInclude Include="Source\Physics\Struct\Constraint\ContactConstraint.h" />
+    <ClInclude Include="Source\Physics\Struct\Constraint\DirectionEndPoint.h" />
     <ClInclude Include="Source\Physics\Struct\Constraint\DistanceConstraint.h" />
     <ClInclude Include="Source\Physics\Struct\Constraint\EndPoint.h" />
     <ClInclude Include="Source\Physics\Struct\Constraint\HingeConstraint.h" />

@@ -9,6 +9,9 @@
 
 #include "PointConstraintStorage.h"
 #include "DistanceConstraintStorage.h"
+#include "HingeConstraintStorage.h"
+#include "AngleLimitPointConstraintStorage.h"
+#include "AngleLimitHingeConstraintStorage.h"
 
 class ConstraintStorage :public PhysicsStorageBase<ConstraintID, ConstraintSlot>
 {
@@ -18,6 +21,15 @@ class ConstraintStorage :public PhysicsStorageBase<ConstraintID, ConstraintSlot>
 	// 距離拘束
 	MD_OWNED_STORAGE_READ_ONLY_ACCESSORS(ConstraintID, ConstraintID, DistanceConstraintID, distanceConstraintStorage, ID);
 	MD_OWNED_STORAGE_READ_WRITE_ACCESSORS(ConstraintID, DistanceConstraint, DistanceConstraint, distanceConstraintStorage, Constraint);
+	// ヒンジ拘束
+	 MD_OWNED_STORAGE_READ_ONLY_ACCESSORS(ConstraintID, ConstraintID, HingeConstraintID, hingeConstraintStorage, ID);
+	 MD_OWNED_STORAGE_READ_WRITE_ACCESSORS(ConstraintID, HingeConstraint, HingeConstraint, hingeConstraintStorage, Constraint);
+	// 角度制限付き点拘束
+	MD_OWNED_STORAGE_READ_ONLY_ACCESSORS(ConstraintID, ConstraintID, AngleLimitPointConstraintID, angleLimitPointConstraintStorage, ID);
+	MD_OWNED_STORAGE_READ_WRITE_ACCESSORS(ConstraintID, AngleLimitPointConstraint, AngleLimitPointConstraint, angleLimitPointConstraintStorage, Constraint);
+	// 角度制限付きヒンジ拘束
+	 MD_OWNED_STORAGE_READ_ONLY_ACCESSORS(ConstraintID, ConstraintID, AngleLimitHingeConstraintID, angleLimitHingeConstraintStorage, ID);
+	 MD_OWNED_STORAGE_READ_WRITE_ACCESSORS(ConstraintID, AngleLimitHingeConstraint, AngleLimitHingeConstraint, angleLimitHingeConstraintStorage, Constraint);
 public:
 	// コンストラクタ
 	ConstraintStorage();
@@ -42,6 +54,9 @@ private:
 
 	std::unique_ptr<PointConstraintStorage> pointConstraintStorage;
 	std::unique_ptr<DistanceConstraintStorage> distanceConstraintStorage;
+	std::unique_ptr<HingeConstraintStorage> hingeConstraintStorage;
+	std::unique_ptr<AngleLimitPointConstraintStorage> angleLimitPointConstraintStorage;
+	std::unique_ptr<AngleLimitHingeConstraintStorage> angleLimitHingeConstraintStorage;
 
 	// PhysicsTransformIDとの対応表
 	std::unordered_map<PhysicsTransformID, ConstraintID> transformMap;
