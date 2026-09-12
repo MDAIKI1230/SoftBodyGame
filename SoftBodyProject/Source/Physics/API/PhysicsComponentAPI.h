@@ -208,6 +208,20 @@ public:
 	// 拘束からEndPoint除外
 	static void RemoveEndPoint(ConstraintID _id, EntityID _entity);
 
+	// ヒンジ拘束作成
+	static ConstraintID CreateHingeConstraint(EntityID _entity, const Vector3& _localOffset);
+	// 角度制限付き点拘束作成
+	static ConstraintID CreateAngleLimitPointConstraint(EntityID _entity, const Vector3& _localOffset);
+
+	// 拘束にDirectionEndPoint追加
+	static void AddDirectionEndPoint(ConstraintID _id, EntityID _entity, const Vector3& _localOffset, const Vector3& _localDirection);
+
+	// 角度制限付きヒンジ拘束作成
+	static ConstraintID CreateAngleLimitHingeConstraint(EntityID _entity, const Vector3& _localOffset);
+
+	// 拘束にAngleLimitHingeEndPoint追加
+	static void AddAngleLimitHingeEndPoint(ConstraintID _id, EntityID _entity, const Vector3& _localOffset, const Vector3& _localAxis, const Vector3& _localDirection);
+
 	// --- キャラクターコントローラー ---
 
 	// 作成
