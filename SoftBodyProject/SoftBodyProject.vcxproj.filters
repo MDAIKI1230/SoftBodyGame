@@ -335,6 +335,9 @@
     <Filter Include="ソース ファイル\Animation\Constants">
       <UniqueIdentifier>{c7129919-d6a4-482a-bc28-07f60d14d796}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Physics\Component\Constraint\Base">
+      <UniqueIdentifier>{2d2e0754-fc53-4b3d-aaec-a0055dc82b58}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Objects\Camera.h">
@@ -775,9 +778,6 @@
     <ClInclude Include="Source\Common\Macro\StorageAccessorsMacros.h">
       <Filter>ソース ファイル\Common\Macro</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Physics\Component\Constraint\EndPointConstraintComponentBase.h">
-      <Filter>ソース ファイル\Physics\Component\Constraint</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Common\Struct\GenerationalID.h">
       <Filter>ソース ファイル\Common\Struct</Filter>
     </ClInclude>
@@ -1153,8 +1153,11 @@
     <ClInclude Include="Source\Physics\Struct\Constraint\AngleLimitHingeEndPoint.h">
       <Filter>ソース ファイル\Physics\Struct\Constraint</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Physics\Component\Constraint\DirectionEndPointConstraintComponentBase.h">
-      <Filter>ソース ファイル\Physics\Component\Constraint</Filter>
+    <ClInclude Include="Source\Physics\Component\Constraint\Base\DirectionEndPointConstraintComponentBase.h">
+      <Filter>ソース ファイル\Physics\Component\Constraint\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Component\Constraint\Base\EndPointConstraintComponentBase.h">
+      <Filter>ソース ファイル\Physics\Component\Constraint\Base</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1353,9 +1356,6 @@
     <ClCompile Include="Source\Physics\Storage\Component\Body\Soft\SoftBodyComponentStorage.cpp">
       <Filter>ソース ファイル\Physics\Storage\Component\Body\Soft</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Physics\Component\Constraint\EndPointConstraintComponentBase.cpp">
-      <Filter>ソース ファイル\Physics\Component\Constraint</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Common\ECS\SparseSet\Table\LinearTable.cpp">
       <Filter>ソース ファイル\Common\ECS\SparseSet\Table</Filter>
     </ClCompile>
@@ -1509,8 +1509,11 @@
     <ClCompile Include="Source\Physics\Storage\Component\Constraint\AngleLimitHingeConstraintComponentStorage.cpp">
       <Filter>ソース ファイル\Physics\Storage\Component\Constraint</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Physics\Component\Constraint\DirectionEndPointConstraintComponentBase.cpp">
-      <Filter>ソース ファイル\Physics\Component\Constraint</Filter>
+    <ClCompile Include="Source\Physics\Component\Constraint\Base\DirectionEndPointConstraintComponentBase.cpp">
+      <Filter>ソース ファイル\Physics\Component\Constraint\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Physics\Component\Constraint\Base\EndPointConstraintComponentBase.cpp">
+      <Filter>ソース ファイル\Physics\Component\Constraint\Base</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -49,14 +49,14 @@ ConstraintID ConstraintStorage::CreateDistanceConstraint(EntityID _entity, Physi
 }
 
 // ヒンジ拘束作成関数
-ConstraintID ConstraintStorage::CreateHingeConstraint(EntityID _entity, PhysicsTransformID _transformID, const Vector3& _localOffset)
+ConstraintID ConstraintStorage::CreateHingeConstraint(EntityID _entity, PhysicsTransformID _transformID, const Vector3& _localOffset, const Vector3& _localDirection)
 {
 	// ID作成
 	ConstraintID id{ CreateID(ConstraintType::HINGE,hingeConstraintStorage->CountConstraint(),_entity,_transformID) };
 
 	// 実態を作る
 	HingeConstraint hingeConstraint;
-	hingeConstraint.ownerEndPoint = DirectionEndPoint{ _transformID,_localOffset,Vector3::UP };
+	hingeConstraint.ownerEndPoint = DirectionEndPoint{ _transformID,_localOffset,_localDirection };
 
 	// 追加
 	hingeConstraintStorage->Add(id, hingeConstraint);
@@ -69,14 +69,16 @@ ConstraintID ConstraintStorage::CreateHingeConstraint(EntityID _entity, PhysicsT
 }
 
 // 角度制限付き点拘束作成関数
-ConstraintID ConstraintStorage::CreateAngleLimitPointConstraint(EntityID _entity, PhysicsTransformID _transformID, const Vector3& _localOffset)
+ConstraintID ConstraintStorage::CreateAngleLimitPointConstraint(EntityID _entity, PhysicsTransformID _transformID, const Vector3& _localOffset, const Vector3& _localDirection, float _angleMin, float _angleMax)
 {
 	// ID作成
 	ConstraintID id{ CreateID(ConstraintType::ANGLE_LIMIT_POINT,angleLimitPointConstraintStorage->CountConstraint(),_entity,_transformID) };
 
 	// 実態を作る
 	AngleLimitPointConstraint angleLimitPointConstraint;
-	angleLimitPointConstraint.directionEndPoints.emplace_back(_transformID, _localOffset, Vector3::UP);
+	angleLimitPointConstraint.directionEndPoints.emplace_back(_transformID, _localOffset, _localDirection);
+	angleLimitPointConstraint.angleMin = _angleMin;
+	angleLimitPointConstraint.angleMax = _angleMax;
 
 	// 追加
 	angleLimitPointConstraintStorage->Add(id, angleLimitPointConstraint);
@@ -89,14 +91,19 @@ ConstraintID ConstraintStorage::CreateAngleLimitPointConstraint(EntityID _entity
 }
 
 // 角度制限付きヒンジ拘束作成関数
-ConstraintID ConstraintStorage::CreateAngleLimitHingeConstraint(EntityID _entity, PhysicsTransformID _transformID, const Vector3& _localOffset)
+ConstraintID ConstraintStorage::CreateAngleLimitHingeConstraint(
+	EntityID _entity, PhysicsTransformID _transformID,
+	const Vector3& _localOffset, const Vector3& _localAxis, const Vector3& _localDirection,
+	float _angleMin, float _angleMax)
 {
 	// ID作成
 	ConstraintID id{ CreateID(ConstraintType::ANGLE_LIMIT_HINGE,angleLimitHingeConstraintStorage->CountConstraint(),_entity,_transformID) };
 
 	// 実態を作る
 	AngleLimitHingeConstraint angleLimitHingeConstraint;
-	angleLimitHingeConstraint.ownerEndPoint = AngleLimitHingeEndPoint{ _transformID ,_localOffset ,Vector3::UP,Vector3::FORWARD };
+	angleLimitHingeConstraint.ownerEndPoint = AngleLimitHingeEndPoint{ _transformID ,_localOffset ,_localAxis,_localDirection };
+	angleLimitHingeConstraint.angleMin = _angleMin;
+	angleLimitHingeConstraint.angleMax = _angleMax;
 
 	// 追加
 	angleLimitHingeConstraintStorage->Add(id, angleLimitHingeConstraint);

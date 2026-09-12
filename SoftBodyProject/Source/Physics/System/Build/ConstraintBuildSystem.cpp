@@ -343,7 +343,7 @@ void ConstraintBuildSystem::BuildAngleLimitHingeConstraint(ConstraintStorage* _c
 	for (auto& angleLimitHingeConstraint : _constraintStorage->EditAngleLimitHingeConstraintRange())
 	{
 		// 対象がいないとダメ
-		if (angleLimitHingeConstraint.endPoint.size() < 1)
+		if (angleLimitHingeConstraint.angleLimitHingeEndPoints.size() < 1)
 		{
 			continue;
 		}
@@ -378,7 +378,7 @@ void ConstraintBuildSystem::BuildAngleLimitHingeConstraint(ConstraintStorage* _c
 		Vector3 tangent1{ Vector3::Cross(axis, seed).Normalized() };
 		Vector3 tangent2{ Vector3::Cross(axis, tangent1).Normalized() };
 
-		for (auto& endPoint : angleLimitHingeConstraint.endPoint)
+		for (auto& endPoint : angleLimitHingeConstraint.angleLimitHingeEndPoints)
 		{
 			// 対象側
 			uint32_t pointIndex{ _solverBodyBuffer->GetIndex(endPoint.transformID) };

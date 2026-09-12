@@ -50,6 +50,8 @@ private:
 	void DrawLine(const Vector3& _pos1, const Vector3& _pos2, const Color& _color) override;
 	// カプセル描画
 	void DrawCapsule(const Vector3& _pos1, const Vector3& _pos2, float _radius, const Color& _color);
+	// 円錐描画
+	void DrawCone(const Vector3& _topPos, const Vector3& _bottomPos, float _radius, int _division, const Color& _color) override;
 
 	// --- アニメーション関連 ---
 

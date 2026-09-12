@@ -198,6 +198,14 @@ void DxlibRenderer::DrawCapsule(const Vector3& _pos1, const Vector3& _pos2, floa
 {
 	DxLib::DrawCapsule3D(ToDxlib(_pos1), ToDxlib(_pos2), _radius, 10, ToDxlib(_color), ToDxlib(_color), false);
 }
+// 円錐描画
+void DxlibRenderer::DrawCone(const Vector3& _topPos, const Vector3& _bottomPos, float _radius, int _division, const Color& _color)
+{
+	DxLib::DrawCone3D(ToDxlib(_topPos), ToDxlib(_bottomPos),
+		_radius, _division,
+		ToDxlib(_color), ToDxlib(_color),
+		false);
+}
 
 // --- アニメーション関連 ---
 

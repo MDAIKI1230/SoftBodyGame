@@ -27,6 +27,9 @@
 // 拘束
 #include "PointConstraintComponentStorage.h"
 #include "DistanceConstraintComponentStorage.h"
+#include "HingeConstraintComponentStorage.h"
+#include "AngleLimitPointConstraintComponentStorage.h"
+#include "AngleLimitHingeConstraintComponentStorage.h"
 
 // キャラクターコントローラー
 #include "CharacterControllerComponentStorage.h"
@@ -74,6 +77,9 @@ SceneBase::SceneBase()
 	// 拘束
 	AddStorage<PointConstraintComponent>(std::make_unique<PointConstraintComponentStorage>());
 	AddStorage<DistanceConstraintComponent>(std::make_unique<DistanceConstraintComponentStorage>());
+	AddStorage<HingeConstraintComponent>(std::make_unique<HingeConstraintComponentStorage>());
+	AddStorage<AngleLimitPointConstraintComponent>(std::make_unique<AngleLimitPointConstraintComponentStorage>());
+	AddStorage<AngleLimitHingeConstraintComponent>(std::make_unique<AngleLimitHingeConstraintComponentStorage>());
 
 	// キャラクターコントローラー
 	AddStorage<CharacterControllerComponent>(std::make_unique<CharacterControllerComponentStorage>());

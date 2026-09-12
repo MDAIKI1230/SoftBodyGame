@@ -477,14 +477,15 @@ void  PhysicsComponentAPI::RemoveEndPoint(ConstraintID _id, EntityID _entity)
 }
 
 // ヒンジ拘束作成
-ConstraintID PhysicsComponentAPI::CreateHingeConstraint(EntityID _entity, const Vector3& _localOffset)
+ConstraintID PhysicsComponentAPI::CreateHingeConstraint(EntityID _entity, const Vector3& _localOffset, const Vector3& _localDirection)
 {
-	return constraintStorage->CreateHingeConstraint(_entity, transformStorage->GetOrCreateTransform(_entity), _localOffset);
+	return constraintStorage->CreateHingeConstraint(_entity, transformStorage->GetOrCreateTransform(_entity), _localOffset, _localDirection);
 }
+
 // 角度制限付き点拘束作成
-ConstraintID PhysicsComponentAPI::CreateAngleLimitPointConstraint(EntityID _entity, const Vector3& _localOffset)
+ConstraintID PhysicsComponentAPI::CreateAngleLimitPointConstraint(EntityID _entity, const Vector3& _localOffset, const Vector3& _localDirection, float _angleMin, float _angleMax)
 {
-	return constraintStorage->CreateAngleLimitPointConstraint(_entity, transformStorage->GetOrCreateTransform(_entity), _localOffset);
+	return constraintStorage->CreateAngleLimitPointConstraint(_entity, transformStorage->GetOrCreateTransform(_entity), _localOffset, _localDirection, _angleMin, _angleMax);
 }
 
 // 拘束にDirectionEndPoint追加
@@ -500,7 +501,7 @@ void PhysicsComponentAPI::AddDirectionEndPoint(ConstraintID _id, EntityID _entit
 			constraintStorage->EditHingeConstraint(_id).directionEndPoints.emplace_back(transformID, _localOffset, _localDirection);
 			break;
 			case ConstraintType::ANGLE_LIMIT_POINT:
-			constraintStorage->EditHingeConstraint(_id).directionEndPoints.emplace_back(transformID, _localOffset, _localDirection);
+			constraintStorage->EditAngleLimitPointConstraint(_id).directionEndPoints.emplace_back(transformID, _localOffset, _localDirection);
 			break;
 		default:
 			break;
@@ -509,9 +510,15 @@ void PhysicsComponentAPI::AddDirectionEndPoint(ConstraintID _id, EntityID _entit
 }
 
 // 角度制限付きヒンジ拘束作成
-ConstraintID PhysicsComponentAPI::CreateAngleLimitHingeConstraint(EntityID _entity, const Vector3& _localOffset)
+ConstraintID PhysicsComponentAPI::CreateAngleLimitHingeConstraint(
+	EntityID _entity,
+	const Vector3& _localOffset, const Vector3& _localAxis, const Vector3& _localDirection,
+	float _angleMin, float _angleMax)
 {
-	return constraintStorage->CreateAngleLimitHingeConstraint(_entity, transformStorage->GetOrCreateTransform(_entity), _localOffset);
+	return constraintStorage->CreateAngleLimitHingeConstraint(
+		_entity, transformStorage->GetOrCreateTransform(_entity),
+		_localOffset, _localAxis, _localDirection,
+		_angleMin, _angleMax);
 }
 
 // 拘束にAngleLimitHingeEndPoint追加
@@ -523,8 +530,178 @@ void PhysicsComponentAPI::AddAngleLimitHingeEndPoint(ConstraintID _id, EntityID 
 	{
 		if (constraintStorage->GetType(_id) == ConstraintType::ANGLE_LIMIT_HINGE)
 		{
-			constraintStorage->EditAngleLimitHingeConstraint(_id).endPoint.emplace_back(transformID, _localOffset, _localAxis, _localDirection);
+			constraintStorage->EditAngleLimitHingeConstraint(_id).angleLimitHingeEndPoints.emplace_back(transformID, _localOffset, _localAxis, _localDirection);
 		}
+	}
+}
+
+// 最小角度取得
+float PhysicsComponentAPI::GetAngleMin(ConstraintID _id)
+{
+	switch (constraintStorage->GetType(_id))
+	{
+	case ConstraintType::ANGLE_LIMIT_POINT:
+		return constraintStorage->GetAngleLimitPointConstraint(_id).angleMin;
+	case ConstraintType::ANGLE_LIMIT_HINGE:
+		return constraintStorage->GetAngleLimitHingeConstraint(_id).angleMin;
+	default:
+		return 0.0f;
+	}
+}
+
+// 最小角度変更
+void PhysicsComponentAPI::SetAngleMin(ConstraintID _id, float _angleMin)
+{
+	switch (constraintStorage->GetType(_id))
+	{
+	case ConstraintType::ANGLE_LIMIT_POINT:
+		constraintStorage->EditAngleLimitPointConstraint(_id).angleMin = _angleMin;
+		break;
+	case ConstraintType::ANGLE_LIMIT_HINGE:
+		constraintStorage->EditAngleLimitHingeConstraint(_id).angleMin = _angleMin;
+		break;
+	default:
+		break;
+	}
+}
+
+// 最大角度取得
+float PhysicsComponentAPI::GetAngleMax(ConstraintID _id)
+{
+	switch (constraintStorage->GetType(_id))
+	{
+	case ConstraintType::ANGLE_LIMIT_POINT:
+		return constraintStorage->GetAngleLimitPointConstraint(_id).angleMax;
+	case ConstraintType::ANGLE_LIMIT_HINGE:
+		return constraintStorage->GetAngleLimitHingeConstraint(_id).angleMax;
+	default:
+		return 0.0f;
+	}
+}
+
+// 最大角度変更
+void PhysicsComponentAPI::SetAngleMax(ConstraintID _id, float _angleMax)
+{
+	switch (constraintStorage->GetType(_id))
+	{
+	case ConstraintType::ANGLE_LIMIT_POINT:
+		constraintStorage->EditAngleLimitPointConstraint(_id).angleMax = _angleMax;
+		break;
+	case ConstraintType::ANGLE_LIMIT_HINGE:
+		constraintStorage->EditAngleLimitHingeConstraint(_id).angleMax = _angleMax;
+		break;
+	default:
+		break;
+	}
+}
+
+// 角度範囲変更
+void PhysicsComponentAPI::SetAngleRange(ConstraintID _id, float _angleMin, float _angleMax)
+{
+	// 最小値と最大値が逆なら入れ替える
+	if (_angleMin > _angleMax)
+	{
+		float temp{ _angleMin };
+		_angleMin = _angleMax;
+		_angleMax = temp;
+	}
+
+	SetAngleMin(_id, _angleMin);
+	SetAngleMax(_id, _angleMax);
+}
+
+// 単一Tuning取得
+ConstraintTuning PhysicsComponentAPI::GetTuning(ConstraintID _id)
+{
+	switch (constraintStorage->GetType(_id))
+	{
+	case ConstraintType::POINTS:
+		return constraintStorage->GetPointConstraint(_id).tuning;
+	case ConstraintType::DISTANCE:
+		return constraintStorage->GetDistanceConstraint(_id).tuning;
+	case ConstraintType::ANGLE_LIMIT_POINT:
+		return constraintStorage->GetAngleLimitPointConstraint(_id).tuning;
+	default:
+		return {};
+	}
+}
+
+// 単一Tuning変更
+void PhysicsComponentAPI::SetTuning(ConstraintID _id, const ConstraintTuning& _tuning)
+{
+	switch (constraintStorage->GetType(_id))
+	{
+	case ConstraintType::POINTS:
+		constraintStorage->EditPointConstraint(_id).tuning = _tuning;
+		break;
+	case ConstraintType::DISTANCE:
+		constraintStorage->EditDistanceConstraint(_id).tuning = _tuning;
+		break;
+	case ConstraintType::ANGLE_LIMIT_POINT:
+		constraintStorage->EditAngleLimitPointConstraint(_id).tuning = _tuning;
+		break;
+	default:
+		break;
+	}
+}
+
+// 位置Tuning取得
+ConstraintTuning PhysicsComponentAPI::GetPositionTuning(ConstraintID _id)
+{
+	switch (constraintStorage->GetType(_id))
+	{
+	case ConstraintType::HINGE:
+		return constraintStorage->GetHingeConstraint(_id).positionTuning;
+	case ConstraintType::ANGLE_LIMIT_HINGE:
+		return constraintStorage->GetAngleLimitHingeConstraint(_id).positionTuning;
+	default:
+		return {};
+	}
+}
+
+// 位置Tuning変更
+void PhysicsComponentAPI::SetPositionTuning(ConstraintID _id, const ConstraintTuning& _tuning)
+{
+	switch (constraintStorage->GetType(_id))
+	{
+	case ConstraintType::HINGE:
+		constraintStorage->EditHingeConstraint(_id).positionTuning = _tuning;
+		break;
+	case ConstraintType::ANGLE_LIMIT_HINGE:
+		constraintStorage->EditAngleLimitHingeConstraint(_id).positionTuning = _tuning;
+		break;
+	default:
+		break;
+	}
+}
+
+// 回転Tuning取得
+ConstraintTuning PhysicsComponentAPI::GetAngularTuning(ConstraintID _id)
+{
+	switch (constraintStorage->GetType(_id))
+	{
+	case ConstraintType::HINGE:
+		return constraintStorage->GetHingeConstraint(_id).angularTuning;
+	case ConstraintType::ANGLE_LIMIT_HINGE:
+		return constraintStorage->GetAngleLimitHingeConstraint(_id).angularTuning;
+	default:
+		return {};
+	}
+}
+
+// 回転Tuning変更
+void PhysicsComponentAPI::SetAngularTuning(ConstraintID _id, const ConstraintTuning& _tuning)
+{
+	switch (constraintStorage->GetType(_id))
+	{
+	case ConstraintType::HINGE:
+		constraintStorage->EditHingeConstraint(_id).angularTuning = _tuning;
+		break;
+	case ConstraintType::ANGLE_LIMIT_HINGE:
+		constraintStorage->EditAngleLimitHingeConstraint(_id).angularTuning = _tuning;
+		break;
+	default:
+		break;
 	}
 }
 
@@ -852,6 +1029,96 @@ ConstraintID PhysicsComponentAPI::CreateInternalPointConstraint(EntityID _entity
 	return constraintStorage->CreatePointConstraint(_entity, _transformID, _localOffset);
 }
 
+// 内部用の距離拘束作成(寿命管理をちゃんを忘れない)
+ConstraintID PhysicsComponentAPI::CreateInternalDistanceConstraint(EntityID _entity, PhysicsTransformID _transformID, const Vector3& _localOffset, float _distance)
+{
+	return constraintStorage->CreateDistanceConstraint(_entity, _transformID, _localOffset, _distance);
+}
+
+// 内部用のヒンジ拘束作成(寿命管理をちゃんを忘れない)
+ConstraintID PhysicsComponentAPI::CreateInternalHingeConstraint(EntityID _entity, PhysicsTransformID _transformID, const Vector3& _localOffset, const Vector3& _localDirection)
+{
+	ConstraintID id{ constraintStorage->CreateHingeConstraint(_entity, _transformID, _localOffset,_localDirection) };
+
+	constraintStorage->EditHingeConstraint(id).ownerEndPoint.localDirection = _localDirection;
+
+	return id;
+}
+
+// 内部用の角度制限付き点拘束作成(寿命管理をちゃんを忘れない)
+ConstraintID PhysicsComponentAPI::CreateInternalAngleLimitPointConstraint(EntityID _entity, PhysicsTransformID _transformID, const Vector3& _localOffset, const Vector3& _localDirection, float _angleMin, float _angleMax)
+{
+	ConstraintID id{ constraintStorage->CreateAngleLimitPointConstraint(_entity, _transformID, _localOffset, _localDirection, _angleMin, _angleMax) };
+
+	constraintStorage->EditAngleLimitPointConstraint(id).directionEndPoints[0].localDirection = _localDirection;
+
+	SetAngleRange(id, _angleMin, _angleMax);
+
+	return id;
+}
+
+// 内部用の角度制限付きヒンジ拘束作成(寿命管理をちゃんを忘れない)
+ConstraintID PhysicsComponentAPI::CreateInternalAngleLimitHingeConstraint(
+	EntityID _entity, PhysicsTransformID _transformID,
+	const Vector3& _localOffset, const Vector3& _localAxis, const Vector3& _localDirection,
+	float _angleMin, float _angleMax)
+{
+	ConstraintID id{ constraintStorage->CreateAngleLimitHingeConstraint(
+		_entity, transformStorage->GetOrCreateTransform(_entity),
+		_localOffset, _localAxis, _localDirection,
+		_angleMin, _angleMax) };
+
+	AngleLimitHingeConstraint& constraint{ constraintStorage->EditAngleLimitHingeConstraint(id) };
+
+	constraint.ownerEndPoint.localAxis = _localAxis;
+	constraint.ownerEndPoint.localReferenceDirection = _localDirection;
+
+	SetAngleRange(id, _angleMin, _angleMax);
+
+	return id;
+}
+
+// 内部用拘束のEndPoint追加(寿命管理をちゃんを忘れない)
+void PhysicsComponentAPI::AddInternalEndPoint(ConstraintID _constraintID, PhysicsTransformID _transformID, const Vector3& _localOffset)
+{
+	switch (constraintStorage->GetType(_constraintID))
+	{
+	case ConstraintType::POINTS:
+		constraintStorage->EditPointConstraint(_constraintID).endPoints.emplace_back(_transformID, _localOffset);
+		break;
+	case ConstraintType::DISTANCE:
+		constraintStorage->EditDistanceConstraint(_constraintID).endPoints.emplace_back(_transformID, _localOffset);
+		break;
+	default:
+		break;
+	}
+}
+
+// 内部用拘束のDirectionEndPoint追加(寿命管理をちゃんを忘れない)
+void PhysicsComponentAPI::AddInternalDirectionEndPoint(ConstraintID _constraintID, PhysicsTransformID _transformID, const Vector3& _localOffset, const Vector3& _localDirection)
+{
+	switch (constraintStorage->GetType(_constraintID))
+	{
+	case ConstraintType::HINGE:
+		constraintStorage->EditHingeConstraint(_constraintID).directionEndPoints.emplace_back(_transformID, _localOffset, _localDirection);
+		break;
+	case ConstraintType::ANGLE_LIMIT_POINT:
+		constraintStorage->EditAngleLimitPointConstraint(_constraintID).directionEndPoints.emplace_back(_transformID, _localOffset, _localDirection);
+		break;
+	default:
+		break;
+	}
+}
+
+// 内部用拘束のAngleLimitHingeEndPoint追加(寿命管理をちゃんを忘れない)
+void PhysicsComponentAPI::AddInternalAngleLimitHingeEndPoint(ConstraintID _constraintID, PhysicsTransformID _transformID, const Vector3& _localOffset, const Vector3& _localAxis, const Vector3& _localDirection)
+{
+	if (constraintStorage->GetType(_constraintID) == ConstraintType::ANGLE_LIMIT_HINGE)
+	{
+		constraintStorage->EditAngleLimitHingeConstraint(_constraintID).angleLimitHingeEndPoints.emplace_back(_transformID, _localOffset, _localAxis, _localDirection);
+	}
+}
+
 // PhysicsTransform破棄(対応する他の奴も破棄する)
 void PhysicsComponentAPI::DestroyPhysicsTransform(PhysicsTransformID _transformID)
 {
@@ -873,23 +1140,6 @@ void PhysicsComponentAPI::DestroyPhysicsTransform(PhysicsTransformID _transformI
 	}
 
 	transformStorage->Destroy(_transformID);
-}
-
-// 内部用拘束の点追加
-void PhysicsComponentAPI::AddInternalEndPoint(ConstraintID _constraintID, PhysicsTransformID _transformID, const Vector3& _localOffset)
-{
-	// エンティティに対応したTransformがあるならそれを追加ないなら何もしない
-	switch (constraintStorage->GetType(_constraintID))
-	{
-	case ConstraintType::POINTS:
-		constraintStorage->EditPointConstraint(_constraintID).endPoints.emplace_back(_transformID, _localOffset);
-		break;
-	case ConstraintType::DISTANCE:
-		constraintStorage->EditDistanceConstraint(_constraintID).endPoints.emplace_back(_transformID, _localOffset);
-		break;
-	default:
-		break;
-	}
 }
 
 // --- World接続 ---

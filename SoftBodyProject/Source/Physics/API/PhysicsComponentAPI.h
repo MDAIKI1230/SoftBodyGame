@@ -209,18 +209,47 @@ public:
 	static void RemoveEndPoint(ConstraintID _id, EntityID _entity);
 
 	// ヒンジ拘束作成
-	static ConstraintID CreateHingeConstraint(EntityID _entity, const Vector3& _localOffset);
+	static ConstraintID CreateHingeConstraint(EntityID _entity, const Vector3& _localOffset, const Vector3& _localDirection);
 	// 角度制限付き点拘束作成
-	static ConstraintID CreateAngleLimitPointConstraint(EntityID _entity, const Vector3& _localOffset);
+	static ConstraintID CreateAngleLimitPointConstraint(EntityID _entity, const Vector3& _localOffset, const Vector3& _localDirection, float _angleMin, float _angleMax);
 
 	// 拘束にDirectionEndPoint追加
 	static void AddDirectionEndPoint(ConstraintID _id, EntityID _entity, const Vector3& _localOffset, const Vector3& _localDirection);
 
 	// 角度制限付きヒンジ拘束作成
-	static ConstraintID CreateAngleLimitHingeConstraint(EntityID _entity, const Vector3& _localOffset);
+	static ConstraintID CreateAngleLimitHingeConstraint(
+		EntityID _entity,
+		const Vector3& _localOffset, const Vector3& _localAxis, const Vector3& _localDirection,
+		float _angleMin, float _angleMax);
 
 	// 拘束にAngleLimitHingeEndPoint追加
 	static void AddAngleLimitHingeEndPoint(ConstraintID _id, EntityID _entity, const Vector3& _localOffset, const Vector3& _localAxis, const Vector3& _localDirection);
+
+	// 最小角度取得
+	static float GetAngleMin(ConstraintID _id);
+	// 最小角度変更
+	static void SetAngleMin(ConstraintID _id, float _angleMin);
+	// 最大角度取得
+	static float GetAngleMax(ConstraintID _id);
+	// 最大角度変更
+	static void SetAngleMax(ConstraintID _id, float _angleMax);
+	// 角度範囲変更
+	static void SetAngleRange(ConstraintID _id, float _angleMin, float _angleMax);
+
+	// 単一Tuning取得
+	static ConstraintTuning GetTuning(ConstraintID _id);
+	// 単一Tuning変更
+	static void SetTuning(ConstraintID _id, const ConstraintTuning& _tuning);
+
+	// 位置Tuning取得
+	static ConstraintTuning GetPositionTuning(ConstraintID _id);
+	// 位置Tuning変更
+	static void SetPositionTuning(ConstraintID _id, const ConstraintTuning& _tuning);
+
+	// 回転Tuning取得
+	static ConstraintTuning GetAngularTuning(ConstraintID _id);
+	// 回転Tuning変更
+	static void SetAngularTuning(ConstraintID _id, const ConstraintTuning& _tuning);
 
 	// --- キャラクターコントローラー ---
 
@@ -338,14 +367,30 @@ public:
 	static ColliderID CreateInternalCapsuleCollider(EntityID _entity, PhysicsTransformID _transformID, float _height, float _radius);
 	// 内部用のボックスコライダー作成(寿命管理をちゃんを忘れない)
 	static ColliderID CreateInternalBoxCollider(EntityID _entity, PhysicsTransformID _transformID, const Vector3& _scale);
+
 	// 内部用の点拘束作成(寿命管理をちゃんを忘れない)
 	static ConstraintID CreateInternalPointConstraint(EntityID _entity, PhysicsTransformID _transformID, const Vector3& _localOffset);
+	// 内部用の距離拘束作成(寿命管理をちゃんを忘れない)
+	static ConstraintID CreateInternalDistanceConstraint(EntityID _entity, PhysicsTransformID _transformID, const Vector3& _localOffset, float _distance);
+	// 内部用のヒンジ拘束作成(寿命管理をちゃんを忘れない)
+	static ConstraintID CreateInternalHingeConstraint(EntityID _entity, PhysicsTransformID _transformID, const Vector3& _localOffset, const Vector3& _localDirection);
+	// 内部用の角度制限付き点拘束作成(寿命管理をちゃんを忘れない)
+	static ConstraintID CreateInternalAngleLimitPointConstraint(EntityID _entity, PhysicsTransformID _transformID, const Vector3& _localOffset, const Vector3& _localDirection, float _angleMin, float _angleMax);
+	// 内部用の角度制限付きヒンジ拘束作成(寿命管理をちゃんを忘れない)
+	static ConstraintID CreateInternalAngleLimitHingeConstraint(
+		EntityID _entity, PhysicsTransformID _transformID,
+		const Vector3& _localOffset, const Vector3& _localAxis, const Vector3& _localDirection,
+		float _angleMin, float _angleMax);
+
+	// 内部用拘束のEndPoint追加(寿命管理をちゃんを忘れない)
+	static void AddInternalEndPoint(ConstraintID _constraintID, PhysicsTransformID _transformID, const Vector3& _localOffset);
+	// 内部用拘束のDirectionEndPoint追加(寿命管理をちゃんを忘れない)
+	static void AddInternalDirectionEndPoint(ConstraintID _constraintID, PhysicsTransformID _transformID, const Vector3& _localOffset, const Vector3& _localDirection);
+	// 内部用拘束のAngleLimitHingeEndPoint追加(寿命管理をちゃんを忘れない)
+	static void AddInternalAngleLimitHingeEndPoint(ConstraintID _constraintID, PhysicsTransformID _transformID, const Vector3& _localOffset, const Vector3& _localAxis, const Vector3& _localDirection);
 
 	// PhysicsTransform破棄(対応する他の奴も破棄する)
 	static void DestroyPhysicsTransform(PhysicsTransformID _transformID);
-
-	// 内部用拘束の点追加
-	static void AddInternalEndPoint(ConstraintID _constraintID, PhysicsTransformID _transformID, const Vector3& _localOffset);
 
 	static void BindWorld(PhysicsWorld& _physicsWorld, WorldStorage& _componentWorld);
 	static void UnbindWorld();

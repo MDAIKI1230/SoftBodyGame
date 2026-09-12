@@ -292,8 +292,8 @@
     <ClInclude Include="Source\Physics\Component\Collider\SphereColliderComponent.h" />
     <ClInclude Include="Source\Physics\Component\Constraint\AngleLimitHingeConstraintComponent.h" />
     <ClInclude Include="Source\Physics\Component\Constraint\AngleLimitPointConstraintComponent.h" />
-    <ClInclude Include="Source\Physics\Component\Constraint\DirectionEndPointConstraintComponentBase.h" />
-    <ClInclude Include="Source\Physics\Component\Constraint\EndPointConstraintComponentBase.h" />
+    <ClInclude Include="Source\Physics\Component\Constraint\Base\DirectionEndPointConstraintComponentBase.h" />
+    <ClInclude Include="Source\Physics\Component\Constraint\Base\EndPointConstraintComponentBase.h" />
     <ClInclude Include="Source\Physics\Component\Constraint\DistanceConstraintComponent.h" />
     <ClInclude Include="Source\Physics\Component\Constraint\HingeConstraintComponent.h" />
     <ClInclude Include="Source\Physics\Component\Constraint\PointConstraintComponent.h" />
@@ -501,9 +501,9 @@
     <ClCompile Include="Source\Physics\Component\Collider\SphereColliderComponent.cpp" />
     <ClCompile Include="Source\Physics\Component\Constraint\AngleLimitHingeConstraintComponent.cpp" />
     <ClCompile Include="Source\Physics\Component\Constraint\AngleLimitPointConstraintComponent.cpp" />
-    <ClCompile Include="Source\Physics\Component\Constraint\DirectionEndPointConstraintComponentBase.cpp" />
+    <ClCompile Include="Source\Physics\Component\Constraint\Base\DirectionEndPointConstraintComponentBase.cpp" />
+    <ClCompile Include="Source\Physics\Component\Constraint\Base\EndPointConstraintComponentBase.cpp" />
     <ClCompile Include="Source\Physics\Component\Constraint\DistanceConstraintComponent.cpp" />
-    <ClCompile Include="Source\Physics\Component\Constraint\EndPointConstraintComponentBase.cpp" />
     <ClCompile Include="Source\Physics\Component\Constraint\HingeConstraintComponent.cpp" />
     <ClCompile Include="Source\Physics\Component\Constraint\PointConstraintComponent.cpp" />
     <ClCompile Include="Source\Physics\DebugRender\ColliderDebugRenderingSystem.cpp" />
