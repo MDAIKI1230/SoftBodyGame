@@ -1141,15 +1141,6 @@
     <ClInclude Include="Source\Animation\Struct\Ragdoll\RagdollJointAngleLimitDefinition.h">
       <Filter>ソース ファイル\Animation\Struct\Ragdoll</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Physics\Struct\Constraint\EndPoint\AngleLimitHingeEndPoint.h">
-      <Filter>ソース ファイル\Physics\Struct\Constraint\EndPoint</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Physics\Struct\Constraint\EndPoint\DirectionEndPoint.h">
-      <Filter>ソース ファイル\Physics\Struct\Constraint\EndPoint</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Physics\Struct\Constraint\EndPoint\EndPoint.h">
-      <Filter>ソース ファイル\Physics\Struct\Constraint\EndPoint</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Physics\Struct\Constraint\Constraint\AngleLimitHingeConstraint.h">
       <Filter>ソース ファイル\Physics\Struct\Constraint\Constraint</Filter>
     </ClInclude>
@@ -1167,6 +1158,15 @@
     </ClInclude>
     <ClInclude Include="Source\Physics\Struct\Constraint\Constraint\PointConstraint.h">
       <Filter>ソース ファイル\Physics\Struct\Constraint\Constraint</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Struct\Constraint\EndPoint\AngleLimitHingeEndPoint.h">
+      <Filter>ソース ファイル\Physics\Struct\Constraint\EndPoint</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Struct\Constraint\EndPoint\DirectionEndPoint.h">
+      <Filter>ソース ファイル\Physics\Struct\Constraint\EndPoint</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Struct\Constraint\EndPoint\EndPoint.h">
+      <Filter>ソース ファイル\Physics\Struct\Constraint\EndPoint</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
