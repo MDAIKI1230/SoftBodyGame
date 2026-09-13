@@ -75,10 +75,10 @@ bool RagdollStorage::CreateRagdoll(EntityID _entity, SkeletonID _skeletonID, Mod
 	{
 		const std::string& boneName{ _skeleton.skeletonData->boneNames[boneIndex] };
 		// 作成用情報に対応するボーンの名前があるのなら、Bodyの作成にかかる。
-		if (_definition.Contains(boneName))
+		if (_definition.boneToBody.contains(boneName))
 		{
 			// ボディの情報
-			const RagdollBodyDefinition& bodyDefinition{ _definition[boneName] };
+			const RagdollBodyDefinition& bodyDefinition{ _definition.boneToBody.at(boneName) };
 
 			// トランスフォームを作ってからリジッドボディとコライダーを作成する
 			PhysicsTransformID transformID{

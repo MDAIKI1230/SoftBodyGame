@@ -338,6 +338,12 @@
     <Filter Include="ソース ファイル\Physics\Component\Constraint\Base">
       <UniqueIdentifier>{2d2e0754-fc53-4b3d-aaec-a0055dc82b58}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Physics\Struct\Constraint\EndPoint">
+      <UniqueIdentifier>{5dd93675-bc9b-4720-9702-478ee26716a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Physics\Struct\Constraint\Constraint">
+      <UniqueIdentifier>{c2d4cbce-7c8d-49b3-8f63-10960b1ef5b3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Objects\Camera.h">
@@ -544,9 +550,6 @@
     <ClInclude Include="Source\Physics\Struct\Body\SolverBody.h">
       <Filter>ソース ファイル\Physics\Struct\Body</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Physics\Struct\Constraint\ContactConstraint.h">
-      <Filter>ソース ファイル\Physics\Struct\Constraint</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Physics\Struct\Constraint\Constraint.h">
       <Filter>ソース ファイル\Physics\Struct\Constraint</Filter>
     </ClInclude>
@@ -637,20 +640,11 @@
     <ClInclude Include="Source\Physics\Struct\Constraint\ConstraintSlot.h">
       <Filter>ソース ファイル\Physics\Struct\Constraint</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Physics\Struct\Constraint\EndPoint.h">
-      <Filter>ソース ファイル\Physics\Struct\Constraint</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Physics\Struct\Constraint\PointConstraint.h">
-      <Filter>ソース ファイル\Physics\Struct\Constraint</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Physics\Storage\Constraint\PointConstraintStorage.h">
       <Filter>ソース ファイル\Physics\Storage\Constraint</Filter>
     </ClInclude>
     <ClInclude Include="Source\Physics\System\Solver\SolverBodyCommitSystem.h">
       <Filter>ソース ファイル\Physics\System\Solver</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Physics\Struct\Constraint\DistanceConstraint.h">
-      <Filter>ソース ファイル\Physics\Struct\Constraint</Filter>
     </ClInclude>
     <ClInclude Include="Source\Physics\Component\Constraint\DistanceConstraintComponent.h">
       <Filter>ソース ファイル\Physics\Component\Constraint</Filter>
@@ -1138,26 +1132,41 @@
     <ClInclude Include="Source\Physics\Storage\Component\Constraint\AngleLimitHingeConstraintComponentStorage.h">
       <Filter>ソース ファイル\Physics\Storage\Component\Constraint</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Physics\Struct\Constraint\AngleLimitPointConstraint.h">
-      <Filter>ソース ファイル\Physics\Struct\Constraint</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Physics\Struct\Constraint\HingeConstraint.h">
-      <Filter>ソース ファイル\Physics\Struct\Constraint</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Physics\Struct\Constraint\AngleLimitHingeConstraint.h">
-      <Filter>ソース ファイル\Physics\Struct\Constraint</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Physics\Struct\Constraint\DirectionEndPoint.h">
-      <Filter>ソース ファイル\Physics\Struct\Constraint</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Physics\Struct\Constraint\AngleLimitHingeEndPoint.h">
-      <Filter>ソース ファイル\Physics\Struct\Constraint</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Physics\Component\Constraint\Base\DirectionEndPointConstraintComponentBase.h">
       <Filter>ソース ファイル\Physics\Component\Constraint\Base</Filter>
     </ClInclude>
     <ClInclude Include="Source\Physics\Component\Constraint\Base\EndPointConstraintComponentBase.h">
       <Filter>ソース ファイル\Physics\Component\Constraint\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Animation\Struct\Ragdoll\RagdollJointAngleLimitDefinition.h">
+      <Filter>ソース ファイル\Animation\Struct\Ragdoll</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Struct\Constraint\EndPoint\AngleLimitHingeEndPoint.h">
+      <Filter>ソース ファイル\Physics\Struct\Constraint\EndPoint</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Struct\Constraint\EndPoint\DirectionEndPoint.h">
+      <Filter>ソース ファイル\Physics\Struct\Constraint\EndPoint</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Struct\Constraint\EndPoint\EndPoint.h">
+      <Filter>ソース ファイル\Physics\Struct\Constraint\EndPoint</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Struct\Constraint\Constraint\AngleLimitHingeConstraint.h">
+      <Filter>ソース ファイル\Physics\Struct\Constraint\Constraint</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Struct\Constraint\Constraint\AngleLimitPointConstraint.h">
+      <Filter>ソース ファイル\Physics\Struct\Constraint\Constraint</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Struct\Constraint\Constraint\ContactConstraint.h">
+      <Filter>ソース ファイル\Physics\Struct\Constraint\Constraint</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Struct\Constraint\Constraint\DistanceConstraint.h">
+      <Filter>ソース ファイル\Physics\Struct\Constraint\Constraint</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Struct\Constraint\Constraint\HingeConstraint.h">
+      <Filter>ソース ファイル\Physics\Struct\Constraint\Constraint</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Struct\Constraint\Constraint\PointConstraint.h">
+      <Filter>ソース ファイル\Physics\Struct\Constraint\Constraint</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

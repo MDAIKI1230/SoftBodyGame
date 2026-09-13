@@ -13,7 +13,7 @@
 struct RagdollBodyLink
 {
     // ボーンのインデックス
-    uint32_t boneIndex;
+	uint32_t boneIndex{ 0 };
     // ボディのID
     BodyID bodyID;
 

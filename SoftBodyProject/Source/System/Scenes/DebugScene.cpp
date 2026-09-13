@@ -201,7 +201,7 @@ void DebugScene::Initialize()
 	//objectManager.Add(std::move(hingeBox));
 
 	// 角度制限付き点拘束
-	std::unique_ptr<EmptyObject> angleLimitPointEmpty{ std::make_unique<EmptyObject>(&worldStorage, objectManager.GenerateNewID()) };
+	/*std::unique_ptr<EmptyObject> angleLimitPointEmpty{ std::make_unique<EmptyObject>(&worldStorage, objectManager.GenerateNewID()) };
 
 	angleLimitPointEmpty->GetComponent<TransformComponent>()->SetPosition(Vector3{ 0.0f,-100.0f,0.0f });
 
@@ -218,10 +218,10 @@ void DebugScene::Initialize()
 
 	angleLimitPoint->AddEndPoint(angleLimitPointBox->GetID(), Vector3{ 50.0f,0.0f,10.0f }, Vector3::RIGHT);
 
-	objectManager.Add(std::move(angleLimitPointBox));
+	objectManager.Add(std::move(angleLimitPointBox));*/
 
 	// 角度制限付きヒンジ拘束
-	/*std::unique_ptr<EmptyObject> angleLimitHingeEmpty{ std::make_unique<EmptyObject>(&worldStorage, objectManager.GenerateNewID()) };
+	std::unique_ptr<EmptyObject> angleLimitHingeEmpty{ std::make_unique<EmptyObject>(&worldStorage, objectManager.GenerateNewID()) };
 
 	angleLimitHingeEmpty->GetComponent<TransformComponent>()->SetPosition(Vector3{ 0.0f,-100.0f,0.0f });
 
@@ -238,5 +238,5 @@ void DebugScene::Initialize()
 
 	angleLimitHinge->AddEndPoint(angleLimitHingeBox->GetID(), Vector3{ 50.0f,0.0f,10.0f }, Vector3::UP,-Vector3::RIGHT);
 
-	objectManager.Add(std::move(angleLimitHingeBox));*/
+	objectManager.Add(std::move(angleLimitHingeBox));
 }
