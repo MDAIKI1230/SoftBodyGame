@@ -1168,6 +1168,21 @@
     <ClInclude Include="Source\Physics\Struct\Constraint\EndPoint\EndPoint.h">
       <Filter>ソース ファイル\Physics\Struct\Constraint\EndPoint</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Physics\Struct\Constraint\Constraint\LimitedBallJointConstraint.h">
+      <Filter>ソース ファイル\Physics\Struct\Constraint\Constraint</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Storage\Constraint\LimitedBallJointConstraintStorage.h">
+      <Filter>ソース ファイル\Physics\Storage\Constraint</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Component\Constraint\LimitedBallJointConstraintComponent.h">
+      <Filter>ソース ファイル\Physics\Component\Constraint</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Storage\Component\Constraint\LimitedBallJointConstraintComponentStorage.h">
+      <Filter>ソース ファイル\Physics\Storage\Component\Constraint</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Struct\Constraint\EndPoint\EndPointFrame.h">
+      <Filter>ソース ファイル\Physics\Struct\Constraint\EndPoint</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\System\Scenes\DebugScene.cpp">
@@ -1523,6 +1538,12 @@
     </ClCompile>
     <ClCompile Include="Source\Physics\Component\Constraint\Base\EndPointConstraintComponentBase.cpp">
       <Filter>ソース ファイル\Physics\Component\Constraint\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Physics\Component\Constraint\LimitedBallJointConstraintComponent.cpp">
+      <Filter>ソース ファイル\Physics\Component\Constraint</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Physics\Storage\Component\Constraint\LimitedBallJointConstraintComponentStorage.cpp">
+      <Filter>ソース ファイル\Physics\Storage\Component\Constraint</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
