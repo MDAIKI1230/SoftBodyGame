@@ -4,13 +4,13 @@
 
 // コンストラクタ
 AngleLimitHingeConstraintComponent::AngleLimitHingeConstraintComponent(EntityID _entity) :
-	ConstraintComponentBase{ PhysicsComponentAPI::CreateAngleLimitHingeConstraint(_entity, Vector3::ZERO, Quaternion::Identity()) }
+	ConstraintComponentBase{ PhysicsComponentAPI::CreateAngleLimitHingeConstraint(_entity, Vector3::ZERO, Quaternion::IDENTITY) }
 {
 }
 
 // コンストラクタ
 AngleLimitHingeConstraintComponent::AngleLimitHingeConstraintComponent(EntityID _entity, const Vector3& _localOffset) :
-	ConstraintComponentBase{ PhysicsComponentAPI::CreateAngleLimitHingeConstraint(_entity, _localOffset, Quaternion::Identity()) }
+	ConstraintComponentBase{ PhysicsComponentAPI::CreateAngleLimitHingeConstraint(_entity, _localOffset, Quaternion::IDENTITY) }
 {
 }
 

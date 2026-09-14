@@ -4,7 +4,7 @@
 
 // コンストラクタ
 HingeConstraintComponent::HingeConstraintComponent(EntityID _entity) :
-	ConstraintComponentBase{ PhysicsComponentAPI::CreateHingeConstraint(_entity, Vector3::ZERO, Quaternion::Identity()) }
+	ConstraintComponentBase{ PhysicsComponentAPI::CreateHingeConstraint(_entity, Vector3::ZERO, Quaternion::IDENTITY) }
 {
 }
 

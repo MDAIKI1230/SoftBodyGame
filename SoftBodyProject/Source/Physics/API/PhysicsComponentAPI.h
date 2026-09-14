@@ -218,7 +218,7 @@ public:
 	static void SetEndPoint(ConstraintID _id,const EndPointFrame& _endPoint);
 
 	// 拘束にEndPoint追加
-	static void AddEndPoint(ConstraintID _id, EntityID _entity, const Vector3& _localOffset, const Quaternion& _localRotation = Quaternion::Identity());
+	static void AddEndPoint(ConstraintID _id, EntityID _entity, const Vector3& _localOffset, const Quaternion& _localRotation = Quaternion::IDENTITY);
 	// 拘束からEndPoint除外
 	static void RemoveEndPoint(ConstraintID _id, EntityID _entity);
 
@@ -396,7 +396,7 @@ public:
 		const Vector3& _localOffset, const Quaternion& _localRotation);
 
 	// 内部用拘束のEndPoint追加(寿命管理をちゃんを忘れない)
-	static void AddInternalEndPoint(ConstraintID _constraintID, PhysicsTransformID _transformID, const Vector3& _localOffset, const Quaternion& _localRotation = Quaternion::Identity());
+	static void AddInternalEndPoint(ConstraintID _constraintID, PhysicsTransformID _transformID, const Vector3& _localOffset, const Quaternion& _localRotation = Quaternion::IDENTITY);
 
 	// PhysicsTransform破棄(対応する他の奴も破棄する)
 	static void DestroyPhysicsTransform(PhysicsTransformID _transformID);

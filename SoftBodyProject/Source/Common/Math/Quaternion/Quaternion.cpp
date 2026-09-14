@@ -4,10 +4,7 @@
 #include "Quaternion.h"
 
 // 単位
-Quaternion Quaternion::Identity()
-{
-	return Quaternion{ 0,0,0,1 };
-}
+const Quaternion Quaternion::IDENTITY{ 0.0f,0.0f,0.0f,1.0f };
 
 // ベクトル回転
 Vector3 Quaternion::Rotate(const Vector3& _vec) const

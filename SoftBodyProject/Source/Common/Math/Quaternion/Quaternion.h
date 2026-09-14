@@ -43,7 +43,7 @@ public:
 	}
 
 	// 単位
-	static Quaternion Identity();
+	static const Quaternion IDENTITY;
 
 	// ベクトル回転
 	Vector3 Rotate(const Vector3& _vec) const;

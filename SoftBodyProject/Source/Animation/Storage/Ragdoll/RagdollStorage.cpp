@@ -85,7 +85,7 @@ bool RagdollStorage::CreateRagdoll(EntityID _entity, SkeletonID _skeletonID, Mod
 				PhysicsComponentAPI::CreateInternalPhysicsTransformID(
 					_entity,
 					Vector3::ZERO,
-					Quaternion::Identity(),
+					Quaternion::IDENTITY,
 					Vector3::ONE) };
 
 			ragdoll.transforms.push_back(transformID);

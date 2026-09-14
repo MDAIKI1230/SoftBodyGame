@@ -852,7 +852,7 @@ Quaternion PhysicsComponentAPI::GetCharacterControllerRotation(CharacterControll
 
 	if (transform == nullptr)
 	{
-		return Quaternion::Identity();
+		return Quaternion::IDENTITY;
 	}
 
 	return transform->GetRotation();

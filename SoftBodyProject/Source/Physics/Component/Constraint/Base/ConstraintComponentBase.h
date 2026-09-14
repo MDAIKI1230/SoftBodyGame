@@ -22,7 +22,7 @@ public:
 	void SetEndPoint(const EndPointFrame& _endPoint);
 
 	// 対応点追加
-	void AddEndPoint(EntityID _entityID, const Vector3& _localOffset, const Quaternion& _rotation = Quaternion::Identity());
+	void AddEndPoint(EntityID _entityID, const Vector3& _localOffset, const Quaternion& _rotation = Quaternion::IDENTITY);
 	// 対応点削除
 	void RemoveEndPoint(EntityID _entityID);
 

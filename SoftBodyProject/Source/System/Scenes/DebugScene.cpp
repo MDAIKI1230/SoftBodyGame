@@ -256,7 +256,7 @@ void DebugScene::Initialize()
 
 	limitedBallJointBox->AddComponent<RigidBodyComponent>();
 
-	limitedBallJoint->AddEndPoint(limitedBallJointBox->GetID(), Vector3{ 0.0f,35.0f,0.0f }, Quaternion::Identity());
+	limitedBallJoint->AddEndPoint(limitedBallJointBox->GetID(), Vector3{ 0.0f,35.0f,0.0f }, Quaternion::IDENTITY);
 
 	objectManager.Add(std::move(limitedBallJointBox));
 }
