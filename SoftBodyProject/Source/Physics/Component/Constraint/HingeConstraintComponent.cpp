@@ -4,19 +4,7 @@
 
 // コンストラクタ
 HingeConstraintComponent::HingeConstraintComponent(EntityID _entity) :
-	DirectionEndPointConstraintComponentBase{ PhysicsComponentAPI::CreateHingeConstraint(_entity, Vector3::ZERO, Vector3::UP) }
-{
-}
-
-// コンストラクタ
-HingeConstraintComponent::HingeConstraintComponent(EntityID _entity, Vector3 _localOffset) :
-	DirectionEndPointConstraintComponentBase{ PhysicsComponentAPI::CreateHingeConstraint(_entity, _localOffset, Vector3::UP) }
-{
-}
-
-// コンストラクタ
-HingeConstraintComponent::HingeConstraintComponent(EntityID _entity, Vector3 _localOffset, Vector3 _localDirection) :
-	DirectionEndPointConstraintComponentBase{ PhysicsComponentAPI::CreateHingeConstraint(_entity, _localOffset, _localDirection) }
+	ConstraintComponentBase{ PhysicsComponentAPI::CreateHingeConstraint(_entity, Vector3::ZERO, Quaternion::Identity()) }
 {
 }
 

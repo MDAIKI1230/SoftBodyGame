@@ -32,9 +32,9 @@ public:
 	std::vector<EndPointFrame> endPoints;
 
 	// Twist制限角度
-	float twistAngle;
+	float twistAngle{ 0.0f };
 	// Swing制限角度
-	float swingAngle;
+	float swingAngle{ 0.0f };
 
 	// 柔らかさなどの調整用数値(角度と位置で別に用意)
 	ConstraintTuning positionTuning;

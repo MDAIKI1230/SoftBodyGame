@@ -1132,10 +1132,7 @@
     <ClInclude Include="Source\Physics\Storage\Component\Constraint\AngleLimitHingeConstraintComponentStorage.h">
       <Filter>ソース ファイル\Physics\Storage\Component\Constraint</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Physics\Component\Constraint\Base\DirectionEndPointConstraintComponentBase.h">
-      <Filter>ソース ファイル\Physics\Component\Constraint\Base</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Physics\Component\Constraint\Base\EndPointConstraintComponentBase.h">
+    <ClInclude Include="Source\Physics\Component\Constraint\Base\ConstraintComponentBase.h">
       <Filter>ソース ファイル\Physics\Component\Constraint\Base</Filter>
     </ClInclude>
     <ClInclude Include="Source\Animation\Struct\Ragdoll\RagdollJointAngleLimitDefinition.h">
@@ -1159,15 +1156,6 @@
     <ClInclude Include="Source\Physics\Struct\Constraint\Constraint\PointConstraint.h">
       <Filter>ソース ファイル\Physics\Struct\Constraint\Constraint</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Physics\Struct\Constraint\EndPoint\AngleLimitHingeEndPoint.h">
-      <Filter>ソース ファイル\Physics\Struct\Constraint\EndPoint</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Physics\Struct\Constraint\EndPoint\DirectionEndPoint.h">
-      <Filter>ソース ファイル\Physics\Struct\Constraint\EndPoint</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Physics\Struct\Constraint\EndPoint\EndPoint.h">
-      <Filter>ソース ファイル\Physics\Struct\Constraint\EndPoint</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Physics\Struct\Constraint\Constraint\LimitedBallJointConstraint.h">
       <Filter>ソース ファイル\Physics\Struct\Constraint\Constraint</Filter>
     </ClInclude>
@@ -1182,6 +1170,9 @@
     </ClInclude>
     <ClInclude Include="Source\Physics\Struct\Constraint\EndPoint\EndPointFrame.h">
       <Filter>ソース ファイル\Physics\Struct\Constraint\EndPoint</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Common\Macro\AssertMacros.h">
+      <Filter>ソース ファイル\Common\Macro</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1533,10 +1524,7 @@
     <ClCompile Include="Source\Physics\Storage\Component\Constraint\AngleLimitHingeConstraintComponentStorage.cpp">
       <Filter>ソース ファイル\Physics\Storage\Component\Constraint</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Physics\Component\Constraint\Base\DirectionEndPointConstraintComponentBase.cpp">
-      <Filter>ソース ファイル\Physics\Component\Constraint\Base</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Physics\Component\Constraint\Base\EndPointConstraintComponentBase.cpp">
+    <ClCompile Include="Source\Physics\Component\Constraint\Base\ConstraintComponentBase.cpp">
       <Filter>ソース ファイル\Physics\Component\Constraint\Base</Filter>
     </ClCompile>
     <ClCompile Include="Source\Physics\Component\Constraint\LimitedBallJointConstraintComponent.cpp">

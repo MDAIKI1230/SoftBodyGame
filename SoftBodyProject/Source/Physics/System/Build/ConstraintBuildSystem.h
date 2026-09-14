@@ -20,6 +20,8 @@ private:
 	void BuildAngleLimitPointConstraint(ConstraintStorage* _constraintStorage, SolverBodyBuffer* _solverBodyBuffer, ConstraintBuffer* _constraintBuffer);
 	// 角度制限付きヒンジ拘束の解く用の拘束構造体を作る
 	void BuildAngleLimitHingeConstraint(ConstraintStorage* _constraintStorage, SolverBodyBuffer* _solverBodyBuffer, ConstraintBuffer* _constraintBuffer);
+	// SwingTwist拘束の解く用の拘束構造体を作る
+	void BuildLimitedBallJointConstraint(ConstraintStorage* _constraintStorage, SolverBodyBuffer* _solverBodyBuffer, ConstraintBuffer* _constraintBuffer);
 
 	void MakeConstraintInfo(Constraint& _constraint, const ConstraintTuning& _tuning);
 

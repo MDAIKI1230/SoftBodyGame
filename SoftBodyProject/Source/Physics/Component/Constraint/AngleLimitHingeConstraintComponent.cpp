@@ -4,44 +4,20 @@
 
 // コンストラクタ
 AngleLimitHingeConstraintComponent::AngleLimitHingeConstraintComponent(EntityID _entity) :
-	id{ PhysicsComponentAPI::CreateAngleLimitHingeConstraint(_entity, Vector3::ZERO, Vector3::UP, Vector3::FORWARD, 0.0f, 0.0f) }
+	ConstraintComponentBase{ PhysicsComponentAPI::CreateAngleLimitHingeConstraint(_entity, Vector3::ZERO, Quaternion::Identity()) }
 {
 }
 
 // コンストラクタ
-AngleLimitHingeConstraintComponent::AngleLimitHingeConstraintComponent(EntityID _entity, Vector3 _localOffset) :
-	id{ PhysicsComponentAPI::CreateAngleLimitHingeConstraint(_entity, _localOffset, Vector3::UP, Vector3::FORWARD, 0.0f, 0.0f) }
+AngleLimitHingeConstraintComponent::AngleLimitHingeConstraintComponent(EntityID _entity, const Vector3& _localOffset) :
+	ConstraintComponentBase{ PhysicsComponentAPI::CreateAngleLimitHingeConstraint(_entity, _localOffset, Quaternion::Identity()) }
 {
 }
 
 // コンストラクタ
-AngleLimitHingeConstraintComponent::AngleLimitHingeConstraintComponent(EntityID _entity, float _angleMin, float _angleMax) :
-	id{ PhysicsComponentAPI::CreateAngleLimitHingeConstraint(_entity, Vector3::ZERO, Vector3::UP, Vector3::FORWARD, _angleMin, _angleMax) }
+AngleLimitHingeConstraintComponent::AngleLimitHingeConstraintComponent(EntityID _entity, const Vector3& _localOffset, const Quaternion& _localRotation) :
+	ConstraintComponentBase{ PhysicsComponentAPI::CreateAngleLimitHingeConstraint(_entity, _localOffset, _localRotation) }
 {
-}
-
-// コンストラクタ
-AngleLimitHingeConstraintComponent::AngleLimitHingeConstraintComponent(EntityID _entity, Vector3 _localOffset, Vector3 _localAxis, Vector3 _localDirection) :
-	id{ PhysicsComponentAPI::CreateAngleLimitHingeConstraint(_entity, _localOffset, _localAxis, _localDirection, 0.0f, 0.0f) }
-{
-}
-
-// コンストラクタ
-AngleLimitHingeConstraintComponent::AngleLimitHingeConstraintComponent(EntityID _entity, Vector3 _localOffset, Vector3 _localAxis, Vector3 _localDirection, float _angleMin, float _angleMax) :
-	id{ PhysicsComponentAPI::CreateAngleLimitHingeConstraint(_entity, _localOffset, _localAxis, _localDirection, _angleMin, _angleMax) }
-{
-}
-
-// 対応点追加
-void AngleLimitHingeConstraintComponent::AddEndPoint(EntityID _entityID, const Vector3& _localOffset, const Vector3& _localAxis, const Vector3& _localDirection)
-{
-	PhysicsComponentAPI::AddAngleLimitHingeEndPoint(id, _entityID, _localOffset, _localAxis, _localDirection);
-}
-
-// 対応点削除
-void AngleLimitHingeConstraintComponent::RemoveEndPoint(EntityID _entityID)
-{
-	PhysicsComponentAPI::RemoveEndPoint(id, _entityID);
 }
 
 // 最小角度取得

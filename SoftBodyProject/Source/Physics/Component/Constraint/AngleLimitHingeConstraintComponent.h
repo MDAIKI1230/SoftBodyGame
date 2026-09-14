@@ -3,27 +3,19 @@
 #include "MDMath.h"
 
 #include "EntityID.h"
-#include "ConstraintID.h"
 #include "ConstraintTuning.h"
 
-struct AngleLimitHingeConstraintComponent
+#include "Base/ConstraintComponentBase.h"
+
+struct AngleLimitHingeConstraintComponent :public ConstraintComponentBase
 {
 public:
 	// コンストラクタ
 	AngleLimitHingeConstraintComponent(EntityID _entity);
 	// コンストラクタ
-	AngleLimitHingeConstraintComponent(EntityID _entity, Vector3 _localOffset);
+	AngleLimitHingeConstraintComponent(EntityID _entity, const Vector3& _localOffset);
 	// コンストラクタ
-	AngleLimitHingeConstraintComponent(EntityID _entity, float _angleMin, float _angleMax);
-	// コンストラクタ
-	AngleLimitHingeConstraintComponent(EntityID _entity, Vector3 _localOffset, Vector3 _localAxis, Vector3 _localDirection);
-	// コンストラクタ
-	AngleLimitHingeConstraintComponent(EntityID _entity, Vector3 _localOffset, Vector3 _localAxis, Vector3 _localDirection, float _angleMin, float _angleMax);
-
-	// 対応点追加
-	void AddEndPoint(EntityID _entityID, const Vector3& _localOffset, const Vector3& _localAxis, const Vector3& _localDirection);
-	// 対応点削除
-	void RemoveEndPoint(EntityID _entityID);
+	AngleLimitHingeConstraintComponent(EntityID _entity, const Vector3& _localOffset, const Quaternion& _localRotation);
 
 	// 最小角度取得
 	float GetAngleMin() const;
@@ -47,9 +39,4 @@ public:
 	ConstraintTuning GetAngularTuning() const;
 	// 回転Tuning変更
 	void SetAngularTuning(const ConstraintTuning& _tuning);
-
-	// ID取得
-	ConstraintID GetID() const { return id; }
-private:
-	ConstraintID id;
 };

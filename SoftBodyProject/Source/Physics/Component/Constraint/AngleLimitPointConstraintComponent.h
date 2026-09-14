@@ -4,22 +4,18 @@
 
 #include "ConstraintTuning.h"
 
-#include "Base/DirectionEndPointConstraintComponentBase.h"
+#include "Base/ConstraintComponentBase.h"
 
-struct AngleLimitPointConstraintComponent :public DirectionEndPointConstraintComponentBase
+struct AngleLimitPointConstraintComponent :public ConstraintComponentBase
 {
 	friend class AngleLimitPointConstraintComponentStorage;
 public:
 	// コンストラクタ
 	AngleLimitPointConstraintComponent(EntityID _entity);
 	// コンストラクタ
-	AngleLimitPointConstraintComponent(EntityID _entity, Vector3 _localOffset);
+	AngleLimitPointConstraintComponent(EntityID _entity, const Vector3& _localOffset);
 	// コンストラクタ
-	AngleLimitPointConstraintComponent(EntityID _entity, float _angleMin, float _angleMax);
-	// コンストラクタ
-	AngleLimitPointConstraintComponent(EntityID _entity, Vector3 _localOffset, Vector3 _localDirection);
-	// コンストラクタ
-	AngleLimitPointConstraintComponent(EntityID _entity, Vector3 _localOffset, Vector3 _localDirection, float _angleMin, float _angleMax);
+	AngleLimitPointConstraintComponent(EntityID _entity, const Vector3& _localOffset, const Quaternion& _localRotation);
 
 	// 最小角度取得
 	float GetAngleMin() const;

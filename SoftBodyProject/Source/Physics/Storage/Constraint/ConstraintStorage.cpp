@@ -7,6 +7,7 @@ ConstraintStorage::ConstraintStorage()
 	hingeConstraintStorage = std::make_unique<HingeConstraintStorage>();
 	angleLimitPointConstraintStorage = std::make_unique<AngleLimitPointConstraintStorage>();
 	angleLimitHingeConstraintStorage = std::make_unique<AngleLimitHingeConstraintStorage>();
+	limitedBallJointConstraintStorage = std::make_unique<LimitedBallJointConstraintStorage>();
 }
 
 ConstraintID ConstraintStorage::CreatePointConstraint(EntityID _entity, PhysicsTransformID _transformID,const Vector3& _localOffset)
@@ -28,7 +29,7 @@ ConstraintID ConstraintStorage::CreatePointConstraint(EntityID _entity, PhysicsT
 	return id;
 }
 
-ConstraintID ConstraintStorage::CreateDistanceConstraint(EntityID _entity, PhysicsTransformID _transformID, const Vector3& _localOffset, float _distance)
+ConstraintID ConstraintStorage::CreateDistanceConstraint(EntityID _entity, PhysicsTransformID _transformID, const Vector3& _localOffset)
 {
 	// ID作成
 	ConstraintID id{ CreateID(ConstraintType::DISTANCE,distanceConstraintStorage->CountConstraint(),_entity,_transformID)};
@@ -36,7 +37,6 @@ ConstraintID ConstraintStorage::CreateDistanceConstraint(EntityID _entity, Physi
 	// 実態を作る
 	DistanceConstraint distanceConstraint;
 	distanceConstraint.endPoints.emplace_back(_transformID, _localOffset);
-	distanceConstraint.distance = _distance;
 
 	// 追加
 	distanceConstraintStorage->Add(id, distanceConstraint);
@@ -49,14 +49,14 @@ ConstraintID ConstraintStorage::CreateDistanceConstraint(EntityID _entity, Physi
 }
 
 // ヒンジ拘束作成関数
-ConstraintID ConstraintStorage::CreateHingeConstraint(EntityID _entity, PhysicsTransformID _transformID, const Vector3& _localOffset, const Vector3& _localDirection)
+ConstraintID ConstraintStorage::CreateHingeConstraint(EntityID _entity, PhysicsTransformID _transformID, const Vector3& _localOffset, const Quaternion& _localRotation)
 {
 	// ID作成
 	ConstraintID id{ CreateID(ConstraintType::HINGE,hingeConstraintStorage->CountConstraint(),_entity,_transformID) };
 
 	// 実態を作る
 	HingeConstraint hingeConstraint;
-	hingeConstraint.ownerEndPoint = DirectionEndPoint{ _transformID,_localOffset,_localDirection };
+	hingeConstraint.ownerEndPoint = EndPointFrame{ _transformID,_localOffset,_localRotation };
 
 	// 追加
 	hingeConstraintStorage->Add(id, hingeConstraint);
@@ -69,16 +69,14 @@ ConstraintID ConstraintStorage::CreateHingeConstraint(EntityID _entity, PhysicsT
 }
 
 // 角度制限付き点拘束作成関数
-ConstraintID ConstraintStorage::CreateAngleLimitPointConstraint(EntityID _entity, PhysicsTransformID _transformID, const Vector3& _localOffset, const Vector3& _localDirection, float _angleMin, float _angleMax)
+ConstraintID ConstraintStorage::CreateAngleLimitPointConstraint(EntityID _entity, PhysicsTransformID _transformID, const Vector3& _localOffset, const Quaternion& _localRotation)
 {
 	// ID作成
 	ConstraintID id{ CreateID(ConstraintType::ANGLE_LIMIT_POINT,angleLimitPointConstraintStorage->CountConstraint(),_entity,_transformID) };
 
 	// 実態を作る
 	AngleLimitPointConstraint angleLimitPointConstraint;
-	angleLimitPointConstraint.directionEndPoints.emplace_back(_transformID, _localOffset, _localDirection);
-	angleLimitPointConstraint.angleMin = _angleMin;
-	angleLimitPointConstraint.angleMax = _angleMax;
+	angleLimitPointConstraint.ownerEndPoint = EndPointFrame{ _transformID, _localOffset, _localRotation };
 
 	// 追加
 	angleLimitPointConstraintStorage->Add(id, angleLimitPointConstraint);
@@ -93,17 +91,14 @@ ConstraintID ConstraintStorage::CreateAngleLimitPointConstraint(EntityID _entity
 // 角度制限付きヒンジ拘束作成関数
 ConstraintID ConstraintStorage::CreateAngleLimitHingeConstraint(
 	EntityID _entity, PhysicsTransformID _transformID,
-	const Vector3& _localOffset, const Vector3& _localAxis, const Vector3& _localDirection,
-	float _angleMin, float _angleMax)
+	const Vector3& _localOffset, const Quaternion& _localRotation)
 {
 	// ID作成
 	ConstraintID id{ CreateID(ConstraintType::ANGLE_LIMIT_HINGE,angleLimitHingeConstraintStorage->CountConstraint(),_entity,_transformID) };
 
 	// 実態を作る
 	AngleLimitHingeConstraint angleLimitHingeConstraint;
-	angleLimitHingeConstraint.ownerEndPoint = AngleLimitHingeEndPoint{ _transformID ,_localOffset ,_localAxis,_localDirection };
-	angleLimitHingeConstraint.angleMin = _angleMin;
-	angleLimitHingeConstraint.angleMax = _angleMax;
+	angleLimitHingeConstraint.ownerEndPoint = EndPointFrame{ _transformID ,_localOffset ,_localRotation };
 
 	// 追加
 	angleLimitHingeConstraintStorage->Add(id, angleLimitHingeConstraint);
@@ -116,10 +111,7 @@ ConstraintID ConstraintStorage::CreateAngleLimitHingeConstraint(
 }
 
 // SwingTwist拘束作成関数
-ConstraintID ConstraintStorage::CreateLimitedBallJointConstraint(
-	EntityID _entity, PhysicsTransformID _transformID,
-	const Vector3& _localOffset, const Quaternion& _localRotation,
-	float _swingAngle, float _twistAngle)
+ConstraintID ConstraintStorage::CreateLimitedBallJointConstraint(EntityID _entity, PhysicsTransformID _transformID, const Vector3& _localOffset, const Quaternion& _localRotation)
 {
 	// ID作成
 	ConstraintID id{ CreateID(ConstraintType::LIMITED_BALL_JOINT,angleLimitHingeConstraintStorage->CountConstraint(),_entity,_transformID) };
@@ -127,8 +119,6 @@ ConstraintID ConstraintStorage::CreateLimitedBallJointConstraint(
 	// 実態を作る
 	LimitedBallJointConstraint limitedBallJointConstraint;
 	limitedBallJointConstraint.ownerEndPoint = EndPointFrame{ _transformID ,_localOffset ,_localRotation };
-	limitedBallJointConstraint.swingAngle = _swingAngle;
-	limitedBallJointConstraint.twistAngle = _twistAngle;
 
 	// 追加
 	limitedBallJointConstraintStorage->Add(id, limitedBallJointConstraint);
@@ -167,6 +157,7 @@ void ConstraintStorage::Destory(ConstraintID _id)
 		break;
 	case ConstraintType::ANGLE_LIMIT_HINGE:
 		movedId = angleLimitHingeConstraintStorage->Remove(GetDenseIndex(_id));
+		break;
 	case ConstraintType::LIMITED_BALL_JOINT:
 		movedId = limitedBallJointConstraintStorage->Remove(GetDenseIndex(_id));
 		break;

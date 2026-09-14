@@ -11,6 +11,7 @@ void ConstraintBuildSystem::FixedUpdate(ConstraintStorage* _constraintStorage, S
 	BuildHingeConstraint(_constraintStorage, _solverBodyBuffer, _constraintBuffer);
 	BuildAngleLimitPointConstraint(_constraintStorage, _solverBodyBuffer, _constraintBuffer);
 	BuildAngleLimitHingeConstraint(_constraintStorage, _solverBodyBuffer, _constraintBuffer);
+	BuildLimitedBallJointConstraint(_constraintStorage, _solverBodyBuffer, _constraintBuffer);
 }
 
 // 点拘束の解く用の拘束構造体を作る
@@ -32,7 +33,7 @@ void ConstraintBuildSystem::BuildPointConstraint(ConstraintStorage* _constraintS
 		// 基準点となるボディから位置を持ってくる。
 		uint32_t basePointIndex{ _solverBodyBuffer->GetIndex(pointConstraint.endPoints[0].transformID) };
 		const SolverBody& solverBodyBase{ _solverBodyBuffer->Get(basePointIndex) };
-		Vector3 basePoint{ solverBodyBase.position + solverBodyBase.rotation.Rotate(pointConstraint.endPoints[0].localPoint) };
+		Vector3 basePoint{ solverBodyBase.position + solverBodyBase.rotation.Rotate(pointConstraint.endPoints[0].localPosition) };
 
 		for (int i{ 1 }; i < pointConstraint.endPoints.size(); i++)
 		{
@@ -41,7 +42,7 @@ void ConstraintBuildSystem::BuildPointConstraint(ConstraintStorage* _constraintS
 			// 対象の位置を取得
 			uint32_t pointIndex{ _solverBodyBuffer->GetIndex(pointConstraint.endPoints[i].transformID) };
 			const SolverBody& solverBody{ _solverBodyBuffer->Get(pointIndex) };
-			Vector3 point{ solverBody.position + solverBody.rotation.Rotate(pointConstraint.endPoints[i].localPoint) };
+			Vector3 point{ solverBody.position + solverBody.rotation.Rotate(pointConstraint.endPoints[i].localPosition) };
 
 			constraint.solverBodyAIndex = basePointIndex;
 			constraint.solverBodyBIndex = pointIndex;
@@ -78,7 +79,7 @@ void ConstraintBuildSystem::BuildDistanceConstraint(ConstraintStorage* _constrai
 		// 基準点となるボディから位置を持ってくる。
 		uint32_t basePointIndex{ _solverBodyBuffer->GetIndex(distanceConstraint.endPoints[0].transformID) };
 		const SolverBody& solverBodyBase{ _solverBodyBuffer->Get(basePointIndex) };
-		Vector3 basePoint{ solverBodyBase.position + solverBodyBase.rotation.Rotate(distanceConstraint.endPoints[0].localPoint) };
+		Vector3 basePoint{ solverBodyBase.position + solverBodyBase.rotation.Rotate(distanceConstraint.endPoints[0].localPosition) };
 
 		for (int i{ 1 }; i < distanceConstraint.endPoints.size(); i++)
 		{
@@ -87,7 +88,7 @@ void ConstraintBuildSystem::BuildDistanceConstraint(ConstraintStorage* _constrai
 			// 対象の位置を取得
 			uint32_t pointIndex{ _solverBodyBuffer->GetIndex(distanceConstraint.endPoints[i].transformID) };
 			const SolverBody& solverBody{ _solverBodyBuffer->Get(pointIndex) };
-			Vector3 point{ solverBody.position + solverBody.rotation.Rotate(distanceConstraint.endPoints[i].localPoint) };
+			Vector3 point{ solverBody.position + solverBody.rotation.Rotate(distanceConstraint.endPoints[i].localPosition) };
 
 			constraint.solverBodyAIndex = basePointIndex;
 			constraint.solverBodyBIndex = pointIndex;
@@ -138,7 +139,7 @@ void ConstraintBuildSystem::BuildHingeConstraint(ConstraintStorage* _constraintS
 	for (auto& hingeConstraint : _constraintStorage->EditHingeConstraintRange())
 	{
 		// 対象がいないとダメ
-		if (hingeConstraint.directionEndPoints.size() < 1)
+		if (hingeConstraint.endPoints.size() < 1)
 		{
 			continue;
 		}
@@ -148,11 +149,11 @@ void ConstraintBuildSystem::BuildHingeConstraint(ConstraintStorage* _constraintS
 		const SolverBody& solverBodyBase{ _solverBodyBuffer->Get(basePointIndex) };
 		Vector3 basePoint{ solverBodyBase.position + solverBodyBase.rotation.Rotate(hingeConstraint.ownerEndPoint.localPosition) };
 
-		Vector3 axis{ solverBodyBase.rotation
-			.Rotate(hingeConstraint.ownerEndPoint.localDirection)
-			.Normalized() };
+		Vector3 axis{ hingeConstraint.ownerEndPoint.localRotation.Rotate(Vector3::UP) };
 
-		for (auto& directionEndPoint : hingeConstraint.directionEndPoints)
+		axis = solverBodyBase.rotation.Rotate(axis).Normalized();
+
+		for (auto& directionEndPoint : hingeConstraint.endPoints)
 		{
 			// 対象の位置を取得
 			uint32_t pointIndex{ _solverBodyBuffer->GetIndex(directionEndPoint.transformID) };
@@ -163,7 +164,8 @@ void ConstraintBuildSystem::BuildHingeConstraint(ConstraintStorage* _constraintS
 			Vector3 rB{ point - solverBody.position };
 
 			// B側ヒンジ軸
-			Vector3 axisB{ solverBody.rotation.Rotate(directionEndPoint.localDirection) };
+			Vector3 axisB{ directionEndPoint.localRotation.Rotate(Vector3::UP) };
+			axisB = solverBody.rotation.Rotate(axisB);
 
 			// 不正なヒンジ軸
 			if (axisB.LengthSqr() <= MathConstants::EPSILON)
@@ -245,26 +247,28 @@ void ConstraintBuildSystem::BuildAngleLimitPointConstraint(ConstraintStorage* _c
 	for (auto& angleLimitPointConstraint : _constraintStorage->EditAngleLimitPointConstraintRange())
 	{
 		// ポイントが2つ以上じゃないと拘束なんて発生しない
-		if (angleLimitPointConstraint.directionEndPoints.size() <= 1)
+		if (angleLimitPointConstraint.endPoints.size() < 1)
 		{
 			continue;
 		}
 
 		// 基準点となるボディから位置を持ってくる。
-		uint32_t basePointIndex{ _solverBodyBuffer->GetIndex(angleLimitPointConstraint.directionEndPoints[0].transformID) };
+		uint32_t basePointIndex{ _solverBodyBuffer->GetIndex(angleLimitPointConstraint.ownerEndPoint.transformID) };
 		const SolverBody& solverBodyBase{ _solverBodyBuffer->Get(basePointIndex) };
-		Vector3 basePoint{ solverBodyBase.position + solverBodyBase.rotation.Rotate(angleLimitPointConstraint.directionEndPoints[0].localPosition) };
-		Vector3 baseDir{ solverBodyBase.rotation.Rotate(angleLimitPointConstraint.directionEndPoints[0].localDirection) };
+		Vector3 basePoint{ solverBodyBase.position + solverBodyBase.rotation.Rotate(angleLimitPointConstraint.ownerEndPoint.localPosition) };
+		Vector3 baseDir{ angleLimitPointConstraint.ownerEndPoint.localRotation.Rotate(Vector3::UP) };
+		baseDir = solverBodyBase.rotation.Rotate(baseDir);
 
-		for (int i{ 1 }; i < angleLimitPointConstraint.directionEndPoints.size(); i++)
+		for (const auto& endPoint: angleLimitPointConstraint.endPoints)
 		{
 			Constraint constraint;
 
 			// 対象の位置を取得
-			uint32_t pointIndex{ _solverBodyBuffer->GetIndex(angleLimitPointConstraint.directionEndPoints[i].transformID) };
+			uint32_t pointIndex{ _solverBodyBuffer->GetIndex(endPoint.transformID) };
 			const SolverBody& solverBody{ _solverBodyBuffer->Get(pointIndex) };
-			Vector3 point{ solverBody.position + solverBody.rotation.Rotate(angleLimitPointConstraint.directionEndPoints[i].localPosition) };
-			Vector3 dir{ solverBody.rotation.Rotate(angleLimitPointConstraint.directionEndPoints[i].localDirection) };
+			Vector3 point{ solverBody.position + solverBody.rotation.Rotate(endPoint.localPosition) };
+			Vector3 dir{ endPoint.localRotation.Rotate(Vector3::RIGHT) };
+			dir = solverBody.rotation.Rotate(dir);
 
 			constraint.solverBodyAIndex = basePointIndex;
 			constraint.solverBodyBIndex = pointIndex;
@@ -284,7 +288,7 @@ void ConstraintBuildSystem::BuildAngleLimitPointConstraint(ConstraintStorage* _c
 			Vector3 crossAB{ Vector3::Cross(baseDir, dir) };
 
 			float sinTheta{ crossAB.Length() };
-			float cosTheta = std::clamp(Vector3::Dot(baseDir, dir), -1.0f, 1.0f);
+			float cosTheta{ Vector3::Dot(baseDir, dir) };
 
 			float theta{ std::atan2(sinTheta, cosTheta) };
 
@@ -343,34 +347,20 @@ void ConstraintBuildSystem::BuildAngleLimitHingeConstraint(ConstraintStorage* _c
 	for (auto& angleLimitHingeConstraint : _constraintStorage->EditAngleLimitHingeConstraintRange())
 	{
 		// 対象がいないとダメ
-		if (angleLimitHingeConstraint.angleLimitHingeEndPoints.size() < 1)
+		if (angleLimitHingeConstraint.endPoints.size() < 1)
 		{
 			continue;
 		}
 
 		// 基準側
-		uint32_t basePointIndex{ _solverBodyBuffer->GetIndex(angleLimitHingeConstraint.ownerEndPoint.transformID) };
+		EndPointFrame& endPoint{ angleLimitHingeConstraint.ownerEndPoint };
+		uint32_t basePointIndex{ _solverBodyBuffer->GetIndex(endPoint.transformID) };
 		const SolverBody& solverBodyBase{ _solverBodyBuffer->Get(basePointIndex) };
-		Vector3 basePoint{ solverBodyBase.position + solverBodyBase.rotation.Rotate(angleLimitHingeConstraint.ownerEndPoint.localPosition) };
-		Vector3 axis{ solverBodyBase.rotation.Rotate(angleLimitHingeConstraint.ownerEndPoint.localAxis) };
-
-		if (axis.LengthSqr() <= MathConstants::EPSILON)
-		{
-			continue;
-		}
-
-		axis.Normalize();
+		Vector3 basePoint{ solverBodyBase.position + solverBodyBase.rotation.Rotate(endPoint.localPosition) };
+		Vector3 axis{ solverBodyBase.rotation.Rotate(endPoint.localRotation.Rotate(Vector3::UP)) };
 
 		// A側の角度0基準方向
-		Vector3 referenceA{ solverBodyBase.rotation.Rotate(angleLimitHingeConstraint.ownerEndPoint.localReferenceDirection) };
-		referenceA = referenceA - axis * Vector3::Dot(axis, referenceA);
-
-		bool canMeasureAngle{ referenceA.LengthSqr() > MathConstants::EPSILON };
-
-		if (canMeasureAngle)
-		{
-			referenceA.Normalize();
-		}
+		Vector3 referenceA{ solverBodyBase.rotation.Rotate(endPoint.localRotation.Rotate(Vector3::RIGHT)) };
 
 		// ヒンジ軸に垂直な2方向
 		float rightDot{ Vector3::Dot(axis, Vector3::RIGHT) };
@@ -378,13 +368,13 @@ void ConstraintBuildSystem::BuildAngleLimitHingeConstraint(ConstraintStorage* _c
 		Vector3 tangent1{ Vector3::Cross(axis, seed).Normalized() };
 		Vector3 tangent2{ Vector3::Cross(axis, tangent1).Normalized() };
 
-		for (auto& endPoint : angleLimitHingeConstraint.angleLimitHingeEndPoints)
+		for (auto& endPoint : angleLimitHingeConstraint.endPoints)
 		{
 			// 対象側
 			uint32_t pointIndex{ _solverBodyBuffer->GetIndex(endPoint.transformID) };
 			const SolverBody& solverBody{ _solverBodyBuffer->Get(pointIndex) };
 			Vector3 point{ solverBody.position + solverBody.rotation.Rotate(endPoint.localPosition) };
-			Vector3 axisB{ solverBody.rotation.Rotate(endPoint.localAxis) };
+			Vector3 axisB{ solverBody.rotation.Rotate(endPoint.localRotation.Rotate(Vector3::UP)) };
 
 			if (axisB.LengthSqr() <= MathConstants::EPSILON)
 			{
@@ -424,26 +414,12 @@ void ConstraintBuildSystem::BuildAngleLimitHingeConstraint(ConstraintStorage* _c
 			AddAxisConstraint(constraint, angleLimitHingeConstraint.angularTuning, tangent1, axisError, _constraintBuffer);
 			AddAxisConstraint(constraint, angleLimitHingeConstraint.angularTuning, tangent2, axisError, _constraintBuffer);
 
-			// 基準方向が作れない場合は通常Hingeとしてだけ働かせる
-			if (!canMeasureAngle)
-			{
-				continue;
-			}
-
 			// B側の基準方向をA側ヒンジ軸の平面へ射影
-			Vector3 referenceB{ solverBody.rotation.Rotate(endPoint.localReferenceDirection) };
-			referenceB = referenceB - axis * Vector3::Dot(axis, referenceB);
-
-			if (referenceB.LengthSqr() <= MathConstants::EPSILON)
-			{
-				continue;
-			}
-
-			referenceB.Normalize();
+			Vector3 referenceB{ solverBody.rotation.Rotate(endPoint.localRotation.Rotate(Vector3::RIGHT)) };
 
 			// Aの基準方向からBの基準方向への符号付き角度
 			float sinAngle{ Vector3::Dot(axis, Vector3::Cross(referenceA, referenceB)) };
-			float cosAngle{ std::clamp(Vector3::Dot(referenceA, referenceB), -1.0f, 1.0f) };
+			float cosAngle{ Vector3::Dot(referenceA, referenceB) };
 			float angle{ std::atan2(sinAngle, cosAngle) };
 
 			// Row 6：範囲外の場合だけ片側角度拘束を作る
@@ -473,6 +449,127 @@ void ConstraintBuildSystem::BuildAngleLimitHingeConstraint(ConstraintStorage* _c
 			// Limitなので片側拘束
 			constraint.minLambda = 0.0f;
 			constraint.maxLambda = angleLimitHingeConstraint.angularTuning.maxForce * TimeManager::GetFixedDeltaTime();
+
+			_constraintBuffer->Add(constraint);
+		}
+	}
+}
+
+// SwingTwist拘束の解く用の拘束構造体を作る
+void ConstraintBuildSystem::BuildLimitedBallJointConstraint(ConstraintStorage* _constraintStorage, SolverBodyBuffer* _solverBodyBuffer, ConstraintBuffer* _constraintBuffer)
+{
+	// 拘束が存在するかチェック
+	if (_constraintStorage->CountLimitedBallJointConstraint() <= 0)
+	{
+		return;
+	}
+
+	for (auto& limitedBallJointConstraint : _constraintStorage->EditLimitedBallJointConstraintRange())
+	{
+		// ポイントが2つ以上じゃないと拘束なんて発生しない
+		if (limitedBallJointConstraint.endPoints.size() < 1)
+		{
+			continue;
+		}
+
+		const EndPointFrame& ownerEndPoint{ limitedBallJointConstraint.ownerEndPoint };
+
+		// 基準点となるボディから位置を持ってくる。
+		uint32_t basePointIndex{ _solverBodyBuffer->GetIndex(ownerEndPoint.transformID) };
+		const SolverBody& solverBodyBase{ _solverBodyBuffer->Get(basePointIndex) };
+		Vector3 basePoint{ solverBodyBase.position + solverBodyBase.rotation.Rotate(ownerEndPoint.localPosition) };
+		Vector3 baseDir{ ownerEndPoint.localRotation.Rotate(Vector3::UP) };
+		baseDir = solverBodyBase.rotation.Rotate(baseDir);
+
+		// A側の角度0基準方向
+		Vector3 referenceA{ solverBodyBase.rotation.Rotate(ownerEndPoint.localRotation.Rotate(Vector3::RIGHT)) };
+
+		for (const auto& endPoint : limitedBallJointConstraint.endPoints)
+		{
+			Constraint constraint;
+
+			// 対象の位置を取得
+			uint32_t pointIndex{ _solverBodyBuffer->GetIndex(endPoint.transformID) };
+			const SolverBody& solverBody{ _solverBodyBuffer->Get(pointIndex) };
+			Vector3 point{ solverBody.position + solverBody.rotation.Rotate(endPoint.localPosition) };
+			Vector3 dir{ endPoint.localRotation.Rotate(Vector3::UP) };
+			dir = solverBody.rotation.Rotate(dir);
+
+			constraint.solverBodyAIndex = basePointIndex;
+			constraint.solverBodyBIndex = pointIndex;
+
+			Vector3 rA = basePoint - solverBodyBase.position;
+			Vector3	rB = point - solverBody.position;
+
+			// 通常の点拘束を入れる
+			AddPointConstraint(
+				constraint, limitedBallJointConstraint.positionTuning,
+				rA, basePoint,
+				rB, point,
+				_constraintBuffer
+			);
+
+			// Swing角度の制限を入れる
+			Vector3 crossAB{ Vector3::Cross(baseDir, dir) };
+
+			float sinTheta{ crossAB.Length() };
+			float cosTheta{ Vector3::Dot(baseDir, dir) };
+
+			float theta{ std::atan2(sinTheta, cosTheta) };
+
+			if (theta > limitedBallJointConstraint.swingAngle)
+			{
+				Vector3 n{ crossAB / sinTheta };
+
+				constraint.error = theta - limitedBallJointConstraint.swingAngle;
+
+				constraint.jacobian[0] = Vector3::ZERO; // linear A
+				constraint.jacobian[1] = -n;            // angular A
+				constraint.jacobian[2] = Vector3::ZERO; // linear B
+				constraint.jacobian[3] = n;            // angular B
+
+				MakeConstraintInfo(constraint, limitedBallJointConstraint.angularTuning);
+
+				constraint.minLambda = 0.0f;
+				constraint.maxLambda = limitedBallJointConstraint.angularTuning.maxForce * TimeManager::GetFixedDeltaTime();
+
+				// 拘束として追加
+				_constraintBuffer->Add(constraint);
+			}
+			
+			// Twist角度の制限を入れる
+
+			// B側の基準方向をA側ヒンジ軸の平面へ射影
+			Vector3 referenceB{ solverBody.rotation.Rotate(endPoint.localRotation.Rotate(Vector3::RIGHT)) };
+
+			// Aの基準方向からBの基準方向への符号付き角度
+			float sinAngle{ Vector3::Dot(baseDir, Vector3::Cross(referenceA, referenceB)) };
+			float cosAngle{ Vector3::Dot(referenceA, referenceB) };
+			float angle{ std::atan2(sinAngle, cosAngle) };
+
+			// 範囲外の場合だけ片側角度拘束を作る
+			if (angle > limitedBallJointConstraint.twistAngle)
+			{
+				constraint.error = angle - limitedBallJointConstraint.twistAngle;
+				constraint.jacobian[0] = Vector3::ZERO;
+				constraint.jacobian[1] = -baseDir;
+				constraint.jacobian[2] = Vector3::ZERO;
+				constraint.jacobian[3] = baseDir;
+			}
+			else if (angle < 0)
+			{
+				constraint.error = 0 - angle;
+				constraint.jacobian[0] = Vector3::ZERO;
+				constraint.jacobian[1] = baseDir;
+				constraint.jacobian[2] = Vector3::ZERO;
+				constraint.jacobian[3] = -baseDir;
+			}
+
+			MakeConstraintInfo(constraint, limitedBallJointConstraint.angularTuning);
+
+			// Limitなので片側拘束
+			constraint.minLambda = 0.0f;
+			constraint.maxLambda = limitedBallJointConstraint.angularTuning.maxForce * TimeManager::GetFixedDeltaTime();
 
 			_constraintBuffer->Add(constraint);
 		}

@@ -16,6 +16,7 @@
 #include "HingeConstraintComponent.h"
 #include "AngleLimitPointConstraintComponent.h"
 #include "AngleLimitHingeConstraintComponent.h"
+#include "LimitedBallJointConstraintComponent.h"
 
 #include "DebugSphere.h"
 #include "DebugBox.h"
@@ -57,31 +58,31 @@ void DebugScene::Initialize()
 	objectManager.Add(std::move(debugBox01));
 
 	// 距離拘束デバッグ(宙ぶらりんなせいで力が減衰する要素がほぼないので凄い動く)
-	/*std::unique_ptr<EmptyObject> emptyObject{ std::make_unique<EmptyObject>(worldStorage, objectManager.GenerateNewID()) };
+	/*std::unique_ptr<EmptyObject> emptyObject{ std::make_unique<EmptyObject>(&worldStorage, objectManager.GenerateNewID()) };
 	emptyObject->GetComponent<TransformComponent>()->SetPosition(Vector3{ 200.0f,0.0f,0.0f });
 	DistanceConstraintComponent* distanceConstraint{ emptyObject->AddComponent<DistanceConstraintComponent>(Vector3{ 15.0f,15.0f,15.0f },100.0f) };
 	objectManager.Add(std::move(emptyObject));
 
 
-	std::unique_ptr<DebugBox> debugBox03{ std::make_unique<DebugBox>(worldStorage, objectManager.GenerateNewID(), 30.0f) };
+	std::unique_ptr<DebugBox> debugBox03{ std::make_unique<DebugBox>(&worldStorage, objectManager.GenerateNewID(), 30.0f) };
 	debugBox03->GetComponent<TransformComponent>()->SetPosition(Vector3{ 0,100,0 });
 	debugBox03->AddComponent<RigidBodyComponent>()->SetIsGravity(true);
 	distanceConstraint->AddEndPoint(debugBox03->GetID(), Vector3{ 15.0f,15.0f,15.0f });
 	objectManager.Add(std::move(debugBox03));*/
 
 	// 点拘束デバッグ
-	/*std::unique_ptr<DebugBox> debugBox02{ std::make_unique<DebugBox>(&worldStorage, objectManager.GenerateNewID(), 30.0f) };
-	debugBox02->GetComponent<TransformComponent>()->SetPosition(Vector3{ 0,50,0 });
-	debugBox02->GetComponent<TransformComponent>()->Rotate(Quaternion::AngleAxis((3.141592f / 4.0f), Vector3{ 0,1,1 }));
-	debugBox02->AddComponent<RigidBodyComponent>()->SetIsGravity(true);
-	PointConstraintComponent* pointConstraint{ debugBox02->AddComponent<PointConstraintComponent>(Vector3{ 15.0f,15.0f,15.0f }) };
-	objectManager.Add(std::move(debugBox02));
+	//std::unique_ptr<DebugBox> debugBox02{ std::make_unique<DebugBox>(&worldStorage, objectManager.GenerateNewID(), 30.0f) };
+	//debugBox02->GetComponent<TransformComponent>()->SetPosition(Vector3{ 0,50,0 });
+	//debugBox02->GetComponent<TransformComponent>()->Rotate(Quaternion::AngleAxis((3.141592f / 4.0f), Vector3{ 0,1,1 }));
+	//debugBox02->AddComponent<RigidBodyComponent>()->SetIsGravity(true);
+	//PointConstraintComponent* pointConstraint{ debugBox02->AddComponent<PointConstraintComponent>(Vector3{ 15.0f,15.0f,15.0f }) };
+	//objectManager.Add(std::move(debugBox02));
 
-	std::unique_ptr<DebugBox> debugBox04{ std::make_unique<DebugBox>(&worldStorage, objectManager.GenerateNewID(), 30.0f) };
-	debugBox04->GetComponent<TransformComponent>()->SetPosition(Vector3{ 0,100,0 });
-	debugBox04->AddComponent<RigidBodyComponent>()->SetIsGravity(true);
-	pointConstraint->AddEndPoint(debugBox04->GetID(), Vector3{ 15.0f,15.0f,15.0f });
-	objectManager.Add(std::move(debugBox04));*/
+	//std::unique_ptr<DebugBox> debugBox04{ std::make_unique<DebugBox>(&worldStorage, objectManager.GenerateNewID(), 30.0f) };
+	//debugBox04->GetComponent<TransformComponent>()->SetPosition(Vector3{ 0,100,0 });
+	//debugBox04->AddComponent<RigidBodyComponent>()->SetIsGravity(true);
+	//pointConstraint->AddEndPoint(debugBox04->GetID(), Vector3{ 15.0f,15.0f,15.0f });
+	//objectManager.Add(std::move(debugBox04));
 
 	// 距離拘束によるロープの実装
 	/*
@@ -196,7 +197,7 @@ void DebugScene::Initialize()
 	//RigidBodyComponent* hingeBody{ hingeBox->AddComponent<RigidBodyComponent>() };
 
 	//// 固定側と箱側で同じヒンジ軸を指定
-	//hinge->AddEndPoint(hingeBox->GetID(), Vector3{ 50.0f,0.0f,0.0f }, Vector3::UP);
+	//hinge->AddEndPoint(hingeBox->GetID(), Vector3{ 50.0f,0.0f,0.0f }, Quaternion::Identity());
 
 	//objectManager.Add(std::move(hingeBox));
 
@@ -208,7 +209,7 @@ void DebugScene::Initialize()
 	AngleLimitPointConstraintComponent* angleLimitPoint{ angleLimitPointEmpty->AddComponent<AngleLimitPointConstraintComponent>() };
 
 	angleLimitPoint->SetAngleMax(MathConstants::PI_FLT / 1.5f);
-	angleLimitPoint->SetAngleMin(MathConstants::PI_FLT / 4.0f);
+	angleLimitPoint->SetAngleMin(MathConstants::PI_FLT / 2.0f);
 
 	objectManager.Add(std::move(angleLimitPointEmpty));
 
@@ -216,12 +217,12 @@ void DebugScene::Initialize()
 
 	angleLimitPointBox->AddComponent<RigidBodyComponent>();
 
-	angleLimitPoint->AddEndPoint(angleLimitPointBox->GetID(), Vector3{ 50.0f,0.0f,10.0f }, Vector3::RIGHT);
+	angleLimitPoint->AddEndPoint(angleLimitPointBox->GetID(), Vector3{ 50.0f,0.0f,0.0f }, Quaternion::Identity());
 
 	objectManager.Add(std::move(angleLimitPointBox));*/
 
 	// 角度制限付きヒンジ拘束
-	std::unique_ptr<EmptyObject> angleLimitHingeEmpty{ std::make_unique<EmptyObject>(&worldStorage, objectManager.GenerateNewID()) };
+	/*std::unique_ptr<EmptyObject> angleLimitHingeEmpty{ std::make_unique<EmptyObject>(&worldStorage, objectManager.GenerateNewID()) };
 
 	angleLimitHingeEmpty->GetComponent<TransformComponent>()->SetPosition(Vector3{ 0.0f,-100.0f,0.0f });
 
@@ -236,7 +237,26 @@ void DebugScene::Initialize()
 
 	angleLimitHingeBox->AddComponent<RigidBodyComponent>();
 
-	angleLimitHinge->AddEndPoint(angleLimitHingeBox->GetID(), Vector3{ 50.0f,0.0f,10.0f }, Vector3::UP,-Vector3::RIGHT);
+	angleLimitHinge->AddEndPoint(angleLimitHingeBox->GetID(), Vector3{ 50.0f,0.0f,10.0f }, Quaternion::Identity());
 
-	objectManager.Add(std::move(angleLimitHingeBox));
+	objectManager.Add(std::move(angleLimitHingeBox));*/
+	// SwingTwist拘束
+	std::unique_ptr<EmptyObject> limitedBallJointEmpty{ std::make_unique<EmptyObject>(&worldStorage, objectManager.GenerateNewID()) };
+
+	limitedBallJointEmpty->GetComponent<TransformComponent>()->SetPosition(Vector3{ 0.0f,-100.0f,0.0f });
+
+	LimitedBallJointConstraintComponent* limitedBallJoint{ limitedBallJointEmpty->AddComponent<LimitedBallJointConstraintComponent>() };
+
+	limitedBallJoint->SetSwingAngle(MathConstants::PI_FLT / 3.0f);
+	limitedBallJoint->SetTwistAngle(MathConstants::PI_FLT / 2.0f);
+
+	objectManager.Add(std::move(limitedBallJointEmpty));
+
+	std::unique_ptr<DebugBox> limitedBallJointBox{ std::make_unique<DebugBox>(&worldStorage, objectManager.GenerateNewID(), 20.0f, 70.0f, 20.0f) };
+
+	limitedBallJointBox->AddComponent<RigidBodyComponent>();
+
+	limitedBallJoint->AddEndPoint(limitedBallJointBox->GetID(), Vector3{ 0.0f,35.0f,0.0f }, Quaternion::Identity());
+
+	objectManager.Add(std::move(limitedBallJointBox));
 }

@@ -4,31 +4,19 @@
 
 // コンストラクタ
 AngleLimitPointConstraintComponent::AngleLimitPointConstraintComponent(EntityID _entity) :
-	DirectionEndPointConstraintComponentBase{ PhysicsComponentAPI::CreateAngleLimitPointConstraint(_entity, Vector3::ZERO, Vector3::UP, 0.0f, 0.0f) }
+	ConstraintComponentBase{ PhysicsComponentAPI::CreateAngleLimitPointConstraint(_entity, Vector3::ZERO, Quaternion::Identity()) }
 {
 }
 
 // コンストラクタ
-AngleLimitPointConstraintComponent::AngleLimitPointConstraintComponent(EntityID _entity, Vector3 _localOffset) :
-	DirectionEndPointConstraintComponentBase{ PhysicsComponentAPI::CreateAngleLimitPointConstraint(_entity, _localOffset, Vector3::UP, 0.0f, 0.0f) }
+AngleLimitPointConstraintComponent::AngleLimitPointConstraintComponent(EntityID _entity, const Vector3& _localOffset) :
+	ConstraintComponentBase{ PhysicsComponentAPI::CreateAngleLimitPointConstraint(_entity, _localOffset, Quaternion::Identity()) }
 {
 }
 
 // コンストラクタ
-AngleLimitPointConstraintComponent::AngleLimitPointConstraintComponent(EntityID _entity, float _angleMin, float _angleMax) :
-	DirectionEndPointConstraintComponentBase{ PhysicsComponentAPI::CreateAngleLimitPointConstraint(_entity, Vector3::ZERO, Vector3::UP, _angleMin, _angleMax) }
-{
-}
-
-// コンストラクタ
-AngleLimitPointConstraintComponent::AngleLimitPointConstraintComponent(EntityID _entity, Vector3 _localOffset, Vector3 _localDirection) :
-	DirectionEndPointConstraintComponentBase{ PhysicsComponentAPI::CreateAngleLimitPointConstraint(_entity, _localOffset, _localDirection, 0.0f, 0.0f) }
-{
-}
-
-// コンストラクタ
-AngleLimitPointConstraintComponent::AngleLimitPointConstraintComponent(EntityID _entity, Vector3 _localOffset, Vector3 _localDirection, float _angleMin, float _angleMax) :
-	DirectionEndPointConstraintComponentBase{ PhysicsComponentAPI::CreateAngleLimitPointConstraint(_entity, _localOffset, _localDirection, _angleMin, _angleMax) }
+AngleLimitPointConstraintComponent::AngleLimitPointConstraintComponent(EntityID _entity, const Vector3& _localOffset, const Quaternion& _localRotation) :
+	ConstraintComponentBase{ PhysicsComponentAPI::CreateAngleLimitPointConstraint(_entity, _localOffset, _localRotation) }
 {
 }
 

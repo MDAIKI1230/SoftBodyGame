@@ -9,3 +9,4 @@
 #define MD_STORAGE_ID_READ_ONLY_COLUMN(IDType, Type, _tag, _member)
 #define MD_STORAGE_ID_WRITE_ORIGINAL_COLUMN(IDType, Type, _tag, _member)
 #define SingletonPublicFunction(Type,FuncName,declaration,arguments)
+#define MD_UNREACHABLE(message)

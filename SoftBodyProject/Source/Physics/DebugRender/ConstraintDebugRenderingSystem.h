@@ -18,4 +18,6 @@ private:
 	void AngleLimitPointConstraintRender(PhysicsTransformStorage* _transformStorage, ConstraintStorage* _constraintStorage);
 	// 角度制限付きヒンジ拘束描画
 	void AngleLimitHingeConstraintRender(PhysicsTransformStorage* _transformStorage, ConstraintStorage* _constraintStorage);
+	// SwingTwist拘束描画
+	void LimitedBallJointConstraintRender(PhysicsTransformStorage* _transformStorage, ConstraintStorage* _constraintStorage);
 };

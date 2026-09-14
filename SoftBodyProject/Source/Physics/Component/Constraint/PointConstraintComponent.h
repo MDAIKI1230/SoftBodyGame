@@ -2,9 +2,9 @@
 
 #include "MDMath.h"
 
-#include "Base/EndPointConstraintComponentBase.h"
+#include "Base/ConstraintComponentBase.h"
 
-struct PointConstraintComponent :public EndPointConstraintComponentBase
+struct PointConstraintComponent :public ConstraintComponentBase
 {
 public:
 	// コンストラクタ

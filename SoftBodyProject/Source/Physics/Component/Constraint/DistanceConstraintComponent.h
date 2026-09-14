@@ -2,19 +2,15 @@
 
 #include "MDMath.h"
 
-#include "Base/EndPointConstraintComponentBase.h"
+#include "Base/ConstraintComponentBase.h"
 
-struct DistanceConstraintComponent :public EndPointConstraintComponentBase
+struct DistanceConstraintComponent :public ConstraintComponentBase
 {
 public:
 	// コンストラクタ
 	DistanceConstraintComponent(EntityID _entity);
 	// コンストラクタ
 	DistanceConstraintComponent(EntityID _entity, Vector3 _localOffset);
-	// コンストラクタ
-	DistanceConstraintComponent(EntityID _entity, float _distance);
-	// コンストラクタ
-	DistanceConstraintComponent(EntityID _entity, Vector3 _localOffset, float _distance);
 
 	// 距離取得
 	float GetDistance();

@@ -195,41 +195,32 @@ public:
 
 	// 点拘束作成
 	static ConstraintID CreatePointConstraint(EntityID _entity, const Vector3& _localOffset);
-
 	// 距離拘束作成
-	static ConstraintID CreateDistanceConstraint(EntityID _entity, const Vector3& _localOffset, float _distance);
+	static ConstraintID CreateDistanceConstraint(EntityID _entity, const Vector3& _localOffset);
+
 	// 距離拘束の距離取得
 	static float GetDistance(ConstraintID _id);
 	// 距離拘束の距離設定
 	static void SetDistance(ConstraintID _id, float _distance);
 
+	// ヒンジ拘束作成
+	static ConstraintID CreateHingeConstraint(EntityID _entity, const Vector3& _localOffset, const Quaternion& _localRotation);
+	// 角度制限付き点拘束作成
+	static ConstraintID CreateAngleLimitPointConstraint(EntityID _entity, const Vector3& _localOffset, const Quaternion& _localRotation);
+	// 角度制限付きヒンジ拘束作成
+	static ConstraintID CreateAngleLimitHingeConstraint(EntityID _entity, const Vector3& _localOffset, const Quaternion& _localRotation);
+	// SwingTwist拘束作成関数
+	static ConstraintID CreateLimitedBallJointConstraint(EntityID _entity, const Vector3& _localOffset, const Quaternion& _localRotation);
+
+	// 自信のEndPoint取得
+	static const EndPointFrame& GetEndPoint(ConstraintID _id);
+	// 自信のEndPoint変更
+	static void SetEndPoint(ConstraintID _id,const EndPointFrame& _endPoint);
+
 	// 拘束にEndPoint追加
-	static void AddEndPoint(ConstraintID _id, EntityID _entity, const Vector3& _localOffset);
+	static void AddEndPoint(ConstraintID _id, EntityID _entity, const Vector3& _localOffset, const Quaternion& _localRotation = Quaternion::Identity());
 	// 拘束からEndPoint除外
 	static void RemoveEndPoint(ConstraintID _id, EntityID _entity);
-
-	// ヒンジ拘束作成
-	static ConstraintID CreateHingeConstraint(EntityID _entity, const Vector3& _localOffset, const Vector3& _localDirection);
-	// 角度制限付き点拘束作成
-	static ConstraintID CreateAngleLimitPointConstraint(EntityID _entity, const Vector3& _localOffset, const Vector3& _localDirection, float _angleMin, float _angleMax);
-
-	// 拘束にDirectionEndPoint追加
-	static void AddDirectionEndPoint(ConstraintID _id, EntityID _entity, const Vector3& _localOffset, const Vector3& _localDirection);
-
-	// 角度制限付きヒンジ拘束作成
-	static ConstraintID CreateAngleLimitHingeConstraint(
-		EntityID _entity,
-		const Vector3& _localOffset, const Vector3& _localAxis, const Vector3& _localDirection,
-		float _angleMin, float _angleMax);
-
-	// 拘束にAngleLimitHingeEndPoint追加
-	static void AddAngleLimitHingeEndPoint(ConstraintID _id, EntityID _entity, const Vector3& _localOffset, const Vector3& _localAxis, const Vector3& _localDirection);
-
-	// SwingTwist拘束作成関数
-	static ConstraintID CreateLimitedBallJointConstraint(
-		EntityID _entity, PhysicsTransformID _transformID,
-		const Vector3& _localOffset, const Quaternion& _localRotation,
-		float _swingAngle, float _twistAngle);
 
 	// Swing角度取得
 	static float GetSwingAngle(ConstraintID _id);
@@ -386,23 +377,22 @@ public:
 	// 内部用の点拘束作成(寿命管理をちゃんを忘れない)
 	static ConstraintID CreateInternalPointConstraint(EntityID _entity, PhysicsTransformID _transformID, const Vector3& _localOffset);
 	// 内部用の距離拘束作成(寿命管理をちゃんを忘れない)
-	static ConstraintID CreateInternalDistanceConstraint(EntityID _entity, PhysicsTransformID _transformID, const Vector3& _localOffset, float _distance);
+	static ConstraintID CreateInternalDistanceConstraint(EntityID _entity, PhysicsTransformID _transformID, const Vector3& _localOffset);
 	// 内部用のヒンジ拘束作成(寿命管理をちゃんを忘れない)
-	static ConstraintID CreateInternalHingeConstraint(EntityID _entity, PhysicsTransformID _transformID, const Vector3& _localOffset, const Vector3& _localDirection);
+	static ConstraintID CreateInternalHingeConstraint(EntityID _entity, PhysicsTransformID _transformID, const Vector3& _localOffset, const Quaternion& _localRotation);
 	// 内部用の角度制限付き点拘束作成(寿命管理をちゃんを忘れない)
-	static ConstraintID CreateInternalAngleLimitPointConstraint(EntityID _entity, PhysicsTransformID _transformID, const Vector3& _localOffset, const Vector3& _localDirection, float _angleMin, float _angleMax);
+	static ConstraintID CreateInternalAngleLimitPointConstraint(EntityID _entity, PhysicsTransformID _transformID, const Vector3& _localOffset, const Quaternion& _localRotation);
 	// 内部用の角度制限付きヒンジ拘束作成(寿命管理をちゃんを忘れない)
 	static ConstraintID CreateInternalAngleLimitHingeConstraint(
 		EntityID _entity, PhysicsTransformID _transformID,
-		const Vector3& _localOffset, const Vector3& _localAxis, const Vector3& _localDirection,
-		float _angleMin, float _angleMax);
+		const Vector3& _localOffset, const Quaternion& _localRotation);
+	// SwingTwist拘束作成関数(寿命管理をちゃんを忘れない)
+	static ConstraintID CreateInternalLimitedBallJointConstraint(
+		EntityID _entity, PhysicsTransformID _transformID,
+		const Vector3& _localOffset, const Quaternion& _localRotation);
 
 	// 内部用拘束のEndPoint追加(寿命管理をちゃんを忘れない)
-	static void AddInternalEndPoint(ConstraintID _constraintID, PhysicsTransformID _transformID, const Vector3& _localOffset);
-	// 内部用拘束のDirectionEndPoint追加(寿命管理をちゃんを忘れない)
-	static void AddInternalDirectionEndPoint(ConstraintID _constraintID, PhysicsTransformID _transformID, const Vector3& _localOffset, const Vector3& _localDirection);
-	// 内部用拘束のAngleLimitHingeEndPoint追加(寿命管理をちゃんを忘れない)
-	static void AddInternalAngleLimitHingeEndPoint(ConstraintID _constraintID, PhysicsTransformID _transformID, const Vector3& _localOffset, const Vector3& _localAxis, const Vector3& _localDirection);
+	static void AddInternalEndPoint(ConstraintID _constraintID, PhysicsTransformID _transformID, const Vector3& _localOffset, const Quaternion& _localRotation = Quaternion::Identity());
 
 	// PhysicsTransform破棄(対応する他の奴も破棄する)
 	static void DestroyPhysicsTransform(PhysicsTransformID _transformID);

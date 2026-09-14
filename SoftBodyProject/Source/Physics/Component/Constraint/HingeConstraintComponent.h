@@ -4,18 +4,14 @@
 
 #include "ConstraintTuning.h"
 
-#include "Base/DirectionEndPointConstraintComponentBase.h"
+#include "Base/ConstraintComponentBase.h"
 
-struct HingeConstraintComponent :public DirectionEndPointConstraintComponentBase
+struct HingeConstraintComponent :public ConstraintComponentBase
 {
 	friend class HingeConstraintComponentStorage;
 public:
 	// コンストラクタ
 	HingeConstraintComponent(EntityID _entity);
-	// コンストラクタ
-	HingeConstraintComponent(EntityID _entity, Vector3 _localOffset);
-	// コンストラクタ
-	HingeConstraintComponent(EntityID _entity, Vector3 _localOffset, Vector3 _localDirection);
 
 	// 位置Tuning取得
 	ConstraintTuning GetPositionTuning() const;

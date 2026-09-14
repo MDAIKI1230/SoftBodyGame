@@ -41,21 +41,17 @@ public:
 	// 点拘束作成関数
 	ConstraintID CreatePointConstraint(EntityID _entity, PhysicsTransformID _transformID, const Vector3& _localOffset);
 	// 距離拘束作成関数
-	ConstraintID CreateDistanceConstraint(EntityID _entity, PhysicsTransformID _transformID, const Vector3& _localOffset, float _distance);
+	ConstraintID CreateDistanceConstraint(EntityID _entity, PhysicsTransformID _transformID, const Vector3& _localOffset);
 	// ヒンジ拘束作成関数
-	ConstraintID CreateHingeConstraint(EntityID _entity, PhysicsTransformID _transformID, const Vector3& _localOffset, const Vector3& _localDirection);
+	ConstraintID CreateHingeConstraint(EntityID _entity, PhysicsTransformID _transformID, const Vector3& _localOffset, const Quaternion& _localRotation);
 	// 角度制限付き点拘束作成関数
-	ConstraintID CreateAngleLimitPointConstraint(EntityID _entity, PhysicsTransformID _transformID, const Vector3& _localOffset, const Vector3& _localDirection, float _angleMin, float _angleMax);
+	ConstraintID CreateAngleLimitPointConstraint(EntityID _entity, PhysicsTransformID _transformID, const Vector3& _localOffset, const Quaternion& _localRotation);
 	// 角度制限付きヒンジ拘束作成関数
 	ConstraintID CreateAngleLimitHingeConstraint(
 		EntityID _entity, PhysicsTransformID _transformID,
-		const Vector3& _localOffset, const Vector3& _localAxis, const Vector3& _localDirection,
-		float _angleMin, float _angleMax);
+		const Vector3& _localOffset, const Quaternion& _localRotation);
 	// SwingTwist拘束作成関数
-	ConstraintID CreateLimitedBallJointConstraint(
-		EntityID _entity, PhysicsTransformID _transformID,
-		const Vector3& _localOffset, const Quaternion& _localRotation,
-		float _swingAngle, float _twistAngle);
+	ConstraintID CreateLimitedBallJointConstraint(EntityID _entity, PhysicsTransformID _transformID, const Vector3& _localOffset, const Quaternion& _localRotation);
 
 	// 破棄
 	void Destory(ConstraintID _id);
