@@ -593,19 +593,33 @@ void PhysicsComponentAPI::SetSwingAngle(ConstraintID _id, float _angle)
 
 	constraintStorage->EditLimitedBallJointConstraint(_id).swingAngle = _angle;
 }
-// Twist角度取得
-float PhysicsComponentAPI::GetTwistAngle(ConstraintID _id)
+// Twist最大角度取得
+float PhysicsComponentAPI::GetTwistAngleMax(ConstraintID _id)
 {
 	assert(constraintStorage->GetType(_id) == ConstraintType::LIMITED_BALL_JOINT);
 
-	return constraintStorage->GetLimitedBallJointConstraint(_id).twistAngle;
+	return constraintStorage->GetLimitedBallJointConstraint(_id).twistAngleMax;
 }
-// Twist角度変更
-void PhysicsComponentAPI::SetTwistAngle(ConstraintID _id, float _angle)
+// Twist最大角度変更
+void PhysicsComponentAPI::SetTwistAngleMax(ConstraintID _id, float _angle)
 {
 	assert(constraintStorage->GetType(_id) == ConstraintType::LIMITED_BALL_JOINT);
 
-	constraintStorage->EditLimitedBallJointConstraint(_id).twistAngle = _angle;
+	constraintStorage->EditLimitedBallJointConstraint(_id).twistAngleMax = _angle;
+}
+// Twist最小角度取得
+float PhysicsComponentAPI::GetTwistAngleMin(ConstraintID _id)
+{
+	assert(constraintStorage->GetType(_id) == ConstraintType::LIMITED_BALL_JOINT);
+
+	return constraintStorage->GetLimitedBallJointConstraint(_id).twistAngleMin;
+}
+// Twist最小角度変更
+void PhysicsComponentAPI::SetTwistAngleMin(ConstraintID _id, float _angle)
+{
+	assert(constraintStorage->GetType(_id) == ConstraintType::LIMITED_BALL_JOINT);
+
+	constraintStorage->EditLimitedBallJointConstraint(_id).twistAngleMin = _angle;
 }
 
 // 最小角度取得

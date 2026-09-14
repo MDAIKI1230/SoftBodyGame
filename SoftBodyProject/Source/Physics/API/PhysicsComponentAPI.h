@@ -226,10 +226,14 @@ public:
 	static float GetSwingAngle(ConstraintID _id);
 	// Swing角度変更
 	static void SetSwingAngle(ConstraintID _id, float _angle);
-	// Twist角度取得
-	static float GetTwistAngle(ConstraintID _id);
-	// Twist角度変更
-	static void SetTwistAngle(ConstraintID _id, float _angle);
+	// Twist角度最大取得
+	static float GetTwistAngleMax(ConstraintID _id);
+	// Twist角度最大変更
+	static void SetTwistAngleMax(ConstraintID _id, float _angle);
+	// Twist角度最小取得
+	static float GetTwistAngleMin(ConstraintID _id);
+	// Twist角度最小変更
+	static void SetTwistAngleMin(ConstraintID _id, float _angle);
 
 	// 最小角度取得
 	static float GetAngleMin(ConstraintID _id);

@@ -277,8 +277,8 @@ void ConstraintDebugRenderingSystem::LimitedBallJointConstraintRender(PhysicsTra
 			// Twist角度の描画
 			Renderer::DrawSector(
 				position, direction, baseReference,
-				30.0f,
-				0.0f, limitedBallJointConstraint.twistAngle,
+				length,
+				limitedBallJointConstraint.twistAngleMin, limitedBallJointConstraint.twistAngleMax,
 				32, Color{ 0.0f, 1.0f, 0.0f });
 		}
 	}

@@ -18,15 +18,26 @@ void LimitedBallJointConstraintComponent::SetSwingAngle(float _angle)
 {
 	PhysicsComponentAPI::SetSwingAngle(id, _angle);
 }
-// Twist角度取得
-float LimitedBallJointConstraintComponent::GetTwistAngle()
+
+// Twist最大角度取得
+float LimitedBallJointConstraintComponent::GetTwistAngleMax()
 {
-	return PhysicsComponentAPI::GetTwistAngle(id);
+	return PhysicsComponentAPI::GetTwistAngleMax(id);
 }
-// Twist角度変更
-void LimitedBallJointConstraintComponent::SetTwistAngle(float _angle)
+// Twist最大角度変更
+void LimitedBallJointConstraintComponent::SetTwistAngleMax(float _angle)
 {
-	PhysicsComponentAPI::SetTwistAngle(id,_angle);
+	PhysicsComponentAPI::SetTwistAngleMax(id,_angle);
+}
+// Twist最小角度取得
+float LimitedBallJointConstraintComponent::GetTwistAngleMin()
+{
+	return PhysicsComponentAPI::GetTwistAngleMin(id);
+}
+// Twist最小角度変更
+void LimitedBallJointConstraintComponent::SetTwistAngleMin(float _angle)
+{
+	PhysicsComponentAPI::SetTwistAngleMin(id,_angle);
 }
 
 // 位置Tuning取得

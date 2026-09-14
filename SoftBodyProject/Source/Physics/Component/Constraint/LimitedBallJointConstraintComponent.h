@@ -17,10 +17,15 @@ public:
 	float GetSwingAngle();
 	// Swing角度変更
 	void SetSwingAngle(float _angle);
-	// Twist角度取得
-	float GetTwistAngle();
-	// Twist角度変更
-	void SetTwistAngle(float _angle);
+
+	// Twist最大角度取得
+	float GetTwistAngleMax();
+	// Twist最大角度変更
+	void SetTwistAngleMax(float _angle);
+	// Twist最小角度取得
+	float GetTwistAngleMin();
+	// Twist最小角度変更
+	void SetTwistAngleMin(float _angle);
 
 	// 位置Tuning取得
 	ConstraintTuning GetPositionTuning() const;

@@ -248,7 +248,7 @@ void DebugScene::Initialize()
 	LimitedBallJointConstraintComponent* limitedBallJoint{ limitedBallJointEmpty->AddComponent<LimitedBallJointConstraintComponent>() };
 
 	limitedBallJoint->SetSwingAngle(MathConstants::PI_FLT / 3.0f);
-	limitedBallJoint->SetTwistAngle(MathConstants::PI_FLT / 2.0f);
+	limitedBallJoint->SetTwistAngleMax(MathConstants::PI_FLT / 2.0f);
 
 	objectManager.Add(std::move(limitedBallJointEmpty));
 

@@ -548,15 +548,15 @@ void ConstraintBuildSystem::BuildLimitedBallJointConstraint(ConstraintStorage* _
 			float angle{ std::atan2(sinAngle, cosAngle) };
 
 			// 範囲外の場合だけ片側角度拘束を作る
-			if (angle > limitedBallJointConstraint.twistAngle)
+			if (angle > limitedBallJointConstraint.twistAngleMax)
 			{
-				constraint.error = angle - limitedBallJointConstraint.twistAngle;
+				constraint.error = angle - limitedBallJointConstraint.twistAngleMax;
 				constraint.jacobian[0] = Vector3::ZERO;
 				constraint.jacobian[1] = -baseDir;
 				constraint.jacobian[2] = Vector3::ZERO;
 				constraint.jacobian[3] = baseDir;
 			}
-			else if (angle < 0)
+			else if (angle < limitedBallJointConstraint.twistAngleMin)
 			{
 				constraint.error = 0 - angle;
 				constraint.jacobian[0] = Vector3::ZERO;
