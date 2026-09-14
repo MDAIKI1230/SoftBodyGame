@@ -115,6 +115,31 @@ ConstraintID ConstraintStorage::CreateAngleLimitHingeConstraint(
 	return id;
 }
 
+// SwingTwist拘束作成関数
+ConstraintID ConstraintStorage::CreateLimitedBallJointConstraint(
+	EntityID _entity, PhysicsTransformID _transformID,
+	const Vector3& _localOffset, const Quaternion& _localRotation,
+	float _swingAngle, float _twistAngle)
+{
+	// ID作成
+	ConstraintID id{ CreateID(ConstraintType::LIMITED_BALL_JOINT,angleLimitHingeConstraintStorage->CountConstraint(),_entity,_transformID) };
+
+	// 実態を作る
+	LimitedBallJointConstraint limitedBallJointConstraint;
+	limitedBallJointConstraint.ownerEndPoint = EndPointFrame{ _transformID ,_localOffset ,_localRotation };
+	limitedBallJointConstraint.swingAngle = _swingAngle;
+	limitedBallJointConstraint.twistAngle = _twistAngle;
+
+	// 追加
+	limitedBallJointConstraintStorage->Add(id, limitedBallJointConstraint);
+
+	// 対応表
+	transformMap[_transformID] = id;
+
+	// ID返して終了
+	return id;
+}
+
 void ConstraintStorage::Destory(ConstraintID _id)
 {
 	// 生存チェック
@@ -142,6 +167,10 @@ void ConstraintStorage::Destory(ConstraintID _id)
 		break;
 	case ConstraintType::ANGLE_LIMIT_HINGE:
 		movedId = angleLimitHingeConstraintStorage->Remove(GetDenseIndex(_id));
+	case ConstraintType::LIMITED_BALL_JOINT:
+		movedId = limitedBallJointConstraintStorage->Remove(GetDenseIndex(_id));
+		break;
+	default:
 		break;
 	}
 

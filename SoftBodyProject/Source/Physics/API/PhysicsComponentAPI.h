@@ -225,6 +225,21 @@ public:
 	// 拘束にAngleLimitHingeEndPoint追加
 	static void AddAngleLimitHingeEndPoint(ConstraintID _id, EntityID _entity, const Vector3& _localOffset, const Vector3& _localAxis, const Vector3& _localDirection);
 
+	// SwingTwist拘束作成関数
+	static ConstraintID CreateLimitedBallJointConstraint(
+		EntityID _entity, PhysicsTransformID _transformID,
+		const Vector3& _localOffset, const Quaternion& _localRotation,
+		float _swingAngle, float _twistAngle);
+
+	// Swing角度取得
+	static float GetSwingAngle(ConstraintID _id);
+	// Swing角度変更
+	static void SetSwingAngle(ConstraintID _id, float _angle);
+	// Twist角度取得
+	static float GetTwistAngle(ConstraintID _id);
+	// Twist角度変更
+	static void SetTwistAngle(ConstraintID _id, float _angle);
+
 	// 最小角度取得
 	static float GetAngleMin(ConstraintID _id);
 	// 最小角度変更

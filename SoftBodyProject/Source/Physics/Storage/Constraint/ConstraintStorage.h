@@ -12,6 +12,7 @@
 #include "HingeConstraintStorage.h"
 #include "AngleLimitPointConstraintStorage.h"
 #include "AngleLimitHingeConstraintStorage.h"
+#include "LimitedBallJointConstraintStorage.h"
 
 class ConstraintStorage :public PhysicsStorageBase<ConstraintID, ConstraintSlot>
 {
@@ -30,6 +31,9 @@ class ConstraintStorage :public PhysicsStorageBase<ConstraintID, ConstraintSlot>
 	// 角度制限付きヒンジ拘束
 	 MD_OWNED_STORAGE_READ_ONLY_ACCESSORS(ConstraintID, ConstraintID, AngleLimitHingeConstraintID, angleLimitHingeConstraintStorage, ID);
 	 MD_OWNED_STORAGE_READ_WRITE_ACCESSORS(ConstraintID, AngleLimitHingeConstraint, AngleLimitHingeConstraint, angleLimitHingeConstraintStorage, Constraint);
+	// SwingTwist拘束
+	 MD_OWNED_STORAGE_READ_ONLY_ACCESSORS(ConstraintID, ConstraintID, LimitedBallJointConstraintID, limitedBallJointConstraintStorage, ID);
+	 MD_OWNED_STORAGE_READ_WRITE_ACCESSORS(ConstraintID, LimitedBallJointConstraint, LimitedBallJointConstraint, limitedBallJointConstraintStorage, Constraint);
 public:
 	// コンストラクタ
 	ConstraintStorage();
@@ -40,13 +44,18 @@ public:
 	ConstraintID CreateDistanceConstraint(EntityID _entity, PhysicsTransformID _transformID, const Vector3& _localOffset, float _distance);
 	// ヒンジ拘束作成関数
 	ConstraintID CreateHingeConstraint(EntityID _entity, PhysicsTransformID _transformID, const Vector3& _localOffset, const Vector3& _localDirection);
-	// 距離拘束作成関数
+	// 角度制限付き点拘束作成関数
 	ConstraintID CreateAngleLimitPointConstraint(EntityID _entity, PhysicsTransformID _transformID, const Vector3& _localOffset, const Vector3& _localDirection, float _angleMin, float _angleMax);
-	// 距離拘束作成関数
+	// 角度制限付きヒンジ拘束作成関数
 	ConstraintID CreateAngleLimitHingeConstraint(
 		EntityID _entity, PhysicsTransformID _transformID,
 		const Vector3& _localOffset, const Vector3& _localAxis, const Vector3& _localDirection,
 		float _angleMin, float _angleMax);
+	// SwingTwist拘束作成関数
+	ConstraintID CreateLimitedBallJointConstraint(
+		EntityID _entity, PhysicsTransformID _transformID,
+		const Vector3& _localOffset, const Quaternion& _localRotation,
+		float _swingAngle, float _twistAngle);
 
 	// 破棄
 	void Destory(ConstraintID _id);
@@ -66,6 +75,7 @@ private:
 	std::unique_ptr<HingeConstraintStorage> hingeConstraintStorage;
 	std::unique_ptr<AngleLimitPointConstraintStorage> angleLimitPointConstraintStorage;
 	std::unique_ptr<AngleLimitHingeConstraintStorage> angleLimitHingeConstraintStorage;
+	std::unique_ptr<LimitedBallJointConstraintStorage> limitedBallJointConstraintStorage;
 
 	// PhysicsTransformIDとの対応表
 	std::unordered_map<PhysicsTransformID, ConstraintID> transformMap;

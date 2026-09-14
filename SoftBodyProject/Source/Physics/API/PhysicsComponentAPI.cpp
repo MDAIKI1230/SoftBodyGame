@@ -1,4 +1,6 @@
-﻿#include "NamericalAnalysis.h"
+﻿#include <cassert>
+
+#include "NamericalAnalysis.h"
 
 #include "RigidBodyComponentStorage.h"
 #include "BoxColliderComponentStorage.h"
@@ -534,6 +536,47 @@ void PhysicsComponentAPI::AddAngleLimitHingeEndPoint(ConstraintID _id, EntityID 
 		}
 	}
 }
+// 拘束にAngleLimitHingeEndPoint追加
+ConstraintID PhysicsComponentAPI::CreateLimitedBallJointConstraint(
+	EntityID _entity, PhysicsTransformID _transformID,
+	const Vector3& _localOffset, const Quaternion& _localRotation,
+	float _swingAngle, float _twistAngle)
+{
+	return constraintStorage->CreateLimitedBallJointConstraint(
+		_entity, _transformID,
+		_localOffset, _localRotation,
+		_swingAngle, _twistAngle
+	);
+}
+
+// Swing角度取得
+float PhysicsComponentAPI::GetSwingAngle(ConstraintID _id)
+{
+	assert(constraintStorage->GetType(_id) == ConstraintType::LIMITED_BALL_JOINT);
+
+	return constraintStorage->GetLimitedBallJointConstraint(_id).swingAngle;
+}
+// Swing角度変更
+void PhysicsComponentAPI::SetSwingAngle(ConstraintID _id, float _angle)
+{
+	assert(constraintStorage->GetType(_id) == ConstraintType::LIMITED_BALL_JOINT);
+
+	constraintStorage->EditLimitedBallJointConstraint(_id).swingAngle = _angle;
+}
+// Twist角度取得
+float PhysicsComponentAPI::GetTwistAngle(ConstraintID _id)
+{
+	assert(constraintStorage->GetType(_id) == ConstraintType::LIMITED_BALL_JOINT);
+
+	return constraintStorage->GetLimitedBallJointConstraint(_id).twistAngle;
+}
+// Twist角度変更
+void PhysicsComponentAPI::SetTwistAngle(ConstraintID _id, float _angle)
+{
+	assert(constraintStorage->GetType(_id) == ConstraintType::LIMITED_BALL_JOINT);
+
+	constraintStorage->EditLimitedBallJointConstraint(_id).twistAngle = _angle;
+}
 
 // 最小角度取得
 float PhysicsComponentAPI::GetAngleMin(ConstraintID _id)
@@ -654,6 +697,8 @@ ConstraintTuning PhysicsComponentAPI::GetPositionTuning(ConstraintID _id)
 		return constraintStorage->GetHingeConstraint(_id).positionTuning;
 	case ConstraintType::ANGLE_LIMIT_HINGE:
 		return constraintStorage->GetAngleLimitHingeConstraint(_id).positionTuning;
+	case ConstraintType::LIMITED_BALL_JOINT:
+		return constraintStorage->GetLimitedBallJointConstraint(_id).positionTuning;
 	default:
 		return {};
 	}
@@ -670,6 +715,9 @@ void PhysicsComponentAPI::SetPositionTuning(ConstraintID _id, const ConstraintTu
 	case ConstraintType::ANGLE_LIMIT_HINGE:
 		constraintStorage->EditAngleLimitHingeConstraint(_id).positionTuning = _tuning;
 		break;
+	case ConstraintType::LIMITED_BALL_JOINT:
+		constraintStorage->EditLimitedBallJointConstraint(_id).positionTuning = _tuning;
+		break;
 	default:
 		break;
 	}
@@ -684,6 +732,8 @@ ConstraintTuning PhysicsComponentAPI::GetAngularTuning(ConstraintID _id)
 		return constraintStorage->GetHingeConstraint(_id).angularTuning;
 	case ConstraintType::ANGLE_LIMIT_HINGE:
 		return constraintStorage->GetAngleLimitHingeConstraint(_id).angularTuning;
+	case ConstraintType::LIMITED_BALL_JOINT:
+		return constraintStorage->GetLimitedBallJointConstraint(_id).angularTuning;
 	default:
 		return {};
 	}
@@ -699,6 +749,9 @@ void PhysicsComponentAPI::SetAngularTuning(ConstraintID _id, const ConstraintTun
 		break;
 	case ConstraintType::ANGLE_LIMIT_HINGE:
 		constraintStorage->EditAngleLimitHingeConstraint(_id).angularTuning = _tuning;
+		break;
+	case ConstraintType::LIMITED_BALL_JOINT:
+		constraintStorage->EditLimitedBallJointConstraint(_id).angularTuning = _tuning;
 		break;
 	default:
 		break;
