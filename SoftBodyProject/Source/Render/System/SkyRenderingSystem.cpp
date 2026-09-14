@@ -41,7 +41,7 @@ void SkyRenderingSystem::Draw(WorldStorage* _worldStorage, EventManager* _eventM
 		// モデルをカメラの位置に持ってくる。
 		ResourceManager::SetMatrix(boxHandle, trans.GetWorldMatrix());
 
-		cbData.world = Matrix4x4::Identity();
+		cbData.world = Matrix4x4::IDENTITY;
 		cbData.view = MatGenerateFunc::InverseTRS(trans.GetPosition(), trans.GetRotation(), Vector3{ 1.0f,1.0f, 1.0f });
 
 		// Projection行列作成

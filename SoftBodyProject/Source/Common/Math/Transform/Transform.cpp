@@ -168,7 +168,7 @@ void Transform::SetParent(Transform* _parent, bool keepLocal)
 		else
 		{
 			// 親がないなら単位行列
-			invParent = Matrix4x4::Identity();
+			invParent = Matrix4x4::IDENTITY;
 		}
 			
 		// ローカルを作り直す

@@ -77,7 +77,7 @@ void SolverBodyBuildSystem::CreateSolverBody(PhysicsTransformStorage* _transform
 	body.rotation = _transformStorage->GetRotation(_transformID);
 	body.angularVelocity = Vector3::ZERO;;
 	body.inverseMass = 0;
-	body.localInverseInertiaTensor = Matrix4x4::Zero();
+	body.localInverseInertiaTensor = Matrix4x4::ZERO;
 
 	// 追加
 	_solverBodyBuffer->Add(_transformID, body);

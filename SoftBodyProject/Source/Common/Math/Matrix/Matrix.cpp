@@ -2,26 +2,19 @@
 #include "../Vector/SIMD/SIMDVectorMath.h"
 
 // 単位行列
-Matrix4x4 Matrix4x4::Identity()
-{
-	return Matrix4x4{
+const Matrix4x4 Matrix4x4::IDENTITY{
 		1.0f,0.0f,0.0f,0.0f,
 		0.0f,1.0f,0.0f,0.0f,
 		0.0f,0.0f,1.0f,0.0f,
 		0.0f,0.0f,0.0f,1.0f
-	};
-}
-
+};
 // ZERO行列
-Matrix4x4 Matrix4x4::Zero()
-{
-	return Matrix4x4{
+const Matrix4x4 Matrix4x4::ZERO{
 		0.0f,0.0f,0.0f,0.0f,
 		0.0f,0.0f,0.0f,0.0f,
 		0.0f,0.0f,0.0f,0.0f,
 		0.0f,0.0f,0.0f,0.0f
-	};
-}
+};
 
 // 加算
 Matrix4x4 Matrix4x4::operator+(const Matrix4x4& _other)const

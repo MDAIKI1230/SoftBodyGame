@@ -58,9 +58,9 @@ public:
 	}
 
 	// 単位行列
-	static Matrix4x4 Identity();
+	static const Matrix4x4 IDENTITY;
 	// ZERO行列
-	static Matrix4x4 Zero();
+	static const Matrix4x4 ZERO;
 
 	// 加算
 	Matrix4x4 operator+(const Matrix4x4& _other)const;

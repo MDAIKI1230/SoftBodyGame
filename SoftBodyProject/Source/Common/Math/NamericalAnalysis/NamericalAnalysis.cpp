@@ -9,7 +9,7 @@ Vector4 NamericalAnalysis::GaussJordan(const Matrix4x4& _coefficientMatrix, cons
 	// 逆行列が必要そうなら単位行列で初期化
 	if (inverseMatrix)
 	{
-		*inverseMatrix = Matrix4x4::Identity();
+		*inverseMatrix = Matrix4x4::IDENTITY;
 	}
 
 	for (int k{ 0 }; k < 4; k++)
@@ -100,7 +100,7 @@ Vector4 NamericalAnalysis::GaussJordan(const Matrix4x4& _coefficientMatrix, cons
 Matrix4x4 NamericalAnalysis::GaussJordan(const Matrix4x4& _coefficientMatrix)
 {
 	Matrix4x4 mat{ _coefficientMatrix };
-	Matrix4x4 result{ Matrix4x4::Identity() };
+	Matrix4x4 result{ Matrix4x4::IDENTITY };
 
 	for (int k{ 0 }; k < 4; k++)
 	{
@@ -135,7 +135,7 @@ Matrix4x4 NamericalAnalysis::GaussJordan(const Matrix4x4& _coefficientMatrix)
 		// 逆行列なし、または解けない
 		if (pivotValue < MathConstants::EPSILON)
 		{
-			return Matrix4x4::Zero();
+			return Matrix4x4::ZERO;
 		}
 
 		// 前進消去
