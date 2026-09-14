@@ -1,0 +1,352 @@
+﻿{
+	"Format": "RagdollDefinition",
+	"Root": {
+		"Bone": "A1_3",
+		"Body": {
+			"LocalPosition": { "X": 5.3579, "Y": 0.2641, "Z": -0.0304 },
+			"LocalRotationDeg": { "X": 0.0016, "Y": -10.6055, "Z": -88.1790 },
+			"Mass": 8.0,
+			"Collider": {
+				"Type": "Box",
+				"Size": { "X": 18.0, "Y": 14.0, "Z": 15.0 }
+			}
+		},
+		"Children": [
+			{
+				"Bone": "A1_2",
+				"Body": {
+					"LocalPosition": { "X": 4.1227, "Y": 0.0917, "Z": -0.0087 },
+					"LocalRotationDeg": { "X": -0.3340, "Y": 2.6382, "Z": -90.0111 },
+					"Mass": 10.0,
+					"Collider": {
+						"Type": "Box",
+						"Size": { "X": 20.0, "Y": 18.0, "Z": 15.0 }
+					}
+				},
+				"Joint": {
+					"LocalPosition": { "X": 0.0, "Y": 0.0, "Z": 0.0 },
+					"LocalRotationDeg": { "X": -0.3340, "Y": 2.6382, "Z": -90.0111 },
+					"Type": "LimitedBallJoint",
+					"AngleLimit": {
+						"SwingMaxDeg": 25.0,
+						"TwistMinDeg": -20.0,
+						"TwistMaxDeg": 20.0
+					}
+				},
+				"Children": [
+					{
+						"Bone": "A1_1",
+						"Body": {
+							"LocalPosition": { "X": 12.5907, "Y": -0.8538, "Z": 2.7827 },
+							"LocalRotationDeg": { "X": 0.1361, "Y": -4.5039, "Z": -89.3239 },
+							"Mass": 5.0,
+							"Collider": {
+								"Type": "Sphere",
+								"Radius": 18.0
+							}
+						},
+						"Joint": {
+							"LocalPosition": { "X": 0.0, "Y": 0.0, "Z": 0.0 },
+							"LocalRotationDeg": { "X": 0.1361, "Y": -4.5039, "Z": -89.3239 },
+							"Type": "LimitedBallJoint",
+							"AngleLimit": {
+								"SwingMaxDeg": 35.0,
+								"TwistMinDeg": -45.0,
+								"TwistMaxDeg": 45.0
+							}
+						},
+						"Children": []
+					},
+					{
+						"Bone": "D1_2",
+						"Body": {
+							"LocalPosition": { "X": 5.7170, "Y": 0.0, "Z": 0.0 },
+							"LocalRotationDeg": { "X": -91.8449, "Y": 0.0042, "Z": -90.0043 },
+							"Mass": 1.2,
+							"Collider": {
+								"Type": "Capsule",
+								"Height": 3.4,
+								"Radius": 4.0
+							}
+						},
+						"Joint": {
+							"LocalPosition": { "X": 0.0, "Y": 0.0, "Z": 0.0 },
+							"LocalRotationDeg": { "X": -91.8449, "Y": 0.0042, "Z": -90.0043 },
+							"Type": "LimitedBallJoint",
+							"AngleLimit": {
+								"SwingMaxDeg": 100.0,
+								"TwistMinDeg": -80.0,
+								"TwistMaxDeg": 80.0
+							}
+						},
+						"Children": [
+							{
+								"Bone": "D1_3",
+								"Body": {
+									"LocalPosition": { "X": 5.9340, "Y": 0.0, "Z": 0.0 },
+									"LocalRotationDeg": { "X": -88.1675, "Y": 0.0035, "Z": -90.0036 },
+									"Mass": 0.9,
+									"Collider": {
+										"Type": "Capsule",
+										"Height": 5.5,
+										"Radius": 3.2
+									}
+								},
+								"Joint": {
+									"LocalPosition": { "X": 0.0, "Y": 0.0, "Z": 0.0 },
+									"LocalRotationDeg": { "X": 1.8313, "Y": 2.0578, "Z": -18.4129 },
+									"Type": "AngleLimitHinge",
+									"AngleLimit": {
+										"MinDeg": -5.0,
+										"MaxDeg": 145.0
+									}
+								},
+								"Children": [
+									{
+										"Bone": "D3_1",
+										"Body": {
+											"LocalPosition": { "X": 1.9538, "Y": -0.0137, "Z": -0.3046 },
+											"LocalRotationDeg": { "X": 2.8358, "Y": 9.8286, "Z": 173.3148 },
+											"Mass": 0.35,
+											"Collider": {
+												"Type": "Sphere",
+												"Radius": 5.0
+											}
+										},
+										"Joint": {
+											"LocalPosition": { "X": 0.0, "Y": 0.0, "Z": 0.0 },
+											"LocalRotationDeg": { "X": -87.1221, "Y": 0.0061, "Z": -90.0062 },
+											"Type": "LimitedBallJoint",
+											"AngleLimit": {
+												"SwingMaxDeg": 35.0,
+												"TwistMinDeg": -45.0,
+												"TwistMaxDeg": 45.0
+											}
+										},
+										"Children": []
+									}
+								]
+							}
+						]
+					},
+					{
+						"Bone": "E1_2",
+						"Body": {
+							"LocalPosition": { "X": 5.5939, "Y": 0.0188, "Z": 0.0014 },
+							"LocalRotationDeg": { "X": -84.5130, "Y": -2.0169, "Z": -87.9879 },
+							"Mass": 1.2,
+							"Collider": {
+								"Type": "Capsule",
+								"Height": 3.2,
+								"Radius": 4.0
+							}
+						},
+						"Joint": {
+							"LocalPosition": { "X": 0.0, "Y": 0.0, "Z": 0.0 },
+							"LocalRotationDeg": { "X": -84.5130, "Y": -2.0169, "Z": -87.9879 },
+							"Type": "LimitedBallJoint",
+							"AngleLimit": {
+								"SwingMaxDeg": 100.0,
+								"TwistMinDeg": -80.0,
+								"TwistMaxDeg": 80.0
+							}
+						},
+						"Children": [
+							{
+								"Bone": "E1_3",
+								"Body": {
+									"LocalPosition": { "X": 6.1034, "Y": 0.0, "Z": 0.0 },
+									"LocalRotationDeg": { "X": -89.9035, "Y": -0.0253, "Z": -89.9775 },
+									"Mass": 0.9,
+									"Collider": {
+										"Type": "Capsule",
+										"Height": 5.8,
+										"Radius": 3.2
+									}
+								},
+								"Joint": {
+									"LocalPosition": { "X": 0.0, "Y": 0.0, "Z": 0.0 },
+									"LocalRotationDeg": { "X": 0.0963, "Y": 4.3377, "Z": 16.5262 },
+									"Type": "AngleLimitHinge",
+									"AngleLimit": {
+										"MinDeg": -5.0,
+										"MaxDeg": 145.0
+									}
+								},
+								"Children": [
+									{
+										"Bone": "E3_1",
+										"Body": {
+											"LocalPosition": { "X": 2.2583, "Y": -0.3096, "Z": -0.0638 },
+											"LocalRotationDeg": { "X": 81.1420, "Y": 81.8073, "Z": 92.7971 },
+											"Mass": 0.35,
+											"Collider": {
+												"Type": "Sphere",
+												"Radius": 5.0
+											}
+										},
+										"Joint": {
+											"LocalPosition": { "X": 0.0, "Y": 0.0, "Z": 0.0 },
+											"LocalRotationDeg": { "X": -1.2717, "Y": -0.0033, "Z": -90.0 },
+											"Type": "LimitedBallJoint",
+											"AngleLimit": {
+												"SwingMaxDeg": 35.0,
+												"TwistMinDeg": -45.0,
+												"TwistMaxDeg": 45.0
+											}
+										},
+										"Children": []
+									}
+								]
+							}
+						]
+					}
+				]
+			},
+			{
+				"Bone": "B1_2",
+				"Body": {
+					"LocalPosition": { "X": 11.5569, "Y": 0.0, "Z": 0.0 },
+					"LocalRotationDeg": { "X": -90.0, "Y": 0.0, "Z": -90.0 },
+					"Mass": 3.5,
+					"Collider": {
+						"Type": "Capsule",
+						"Height": 12.1,
+						"Radius": 5.5
+					}
+				},
+				"Joint": {
+					"LocalPosition": { "X": 0.0, "Y": 0.0, "Z": 0.0 },
+					"LocalRotationDeg": { "X": -90.0, "Y": 0.0, "Z": -90.0 },
+					"Type": "LimitedBallJoint",
+					"AngleLimit": {
+						"SwingMaxDeg": 60.0,
+						"TwistMinDeg": -35.0,
+						"TwistMaxDeg": 35.0
+					}
+				},
+				"Children": [
+					{
+						"Bone": "B1_3",
+						"Body": {
+							"LocalPosition": { "X": 8.8377, "Y": 0.0, "Z": 0.0 },
+							"LocalRotationDeg": { "X": -90.0, "Y": 0.0, "Z": -90.0 },
+							"Mass": 2.2,
+							"Collider": {
+								"Type": "Capsule",
+								"Height": 8.7,
+								"Radius": 4.5
+							}
+						},
+						"Joint": {
+							"LocalPosition": { "X": 0.0, "Y": 0.0, "Z": 0.0 },
+							"LocalRotationDeg": { "X": 0.0, "Y": 0.0, "Z": 6.4730 },
+							"Type": "AngleLimitHinge",
+							"AngleLimit": {
+								"MinDeg": -5.0,
+								"MaxDeg": 140.0
+							}
+						},
+						"Children": [
+							{
+								"Bone": "B1_4",
+								"Body": {
+									"LocalPosition": { "X": 5.4793, "Y": -0.3637, "Z": 0.1244 },
+									"LocalRotationDeg": { "X": 1.5023, "Y": 23.8060, "Z": 121.7624 },
+									"Mass": 0.7,
+									"Collider": {
+										"Type": "Box",
+										"Size": { "X": 13.0, "Y": 7.0, "Z": 14.0 }
+									}
+								},
+								"Joint": {
+									"LocalPosition": { "X": 0.0, "Y": 0.0, "Z": 0.0 },
+									"LocalRotationDeg": { "X": -88.3581, "Y": -0.0001, "Z": -89.9999 },
+									"Type": "LimitedBallJoint",
+									"AngleLimit": {
+										"SwingMaxDeg": 30.0,
+										"TwistMinDeg": -20.0,
+										"TwistMaxDeg": 20.0
+									}
+								},
+								"Children": []
+							}
+						]
+					}
+				]
+			},
+			{
+				"Bone": "C1_2",
+				"Body": {
+					"LocalPosition": { "X": 11.1621, "Y": 0.0, "Z": 0.0 },
+					"LocalRotationDeg": { "X": -94.6895, "Y": -0.0001, "Z": -89.9999 },
+					"Mass": 3.5,
+					"Collider": {
+						"Type": "Capsule",
+						"Height": 11.3,
+						"Radius": 5.5
+					}
+				},
+				"Joint": {
+					"LocalPosition": { "X": 0.0, "Y": 0.0, "Z": 0.0 },
+					"LocalRotationDeg": { "X": -94.6895, "Y": -0.0001, "Z": -89.9999 },
+					"Type": "LimitedBallJoint",
+					"AngleLimit": {
+						"SwingMaxDeg": 60.0,
+						"TwistMinDeg": -35.0,
+						"TwistMaxDeg": 35.0
+					}
+				},
+				"Children": [
+					{
+						"Bone": "C1_3",
+						"Body": {
+							"LocalPosition": { "X": 8.9919, "Y": 0.0, "Z": 0.0 },
+							"LocalRotationDeg": { "X": -90.1903, "Y": -0.0308, "Z": -89.9668 },
+							"Mass": 2.2,
+							"Collider": {
+								"Type": "Capsule",
+								"Height": 9.0,
+								"Radius": 4.5
+							}
+						},
+						"Joint": {
+							"LocalPosition": { "X": 0.0, "Y": 0.0, "Z": 0.0 },
+							"LocalRotationDeg": { "X": -0.1903, "Y": -0.7518, "Z": -4.6345 },
+							"Type": "AngleLimitHinge",
+							"AngleLimit": {
+								"MinDeg": -5.0,
+								"MaxDeg": 140.0
+							}
+						},
+						"Children": [
+							{
+								"Bone": "C1_4",
+								"Body": {
+									"LocalPosition": { "X": 5.3265, "Y": 0.4917, "Z": 1.0314 },
+									"LocalRotationDeg": { "X": 49.1370, "Y": 28.2229, "Z": 83.6472 },
+									"Mass": 0.7,
+									"Collider": {
+										"Type": "Box",
+										"Size": { "X": 13.0, "Y": 7.0, "Z": 14.0 }
+									}
+								},
+								"Joint": {
+									"LocalPosition": { "X": 0.0, "Y": 0.0, "Z": 0.0 },
+									"LocalRotationDeg": { "X": -37.3166, "Y": 0.0006, "Z": -90.0 },
+									"Type": "LimitedBallJoint",
+									"AngleLimit": {
+										"SwingMaxDeg": 30.0,
+										"TwistMinDeg": -20.0,
+										"TwistMaxDeg": 20.0
+									}
+								},
+								"Children": []
+							}
+						]
+					}
+				]
+			}
+		]
+	}
+}

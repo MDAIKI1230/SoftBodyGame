@@ -558,11 +558,15 @@ void ConstraintBuildSystem::BuildLimitedBallJointConstraint(ConstraintStorage* _
 			}
 			else if (angle < limitedBallJointConstraint.twistAngleMin)
 			{
-				constraint.error = 0 - angle;
+				constraint.error = limitedBallJointConstraint.twistAngleMin - angle;
 				constraint.jacobian[0] = Vector3::ZERO;
 				constraint.jacobian[1] = baseDir;
 				constraint.jacobian[2] = Vector3::ZERO;
 				constraint.jacobian[3] = -baseDir;
+			}
+			else
+			{
+				continue;
 			}
 
 			MakeConstraintInfo(constraint, limitedBallJointConstraint.angularTuning);

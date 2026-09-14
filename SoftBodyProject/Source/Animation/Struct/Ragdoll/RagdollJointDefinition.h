@@ -22,7 +22,7 @@ struct RagdollJointDefinition
 	Quaternion constraintRotationLocalChild;
 
 	// 拘束種類
-	ConstraintType type;
+	ConstraintType type{ ConstraintType::ANGLE_LIMIT_HINGE };
 
 	// 拘束の制限角度
 	RagdollJointAngleLimitDefinition angleLimit;

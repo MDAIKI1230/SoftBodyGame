@@ -185,6 +185,8 @@
     <ClInclude Include="Source\Animation\API\AnimationComponentAPI.h" />
     <ClInclude Include="Source\Animation\Component\RagdollComponent.h" />
     <ClInclude Include="Source\Animation\Constants\RagdollConstants.h" />
+    <ClInclude Include="Source\Animation\Load\Ragdoll\RagdollLoader.h" />
+    <ClInclude Include="Source\Animation\Load\Ragdoll\RagdollLoaderHelper.h" />
     <ClInclude Include="Source\Animation\Storage\Buffer\PoseBuffer.h" />
     <ClInclude Include="Source\Animation\Storage\Component\RagdollComponentStorage.h" />
     <ClInclude Include="Source\Animation\Storage\Ragdoll\RagdollStorage.h" />
@@ -462,6 +464,8 @@
     <ClCompile Include="Source\Animation\AnimationWorld.cpp" />
     <ClCompile Include="Source\Animation\API\AnimationComponentAPI.cpp" />
     <ClCompile Include="Source\Animation\Component\RagdollComponent.cpp" />
+    <ClCompile Include="Source\Animation\Load\Ragdoll\RagdollLoader.cpp" />
+    <ClCompile Include="Source\Animation\Load\Ragdoll\RagdollLoaderHelper.cpp" />
     <ClCompile Include="Source\Animation\Storage\Component\RagdollComponentStorage.cpp" />
     <ClCompile Include="Source\Animation\Storage\Ragdoll\RagdollStorage.cpp" />
     <ClCompile Include="Source\Animation\Storage\Skeleton\SkeletonInstanceStorage.cpp" />

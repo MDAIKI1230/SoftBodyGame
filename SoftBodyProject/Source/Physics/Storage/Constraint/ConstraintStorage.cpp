@@ -114,7 +114,7 @@ ConstraintID ConstraintStorage::CreateAngleLimitHingeConstraint(
 ConstraintID ConstraintStorage::CreateLimitedBallJointConstraint(EntityID _entity, PhysicsTransformID _transformID, const Vector3& _localOffset, const Quaternion& _localRotation)
 {
 	// ID作成
-	ConstraintID id{ CreateID(ConstraintType::LIMITED_BALL_JOINT,angleLimitHingeConstraintStorage->CountConstraint(),_entity,_transformID) };
+	ConstraintID id{ CreateID(ConstraintType::LIMITED_BALL_JOINT,limitedBallJointConstraintStorage->CountConstraint(),_entity,_transformID) };
 
 	// 実態を作る
 	LimitedBallJointConstraint limitedBallJointConstraint;

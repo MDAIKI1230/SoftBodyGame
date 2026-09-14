@@ -1187,6 +1187,9 @@ void PhysicsComponentAPI::AddInternalEndPoint(ConstraintID _constraintID, Physic
 	case ConstraintType::ANGLE_LIMIT_HINGE:
 		constraintStorage->EditAngleLimitHingeConstraint(_constraintID).endPoints.emplace_back(_transformID, _localOffset, _localRotation);
 		break;
+	case ConstraintType::LIMITED_BALL_JOINT:
+		constraintStorage->EditLimitedBallJointConstraint(_constraintID).endPoints.emplace_back(_transformID, _localOffset, _localRotation);
+		break;
 	default:
 		break;
 	}

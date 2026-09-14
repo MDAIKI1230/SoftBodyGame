@@ -344,6 +344,12 @@
     <Filter Include="ソース ファイル\Physics\Struct\Constraint\Constraint">
       <UniqueIdentifier>{c2d4cbce-7c8d-49b3-8f63-10960b1ef5b3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Animation\Load">
+      <UniqueIdentifier>{119c48b8-66a9-4c1a-ad4f-3be805c7dee4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Animation\Load\Ragdoll">
+      <UniqueIdentifier>{5afb3728-1a60-4b13-b69b-7558db1336fb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Objects\Camera.h">
@@ -1174,6 +1180,12 @@
     <ClInclude Include="Source\Common\Macro\AssertMacros.h">
       <Filter>ソース ファイル\Common\Macro</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Animation\Load\Ragdoll\RagdollLoader.h">
+      <Filter>ソース ファイル\Animation\Load\Ragdoll</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Animation\Load\Ragdoll\RagdollLoaderHelper.h">
+      <Filter>ソース ファイル\Animation\Load\Ragdoll</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\System\Scenes\DebugScene.cpp">
@@ -1532,6 +1544,12 @@
     </ClCompile>
     <ClCompile Include="Source\Physics\Storage\Component\Constraint\LimitedBallJointConstraintComponentStorage.cpp">
       <Filter>ソース ファイル\Physics\Storage\Component\Constraint</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Animation\Load\Ragdoll\RagdollLoader.cpp">
+      <Filter>ソース ファイル\Animation\Load\Ragdoll</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Animation\Load\Ragdoll\RagdollLoaderHelper.cpp">
+      <Filter>ソース ファイル\Animation\Load\Ragdoll</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

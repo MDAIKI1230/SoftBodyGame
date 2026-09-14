@@ -313,7 +313,7 @@ bool DxlibRenderer::GetCurrentPose(ModelHandle _handle, PoseBuffer& _output)
 	}
 
 	// 全BoneのModel行列を作る
-	for (uint32_t bone{ 0 }; bone < frameCount; bone++)
+	for (uint32_t bone{ 0 }; bone < static_cast<uint32_t>(frameCount); bone++)
 	{
 		const Matrix4x4& localMatrix{ _output.localMatrices[bone] };
 

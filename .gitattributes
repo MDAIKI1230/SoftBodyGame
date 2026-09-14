@@ -1,0 +1,18 @@
+# テキストファイルの改行コードをLFへ統一
+* text=auto eol=lf
+
+# バイナリファイル
+*.fbx binary
+*.mv1 binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.bmp binary
+*.dds binary
+*.wav binary
+*.mp3 binary
+*.ogg binary
+*.exe binary
+*.dll binary
+*.lib binary
+*.pdb binary

@@ -1,0 +1,106 @@
+{
+  別種類のJSONを誤って読まないための識別
+  "Format": "RagdollDefinition",
+
+  Ragdoll階層の根
+  Rootには接続先の親がないためJointは設定しない
+  "Root": {
+    モデル内のBone名
+    "Bone": "モデル内の腰ボーン名",
+
+    Bone空間から見たPhysics Bodyの設定
+    "Body": {
+      "LocalPosition": { "X": 0, "Y": 0, "Z": 0 },
+
+      オイラー角・度数法
+      "LocalRotationDeg": { "X": 0, "Y": 0, "Z": 0 },
+
+      "Mass": 10.0,
+
+      Colliderの種類
+      Capsule : Height・Radius
+      Sphere  : Radius
+      Box     : Size
+      "Collider": {
+        "Type": "Capsule",
+        Y軸方向の軸線部分の長さ
+        "Height": 30.0,
+        "Radius": 10.0
+      }
+    },
+
+    "Children": [
+      {
+        "Bone": "モデル内の左上脚ボーン名",
+
+        "Body": {
+          "LocalPosition": { "X": 0, "Y": -15, "Z": 0 },
+          "LocalRotationDeg": { "X": 0, "Y": 0, "Z": 0 },
+          "Mass": 5.0,
+
+          "Collider": {
+            "Type": "Capsule",
+            "Height": 30.0,
+            "Radius": 7.0
+          }
+        },
+
+        JSON階層上の親Boneと、このBoneを接続するJoint
+        Joint位置と姿勢は、この子Boneから見たローカル
+        JointローカルY軸がSwing・Twist軸
+        JointローカルX軸がTwist角度0の基準方向
+        
+        "Joint": {
+
+          "LocalPosition": { "X": 0, "Y": 0, "Z": 0 },
+          "LocalRotationDeg": { "X": 0, "Y": 0, "Z": 0 },
+
+          Jointの種類
+          LimitedBallJoint : SwingMaxDeg・TwistMinDeg・TwistMaxDeg
+          AngleLimitHinge  : MinDeg・MaxDeg
+          "Type": "LimitedBallJoint",
+          角度は度数法で記述し、読み込み時にラジアンへ変換
+          "AngleLimit": {
+            "SwingMaxDeg": 45.0,
+            "TwistMinDeg": -20.0,
+            "TwistMaxDeg": 20.0
+          }
+        },
+
+        "Children": [
+          {
+            "Bone": "モデル内の左下脚ボーン名",
+
+            "Body": {
+              "LocalPosition": { "X": 0, "Y": -15, "Z": 0 },
+              "LocalRotationDeg": { "X": 0, "Y": 0, "Z": 0 },
+              "Mass": 3.0,
+
+              "Collider": {
+                "Type": "Capsule",
+                "Height": 30.0,
+                "Radius": 6.0
+              }
+            },
+
+            JointローカルY軸がヒンジ回転軸
+            JointローカルX軸が角度0の基準方向
+            "Joint": {
+              "LocalPosition": { "X": 0, "Y": 0, "Z": 0 },
+              "LocalRotationDeg": { "X": 0, "Y": 0, "Z": 0 },
+
+              "Type": "AngleLimitHinge",
+              "AngleLimit": {
+                "MinDeg": 0.0,
+                "MaxDeg": 140.0
+              }
+            },
+
+            子がない場合も空配列を設定
+            "Children": []
+          }
+        ]
+      }
+    ]
+  }
+}
