@@ -14,6 +14,7 @@ bool RagdollLoaderHelper::LoadRagdollDefinition(rapidjson::Document& _document, 
 // Bone情報ロード関数
 bool RagdollLoaderHelper::LoadBone(const rapidjson::Value& _value, RagdollDefinition& _output, std::string_view _parentBoneName)
 {
+	// 名前の読み込み
 	if (!_value.HasMember("Bone") || !_value["Bone"].IsString())
 	{
 		return false;

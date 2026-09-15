@@ -13,11 +13,11 @@ bool ResourceManager::LoadModelImpl(std::filesystem::path _path)
 	modelMasters[key] = ServiceLocator::GetRenderer()->LoadModel(_path.string());
 
 	// スケルトンの取得も済ませて置く
-	SkeletonData skeleton;
+	SkeletonHandle skeletonHandle{ ServiceLocator::GetRenderer()->LoadSkeletonData(modelMasters[key]) };
 
-	if (ServiceLocator::GetRenderer()->GetSkeletonData(modelMasters[key], skeleton))
+	if (skeletonHandle.IsValid())
 	{
-		skeletonMasters[modelMasters[key]] = std::move(skeleton);
+		modelToSkeleton[modelMasters[key]] = skeletonHandle;
 	}
 
 	return modelMasters[key].GetGeneration() != 0;
@@ -74,7 +74,10 @@ ModelHandle ResourceManager::GetModelImpl(std::filesystem::path _path)
 	// あるかチェックして無かったら無効値を返す
 	if (modelMasters.contains(_path))
 	{
-		return ServiceLocator::GetRenderer()->DuplicateModel(modelMasters[_path]);
+		ModelHandle originalHandle{ modelMasters[_path] };
+		ModelHandle handle{ ServiceLocator::GetRenderer()->DuplicateModel(originalHandle) };
+		modelToSkeleton[handle] = modelToSkeleton[originalHandle];
+		return handle;
 	}
 	
 	return {};
@@ -123,9 +126,9 @@ PixelShaderHandle ResourceManager::GetPixelShaderImpl(std::filesystem::path _pat
 // モデルのハンドルからスケルトンのデータを取得する
 const SkeletonData* ResourceManager::GetSkeletonDataImpl(ModelHandle _model)
 {
-	if (skeletonMasters.contains(_model))
+	if (modelToSkeleton.contains(_model))
 	{
-		return &skeletonMasters[_model];
+		return ServiceLocator::GetRenderer()->GetSkeletonData(modelToSkeleton[_model]);
 	}
 
 	return nullptr;
@@ -180,10 +183,11 @@ void ResourceManager::UnLoadModelImpl(std::filesystem::path _path)
 	for (auto handle : modelSharedResource[_path])
 	{
 		ServiceLocator::GetRenderer()->DeleteModel(handle);
+		modelToSkeleton.erase(handle);
 	}
 
 	// スケルトンも消す
-	skeletonMasters.erase(modelMasters[_path]);
+	modelToSkeleton.erase(modelMasters[_path]);
 
 	ServiceLocator::GetRenderer()->DeleteModel(modelMasters[_path]);
 

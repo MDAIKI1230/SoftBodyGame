@@ -189,6 +189,11 @@ public:
 	// 半径変更
 	static void SetCapsuleRadius(ColliderID _id, float _radius);
 
+	// フィルター取得
+	static const CollisionFilter& GetFilter(ColliderID _id);
+	// フィルター変更
+	static void SetFilter(ColliderID _id, const CollisionFilter& _filter);
+
 	// --- 拘束系 ---
 	// 破壊
 	static void DestroyConstraint(ConstraintID _id);

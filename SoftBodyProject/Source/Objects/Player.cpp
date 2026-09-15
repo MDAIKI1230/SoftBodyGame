@@ -20,7 +20,7 @@ Player::Player(WorldStorage* _world, EntityID _entityID, Camera* _camera) :
 	cc->SetGroundDeceleration(2000.0f);
 	cc->SetJumpSpeed(100.0f);
 
-	camera->GetComponent<CameraRigComponent>()->SetMode(CameraMode::TPS);
+	camera->GetComponent<CameraRigComponent>()->SetMode(CameraMode::FPS);
 	camera->GetComponent<CameraRigComponent>()->SetFollowTarget(GetID());
 	camera->GetComponent<CameraComponent>()->SetNear(0.01f);
 }

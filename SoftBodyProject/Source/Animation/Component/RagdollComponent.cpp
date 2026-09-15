@@ -2,7 +2,7 @@
 
 #include "RagdollComponent.h"
 
-RagdollComponent::RagdollComponent(EntityID _entity, const RendererComponent& rendererComponent, const RagdollDefinition& _definition)
+RagdollComponent::RagdollComponent(EntityID _entity, const RendererComponent& rendererComponent, const std::string& _path)
 {
-	id = AnimationComponentAPI::CreateRagdoll(_entity, rendererComponent, _definition);
+	id = AnimationComponentAPI::CreateRagdoll(_entity, rendererComponent, _path);
 }

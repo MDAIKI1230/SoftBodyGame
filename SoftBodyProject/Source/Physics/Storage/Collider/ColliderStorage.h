@@ -51,6 +51,16 @@ class ColliderStorage:public PhysicsStorageBase<ColliderID, ColliderSlot>
     {
         return aabbStorage->Count();
     }
+	// Filter取得
+	const CollisionFilter& GetFilter(ColliderID _id)
+	{
+		return GetSlot(_id).filter;
+	}
+	// Filter編集
+	CollisionFilter& EditFilter(ColliderID _id)
+	{
+		return EditSlotMember<&ColliderSlot::filter>(_id);
+	}
 public:
     // コンストラクタ
     ColliderStorage();

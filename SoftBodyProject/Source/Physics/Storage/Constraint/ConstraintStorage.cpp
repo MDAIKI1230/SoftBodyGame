@@ -23,7 +23,7 @@ ConstraintID ConstraintStorage::CreatePointConstraint(EntityID _entity, PhysicsT
 	pointConstraintStorage->Add(id, pointConstraint);
 
 	// 対応表
-	transformMap[_transformID] = id;
+	transformMap[_transformID].push_back(id);
 
 	// ID返して終了
 	return id;
@@ -42,7 +42,7 @@ ConstraintID ConstraintStorage::CreateDistanceConstraint(EntityID _entity, Physi
 	distanceConstraintStorage->Add(id, distanceConstraint);
 
 	// 対応表
-	transformMap[_transformID] = id;
+	transformMap[_transformID].push_back(id);
 
 	// ID返して終了
 	return id;
@@ -62,7 +62,7 @@ ConstraintID ConstraintStorage::CreateHingeConstraint(EntityID _entity, PhysicsT
 	hingeConstraintStorage->Add(id, hingeConstraint);
 
 	// 対応表
-	transformMap[_transformID] = id;
+	transformMap[_transformID].push_back(id);
 
 	// ID返して終了
 	return id;
@@ -82,7 +82,7 @@ ConstraintID ConstraintStorage::CreateAngleLimitPointConstraint(EntityID _entity
 	angleLimitPointConstraintStorage->Add(id, angleLimitPointConstraint);
 
 	// 対応表
-	transformMap[_transformID] = id;
+	transformMap[_transformID].push_back(id);
 
 	// ID返して終了
 	return id;
@@ -104,7 +104,7 @@ ConstraintID ConstraintStorage::CreateAngleLimitHingeConstraint(
 	angleLimitHingeConstraintStorage->Add(id, angleLimitHingeConstraint);
 
 	// 対応表
-	transformMap[_transformID] = id;
+	transformMap[_transformID].push_back(id);
 
 	// ID返して終了
 	return id;
@@ -124,7 +124,7 @@ ConstraintID ConstraintStorage::CreateLimitedBallJointConstraint(EntityID _entit
 	limitedBallJointConstraintStorage->Add(id, limitedBallJointConstraint);
 
 	// 対応表
-	transformMap[_transformID] = id;
+	transformMap[_transformID].push_back(id);
 
 	// ID返して終了
 	return id;
@@ -189,14 +189,13 @@ PhysicsTransformID ConstraintStorage::GetTransformID(ConstraintID _id) const
 }
 
 // TransformIDから対応した拘束取得
-bool ConstraintStorage::TryGetConstraintIDFromTransformID(PhysicsTransformID _id, ConstraintID& _output)
+bool ConstraintStorage::TryGetConstraintIDFromTransformID(PhysicsTransformID _id, std::vector<ConstraintID>& _output)
 {
 	if (transformMap.contains(_id))
 	{
-		return false;
+		_output = transformMap[_id];
+		return true;
 	}
 
-	_output = transformMap[_id];
-
-	return true;
+	return false;
 }

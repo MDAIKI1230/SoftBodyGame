@@ -5,19 +5,20 @@
 #include "CollisionConstants.h"
 #include "EntityID.h"
 #include "PhysicsTransformID.h"
+#include "CollisionFilter.h"
 
 struct ColliderSlot
 {
 public:
     // コンストラクタ
-    ColliderSlot(ColliderType _type, uint32_t _denseIndex, uint32_t _aabbIndex, EntityID _ownerEntity, PhysicsTransformID _transformID) :
-        type{ _type },
-        denseIndex{ _denseIndex },
-        aabbIndex{ _aabbIndex },
-        ownerEntity{ _ownerEntity },
-        transformID{ _transformID }
-    {
-    }
+	ColliderSlot(ColliderType _type, uint32_t _denseIndex, uint32_t _aabbIndex, EntityID _ownerEntity, PhysicsTransformID _transformID) :
+		type{ _type },
+		denseIndex{ _denseIndex },
+		aabbIndex{ _aabbIndex },
+		ownerEntity{ _ownerEntity },
+		transformID{ _transformID }
+	{
+	}
 
 public:
     // 世代
@@ -34,4 +35,6 @@ public:
     EntityID ownerEntity;
     // Transform
     PhysicsTransformID transformID;
+	// フィルター
+	CollisionFilter filter;
 };

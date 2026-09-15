@@ -99,6 +99,9 @@ void PhysicsTransformStorage::Destroy(PhysicsTransformID _id)
 	scales.pop_back();
 	localMatrices.pop_back();
 	worldMatrices.pop_back();
+	parentIDs.pop_back();
+	syncPolicies.pop_back();
+	ownerEntities.pop_back();
 	ids.pop_back();
 
 	auto it = entityMap.find(GetOwnerEntity(_id));

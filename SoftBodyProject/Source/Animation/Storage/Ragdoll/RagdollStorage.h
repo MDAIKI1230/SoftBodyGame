@@ -27,11 +27,14 @@ public:
 	MD_STORAGE_ID_READ_ONLY_COLUMN(RagdollID, EntityID, OwnerEntity, ownerEntities)
 public:
 	// 生成
-	RagdollID Create(EntityID _entity, SkeletonID _skeletonID, ModelHandle _model, const SkeletonInstanceData& _skeleton, const RagdollDefinition& _definition);
+	RagdollID Create(EntityID _entity, SkeletonID _skeletonID, ModelHandle _model, const SkeletonInstanceData& _skeleton, const std::string& _path);
 	// 破棄
 	void Destroy(RagdollID _id);
 
 private:
 	// Ragdoll情報の作成関数
-	bool CreateRagdoll(EntityID _entity, SkeletonID _skeletonID, ModelHandle _model, const SkeletonInstanceData& _skeleton, const RagdollDefinition& _definition);
+	bool CreateRagdoll(EntityID _entity, SkeletonID _skeletonID, RagdollID _ragdollID, ModelHandle _model, const SkeletonInstanceData& _skeleton, const RagdollDefinition& _definition);
+
+	// Ragdoll情報の破棄関数
+	void DestroyRagdoll(const Ragdoll& _ragdoll);
 };

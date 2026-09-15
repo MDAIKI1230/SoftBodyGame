@@ -397,6 +397,17 @@ void PhysicsComponentAPI::SetCapsuleRadius(ColliderID _id, float _radius)
 	colliderStorage->SetCapsuleColliderRadius(_id, _radius);
 }
 
+// フィルター取得
+const CollisionFilter& PhysicsComponentAPI::GetFilter(ColliderID _id)
+{
+	return colliderStorage->GetFilter(_id);
+}
+// フィルター変更
+void PhysicsComponentAPI::SetFilter(ColliderID _id, const CollisionFilter& _filter)
+{
+	colliderStorage->EditFilter(_id) = _filter;
+}
+
 // --- 拘束系 ---
 
 // 点拘束作成
@@ -1151,7 +1162,7 @@ ConstraintID PhysicsComponentAPI::CreateInternalAngleLimitHingeConstraint(
 {
 
 	return constraintStorage->CreateAngleLimitHingeConstraint(
-		_entity, transformStorage->GetOrCreateTransform(_entity),
+		_entity, _transformID,
 		_localOffset, _localRotation);
 }
 
@@ -1203,16 +1214,26 @@ void PhysicsComponentAPI::DestroyPhysicsTransform(PhysicsTransformID _transformI
 	{
 		bodyStorage->Destroy(bodyID);
 	}
+
+	std::vector<ColliderID> destroyColliders;
 	
 	for (auto colliderID : colliderStorage->GetColliderIDFromTransformID(_transformID))
+	{
+		destroyColliders.push_back(colliderID);
+	}
+
+	for (auto colliderID : destroyColliders)
 	{
 		colliderStorage->Destroy(colliderID);
 	}
 
-	ConstraintID constraintID;
-	if (constraintStorage->TryGetConstraintIDFromTransformID(_transformID, constraintID))
+	std::vector <ConstraintID> constraintIDs;
+	if (constraintStorage->TryGetConstraintIDFromTransformID(_transformID, constraintIDs))
 	{
-		constraintStorage->Destory(constraintID);
+		for (auto constraintID : constraintIDs)
+		{
+			constraintStorage->Destory(constraintID);
+		}
 	}
 
 	transformStorage->Destroy(_transformID);

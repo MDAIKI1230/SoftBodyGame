@@ -55,8 +55,10 @@ private:
 
 	// --- アニメーション関連 ---
 
+	// モデルのスケルトンデータのロード
+	SkeletonHandle LoadSkeletonData(ModelHandle _handle) override;
 	// モデルのスケルトンデータの取得
-	bool GetSkeletonData(ModelHandle _handle, SkeletonData& _output) override;
+	const SkeletonData* GetSkeletonData(SkeletonHandle _handle) override;
 	// 現在のスケルトンのポーズ情報の取得
 	bool GetCurrentPose(ModelHandle _handle, PoseBuffer& _output) override;
 	// モデルに、ポーズを適応する
@@ -105,4 +107,5 @@ private:
 	ResourceStorage<ModelHandle, int> modelStorage;
 	ResourceStorage<TextureHandle, int> textureStorage;
 	ResourceStorage<CubeTextureHandle, int> cubeTextureStorage;
+	ResourceStorage<SkeletonHandle, SkeletonData> skeletonStorage;
 };

@@ -1,5 +1,7 @@
 ﻿#include <DxLib.h>
 
+#include "AssertMacros.h"
+
 #include "DxlibConvert.h"
 
 #include "DxlibRenderer.h"
@@ -210,35 +212,37 @@ void DxlibRenderer::DrawCone(const Vector3& _topPos, const Vector3& _bottomPos, 
 // --- アニメーション関連 ---
 
 // モデルのスケルトンデータの取得
-bool DxlibRenderer::GetSkeletonData(ModelHandle _handle, SkeletonData& _output)
+SkeletonHandle DxlibRenderer::LoadSkeletonData(ModelHandle _handle)
 {
 	int nativeHandle;
 
 	if (!modelStorage.TryGet(_handle, nativeHandle))
 	{
-		return false;
+		return {};
 	}
 
 	int frameCount{ MV1GetFrameNum(nativeHandle) };
 
 	if (frameCount == -1)
 	{
-		return false;
+		return {};
 	}
 
-	_output.ReSize(frameCount);
+	SkeletonData skeletonData;
+
+	skeletonData.ReSize(frameCount);
 
 	// 先に、親ボーンからのローカル座標を計算して保持しておく
 	for (int frame{ 0 }; frame < frameCount; frame++)
 	{
-		_output.bindLocalMatrices[frame] = ToMDMath(MV1GetFrameBaseLocalMatrix(nativeHandle, frame));
+		skeletonData.bindLocalMatrices[frame] = ToMDMath(MV1GetFrameBaseLocalMatrix(nativeHandle, frame));
 
 		// 行列を分解して位置/回転/スケールを作る
 		Transform::DecomposeTRS(
-			_output.bindLocalMatrices[frame],
-			_output.bindLocalPositions[frame],
-			_output.bindLocalRotations[frame],
-			_output.bindLocalScales[frame]);
+			skeletonData.bindLocalMatrices[frame],
+			skeletonData.bindLocalPositions[frame],
+			skeletonData.bindLocalRotations[frame],
+			skeletonData.bindLocalScales[frame]);
 	}
 
 	for (int frame{ 0 }; frame < frameCount; frame++)
@@ -248,23 +252,23 @@ bool DxlibRenderer::GetSkeletonData(ModelHandle _handle, SkeletonData& _output)
 		// 無効値が-2らしいので-2の時は無効値にしておく
 		if (parent == -2)
 		{
-			_output.parentIndices[frame] = INVALID_BONE;
+			skeletonData.parentIndices[frame] = INVALID_BONE;
 			// 親がいないので上で求めた行列を等しくなる
-			_output.bindModelMatrices[frame] = _output.bindLocalMatrices[frame];
+			skeletonData.bindModelMatrices[frame] = skeletonData.bindLocalMatrices[frame];
 		}
 		else
 		{
-			_output.parentIndices[frame] = static_cast<uint32_t>(parent);
+			skeletonData.parentIndices[frame] = static_cast<uint32_t>(parent);
 			// 親との計算をする
-			_output.bindModelMatrices[frame] = _output.bindModelMatrices[parent] * _output.bindLocalMatrices[frame];
+			skeletonData.bindModelMatrices[frame] = skeletonData.bindModelMatrices[parent] * skeletonData.bindLocalMatrices[frame];
 		}
 
 		// 行列を分解して位置/回転/スケールを作る
 		Transform::DecomposeTRS(
-			_output.bindModelMatrices[frame],
-			_output.bindModelPositions[frame],
-			_output.bindModelRotations[frame],
-			_output.bindModelScales[frame]);
+			skeletonData.bindModelMatrices[frame],
+			skeletonData.bindModelPositions[frame],
+			skeletonData.bindModelRotations[frame],
+			skeletonData.bindModelScales[frame]);
 
 		// 名前取得
 		std::wstring name{ MV1GetFrameName(nativeHandle, frame) };
@@ -274,11 +278,17 @@ bool DxlibRenderer::GetSkeletonData(ModelHandle _handle, SkeletonData& _output)
 			continue;
 		}
 
-		_output.boneNames[frame] = std::string(name.begin(), name.end());
-		_output.boneLookup[_output.boneNames[frame]] = frame;
+		skeletonData.boneNames[frame] = std::string(name.begin(), name.end());
+		skeletonData.boneLookup[skeletonData.boneNames[frame]] = frame;
 	}
 
-	return true;
+	return skeletonStorage.Add(skeletonData);
+}
+
+// モデルのスケルトンデータの取得
+const SkeletonData* DxlibRenderer::GetSkeletonData(SkeletonHandle _handle)
+{
+	return skeletonStorage.Get(_handle);
 }
 
 // 現在のスケルトンのポーズ情報の取得

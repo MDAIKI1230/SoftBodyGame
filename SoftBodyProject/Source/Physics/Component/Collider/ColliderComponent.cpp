@@ -2,6 +2,17 @@
 
 #include "ColliderComponent.h"
 
+// フィルター取得
+const CollisionFilter& ColliderComponent::GetFilter()
+{
+	return PhysicsComponentAPI::GetFilter(id);
+}
+// フィルター変更
+void ColliderComponent::SetFilter(const CollisionFilter& _filter)
+{
+	PhysicsComponentAPI::SetFilter(id, _filter);
+}
+
 // Colliderが現在も有効か
 bool ColliderComponent::IsValid() const
 {

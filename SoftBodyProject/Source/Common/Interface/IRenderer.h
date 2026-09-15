@@ -10,6 +10,7 @@
 #include "ModelHandle.h"
 #include "TextureHandle.h"
 #include "CubeTextureHandle.h"
+#include "SkeletonHandle.h"
 
 class IRenderer
 {
@@ -69,8 +70,10 @@ protected:
 
 	// --- アニメーション関連 ---
 
+	// モデルのスケルトンデータのロード
+	virtual SkeletonHandle LoadSkeletonData(ModelHandle _handle) = 0;
 	// モデルのスケルトンデータの取得
-	virtual bool GetSkeletonData(ModelHandle _handle, SkeletonData& _output) = 0;
+	virtual const SkeletonData* GetSkeletonData(SkeletonHandle _handle) = 0;
 	// 現在のスケルトンのポーズ情報の取得
 	virtual bool GetCurrentPose(ModelHandle _handle, PoseBuffer& _output) = 0;
 	// モデルに、ポーズを適応する

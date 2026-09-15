@@ -23,6 +23,7 @@
 #include "DebugCapsule.h"
 #include "EmptyObject.h"
 #include "Player.h"
+#include "DebugRagdoll.h"
 
 #include "DebugScene.h"
 
@@ -241,7 +242,7 @@ void DebugScene::Initialize()
 
 	objectManager.Add(std::move(angleLimitHingeBox));*/
 	// SwingTwist拘束
-	std::unique_ptr<EmptyObject> limitedBallJointEmpty{ std::make_unique<EmptyObject>(&worldStorage, objectManager.GenerateNewID()) };
+	/*std::unique_ptr<EmptyObject> limitedBallJointEmpty{ std::make_unique<EmptyObject>(&worldStorage, objectManager.GenerateNewID()) };
 
 	limitedBallJointEmpty->GetComponent<TransformComponent>()->SetPosition(Vector3{ 0.0f,-100.0f,0.0f });
 
@@ -258,5 +259,9 @@ void DebugScene::Initialize()
 
 	limitedBallJoint->AddEndPoint(limitedBallJointBox->GetID(), Vector3{ 0.0f,35.0f,0.0f }, Quaternion::IDENTITY);
 
-	objectManager.Add(std::move(limitedBallJointBox));
+	objectManager.Add(std::move(limitedBallJointBox));*/
+
+	// Ragdollデバッグ
+
+	objectManager.Add(std::make_unique<DebugRagdoll>(&worldStorage, objectManager.GenerateNewID()));
 }

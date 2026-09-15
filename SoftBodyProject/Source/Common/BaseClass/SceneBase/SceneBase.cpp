@@ -40,6 +40,10 @@
 #include "CameraBindSystem.h"
 #include "CameraRigComponentStorage.h"
 
+// アニメーション関系
+
+#include "RagdollComponentStorage.h"
+
 // API
 #include "PhysicsComponentAPI.h"
 #include "PhysicsAPI.h"
@@ -90,6 +94,10 @@ SceneBase::SceneBase()
 	AddSystem(std::make_unique<CameraRigSystem>());
 	AddSystem(std::make_unique<CameraBindSystem>());
 	AddStorage<CameraRigComponent>(std::make_unique<CameraRigComponentStorage>());
+
+	// アニメーション関系
+
+	AddStorage<RagdollComponent>(std::make_unique<RagdollComponentStorage>());
 
 	PhysicsComponentAPI::BindWorld(physicsWorld, worldStorage);
 	PhysicsAPI::BindWorld(physicsWorld);

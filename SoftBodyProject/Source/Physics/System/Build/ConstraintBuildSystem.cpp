@@ -539,7 +539,7 @@ void ConstraintBuildSystem::BuildLimitedBallJointConstraint(ConstraintStorage* _
 			
 			// Twist角度の制限を入れる
 
-			// B側の基準方向をA側ヒンジ軸の平面へ射影
+			// B側の基準方向
 			Vector3 referenceB{ solverBody.rotation.Rotate(endPoint.localRotation.Rotate(Vector3::RIGHT)) };
 
 			// Aの基準方向からBの基準方向への符号付き角度

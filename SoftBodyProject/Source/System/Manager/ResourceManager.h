@@ -199,7 +199,7 @@ private:
 	std::unordered_map <std::filesystem::path, VertexShaderHandle> vertexShaderMasters;
 	std::unordered_map <std::filesystem::path, PixelShaderHandle> pixelShaderMasters;
 
-	std::unordered_map <ModelHandle, SkeletonData> skeletonMasters;
+	std::unordered_map <ModelHandle, SkeletonHandle> modelToSkeleton;
 
 
 	// --- 共有データ ---

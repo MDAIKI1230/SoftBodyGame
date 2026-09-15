@@ -62,7 +62,7 @@ public:
 	PhysicsTransformID GetTransformID(ConstraintID _id) const;
 
 	// TransformIDから対応した拘束取得
-	bool TryGetConstraintIDFromTransformID(PhysicsTransformID _id, ConstraintID& _output);
+	bool TryGetConstraintIDFromTransformID(PhysicsTransformID _id, std::vector<ConstraintID>& _output);
 private:
 	// --- 各種拘束ストレージ ---
 
@@ -74,5 +74,5 @@ private:
 	std::unique_ptr<LimitedBallJointConstraintStorage> limitedBallJointConstraintStorage;
 
 	// PhysicsTransformIDとの対応表
-	std::unordered_map<PhysicsTransformID, ConstraintID> transformMap;
+	std::unordered_map<PhysicsTransformID, std::vector<ConstraintID>> transformMap;
 };

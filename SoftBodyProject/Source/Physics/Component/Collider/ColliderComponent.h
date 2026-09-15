@@ -4,6 +4,8 @@
 
 #include "CollisionConstants.h"
 
+#include "CollisionFilter.h"
+
 struct ColliderComponent
 {
 public:
@@ -15,6 +17,11 @@ public:
 		id{ _id }
 	{
 	}
+
+	// フィルター取得
+	const CollisionFilter& GetFilter();
+	// フィルター変更
+	void SetFilter(const CollisionFilter& _filter);
 
 	// 仮想デストラクタ
 	virtual ~ColliderComponent() = default;

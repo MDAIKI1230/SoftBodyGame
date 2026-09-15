@@ -188,8 +188,6 @@ void Transform::DecomposeTRS(const Matrix4x4& _mat, Vector3& _pos, Quaternion& _
 	// 位置
 	_pos = Vector3{ _mat.m[0][3],_mat.m[1][3],_mat.m[2][3] };
 
-	// 四元数
-	_rot = Quaternion::FromMatrix(_mat);
 
 	float sx{ Vector3{_mat.m[0][0],_mat.m[1][0],_mat.m[2][0]}.Length() };
 	float sy{ Vector3{_mat.m[0][1],_mat.m[1][1],_mat.m[2][1]}.Length() };
@@ -197,6 +195,26 @@ void Transform::DecomposeTRS(const Matrix4x4& _mat, Vector3& _pos, Quaternion& _
 
 	// スケール
 	_scale = Vector3{ sx,sy,sz };
+
+	// 四元数
+	Matrix4x4 rotMat = _mat;
+
+	for (int row = 0; row < 3; ++row)
+	{
+		rotMat.m[row][0] /= sx;
+		rotMat.m[row][1] /= sy;
+		rotMat.m[row][2] /= sz;
+	}
+
+	rotMat.m[0][3] = 0.0f;
+	rotMat.m[1][3] = 0.0f;
+	rotMat.m[2][3] = 0.0f;
+	rotMat.m[3][0] = 0.0f;
+	rotMat.m[3][1] = 0.0f;
+	rotMat.m[3][2] = 0.0f;
+	rotMat.m[3][3] = 1.0f;
+
+	_rot = Quaternion::FromMatrix(rotMat);
 }
 
 // ローカル行列更新

@@ -7,7 +7,7 @@
 struct SkeletonInstanceData
 {
     // おおもとのスケルトンデータ
-    const SkeletonData* skeletonData;
+	const SkeletonData* skeletonData{ nullptr };
 
     // このキャラクター専用
     PoseBuffer targetPose;
