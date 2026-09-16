@@ -63,6 +63,7 @@ void RagdollSystem::PrePhysicsFixedUpdate(SkeletonInstanceStorage* _skeletonStor
 
 			PhysicsComponentAPI::SetRigidBodyPosition(link.bodyID, position);
 			PhysicsComponentAPI::SetRigidBodyRoatation(link.bodyID, rotation);
+			// PhysicsComponentAPI::SetRigidBodyScale(link.bodyID, scale);
 		}
 
 		_ragdollStorage->SetNeedInitialize(id, false);
@@ -123,6 +124,7 @@ void RagdollSystem::PostPhysicsFixedUpdate(SkeletonInstanceStorage* _skeletonSto
 				// リジッドボディの姿勢を得る
 				Vector3 position{ PhysicsComponentAPI::GetRigidBodyPosition(bodyID) };
 				Quaternion rotation{ PhysicsComponentAPI::GetRigidBodyRoatation(bodyID) };
+				// Vector3 scale{ PhysicsComponentAPI::GetRigidBodyScale(bodyID) };
 
 				Matrix4x4 worldBodyMatrix{ MatGenerateFunc::TRS(position,rotation,Vector3::ONE) };
 

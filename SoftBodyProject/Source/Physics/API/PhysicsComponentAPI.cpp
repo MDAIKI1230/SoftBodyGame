@@ -61,6 +61,19 @@ void PhysicsComponentAPI::SetRigidBodyRoatation(BodyID _id, const Quaternion& _r
 	transformStorage->SetRotation(transformID, _rotation);
 }
 
+// スケール取得
+Vector3 PhysicsComponentAPI::GetRigidBodyScale(BodyID _id)
+{
+	PhysicsTransformID transformID{ bodyStorage->GetTransformID(_id) };
+	return transformStorage->GetScale(transformID);
+}
+// スケール変更
+void PhysicsComponentAPI::SetRigidBodyScale(BodyID _id, const Vector3& _scale)
+{
+	PhysicsTransformID transformID{ bodyStorage->GetTransformID(_id) };
+	transformStorage->SetScale(transformID, _scale);
+}
+
 // 力加算
 void PhysicsComponentAPI::AddForce(BodyID _id, const Vector3& _force)
 {

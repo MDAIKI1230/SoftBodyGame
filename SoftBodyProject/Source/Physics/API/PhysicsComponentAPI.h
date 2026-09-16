@@ -39,6 +39,11 @@ public:
 	// 回転変更
 	static void SetRigidBodyRoatation(BodyID _id, const Quaternion& _rotation);
 
+	// スケール取得
+	static Vector3 GetRigidBodyScale(BodyID _id);
+	// スケール変更
+	static void SetRigidBodyScale(BodyID _id, const Vector3& _scale);
+
 	// 力加算
 	static void AddForce(BodyID _id, const Vector3& _force);
 	// トルク加算

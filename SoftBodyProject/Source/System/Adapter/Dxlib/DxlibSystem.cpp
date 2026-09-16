@@ -5,6 +5,8 @@
 // 初期化
 int DxlibSystem::Init()
 {
+	DxLib::SetFullSceneAntiAliasingMode(4, 2);
+
     const int result = DxLib::DxLib_Init();
 
     if (result < 0)
