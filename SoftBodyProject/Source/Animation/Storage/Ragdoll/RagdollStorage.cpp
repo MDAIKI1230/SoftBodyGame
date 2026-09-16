@@ -239,12 +239,12 @@ bool RagdollStorage::CreateRagdoll(EntityID _entity, SkeletonID _skeletonID, Rag
 				childBoneFromJoint
 			};
 
-			// Model空間から親Bone空間への変換
+			// Model空間から親Bone空間への変換(スケール無視)
 			const Matrix4x4 parentBoneFromModel{
 				MatGenerateFunc::InverseTRS(
 					skeletonData.bindModelPositions[parentIndex],
 					skeletonData.bindModelRotations[parentIndex],
-					skeletonData.bindModelScales[parentIndex])
+					Vector3::ONE)
 			};
 
 			// 親Body空間から見たJoint

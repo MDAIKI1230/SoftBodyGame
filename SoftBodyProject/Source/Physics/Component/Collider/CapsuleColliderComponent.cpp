@@ -34,3 +34,24 @@ void CapsuleColliderComponent::SetRadius(float _radius)
 {
 	PhysicsComponentAPI::SetCapsuleRadius(id, _radius);
 }
+
+// オフセット位置取得
+Vector3 CapsuleColliderComponent::GetOffsetPosition()
+{
+	return PhysicsComponentAPI::GetCapsuleOffsetPosition(id);
+}
+// オフセット位置変更
+void CapsuleColliderComponent::SetOffsetPosition(const Vector3& _offset)
+{
+	PhysicsComponentAPI::SetCapsuleOffsetPosition(id, _offset);
+}
+// オフセット回転取得
+Quaternion CapsuleColliderComponent::GetOffsetRotation()
+{
+	return PhysicsComponentAPI::GetCapsuleOffsetRotation(id);
+}
+// オフセット回転変更
+void CapsuleColliderComponent::SetOffsetRotation(const Quaternion& _offset)
+{
+	PhysicsComponentAPI::SetCapsuleOffsetRotation(id, _offset);
+}

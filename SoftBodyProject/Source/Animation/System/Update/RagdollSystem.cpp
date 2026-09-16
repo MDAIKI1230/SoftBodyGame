@@ -63,7 +63,7 @@ void RagdollSystem::PrePhysicsFixedUpdate(SkeletonInstanceStorage* _skeletonStor
 
 			PhysicsComponentAPI::SetRigidBodyPosition(link.bodyID, position);
 			PhysicsComponentAPI::SetRigidBodyRoatation(link.bodyID, rotation);
-			// PhysicsComponentAPI::SetRigidBodyScale(link.bodyID, scale);
+			PhysicsComponentAPI::SetRigidBodyScale(link.bodyID, scale);
 		}
 
 		_ragdollStorage->SetNeedInitialize(id, false);
@@ -124,7 +124,6 @@ void RagdollSystem::PostPhysicsFixedUpdate(SkeletonInstanceStorage* _skeletonSto
 				// リジッドボディの姿勢を得る
 				Vector3 position{ PhysicsComponentAPI::GetRigidBodyPosition(bodyID) };
 				Quaternion rotation{ PhysicsComponentAPI::GetRigidBodyRoatation(bodyID) };
-				// Vector3 scale{ PhysicsComponentAPI::GetRigidBodyScale(bodyID) };
 
 				Matrix4x4 worldBodyMatrix{ MatGenerateFunc::TRS(position,rotation,Vector3::ONE) };
 
@@ -149,13 +148,35 @@ void RagdollSystem::PostPhysicsFixedUpdate(SkeletonInstanceStorage* _skeletonSto
 			}
 
 			// TRS情報をアウトプットに入れる
-			skeleton.outputPose.localMatrices[boneIndex] = localMatrix;
+			Vector3 localPosition;
+			Quaternion localRotation;
+			Vector3 decomposedScale;
+
 			Transform::DecomposeTRS(
-				skeleton.outputPose.localMatrices[boneIndex],
-				skeleton.outputPose.localPositions[boneIndex],
-				skeleton.outputPose.localRotations[boneIndex],
-				skeleton.outputPose.localScales[boneIndex]
+				localMatrix,
+				localPosition,
+				localRotation,
+				decomposedScale
 			);
+
+			// RigidBodyを持つBoneのScaleはアニメーション側から維持する
+			const Vector3 localScale{
+				bodyID.IsValid()
+					? skeleton.targetPose.localScales[boneIndex]
+					: decomposedScale
+			};
+
+			// 維持したScaleで行列を作り直す
+			localMatrix = MatGenerateFunc::TRS(
+				localPosition,
+				localRotation,
+				localScale
+			);
+
+			skeleton.outputPose.localMatrices[boneIndex] = localMatrix;
+			skeleton.outputPose.localPositions[boneIndex] = localPosition;
+			skeleton.outputPose.localRotations[boneIndex] = localRotation;
+			skeleton.outputPose.localScales[boneIndex] = localScale;
 
 			// 子の計算の準備をする
 

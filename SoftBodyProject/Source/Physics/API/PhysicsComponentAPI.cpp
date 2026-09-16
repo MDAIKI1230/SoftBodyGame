@@ -358,6 +358,27 @@ void PhysicsComponentAPI::SetSphereRadius(ColliderID _id, float _radius)
 	colliderStorage->SetSphereColliderRadius(_id, _radius);
 }
 
+// オフセット位置取得
+Vector3 PhysicsComponentAPI::GetSphereOffsetPosition(ColliderID _id)
+{
+	return colliderStorage->GetSphereColliderOffsetPosition(_id);
+}
+// オフセット位置変更
+void PhysicsComponentAPI::SetSphereOffsetPosition(ColliderID _id, const Vector3& _offset)
+{
+	colliderStorage->SetSphereColliderOffsetPosition(_id, _offset);
+}
+// オフセット回転取得
+Quaternion PhysicsComponentAPI::GetSphereOffsetRotation(ColliderID _id)
+{
+	return colliderStorage->GetSphereColliderOffsetRotation(_id);
+}
+// オフセット回転変更
+void PhysicsComponentAPI::SetSphereOffsetRotation(ColliderID _id, const Quaternion& _offset)
+{
+	colliderStorage->SetSphereColliderOffsetRotation(_id, _offset);
+}
+
 // X方向の長さ取得
 float PhysicsComponentAPI::GetBoxWidth(ColliderID _id)
 {
@@ -389,12 +410,33 @@ void PhysicsComponentAPI::SetBoxDepth(ColliderID _id, float _depth)
 	colliderStorage->EditBoxColliderScale(_id).z = _depth;
 }
 
-// Y方向の長さ取得
+// オフセット位置取得
+Vector3 PhysicsComponentAPI::GetBoxOffsetPosition(ColliderID _id)
+{
+	return colliderStorage->GetBoxColliderOffsetPosition(_id);
+}
+// オフセット位置変更
+void PhysicsComponentAPI::SetBoxOffsetPosition(ColliderID _id, const Vector3& _offset)
+{
+	colliderStorage->SetBoxColliderOffsetPosition(_id, _offset);
+}
+// オフセット回転取得
+Quaternion PhysicsComponentAPI::GetBoxOffsetRotation(ColliderID _id)
+{
+	return colliderStorage->GetBoxColliderOffsetRotation(_id);
+}
+// オフセット回転変更
+void PhysicsComponentAPI::SetBoxOffsetRotation(ColliderID _id, const Quaternion& _offset)
+{
+	colliderStorage->SetBoxColliderOffsetRotation(_id, _offset);
+}
+
+// 高さ取得
 float PhysicsComponentAPI::GetCapsuleHeight(ColliderID _id)
 {
 	return colliderStorage->GetCapsuleColliderHeight(_id);
 }
-// Y方向の長さ変更
+// 高さ変更
 void PhysicsComponentAPI::SetCapsuleHeight(ColliderID _id, float _height)
 {
 	colliderStorage->SetCapsuleColliderHeight(_id, _height);
@@ -408,6 +450,27 @@ float PhysicsComponentAPI::GetCapsuleRadius(ColliderID _id)
 void PhysicsComponentAPI::SetCapsuleRadius(ColliderID _id, float _radius)
 {
 	colliderStorage->SetCapsuleColliderRadius(_id, _radius);
+}
+
+// オフセット位置取得
+Vector3 PhysicsComponentAPI::GetCapsuleOffsetPosition(ColliderID _id)
+{
+	return colliderStorage->GetCapsuleColliderOffsetPosition(_id);
+}
+// オフセット位置変更
+void PhysicsComponentAPI::SetCapsuleOffsetPosition(ColliderID _id, const Vector3& _offset)
+{
+	colliderStorage->SetCapsuleColliderOffsetPosition(_id, _offset);
+}
+// オフセット回転取得
+Quaternion PhysicsComponentAPI::GetCapsuleOffsetRotation(ColliderID _id)
+{
+	return colliderStorage->GetCapsuleColliderOffsetRotation(_id);
+}
+// オフセット回転変更
+void PhysicsComponentAPI::SetCapsuleOffsetRotation(ColliderID _id, const Quaternion& _offset)
+{
+	colliderStorage->SetCapsuleColliderOffsetRotation(_id, _offset);
 }
 
 // フィルター取得

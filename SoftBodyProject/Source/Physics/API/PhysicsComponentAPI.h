@@ -167,6 +167,14 @@ public:
 	static float GetSphereRadius(ColliderID _id);
 	// 半径変更
 	static void SetSphereRadius(ColliderID _id, float _radius);
+	// オフセット位置取得
+	static Vector3 GetSphereOffsetPosition(ColliderID _id);
+	// オフセット位置変更
+	static void SetSphereOffsetPosition(ColliderID _id, const Vector3& _offset);
+	// オフセット回転取得
+	static Quaternion GetSphereOffsetRotation(ColliderID _id);
+	// オフセット回転変更
+	static void SetSphereOffsetRotation(ColliderID _id, const Quaternion& _offset);
 
 	// --- 箱コライダー ---
 
@@ -182,17 +190,33 @@ public:
 	static float GetBoxDepth(ColliderID _id);
 	// Z方向の長さ変更
 	static void SetBoxDepth(ColliderID _id, float _depth);
+	// オフセット位置取得
+	static Vector3 GetBoxOffsetPosition(ColliderID _id);
+	// オフセット位置変更
+	static void SetBoxOffsetPosition(ColliderID _id, const Vector3& _offset);
+	// オフセット回転取得
+	static Quaternion GetBoxOffsetRotation(ColliderID _id);
+	// オフセット回転変更
+	static void SetBoxOffsetRotation(ColliderID _id, const Quaternion& _offset);
 
 	// --- カプセルコライダー ---
 
-	// Y方向の長さ取得
+	// 高さ取得
 	static float GetCapsuleHeight(ColliderID _id);
-	// Y方向の長さ変更
+	// 高さ変更
 	static void SetCapsuleHeight(ColliderID _id, float _height);
 	// 半径取得
 	static float GetCapsuleRadius(ColliderID _id);
 	// 半径変更
 	static void SetCapsuleRadius(ColliderID _id, float _radius);
+	// オフセット位置取得
+	static Vector3 GetCapsuleOffsetPosition(ColliderID _id);
+	// オフセット位置変更
+	static void SetCapsuleOffsetPosition(ColliderID _id, const Vector3& _offset);
+	// オフセット回転取得
+	static Quaternion GetCapsuleOffsetRotation(ColliderID _id);
+	// オフセット回転変更
+	static void SetCapsuleOffsetRotation(ColliderID _id, const Quaternion& _offset);
 
 	// フィルター取得
 	static const CollisionFilter& GetFilter(ColliderID _id);
