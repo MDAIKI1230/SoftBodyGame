@@ -115,7 +115,9 @@ void DxlibRenderer::DrawModel(ModelHandle _handle)
 
 	if (modelStorage.TryGet(_handle, nativeHandle))
 	{
+		DxLib::SetUseLighting(false);
 		DxLib::MV1DrawModel(nativeHandle);
+		DxLib::SetUseLighting(true);
 	}
 }
 
