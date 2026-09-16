@@ -9,7 +9,7 @@
 void DxlibRenderer::SetCamera(const Matrix4x4& _view, float _near, float _far)
 {
 	// 位置と見る点を決める
-	DxLib::SetCameraViewMatrix(ToDxlib(_view));
+	DxLib::SetCameraViewMatrix(MathConvert::ToDxlib(_view));
 	DxLib::SetCameraNearFar(_near, _far);
 }
 
@@ -103,7 +103,7 @@ void DxlibRenderer::ModelSetMatrix(ModelHandle _handle, const Matrix4x4& _mat)
 
 	if (modelStorage.TryGet(_handle, nativeHandle))
 	{
-		DxLib::MV1SetMatrix(nativeHandle, ToDxlib(_mat));
+		DxLib::MV1SetMatrix(nativeHandle, MathConvert::ToDxlib(_mat));
 	}
 }
 
@@ -136,8 +136,8 @@ void DxlibRenderer::DrawTexture(TextureHandle _handle, const Vector2& _pos, bool
 void DxlibRenderer::DrawSphere(const Vector3& _pos, float _radius, const Color& _color)
 {
 	DxLib::DrawSphere3D(
-		ToDxlib(_pos), _radius, 8,
-		ToDxlib(_color), ToDxlib(_color),
+		MathConvert::ToDxlib(_pos), _radius, 8,
+		MathConvert::ToDxlib(_color), MathConvert::ToDxlib(_color),
 		true);
 }
 
@@ -145,8 +145,8 @@ void DxlibRenderer::DrawSphere(const Vector3& _pos, float _radius, const Color& 
 void DxlibRenderer::DrawSphereMesh(const Vector3& _pos, float _radius, const Color& _color)
 {
 	DxLib::DrawSphere3D(
-		ToDxlib(_pos), _radius, 8,
-		ToDxlib(_color), ToDxlib(_color),
+		MathConvert::ToDxlib(_pos), _radius, 8,
+		MathConvert::ToDxlib(_color), MathConvert::ToDxlib(_color),
 		false);
 }
 
@@ -195,19 +195,19 @@ void DxlibRenderer::DrawBox(const Matrix4x4& _mat, const Vector3& _size, const C
 // 線描画
 void DxlibRenderer::DrawLine(const Vector3& _pos1, const Vector3& _pos2, const Color& _color)
 {
-	DxLib::DrawLine3D(ToDxlib(_pos1), ToDxlib(_pos2), ToDxlib(_color));
+	DxLib::DrawLine3D(MathConvert::ToDxlib(_pos1), MathConvert::ToDxlib(_pos2), MathConvert::ToDxlib(_color));
 }
 // カプセル描画
 void DxlibRenderer::DrawCapsule(const Vector3& _pos1, const Vector3& _pos2, float _radius, const Color& _color)
 {
-	DxLib::DrawCapsule3D(ToDxlib(_pos1), ToDxlib(_pos2), _radius, 10, ToDxlib(_color), ToDxlib(_color), false);
+	DxLib::DrawCapsule3D(MathConvert::ToDxlib(_pos1), MathConvert::ToDxlib(_pos2), _radius, 10, MathConvert::ToDxlib(_color), MathConvert::ToDxlib(_color), false);
 }
 // 円錐描画
 void DxlibRenderer::DrawCone(const Vector3& _topPos, const Vector3& _bottomPos, float _radius, int _division, const Color& _color)
 {
-	DxLib::DrawCone3D(ToDxlib(_topPos), ToDxlib(_bottomPos),
+	DxLib::DrawCone3D(MathConvert::ToDxlib(_topPos), MathConvert::ToDxlib(_bottomPos),
 		_radius, _division,
-		ToDxlib(_color), ToDxlib(_color),
+		MathConvert::ToDxlib(_color), MathConvert::ToDxlib(_color),
 		false);
 }
 
@@ -237,7 +237,7 @@ SkeletonHandle DxlibRenderer::LoadSkeletonData(ModelHandle _handle)
 	// 先に、親ボーンからのローカル座標を計算して保持しておく
 	for (int frame{ 0 }; frame < frameCount; frame++)
 	{
-		skeletonData.bindLocalMatrices[frame] = ToMDMath(MV1GetFrameBaseLocalMatrix(nativeHandle, frame));
+		skeletonData.bindLocalMatrices[frame] = MathConvert::ToMDMath(MV1GetFrameBaseLocalMatrix(nativeHandle, frame));
 
 		// 行列を分解して位置/回転/スケールを作る
 		Transform::DecomposeTRS(
@@ -314,7 +314,7 @@ bool DxlibRenderer::GetCurrentPose(ModelHandle _handle, PoseBuffer& _output)
 
 	for (int frame{ 0 }; frame < frameCount; frame++)
 	{
-		_output.localMatrices[frame] = ToMDMath(MV1GetFrameLocalMatrix(nativeHandle, frame));
+		_output.localMatrices[frame] = MathConvert::ToMDMath(MV1GetFrameLocalMatrix(nativeHandle, frame));
 
 		// 行列を分解して位置/回転/スケールを作る
 		Transform::DecomposeTRS(
@@ -376,7 +376,7 @@ bool DxlibRenderer::ApplyPose(ModelHandle _handle, const PoseBuffer& _pose)
 
 	for (int frame{ 0 }; frame < frameCount; ++frame)
 	{
-		MV1SetFrameUserLocalMatrix(nativeHandle, frame, ToDxlib(_pose.localMatrices[frame]));
+		MV1SetFrameUserLocalMatrix(nativeHandle, frame, MathConvert::ToDxlib(_pose.localMatrices[frame]));
 	}
 
 	return true;

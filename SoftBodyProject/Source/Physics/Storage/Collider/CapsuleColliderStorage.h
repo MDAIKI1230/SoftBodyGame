@@ -2,13 +2,15 @@
 
 #include "StorageAccessorsMacros.h"
 
+#include "MDMath.h"
+
 #include "ColliderID.h"
 
 class CapsuleColliderStorage
 {
-    MD_STORAGE_READ_ONLY_COLUMN(ColliderID, ID, ids);
-    MD_STORAGE_READ_WRITE_COLUMN(float, Height, heights);
-    MD_STORAGE_READ_WRITE_COLUMN(float, Radius, radiuses);
+    MD_STORAGE_READ_ONLY_COLUMN(ColliderID, ID, ids)
+    MD_STORAGE_READ_WRITE_COLUMN(float, Height, heights)
+    MD_STORAGE_READ_WRITE_COLUMN(float, Radius, radiuses)
 	MD_STORAGE_READ_WRITE_COLUMN(Vector3, OffsetPosition, offsetPositions)
 	MD_STORAGE_READ_WRITE_COLUMN(Quaternion, OffsetRotation, offsetRotations)
 public:
@@ -18,6 +20,8 @@ public:
         ids.push_back(_id);
         heights.push_back(_height);
         radiuses.push_back(_radius);
+		offsetPositions.emplace_back();
+		offsetRotations.emplace_back();
     }
 
     // 除外関数

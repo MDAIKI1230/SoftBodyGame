@@ -4,21 +4,23 @@
 
 #include "CollisionManifoldBuffer.h"
 #include "PhysicsTransformStorage.h"
-#include "ColliderStorage.h"
 
 namespace ManifoldFunction
 {
 	void AddFaceAManifold(
-		const Vector3& _positionA, const Quaternion& _rotationA, const Vector3* _candidateAxisA, const float* _halfsA,
-		const Vector3& _positionB, const Quaternion& _rotationB, const Vector3* _candidateAxisB, const float* _halfsB,
+		PhysicsTransformStorage* _transformStorage,
+		PhysicsTransformID _transformA, const Vector3& _positionA, const Vector3* _candidateAxisA, const float* _halfsA,
+		PhysicsTransformID _transformB, const Vector3& _positionB, const Vector3* _candidateAxisB, const float* _halfsB,
 		const BoxBoxContactInfo& _info, CollisionManifoldBuffer* _manifoldBuffer);
 	void AddFaceBManifold(
-		const Vector3& _positionA, const Quaternion& _rotationA, const Vector3* _candidateAxisA, const float* _halfsA,
-		const Vector3& _positionB, const Quaternion& _rotationB, const Vector3* _candidateAxisB, const  float* _halfsB,
+		PhysicsTransformStorage* _transformStorage,
+		PhysicsTransformID _transformA, const Vector3& _positionA, const Vector3* _candidateAxisA, const float* _halfsA,
+		PhysicsTransformID _transformB, const Vector3& _positionB, const Vector3* _candidateAxisB, const  float* _halfsB,
 		const BoxBoxContactInfo& _info, CollisionManifoldBuffer* _manifoldBuffer);
 	void AddEdgeManifold(
-		const Vector3& _positionA, const Quaternion& _rotationA, const Vector3* _candidateAxisA, const float* _halfsA,
-		const Vector3& _positionB, const Quaternion& _rotationB, const Vector3* _candidateAxisB, const float* _halfsB,
+		PhysicsTransformStorage* _transformStorage,
+		PhysicsTransformID _transformA, const Vector3& _positionA, const Vector3* _candidateAxisA, const float* _halfsA,
+		PhysicsTransformID _transformB, const Vector3& _positionB, const Vector3* _candidateAxisB, const float* _halfsB,
 		const BoxBoxContactInfo& _info, CollisionManifoldBuffer* _manifoldBuffer);
 
 	// 衝突点を出すのに必要な点を出してくれる関数
@@ -32,7 +34,8 @@ namespace ManifoldFunction
     void AddUniquePoint(Manifold& _manifold, const ContactPoint& _point);
 	
 	void BoxBox(
-		const Vector3& _positionA, const Quaternion& _rotationA, const Vector3* _candidateAxisA, const float* _halfsA,
-		const Vector3& _positionB, const Quaternion& _rotationB, const Vector3* _candidateAxisB, const float* _halfsB,
+		PhysicsTransformStorage* _transformStorage,
+		PhysicsTransformID _transformA, const Vector3& _positionA, const Vector3* _candidateAxisA, const float* _halfsA,
+		PhysicsTransformID _transformB, const Vector3& _positionB, const Vector3* _candidateAxisB, const float* _halfsB,
 		const BoxBoxContactInfo& _info, CollisionManifoldBuffer* _manifoldBuffer);
 }

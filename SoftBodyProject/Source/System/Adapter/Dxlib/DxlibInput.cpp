@@ -1,6 +1,7 @@
 ﻿#include <DxLib.h>
 
 #include "DxlibConstants.h"
+#include "DxlibConvert.h"
 
 #include "DxlibInput.h"
 
@@ -32,7 +33,7 @@ void DxlibInput::Update()
 			continue;
 		}
 
-
+		UpdateJoypadDirectInputState(gamePadState, DX_INPUT_PAD1 + i);
 	}
 
 	// マウスポインタの位置情報更新
@@ -161,7 +162,7 @@ float DxlibInput::NormalizeXInputStick(const short _value)
 
 float DxlibInput::NormalizeDirectInputTrigger(const unsigned char _value)
 {
-	return 0;
+	return _value / 128.0f;
 }
 
 float DxlibInput::NormalizeDirectInputStick(const int _value)
@@ -251,7 +252,9 @@ bool DxlibInput::UpdateSwitchProCtrl(GamePadState& _state, int _inputType)
 	for (std::size_t buttonIndex{ 0 }; buttonIndex < (size_t)GamePadButton::Count; buttonIndex++)
 	{
 		// ボタンの列挙体すべての入力値を写す
-		int nativeButtonIndex{ DxlibConstants::DxlibXInputButtonTable[buttonIndex] };
+		int nativeButtonIndex{
+			SwitchGamePad::ConvertSwitchButton(static_cast<GamePadButton>(buttonIndex))
+		};
 
 		if (nativeButtonIndex == DxlibConstants::DXLIB_INVALID_INPUT)
 		{
@@ -264,21 +267,22 @@ bool DxlibInput::UpdateSwitchProCtrl(GamePadState& _state, int _inputType)
 	// トリガー
 	for (std::size_t axisIndex{ 0 }; axisIndex < (size_t)GamePadAxis1D::Count; axisIndex++)
 	{
-		auto member{ DxlibConstants::DxlibXInputAxis1DTable[axisIndex] };
+		int member{
+			SwitchGamePad::ConvertSwitchAxis1D(static_cast<GamePadAxis1D>(axisIndex))
+		};
 
-		_state.axis1D[axisIndex] = NormalizeXInputTrigger(state.Rx);
+		_state.axis1D[axisIndex] = NormalizeDirectInputTrigger(state.Buttons[member]);
 	}
 
 	// スティック
-	for (std::size_t axisIndex{ 0 }; axisIndex < (size_t)GamePadAxis2D::Count; axisIndex++)
-	{
-		auto& members{ DxlibConstants::DxlibXInputAxis2DTable[axisIndex] };
-
-		_state.axis2D[axisIndex] = Vector2{
+	_state.axis2D[static_cast<int>(GamePadAxis2D::LEFT_STICK)] = Vector2{
 			NormalizeDirectInputStick(state.X),
 			NormalizeDirectInputStick(state.Y)
-		};
-	}
+	};
+	_state.axis2D[static_cast<int>(GamePadAxis2D::RIGHT_STICK)] = Vector2{
+			NormalizeDirectInputStick(state.Rx),
+			NormalizeDirectInputStick(state.Ry)
+	};
 
 	return true;
 }

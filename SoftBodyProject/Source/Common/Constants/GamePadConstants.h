@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#pragma once
+#include <variant>
 
 // boolを返す入力
 enum class GamePadButton : int

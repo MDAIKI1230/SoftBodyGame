@@ -41,6 +41,7 @@ void DebugScene::Initialize()
 	ResourceManager::LoadCubeTexture("Res/Texture/Sky/NaturalDayMeadow_Cubemap.dds");
 	camera->GetComponent<CameraComponent>()->SetSkyTextureHandle(ResourceManager::GetCubeTexture("NaturalDayMeadow_Cubemap.dds"));
 	camera->GetComponent<CameraComponent>()->SetClearMode(ClearMode::SKY);
+	camera->GetComponent<TransformComponent>()->SetPosition(Vector3{ 0.0f,-200.0f,-500.0f });
 
 	Camera* cameraPtr{ camera.get()};
 
@@ -50,9 +51,23 @@ void DebugScene::Initialize()
 
 	objectManager.Add(std::move(player));
 
-	//std::unique_ptr<DebugSphere> sphere{ std::make_unique<DebugSphere>(worldStorage, objectManager.GenerateNewID()) };
-	//// sphere->AddComponent<PointConstraintComponent>();
-	//objectManager.Add(std::move(sphere));
+	/*std::unique_ptr<DebugSphere> sphere{ std::make_unique<DebugSphere>(&worldStorage, objectManager.GenerateNewID()) };
+	sphere->GetComponent<SphereColliderComponent>()->SetOffsetPosition(-Vector3::UP * 100.0f);
+	sphere->GetComponent<SphereColliderComponent>()->SetOffsetRotation(Quaternion::Euler(MathConstants::PI_FLT / 2.0f, 0.0f, 0.0f));
+	objectManager.Add(std::move(sphere));
+
+	std::unique_ptr<DebugCapsule> capsule{ std::make_unique<DebugCapsule>(&worldStorage, objectManager.GenerateNewID()) };
+	capsule->GetComponent<CapsuleColliderComponent>()->SetOffsetPosition(-Vector3::UP * 100.0f);
+	capsule->GetComponent<CapsuleColliderComponent>()->SetOffsetRotation(Quaternion::Euler(MathConstants::PI_FLT / 2.0f, 0.0f, 0.0f));
+	capsule->GetComponent<CapsuleColliderComponent>()->SetHeight(100.0f);
+	capsule->GetComponent<CapsuleColliderComponent>()->SetRadius(30.0f);
+	objectManager.Add(std::move(capsule));
+
+	std::unique_ptr<DebugBox> box{ std::make_unique<DebugBox>(&worldStorage, objectManager.GenerateNewID()) };
+	box->AddComponent<RigidBodyComponent>();
+	box->GetComponent<BoxColliderComponent>()->SetOffsetPosition(-Vector3::UP * 100.0f);
+	box->GetComponent<BoxColliderComponent>()->SetOffsetRotation(Quaternion::Euler(MathConstants::PI_FLT / 2.0f, 0.0f, 0.0f));
+	objectManager.Add(std::move(box));*/
 
 	std::unique_ptr<DebugBox> debugBox01{ std::make_unique<DebugBox>(&worldStorage, objectManager.GenerateNewID(), 500.0f, 50.0f, 500.0f)};
 	debugBox01->GetComponent<TransformComponent>()->SetPosition(Vector3{ 0,-200,0 });
@@ -72,18 +87,18 @@ void DebugScene::Initialize()
 	objectManager.Add(std::move(debugBox03));*/
 
 	// 点拘束デバッグ
-	//std::unique_ptr<DebugBox> debugBox02{ std::make_unique<DebugBox>(&worldStorage, objectManager.GenerateNewID(), 30.0f) };
-	//debugBox02->GetComponent<TransformComponent>()->SetPosition(Vector3{ 0,50,0 });
-	//debugBox02->GetComponent<TransformComponent>()->Rotate(Quaternion::AngleAxis((3.141592f / 4.0f), Vector3{ 0,1,1 }));
-	//debugBox02->AddComponent<RigidBodyComponent>()->SetIsGravity(true);
-	//PointConstraintComponent* pointConstraint{ debugBox02->AddComponent<PointConstraintComponent>(Vector3{ 15.0f,15.0f,15.0f }) };
-	//objectManager.Add(std::move(debugBox02));
+	/*std::unique_ptr<DebugBox> debugBox02{ std::make_unique<DebugBox>(&worldStorage, objectManager.GenerateNewID(), 30.0f) };
+	debugBox02->GetComponent<TransformComponent>()->SetPosition(Vector3{ 0,50,0 });
+	debugBox02->GetComponent<TransformComponent>()->Rotate(Quaternion::AngleAxis((3.141592f / 4.0f), Vector3{ 0,1,1 }));
+	debugBox02->AddComponent<RigidBodyComponent>()->SetIsGravity(true);
+	PointConstraintComponent* pointConstraint{ debugBox02->AddComponent<PointConstraintComponent>(Vector3{ 15.0f,15.0f,15.0f }) };
+	objectManager.Add(std::move(debugBox02));
 
-	//std::unique_ptr<DebugBox> debugBox04{ std::make_unique<DebugBox>(&worldStorage, objectManager.GenerateNewID(), 30.0f) };
-	//debugBox04->GetComponent<TransformComponent>()->SetPosition(Vector3{ 0,100,0 });
-	//debugBox04->AddComponent<RigidBodyComponent>()->SetIsGravity(true);
-	//pointConstraint->AddEndPoint(debugBox04->GetID(), Vector3{ 15.0f,15.0f,15.0f });
-	//objectManager.Add(std::move(debugBox04));
+	std::unique_ptr<DebugBox> debugBox04{ std::make_unique<DebugBox>(&worldStorage, objectManager.GenerateNewID(), 30.0f) };
+	debugBox04->GetComponent<TransformComponent>()->SetPosition(Vector3{ 0,100,0 });
+	debugBox04->AddComponent<RigidBodyComponent>()->SetIsGravity(true);
+	pointConstraint->AddEndPoint(debugBox04->GetID(), Vector3{ 15.0f,15.0f,15.0f });
+	objectManager.Add(std::move(debugBox04));*/
 
 	// 距離拘束によるロープの実装
 	/*
@@ -263,10 +278,10 @@ void DebugScene::Initialize()
 
 	// Ragdollデバッグ
 
-	objectManager.Add(std::make_unique<DebugRagdoll>(&worldStorage, objectManager.GenerateNewID()));
+	/*objectManager.Add(std::make_unique<DebugRagdoll>(&worldStorage, objectManager.GenerateNewID()));
 
 	std::unique_ptr<EmptyObject> model{ std::make_unique<EmptyObject>(&worldStorage, objectManager.GenerateNewID()) };
 	model->AddComponent<RendererComponent>(ResourceManager::GetModel("M_001_player_095_01_no_sword_tpose.mv1"));
 	model->GetComponent<TransformComponent>()->SetPosition(Vector3{ 0.0f,-200.0f,0.0f });
-	objectManager.Add(std::move(model));
+	objectManager.Add(std::move(model));*/
 }

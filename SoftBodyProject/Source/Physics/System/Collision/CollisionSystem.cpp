@@ -37,12 +37,14 @@ void CollisionSystem::BroadPhase(PhysicsTransformStorage* _transformStorage, Col
 		// AABBと紐づいたコライダーのID
 		ColliderID colliderID{ _colliderStorage->GetAABBBroadPhaseCollider(i).colliderID };
 
+		Vector3 offset{ _transformStorage->GetRotation(transformID).Rotate(_colliderStorage->GetOffsetPosition(colliderID)) };
+
 		data.min = _colliderStorage->GetAABBBroadPhaseCollider(i).min
 			+ _transformStorage->GetPosition(transformID)
-			+ _colliderStorage->GetOffsetPosition(colliderID);
+			+ offset;
 		data.max = _colliderStorage->GetAABBBroadPhaseCollider(i).max
 			+ _transformStorage->GetPosition(transformID)
-			+ _colliderStorage->GetOffsetPosition(colliderID);
+			+ offset;
 
 		// コライダーIDのindex
 		size_t colliderIndex{ colliderID.GetIndex()};

@@ -16,6 +16,8 @@ public:
     {
         ids.push_back(_id);
         radiuses.push_back(_radius);
+		offsetPositions.emplace_back();
+		offsetRotations.emplace_back();
     }
 
     // 除外関数

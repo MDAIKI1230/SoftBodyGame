@@ -73,14 +73,12 @@ void AABBUpdateSystem::ComputeBox(AABBBroadPhaseCollider& _aabb, ColliderStorage
 {
 	PhysicsTransformID transID{ _colliderStorage->GetTransformID(_id) };
 
-	// 行列から各方向を取得
-	Vector3 right{ _transformStorage->GetRotation(transID).Rotate(Vector3::RIGHT) };
-	Vector3 up{ _transformStorage->GetRotation(transID).Rotate(Vector3::UP) };
-	Vector3 forward{ _transformStorage->GetRotation(transID).Rotate(Vector3::FORWARD) };
+	Quaternion rotation{ _transformStorage->GetRotation(transID) * _colliderStorage->GetBoxColliderOffsetRotation(_id) };
 
-	right = _colliderStorage->GetBoxColliderOffsetRotation(_id).Rotate(right);
-	up = _colliderStorage->GetBoxColliderOffsetRotation(_id).Rotate(up);
-	forward = _colliderStorage->GetBoxColliderOffsetRotation(_id).Rotate(forward);
+	// 行列から各方向を取得
+	Vector3 right{ rotation.Rotate(Vector3::RIGHT) };
+	Vector3 up{ rotation.Rotate(Vector3::UP) };
+	Vector3 forward{ rotation.Rotate(Vector3::FORWARD) };
 
 	Vector3 halfScale{ _colliderStorage->GetBoxColliderScale(_id) * 0.5f};
 
@@ -116,11 +114,9 @@ void AABBUpdateSystem::ComputeCapsule(AABBBroadPhaseCollider& _aabb, ColliderSto
 	float radius{ _colliderStorage->GetCapsuleColliderRadius(_id) };
 	float height{ _colliderStorage->GetCapsuleColliderHeight(_id) };
 	PhysicsTransformID transID{ _colliderStorage->GetTransformID(_id) };
-	const Quaternion& rotation{ _transformStorage->GetRotation(transID) };
+	const Quaternion& rotation{ _transformStorage->GetRotation(transID) * _colliderStorage->GetCapsuleColliderOffsetRotation(_id) };
 
 	Vector3 axisHalf{ rotation.Rotate(Vector3::UP * (height * 0.5f)) };
-
-	axisHalf = _colliderStorage->GetBoxColliderOffsetRotation(_id).Rotate(axisHalf);
 
 	Vector3 extent{
 		std::abs(axisHalf.x) + radius,

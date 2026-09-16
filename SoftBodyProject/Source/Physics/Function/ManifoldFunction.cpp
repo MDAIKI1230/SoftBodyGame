@@ -17,36 +17,39 @@ void ManifoldFunction::AddUniquePoint(Manifold& _manifold, const ContactPoint& _
 }
 
 void ManifoldFunction::BoxBox(
-    const Vector3& _positionA, const Quaternion& _rotationA, const Vector3* _candidateAxisA, const float* _halfsA,
-    const Vector3& _positionB, const Quaternion& _rotationB, const Vector3* _candidateAxisB, const float* _halfsB,
+	PhysicsTransformStorage* _transformStorage,
+	PhysicsTransformID _transformA, const Vector3& _positionA, const Vector3* _candidateAxisA, const float* _halfsA,
+	PhysicsTransformID _transformB, const Vector3& _positionB, const Vector3* _candidateAxisB, const float* _halfsB,
     const BoxBoxContactInfo& _info, CollisionManifoldBuffer* _manifoldBuffer)
 {
     switch (_info.type)
     {
     case BoxBoxContactInfo::FaceA:
-        AddFaceAManifold(
-            _positionA, _rotationA, _candidateAxisA, _halfsA,
-            _positionB, _rotationB, _candidateAxisB, _halfsB,
-            _info, _manifoldBuffer);
+		AddFaceAManifold(
+			_transformStorage,
+			_transformA, _positionA, _candidateAxisA, _halfsA,
+			_transformB, _positionB, _candidateAxisB, _halfsB,
+			_info, _manifoldBuffer);
         break;
     case BoxBoxContactInfo::FaceB:
-        AddFaceBManifold(
-            _positionA, _rotationA, _candidateAxisA, _halfsA,
-            _positionB, _rotationB, _candidateAxisB, _halfsB,
-            _info, _manifoldBuffer);
+		AddFaceBManifold(_transformStorage,
+			_transformA, _positionA, _candidateAxisA, _halfsA,
+			_transformB, _positionB, _candidateAxisB, _halfsB,
+			_info, _manifoldBuffer);
         break;
     case BoxBoxContactInfo::EdgeEdge:
-        AddEdgeManifold(
-            _positionA, _rotationA, _candidateAxisA, _halfsA,
-            _positionB, _rotationB, _candidateAxisB, _halfsB,
-            _info, _manifoldBuffer);
+		AddEdgeManifold(_transformStorage,
+			_transformA, _positionA, _candidateAxisA, _halfsA,
+			_transformB, _positionB, _candidateAxisB, _halfsB,
+			_info, _manifoldBuffer);
         break;
     }
 }
 
 void ManifoldFunction::AddFaceAManifold(
-    const Vector3& _positionA, const Quaternion& _rotationA, const Vector3* _candidateAxisA, const float* _halfsA,
-    const Vector3& _positionB, const Quaternion& _rotationB, const Vector3* _candidateAxisB, const float* _halfsB,
+	PhysicsTransformStorage* _transformStorage,
+	PhysicsTransformID _transformA, const Vector3& _positionA, const Vector3* _candidateAxisA, const float* _halfsA,
+	PhysicsTransformID _transformB, const Vector3& _positionB, const Vector3* _candidateAxisB, const float* _halfsB,
     const BoxBoxContactInfo& _info, CollisionManifoldBuffer* _manifoldBuffer)
 {
     Manifold manifold;
@@ -81,8 +84,14 @@ void ManifoldFunction::AddFaceAManifold(
         {
             ContactPoint contactPoint;
 
-            contactPoint.positionLocalA = _rotationA.Conjugate().Rotate((positionB - faceNormal * penetration) - _positionA);
-            contactPoint.positionLocalB = _rotationB.Conjugate().Rotate(positionB - _positionB);
+
+
+			contactPoint.positionLocalA = _transformStorage->GetRotation(_transformA).Conjugate().Rotate(
+				(positionB - faceNormal * penetration) -
+				_transformStorage->GetPosition(_transformA));
+            contactPoint.positionLocalB = _transformStorage->GetRotation(_transformB).Conjugate().Rotate(
+				positionB -
+				_transformStorage->GetPosition(_transformB));
             contactPoint.penetration = -penetration;
 
             AddUniquePoint(manifold, contactPoint);
@@ -97,8 +106,9 @@ void ManifoldFunction::AddFaceAManifold(
     _manifoldBuffer->Add(manifold);
 }
 void ManifoldFunction::AddFaceBManifold(
-    const Vector3& _positionA, const Quaternion& _rotationA, const Vector3* _candidateAxisA, const float* _halfsA,
-    const Vector3& _positionB, const Quaternion& _rotationB, const Vector3* _candidateAxisB, const float* _halfsB,
+	PhysicsTransformStorage* _transformStorage,
+	PhysicsTransformID _transformA, const Vector3& _positionA, const Vector3* _candidateAxisA, const float* _halfsA,
+	PhysicsTransformID _transformB, const Vector3& _positionB, const Vector3* _candidateAxisB, const float* _halfsB,
     const BoxBoxContactInfo& _info, CollisionManifoldBuffer* _manifoldBuffer)
 {
     Manifold manifold;
@@ -134,8 +144,12 @@ void ManifoldFunction::AddFaceBManifold(
         {
             ContactPoint cp;
 
-            cp.positionLocalA = _rotationA.Conjugate().Rotate(positionA - _positionA);
-            cp.positionLocalB = _rotationB.Conjugate().Rotate((positionA - faceNormal * penetration) - _positionB);
+            cp.positionLocalA = _transformStorage->GetRotation(_transformA).Conjugate().Rotate(
+				positionA -
+				_transformStorage->GetPosition(_transformA));
+            cp.positionLocalB = _transformStorage->GetRotation(_transformB).Conjugate().Rotate(
+				(positionA - faceNormal * penetration) -
+				_transformStorage->GetPosition(_transformB));
             cp.penetration = -penetration;
 
             AddUniquePoint(manifold, cp);
@@ -151,8 +165,9 @@ void ManifoldFunction::AddFaceBManifold(
 }
 
 void ManifoldFunction::AddEdgeManifold(
-    const Vector3& _positionA, const Quaternion& _rotationA, const Vector3* _candidateAxisA, const float* _halfsA,
-    const Vector3& _positionB, const Quaternion& _rotationB, const Vector3* _candidateAxisB, const float* _halfsB,
+	PhysicsTransformStorage* _transformStorage,
+	PhysicsTransformID _transformA, const Vector3& _positionA, const Vector3* _candidateAxisA, const float* _halfsA,
+	PhysicsTransformID _transformB, const Vector3& _positionB, const Vector3* _candidateAxisB, const float* _halfsB,
     const BoxBoxContactInfo& _info, CollisionManifoldBuffer* _manifoldBuffer)
 {
     Manifold manifold;
@@ -191,8 +206,14 @@ void ManifoldFunction::AddEdgeManifold(
     const Vector3& closestB = closestPoints.pointB;
 
     ContactPoint cp;
-    cp.positionLocalA = _rotationA.Conjugate().Rotate(closestA - _positionA);
-    cp.positionLocalB = _rotationB.Conjugate().Rotate(closestB - _positionB);
+    cp.positionLocalA =
+		_transformStorage->GetRotation(_transformA).Conjugate().Rotate(
+		closestA -
+		_transformStorage->GetPosition(_transformA));
+    cp.positionLocalB =
+		_transformStorage->GetRotation(_transformB).Conjugate().Rotate(
+			closestB -
+			_transformStorage->GetPosition(_transformB));
     cp.penetration = _info.depth;
 
     // 追加

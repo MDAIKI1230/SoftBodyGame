@@ -17,8 +17,10 @@ void ColliderDebugRenderingSystem::RenderSphera(PhysicsTransformStorage* _transf
 	{
 		PhysicsTransformID transID{ _colliderStorage->GetTransformID(id) };
 
+		Vector3 offset{ _transformStorage->GetRotation(transID).Rotate(_colliderStorage->GetOffsetPosition(id)) };
+
 		Renderer::DrawSphereMesh(
-			_transformStorage->GetPosition(transID),
+			_transformStorage->GetPosition(transID) + offset,
 			_colliderStorage->GetSphereColliderRadius(id),
 			Color{ 0.0f,1.0f, 0.0f });
 	}
@@ -32,8 +34,14 @@ void ColliderDebugRenderingSystem::RenderBox(PhysicsTransformStorage* _transform
 
 		PhysicsTransformID transID{ _colliderStorage->GetTransformID(id) };
 
+		Matrix4x4 offset{ MatGenerateFunc::TRS(
+			_colliderStorage->GetBoxColliderOffsetPosition(id),
+			_colliderStorage->GetBoxColliderOffsetRotation(id),
+			Vector3::ONE
+		) };
+
 		Renderer::DrawBox(
-			_transformStorage->GetWorldMatrix(transID),
+			_transformStorage->GetWorldMatrix(transID) * offset,
 			_colliderStorage->GetBoxColliderScale(id),
 			Color{ 0.0f,1.0f, 0.0f });
 	}
@@ -48,8 +56,9 @@ void ColliderDebugRenderingSystem::RenderCapsule(PhysicsTransformStorage* _trans
 		PhysicsTransformID transID{ _colliderStorage->GetTransformID(id) };
 
 		// 軸の半分
-		const Quaternion& rot{ _transformStorage->GetRotation(transID) };
-		const Vector3& pos{ _transformStorage->GetPosition(transID) };
+		const Quaternion& rot{ _transformStorage->GetRotation(transID) * _colliderStorage->GetCapsuleColliderOffsetRotation(id) };
+		Vector3 offset{ _transformStorage->GetRotation(transID).Rotate(_colliderStorage->GetOffsetPosition(id)) };
+		const Vector3& pos{ _transformStorage->GetPosition(transID) + offset };
 		Vector3 axisHalf{ rot.Rotate(Vector3::UP * _colliderStorage->GetCapsuleColliderHeight(id) / 2.0f) };
 
 		// Capsuleの始点終点

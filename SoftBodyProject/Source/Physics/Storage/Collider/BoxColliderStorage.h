@@ -16,6 +16,8 @@ public:
     {
         ids.push_back(_id);
         scales.push_back(_scale);
+		offsetPositions.emplace_back();
+		offsetRotations.emplace_back();
     }
 
     // 除外関数
