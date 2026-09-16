@@ -1,4 +1,6 @@
-﻿#include <DxLib.h>
+﻿#include <cassert>
+
+#include <DxLib.h>
 
 #include "DxlibConstants.h"
 #include "DxlibConvert.h"
@@ -8,7 +10,9 @@
 // 更新
 void DxlibInput::Update()
 {
-	gamePadCount = DxLib::GetJoypadNum();
+	int count{ DxLib::GetJoypadNum() };
+
+	gamePadCount = count;
 
 	if (gamePadCount < 0)
 	{
@@ -69,7 +73,7 @@ bool DxlibInput::GetCurrentValue(KeyConstants _key) const
 // マウス
 bool DxlibInput::GetCurrentValue(MouseButton _button) const
 {
-    return (GetMouseInput() & DxlibConstants::DxlibMouseButtonTable[(int)_button]);
+	return (GetMouseInput() & DxlibConstants::DxlibMouseButtonTable[(int)_button]);
 }
 
 float DxlibInput::GetCurrentValue(MouseAxis1D _axis) const

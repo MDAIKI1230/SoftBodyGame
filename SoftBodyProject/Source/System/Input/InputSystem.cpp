@@ -36,6 +36,15 @@ void InputSystem::UpdateImpl()
 	nativeInput->Update();
 	EvaluateActions();
 	UpdateInteractions();
+
+	if (nativeInput->GetCurrentValue(GamePadAxis2D::LEFT_STICK, 0).Length() >= MathConstants::EPSILON)
+	{
+		float x{ 0.0f };
+
+		x++;
+
+		x *= 2.99f;
+	}
 }
 
 // InputAction取得関数

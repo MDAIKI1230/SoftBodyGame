@@ -48,9 +48,9 @@ private:
 private:
 	static constexpr int MAX_GAMEPAD_COUNT{ 16 };
 private:
-	std::vector<GamePadState> gamePadStates{};
-	int gamePadCount{ 0 };
-	Vector2 mouseCurrentPos{};
-	Vector2 mousePreviousPos{};
+	std::vector<GamePadState> gamePadStates;
+	int gamePadCount{ 1 };
+	Vector2 mouseCurrentPos;
+	Vector2 mousePreviousPos;
 	Vector2 mouseScroll;
 };
