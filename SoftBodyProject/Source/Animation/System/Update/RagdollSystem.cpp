@@ -14,8 +14,10 @@ void RagdollSystem::PrePhysicsFixedUpdate(SkeletonInstanceStorage* _skeletonStor
 			continue;
 		}
 
+		const Ragdoll& ragdoll{ _ragdollStorage->EditRagdoll(id) };
+
 		// Animation Pose → Physics Body
-		SkeletonID skeletonID{ _ragdollStorage->EditRagdoll(id).skeleton };
+		SkeletonID skeletonID{ ragdoll.skeleton };
 
 		SkeletonInstanceData& skeleton{ _skeletonStorage->EditSkeletonInstanceData(skeletonID) };
 
@@ -39,8 +41,10 @@ void RagdollSystem::PrePhysicsFixedUpdate(SkeletonInstanceStorage* _skeletonStor
 		}
 
 		// 全Boneをワールド姿勢に変換し、それをBodyに反映する
-		for (const RagdollBodyLink& link : _ragdollStorage->GetRagdoll(id).bodyLinks)
+		for (int boneIndex{ 0 }; boneIndex < ragdoll.bodyLinks.size(); boneIndex++)
 		{
+			const RagdollBodyLink& link{ ragdoll.bodyLinks[boneIndex] };
+
 			if (!link.bodyID.IsValid())
 			{
 				continue;
@@ -53,7 +57,7 @@ void RagdollSystem::PrePhysicsFixedUpdate(SkeletonInstanceStorage* _skeletonStor
 
 			Matrix4x4 worldFromBody{
 				_skeletonStorage->GetWorldFromModel(skeletonID) *
-				modelMatrices[link.boneIndex] *
+				modelMatrices[boneIndex] *
 				boneFromBody };
 
 			Vector3 position;
@@ -107,10 +111,10 @@ void RagdollSystem::PostPhysicsFixedUpdate(SkeletonInstanceStorage* _skeletonSto
 
 		// モデルのワールド変換を逆変換する用行列
 		Matrix4x4 modelFromWorld{ NamericalAnalysis::GaussJordan(_skeletonStorage->GetWorldFromModel(skeletonID)) };
-		for (auto& link : ragdoll.bodyLinks)
+		for (int boneIndex{ 0 }; boneIndex < ragdoll.bodyLinks.size(); boneIndex++)
 		{
-			// 何番のボーンか
-			uint32_t boneIndex{ link.boneIndex };
+			// リンク
+			const RagdollBodyLink& link{ ragdoll.bodyLinks[boneIndex] };
 			// 親ボーン
 			uint32_t parentIndex{ skeleton.skeletonData->parentIndices[boneIndex] };
 			// 最終的な結果になる行列(親ボーンからのローカル行列)

@@ -1,6 +1,7 @@
 ﻿#include <math.h>
 #include "../Vector/SIMD/SIMDVectorMath.h"
 #include "../Matrix/MatGenerateFunc.h"
+#include "../Constants/MathConstants.h"
 #include "Quaternion.h"
 
 // 単位
@@ -159,6 +160,34 @@ Quaternion Quaternion::Euler(float _pitch, float _yaw, float _roll)
 Matrix4x4 Quaternion::ToMatrix() const
 {
 	return MatGenerateFunc::Rotate(*this);
+}
+
+// 軸と角度に分解する関数
+void Quaternion::ToAxisAngle(Vector3& _axis, float& _theta) const
+{
+	// 正規化されてる前提とする
+	Quaternion q{ *this };
+
+
+	if (w < 0.0f)
+	{
+		q = { -q.x,-q.y,-q.z,-q.w };
+	}
+
+	_axis = { q.x, q.y, q.z };
+
+	float len{ _axis.Length() };
+
+	// 回転がほぼねぇため適当な軸を返します。
+	if (len < MathConstants::EPSILON)
+	{
+		_axis = Vector3::UP;
+		_theta = 0.0f;
+		return;
+	}
+
+	_axis /= len;
+	_theta = 2.0f * atan2f(len, q.w);
 }
 
 // 球面補間

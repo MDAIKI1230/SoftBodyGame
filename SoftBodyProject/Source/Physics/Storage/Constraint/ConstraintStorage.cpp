@@ -130,6 +130,26 @@ ConstraintID ConstraintStorage::CreateLimitedBallJointConstraint(EntityID _entit
 	return id;
 }
 
+// 関節駆動拘束作成関数
+ConstraintID ConstraintStorage::CreateJointDriveConstraint(EntityID _entity, PhysicsTransformID _transformID, const Vector3& _localOffset, const Quaternion& _localRotation)
+{
+	// ID作成
+	ConstraintID id{ CreateID(ConstraintType::LIMITED_BALL_JOINT,limitedBallJointConstraintStorage->CountConstraint(),_entity,_transformID) };
+
+	// 実態を作る
+	JointDriveConstraint jointDriveConstraint;
+	jointDriveConstraint.ownerEndPoint = EndPointFrame{ _transformID ,_localOffset ,_localRotation };
+
+	// 追加
+	jointDriveConstraintStorage->Add(id, jointDriveConstraint);
+
+	// 対応表
+	transformMap[_transformID].push_back(id);
+
+	// ID返して終了
+	return id;
+}
+
 void ConstraintStorage::Destory(ConstraintID _id)
 {
 	// 生存チェック

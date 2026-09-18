@@ -160,8 +160,6 @@ bool RagdollStorage::CreateRagdoll(EntityID _entity, SkeletonID _skeletonID, Rag
 
 			RagdollBodyLink link;
 
-			link.boneIndex = boneIndex;
-
 			link.bodyID = PhysicsComponentAPI::CreateInternalRigidBody(_entity, transformID);
 
 			link.bodyPositionInBoneSpace = bodyDefinition.bodyLocalPosition;
@@ -181,8 +179,6 @@ bool RagdollStorage::CreateRagdoll(EntityID _entity, SkeletonID _skeletonID, Rag
 		else
 		{
 			RagdollBodyLink link;
-
-			link.boneIndex = boneIndex;
 
 			ragdoll.bodyLinks.push_back(std::move(link));
 

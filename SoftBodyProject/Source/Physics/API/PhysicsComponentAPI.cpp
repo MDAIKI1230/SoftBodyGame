@@ -544,6 +544,15 @@ ConstraintID PhysicsComponentAPI::CreateLimitedBallJointConstraint(EntityID _ent
 	);
 }
 
+// 関節駆動拘束作成関数
+ConstraintID PhysicsComponentAPI::CreateJointDriveConstraint(EntityID _entity, const Vector3& _localOffset, const Quaternion& _localRotation)
+{
+	return constraintStorage->CreateJointDriveConstraint(
+		_entity, transformStorage->GetOrCreateTransform(_entity),
+		_localOffset, _localRotation
+	);
+}
+
 // 自信のEndPoint取得
 const EndPointFrame& PhysicsComponentAPI::GetEndPoint(ConstraintID _id)
 {
@@ -566,6 +575,9 @@ const EndPointFrame& PhysicsComponentAPI::GetEndPoint(ConstraintID _id)
 		break;
 	case ConstraintType::LIMITED_BALL_JOINT:
 		return constraintStorage->GetLimitedBallJointConstraint(_id).ownerEndPoint;
+		break;
+		case ConstraintType::JOINT_DRIVE:
+		return constraintStorage->GetJointDriveConstraint(_id).ownerEndPoint;
 		break;
 	}
 
@@ -594,7 +606,41 @@ void PhysicsComponentAPI::SetEndPoint(ConstraintID _id, const EndPointFrame& _en
 	case ConstraintType::LIMITED_BALL_JOINT:
 		constraintStorage->EditLimitedBallJointConstraint(_id).ownerEndPoint = _endPoint;
 		break;
+	case ConstraintType::JOINT_DRIVE:
+		constraintStorage->EditJointDriveConstraint(_id).ownerEndPoint = _endPoint;
+		break;
 	default:
+		break;
+	}
+}
+
+// 相手のEndPointすべて取得
+std::span<const EndPointFrame> PhysicsComponentAPI::GetOtherEndPoints(ConstraintID _id)
+{
+	switch (constraintStorage->GetType(_id))
+	{
+	case ConstraintType::POINTS:
+		return std::span{ constraintStorage->EditPointConstraint(_id).endPoints }.subspan(1);
+		break;
+	case ConstraintType::DISTANCE:
+		return std::span{ constraintStorage->EditDistanceConstraint(_id).endPoints }.subspan(1);
+		break;
+	case ConstraintType::HINGE:
+		return std::span{ constraintStorage->EditHingeConstraint(_id).endPoints };
+		break;
+	case ConstraintType::ANGLE_LIMIT_POINT:
+		return std::span{ constraintStorage->EditAngleLimitPointConstraint(_id).endPoints };
+		break;
+	case ConstraintType::ANGLE_LIMIT_HINGE:
+		return std::span{ constraintStorage->EditAngleLimitHingeConstraint(_id).endPoints };
+		break;
+	case ConstraintType::LIMITED_BALL_JOINT:
+		return std::span{ constraintStorage->EditLimitedBallJointConstraint(_id).endPoints };
+		break;
+	case ConstraintType::JOINT_DRIVE:
+		return std::span<const EndPointFrame>{ &constraintStorage->EditJointDriveConstraint(_id).otherEndPoint, 1 };
+	default:
+		return {};
 		break;
 	}
 }
@@ -625,6 +671,9 @@ void PhysicsComponentAPI::AddEndPoint(ConstraintID _id, EntityID _entity, const 
 			break;
 		case ConstraintType::LIMITED_BALL_JOINT:
 			constraintStorage->EditLimitedBallJointConstraint(_id).endPoints.emplace_back(transformID, _localOffset, _localRotation);
+			break;
+		case ConstraintType::JOINT_DRIVE:
+			constraintStorage->EditJointDriveConstraint(_id).otherEndPoint = EndPointFrame{ transformID, _localOffset, _localRotation };
 			break;
 		default:
 			break;
@@ -658,6 +707,9 @@ void  PhysicsComponentAPI::RemoveEndPoint(ConstraintID _id, EntityID _entity)
 			break;
 		case ConstraintType::LIMITED_BALL_JOINT:
 			constraintStorage->EditLimitedBallJointConstraint(_id).RemoveEndpoint(transformID);
+			break;
+		case ConstraintType::JOINT_DRIVE:
+			constraintStorage->EditJointDriveConstraint(_id).RemoveEndpoint();
 			break;
 		default:
 			break;
@@ -784,6 +836,17 @@ void PhysicsComponentAPI::SetAngleRange(ConstraintID _id, float _angleMin, float
 	SetAngleMax(_id, _angleMax);
 }
 
+// 関節駆動拘束の相対姿勢取得
+Quaternion PhysicsComponentAPI::GetTargetRelativeRotation(ConstraintID _id)
+{
+	return constraintStorage->GetJointDriveConstraint(_id).targetRelativeRotation;
+}
+// 関節駆動拘束の相対姿勢変更
+void PhysicsComponentAPI::SetTargetRelativeRotation(ConstraintID _id, const Quaternion& _targetRelativeRotation)
+{
+	constraintStorage->EditJointDriveConstraint(_id).targetRelativeRotation = _targetRelativeRotation;
+}
+
 // 単一Tuning取得
 ConstraintTuning PhysicsComponentAPI::GetTuning(ConstraintID _id)
 {
@@ -795,6 +858,8 @@ ConstraintTuning PhysicsComponentAPI::GetTuning(ConstraintID _id)
 		return constraintStorage->GetDistanceConstraint(_id).tuning;
 	case ConstraintType::ANGLE_LIMIT_POINT:
 		return constraintStorage->GetAngleLimitPointConstraint(_id).tuning;
+	case ConstraintType::JOINT_DRIVE:
+		return constraintStorage->GetJointDriveConstraint(_id).tuning;
 	default:
 		return {};
 	}
@@ -813,6 +878,9 @@ void PhysicsComponentAPI::SetTuning(ConstraintID _id, const ConstraintTuning& _t
 		break;
 	case ConstraintType::ANGLE_LIMIT_POINT:
 		constraintStorage->EditAngleLimitPointConstraint(_id).tuning = _tuning;
+		break;
+	case ConstraintType::JOINT_DRIVE:
+		constraintStorage->EditJointDriveConstraint(_id).tuning = _tuning;
 		break;
 	default:
 		break;
@@ -1253,6 +1321,17 @@ ConstraintID PhysicsComponentAPI::CreateInternalLimitedBallJointConstraint(
 	);
 }
 
+// 関節駆動拘束作成関数
+ConstraintID PhysicsComponentAPI::CreateInternalJointDriveConstraint(
+	EntityID _entity, PhysicsTransformID _transformID,
+	const Vector3& _localOffset, const Quaternion& _localRotation)
+{
+	return constraintStorage->CreateJointDriveConstraint(
+		_entity, _transformID,
+		_localOffset, _localRotation
+	);
+}
+
 
 // 内部用拘束のEndPoint追加(寿命管理をちゃんを忘れない)
 void PhysicsComponentAPI::AddInternalEndPoint(ConstraintID _constraintID, PhysicsTransformID _transformID, const Vector3& _localOffset, const Quaternion& _localRotation)
@@ -1276,6 +1355,9 @@ void PhysicsComponentAPI::AddInternalEndPoint(ConstraintID _constraintID, Physic
 		break;
 	case ConstraintType::LIMITED_BALL_JOINT:
 		constraintStorage->EditLimitedBallJointConstraint(_constraintID).endPoints.emplace_back(_transformID, _localOffset, _localRotation);
+		break;
+	case ConstraintType::JOINT_DRIVE:
+		constraintStorage->EditJointDriveConstraint(_constraintID).otherEndPoint = EndPointFrame{ _transformID, _localOffset, _localRotation };
 		break;
 	default:
 		break;

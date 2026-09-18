@@ -1,7 +1,4 @@
 ﻿#pragma once
-
-#include <cstdint>
-
 #include "MDMath.h"
 
 #include "BodyID.h"
@@ -12,8 +9,6 @@
 */
 struct RagdollBodyLink
 {
-    // ボーンのインデックス
-	uint32_t boneIndex{ 0 };
     // ボディのID
     BodyID bodyID;
 

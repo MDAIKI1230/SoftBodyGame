@@ -3,9 +3,10 @@
 #include "SkeletonInstanceStorage.h"
 #include "RagdollStorage.h"
 
-#include "AnimationCommitSystem.h"
-#include "RagdollSystem.h"
 #include "AnimationSyncSystem.h"
+#include "TargetPoseSystem.h"
+#include "RagdollSystem.h"
+#include "AnimationCommitSystem.h"
 
 class AnimationWorld
 {
@@ -34,9 +35,10 @@ private:
 
 	// --- System ---
 
-	AnimationCommitSystem animationCommitSystem;
+	AnimationSyncSystem animationSyncSystem;
 
+	TargetPoseSystem targetPoseSystem;
 	RagdollSystem ragdollSystem;
 
-	AnimationSyncSystem animationSyncSystem;
+	AnimationCommitSystem animationCommitSystem;
 };

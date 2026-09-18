@@ -580,6 +580,95 @@ void ConstraintBuildSystem::BuildLimitedBallJointConstraint(ConstraintStorage* _
 	}
 }
 
+// 関節駆動拘束の解く用の拘束構造体を作る
+void ConstraintBuildSystem::BuildJointDriveConstraint(ConstraintStorage* _constraintStorage, SolverBodyBuffer* _solverBodyBuffer, ConstraintBuffer* _constraintBuffer)
+{
+	// 拘束が存在するかチェック
+	if (_constraintStorage->CountJointDriveConstraint() <= 0)
+	{
+		return;
+	}
+
+	for (auto& jointDrive : _constraintStorage->EditJointDriveConstraintRange())
+	{
+		// 相手ポイントが無効値なら飛ばす
+		if (!jointDrive.otherEndPoint.transformID.IsValid())
+		{
+			continue;
+		}
+
+		// 基準点となるボディから位置を持ってくる。
+		const EndPointFrame& ownerEndPoint{ jointDrive.ownerEndPoint };
+
+		uint32_t basePointIndex{ _solverBodyBuffer->GetIndex(ownerEndPoint.transformID) };
+		const SolverBody& solverBodyBase{ _solverBodyBuffer->Get(basePointIndex) };
+		const Quaternion& baseRot{ solverBodyBase.rotation * ownerEndPoint.localRotation };
+
+		// 相手となるボディから位置を持ってくる。
+		const EndPointFrame& otherEndPoint{ jointDrive.otherEndPoint };
+
+		uint32_t otherPointIndex{ _solverBodyBuffer->GetIndex(otherEndPoint.transformID) };
+		const SolverBody& solverBodyOther{ _solverBodyBuffer->Get(otherPointIndex) };
+		const Quaternion& otherRot{ solverBodyOther.rotation * otherEndPoint.localRotation };
+
+		// 相対姿勢を求める
+		Quaternion relativeRotation{ baseRot.Conjugate() * otherRot };
+		// C(Quaternion版)
+		Quaternion errorRot{ jointDrive.targetRelativeRotation.Conjugate() * relativeRotation };
+
+		// このままでは使えないので、書く方向にどれだけズレてるかに変更する
+
+		Vector3 axis;
+		float theta;
+		errorRot.ToAxisAngle(axis, theta);
+
+		// 角度が0に限りなく近いならやる意味も内でやんしょう
+		if (theta <= MathConstants::EPSILON)
+		{
+			continue;
+		}
+
+		Constraint constraint;
+
+		constraint.jacobian[0] = Vector3::ZERO;
+		constraint.jacobian[2] = Vector3::ZERO;
+
+		// ヤコビアンの計算
+		constraint.error = axis.x * theta;
+
+		constraint.jacobian[1] = Vector3::RIGHT;
+		constraint.jacobian[3] = Vector3::RIGHT;
+
+		MakeConstraintInfo(constraint, jointDrive.tuning);
+
+		// 拘束として追加
+		_constraintBuffer->Add(constraint);
+
+		constraint.error = axis.y * theta;
+
+
+		// ヤコビアンの計算
+		constraint.jacobian[1] = Vector3::UP;
+		constraint.jacobian[3] = Vector3::UP;
+
+		MakeConstraintInfo(constraint, jointDrive.tuning);
+
+		// 拘束として追加
+		_constraintBuffer->Add(constraint);
+
+		constraint.error = axis.z * theta;
+
+
+		// ヤコビアンの計算
+		constraint.jacobian[1] = Vector3::FORWARD;
+		constraint.jacobian[3] = Vector3::FORWARD;
+
+		MakeConstraintInfo(constraint, jointDrive.tuning);
+
+		// 拘束として追加
+		_constraintBuffer->Add(constraint);
+	}
+}
 
 void ConstraintBuildSystem::MakeConstraintInfo(Constraint& _constraint, const ConstraintTuning& _tuning)
 {

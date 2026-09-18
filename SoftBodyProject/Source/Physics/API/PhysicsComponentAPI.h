@@ -1,5 +1,7 @@
 ﻿#pragma once
 
+#include <span>
+
 #include "MDMath.h"
 
 #include "PhysicsWorld.h"
@@ -245,11 +247,15 @@ public:
 	static ConstraintID CreateAngleLimitHingeConstraint(EntityID _entity, const Vector3& _localOffset, const Quaternion& _localRotation);
 	// SwingTwist拘束作成関数
 	static ConstraintID CreateLimitedBallJointConstraint(EntityID _entity, const Vector3& _localOffset, const Quaternion& _localRotation);
+	// 関節駆動拘束作成関数
+	static ConstraintID CreateJointDriveConstraint(EntityID _entity, const Vector3& _localOffset, const Quaternion& _localRotation);
 
 	// 自信のEndPoint取得
 	static const EndPointFrame& GetEndPoint(ConstraintID _id);
 	// 自信のEndPoint変更
 	static void SetEndPoint(ConstraintID _id,const EndPointFrame& _endPoint);
+	// 相手のEndPointすべて取得
+	static std::span<const EndPointFrame> GetOtherEndPoints(ConstraintID _id);
 
 	// 拘束にEndPoint追加
 	static void AddEndPoint(ConstraintID _id, EntityID _entity, const Vector3& _localOffset, const Quaternion& _localRotation = Quaternion::IDENTITY);
@@ -279,6 +285,11 @@ public:
 	static void SetAngleMax(ConstraintID _id, float _angleMax);
 	// 角度範囲変更
 	static void SetAngleRange(ConstraintID _id, float _angleMin, float _angleMax);
+
+	// 関節駆動拘束の相対姿勢取得
+	static Quaternion GetTargetRelativeRotation(ConstraintID _id);
+	// 関節駆動拘束の相対姿勢変更
+	static void SetTargetRelativeRotation(ConstraintID _id,const Quaternion& _targetRelativeRotation);
 
 	// 単一Tuning取得
 	static ConstraintTuning GetTuning(ConstraintID _id);
@@ -426,6 +437,10 @@ public:
 		const Vector3& _localOffset, const Quaternion& _localRotation);
 	// SwingTwist拘束作成関数(寿命管理をちゃんを忘れない)
 	static ConstraintID CreateInternalLimitedBallJointConstraint(
+		EntityID _entity, PhysicsTransformID _transformID,
+		const Vector3& _localOffset, const Quaternion& _localRotation);
+	// 関節駆動拘束作成関数
+	static ConstraintID CreateInternalJointDriveConstraint(
 		EntityID _entity, PhysicsTransformID _transformID,
 		const Vector3& _localOffset, const Quaternion& _localRotation);
 

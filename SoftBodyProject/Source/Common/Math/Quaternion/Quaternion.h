@@ -80,6 +80,9 @@ public:
 	// 行列に変換
 	Matrix4x4 ToMatrix() const;
 
+	// 軸と角度に分解する関数
+	void ToAxisAngle(Vector3& _axis, float& _theta) const;
+
 	/// <summary>
 	/// 球面補間
 	/// </summary>
