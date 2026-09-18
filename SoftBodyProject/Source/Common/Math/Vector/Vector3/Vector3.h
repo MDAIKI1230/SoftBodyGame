@@ -121,4 +121,7 @@ public:
 	static float Dot(const Vector3& _vec1, const Vector3& _vec2);
 	// 外積
 	static Vector3 Cross(const Vector3& _vec1, const Vector3& _vec2);
+
+	// 線形補間
+	static Vector3 Lerp(const Vector3& _start, const Vector3& _end, float _t);
 };

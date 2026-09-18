@@ -63,6 +63,16 @@ private:
 	bool GetCurrentPose(ModelHandle _handle, PoseBuffer& _output) override;
 	// モデルに、ポーズを適応する
 	bool ApplyPose(ModelHandle _handle, const PoseBuffer& _pose) override;
+	// アニメーションの適用
+	AnimationHandle AttachAnimation(ModelHandle _handle, int _animIndex) override;
+	// 適用中のアニメーションの時間を設定する
+	void SetAnimationTime(ModelHandle _model, AnimationHandle _handle, float _time) override;
+	// アニメーションの解除
+	void DetachAnimation(ModelHandle _model, AnimationHandle _handle) override;
+	// モデルのアニメーション数を取得
+	int GetAnimationCount(ModelHandle _model) override;
+	// アニメーション番号に対しての名前を取得
+	std::string GetAnimationName(ModelHandle _model, int _animIndex) override;
 
 	// ---読み込み関数---
 
@@ -98,6 +108,8 @@ private:
 	// すべてのリソースを削除
 	void DeleteAll() override;
 private:
+	std::string TCHARToUTF8(const wchar_t* text);
+private:
 	static constexpr uint32_t INVALID_BONE{ UINT32_MAX };
 
 private:
@@ -108,4 +120,5 @@ private:
 	ResourceStorage<TextureHandle, int> textureStorage;
 	ResourceStorage<CubeTextureHandle, int> cubeTextureStorage;
 	ResourceStorage<SkeletonHandle, SkeletonData> skeletonStorage;
+	ResourceStorage<AnimationHandle, int> animationStorage;
 };

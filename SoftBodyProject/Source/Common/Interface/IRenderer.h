@@ -11,6 +11,7 @@
 #include "TextureHandle.h"
 #include "CubeTextureHandle.h"
 #include "SkeletonHandle.h"
+#include "AnimationHandle.h"
 
 class IRenderer
 {
@@ -76,8 +77,19 @@ protected:
 	virtual const SkeletonData* GetSkeletonData(SkeletonHandle _handle) = 0;
 	// 現在のスケルトンのポーズ情報の取得
 	virtual bool GetCurrentPose(ModelHandle _handle, PoseBuffer& _output) = 0;
-	// モデルに、ポーズを適応する
+	// モデルに、ポーズを適用する
 	virtual bool ApplyPose(ModelHandle _handle, const PoseBuffer& _pose) = 0;
+	// アニメーションの適用
+	virtual AnimationHandle AttachAnimation(ModelHandle _handle, int _animIndex) = 0;
+	// 適用中のアニメーションの時間を設定する
+	virtual void SetAnimationTime(ModelHandle _model, AnimationHandle _handle, float _time) = 0;
+	// アニメーションの解除
+	virtual void DetachAnimation(ModelHandle _model, AnimationHandle _handle) = 0;
+	// モデルのアニメーション数を取得
+	virtual int GetAnimationCount(ModelHandle _model) = 0;
+	// アニメーション番号に対しての名前を取得
+	virtual std::string GetAnimationName(ModelHandle _model, int _animIndex) = 0;
+
 
 	// ---読み込み関数---
 

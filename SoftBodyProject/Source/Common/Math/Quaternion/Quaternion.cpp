@@ -221,7 +221,7 @@ Quaternion Quaternion::Lerp(const Quaternion& _start, const Quaternion _end, flo
 	return { SIMDVectorMath::Add(
 		SIMDVectorMath::MulScalar(_start.simd,(1 - _t)),// start * ( 1 - t)
 		SIMDVectorMath::MulScalar(_end.simd,_t)         // b * t
-) };
+	) };
 }
 
 // 内積

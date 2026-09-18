@@ -109,20 +109,42 @@ public:
 	SingletonPublicFunction(bool, GetPose, (ModelHandle _model, PoseBuffer& _output), (_model, _output))
 
 	/// <summary>
-	/// モデルにTRS列を適応する
+	/// モデルにTRS列を適用する
 	/// </summary>
 	/// <param name="_model">モデルハンドル</param>
 	/// <param name="_pose">ポーズ</param>
 	static void SetMatrix(ModelHandle _model, const Matrix4x4& _mat)
 	SingletonPublicFunction(void, SetMatrix, (ModelHandle _model, const Matrix4x4& _mat), (_model, _mat))
 	/// <summary>
-	/// モデルにポーズを適応させる(アニメーションを踏まえない)
+	/// モデルにポーズを適用させる(アニメーションを踏まえない)
 	/// </summary>
 	/// <param name="_model">モデルハンドル</param>
 	/// <param name="_pose">ポーズ</param>
 	/// <returns>成功したか</returns>
 	static bool ApplyPose(ModelHandle _model, const PoseBuffer& _pose)
 	SingletonPublicFunction(bool, ApplyPose, (ModelHandle _model, const PoseBuffer& _pose), (_model, _pose))
+	/// <summary>
+	/// モデルにアニメーションを適用させる
+	/// </summary>
+	/// <param name="_handle">モデルハンドル</param>
+	/// <param name="_animIndex">アニメーション番号</param>
+	/// <returns>成功したか</returns>
+	static AnimationHandle AttachAnimation(ModelHandle _handle, std::string _animName)
+	SingletonPublicFunction(AnimationHandle, AttachAnimation, (ModelHandle _handle, std::string _animName), (_handle, _animName))
+	/// <summary>
+	/// モデルに適用させてるアニメーションに時間を設定する
+	/// </summary>
+	/// <param name="_model">モデルハンドル</param>
+	/// <param name="_handle">アニメーションハンドル</param>
+	static void SetAnimationTime(ModelHandle _model, AnimationHandle _handle, float _time)
+	SingletonPublicFunction(void, SetAnimationTime, (ModelHandle _model, AnimationHandle _handle, float _time), (_model, _handle, _time))
+	/// <summary>
+	/// モデルに適用させてるアニメーションを解除
+	/// </summary>
+	/// <param name="_model">モデルハンドル</param>
+	/// <param name="_handle">アニメーションハンドル</param>
+	static void DetachAnimation(ModelHandle _model, AnimationHandle _handle)
+	SingletonPublicFunction(void, DetachAnimation, (ModelHandle _model, AnimationHandle _handle), (_model, _handle))
 	/// <summary>
 	/// 定数バッファに値を渡す
 	/// </summary>
@@ -198,6 +220,7 @@ private:
 	std::unordered_map <std::filesystem::path, CubeTextureHandle> cubeTextureMasters;
 	std::unordered_map <std::filesystem::path, VertexShaderHandle> vertexShaderMasters;
 	std::unordered_map <std::filesystem::path, PixelShaderHandle> pixelShaderMasters;
+	std::unordered_map <std::filesystem::path, int> animationIndecies;
 
 	std::unordered_map <ModelHandle, SkeletonHandle> modelToSkeleton;
 

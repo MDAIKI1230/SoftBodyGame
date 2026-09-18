@@ -1,8 +1,15 @@
 ﻿#include "ResourceManager.h"
 
+#include "PoseMixer.h"
+
 #include "TargetPoseSystem.h"
 
 void TargetPoseSystem::Update(SkeletonInstanceStorage* _skeletonStorage)
+{
+	InitialePose(_skeletonStorage);
+}
+
+void TargetPoseSystem::InitialePose(SkeletonInstanceStorage* _skeletonStorage)
 {
 	for (auto& skeleton : _skeletonStorage->EditSkeletonInstanceDataRange())
 	{
@@ -17,5 +24,14 @@ void TargetPoseSystem::Update(SkeletonInstanceStorage* _skeletonStorage)
 
 			targetPose.localMatrices[boneIndex] = skeleton.skeletonData->bindLocalMatrices[boneIndex];
 		}
+	}
+}
+
+void TargetPoseSystem::MixPose(SkeletonInstanceStorage* _skeletonStorage, PoseLayerStorage* _poseLayerStorage)
+{
+	for (const PoseLayer& layer : _poseLayerStorage->GetPoseLayerRange())
+	{
+		SkeletonInstanceData& skeleton{ _skeletonStorage->EditSkeletonInstanceData(layer.skeletonID) };
+		PoseMixer::MakeTargetPose(skeleton.targetPose, layer);
 	}
 }

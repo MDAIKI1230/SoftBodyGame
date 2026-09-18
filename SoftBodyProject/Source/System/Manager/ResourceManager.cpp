@@ -10,14 +10,25 @@ bool ResourceManager::LoadModelImpl(std::filesystem::path _path)
 	// ファイル名だけをキーとして扱う
 	const auto key{ _path.filename() };
 
-	modelMasters[key] = ServiceLocator::GetRenderer()->LoadModel(_path.string());
+	ModelHandle modelHandle{ ServiceLocator::GetRenderer()->LoadModel(_path.string()) };
+
+	modelMasters[key] = modelHandle;
 
 	// スケルトンの取得も済ませて置く
 	SkeletonHandle skeletonHandle{ ServiceLocator::GetRenderer()->LoadSkeletonData(modelMasters[key]) };
 
 	if (skeletonHandle.IsValid())
 	{
-		modelToSkeleton[modelMasters[key]] = skeletonHandle;
+		modelToSkeleton[modelHandle] = skeletonHandle;
+	}
+
+	// アニメーションを名前から行けるようにしとこう
+	int animeCount{ ServiceLocator::GetRenderer()->GetAnimationCount(modelHandle) };
+
+	for (int animIndex{ 0 }; animIndex < animeCount; animIndex++)
+	{
+		std::string animName{ ServiceLocator::GetRenderer()->GetAnimationName(modelHandle,animIndex) };
+		animationIndecies[animName] = animIndex;
 	}
 
 	return modelMasters[key].GetGeneration() != 0;
@@ -170,6 +181,29 @@ bool ResourceManager::ApplyPoseImpl(ModelHandle _model, const PoseBuffer& _pose)
 	return ServiceLocator::GetRenderer()->ApplyPose(_model, _pose);
 }
 
+// モデルにアニメーションを適用させる
+AnimationHandle ResourceManager::AttachAnimationImpl(ModelHandle _handle, std::string _animName)
+{
+	if (animationIndecies.contains(_animName))
+	{
+		return ServiceLocator::GetRenderer()->AttachAnimation(_handle, animationIndecies.at(_animName));
+	}
+
+	return {};
+}
+
+// モデルに適用させてるアニメーションに時間を設定する
+void ResourceManager::SetAnimationTimeImpl(ModelHandle _model, AnimationHandle _handle, float _time)
+{
+	ServiceLocator::GetRenderer()->SetAnimationTime(_model, _handle, _time);
+}
+
+// モデルに適用させてるアニメーションを解除
+void ResourceManager::DetachAnimationImpl(ModelHandle _model, AnimationHandle _handle)
+{
+	ServiceLocator::GetRenderer()->DetachAnimation(_model, _handle);
+}
+
 // 3Dモデル共有リソース破棄
 void ResourceManager::DestroyModelImpl(ModelHandle _handle)
 {
@@ -186,10 +220,21 @@ void ResourceManager::UnLoadModelImpl(std::filesystem::path _path)
 		modelToSkeleton.erase(handle);
 	}
 
-	// スケルトンも消す
-	modelToSkeleton.erase(modelMasters[_path]);
+	ModelHandle handle{ modelMasters[_path] };
 
-	ServiceLocator::GetRenderer()->DeleteModel(modelMasters[_path]);
+	// アニメーションを名前から行けるようにしとこう
+	int animeCount{ ServiceLocator::GetRenderer()->GetAnimationCount(handle) };
+
+	for (int animIndex{ 0 }; animIndex < animeCount; animIndex++)
+	{
+		std::string animName{ ServiceLocator::GetRenderer()->GetAnimationName(handle,animIndex) };
+		animationIndecies.erase(animName);
+	}
+
+	// スケルトンも消す
+	modelToSkeleton.erase(handle);
+
+	ServiceLocator::GetRenderer()->DeleteModel(handle);
 
 	modelMasters.erase(_path);
 	modelSharedResource.erase(_path);

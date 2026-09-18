@@ -382,6 +382,86 @@ bool DxlibRenderer::ApplyPose(ModelHandle _handle, const PoseBuffer& _pose)
 	return true;
 }
 
+// アニメーションの適用
+AnimationHandle DxlibRenderer::AttachAnimation(ModelHandle _handle, int _animIndex)
+{
+	int nativeModelHandle;
+
+	if (!modelStorage.TryGet(_handle, nativeModelHandle))
+	{
+		return {};
+	}
+
+	int nativeHandle{ DxLib::MV1AttachAnim(nativeModelHandle,_animIndex) };
+
+	return animationStorage.Add(nativeHandle);
+}
+
+// 適用中のアニメーションの時間を設定する
+void DxlibRenderer::SetAnimationTime(ModelHandle _model, AnimationHandle _handle, float _time)
+{
+	int nativeModelHandle;
+
+	if (!modelStorage.TryGet(_model, nativeModelHandle))
+	{
+		return;
+	}
+
+	int nativeAnimHandle;
+
+	if (!animationStorage.TryGet(_handle, nativeAnimHandle))
+	{
+		return;
+	}
+
+	DxLib::MV1SetAttachAnimTime(nativeModelHandle, nativeAnimHandle, _time);
+}
+
+// アニメーションの解除
+void DxlibRenderer::DetachAnimation(ModelHandle _model, AnimationHandle _handle)
+{
+	int nativeModelHandle;
+
+	if (!modelStorage.TryGet(_model, nativeModelHandle))
+	{
+		return;
+	}
+
+	int nativeAnimHandle;
+
+	if (!animationStorage.TryGet(_handle, nativeAnimHandle))
+	{
+		return;
+	}
+
+	DxLib::MV1DetachAnim(nativeModelHandle, nativeAnimHandle);
+}
+
+// モデルのアニメーション数を取得
+int DxlibRenderer::GetAnimationCount(ModelHandle _model)
+{
+	int nativeHandle;
+
+	if (!modelStorage.TryGet(_model, nativeHandle))
+	{
+		return 0;
+	}
+
+	return DxLib::MV1GetAnimNum(nativeHandle);
+}
+
+// アニメーション番号に対しての名前を取得
+std::string DxlibRenderer::GetAnimationName(ModelHandle _model, int _animIndex)
+{
+	int nativeHandle;
+
+	if (!modelStorage.TryGet(_model, nativeHandle))
+	{
+		return {};
+	}
+
+	return TCHARToUTF8(DxLib::MV1GetAnimName(nativeHandle, _animIndex));
+}
 
 // テクスチャをShaderに渡す。
 void DxlibRenderer::BindTexture(TextureHandle _handle, uint32_t _slot)
@@ -447,4 +527,52 @@ void DxlibRenderer::DeleteCubeTexture(CubeTextureHandle _handle)
 void DxlibRenderer::DeleteAll()
 {
 	InitGraph();
+}
+
+std::string DxlibRenderer::TCHARToUTF8(const wchar_t* text)
+{
+	if (text == nullptr)
+	{
+		return {};
+	}
+
+#ifdef UNICODE
+	const int requiredSize{ WideCharToMultiByte(
+		CP_UTF8,
+		0,
+		text,
+		-1,
+		nullptr,
+		0,
+		nullptr,
+		nullptr
+	) };
+
+	if (requiredSize <= 1)
+	{
+		return {};
+	}
+
+	std::string result(
+		static_cast<size_t>(requiredSize - 1),
+		'\0'
+	);
+
+	WideCharToMultiByte(
+		CP_UTF8,
+		0,
+		text,
+		-1,
+		result.data(),
+		requiredSize,
+		nullptr,
+		nullptr
+	);
+
+	return result;
+#else
+	// TCHAR == char の場合。
+	// ただしこの場合、元文字列がUTF-8とは限らない。
+	return std::string(text);
+#endif
 }

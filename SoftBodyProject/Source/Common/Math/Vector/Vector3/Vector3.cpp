@@ -175,3 +175,13 @@ Vector3 Vector3::Cross(const Vector3& _vec1, const Vector3& _vec2)
 {
 	return SIMDVectorMath::Cross3(_vec1, _vec2);
 }
+
+// 線形補間
+Vector3 Vector3::Lerp(const Vector3& _start, const Vector3& _end, float _t)
+{
+	// start * ( 1 - t) + b * t
+	return { SIMDVectorMath::Add(
+		SIMDVectorMath::MulScalar(_start.simd,(1 - _t)),// start * ( 1 - t)
+		SIMDVectorMath::MulScalar(_end.simd,_t)         // b * t
+	) };
+}

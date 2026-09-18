@@ -23,6 +23,10 @@ public:
 		boneFromModelMatrices.resize(_size);
 	}
 
+	size_t Size() const
+	{
+		return localMatrices.size();
+	}
 public:
 	std::vector<Vector3> localPositions;
 	std::vector<Quaternion> localRotations;

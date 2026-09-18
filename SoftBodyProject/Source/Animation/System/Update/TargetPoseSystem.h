@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "SkeletonInstanceStorage.h"
+#include "PoseLayerStorage.h"
 
 /*
 	スケルトンインスタンスデータのターゲットポーズを作るところ
@@ -12,4 +13,9 @@ class TargetPoseSystem
 {
 public:
 	void Update(SkeletonInstanceStorage* _skeletonStorage);
+
+private:
+	void InitialePose(SkeletonInstanceStorage* _skeletonStorage);
+
+	void MixPose(SkeletonInstanceStorage* _skeletonStorage, PoseLayerStorage* _poseLayerStorage);
 };
