@@ -597,7 +597,6 @@ void ConstraintBuildSystem::BuildJointDriveConstraint(ConstraintStorage* _constr
 		// 相手ポイントが無効値なら飛ばす
 		if (!jointDrive.otherEndPoint.transformID.IsValid())
 		{
-			MD_UNREACHABLE("トランスフォームが無効値");
 			continue;
 		}
 
@@ -618,7 +617,7 @@ void ConstraintBuildSystem::BuildJointDriveConstraint(ConstraintStorage* _constr
 		// 相対姿勢を求める
 		Quaternion relativeRotation{ baseRot.Conjugate() * otherRot };
 		// C(Quaternion版)
-		Quaternion errorRot{ jointDrive.targetRelativeRotation.Conjugate() * relativeRotation };
+		Quaternion errorRot{ relativeRotation * jointDrive.targetRelativeRotation.Conjugate() };
 
 		// このままでは使えないので、書く方向にどれだけズレてるかに変更する
 
@@ -629,11 +628,13 @@ void ConstraintBuildSystem::BuildJointDriveConstraint(ConstraintStorage* _constr
 		// 角度が0に限りなく近いならやる意味も内でやんしょう
 		if (theta <= MathConstants::EPSILON)
 		{
-			MD_UNREACHABLE("角度が限りなく0");
 			continue;
 		}
 
 		Constraint constraint;
+
+		constraint.solverBodyAIndex = basePointIndex;
+		constraint.solverBodyBIndex = otherPointIndex;
 
 		Vector3 axisError{ axis * theta };
 
@@ -647,8 +648,8 @@ void ConstraintBuildSystem::BuildJointDriveConstraint(ConstraintStorage* _constr
 		// ヤコビアンの計算
 		constraint.error = axisError.x;
 
-		constraint.jacobian[1] = axisX;
-		constraint.jacobian[3] = -axisX;
+		constraint.jacobian[1] = -axisX;
+		constraint.jacobian[3] = axisX;
 
 		MakeConstraintInfo(constraint, jointDrive.tuning);
 
@@ -658,8 +659,8 @@ void ConstraintBuildSystem::BuildJointDriveConstraint(ConstraintStorage* _constr
 		constraint.error = axisError.y;
 
 		// ヤコビアンの計算
-		constraint.jacobian[1] = axisY;
-		constraint.jacobian[3] = -axisY;
+		constraint.jacobian[1] = -axisY;
+		constraint.jacobian[3] = axisY;
 
 		MakeConstraintInfo(constraint, jointDrive.tuning);
 
@@ -669,8 +670,8 @@ void ConstraintBuildSystem::BuildJointDriveConstraint(ConstraintStorage* _constr
 		constraint.error = axisError.z;
 
 		// ヤコビアンの計算
-		constraint.jacobian[1] = axisZ;
-		constraint.jacobian[3] = -axisZ;
+		constraint.jacobian[1] = -axisZ;
+		constraint.jacobian[3] = axisZ;
 
 		MakeConstraintInfo(constraint, jointDrive.tuning);
 

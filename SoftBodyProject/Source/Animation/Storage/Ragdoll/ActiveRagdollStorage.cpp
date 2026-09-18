@@ -91,12 +91,6 @@ bool ActiveRagdollStorage::CreateActiveRagdoll(EntityID _entity, const Ragdoll& 
 				childEndPoint.localPosition,
 				childEndPoint.localRotation);
 
-			/*ConstraintTuning tuning;
-
-			tuning.stiffness = 10000000.0f;
-
-			PhysicsComponentAPI::SetTuning(constraintID, tuning);*/
-
 			activeRagdoll.childBoneIndex.push_back(boneIndex);
 			activeRagdoll.parentBoneIndex.push_back(parentIndices[boneIndex]);
 			activeRagdoll.jointDriveConstraints.push_back(constraintID);

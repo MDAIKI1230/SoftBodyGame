@@ -16,13 +16,29 @@ void ActiveRagdollSystem::PrePhysicsFixedUpdate(SkeletonInstanceStorage* _skelet
 			/*
 				親をオーナーとしている事に注意
 			*/
+
 			ConstraintID constraint{ activeRagdoll.jointDriveConstraints[i] };
 
-			Quaternion targetRelativeRotation{
-				skeleton.targetPose.localRotations[activeRagdoll.parentBoneIndex[i]].Conjugate() *
-				skeleton.targetPose.localRotations[activeRagdoll.childBoneIndex[i]] };
+			// 親ボーンインデックス
+			uint32_t parentBoneIndex{ activeRagdoll.parentBoneIndex[i] };
+			// 子ボーンインデックス
+			uint32_t childBoneIndex{ activeRagdoll.childBoneIndex[i] };
 
-			PhysicsComponentAPI::SetTargetRelativeRotation(constraint, targetRelativeRotation);
+			const EndPointFrame& parentEndPoint{ PhysicsComponentAPI::GetEndPoint(constraint) };
+			// 一旦APIの関係上一対一だけどこれからしか取得できないから[0]があってすまぬ
+			const EndPointFrame& childEndPoint{ PhysicsComponentAPI::GetOtherEndPoints(constraint)[0] };
+
+			
+			const Quaternion& parentBodyRotation{ skeleton.targetPose.localRotations[parentBoneIndex] };
+			const Quaternion& childBodyRotation{ skeleton.targetPose.localRotations[childBoneIndex] };
+
+			Quaternion parentJointWorld{ parentBodyRotation * parentEndPoint.localRotation };
+
+			Quaternion childJointWorld{ childBodyRotation * childEndPoint.localRotation };
+
+			Quaternion targetRelativeRotation{ parentJointWorld.Conjugate() * childJointWorld };
+
+			PhysicsComponentAPI::SetTargetRelativeRotation(constraint, Quaternion::IDENTITY);
 		}
 	}
 }

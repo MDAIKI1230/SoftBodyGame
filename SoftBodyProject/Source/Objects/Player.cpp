@@ -10,7 +10,7 @@ Player::Player(WorldStorage* _world, EntityID _entityID, Camera* _camera) :
 	AddComponent<TransformComponent>();
 	cc = AddComponent<CharacterControllerComponent>();
 
-	GetComponent<TransformComponent>()->SetPosition(Vector3{ 0,0,0 });
+	GetComponent<TransformComponent>()->SetPosition(Vector3{ 200.0f,0,0 });
 
 	InputSystem::GetInputAction("Character", "Move").AddPerformedCallback<&Player::Move>(this);
 	InputSystem::GetInputAction("Character", "Move").AddCanceledCallback<&Player::Move>(this);

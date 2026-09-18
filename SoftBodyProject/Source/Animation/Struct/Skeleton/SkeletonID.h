@@ -2,6 +2,6 @@
 
 #include "GenerationalID.h"
 
-struct SkeletonTag;
+struct SkeletonInstanceTag;
 
-using SkeletonID = GenerationalID <SkeletonTag>;
+using SkeletonID = GenerationalID <SkeletonInstanceTag>;

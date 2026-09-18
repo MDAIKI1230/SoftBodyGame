@@ -14,6 +14,7 @@ public:
 		return slotPool.IsAlive(_id);
 	}
 
+	virtual ~DataStorageBase() = default;
 protected:
 	// 実データインデックス取得
 	uint32_t GetDenseIndex(ID _id) const
