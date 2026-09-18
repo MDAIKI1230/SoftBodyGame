@@ -43,6 +43,7 @@
 // アニメーション関系
 
 #include "RagdollComponentStorage.h"
+#include "ActiveRagdollComponentStorage.h"
 
 // API
 #include "PhysicsComponentAPI.h"
@@ -98,6 +99,7 @@ SceneBase::SceneBase()
 	// アニメーション関系
 
 	AddStorage<RagdollComponent>(std::make_unique<RagdollComponentStorage>());
+	AddStorage<ActiveRagdollComponent>(std::make_unique<ActiveRagdollComponentStorage>());
 
 	PhysicsComponentAPI::BindWorld(physicsWorld, worldStorage);
 	PhysicsAPI::BindWorld(physicsWorld);

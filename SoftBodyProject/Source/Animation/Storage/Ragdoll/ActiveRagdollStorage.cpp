@@ -65,6 +65,8 @@ bool ActiveRagdollStorage::CreateActiveRagdoll(EntityID _entity, const Ragdoll& 
 {
 	const std::vector<uint32_t>& parentIndices{ _skeleton.skeletonData->parentIndices };
 
+	ActiveRagdoll activeRagdoll;
+
 	for (int boneIndex{ 0 }; boneIndex < _ragdoll.constraints.size(); boneIndex++)
 	{
 		ConstraintID bodyConstraint{ _ragdoll.constraints[boneIndex] };
@@ -73,8 +75,6 @@ bool ActiveRagdollStorage::CreateActiveRagdoll(EntityID _entity, const Ragdoll& 
 		{
 			continue;
 		}
-
-		ActiveRagdoll activeRagdoll;
 
 		const EndPointFrame parentEndPoint{ PhysicsComponentAPI::GetEndPoint(bodyConstraint) };
 		for (const EndPointFrame& childEndPoint : PhysicsComponentAPI::GetOtherEndPoints(bodyConstraint))
@@ -85,17 +85,27 @@ bool ActiveRagdollStorage::CreateActiveRagdoll(EntityID _entity, const Ragdoll& 
 				parentEndPoint.localPosition,
 				parentEndPoint.localRotation) };
 
-			PhysicsComponentAPI::AddEndPoint(
+			PhysicsComponentAPI::AddInternalEndPoint(
 				constraintID,
-				_entity,
+				childEndPoint.transformID,
 				childEndPoint.localPosition,
 				childEndPoint.localRotation);
+
+			/*ConstraintTuning tuning;
+
+			tuning.stiffness = 10000000.0f;
+
+			PhysicsComponentAPI::SetTuning(constraintID, tuning);*/
 
 			activeRagdoll.childBoneIndex.push_back(boneIndex);
 			activeRagdoll.parentBoneIndex.push_back(parentIndices[boneIndex]);
 			activeRagdoll.jointDriveConstraints.push_back(constraintID);
 		}
 	}
+
+	activeRagdolls.push_back(std::move(activeRagdoll));
+
+	return true;
 }
 
 // ActiveRagdoll情報の破棄関数

@@ -29,5 +29,4 @@ public:
 	SkeletonID Create(EntityID _entity, ModelHandle _model);
 	// 破棄
 	void Destroy(SkeletonID _id);
-private:
 };

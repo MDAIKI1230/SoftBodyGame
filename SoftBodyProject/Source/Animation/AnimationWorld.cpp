@@ -11,6 +11,7 @@ void AnimationWorld::Update(WorldStorage* worldStorage)
 void AnimationWorld::PrePhysicsFixedUpdate()
 {
 	ragdollSystem.PrePhysicsFixedUpdate(&skeletonInstanceStorage, &gagdollStorage);
+	activeRagdollSystem.PrePhysicsFixedUpdate(&skeletonInstanceStorage, &gagdollStorage, &activeRagdollStorage);
 }
 
 // Physics実行後

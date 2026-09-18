@@ -1,5 +1,7 @@
 ﻿#include <algorithm>
 
+#include "AssertMacros.h"
+
 #include "TimeManager.h"
 
 #include "ConstraintBuildSystem.h"
@@ -12,6 +14,7 @@ void ConstraintBuildSystem::FixedUpdate(ConstraintStorage* _constraintStorage, S
 	BuildAngleLimitPointConstraint(_constraintStorage, _solverBodyBuffer, _constraintBuffer);
 	BuildAngleLimitHingeConstraint(_constraintStorage, _solverBodyBuffer, _constraintBuffer);
 	BuildLimitedBallJointConstraint(_constraintStorage, _solverBodyBuffer, _constraintBuffer);
+	BuildJointDriveConstraint(_constraintStorage, _solverBodyBuffer, _constraintBuffer);
 }
 
 // 点拘束の解く用の拘束構造体を作る
@@ -594,6 +597,7 @@ void ConstraintBuildSystem::BuildJointDriveConstraint(ConstraintStorage* _constr
 		// 相手ポイントが無効値なら飛ばす
 		if (!jointDrive.otherEndPoint.transformID.IsValid())
 		{
+			MD_UNREACHABLE("トランスフォームが無効値");
 			continue;
 		}
 
@@ -625,43 +629,48 @@ void ConstraintBuildSystem::BuildJointDriveConstraint(ConstraintStorage* _constr
 		// 角度が0に限りなく近いならやる意味も内でやんしょう
 		if (theta <= MathConstants::EPSILON)
 		{
+			MD_UNREACHABLE("角度が限りなく0");
 			continue;
 		}
 
 		Constraint constraint;
 
+		Vector3 axisError{ axis * theta };
+
+		Vector3 axisX{ baseRot.Rotate(Vector3::RIGHT) };
+		Vector3 axisY{ baseRot.Rotate(Vector3::UP) };
+		Vector3 axisZ{ baseRot.Rotate(Vector3::FORWARD) };
+
 		constraint.jacobian[0] = Vector3::ZERO;
 		constraint.jacobian[2] = Vector3::ZERO;
 
 		// ヤコビアンの計算
-		constraint.error = axis.x * theta;
+		constraint.error = axisError.x;
 
-		constraint.jacobian[1] = Vector3::RIGHT;
-		constraint.jacobian[3] = Vector3::RIGHT;
-
-		MakeConstraintInfo(constraint, jointDrive.tuning);
-
-		// 拘束として追加
-		_constraintBuffer->Add(constraint);
-
-		constraint.error = axis.y * theta;
-
-
-		// ヤコビアンの計算
-		constraint.jacobian[1] = Vector3::UP;
-		constraint.jacobian[3] = Vector3::UP;
+		constraint.jacobian[1] = axisX;
+		constraint.jacobian[3] = -axisX;
 
 		MakeConstraintInfo(constraint, jointDrive.tuning);
 
 		// 拘束として追加
 		_constraintBuffer->Add(constraint);
 
-		constraint.error = axis.z * theta;
-
+		constraint.error = axisError.y;
 
 		// ヤコビアンの計算
-		constraint.jacobian[1] = Vector3::FORWARD;
-		constraint.jacobian[3] = Vector3::FORWARD;
+		constraint.jacobian[1] = axisY;
+		constraint.jacobian[3] = -axisY;
+
+		MakeConstraintInfo(constraint, jointDrive.tuning);
+
+		// 拘束として追加
+		_constraintBuffer->Add(constraint);
+
+		constraint.error = axisError.z;
+
+		// ヤコビアンの計算
+		constraint.jacobian[1] = axisZ;
+		constraint.jacobian[3] = -axisZ;
 
 		MakeConstraintInfo(constraint, jointDrive.tuning);
 

@@ -13,6 +13,13 @@ public:
 	// 破棄
 	static void DestroyRagdoll(RagdollID _id);
 
+	// --- アクティブラグドール ---
+
+	// 作成
+	static ActiveRagdollID CreateActiveRagdoll(EntityID _entityID, const RendererComponent& _rendererComponent, const std::string& _path);
+	// 破棄
+	static void DestroyActiveRagdoll(ActiveRagdollID _id);
+
 	static void BindWorld(AnimationWorld* _world);
 	static void UnbindWorld();
 private:
@@ -20,4 +27,5 @@ private:
 private:
 	static SkeletonInstanceStorage* skeletonStorage;
 	static RagdollStorage* ragdollStorage;
+	static ActiveRagdollStorage* activeRagdollStorage;
 };

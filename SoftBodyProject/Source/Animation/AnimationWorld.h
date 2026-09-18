@@ -2,10 +2,12 @@
 
 #include "SkeletonInstanceStorage.h"
 #include "RagdollStorage.h"
+#include "ActiveRagdollStorage.h"
 
 #include "AnimationSyncSystem.h"
 #include "TargetPoseSystem.h"
 #include "RagdollSystem.h"
+#include "ActiveRagdollSystem.h"
 #include "AnimationCommitSystem.h"
 
 class AnimationWorld
@@ -27,11 +29,13 @@ public:
 
 	SkeletonInstanceStorage* GetSkeletonInstanceStorage() { return &skeletonInstanceStorage; }
 	RagdollStorage* GetRagdollStorage() { return &gagdollStorage; }
+	ActiveRagdollStorage* GetActiveRagdollStorage() { return &activeRagdollStorage; }
 private:
 	// --- ストレージ ---
 
 	SkeletonInstanceStorage skeletonInstanceStorage;
 	RagdollStorage gagdollStorage;
+	ActiveRagdollStorage activeRagdollStorage;
 
 	// --- System ---
 
@@ -39,6 +43,7 @@ private:
 
 	TargetPoseSystem targetPoseSystem;
 	RagdollSystem ragdollSystem;
+	ActiveRagdollSystem activeRagdollSystem;
 
 	AnimationCommitSystem animationCommitSystem;
 };

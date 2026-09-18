@@ -8,6 +8,7 @@ ConstraintStorage::ConstraintStorage()
 	angleLimitPointConstraintStorage = std::make_unique<AngleLimitPointConstraintStorage>();
 	angleLimitHingeConstraintStorage = std::make_unique<AngleLimitHingeConstraintStorage>();
 	limitedBallJointConstraintStorage = std::make_unique<LimitedBallJointConstraintStorage>();
+	jointDriveConstraintStorage = std::make_unique<JointDriveConstraintStorage>();
 }
 
 ConstraintID ConstraintStorage::CreatePointConstraint(EntityID _entity, PhysicsTransformID _transformID,const Vector3& _localOffset)
@@ -134,7 +135,7 @@ ConstraintID ConstraintStorage::CreateLimitedBallJointConstraint(EntityID _entit
 ConstraintID ConstraintStorage::CreateJointDriveConstraint(EntityID _entity, PhysicsTransformID _transformID, const Vector3& _localOffset, const Quaternion& _localRotation)
 {
 	// ID作成
-	ConstraintID id{ CreateID(ConstraintType::LIMITED_BALL_JOINT,limitedBallJointConstraintStorage->CountConstraint(),_entity,_transformID) };
+	ConstraintID id{ CreateID(ConstraintType::JOINT_DRIVE,jointDriveConstraintStorage->CountConstraint(),_entity,_transformID) };
 
 	// 実態を作る
 	JointDriveConstraint jointDriveConstraint;
