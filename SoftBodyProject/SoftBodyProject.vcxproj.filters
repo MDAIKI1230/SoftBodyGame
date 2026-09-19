@@ -365,6 +365,15 @@
     <Filter Include="ソース ファイル\Animation\Load\Skeleton">
       <UniqueIdentifier>{fd08a1e5-df4e-41f5-9e33-051b5d37a0ac}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Animation\Storage\IK">
+      <UniqueIdentifier>{ba20bd4e-88a5-47ff-9e47-f82663737dda}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Animation\System\Solver">
+      <UniqueIdentifier>{8424f838-9b60-4301-b69f-ea9112d1fb22}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Animation\Struct\IK">
+      <UniqueIdentifier>{f437ec63-9d99-4785-b8b4-a3d112cb7ec4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Objects\Camera.h">
@@ -1282,6 +1291,15 @@
     <ClInclude Include="Source\Animation\Load\Skeleton\BoneMaskLoaderHelper.h">
       <Filter>ソース ファイル\Animation\Load\Skeleton</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Animation\Storage\IK\TwoBoneIKStorage.h">
+      <Filter>ソース ファイル\Animation\Storage\IK</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Animation\System\Solver\IKSolverSystem.h">
+      <Filter>ソース ファイル\Animation\System\Solver</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Animation\Struct\IK\IKID.h">
+      <Filter>ソース ファイル\Animation\Struct\IK</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\System\Scenes\DebugScene.cpp">
@@ -1691,6 +1709,12 @@
     </ClCompile>
     <ClCompile Include="Source\Animation\Load\Skeleton\BoneMaskLoaderHelper.cpp">
       <Filter>ソース ファイル\Animation\Load\Skeleton</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Animation\Storage\IK\TwoBoneIKStorage.cpp">
+      <Filter>ソース ファイル\Animation\Storage\IK</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Animation\System\Solver\IKSolverSystem.cpp">
+      <Filter>ソース ファイル\Animation\System\Solver</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -199,12 +199,14 @@
     <ClInclude Include="Source\Animation\Storage\Component\ActiveRagdollComponentStorage.h" />
     <ClInclude Include="Source\Animation\Storage\Component\AnimationComponentStorage.h" />
     <ClInclude Include="Source\Animation\Storage\Component\RagdollComponentStorage.h" />
+    <ClInclude Include="Source\Animation\Storage\IK\TwoBoneIKStorage.h" />
     <ClInclude Include="Source\Animation\Storage\Ragdoll\ActiveRagdollStorage.h" />
     <ClInclude Include="Source\Animation\Storage\Ragdoll\RagdollStorage.h" />
     <ClInclude Include="Source\Animation\Storage\Skeleton\PoseLayerStorage.h" />
     <ClInclude Include="Source\Animation\Storage\Skeleton\SkeletonInstanceStorage.h" />
     <ClInclude Include="Source\Animation\Struct\Animation\AnimationID.h" />
     <ClInclude Include="Source\Animation\Struct\Animation\AnimationInstanceData.h" />
+    <ClInclude Include="Source\Animation\Struct\IK\IKID.h" />
     <ClInclude Include="Source\Animation\Struct\Ragdoll\Active\ActiveRagdoll.h" />
     <ClInclude Include="Source\Animation\Struct\Ragdoll\Active\ActiveRagdollID.h" />
     <ClInclude Include="Source\Animation\Struct\Ragdoll\Ragdoll.h" />
@@ -220,6 +222,7 @@
     <ClInclude Include="Source\Animation\Struct\Skeleton\PoseLayerID.h" />
     <ClInclude Include="Source\Animation\Struct\Skeleton\SkeletonID.h" />
     <ClInclude Include="Source\Animation\Struct\Skeleton\SkeletonInstanceData.h" />
+    <ClInclude Include="Source\Animation\System\Solver\IKSolverSystem.h" />
     <ClInclude Include="Source\Animation\System\Sync\AnimationCommitSystem.h" />
     <ClInclude Include="Source\Animation\System\Sync\AnimationSyncSystem.h" />
     <ClInclude Include="Source\Animation\System\Update\ActiveRagdollSystem.h" />
@@ -504,10 +507,12 @@
     <ClCompile Include="Source\Animation\Storage\Component\ActiveRagdollComponentStorage.cpp" />
     <ClCompile Include="Source\Animation\Storage\Component\AnimationComponentStorage.cpp" />
     <ClCompile Include="Source\Animation\Storage\Component\RagdollComponentStorage.cpp" />
+    <ClCompile Include="Source\Animation\Storage\IK\TwoBoneIKStorage.cpp" />
     <ClCompile Include="Source\Animation\Storage\Ragdoll\ActiveRagdollStorage.cpp" />
     <ClCompile Include="Source\Animation\Storage\Ragdoll\RagdollStorage.cpp" />
     <ClCompile Include="Source\Animation\Storage\Skeleton\PoseLayerStorage.cpp" />
     <ClCompile Include="Source\Animation\Storage\Skeleton\SkeletonInstanceStorage.cpp" />
+    <ClCompile Include="Source\Animation\System\Solver\IKSolverSystem.cpp" />
     <ClCompile Include="Source\Animation\System\Sync\AnimationCommitSystem.cpp" />
     <ClCompile Include="Source\Animation\System\Sync\AnimationSyncSystem.cpp" />
     <ClCompile Include="Source\Animation\System\Update\ActiveRagdollSystem.cpp" />
