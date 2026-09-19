@@ -39,6 +39,8 @@ public:
 
         bindModelMatrices.resize(_size);
     }
+
+	size_t Size() const { return parentIndices.size(); }
 public:
     std::vector<std::string> boneNames;
     std::vector<uint32_t> parentIndices;

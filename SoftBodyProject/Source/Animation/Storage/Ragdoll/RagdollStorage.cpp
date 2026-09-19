@@ -333,6 +333,8 @@ bool RagdollStorage::CreateRagdoll(EntityID _entity, SkeletonID _skeletonID, Rag
 				childJointPosition,
 				childJointRotation);
 
+			ragdoll.parentIndices.push_back(parentIndex);
+
 			ragdoll.constraints.push_back(constraint);
 		}
 		else
@@ -340,6 +342,7 @@ bool RagdollStorage::CreateRagdoll(EntityID _entity, SkeletonID _skeletonID, Rag
 			// 拘束がない場合もあるので無効値を入れておく
 
 			ragdoll.constraints.emplace_back();
+			ragdoll.parentIndices.emplace_back(UINT32_MAX);
 		}
 	}
 

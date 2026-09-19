@@ -12,10 +12,12 @@
 class TargetPoseSystem
 {
 public:
-	void Update(SkeletonInstanceStorage* _skeletonStorage);
+	void Update(SkeletonInstanceStorage* _skeletonStorage, PoseLayerStorage* _poseLayerStorage);
 
 private:
 	void InitialePose(SkeletonInstanceStorage* _skeletonStorage);
 
 	void MixPose(SkeletonInstanceStorage* _skeletonStorage, PoseLayerStorage* _poseLayerStorage);
+
+	void ReBuildMatrix(SkeletonInstanceStorage* _skeletonStorage);
 };

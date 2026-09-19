@@ -398,7 +398,7 @@ AnimationHandle DxlibRenderer::AttachAnimation(ModelHandle _handle, int _animInd
 }
 
 // 適用中のアニメーションの時間を設定する
-void DxlibRenderer::SetAnimationTime(ModelHandle _model, AnimationHandle _handle, float _time)
+void DxlibRenderer::SetAnimationTime(ModelHandle _model, AnimationHandle _handle, float _timeSeconds)
 {
 	int nativeModelHandle;
 
@@ -414,7 +414,17 @@ void DxlibRenderer::SetAnimationTime(ModelHandle _model, AnimationHandle _handle
 		return;
 	}
 
-	DxLib::MV1SetAttachAnimTime(nativeModelHandle, nativeAnimHandle, _time);
+	int frameCount{ MV1GetFrameNum(nativeModelHandle) };
+
+	for (int frame{ 0 }; frame < frameCount; ++frame)
+	{
+		MV1ResetFrameUserLocalMatrix(nativeModelHandle, frame);
+	}
+
+	// 秒 → DXLib(FBX)の時間単位
+	float nativeTime{ _timeSeconds * FBX_ANIMATION_FPS };
+
+	DxLib::MV1SetAttachAnimTime(nativeModelHandle, nativeAnimHandle, nativeTime);
 }
 
 // アニメーションの解除
@@ -435,6 +445,99 @@ void DxlibRenderer::DetachAnimation(ModelHandle _model, AnimationHandle _handle)
 	}
 
 	DxLib::MV1DetachAnim(nativeModelHandle, nativeAnimHandle);
+}
+
+// アニメーション指定時間の姿勢取得
+bool DxlibRenderer::GetAttachAnimFramePose(ModelHandle _model, AnimationHandle _handle, PoseBuffer& _output)
+{
+	int nativeModelHandle;
+
+	if (!modelStorage.TryGet(_model, nativeModelHandle))
+	{
+		return false;
+	}
+
+	int frameCount{ MV1GetFrameNum(nativeModelHandle) };
+
+	if (frameCount == -1)
+	{
+		return false;
+	}
+
+	_output.ReSize(frameCount);
+
+	int nativeAnimHandle;
+
+	if (!animationStorage.TryGet(_handle, nativeAnimHandle))
+	{
+		return false;
+	}
+
+	for (int frame{ 0 }; frame < frameCount; frame++)
+	{
+		_output.localMatrices[frame] = MathConvert::ToMDMath(MV1GetAttachAnimFrameLocalMatrix(nativeModelHandle, nativeAnimHandle, frame));
+
+		// 行列を分解して位置/回転/スケールを作る
+		Transform::DecomposeTRS(
+			_output.localMatrices[frame],
+			_output.localPositions[frame],
+			_output.localRotations[frame],
+			_output.localScales[frame]);
+	}
+
+	// 全BoneのModel行列を作る
+	for (uint32_t bone{ 0 }; bone < static_cast<uint32_t>(frameCount); bone++)
+	{
+		const Matrix4x4& localMatrix{ _output.localMatrices[bone] };
+
+		int parent{ MV1GetFrameParent(nativeModelHandle, bone) };
+
+		// 逆行列も用意する
+		const Matrix4x4& inverseLocalMatrix{ MatGenerateFunc::InverseTRS(
+			_output.localPositions[bone],
+			_output.localRotations[bone],
+			_output.localScales[bone]) };
+
+		// 無効値が-2らしいので-2の時は無効値にしておく
+		if (parent == -2)
+		{
+			// 親がいないので上で求めた行列と等しくなる
+			_output.modelFromBoneMatrices[bone] = localMatrix;
+
+			_output.boneFromModelMatrices[bone] = inverseLocalMatrix;
+		}
+		else
+		{
+			// 親との計算をする
+			_output.modelFromBoneMatrices[bone] = _output.modelFromBoneMatrices[static_cast<uint32_t>(parent)] * localMatrix;
+
+			_output.boneFromModelMatrices[bone] = inverseLocalMatrix * _output.boneFromModelMatrices[static_cast<uint32_t>(parent)];
+		}
+	}
+
+	return true;
+}
+
+// アニメーションの総時間を取得
+float DxlibRenderer::GetAnimationDuration(ModelHandle _model, AnimationHandle _handle)
+{
+	int nativeModelHandle;
+
+	if (!modelStorage.TryGet(_model, nativeModelHandle))
+	{
+		return 0.0f;
+	}
+
+	int nativeAnimHandle;
+
+	if (!animationStorage.TryGet(_handle, nativeAnimHandle))
+	{
+		return 0.0f;
+	}
+
+	float nativeTotalTime{ DxLib::MV1GetAttachAnimTotalTime(nativeModelHandle, nativeAnimHandle) };
+
+	return nativeTotalTime / FBX_ANIMATION_FPS;
 }
 
 // モデルのアニメーション数を取得

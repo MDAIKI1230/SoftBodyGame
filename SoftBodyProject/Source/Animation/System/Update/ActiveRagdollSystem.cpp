@@ -9,7 +9,7 @@ void ActiveRagdollSystem::PrePhysicsFixedUpdate(SkeletonInstanceStorage* _skelet
 
 		const Ragdoll& ragdoll{ _ragdollStorage->GetRagdoll(_activeRagdollStorage->GetRagdollID(id)) };
 
-		const SkeletonInstanceData& skeleton{ _skeletonStorage->GetSkeletonInstanceData(ragdoll.skeleton) };
+		SkeletonInstanceData& skeleton{ _skeletonStorage->EditSkeletonInstanceData(ragdoll.skeleton) };
 
 		for (int i{ 0 }; i < activeRagdoll.jointDriveConstraints.size(); i++)
 		{
@@ -28,17 +28,36 @@ void ActiveRagdollSystem::PrePhysicsFixedUpdate(SkeletonInstanceStorage* _skelet
 			// 一旦APIの関係上一対一だけどこれからしか取得できないから[0]があってすまぬ
 			const EndPointFrame& childEndPoint{ PhysicsComponentAPI::GetOtherEndPoints(constraint)[0] };
 
-			
-			const Quaternion& parentBodyRotation{ skeleton.targetPose.localRotations[parentBoneIndex] };
-			const Quaternion& childBodyRotation{ skeleton.targetPose.localRotations[childBoneIndex] };
+			Vector3 pos, scale;
+			Quaternion childModelRoatation, parentModelRotation;
 
-			Quaternion parentJointWorld{ parentBodyRotation * parentEndPoint.localRotation };
+			Transform::DecomposeTRS(
+				skeleton.targetPose.modelFromBoneMatrices[childBoneIndex],
+				pos,
+				childModelRoatation,
+				scale
+			);
 
-			Quaternion childJointWorld{ childBodyRotation * childEndPoint.localRotation };
+			Transform::DecomposeTRS(
+				skeleton.targetPose.modelFromBoneMatrices[parentBoneIndex],
+				pos,
+				parentModelRotation,
+				scale
+			);
 
-			Quaternion targetRelativeRotation{ parentJointWorld.Conjugate() * childJointWorld };
+			// それぞれボディ回転に変換
+			Quaternion parentBodyRotation{ parentModelRotation * ragdoll.bodyLinks[parentBoneIndex].bodyRotationInBoneSpace };
+			Quaternion childBodyRotation{ childModelRoatation * ragdoll.bodyLinks[childBoneIndex].bodyRotationInBoneSpace };
 
-			PhysicsComponentAPI::SetTargetRelativeRotation(constraint, Quaternion::IDENTITY);
+			// 拘束回転に変換(ワールド空間ではないが相対姿勢を求める際には、同じモデル上のため問題ない)
+			Quaternion parentJointModel{ parentBodyRotation * parentEndPoint.localRotation };
+			Quaternion childJointModel{ childBodyRotation * childEndPoint.localRotation };
+
+			Quaternion targetRelativeRotation{ parentJointModel.Conjugate() * childJointModel };
+
+			targetRelativeRotation.Normalize();
+
+			PhysicsComponentAPI::SetTargetRelativeRotation(constraint, targetRelativeRotation);
 		}
 	}
 }

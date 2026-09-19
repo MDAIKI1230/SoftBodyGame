@@ -63,7 +63,7 @@ void SkeletonInstanceStorage::Destroy(SkeletonID _id)
 }
 
 // エンティティと対応したSkeletonIDがあるならそれを返すないなら作って返す
-SkeletonID SkeletonInstanceStorage::CreateOrGet(EntityID _entity, ModelHandle _model)
+SkeletonID SkeletonInstanceStorage::CreateOrGetID(EntityID _entity, ModelHandle _model)
 {
 	if (entityLookUp.contains(_entity))
 	{

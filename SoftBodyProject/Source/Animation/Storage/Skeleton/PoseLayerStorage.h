@@ -8,7 +8,7 @@
 #include "SkeletonID.h"
 
 #include "PoseLayer.h"
-#include "Buffer/PoseBuffer.h"
+#include "SkeletonInstanceData.h"
 
 /*
 	ポーズレイヤーのストレージ
@@ -27,7 +27,11 @@ public:
 	MD_STORAGE_ID_READ_ONLY_COLUMN(PoseLayerID, PoseLayerID, ID, ids)
 public:
 	// 作成
-	PoseLayerID Create(SkeletonID _skeletonID, const PoseBuffer& _targetPose);
+	PoseLayerID Create(SkeletonID _skeletonID, const SkeletonInstanceData& _skeleton, const char* _maskPath);
 	// 破棄
 	void Destroy(PoseLayerID _id);
+
+public:
+	// マスク生成
+	bool CreateMask(const char* _path, const SkeletonData* _skeleton, BoneMask& _output);
 };

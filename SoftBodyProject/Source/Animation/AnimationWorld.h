@@ -7,6 +7,7 @@
 #include "ActiveRagdollStorage.h"
 
 #include "AnimationSyncSystem.h"
+#include "BaseAnimationSystem.h"
 #include "TargetPoseSystem.h"
 #include "RagdollSystem.h"
 #include "ActiveRagdollSystem.h"
@@ -46,8 +47,9 @@ private:
 	// --- System ---
 
 	AnimationSyncSystem animationSyncSystem;
-
 	TargetPoseSystem targetPoseSystem;
+	BaseAnimationSystem baseAnimationSystem;
+
 	RagdollSystem ragdollSystem;
 	ActiveRagdollSystem activeRagdollSystem;
 

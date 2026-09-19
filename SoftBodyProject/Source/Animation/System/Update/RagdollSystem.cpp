@@ -148,7 +148,7 @@ void RagdollSystem::PostPhysicsFixedUpdate(SkeletonInstanceStorage* _skeletonSto
 			// BodyIDが無効値なのでリンクされてないBone
 			else
 			{
-				localMatrix = skeleton.targetPose.localMatrices[boneIndex];
+				localMatrix = skeleton.outputPose.localMatrices[boneIndex];
 			}
 
 			// TRS情報をアウトプットに入れる
@@ -166,7 +166,7 @@ void RagdollSystem::PostPhysicsFixedUpdate(SkeletonInstanceStorage* _skeletonSto
 			// RigidBodyを持つBoneのScaleはアニメーション側から維持する
 			const Vector3 localScale{
 				bodyID.IsValid()
-					? skeleton.targetPose.localScales[boneIndex]
+					? skeleton.outputPose.localScales[boneIndex]
 					: decomposedScale
 			};
 

@@ -66,9 +66,13 @@ private:
 	// アニメーションの適用
 	AnimationHandle AttachAnimation(ModelHandle _handle, int _animIndex) override;
 	// 適用中のアニメーションの時間を設定する
-	void SetAnimationTime(ModelHandle _model, AnimationHandle _handle, float _time) override;
+	void SetAnimationTime(ModelHandle _model, AnimationHandle _handle, float _timeSeconds) override;
 	// アニメーションの解除
 	void DetachAnimation(ModelHandle _model, AnimationHandle _handle) override;
+	// アニメーション指定時間の姿勢取得
+	bool GetAttachAnimFramePose(ModelHandle _model, AnimationHandle _handle, PoseBuffer& _output) override;
+	// アニメーションの総時間を取得
+	float GetAnimationDuration(ModelHandle _model, AnimationHandle _handle) override;
 	// モデルのアニメーション数を取得
 	int GetAnimationCount(ModelHandle _model) override;
 	// アニメーション番号に対しての名前を取得
@@ -111,6 +115,7 @@ private:
 	std::string TCHARToUTF8(const wchar_t* text);
 private:
 	static constexpr uint32_t INVALID_BONE{ UINT32_MAX };
+	static constexpr int FBX_ANIMATION_FPS{ 30 };
 
 private:
 	/*

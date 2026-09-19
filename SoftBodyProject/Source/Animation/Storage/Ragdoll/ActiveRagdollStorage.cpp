@@ -63,8 +63,6 @@ void ActiveRagdollStorage::Destroy(ActiveRagdollID _id)
 // ActiveRagdoll情報の作成関数
 bool ActiveRagdollStorage::CreateActiveRagdoll(EntityID _entity, const Ragdoll& _ragdoll, const SkeletonInstanceData& _skeleton)
 {
-	const std::vector<uint32_t>& parentIndices{ _skeleton.skeletonData->parentIndices };
-
 	ActiveRagdoll activeRagdoll;
 
 	for (int boneIndex{ 0 }; boneIndex < _ragdoll.constraints.size(); boneIndex++)
@@ -92,7 +90,7 @@ bool ActiveRagdollStorage::CreateActiveRagdoll(EntityID _entity, const Ragdoll& 
 				childEndPoint.localRotation);
 
 			activeRagdoll.childBoneIndex.push_back(boneIndex);
-			activeRagdoll.parentBoneIndex.push_back(parentIndices[boneIndex]);
+			activeRagdoll.parentBoneIndex.push_back(_ragdoll.parentIndices[boneIndex]);
 			activeRagdoll.jointDriveConstraints.push_back(constraintID);
 		}
 	}

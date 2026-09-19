@@ -25,4 +25,6 @@ struct Ragdoll
 	std::vector<ColliderID> colliders;
 	// 物理トランスフォーム
 	std::vector<PhysicsTransformID> transforms;
+	// Ragdoll上の親ボーンインデックス
+	std::vector<uint32_t> parentIndices;
 };

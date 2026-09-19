@@ -1,4 +1,6 @@
-﻿#include "AnimationStorage.h"
+﻿#include "ResourceManager.h"
+
+#include "AnimationStorage.h"
 
 // 作成関数
 AnimationID AnimationStorage::Create(ModelHandle _model, PoseLayerID _layerID)

@@ -362,6 +362,9 @@
     <Filter Include="ソース ファイル\Animation\Struct\Animation">
       <UniqueIdentifier>{2e97c53d-9390-4fc3-8c92-139f3f74aab6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Animation\Load\Skeleton">
+      <UniqueIdentifier>{fd08a1e5-df4e-41f5-9e33-051b5d37a0ac}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Objects\Camera.h">
@@ -1273,6 +1276,12 @@
     <ClInclude Include="Source\Animation\Storage\Component\AnimationComponentStorage.h">
       <Filter>ソース ファイル\Animation\Storage\Component</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Animation\Load\Skeleton\BoneMaskLoader.h">
+      <Filter>ソース ファイル\Animation\Load\Skeleton</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Animation\Load\Skeleton\BoneMaskLoaderHelper.h">
+      <Filter>ソース ファイル\Animation\Load\Skeleton</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\System\Scenes\DebugScene.cpp">
@@ -1676,6 +1685,12 @@
     </ClCompile>
     <ClCompile Include="Source\Animation\Storage\Component\AnimationComponentStorage.cpp">
       <Filter>ソース ファイル\Animation\Storage\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Animation\Load\Skeleton\BoneMaskLoader.cpp">
+      <Filter>ソース ファイル\Animation\Load\Skeleton</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Animation\Load\Skeleton\BoneMaskLoaderHelper.cpp">
+      <Filter>ソース ファイル\Animation\Load\Skeleton</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

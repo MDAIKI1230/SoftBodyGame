@@ -97,16 +97,33 @@ public:
 	/// <summary>
 	/// モデルのハンドルからスケルトンのデータを取得する
 	/// </summary>
-	/// <param name="_path">モデルハンドル</param>
+	/// <param name="_model">モデルハンドル</param>
 	static const SkeletonData* GetSkeletonData(ModelHandle _model)
 	SingletonPublicFunction(const SkeletonData*, GetSkeletonData, (ModelHandle _model), (_model))
 	/// <summary>
 	/// モデルの現在のポーズを取得する
 	/// </summary>
 	/// <param name="_model">モデルハンドル</param>
+	/// <param name="_output">出力</param>
 	/// <returns>成功したか</returns>
 	static bool GetPose(ModelHandle _model, PoseBuffer& _output)
 	SingletonPublicFunction(bool, GetPose, (ModelHandle _model, PoseBuffer& _output), (_model, _output))
+	/// <summary>
+	/// モデルの現在のポーズを取得する
+	/// </summary>
+	/// <param name="_model">モデルハンドル</param>
+	/// <param name="_anim">アニメーションのハンドル</param>
+	/// <returns>成功したか</returns>
+	static bool GetPose(ModelHandle _model, AnimationHandle _anim, PoseBuffer& _output)
+	SingletonPublicFunction(bool, GetPose, (ModelHandle _model, AnimationHandle _anim, PoseBuffer& _output), (_model, _anim, _output))
+	/// <summary>
+	/// アタッチされてるアニメーションの総再生時間を取得する
+	/// </summary>
+	/// <param name="_model">モデルハンドル</param>
+	/// <param name="_anim">アニメーションのハンドル</param>
+	/// <returns>成功したか</returns>
+	static float GetAnimTotalTime(ModelHandle _model, AnimationHandle _anim)
+	SingletonPublicFunction(float, GetAnimTotalTime, (ModelHandle _model, AnimationHandle _anim), (_model, _anim))
 
 	/// <summary>
 	/// モデルにTRS列を適用する

@@ -157,6 +157,23 @@ bool ResourceManager::GetPoseImpl(ModelHandle _model, PoseBuffer& _output)
 	return ServiceLocator::GetRenderer()->GetCurrentPose(_model, _output);
 }
 
+bool ResourceManager::GetPoseImpl(ModelHandle _model, AnimationHandle _anim, PoseBuffer& _output)
+{
+	// 無効IDなら失敗を渡す
+	if (!_model.IsValid() || !_anim.IsValid())
+	{
+		return false;
+	}
+
+	return ServiceLocator::GetRenderer()->GetAttachAnimFramePose(_model, _anim, _output);
+}
+
+// アタッチされてるアニメーションの総再生時間を取得する
+float ResourceManager::GetAnimTotalTimeImpl(ModelHandle _model, AnimationHandle _anim)
+{
+	return ServiceLocator::GetRenderer()->GetAnimationDuration(_model, _anim);
+}
+
 // モデルにTRS列を適応する
 void ResourceManager::SetMatrixImpl(ModelHandle _model, const Matrix4x4& _mat)
 {

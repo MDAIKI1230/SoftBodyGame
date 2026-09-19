@@ -57,6 +57,9 @@ public:
 	// 正規化(変化あり)
 	static Quaternion& Normalize(Quaternion& _rot);
 
+	// 反転
+	Quaternion operator-() const;
+
 	// 乗法
 	Quaternion operator*(const Quaternion& _value) const;
 

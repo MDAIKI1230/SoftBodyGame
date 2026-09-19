@@ -42,6 +42,8 @@
 
 // アニメーション関系
 
+#include "AnimationComponentStorage.h"
+
 #include "RagdollComponentStorage.h"
 #include "ActiveRagdollComponentStorage.h"
 
@@ -97,6 +99,8 @@ SceneBase::SceneBase()
 	AddStorage<CameraRigComponent>(std::make_unique<CameraRigComponentStorage>());
 
 	// アニメーション関系
+
+	AddStorage<AnimationComponent>(std::make_unique<AnimationComponentStorage>());
 
 	AddStorage<RagdollComponent>(std::make_unique<RagdollComponentStorage>());
 	AddStorage<ActiveRagdollComponent>(std::make_unique<ActiveRagdollComponentStorage>());

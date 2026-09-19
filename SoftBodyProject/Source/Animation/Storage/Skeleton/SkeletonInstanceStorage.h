@@ -33,7 +33,7 @@ public:
 	void Destroy(SkeletonID _id);
 
 	// エンティティと対応したSkeletonIDがあるならそれを返すないなら作って返す
-	SkeletonID CreateOrGet(EntityID _entity, ModelHandle _model);
+	SkeletonID CreateOrGetID(EntityID _entity, ModelHandle _model);
 private:
 	std::unordered_map<EntityID, SkeletonID> entityLookUp;
 };

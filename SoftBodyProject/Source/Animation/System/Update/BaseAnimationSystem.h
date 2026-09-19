@@ -2,6 +2,7 @@
 
 #include "AnimationStorage.h"
 #include "PoseLayerStorage.h"
+#include "SkeletonInstanceStorage.h"
 
 /*
 	ただただアニメーションを再生させるシステム
@@ -12,4 +13,5 @@ class BaseAnimationSystem
 {
 public:
 	void Update(AnimationStorage* _animationStorage, PoseLayerStorage* _poseLayerStorage);
+	void PreRenderUpdate(SkeletonInstanceStorage* _skeletonStorage);
 };

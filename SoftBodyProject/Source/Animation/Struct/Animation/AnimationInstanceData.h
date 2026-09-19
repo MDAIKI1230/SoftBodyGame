@@ -3,6 +3,7 @@
 #include <string>
 
 #include "ModelHandle.h"
+#include "AnimationHandle.h"
 
 #include "PoseLayerID.h"
 
@@ -12,6 +13,8 @@
 struct AnimationInstanceData
 {
 	ModelHandle modelHandle;
+	// アニメーションハンドル
+	AnimationHandle animationHandle;
 	// アニメーションの名前
 	std::string animationName;
 
@@ -19,7 +22,8 @@ struct AnimationInstanceData
 
 	float time{ 0.0f };
 	float speed{ 1.0f };
+	float total{ 0.0f };
 
-	bool loop{ true };
-	bool playing{ true };
+	bool loop{ false };
+	bool playing{ false };
 };

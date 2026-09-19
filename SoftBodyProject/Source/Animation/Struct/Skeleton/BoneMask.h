@@ -9,5 +9,11 @@
 */
 struct BoneMask
 {
-	std::vector<uint32_t> weights;
+public:
+	void ReSize(uint32_t _size)
+	{
+		weights.resize(_size);
+	}
+public:
+	std::vector<float> weights;
 };

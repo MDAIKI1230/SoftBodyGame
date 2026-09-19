@@ -1,4 +1,5 @@
-﻿#include <math.h>
+﻿#include <cmath>
+#include <algorithm>
 #include "../Vector/SIMD/SIMDVectorMath.h"
 #include "../Matrix/MatGenerateFunc.h"
 #include "../Constants/MathConstants.h"
@@ -43,6 +44,12 @@ Quaternion Quaternion::Normalized(const Quaternion& _rot)
 Quaternion& Quaternion::Normalize(Quaternion& _rot)
 {
 	return  _rot.Normalize();
+}
+
+// 反転
+Quaternion Quaternion::operator-() const
+{
+	return { -x,-y,-z,-w };
 }
 
 // 乗法
@@ -193,7 +200,23 @@ void Quaternion::ToAxisAngle(Vector3& _axis, float& _theta) const
 // 球面補間
 Quaternion Quaternion::Slerp(const Quaternion& _start, const Quaternion _end, float _t)
 {
-	float dot{ SIMDVectorMath::Dot4(_start.simd,_end.simd) };
+	if (_t <= 0.0f) return _start;
+	if (_t >= 1.0f) return _end;
+
+	float dot{ std::clamp(Quaternion::Dot(_start, _end), -1.0f, 1.0f) };
+
+	Quaternion end = _end;
+	if (dot < 0.0f)
+	{
+		end = -end;
+		dot = -dot;
+	}
+
+	if (dot > 0.9995f)
+	{
+		return Quaternion::Lerp(_start, end, _t).Normalized();
+	}
+
 	float theta{ acosf(dot) };
 
 	// (sin((1-_t)θ) / sin(θ)_start + (sin(tθ) / sin(θ))_end

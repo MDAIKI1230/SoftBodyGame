@@ -7,20 +7,42 @@ void BaseAnimationSystem::Update(AnimationStorage* _animationStorage, PoseLayerS
 {
 	for (auto& animation : _animationStorage->EditAnimationInstanceDataRange())
 	{
-		animation.time += TimeManager::GetFixedDeltaTime() * animation.speed;
+		if (!animation.animationHandle.IsValid())
+		{
+			continue;
+		}
 
-		AnimationHandle animationHandle{
-			ResourceManager::AttachAnimation(
-			animation.modelHandle,
-			animation.animationName) };
+		if (animation.playing == false)
+		{
+			continue;
+		}
+
+		animation.time += TimeManager::GetDeltaTime() * animation.speed;
+
+		if (animation.loop)
+		{
+			if (animation.time >= animation.total)
+			{
+				animation.time = 0;
+			}
+		}
 
 		ResourceManager::SetAnimationTime(
 			animation.modelHandle,
-			animationHandle,
+			animation.animationHandle,
 			animation.time);
 
 		ResourceManager::GetPose(
 			animation.modelHandle,
 			_poseLayerStorage->EditPoseLayer(animation.layerID).pose);
+	}
+}
+
+// デバッグ用
+void BaseAnimationSystem::PreRenderUpdate(SkeletonInstanceStorage* _skeletonStorage)
+{
+	for (auto& skeleton : _skeletonStorage->EditSkeletonInstanceDataRange())
+	{
+		skeleton.outputPose = skeleton.targetPose;
 	}
 }

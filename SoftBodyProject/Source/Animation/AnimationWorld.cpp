@@ -4,7 +4,8 @@
 void AnimationWorld::Update(WorldStorage* worldStorage)
 {
 	animationSyncSystem.Sync(&skeletonInstanceStorage, worldStorage);
-	targetPoseSystem.Update(&skeletonInstanceStorage);
+	baseAnimationSystem.Update(&animationStorage, &poseLayerStorage);
+	targetPoseSystem.Update(&skeletonInstanceStorage, &poseLayerStorage);
 }
 
 // Physics実行前
