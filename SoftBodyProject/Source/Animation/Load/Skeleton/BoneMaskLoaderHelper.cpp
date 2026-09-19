@@ -3,6 +3,7 @@
 bool BoneMaskLoaderHelper::LoadBoneMask(rapidjson::Document& _document, const SkeletonData* _skeleton, BoneMask& _output)
 {
 	BoneMask loaded;
+	loaded.ReSize(_skeleton->Size());
 
 	if (!LoadDefaultWeight(_document, loaded))
 	{
@@ -14,7 +15,7 @@ bool BoneMaskLoaderHelper::LoadBoneMask(rapidjson::Document& _document, const Sk
 		return false;
 	}
 
-	if (!LoadBranchesWeight(_document, _skeleton, loaded))
+	if (!LoadBoneWeight(_document, _skeleton, loaded))
 	{
 		return false;
 	}
@@ -27,7 +28,7 @@ bool BoneMaskLoaderHelper::LoadBoneMask(rapidjson::Document& _document, const Sk
 bool BoneMaskLoaderHelper::LoadDefaultWeight(rapidjson::Document& _document, BoneMask& _output)
 {
 	// 存在確認
-	if (!_document.HasMember("DefaultWeight") || !_document["DefaultWeight"].IsFloat())
+	if (_document.HasMember("DefaultWeight") || !_document["DefaultWeight"].IsFloat())
 	{
 		return false;
 	}
@@ -46,7 +47,7 @@ bool BoneMaskLoaderHelper::LoadDefaultWeight(rapidjson::Document& _document, Bon
 bool BoneMaskLoaderHelper::LoadBranchesWeight(rapidjson::Document& _document, const SkeletonData* _skeleton, BoneMask& _output)
 {
 	// 存在確認
-	if (!_document.HasMember("Branches") || !_document["Branches"].IsArray())
+	if (_document.HasMember("Branches") || !_document["Branches"].IsArray())
 	{
 		return false;
 	}
@@ -56,25 +57,25 @@ bool BoneMaskLoaderHelper::LoadBranchesWeight(rapidjson::Document& _document, co
 	// Branches内が空でもOK
 	for (auto& branch : _document["Branches"].GetArray())
 	{
-		if (branch.HasMember("RootBoneName") || !_document["RootBoneName"].IsString())
+		if (branch.HasMember("RootBoneName") || !branch["RootBoneName"].IsString())
 		{
 			continue;
 		}
 
-		std::string boneName{ _document["RootBoneName"].GetString(),_document["RootBoneName"].GetStringLength() };
+		std::string boneName{ branch["RootBoneName"].GetString(),branch["RootBoneName"].GetStringLength() };
 
 		// ボーンの名前がないなら失敗
-		if (boneLookup.contains(boneName))
+		if (!boneLookup.contains(boneName))
 		{
 			return false;
 		}
 
-		if (branch.HasMember("Weight") || !_document["Weight"].IsFloat())
+		if (branch.HasMember("Weight") || !branch["Weight"].IsFloat())
 		{
 			continue;
 		}
 
-		float weight{ _document["Weight"].GetFloat() };
+		float weight{ branch["Weight"].GetFloat() };
 
 		uint32_t boneIndex{ boneLookup.at(boneName) };
 
@@ -90,7 +91,7 @@ bool BoneMaskLoaderHelper::LoadBranchesWeight(rapidjson::Document& _document, co
 bool BoneMaskLoaderHelper::LoadBoneWeight(rapidjson::Document& _document, const SkeletonData* _skeleton, BoneMask& _output)
 {
 	// 存在確認
-	if (!_document.HasMember("Bones") || !_document["Bones"].IsArray())
+	if (_document.HasMember("Bones") || !_document["Bones"].IsArray())
 	{
 		return false;
 	}
@@ -108,7 +109,7 @@ bool BoneMaskLoaderHelper::LoadBoneWeight(rapidjson::Document& _document, const 
 		std::string boneName{ _document["BoneName"].GetString(),_document["BoneName"].GetStringLength() };
 
 		// ボーンの名前がないなら失敗
-		if (boneLookup.contains(boneName))
+		if (!boneLookup.contains(boneName))
 		{
 			return false;
 		}
@@ -129,13 +130,19 @@ bool BoneMaskLoaderHelper::LoadBoneWeight(rapidjson::Document& _document, const 
 // 階層以下のボーンすべてにウェイトを設定する
 void BoneMaskLoaderHelper::SetChildrenWeight(uint32_t _parentIndex, float _weight, const SkeletonData* _skeleton, BoneMask& _output)
 {
+	bool hasChild{ false };
 	for (uint32_t boneIndex{ 0 }; boneIndex < _output.weights.size(); boneIndex++)
 	{
 		if (_skeleton->parentIndices[boneIndex] == _parentIndex)
 		{
 			_output.weights[boneIndex] = _weight;
+
+			hasChild = true;
 		}
 
-		SetChildrenWeight(boneIndex, _weight, _skeleton, _output);
+		if (hasChild)
+		{
+			SetChildrenWeight(boneIndex, _weight, _skeleton, _output);
+		}
 	}
 }
