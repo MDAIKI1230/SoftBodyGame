@@ -5,7 +5,7 @@
 SkeletonID SkeletonInstanceStorage::Create(EntityID _entity, ModelHandle _model)
 {
 	// ID作成
-	SkeletonID result{ CreateID(CountID()) };
+	SkeletonID id{ CreateID(CountID()) };
 
 	// データ作っていく
 	SkeletonInstanceData skeletonInstanceData;
@@ -16,12 +16,12 @@ SkeletonID SkeletonInstanceStorage::Create(EntityID _entity, ModelHandle _model)
 	skeletonInstanceDatas.push_back(std::move(skeletonInstanceData));
 
 	worldFromModels.emplace_back();
-
-	ids.push_back(result);
-
+	ids.push_back(id);
 	ownerEntities.push_back(_entity);
 
-	return result;
+	entityLookUp[_entity] = id;
+
+	return id;
 }
 
 void SkeletonInstanceStorage::Destroy(SkeletonID _id)
@@ -34,6 +34,8 @@ void SkeletonInstanceStorage::Destroy(SkeletonID _id)
 
     uint32_t denseIndex{ GetDenseIndex(_id) };
     uint32_t lastIndex{ static_cast<uint32_t>(ids.size() - 1) };
+
+	entityLookUp.erase(ownerEntities[denseIndex]);
 
     // Swap＆Pop
     if (denseIndex != lastIndex)
@@ -58,4 +60,15 @@ void SkeletonInstanceStorage::Destroy(SkeletonID _id)
     ids.pop_back();
 
     ReleaseID(_id);
+}
+
+// エンティティと対応したSkeletonIDがあるならそれを返すないなら作って返す
+SkeletonID SkeletonInstanceStorage::CreateOrGet(EntityID _entity, ModelHandle _model)
+{
+	if (entityLookUp.contains(_entity))
+	{
+		return entityLookUp[_entity];
+	}
+
+	return Create(_entity, _model);
 }

@@ -1267,6 +1267,12 @@
     <ClInclude Include="Source\Animation\Storage\Skeleton\PoseLayerStorage.h">
       <Filter>ソース ファイル\Animation\Storage\Skeleton</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Animation\Component\AnimationComponent.h">
+      <Filter>ソース ファイル\Animation\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Animation\Storage\Component\AnimationComponentStorage.h">
+      <Filter>ソース ファイル\Animation\Storage\Component</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\System\Scenes\DebugScene.cpp">
@@ -1664,6 +1670,12 @@
     </ClCompile>
     <ClCompile Include="Source\Animation\Storage\Skeleton\PoseLayerStorage.cpp">
       <Filter>ソース ファイル\Animation\Storage\Skeleton</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Animation\Component\AnimationComponent.cpp">
+      <Filter>ソース ファイル\Animation\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Animation\Storage\Component\AnimationComponentStorage.cpp">
+      <Filter>ソース ファイル\Animation\Storage\Component</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -1,5 +1,7 @@
 ﻿#pragma once
 
+#include <unordered_map>
+
 #include "StorageAccessorsMacros.h"
 
 #include "DataStorageBase.h"
@@ -29,4 +31,9 @@ public:
 	SkeletonID Create(EntityID _entity, ModelHandle _model);
 	// 破棄
 	void Destroy(SkeletonID _id);
+
+	// エンティティと対応したSkeletonIDがあるならそれを返すないなら作って返す
+	SkeletonID CreateOrGet(EntityID _entity, ModelHandle _model);
+private:
+	std::unordered_map<EntityID, SkeletonID> entityLookUp;
 };

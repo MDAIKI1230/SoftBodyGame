@@ -1,6 +1,8 @@
 ﻿#pragma once
 
 #include "SkeletonInstanceStorage.h"
+#include "AnimationStorage.h"
+#include "PoseLayerStorage.h"
 #include "RagdollStorage.h"
 #include "ActiveRagdollStorage.h"
 
@@ -28,12 +30,16 @@ public:
 	// --- ゲッター ---
 
 	SkeletonInstanceStorage* GetSkeletonInstanceStorage() { return &skeletonInstanceStorage; }
+	AnimationStorage* GetAnimationStorage() { return &animationStorage; }
+	PoseLayerStorage* GetPoseLayerStorage() { return &poseLayerStorage; }
 	RagdollStorage* GetRagdollStorage() { return &gagdollStorage; }
 	ActiveRagdollStorage* GetActiveRagdollStorage() { return &activeRagdollStorage; }
 private:
 	// --- ストレージ ---
 
 	SkeletonInstanceStorage skeletonInstanceStorage;
+	AnimationStorage animationStorage;
+	PoseLayerStorage poseLayerStorage;
 	RagdollStorage gagdollStorage;
 	ActiveRagdollStorage activeRagdollStorage;
 

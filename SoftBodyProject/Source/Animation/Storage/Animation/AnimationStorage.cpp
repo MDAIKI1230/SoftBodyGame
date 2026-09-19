@@ -1,7 +1,7 @@
 ﻿#include "AnimationStorage.h"
 
 // 作成関数
-AnimationID AnimationStorage::Create(EntityID _entity, ModelHandle _model, PoseLayerID _layerID)
+AnimationID AnimationStorage::Create(ModelHandle _model, PoseLayerID _layerID)
 {
 	AnimationID id{ CreateID(CountID()) };
 
@@ -12,7 +12,6 @@ AnimationID AnimationStorage::Create(EntityID _entity, ModelHandle _model, PoseL
 
 	animationInstanceDatas.push_back(data);
 	ids.push_back(id);
-	ownerEntities.push_back(_entity);
 
 	return id;
 }
@@ -38,14 +37,11 @@ void AnimationStorage::Destroy(AnimationID _id)
 
 		ids[denseIndex] = movedID;
 
-		ownerEntities[denseIndex] = ownerEntities[lastIndex];
-
 		// 移動したInstanceの参照先を更新
 		EditDenseIndex(movedID) = denseIndex;
 	}
 
 	animationInstanceDatas.pop_back();
-	ownerEntities.pop_back();
 	ids.pop_back();
 
 	ReleaseID(_id);

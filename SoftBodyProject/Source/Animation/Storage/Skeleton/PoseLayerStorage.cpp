@@ -1,7 +1,7 @@
 ﻿#include "PoseLayerStorage.h"
 
 // 作成
-PoseLayerID PoseLayerStorage::Create(EntityID _entity, SkeletonID _skeletonID, const PoseBuffer& _targetPose)
+PoseLayerID PoseLayerStorage::Create(SkeletonID _skeletonID, const PoseBuffer& _targetPose)
 {
 	PoseLayerID id{ CreateID(CountID()) };
 
@@ -13,7 +13,6 @@ PoseLayerID PoseLayerStorage::Create(EntityID _entity, SkeletonID _skeletonID, c
 
 	poseLayers.push_back(std::move(poseLayer));
 	ids.push_back(id);
-	ownerEntities.push_back(_entity);
 	
 	return id;
 }
@@ -39,15 +38,12 @@ void PoseLayerStorage::Destroy(PoseLayerID _id)
 
 		ids[denseIndex] = movedID;
 
-		ownerEntities[denseIndex] = ownerEntities[lastIndex];
-
 		// 移動したInstanceの参照先を更新
 		EditDenseIndex(movedID) = denseIndex;
 	}
 
 	poseLayers.pop_back();
 	ids.pop_back();
-	ownerEntities.pop_back();
 
 	ReleaseID(_id);
 }

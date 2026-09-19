@@ -186,6 +186,7 @@
     <ClInclude Include="Source\Animation\AnimationWorld.h" />
     <ClInclude Include="Source\Animation\API\AnimationComponentAPI.h" />
     <ClInclude Include="Source\Animation\Component\ActiveRagdollComponent.h" />
+    <ClInclude Include="Source\Animation\Component\AnimationComponent.h" />
     <ClInclude Include="Source\Animation\Component\RagdollComponent.h" />
     <ClInclude Include="Source\Animation\Constants\RagdollConstants.h" />
     <ClInclude Include="Source\Animation\Function\PoseMixer.h" />
@@ -194,6 +195,7 @@
     <ClInclude Include="Source\Animation\Storage\Animation\AnimationStorage.h" />
     <ClInclude Include="Source\Animation\Storage\Buffer\PoseBuffer.h" />
     <ClInclude Include="Source\Animation\Storage\Component\ActiveRagdollComponentStorage.h" />
+    <ClInclude Include="Source\Animation\Storage\Component\AnimationComponentStorage.h" />
     <ClInclude Include="Source\Animation\Storage\Component\RagdollComponentStorage.h" />
     <ClInclude Include="Source\Animation\Storage\Ragdoll\ActiveRagdollStorage.h" />
     <ClInclude Include="Source\Animation\Storage\Ragdoll\RagdollStorage.h" />
@@ -489,12 +491,14 @@
     <ClCompile Include="Source\Animation\AnimationWorld.cpp" />
     <ClCompile Include="Source\Animation\API\AnimationComponentAPI.cpp" />
     <ClCompile Include="Source\Animation\Component\ActiveRagdollComponent.cpp" />
+    <ClCompile Include="Source\Animation\Component\AnimationComponent.cpp" />
     <ClCompile Include="Source\Animation\Component\RagdollComponent.cpp" />
     <ClCompile Include="Source\Animation\Function\PoseMixer.cpp" />
     <ClCompile Include="Source\Animation\Load\Ragdoll\RagdollLoader.cpp" />
     <ClCompile Include="Source\Animation\Load\Ragdoll\RagdollLoaderHelper.cpp" />
     <ClCompile Include="Source\Animation\Storage\Animation\AnimationStorage.cpp" />
     <ClCompile Include="Source\Animation\Storage\Component\ActiveRagdollComponentStorage.cpp" />
+    <ClCompile Include="Source\Animation\Storage\Component\AnimationComponentStorage.cpp" />
     <ClCompile Include="Source\Animation\Storage\Component\RagdollComponentStorage.cpp" />
     <ClCompile Include="Source\Animation\Storage\Ragdoll\ActiveRagdollStorage.cpp" />
     <ClCompile Include="Source\Animation\Storage\Ragdoll\RagdollStorage.cpp" />

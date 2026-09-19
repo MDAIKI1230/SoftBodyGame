@@ -25,11 +25,9 @@ public:
 	MD_STORAGE_ID_READ_WRITE_COLUMN(PoseLayerID, PoseLayer, PoseLayer, poseLayers)
 	// 自身のID
 	MD_STORAGE_ID_READ_ONLY_COLUMN(PoseLayerID, PoseLayerID, ID, ids)
-	// Ownerは生成後に変えない
-	MD_STORAGE_ID_READ_ONLY_COLUMN(PoseLayerID, EntityID, OwnerEntity, ownerEntities)
 public:
 	// 作成
-	PoseLayerID Create(EntityID _entity, SkeletonID _skeletonID, const PoseBuffer& _targetPose);
+	PoseLayerID Create(SkeletonID _skeletonID, const PoseBuffer& _targetPose);
 	// 破棄
 	void Destroy(PoseLayerID _id);
 };
