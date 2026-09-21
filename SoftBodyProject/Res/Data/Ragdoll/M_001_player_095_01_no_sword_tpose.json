@@ -7,8 +7,9 @@
 			"LocalRotationDeg": { "X": 0.0016, "Y": -10.6055, "Z": -88.1790 },
 			"Mass": 8.0,
 			"Collider": {
-				"Type": "Box",
-				"Size": { "X": 18.0, "Y": 14.0, "Z": 15.0 }
+				"Type": "Capsule",
+				"Height": 4.0,
+				"Radius": 2.75
 			}
 		},
 		"Children": [
@@ -19,8 +20,9 @@
 					"LocalRotationDeg": { "X": -0.3340, "Y": 2.6382, "Z": -90.0111 },
 					"Mass": 10.0,
 					"Collider": {
-						"Type": "Box",
-						"Size": { "X": 20.0, "Y": 18.0, "Z": 15.0 }
+						"Type": "Capsule",
+						"Height": 6.0,
+						"Radius": 3.0
 					}
 				},
 				"Joint": {
@@ -28,9 +30,9 @@
 					"LocalRotationDeg": { "X": -0.3340, "Y": 2.6382, "Z": -90.0111 },
 					"Type": "LimitedBallJoint",
 					"AngleLimit": {
-						"SwingMaxDeg": 25.0,
-						"TwistMinDeg": -20.0,
-						"TwistMaxDeg": 20.0
+						"SwingMaxDeg": 20.0,
+						"TwistMinDeg": -15.0,
+						"TwistMaxDeg": 15.0
 					}
 				},
 				"Children": [
@@ -50,9 +52,9 @@
 							"LocalRotationDeg": { "X": 0.1361, "Y": -4.5039, "Z": -89.3239 },
 							"Type": "LimitedBallJoint",
 							"AngleLimit": {
-								"SwingMaxDeg": 35.0,
-								"TwistMinDeg": -45.0,
-								"TwistMaxDeg": 45.0
+								"SwingMaxDeg": 30.0,
+								"TwistMinDeg": -40.0,
+								"TwistMaxDeg": 40.0
 							}
 						},
 						"Children": []
@@ -74,9 +76,9 @@
 							"LocalRotationDeg": { "X": -91.8449, "Y": 0.0042, "Z": -90.0043 },
 							"Type": "LimitedBallJoint",
 							"AngleLimit": {
-								"SwingMaxDeg": 100.0,
-								"TwistMinDeg": -80.0,
-								"TwistMaxDeg": 80.0
+								"SwingMaxDeg": 85.0,
+								"TwistMinDeg": -60.0,
+								"TwistMaxDeg": 60.0
 							}
 						},
 						"Children": [
@@ -97,8 +99,8 @@
 									"LocalRotationDeg": { "X": 1.8313, "Y": 2.0578, "Z": -18.4129 },
 									"Type": "AngleLimitHinge",
 									"AngleLimit": {
-										"MinDeg": -5.0,
-										"MaxDeg": 145.0
+										"MinDeg": 0.0,
+										"MaxDeg": 135.0
 									}
 								},
 								"Children": [
@@ -118,9 +120,9 @@
 											"LocalRotationDeg": { "X": -87.1221, "Y": 0.0061, "Z": -90.0062 },
 											"Type": "LimitedBallJoint",
 											"AngleLimit": {
-												"SwingMaxDeg": 35.0,
-												"TwistMinDeg": -45.0,
-												"TwistMaxDeg": 45.0
+												"SwingMaxDeg": 25.0,
+												"TwistMinDeg": -30.0,
+												"TwistMaxDeg": 30.0
 											}
 										},
 										"Children": []
@@ -146,9 +148,9 @@
 							"LocalRotationDeg": { "X": -84.5130, "Y": -2.0169, "Z": -87.9879 },
 							"Type": "LimitedBallJoint",
 							"AngleLimit": {
-								"SwingMaxDeg": 100.0,
-								"TwistMinDeg": -80.0,
-								"TwistMaxDeg": 80.0
+								"SwingMaxDeg": 85.0,
+								"TwistMinDeg": -60.0,
+								"TwistMaxDeg": 60.0
 							}
 						},
 						"Children": [
@@ -169,8 +171,8 @@
 									"LocalRotationDeg": { "X": 0.0963, "Y": 4.3377, "Z": 16.5262 },
 									"Type": "AngleLimitHinge",
 									"AngleLimit": {
-										"MinDeg": -5.0,
-										"MaxDeg": 145.0
+										"MinDeg": 0.0,
+										"MaxDeg": 135.0
 									}
 								},
 								"Children": [
@@ -190,9 +192,9 @@
 											"LocalRotationDeg": { "X": -1.2717, "Y": -0.0033, "Z": -90.0 },
 											"Type": "LimitedBallJoint",
 											"AngleLimit": {
-												"SwingMaxDeg": 35.0,
-												"TwistMinDeg": -45.0,
-												"TwistMaxDeg": 45.0
+												"SwingMaxDeg": 25.0,
+												"TwistMinDeg": -30.0,
+												"TwistMaxDeg": 30.0
 											}
 										},
 										"Children": []
@@ -220,9 +222,9 @@
 					"LocalRotationDeg": { "X": -90.0, "Y": 0.0, "Z": -90.0 },
 					"Type": "LimitedBallJoint",
 					"AngleLimit": {
-						"SwingMaxDeg": 60.0,
-						"TwistMinDeg": -35.0,
-						"TwistMaxDeg": 35.0
+						"SwingMaxDeg": 50.0,
+						"TwistMinDeg": -25.0,
+						"TwistMaxDeg": 25.0
 					}
 				},
 				"Children": [
@@ -243,8 +245,8 @@
 							"LocalRotationDeg": { "X": 0.0, "Y": 0.0, "Z": 6.4730 },
 							"Type": "AngleLimitHinge",
 							"AngleLimit": {
-								"MinDeg": -5.0,
-								"MaxDeg": 140.0
+								"MinDeg": 0.0,
+								"MaxDeg": 135.0
 							}
 						},
 						"Children": [
@@ -256,7 +258,7 @@
 									"Mass": 0.7,
 									"Collider": {
 										"Type": "Box",
-										"Size": { "X": 13.0, "Y": 7.0, "Z": 14.0 }
+										"Size": { "X": 4.5, "Y": 2.5, "Z": 4.5 }
 									}
 								},
 								"Joint": {
@@ -264,9 +266,9 @@
 									"LocalRotationDeg": { "X": -88.3581, "Y": -0.0001, "Z": -89.9999 },
 									"Type": "LimitedBallJoint",
 									"AngleLimit": {
-										"SwingMaxDeg": 30.0,
-										"TwistMinDeg": -20.0,
-										"TwistMaxDeg": 20.0
+										"SwingMaxDeg": 25.0,
+										"TwistMinDeg": -15.0,
+										"TwistMaxDeg": 15.0
 									}
 								},
 								"Children": []
@@ -292,9 +294,9 @@
 					"LocalRotationDeg": { "X": -94.6895, "Y": -0.0001, "Z": -89.9999 },
 					"Type": "LimitedBallJoint",
 					"AngleLimit": {
-						"SwingMaxDeg": 60.0,
-						"TwistMinDeg": -35.0,
-						"TwistMaxDeg": 35.0
+						"SwingMaxDeg": 50.0,
+						"TwistMinDeg": -25.0,
+						"TwistMaxDeg": 25.0
 					}
 				},
 				"Children": [
@@ -315,8 +317,8 @@
 							"LocalRotationDeg": { "X": -0.1903, "Y": -0.7518, "Z": -4.6345 },
 							"Type": "AngleLimitHinge",
 							"AngleLimit": {
-								"MinDeg": -5.0,
-								"MaxDeg": 140.0
+								"MinDeg": 0.0,
+								"MaxDeg": 135.0
 							}
 						},
 						"Children": [
@@ -328,7 +330,7 @@
 									"Mass": 0.7,
 									"Collider": {
 										"Type": "Box",
-										"Size": { "X": 13.0, "Y": 7.0, "Z": 14.0 }
+										"Size": { "X": 4.5, "Y": 2.5, "Z": 4.5 }
 									}
 								},
 								"Joint": {
@@ -336,9 +338,9 @@
 									"LocalRotationDeg": { "X": -37.3166, "Y": 0.0006, "Z": -90.0 },
 									"Type": "LimitedBallJoint",
 									"AngleLimit": {
-										"SwingMaxDeg": 30.0,
-										"TwistMinDeg": -20.0,
-										"TwistMaxDeg": 20.0
+										"SwingMaxDeg": 25.0,
+										"TwistMinDeg": -15.0,
+										"TwistMaxDeg": 15.0
 									}
 								},
 								"Children": []
