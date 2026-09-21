@@ -13,18 +13,25 @@ void TargetPoseSystem::Update(SkeletonInstanceStorage* _skeletonStorage, PoseLay
 
 void TargetPoseSystem::InitialePose(SkeletonInstanceStorage* _skeletonStorage)
 {
-	for (auto& skeleton : _skeletonStorage->EditSkeletonInstanceDataRange())
+	for (SkeletonID id : _skeletonStorage->GetIDRange())
 	{
-		PoseBuffer& targetPose{ skeleton.targetPose };
+		PoseBuffer& targetPose{ _skeletonStorage->EditTargetPose(id) };
+
+		const SkeletonData* skeletonData{ _skeletonStorage->GetSkeletonDataPtr(id) };
+
+		if (skeletonData == nullptr)
+		{
+			continue;
+		}
 
 		// 一旦初期ポーズを保ち続けるのを目標に作るべし
 		for (int boneIndex{ 0 }; boneIndex < targetPose.localMatrices.size(); boneIndex++)
 		{
-			targetPose.localPositions[boneIndex] = skeleton.skeletonData->bindLocalPositions[boneIndex];
-			targetPose.localRotations[boneIndex] = skeleton.skeletonData->bindLocalRotations[boneIndex];
-			targetPose.localScales[boneIndex] = skeleton.skeletonData->bindLocalScales[boneIndex];
+			targetPose.localPositions[boneIndex] = skeletonData->bindLocalPositions[boneIndex];
+			targetPose.localRotations[boneIndex] = skeletonData->bindLocalRotations[boneIndex];
+			targetPose.localScales[boneIndex] = skeletonData->bindLocalScales[boneIndex];
 
-			targetPose.localMatrices[boneIndex] = skeleton.skeletonData->bindLocalMatrices[boneIndex];
+			targetPose.localMatrices[boneIndex] = skeletonData->bindLocalMatrices[boneIndex];
 		}
 	}
 }
@@ -33,20 +40,36 @@ void TargetPoseSystem::MixPose(SkeletonInstanceStorage* _skeletonStorage, PoseLa
 {
 	for (const PoseLayer& layer : _poseLayerStorage->GetPoseLayerRange())
 	{
-		SkeletonInstanceData& skeleton{ _skeletonStorage->EditSkeletonInstanceData(layer.skeletonID) };
-		PoseMixer::MakeTargetPose(skeleton.targetPose, layer);
+		PoseMixer::MakeTargetPose(_skeletonStorage->EditTargetPose(layer.skeletonID), layer);
 	}
 }
 
 void TargetPoseSystem::ReBuildMatrix(SkeletonInstanceStorage* _skeletonStorage)
 {
-	for (SkeletonInstanceData& skeleton : _skeletonStorage->EditSkeletonInstanceDataRange())
+	for (SkeletonID id : _skeletonStorage->GetIDRange())
 	{
-		PoseBuffer& targetPose{ skeleton.targetPose };
+		PoseBuffer& targetPose{ _skeletonStorage->EditTargetPose(id) };
+
+		const SkeletonData* skeletonData{ _skeletonStorage->GetSkeletonDataPtr(id) };
+
+		if (skeletonData == nullptr)
+		{
+			continue;
+		}
+
+		// ローカル行列も計算しとこう。
+		for (uint32_t boneIndex{ 0 }; boneIndex < targetPose.Size(); boneIndex++)
+		{
+			targetPose.localMatrices[boneIndex] = MatGenerateFunc::TRS(
+				targetPose.localPositions[boneIndex],
+				targetPose.localRotations[boneIndex],
+				targetPose.localScales[boneIndex]
+			);
+		}
 
 		for (uint32_t boneIndex{ 0 }; boneIndex < targetPose.Size(); boneIndex++)
 		{
-			uint32_t parentIndex{ skeleton.skeletonData->parentIndices[boneIndex] };
+			uint32_t parentIndex{ skeletonData->parentIndices[boneIndex]};
 
 			// 逆行列も計算
 			Matrix4x4 boneFromParent{ MatGenerateFunc::InverseTRS(

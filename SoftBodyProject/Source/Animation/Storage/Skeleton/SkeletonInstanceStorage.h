@@ -9,7 +9,8 @@
 #include "SkeletonID.h"
 #include "ModelHandle.h"
 
-#include "SkeletonInstanceData.h"
+#include "Buffer/PoseBuffer.h"
+#include "SkeletonData.h"
 
 /*
 	モデルのインスタンスごとのスケルトンを扱うストレージ
@@ -18,8 +19,12 @@
 class SkeletonInstanceStorage :public DataStorageBase<SkeletonID>
 {
 public:
-	// スケルトンのインスタンスデータ
-	MD_STORAGE_ID_READ_WRITE_COLUMN(SkeletonID, SkeletonInstanceData, SkeletonInstanceData, skeletonInstanceDatas)
+	// スケルトンおおもとデータ
+	MD_STORAGE_ID_READ_ONLY_COLUMN(SkeletonID, const SkeletonData*, SkeletonDataPtr, skeletonDataPtrs)
+	// 目標値として使われるポーズ
+	MD_STORAGE_ID_READ_WRITE_COLUMN(SkeletonID, PoseBuffer, TargetPose, targetPoses)
+	// 出力される最終ポーズ
+	MD_STORAGE_ID_READ_WRITE_COLUMN(SkeletonID, PoseBuffer, OutputPose, outputPoses)
 	// モデルの姿勢をワールド姿勢に変換する行列
 	MD_STORAGE_ID_READ_WRITE_COLUMN(SkeletonID, Matrix4x4, WorldFromModel, worldFromModels)
 	// 自身のID

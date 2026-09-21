@@ -118,4 +118,12 @@ public:
 
 	// 行列から四元数を作る
 	static Quaternion FromMatrix(Matrix4x4 _mat);
+
+	/// <summary>
+	/// ベクトルからベクトルまでの回転を作る
+	/// </summary>
+	/// <param name="_from">元ベクトル</param>
+	/// <param name="_to">目標ベクトル</param>
+	/// <returns></returns>
+	static Quaternion FromToRotation(const Vector3& _from, const Vector3& _to);
 };

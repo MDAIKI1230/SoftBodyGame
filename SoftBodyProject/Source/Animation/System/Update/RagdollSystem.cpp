@@ -19,20 +19,28 @@ void RagdollSystem::PrePhysicsFixedUpdate(SkeletonInstanceStorage* _skeletonStor
 		// Animation Pose → Physics Body
 		SkeletonID skeletonID{ ragdoll.skeleton };
 
-		SkeletonInstanceData& skeleton{ _skeletonStorage->EditSkeletonInstanceData(skeletonID) };
+		// スケルトンデータ
+		const SkeletonData* skeleton{ _skeletonStorage->GetSkeletonDataPtr(skeletonID) };
+		// 出力ポーズバッファ
+		PoseBuffer& outputPose{ _skeletonStorage->EditOutputPose(skeletonID) };
+
+		if (skeleton == nullptr)
+		{
+			continue;
+		}
 
 		// ModelのすべてのBoneの親ボーンのローカルに変換してった行列を入れていくところ。(命名が違うが意味は一緒)
-		std::vector<Matrix4x4>& modelMatrices{ skeleton.outputPose.modelFromBoneMatrices };
+		std::vector<Matrix4x4>& modelMatrices{ outputPose.modelFromBoneMatrices };
 
 		// 全BoneのModel行列を作る
-		for (uint32_t bone{ 0 }; bone < skeleton.outputPose.localPositions.size(); bone++)
+		for (uint32_t bone{ 0 }; bone < outputPose.localPositions.size(); bone++)
 		{
 			Matrix4x4 localMatrix{ MatGenerateFunc::TRS(
-				skeleton.outputPose.localPositions[bone],
-				skeleton.outputPose.localRotations[bone],
-				skeleton.outputPose.localScales[bone]) };
+				outputPose.localPositions[bone],
+				outputPose.localRotations[bone],
+				outputPose.localScales[bone]) };
 
-			uint32_t parent{ skeleton.skeletonData->parentIndices[bone] };
+			uint32_t parent{ skeleton->parentIndices[bone] };
 
 			modelMatrices[bone] =
 				parent == UINT32_MAX
@@ -107,7 +115,14 @@ void RagdollSystem::PostPhysicsFixedUpdate(SkeletonInstanceStorage* _skeletonSto
 		SkeletonID skeletonID{ ragdoll.skeleton };
 
 		// スケルトンデータ
-		SkeletonInstanceData& skeleton{ _skeletonStorage->EditSkeletonInstanceData(skeletonID) };
+		const SkeletonData* skeleton{ _skeletonStorage->GetSkeletonDataPtr(skeletonID) };
+		// 出力ポーズバッファ
+		PoseBuffer& outputPose{ _skeletonStorage->EditOutputPose(skeletonID) };
+
+		if (skeleton == nullptr)
+		{
+			continue;
+		}
 
 		// モデルのワールド変換を逆変換する用行列
 		Matrix4x4 modelFromWorld{ NamericalAnalysis::GaussJordan(_skeletonStorage->GetWorldFromModel(skeletonID)) };
@@ -116,7 +131,7 @@ void RagdollSystem::PostPhysicsFixedUpdate(SkeletonInstanceStorage* _skeletonSto
 			// リンク
 			const RagdollBodyLink& link{ ragdoll.bodyLinks[boneIndex] };
 			// 親ボーン
-			uint32_t parentIndex{ skeleton.skeletonData->parentIndices[boneIndex] };
+			uint32_t parentIndex{ skeleton->parentIndices[boneIndex] };
 			// 最終的な結果になる行列(親ボーンからのローカル行列)
 			Matrix4x4 localMatrix;
 			// BodyID
@@ -143,12 +158,12 @@ void RagdollSystem::PostPhysicsFixedUpdate(SkeletonInstanceStorage* _skeletonSto
 				localMatrix =
 					parentIndex == UINT32_MAX
 					? modelMatrix
-					: skeleton.outputPose.boneFromModelMatrices[parentIndex] * modelMatrix;
+					: outputPose.boneFromModelMatrices[parentIndex] * modelMatrix;
 			}
 			// BodyIDが無効値なのでリンクされてないBone
 			else
 			{
-				localMatrix = skeleton.outputPose.localMatrices[boneIndex];
+				localMatrix = outputPose.localMatrices[boneIndex];
 			}
 
 			// TRS情報をアウトプットに入れる
@@ -166,7 +181,7 @@ void RagdollSystem::PostPhysicsFixedUpdate(SkeletonInstanceStorage* _skeletonSto
 			// RigidBodyを持つBoneのScaleはアニメーション側から維持する
 			const Vector3 localScale{
 				bodyID.IsValid()
-					? skeleton.outputPose.localScales[boneIndex]
+					? outputPose.localScales[boneIndex]
 					: decomposedScale
 			};
 
@@ -177,36 +192,36 @@ void RagdollSystem::PostPhysicsFixedUpdate(SkeletonInstanceStorage* _skeletonSto
 				localScale
 			);
 
-			skeleton.outputPose.localMatrices[boneIndex] = localMatrix;
-			skeleton.outputPose.localPositions[boneIndex] = localPosition;
-			skeleton.outputPose.localRotations[boneIndex] = localRotation;
-			skeleton.outputPose.localScales[boneIndex] = localScale;
+			outputPose.localMatrices[boneIndex] = localMatrix;
+			outputPose.localPositions[boneIndex] = localPosition;
+			outputPose.localRotations[boneIndex] = localRotation;
+			outputPose.localScales[boneIndex] = localScale;
 
 			// 子の計算の準備をする
 
 			// 逆行列も計算
 			Matrix4x4 boneFromParent{ MatGenerateFunc::InverseTRS(
-				skeleton.outputPose.localPositions[boneIndex],
-				skeleton.outputPose.localRotations[boneIndex],
-				skeleton.outputPose.localScales[boneIndex]
+				outputPose.localPositions[boneIndex],
+				outputPose.localRotations[boneIndex],
+				outputPose.localScales[boneIndex]
 			) };
 
 			if (parentIndex == UINT32_MAX)
 			{
 				// モデルからのボーンのローカル姿勢
-				skeleton.outputPose.modelFromBoneMatrices[boneIndex] = localMatrix;
+				outputPose.modelFromBoneMatrices[boneIndex] = localMatrix;
 				// 上の逆行列
-				skeleton.outputPose.boneFromModelMatrices[boneIndex] = boneFromParent;
+				outputPose.boneFromModelMatrices[boneIndex] = boneFromParent;
 			}
 			else
 			{
 				// モデルからのボーンのローカル姿勢
-				skeleton.outputPose.modelFromBoneMatrices[boneIndex] =
-					skeleton.outputPose.modelFromBoneMatrices[parentIndex] * localMatrix;
+				outputPose.modelFromBoneMatrices[boneIndex] =
+					outputPose.modelFromBoneMatrices[parentIndex] * localMatrix;
 
 				// 上の逆行列
-				skeleton.outputPose.boneFromModelMatrices[boneIndex] =
-					boneFromParent * skeleton.outputPose.boneFromModelMatrices[parentIndex];
+				outputPose.boneFromModelMatrices[boneIndex] =
+					boneFromParent * outputPose.boneFromModelMatrices[parentIndex];
 			}
 		}
 	}

@@ -8,12 +8,11 @@ SkeletonID SkeletonInstanceStorage::Create(EntityID _entity, ModelHandle _model)
 	SkeletonID id{ CreateID(CountID()) };
 
 	// データ作っていく
-	SkeletonInstanceData skeletonInstanceData;
-	skeletonInstanceData.skeletonData = ResourceManager::GetSkeletonData(_model);
-	ResourceManager::GetPose(_model, skeletonInstanceData.outputPose);
-	skeletonInstanceData.targetPose = skeletonInstanceData.outputPose;
-
-	skeletonInstanceDatas.push_back(std::move(skeletonInstanceData));
+	skeletonDataPtrs.emplace_back(ResourceManager::GetSkeletonData(_model));
+	targetPoses.emplace_back();
+	outputPoses.emplace_back();
+	ResourceManager::GetPose(_model, targetPoses.back());
+	outputPoses.back() = targetPoses.back();
 
 	worldFromModels.emplace_back();
 	ids.push_back(id);
@@ -42,7 +41,9 @@ void SkeletonInstanceStorage::Destroy(SkeletonID _id)
     {
         SkeletonID movedID{ ids[lastIndex] };
 
-        skeletonInstanceDatas[denseIndex] = std::move(skeletonInstanceDatas[lastIndex]);
+		skeletonDataPtrs[denseIndex] = skeletonDataPtrs[lastIndex];
+		targetPoses[denseIndex] = std::move(targetPoses[lastIndex]);
+		outputPoses[denseIndex] = std::move(outputPoses[lastIndex]);
 
 		worldFromModels[denseIndex] = worldFromModels[lastIndex];
 
@@ -54,7 +55,9 @@ void SkeletonInstanceStorage::Destroy(SkeletonID _id)
         EditDenseIndex(movedID) = denseIndex;
     }
 
-    skeletonInstanceDatas.pop_back();
+	skeletonDataPtrs.pop_back();
+	targetPoses.pop_back();
+	outputPoses.pop_back();
 	worldFromModels.pop_back();
     ownerEntities.pop_back();
     ids.pop_back();

@@ -5,6 +5,8 @@ void AnimationWorld::Update(WorldStorage* worldStorage)
 {
 	animationSyncSystem.Sync(&skeletonInstanceStorage, worldStorage);
 	baseAnimationSystem.Update(&animationStorage, &poseLayerStorage);
+	featureIKSystem.Update(&skeletonInstanceStorage, &featureIKStorage, &solverIKStorage);
+	ikSolverSystem.Solve(&poseLayerStorage, &solverIKStorage);
 	targetPoseSystem.Update(&skeletonInstanceStorage, &poseLayerStorage);
 }
 

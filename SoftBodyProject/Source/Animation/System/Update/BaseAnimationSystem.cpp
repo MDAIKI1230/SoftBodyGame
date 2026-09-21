@@ -41,8 +41,8 @@ void BaseAnimationSystem::Update(AnimationStorage* _animationStorage, PoseLayerS
 // デバッグ用
 void BaseAnimationSystem::PreRenderUpdate(SkeletonInstanceStorage* _skeletonStorage)
 {
-	for (auto& skeleton : _skeletonStorage->EditSkeletonInstanceDataRange())
+	for (SkeletonID id : _skeletonStorage->GetIDRange())
 	{
-		skeleton.outputPose = skeleton.targetPose;
+		_skeletonStorage->EditOutputPose(id) = _skeletonStorage->EditTargetPose(id);
 	}
 }

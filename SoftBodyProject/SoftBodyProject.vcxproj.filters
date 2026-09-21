@@ -374,6 +374,12 @@
     <Filter Include="ソース ファイル\Animation\Struct\IK">
       <UniqueIdentifier>{f437ec63-9d99-4785-b8b4-a3d112cb7ec4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Animation\Storage\IK\Feature">
+      <UniqueIdentifier>{8ddd5404-6adc-4ac9-b5ff-640ce6d90b14}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Animation\Storage\IK\Solve">
+      <UniqueIdentifier>{179091fa-8db8-4a9b-9cdd-e9ad7c6c104f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Objects\Camera.h">
@@ -1048,9 +1054,6 @@
     <ClInclude Include="Source\Animation\Struct\Ragdoll\RagdollBodyLink.h">
       <Filter>ソース ファイル\Animation\Struct\Ragdoll</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Animation\Struct\Skeleton\SkeletonInstanceData.h">
-      <Filter>ソース ファイル\Animation\Struct\Skeleton</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Common\Struct\SkeletonData.h">
       <Filter>ソース ファイル\Common\Struct</Filter>
     </ClInclude>
@@ -1291,14 +1294,41 @@
     <ClInclude Include="Source\Animation\Load\Skeleton\BoneMaskLoaderHelper.h">
       <Filter>ソース ファイル\Animation\Load\Skeleton</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Animation\Storage\IK\TwoBoneIKStorage.h">
-      <Filter>ソース ファイル\Animation\Storage\IK</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Animation\System\Solver\IKSolverSystem.h">
       <Filter>ソース ファイル\Animation\System\Solver</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Animation\Struct\IK\IKID.h">
+    <ClInclude Include="Source\Animation\Struct\IK\FeatureIKID.h">
       <Filter>ソース ファイル\Animation\Struct\IK</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Animation\Struct\IK\SolverIKID.h">
+      <Filter>ソース ファイル\Animation\Struct\IK</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Animation\Struct\IK\HandIK.h">
+      <Filter>ソース ファイル\Animation\Struct\IK</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Animation\Struct\IK\TwoBoneIK.h">
+      <Filter>ソース ファイル\Animation\Struct\IK</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Animation\Storage\IK\Solver\SolverIKStorage.h">
+      <Filter>ソース ファイル\Animation\Storage\IK\Solve</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Animation\Storage\IK\Solver\TwoBoneIKStorage.h">
+      <Filter>ソース ファイル\Animation\Storage\IK\Solve</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Animation\Storage\IK\Feature\FeatureIKStorage.h">
+      <Filter>ソース ファイル\Animation\Storage\IK\Feature</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Animation\Storage\IK\Feature\HandIKStorage.h">
+      <Filter>ソース ファイル\Animation\Storage\IK\Feature</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Animation\Component\HandIKComponent.h">
+      <Filter>ソース ファイル\Animation\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Animation\Storage\Component\HandIKComponentStorage.h">
+      <Filter>ソース ファイル\Animation\Storage\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Animation\System\Update\FeatureIKSystem.h">
+      <Filter>ソース ファイル\Animation\System\Update</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1710,11 +1740,29 @@
     <ClCompile Include="Source\Animation\Load\Skeleton\BoneMaskLoaderHelper.cpp">
       <Filter>ソース ファイル\Animation\Load\Skeleton</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Animation\Storage\IK\TwoBoneIKStorage.cpp">
-      <Filter>ソース ファイル\Animation\Storage\IK</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Animation\System\Solver\IKSolverSystem.cpp">
       <Filter>ソース ファイル\Animation\System\Solver</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Animation\Storage\IK\Solver\SolverIKStorage.cpp">
+      <Filter>ソース ファイル\Animation\Storage\IK\Solve</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Animation\Storage\IK\Solver\TwoBoneIKStorage.cpp">
+      <Filter>ソース ファイル\Animation\Storage\IK\Solve</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Animation\Storage\IK\Feature\FeatureIKStorage.cpp">
+      <Filter>ソース ファイル\Animation\Storage\IK\Feature</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Animation\Storage\IK\Feature\HandIKStorage.cpp">
+      <Filter>ソース ファイル\Animation\Storage\IK\Feature</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Animation\Component\HandIKComponent.cpp">
+      <Filter>ソース ファイル\Animation\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Animation\Storage\Component\HandIKComponentStorage.cpp">
+      <Filter>ソース ファイル\Animation\Storage\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Animation\System\Update\FeatureIKSystem.cpp">
+      <Filter>ソース ファイル\Animation\System\Update</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

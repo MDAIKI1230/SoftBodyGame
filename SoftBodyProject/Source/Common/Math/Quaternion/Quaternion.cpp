@@ -326,3 +326,40 @@ Quaternion Quaternion::FromMatrix(Matrix4x4 _mat)
 
 	return Normalize(q);
 }
+
+// ベクトルからベクトルまでの回転を作る
+Quaternion Quaternion::FromToRotation(const Vector3& _from, const Vector3& _to)
+{
+	Vector3 fromNormal{ _from.Normalized() };
+	Vector3 toNormal{ _to.Normalized() };
+
+	float d{ Vector3::Dot(fromNormal, toNormal) };
+	Vector3 axis{ Vector3::Cross(fromNormal, toNormal) };
+
+	// ほぼ同方向
+	if (d > 1.0f - MathConstants::EPSILON)
+	{
+		return Quaternion::IDENTITY;
+	}
+
+	// ほぼ真逆
+	if (d < -1.0f + MathConstants::EPSILON)
+	{
+		// from と直交する適当な軸を作る
+		axis = Vector3::Cross(_from, Vector3::UP);
+
+		// 平行だったら別軸を使う
+		if (axis.LengthSqr() < MathConstants::EPSILON)
+		{
+			axis = Vector3::Cross(_from, Vector3::RIGHT);
+		}
+
+		axis.Normalize();
+
+		return Quaternion::AngleAxis(MathConstants::PI_FLT, axis);
+	}
+
+	Vector3 cross{ Vector3::Cross(fromNormal,toNormal) };
+
+	return Quaternion{ cross.x,cross.y,cross.z,d }.Normalize();
+}

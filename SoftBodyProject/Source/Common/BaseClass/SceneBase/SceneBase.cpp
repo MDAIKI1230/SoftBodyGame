@@ -47,6 +47,8 @@
 #include "RagdollComponentStorage.h"
 #include "ActiveRagdollComponentStorage.h"
 
+#include "HandIKComponentStorage.h"
+
 // API
 #include "PhysicsComponentAPI.h"
 #include "PhysicsAPI.h"
@@ -104,6 +106,8 @@ SceneBase::SceneBase()
 
 	AddStorage<RagdollComponent>(std::make_unique<RagdollComponentStorage>());
 	AddStorage<ActiveRagdollComponent>(std::make_unique<ActiveRagdollComponentStorage>());
+
+	AddStorage<HandIKComponent>(std::make_unique<HandIKComponentStorage>());
 
 	PhysicsComponentAPI::BindWorld(physicsWorld, worldStorage);
 	PhysicsAPI::BindWorld(physicsWorld);

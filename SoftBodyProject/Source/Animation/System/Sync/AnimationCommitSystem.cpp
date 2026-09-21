@@ -14,10 +14,10 @@ void AnimationCommitSystem::Commit(SkeletonInstanceStorage* _skeletonStorage, Wo
 		// スケルトンストレージからエンティティを取ってきてそれを使って描画コンポーネントを取ってきてそのハンドルを取得する
 		ModelHandle model{ rendererStorage->Get(_skeletonStorage->GetOwnerEntity(id)).GetHandle() };
 
-		SkeletonInstanceData& skeleton{ _skeletonStorage->EditSkeletonInstanceData(id) };
+		PoseBuffer& outputPose{ _skeletonStorage->EditOutputPose(id) };
 
-		ReBuildMatrices(skeleton.outputPose);
-		ResourceManager::ApplyPose(model, skeleton.outputPose);
+		ReBuildMatrices(outputPose);
+		ResourceManager::ApplyPose(model, outputPose);
 	}
 }
 

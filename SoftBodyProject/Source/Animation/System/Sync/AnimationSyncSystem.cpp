@@ -18,10 +18,11 @@ void AnimationSyncSystem::Sync(SkeletonInstanceStorage* _skeletonStorage, WorldS
 		// スケルトンストレージからエンティティを取ってきてそれを使って描画コンポーネントを取ってきてそのハンドルを取得する
 		ModelHandle model{ rendererStorage->Get(ownerEntity).GetHandle() };
 
-		SkeletonInstanceData& skeleton{ _skeletonStorage->EditSkeletonInstanceData(id) };
+		PoseBuffer& targetPose{ _skeletonStorage->EditTargetPose(id) };
+		PoseBuffer& outputPose{ _skeletonStorage->EditOutputPose(id) };
 
-		ResourceManager::GetPose(model, skeleton.targetPose);
-		skeleton.outputPose = skeleton.targetPose;
+		ResourceManager::GetPose(model, targetPose);
+		outputPose = targetPose;
 
 		// 元のTransoform行列を使うことでモデル姿勢をワールド姿勢に変換できるので保持しておく。
 		const TransformComponent& trans{ transformStorage->Get(ownerEntity) };

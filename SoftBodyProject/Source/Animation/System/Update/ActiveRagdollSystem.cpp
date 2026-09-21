@@ -9,7 +9,7 @@ void ActiveRagdollSystem::PrePhysicsFixedUpdate(SkeletonInstanceStorage* _skelet
 
 		const Ragdoll& ragdoll{ _ragdollStorage->GetRagdoll(_activeRagdollStorage->GetRagdollID(id)) };
 
-		SkeletonInstanceData& skeleton{ _skeletonStorage->EditSkeletonInstanceData(ragdoll.skeleton) };
+		const PoseBuffer& targetPose{ _skeletonStorage->EditTargetPose(ragdoll.skeleton) };
 
 		for (int i{ 0 }; i < activeRagdoll.jointDriveConstraints.size(); i++)
 		{
@@ -32,14 +32,14 @@ void ActiveRagdollSystem::PrePhysicsFixedUpdate(SkeletonInstanceStorage* _skelet
 			Quaternion childModelRoatation, parentModelRotation;
 
 			Transform::DecomposeTRS(
-				skeleton.targetPose.modelFromBoneMatrices[childBoneIndex],
+				targetPose.modelFromBoneMatrices[childBoneIndex],
 				pos,
 				childModelRoatation,
 				scale
 			);
 
 			Transform::DecomposeTRS(
-				skeleton.targetPose.modelFromBoneMatrices[parentBoneIndex],
+				targetPose.modelFromBoneMatrices[parentBoneIndex],
 				pos,
 				parentModelRotation,
 				scale

@@ -1,6 +1,7 @@
 ﻿#include "ResourceManager.h"
 
 #include "AnimationComponentAPI.h"
+#include <SolverIKStorage.h>
 
 // --- 通常アニメーション ---
 
@@ -11,7 +12,8 @@ AnimationID AnimationComponentAPI::CreateAnimation(EntityID _entity, const Rende
 	SkeletonID skeletonID{ skeletonStorage->CreateOrGetID(_entity,model) };
 	PoseLayerID poseLayerID{ poseLayerStorage->Create(
 		skeletonID,
-		skeletonStorage->GetSkeletonInstanceData(skeletonID),
+		skeletonStorage->GetSkeletonDataPtr(skeletonID),
+		skeletonStorage->GetTargetPose(skeletonID),
 		_path) };
 
 	return animationStorage->Create(model, poseLayerID);
@@ -96,7 +98,7 @@ RagdollID AnimationComponentAPI::CreateRagdoll(EntityID _entityID, const Rendere
 	return ragdollStorage->Create(
 		_entityID, skeletonID,
 		_rendererComponent.GetHandle(),
-		skeletonStorage->GetSkeletonInstanceData(skeletonID),
+		skeletonStorage->GetSkeletonDataPtr(skeletonID),
 		_path);
 }
 
@@ -109,11 +111,11 @@ void AnimationComponentAPI::DestroyRagdoll(RagdollID _id)
 
 // --- アクティブラグドール ---
 
-	// 作成
+// 作成
 ActiveRagdollID AnimationComponentAPI::CreateActiveRagdoll(EntityID _entityID, const RendererComponent& _rendererComponent, const std::string& _path)
 {
 	SkeletonID skeletonID{ skeletonStorage->CreateOrGetID(_entityID,_rendererComponent.GetHandle()) };
-	const SkeletonInstanceData& skeleton{ skeletonStorage->GetSkeletonInstanceData(skeletonID) };
+	const SkeletonData* skeleton{ skeletonStorage->GetSkeletonDataPtr(skeletonID) };
 
 	RagdollID ragdollID{ ragdollStorage->Create(
 		_entityID,skeletonID,
@@ -134,6 +136,172 @@ void AnimationComponentAPI::DestroyActiveRagdoll(ActiveRagdollID _id)
 	activeRagdollStorage->Destroy(_id);
 }
 
+// --- IK ---
+
+// ハンドIK作成
+FeatureIKID AnimationComponentAPI::CreateHandIK(EntityID _entity, const RendererComponent* _rendererComponent)
+{
+	ModelHandle model{ _rendererComponent->GetHandle() };
+	SkeletonID skeletonID{ skeletonStorage->CreateOrGetID(_entity, model) };
+
+	PoseLayerID poseLayerID{ poseLayerStorage->Create(
+		skeletonID,
+		skeletonStorage->GetSkeletonDataPtr(skeletonID),
+		skeletonStorage->GetTargetPose(skeletonID),
+		nullptr) };
+
+	SolverIKID solverIKID{ solverIKStorage->CreateTwoBoneIK(poseLayerID, skeletonID) };
+
+	return featureIKStorage->CreateHandIK(solverIKID, skeletonID);
+}
+
+// IK破棄
+void AnimationComponentAPI::DestroyIK(FeatureIKID _id)
+{
+	SolverIKID solverIKID{ featureIKStorage->GetHandSolverIKID(_id) };
+	PoseLayerID poseLayerID{ solverIKStorage->GetTwoBoneIKPoseLayerID(solverIKID) };
+
+	featureIKStorage->Destroy(_id);
+	solverIKStorage->Destroy(solverIKID);
+	poseLayerStorage->Destroy(poseLayerID);
+}
+
+// 上腕ボーン取得
+std::string_view AnimationComponentAPI::GetUpperArm(FeatureIKID _id)
+{
+	SolverIKID solverIKID{ featureIKStorage->GetHandSolverIKID(_id) };
+	uint32_t boneIndex{ solverIKStorage->GetTwoBoneIK(solverIKID).rootBoneIndex };
+
+	return GetHandBoneName(_id, boneIndex);
+}
+
+// 上腕ボーン変更
+void AnimationComponentAPI::SetUpperArm(FeatureIKID _id, const char* _boneName)
+{
+	SolverIKID solverIKID{ featureIKStorage->GetHandSolverIKID(_id) };
+	solverIKStorage->EditTwoBoneIK(solverIKID).rootBoneIndex = FindHandBoneIndex(_id, _boneName);
+}
+
+// 前腕ボーン取得
+std::string_view AnimationComponentAPI::GetLowerArm(FeatureIKID _id)
+{
+	SolverIKID solverIKID{ featureIKStorage->GetHandSolverIKID(_id) };
+	uint32_t boneIndex{ solverIKStorage->GetTwoBoneIK(solverIKID).jointBoneIndex };
+
+	return GetHandBoneName(_id, boneIndex);
+}
+
+// 前腕ボーン変更
+void AnimationComponentAPI::SetLowerArm(FeatureIKID _id, const char* _boneName)
+{
+	SolverIKID solverIKID{ featureIKStorage->GetHandSolverIKID(_id) };
+	solverIKStorage->EditTwoBoneIK(solverIKID).jointBoneIndex = FindHandBoneIndex(_id, _boneName);
+}
+
+// 手ボーン取得
+std::string_view AnimationComponentAPI::GetHand(FeatureIKID _id)
+{
+	SolverIKID solverIKID{ featureIKStorage->GetHandSolverIKID(_id) };
+	uint32_t boneIndex{ solverIKStorage->GetTwoBoneIK(solverIKID).endBoneIndex };
+
+	return GetHandBoneName(_id, boneIndex);
+}
+
+// 手ボーン変更
+void AnimationComponentAPI::SetHand(FeatureIKID _id, const char* _boneName)
+{
+	SolverIKID solverIKID{ featureIKStorage->GetHandSolverIKID(_id) };
+	solverIKStorage->EditTwoBoneIK(solverIKID).endBoneIndex = FindHandBoneIndex(_id, _boneName);
+}
+
+// ターゲット位置取得
+Vector3 AnimationComponentAPI::GetTargetPosition(FeatureIKID _id)
+{
+	SolverIKID solverIKID{ featureIKStorage->GetHandSolverIKID(_id) };
+	return solverIKStorage->GetTwoBoneIK(solverIKID).targetPosition;
+}
+
+// ターゲット位置変更
+void AnimationComponentAPI::SetTargetPosition(FeatureIKID _id, const Vector3& _targetPosition)
+{
+	SolverIKID solverIKID{ featureIKStorage->GetHandSolverIKID(_id) };
+	solverIKStorage->EditTwoBoneIK(solverIKID).targetPosition = _targetPosition;
+}
+
+// ターゲット回転取得
+Quaternion AnimationComponentAPI::GetTargetRotation(FeatureIKID _id)
+{
+	return featureIKStorage->GetHandIK(_id).targetRotation;
+}
+
+// ターゲット回転変更
+void AnimationComponentAPI::SetTargetRotation(FeatureIKID _id, const Quaternion& _targetRotation)
+{
+	featureIKStorage->EditHandIK(_id).targetRotation = _targetRotation;
+}
+
+// ポール位置取得
+Vector3 AnimationComponentAPI::GetPolePosition(FeatureIKID _id)
+{
+	SolverIKID solverIKID{ featureIKStorage->GetHandSolverIKID(_id) };
+	return solverIKStorage->GetTwoBoneIK(solverIKID).polePosition;
+}
+
+// ポール位置変更
+void AnimationComponentAPI::SetPolePosition(FeatureIKID _id, const Vector3& _polePosition)
+{
+	SolverIKID solverIKID{ featureIKStorage->GetHandSolverIKID(_id) };
+	solverIKStorage->EditTwoBoneIK(solverIKID).polePosition = _polePosition;
+}
+
+// 位置ウェイト取得
+float AnimationComponentAPI::GetPositionWeight(FeatureIKID _id)
+{
+	SolverIKID solverIKID{ featureIKStorage->GetHandSolverIKID(_id) };
+	return solverIKStorage->GetTwoBoneIK(solverIKID).positionWeight;
+}
+
+// 位置ウェイト変更
+void AnimationComponentAPI::SetPositionWeight(FeatureIKID _id, float _positionWeight)
+{
+	SolverIKID solverIKID{ featureIKStorage->GetHandSolverIKID(_id) };
+	solverIKStorage->EditTwoBoneIK(solverIKID).positionWeight = _positionWeight;
+}
+
+// 回転ウェイト取得
+float AnimationComponentAPI::GetRotationWeight(FeatureIKID _id)
+{
+	return featureIKStorage->GetHandIK(_id).rotationWeight;
+}
+
+// 回転ウェイト変更
+void AnimationComponentAPI::SetRotationWeight(FeatureIKID _id, float _rotationWeight)
+{
+	featureIKStorage->EditHandIK(_id).rotationWeight = _rotationWeight;
+}
+
+// --- private ---
+
+// 名前からボーンインデックス取得
+uint32_t AnimationComponentAPI::FindHandBoneIndex(FeatureIKID _id, const char* _boneName)
+{
+	SolverIKID solverIKID{ featureIKStorage->GetHandSolverIKID(_id) };
+	SkeletonID skeletonID{ solverIKStorage->GetTwoBoneIKSkeletonID(solverIKID) };
+	const SkeletonData* skeleton{ skeletonStorage->GetSkeletonDataPtr(skeletonID) };
+
+	return skeleton->boneLookup.at(_boneName);
+}
+
+// ボーンインデックスから名前取得
+std::string_view AnimationComponentAPI::GetHandBoneName(FeatureIKID _id, uint32_t _boneIndex)
+{
+	SolverIKID solverIKID{ featureIKStorage->GetHandSolverIKID(_id) };
+	SkeletonID skeletonID{ solverIKStorage->GetTwoBoneIKSkeletonID(solverIKID) };
+	const SkeletonData* skeleton{ skeletonStorage->GetSkeletonDataPtr(skeletonID) };
+
+	return skeleton->boneNames.at(_boneIndex);
+}
+
 void AnimationComponentAPI::BindWorld(AnimationWorld* _world)
 {
 	skeletonStorage = _world->GetSkeletonInstanceStorage();
@@ -141,6 +309,8 @@ void AnimationComponentAPI::BindWorld(AnimationWorld* _world)
 	poseLayerStorage = _world->GetPoseLayerStorage();
 	ragdollStorage = _world->GetRagdollStorage();
 	activeRagdollStorage = _world->GetActiveRagdollStorage();
+	solverIKStorage = _world->GetSolverIKStorage();
+	featureIKStorage = _world->GetFeatureIKStorage();
 }
 
 void AnimationComponentAPI::UnbindWorld()
@@ -150,6 +320,8 @@ void AnimationComponentAPI::UnbindWorld()
 	poseLayerStorage = nullptr;
 	ragdollStorage = nullptr;
 	activeRagdollStorage = nullptr;
+	solverIKStorage = nullptr;
+	featureIKStorage = nullptr;
 }
 
 SkeletonInstanceStorage* AnimationComponentAPI::skeletonStorage{ nullptr };
@@ -157,3 +329,5 @@ AnimationStorage* AnimationComponentAPI::animationStorage{ nullptr };
 PoseLayerStorage* AnimationComponentAPI::poseLayerStorage{ nullptr };
 RagdollStorage* AnimationComponentAPI::ragdollStorage{ nullptr };
 ActiveRagdollStorage* AnimationComponentAPI::activeRagdollStorage{ nullptr };
+SolverIKStorage* AnimationComponentAPI::solverIKStorage{ nullptr };
+FeatureIKStorage* AnimationComponentAPI::featureIKStorage{ nullptr };

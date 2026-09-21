@@ -3,15 +3,15 @@
 #include "PoseLayerStorage.h"
 
 // 作成
-PoseLayerID PoseLayerStorage::Create(SkeletonID _skeletonID, const SkeletonInstanceData& _skeleton, const char* _maskPath)
+PoseLayerID PoseLayerStorage::Create(SkeletonID _skeletonID, const SkeletonData* _skeleton, const PoseBuffer& _targetPose, const char* _maskPath)
 {
 	PoseLayerID id{ CreateID(CountID()) };
 
 	PoseLayer poseLayer;
 
 	poseLayer.skeletonID = _skeletonID;
-	poseLayer.pose = _skeleton.targetPose;
-	if (!CreateMask(_maskPath, _skeleton.skeletonData, poseLayer.mask))
+	poseLayer.pose = _targetPose;
+	if (!CreateMask(_maskPath, _skeleton, poseLayer.mask))
 	{
 		ReleaseID(id);
 		return {};
@@ -19,7 +19,7 @@ PoseLayerID PoseLayerStorage::Create(SkeletonID _skeletonID, const SkeletonInsta
 
 	poseLayers.push_back(std::move(poseLayer));
 	ids.push_back(id);
-	
+
 	return id;
 }
 

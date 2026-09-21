@@ -4,13 +4,14 @@
 #include "ActiveRagdollStorage.h"
 
 // 作成関数
-ActiveRagdollID ActiveRagdollStorage::Create(EntityID _entity, RagdollID _ragdollID, const Ragdoll& _ragdoll, const SkeletonInstanceData& _skeleton, const std::string& _path)
+ActiveRagdollID ActiveRagdollStorage::Create(EntityID _entity, RagdollID _ragdollID, const Ragdoll& _ragdoll, const SkeletonData* _skeleton, const std::string& _path)
 {
 	ActiveRagdollID id{ CreateID(CountRagdollID()) };
 
 	// 失敗した場合は無効値を返す
 	if (!CreateActiveRagdoll(_entity, _ragdoll, _skeleton))
 	{
+		ReleaseID(id);
 		return {};
 	}
 
@@ -61,8 +62,13 @@ void ActiveRagdollStorage::Destroy(ActiveRagdollID _id)
 }
 
 // ActiveRagdoll情報の作成関数
-bool ActiveRagdollStorage::CreateActiveRagdoll(EntityID _entity, const Ragdoll& _ragdoll, const SkeletonInstanceData& _skeleton)
+bool ActiveRagdollStorage::CreateActiveRagdoll(EntityID _entity, const Ragdoll& _ragdoll, const SkeletonData* _skeleton)
 {
+	if (_skeleton == nullptr)
+	{
+		return false;
+	}
+
 	ActiveRagdoll activeRagdoll;
 
 	for (int boneIndex{ 0 }; boneIndex < _ragdoll.constraints.size(); boneIndex++)

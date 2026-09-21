@@ -5,9 +5,13 @@
 #include "PoseLayerStorage.h"
 #include "RagdollStorage.h"
 #include "ActiveRagdollStorage.h"
+#include "SolverIKStorage.h"
+#include "FeatureIKStorage.h"
 
 #include "AnimationSyncSystem.h"
+#include "FeatureIKSystem.h"
 #include "BaseAnimationSystem.h"
+#include "IKSolverSystem.h"
 #include "TargetPoseSystem.h"
 #include "RagdollSystem.h"
 #include "ActiveRagdollSystem.h"
@@ -35,6 +39,8 @@ public:
 	PoseLayerStorage* GetPoseLayerStorage() { return &poseLayerStorage; }
 	RagdollStorage* GetRagdollStorage() { return &gagdollStorage; }
 	ActiveRagdollStorage* GetActiveRagdollStorage() { return &activeRagdollStorage; }
+	SolverIKStorage* GetSolverIKStorage() { return &solverIKStorage; }
+	FeatureIKStorage* GetFeatureIKStorage() { return &featureIKStorage; }
 private:
 	// --- ストレージ ---
 
@@ -43,12 +49,16 @@ private:
 	PoseLayerStorage poseLayerStorage;
 	RagdollStorage gagdollStorage;
 	ActiveRagdollStorage activeRagdollStorage;
+	SolverIKStorage solverIKStorage;
+	FeatureIKStorage featureIKStorage;
 
 	// --- System ---
 
 	AnimationSyncSystem animationSyncSystem;
-	TargetPoseSystem targetPoseSystem;
 	BaseAnimationSystem baseAnimationSystem;
+	FeatureIKSystem featureIKSystem;
+	IKSolverSystem ikSolverSystem;
+	TargetPoseSystem targetPoseSystem;
 
 	RagdollSystem ragdollSystem;
 	ActiveRagdollSystem activeRagdollSystem;

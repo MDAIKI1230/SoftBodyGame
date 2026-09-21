@@ -6,7 +6,7 @@
 #include "RagdollStorage.h"
 
 // 生成
-RagdollID RagdollStorage::Create(EntityID _entity, SkeletonID _skeletonID, ModelHandle _model, const SkeletonInstanceData& _skeleton, const std::string& _path)
+RagdollID RagdollStorage::Create(EntityID _entity, SkeletonID _skeletonID, ModelHandle _model, const SkeletonData* _skeleton, const std::string& _path)
 {
 	// パスからロードを試してダメやったら無効値を返す
 	RagdollDefinition definition;
@@ -73,22 +73,25 @@ void RagdollStorage::Destroy(RagdollID _id)
 }
 
 // Ragdoll情報の作成関数
-bool RagdollStorage::CreateRagdoll(EntityID _entity, SkeletonID _skeletonID, RagdollID _ragdollID, ModelHandle _model, const SkeletonInstanceData& _skeleton, const RagdollDefinition& _definition)
+bool RagdollStorage::CreateRagdoll(EntityID _entity, SkeletonID _skeletonID, RagdollID _ragdollID, ModelHandle _model, const SkeletonData* _skeleton, const RagdollDefinition& _definition)
 {
+	if (_skeleton == nullptr)
+	{
+		return false;
+	}
+
 	std::unordered_map<std::string, uint32_t> nameToBoneIndex;
 
 	Ragdoll ragdoll;
 
 	ragdoll.skeleton = _skeletonID;
 
-	const SkeletonData& skeletonData{ *_skeleton.skeletonData };
-
 	std::unordered_map<uint32_t, uint8_t> bondeIndexToCollisionNumber;
 	uint8_t currentCollisionNumber{ 0 };
 
-	for (uint32_t boneIndex{ 0 }; boneIndex < skeletonData.boneNames.size(); boneIndex++)
+	for (uint32_t boneIndex{ 0 }; boneIndex < _skeleton->boneNames.size(); boneIndex++)
 	{
-		const std::string& boneName{ skeletonData.boneNames[boneIndex] };
+		const std::string& boneName{ _skeleton->boneNames[boneIndex] };
 
 		nameToBoneIndex[boneName] = boneIndex;
 		// 作成用情報に対応するボーンの名前があるのなら、Bodyの作成にかかる。
@@ -192,9 +195,9 @@ bool RagdollStorage::CreateRagdoll(EntityID _entity, SkeletonID _skeletonID, Rag
 	}
 
 	// Joint作成
-	for (uint32_t boneIndex{ 0 }; boneIndex < skeletonData.boneNames.size(); boneIndex++)
+	for (uint32_t boneIndex{ 0 }; boneIndex < _skeleton->boneNames.size(); boneIndex++)
 	{
-		const std::string& boneName{ skeletonData.boneNames[boneIndex] };
+		const std::string& boneName{ _skeleton->boneNames[boneIndex] };
 
 		if (_definition.boneToJoint.contains(boneName))
 		{
@@ -238,8 +241,8 @@ bool RagdollStorage::CreateRagdoll(EntityID _entity, SkeletonID _skeletonID, Rag
 			// Model空間から親Bone空間への変換(スケール無視)
 			const Matrix4x4 parentBoneFromModel{
 				MatGenerateFunc::InverseTRS(
-					skeletonData.bindModelPositions[parentIndex],
-					skeletonData.bindModelRotations[parentIndex],
+					_skeleton->bindModelPositions[parentIndex],
+					_skeleton->bindModelRotations[parentIndex],
 					Vector3::ONE)
 			};
 
@@ -247,7 +250,7 @@ bool RagdollStorage::CreateRagdoll(EntityID _entity, SkeletonID _skeletonID, Rag
 			const Matrix4x4 parentBodyFromJoint{
 				parentLink.bodyFromBone *
 				parentBoneFromModel *
-				skeletonData.bindModelMatrices[boneIndex] *
+				_skeleton->bindModelMatrices[boneIndex] *
 				childBoneFromJoint
 			};
 
