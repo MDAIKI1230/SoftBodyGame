@@ -40,8 +40,16 @@ void ColliderDebugRenderingSystem::RenderBox(PhysicsTransformStorage* _transform
 			Vector3::ONE
 		) };
 
+
+		// 行列の作り直しを一応入れておく(ワールドは親から順に計算とかが難しいからあきらめ)
+		Matrix4x4 trs{ MatGenerateFunc::TRS(
+			_transformStorage->GetPosition(transID),
+			_transformStorage->GetRotation(transID),
+			_transformStorage->GetScale(transID)
+		) };
+
 		Renderer::DrawBox(
-			_transformStorage->GetWorldMatrix(transID) * offset,
+			trs * offset,
 			_colliderStorage->GetBoxColliderScale(id),
 			Color{ 0.0f,1.0f, 0.0f });
 	}
