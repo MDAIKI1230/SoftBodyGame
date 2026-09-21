@@ -14,6 +14,7 @@ public:
 	static void CreateTransformComponent(ObjectBase* _obj, SceneComponentData* _data);
 	static void CreateBoxColliderComponent(ObjectBase* _obj, SceneComponentData* _data);
 	static void CreateSphereColliderComponent(ObjectBase* _obj, SceneComponentData* _data);
+	static void CreateRendererComponent(ObjectBase* _obj, SceneComponentData* _data);
 public:
 	static std::unordered_map<std::string, CreateComponentFunc> CreateFuncs;
 };

@@ -1,23 +1,27 @@
 {
-    "Version":0,
-    "Objects":
-    [
-        {
-            "ID":"name",
-            "Type":"ObjectClassName",
-            "Components":
-            [
-                {
-                    "Name":"Transform",
-            "Position"   :{ "x": 0 ,"y": 0 ,"z": 0 },
-            "RotationDeg":{ "x": 0 ,"y": 0 ,"z": 0 },
-            "Scale"      :{ "x": 1 ,"y": 1 ,"z": 1 }
-            },
-                {
-                    "Name":"ComponentName",
-                    "ParameterName": "Parameter"
-                }
-            ]
-        } 
-    ]
+	"Version": 1,
+	"Objects": [
+		{
+			"ID": "name",
+			"Type": "EmptyObject",
+			"Components": [
+				{
+					"Name": "Transform",
+					"Position": { "X": 0.0, "Y": 0.0, "Z": 0.0 },
+					"RotationDeg": { "X": 0.0, "Y": 0.0, "Z": 0.0 },
+					"Scale": { "X": 1.0, "Y": 1.0, "Z": 1.0 }
+				},
+				{
+					"Name": "Renderer",
+					"ModelPath": "Res/Model/model.fbx"
+				},
+				{
+					"Name": "BoxCollider",
+					"Size": { "X": 1.0, "Y": 1.0, "Z": 1.0 },
+					"OffsetPosition": { "X": 0.0, "Y": 0.0, "Z": 0.0 },
+					"OffsetRotationDeg": { "X": 0.0, "Y": 0.0, "Z": 0.0 }
+				}
+			]
+		}
+	]
 }

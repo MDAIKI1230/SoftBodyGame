@@ -1,5 +1,7 @@
 ﻿#pragma once
 
+#include "MDMath.h"
+
 #include "SceneComponentData.h"
 
 struct SphereColliderComponentData :public SceneComponentData
@@ -11,4 +13,6 @@ public:
 	}
 public:
 	float radius{ 0.0f };
+	Vector3 offsetPosition;
+	Vector3 offsetRotationDeg;
 };

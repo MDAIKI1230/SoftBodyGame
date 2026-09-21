@@ -12,6 +12,7 @@ class ObjectFactory
 {
 	using CreateObjectFunc = std::unique_ptr<ObjectBase>(*)(WorldStorage*, EntityID);
 public:
+	static std::unique_ptr<ObjectBase> CreateEmptyObject(WorldStorage* world, EntityID _entity);
 	static std::unique_ptr<ObjectBase> CreateDebugBox(WorldStorage* world, EntityID _entity);
 	static std::unique_ptr<ObjectBase> CreateSphereBox(WorldStorage* world, EntityID _entity);
 public:

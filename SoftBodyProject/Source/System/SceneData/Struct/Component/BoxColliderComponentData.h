@@ -13,4 +13,6 @@ public:
 	}
 public:
 	Vector3 size;
+	Vector3 offsetPosition;
+	Vector3 offsetRotationDeg;
 };
