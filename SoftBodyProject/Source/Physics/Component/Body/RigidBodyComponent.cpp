@@ -7,6 +7,32 @@ RigidBodyComponent::RigidBodyComponent(EntityID _entity) :
 {
 }
 
+// --- 姿勢系 ---
+
+// 位置取得
+Vector3 RigidBodyComponent::GetPosition() const
+{
+	return PhysicsComponentAPI::GetRigidBodyPosition(id);
+}
+
+// 位置変更
+void RigidBodyComponent::SetPosition(const Vector3& _position)
+{
+	PhysicsComponentAPI::SetRigidBodyPosition(id, _position);
+}
+
+// 回転取得
+Quaternion RigidBodyComponent::GetRotation() const
+{
+	return PhysicsComponentAPI::GetRigidBodyRoatation(id);
+}
+
+// 回転変更
+void RigidBodyComponent::SetRotation(const Quaternion& _rotation)
+{
+	PhysicsComponentAPI::SetRigidBodyRoatation(id, _rotation);
+}
+
 // 力加算
 void RigidBodyComponent::AddForce(const Vector3& _force)
 {

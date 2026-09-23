@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "CharacterControllerComponent.h"
+#include "ActiveRagdollComponent.h"
 
 #include "InputActionContext.h"
 #include "InputAction.h"
@@ -36,7 +36,6 @@ private:
 	void Jump(InputActionContext _input);
 	void CameraMove(InputActionContext _input);
 private:
-	CharacterControllerComponent* cc;
 	Camera* camera;
 
 	InputAction cameraMove;

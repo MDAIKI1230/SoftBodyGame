@@ -3,6 +3,11 @@
 #include "AnimationWorld.h"
 #include "RendererComponent.h"
 
+#include "ActiveRagdollConstants.h"
+#include "RagdollConstants.h"
+#include "RigidBodyComponent.h"
+#include "CollisionFilter.h"
+
 class AnimationComponentAPI
 {
 public:
@@ -49,6 +54,38 @@ public:
 	static ActiveRagdollID CreateActiveRagdoll(EntityID _entityID, const RendererComponent& _rendererComponent, const std::string& _path);
 	// 破棄
 	static void DestroyActiveRagdoll(ActiveRagdollID _id);
+
+	// --- Body取得 ---
+
+	// 指定した役割のRigidBody取得
+	static RigidBodyComponent GetActiveRagdollBody(ActiveRagdollID _id, RagdollBoneRole _role);
+
+	// --- 操作要求 ---
+
+	// ワールド空間の移動入力取得
+	static const Vector3& GetActiveRagdollMoveInput(ActiveRagdollID _id);
+	// ワールド空間の移動入力設定
+	static void SetActiveRagdollMoveInput(ActiveRagdollID _id, const Vector3& _moveInput);
+	// ジャンプ要求
+	static void RequestActiveRagdollJump(ActiveRagdollID _id);
+
+	// --- 状態取得 ---
+
+	// 制御状態取得
+	static ActiveRagdollControlState GetActiveRagdollControlState(ActiveRagdollID _id);
+	// 接地状態取得
+	static bool GetActiveRagdollGrounded(ActiveRagdollID _id);
+	// 地面法線取得
+	static const Vector3& GetActiveRagdollGroundNormal(ActiveRagdollID _id);
+	// 水平速度取得
+	static const Vector3& GetActiveRagdollPlanarVelocity(ActiveRagdollID _id);
+	// 重心位置取得
+	static const Vector3& GetActiveRagdollCenterOfMass(ActiveRagdollID _id);
+	// 直立度取得
+	static float GetActiveRagdollUprightDot(ActiveRagdollID _id);
+
+	// Ragdoll全体を無視する衝突フィルター取得
+	static CollisionFilter GetActiveRagdollIgnoreFilter(ActiveRagdollID _id);
 
 	// --- IK ---
 

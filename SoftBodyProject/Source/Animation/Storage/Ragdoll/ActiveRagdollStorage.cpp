@@ -109,7 +109,7 @@ bool ActiveRagdollStorage::CreateActiveRagdoll(EntityID _entity, const Ragdoll& 
 		}
 	}
 
-	activeRagdoll.settings = std::move(_setting);
+	activeRagdoll.settings = _setting;
 
 	activeRagdolls.push_back(std::move(activeRagdoll));
 

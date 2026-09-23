@@ -6,8 +6,8 @@
 
 #include "ModelHandle.h"
 #include "ShaderConstantBufferHandle.h"
-
-#include "Material.h"
+#include "PixelShaderHandle.h"
+#include "VertexShaderHandle.h"
 
 class SkyRenderingSystem :public RenderingSystem
 {
@@ -28,5 +28,6 @@ private:
 
 	ModelHandle boxHandle;
 	ShaderConstantBufferHandle cbHandle;
-	Material material;
+	VertexShaderHandle vertex;
+	PixelShaderHandle pixel;
 };

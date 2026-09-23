@@ -1,0 +1,325 @@
+{
+    "Version": 1,
+    "Objects": [
+        {
+            "ID": "ExhibitionTutorialStage",
+            "Type": "EmptyObject",
+            "Components": [
+                {
+                    "Name": "Transform",
+                    "Position": { "X": 0.0, "Y": 0.0, "Z": 0.0 },
+                    "RotationDeg": { "X": 0.0, "Y": 0.0, "Z": 0.0 },
+                    "Scale": { "X": 1.0, "Y": 1.0, "Z": 1.0 }
+                },
+                {
+                    "Name": "Renderer",
+                    "ModelPath": "Res/Model/ExhibitionTutorialStage.mv1"
+                }
+            ]
+        },
+        {
+            "ID": "ExhibitionControlsSignboard",
+            "Type": "EmptyObject",
+            "Components": [
+                {
+                    "Name": "Transform",
+                    "Position": { "X": -288.0, "Y": 0.0, "Z": -145.0 },
+                    "RotationDeg": { "X": 0.0, "Y": -47.0, "Z": 0.0 },
+                    "Scale": { "X": 1.0, "Y": 1.0, "Z": 1.0 }
+                },
+                {
+                    "Name": "Renderer",
+                    "ModelPath": "Res/Model/ExhibitionControlsSignboard.mv1"
+                }
+            ]
+        },
+        {
+            "ID": "StageCollider_StartFloor",
+            "Type": "EmptyObject",
+            "Components": [
+                {
+                    "Name": "Transform",
+                    "Position": { "X": 0.0, "Y": 15.0, "Z": -275.0 },
+                    "RotationDeg": { "X": 0.0, "Y": 0.0, "Z": 0.0 },
+                    "Scale": { "X": 1.0, "Y": 1.0, "Z": 1.0 }
+                },
+                {
+                    "Name": "BoxCollider",
+                    "Size": { "X": 900.0, "Y": 30.0, "Z": 550.0 }
+                }
+            ]
+        },
+        {
+            "ID": "StageCollider_MainFloor",
+            "Type": "EmptyObject",
+            "Components": [
+                {
+                    "Name": "Transform",
+                    "Position": { "X": 0.0, "Y": 15.0, "Z": 550.0 },
+                    "RotationDeg": { "X": 0.0, "Y": 0.0, "Z": 0.0 },
+                    "Scale": { "X": 1.0, "Y": 1.0, "Z": 1.0 }
+                },
+                {
+                    "Name": "BoxCollider",
+                    "Size": { "X": 1150.0, "Y": 30.0, "Z": 1100.0 }
+                }
+            ]
+        },
+        {
+            "ID": "StageCollider_GoalBlock",
+            "Type": "EmptyObject",
+            "Components": [
+                {
+                    "Name": "Transform",
+                    "Position": { "X": 0.0, "Y": 90.0, "Z": 950.0 },
+                    "RotationDeg": { "X": 0.0, "Y": 0.0, "Z": 0.0 },
+                    "Scale": { "X": 1.0, "Y": 1.0, "Z": 1.0 }
+                },
+                {
+                    "Name": "BoxCollider",
+                    "Size": { "X": 1150.0, "Y": 120.0, "Z": 300.0 }
+                }
+            ]
+        },
+        {
+            "ID": "StageCollider_Threshold",
+            "Type": "EmptyObject",
+            "Components": [
+                {
+                    "Name": "Transform",
+                    "Position": { "X": 0.0, "Y": 34.0, "Z": -20.0 },
+                    "RotationDeg": { "X": 0.0, "Y": 0.0, "Z": 0.0 },
+                    "Scale": { "X": 1.0, "Y": 1.0, "Z": 1.0 }
+                },
+                {
+                    "Name": "BoxCollider",
+                    "Size": { "X": 305.0, "Y": 18.0, "Z": 72.0 }
+                }
+            ]
+        },
+        {
+            "ID": "StageCollider_StartWallLeft",
+            "Type": "EmptyObject",
+            "Components": [
+                {
+                    "Name": "Transform",
+                    "Position": { "X": -450.0, "Y": 41.0, "Z": -275.0 },
+                    "RotationDeg": { "X": 0.0, "Y": 0.0, "Z": 0.0 },
+                    "Scale": { "X": 1.0, "Y": 1.0, "Z": 1.0 }
+                },
+                {
+                    "Name": "BoxCollider",
+                    "Size": { "X": 32.0, "Y": 82.0, "Z": 550.0 }
+                }
+            ]
+        },
+        {
+            "ID": "StageCollider_StartWallRight",
+            "Type": "EmptyObject",
+            "Components": [
+                {
+                    "Name": "Transform",
+                    "Position": { "X": 450.0, "Y": 41.0, "Z": -275.0 },
+                    "RotationDeg": { "X": 0.0, "Y": 0.0, "Z": 0.0 },
+                    "Scale": { "X": 1.0, "Y": 1.0, "Z": 1.0 }
+                },
+                {
+                    "Name": "BoxCollider",
+                    "Size": { "X": 32.0, "Y": 82.0, "Z": 550.0 }
+                }
+            ]
+        },
+        {
+            "ID": "StageCollider_StartWallFrontLeft",
+            "Type": "EmptyObject",
+            "Components": [
+                {
+                    "Name": "Transform",
+                    "Position": { "X": -362.5, "Y": 41.0, "Z": -550.0 },
+                    "RotationDeg": { "X": 0.0, "Y": 0.0, "Z": 0.0 },
+                    "Scale": { "X": 1.0, "Y": 1.0, "Z": 1.0 }
+                },
+                {
+                    "Name": "BoxCollider",
+                    "Size": { "X": 175.0, "Y": 82.0, "Z": 32.0 }
+                }
+            ]
+        },
+        {
+            "ID": "StageCollider_StartWallFrontRight",
+            "Type": "EmptyObject",
+            "Components": [
+                {
+                    "Name": "Transform",
+                    "Position": { "X": 362.5, "Y": 41.0, "Z": -550.0 },
+                    "RotationDeg": { "X": 0.0, "Y": 0.0, "Z": 0.0 },
+                    "Scale": { "X": 1.0, "Y": 1.0, "Z": 1.0 }
+                },
+                {
+                    "Name": "BoxCollider",
+                    "Size": { "X": 175.0, "Y": 82.0, "Z": 32.0 }
+                }
+            ]
+        },
+        {
+            "ID": "StageCollider_StartPostFrontLeft",
+            "Type": "EmptyObject",
+            "Components": [
+                {
+                    "Name": "Transform",
+                    "Position": { "X": -450.0, "Y": 111.0, "Z": -550.0 },
+                    "RotationDeg": { "X": 0.0, "Y": 0.0, "Z": 0.0 },
+                    "Scale": { "X": 1.0, "Y": 1.0, "Z": 1.0 }
+                },
+                {
+                    "Name": "BoxCollider",
+                    "Size": { "X": 68.0, "Y": 222.0, "Z": 68.0 }
+                }
+            ]
+        },
+        {
+            "ID": "StageCollider_StartPostFrontRight",
+            "Type": "EmptyObject",
+            "Components": [
+                {
+                    "Name": "Transform",
+                    "Position": { "X": 450.0, "Y": 111.0, "Z": -550.0 },
+                    "RotationDeg": { "X": 0.0, "Y": 0.0, "Z": 0.0 },
+                    "Scale": { "X": 1.0, "Y": 1.0, "Z": 1.0 }
+                },
+                {
+                    "Name": "BoxCollider",
+                    "Size": { "X": 68.0, "Y": 222.0, "Z": 68.0 }
+                }
+            ]
+        },
+        {
+            "ID": "StageCollider_StartPostBackLeft",
+            "Type": "EmptyObject",
+            "Components": [
+                {
+                    "Name": "Transform",
+                    "Position": { "X": -450.0, "Y": 111.0, "Z": -75.0 },
+                    "RotationDeg": { "X": 0.0, "Y": 0.0, "Z": 0.0 },
+                    "Scale": { "X": 1.0, "Y": 1.0, "Z": 1.0 }
+                },
+                {
+                    "Name": "BoxCollider",
+                    "Size": { "X": 68.0, "Y": 222.0, "Z": 68.0 }
+                }
+            ]
+        },
+        {
+            "ID": "StageCollider_StartPostBackRight",
+            "Type": "EmptyObject",
+            "Components": [
+                {
+                    "Name": "Transform",
+                    "Position": { "X": 450.0, "Y": 111.0, "Z": -75.0 },
+                    "RotationDeg": { "X": 0.0, "Y": 0.0, "Z": 0.0 },
+                    "Scale": { "X": 1.0, "Y": 1.0, "Z": 1.0 }
+                },
+                {
+                    "Name": "BoxCollider",
+                    "Size": { "X": 68.0, "Y": 222.0, "Z": 68.0 }
+                }
+            ]
+        },
+        {
+            "ID": "StageCollider_FrontWallLeft",
+            "Type": "EmptyObject",
+            "Components": [
+                {
+                    "Name": "Transform",
+                    "Position": { "X": -347.5, "Y": 212.5, "Z": -18.0 },
+                    "RotationDeg": { "X": 0.0, "Y": 0.0, "Z": 0.0 },
+                    "Scale": { "X": 1.0, "Y": 1.0, "Z": 1.0 }
+                },
+                {
+                    "Name": "BoxCollider",
+                    "Size": { "X": 455.0, "Y": 425.0, "Z": 36.0 }
+                }
+            ]
+        },
+        {
+            "ID": "StageCollider_FrontWallRight",
+            "Type": "EmptyObject",
+            "Components": [
+                {
+                    "Name": "Transform",
+                    "Position": { "X": 347.5, "Y": 212.5, "Z": -18.0 },
+                    "RotationDeg": { "X": 0.0, "Y": 0.0, "Z": 0.0 },
+                    "Scale": { "X": 1.0, "Y": 1.0, "Z": 1.0 }
+                },
+                {
+                    "Name": "BoxCollider",
+                    "Size": { "X": 455.0, "Y": 425.0, "Z": 36.0 }
+                }
+            ]
+        },
+        {
+            "ID": "StageCollider_DoorLintel",
+            "Type": "EmptyObject",
+            "Components": [
+                {
+                    "Name": "Transform",
+                    "Position": { "X": 0.0, "Y": 352.5, "Z": -18.0 },
+                    "RotationDeg": { "X": 0.0, "Y": 0.0, "Z": 0.0 },
+                    "Scale": { "X": 1.0, "Y": 1.0, "Z": 1.0 }
+                },
+                {
+                    "Name": "BoxCollider",
+                    "Size": { "X": 240.0, "Y": 145.0, "Z": 36.0 }
+                }
+            ]
+        },
+        {
+            "ID": "StageCollider_LeftWall",
+            "Type": "EmptyObject",
+            "Components": [
+                {
+                    "Name": "Transform",
+                    "Position": { "X": -593.0, "Y": 212.5, "Z": 550.0 },
+                    "RotationDeg": { "X": 0.0, "Y": 0.0, "Z": 0.0 },
+                    "Scale": { "X": 1.0, "Y": 1.0, "Z": 1.0 }
+                },
+                {
+                    "Name": "BoxCollider",
+                    "Size": { "X": 36.0, "Y": 425.0, "Z": 1100.0 }
+                }
+            ]
+        },
+        {
+            "ID": "StageCollider_RightWall",
+            "Type": "EmptyObject",
+            "Components": [
+                {
+                    "Name": "Transform",
+                    "Position": { "X": 593.0, "Y": 212.5, "Z": 550.0 },
+                    "RotationDeg": { "X": 0.0, "Y": 0.0, "Z": 0.0 },
+                    "Scale": { "X": 1.0, "Y": 1.0, "Z": 1.0 }
+                },
+                {
+                    "Name": "BoxCollider",
+                    "Size": { "X": 36.0, "Y": 425.0, "Z": 1100.0 }
+                }
+            ]
+        },
+        {
+            "ID": "StageCollider_BackWall",
+            "Type": "EmptyObject",
+            "Components": [
+                {
+                    "Name": "Transform",
+                    "Position": { "X": 0.0, "Y": 212.5, "Z": 1118.0 },
+                    "RotationDeg": { "X": 0.0, "Y": 0.0, "Z": 0.0 },
+                    "Scale": { "X": 1.0, "Y": 1.0, "Z": 1.0 }
+                },
+                {
+                    "Name": "BoxCollider",
+                    "Size": { "X": 1150.0, "Y": 425.0, "Z": 36.0 }
+                }
+            ]
+        }
+    ]
+}

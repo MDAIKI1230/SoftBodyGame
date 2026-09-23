@@ -60,8 +60,8 @@ public:
 	void SetSkyTextureHandle(CubeTextureHandle _skyTextureHandle) noexcept { skyTextureHandle = _skyTextureHandle; }
 private:
 	// カメラ描画距離
-	float nearClip{ 0.1f };
-	float farClip{ 1000.0f };
+	float nearClip{ 1.0f };
+	float farClip{ 2000.0f };
 
 	// FOV(度数法)
 	float fov{ 60.0f };

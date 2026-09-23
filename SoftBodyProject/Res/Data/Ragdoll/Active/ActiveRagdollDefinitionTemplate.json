@@ -120,7 +120,19 @@
       "LiftScale": 0.0,
 
       転倒中の直立制御Torqueへ掛ける倍率
-      "UprightScale": 0.0
+      "UprightScale": 0.0,
+
+      地面から維持したい腰までの高さ
+      "TargetPelvisHeight": 0.0,
+
+      腰高の誤差を持ち上げるForceへ変換する比例係数
+      "HeightStiffness": 0.0,
+
+      腰の上下動を抑える減衰係数
+      "HeightDamping": 0.0,
+
+      腰高制御が出せる最大Force
+      "MaxLiftForce": 0.0
     }
   }
 }

@@ -14,12 +14,10 @@ void SkyRenderingSystem::Initialize()
 	boxHandle = ResourceManager::GetModel("SkyCube.mv1");
 	ResourceManager::LoadVertexShader("Shader/Sky/SkyVS.vso");
 	ResourceManager::LoadPixelShader("Shader/Sky/SkyPS.pso");
-	material.SetVertex(ResourceManager::GetVertexShader("SkyVS.vso"));
-	material.SetPixel(ResourceManager::GetPixelShader("SkyPS.pso"));
+	vertex = ResourceManager::GetVertexShader("SkyVS.vso");
+	pixel = ResourceManager::GetPixelShader("SkyPS.pso");
 
 	cbHandle = ResourceManager::CreateConstantBuffer(sizeof(SkySolidConstantBuffer));
-
-	material.SetConstantBuffer(cbHandle, 4);
 }
 
 // 描画
@@ -32,6 +30,12 @@ void SkyRenderingSystem::Draw(WorldStorage* _worldStorage, EventManager* _eventM
 
 	for (auto cameraEntity : cameraStorage->GetEntities())
 	{
+		Material material;
+
+		material.SetVertex(vertex);
+		material.SetPixel(pixel);
+		material.SetConstantBuffer(cbHandle, 4);
+
 		const TransformComponent& trans{ transformStorage->Get(cameraEntity) };
 
 		SkySolidConstantBuffer cbData;

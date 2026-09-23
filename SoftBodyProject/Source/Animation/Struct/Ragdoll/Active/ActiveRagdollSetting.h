@@ -91,4 +91,14 @@ struct ActiveRagdollSetting
 	float recoveryLiftScale{};
 	// 転倒中の直立制御Torqueへ掛ける最大倍率
 	float recoveryUprightScale{};
+
+	// --- 腰高さ制御 ---
+	// 地面から維持したい腰までの高さ
+	float targetPelvisHeight{};
+	// 腰高の誤差を持ち上げるForceへ変換する比例係数
+	float pelvisHeightStiffness{};
+	// 腰の上下動を抑える減衰係数
+	float pelvisHeightDamping{};
+	// 腰高制御が出せる最大Force
+	float maxPelvisLiftForce{};
 };

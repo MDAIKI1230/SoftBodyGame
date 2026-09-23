@@ -2,6 +2,7 @@
 
 #include "RendererComponent.h"
 
+#include "EntityID.h"
 #include "AnimationID.h"
 
 struct AnimationComponent

@@ -74,6 +74,10 @@ public:
 	// 位置追従の平滑化時間変更
 	void SetPositionDamping(float _damping) noexcept { positionDamping = _damping; }
 
+	// レイのフィルター取得
+	const CollisionFilter& GetRayFilter()const { return rayFilter; }
+	// レイのフィルター変更
+	void GetRayFilter(const CollisionFilter& _rayFilter) { rayFilter = _rayFilter; }
 private:
 	// FPS/TPS
 	CameraMode mode{ CameraMode::TPS };
@@ -105,4 +109,7 @@ private:
 	float positionDamping{ 0.0f };
 	// TPS距離
 	float distance{ 300.0f };
+
+	// レイのフィルター
+	CollisionFilter rayFilter;
 };

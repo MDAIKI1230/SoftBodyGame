@@ -22,10 +22,11 @@ void ActiveRagdollSystem::PrePhysicsFixedUpdate(SkeletonInstanceStorage* _skelet
 		UpdateGroundState(ragdoll, activeRagdoll, ignoreFilter);
 		UpdateBodyState(ragdoll, activeRagdoll);
 		UpdateControlState(activeRagdoll);
-		UpdateRecovery(ragdoll, activeRagdoll);
+		
 		UpdateJump(ragdoll, activeRagdoll);
 		UpdateMovement(ragdoll, activeRagdoll);
 		UpdateUpright(ragdoll, activeRagdoll);
+		UpdateRecovery(ragdoll, activeRagdoll, ignoreFilter);
 		UpdateBalance(ragdoll, activeRagdoll);
 		UpdateJointDrive(ragdoll, activeRagdoll, targetPose);
 	}
@@ -176,12 +177,13 @@ void ActiveRagdollSystem::UpdateFootGroundState(
 void ActiveRagdollSystem::UpdateBodyState(const Ragdoll& _ragdoll, ActiveRagdoll& _activeRagdoll)
 {
 	// Role対応表から胴体/腰ボーンインデックスを取得する
+	uint32_t headBoneIndex{ _ragdoll.roles[static_cast<size_t>(RagdollBoneRole::HEAD)] };
 	uint32_t torsoBoneIndex{ _ragdoll.roles[static_cast<size_t>(RagdollBoneRole::TORSO)] };
 	uint32_t pelvisBoneIndex{ _ragdoll.roles[static_cast<size_t>(RagdollBoneRole::PELVIS)] };
 
 	// 胴体ボーンインデックスが有効か確認する
 	// 無効なら直立度を最低値にして終了する
-	if (torsoBoneIndex == UINT32_MAX || pelvisBoneIndex == UINT32_MAX)
+	if (headBoneIndex == UINT32_MAX || torsoBoneIndex == UINT32_MAX || pelvisBoneIndex == UINT32_MAX)
 	{
 		_activeRagdoll.planarVelocity = Vector3::ZERO;
 		_activeRagdoll.uprightDot = -1.0f;
@@ -189,6 +191,7 @@ void ActiveRagdollSystem::UpdateBodyState(const Ragdoll& _ragdoll, ActiveRagdoll
 	}
 
 	// 胴体Body/腰Bodyの現在姿勢を取得する
+	BodyID headBodyID{ _ragdoll.bodyLinks[headBoneIndex].bodyID };
 	BodyID torsoBodyID{ _ragdoll.bodyLinks[torsoBoneIndex].bodyID };
 	BodyID pelvisBodyID{ _ragdoll.bodyLinks[pelvisBoneIndex].bodyID };
 
@@ -200,23 +203,23 @@ void ActiveRagdollSystem::UpdateBodyState(const Ragdoll& _ragdoll, ActiveRagdoll
 
 	// 胴体Bodyと腰Bodyの差を上方向とする
 	Vector3 pelvisPosition{ PhysicsComponentAPI::GetRigidBodyPosition(pelvisBodyID) };
-
 	Vector3 torsoPosition{ PhysicsComponentAPI::GetRigidBodyPosition(torsoBodyID) };
+	Vector3 headPosition{ PhysicsComponentAPI::GetRigidBodyPosition(headBodyID) };
+	Vector3 lowerBodyUp{ torsoPosition - pelvisPosition };
+	Vector3 upperBodyUp{ headPosition - torsoPosition };
 
-	Vector3 torsoUp{ torsoPosition - pelvisPosition };
-
-	if (torsoUp.LengthSqr() <= MathConstants::EPSILON)
+	if (lowerBodyUp.LengthSqr() <= MathConstants::EPSILON || upperBodyUp.LengthSqr() <= MathConstants::EPSILON)
 	{
 		_activeRagdoll.uprightDot = -1.0f;
 		return;
 	}
 
-	torsoUp.Normalize();
+	lowerBodyUp.Normalize();
+	upperBodyUp.Normalize();
 
-	// 接地中なら地面法線を基準の上方向にする
-	// 非接地中ならワールド上方向を使用する(足の時点で計算済みのはず)
-	// 胴体の上方向と基準上方向の内積から直立度を計算する
-	_activeRagdoll.uprightDot = Vector3::Dot(_activeRagdoll.groundNormal, torsoUp);
+	float lowerUprightDot{ Vector3::Dot(_activeRagdoll.groundNormal, lowerBodyUp) };
+	float upperUprightDot{ Vector3::Dot(_activeRagdoll.groundNormal, upperBodyUp) };
+	_activeRagdoll.uprightDot = std::min(lowerUprightDot, upperUprightDot);
 }
 
 // 接地状態や胴体の傾きから立位・空中・転倒状態を更新する関数
@@ -270,6 +273,23 @@ void ActiveRagdollSystem::UpdateControlState(ActiveRagdoll& _activeRagdoll)
 		break;
 
 	case ActiveRagdollControlState::AIRBORNE:
+		// 大きく傾いた状態が続いたらFALLENへ移行する
+		if (_activeRagdoll.uprightDot <=_activeRagdoll.settings.fallenUprightDot)
+		{
+			_activeRagdoll.fallenTime += TimeManager::GetFixedDeltaTime();
+		}
+		else
+		{
+			_activeRagdoll.fallenTime = 0.0f;
+		}
+
+		if (_activeRagdoll.fallenTime >=_activeRagdoll.settings.fallDelay)
+		{
+			_activeRagdoll.controlState = ActiveRagdollControlState::FALLEN;
+
+			_activeRagdoll.ResetTime();
+			return;
+		}
 		// 非接地中はAIRBORNEを維持する
 		if (!_activeRagdoll.isGrounded)
 		{
@@ -319,54 +339,85 @@ void ActiveRagdollSystem::UpdateControlState(ActiveRagdoll& _activeRagdoll)
 }
 
 // 立ち上がるための力を加える関数
-void ActiveRagdollSystem::UpdateRecovery(const Ragdoll& _ragdoll, ActiveRagdoll& _activeRagdoll)
+void ActiveRagdollSystem::UpdateRecovery(const Ragdoll& _ragdoll, ActiveRagdoll& _activeRagdoll, const CollisionFilter& _ignoreFilter)
 {
-	// FALLENかつ接地中でなければ終了する
-	if (_activeRagdoll.controlState != ActiveRagdollControlState::FALLEN ||
-		!_activeRagdoll.isGrounded)
+	// 空中では腰高制御を行わない
+	if (_activeRagdoll.controlState == ActiveRagdollControlState::AIRBORNE)
 	{
 		return;
 	}
-	// 腰BodyとRagdoll全体の質量を取得する
-	// Role対応表から腰ボーンインデックスを取得する
+
+	// 腰と胴体のBodyを取得する
 	uint32_t pelvisBoneIndex{ _ragdoll.roles[static_cast<size_t>(RagdollBoneRole::PELVIS)] };
-	// 腰ボーンインデックスが有効か確認する
-	if (pelvisBoneIndex == UINT32_MAX)
-	{
-		return;
-	}
-	// 腰ボーンの対応ボディIDを取得
+	uint32_t torsoBoneIndex{ _ragdoll.roles[static_cast<size_t>(RagdollBoneRole::TORSO)] };
 	BodyID pelvisBodyID{ _ragdoll.bodyLinks[pelvisBoneIndex].bodyID };
+	BodyID torsoBodyID{ _ragdoll.bodyLinks[torsoBoneIndex].bodyID };
 
-	float totalMass{ 0.0f };
-	// 総質量を計算
-	for (const RagdollBodyLink& bodyLink : _ragdoll.bodyLinks)
+	// 重力方向を地面探索方向にする
+	Vector3 gravity{ PhysicsComponentAPI::GetGravity(pelvisBodyID) };
+	Vector3 down{ gravity };
+	if (down.LengthSqr() <= MathConstants::EPSILON)
 	{
-		BodyID bodyID{ bodyLink.bodyID };
-		// 無効なBodyは計算対象から除外する
-		if (!bodyID.IsValid())
-		{
-			continue;
-		}
-		// 総質量へBodyの質量を加算する
-		totalMass += PhysicsComponentAPI::GetMass(bodyID);
+		down = -Vector3::UP;
 	}
-	// 重力と全質量から自重を打ち消すForceを作る
-	Vector3 force{ -PhysicsComponentAPI::GetGravity(pelvisBodyID) * totalMass };
+	else
+	{
+		down.Normalize();
+	}
+	Vector3 up{ -down };
 
-	float range{ _activeRagdoll.settings.recoveryUprightDot - _activeRagdoll.settings.fallenUprightDot };
-	// 直立閾値と転倒敷地の間で線形保管し、立ち上がるほど、力を弱くする
-	float uprightAmount{
-		range > MathConstants::EPSILON
-			? std::clamp(
-				(_activeRagdoll.uprightDot - _activeRagdoll.settings.fallenUprightDot) / range,
-				0.0f, 1.0f)
-			: 0.0f
+	// 腰の少し上から、目標腰高より少し長いRayを飛ばす
+	Vector3 pelvisPosition{ PhysicsComponentAPI::GetRigidBodyPosition(pelvisBodyID) };
+	Vector3 origin{ pelvisPosition + up * _activeRagdoll.settings.groundProbeStartOffset };
+	float rayLength{
+		_activeRagdoll.settings.groundProbeStartOffset +
+		_activeRagdoll.settings.targetPelvisHeight +
+		_activeRagdoll.settings.groundProbeDistance
 	};
 
-	float recoveryAmount{ 1.0f - uprightAmount };
+	RayCastHitInfo hitInfo;
+	if (!PhysicsAPI::RayCastHit(Ray{ origin, down, rayLength }, hitInfo, _ignoreFilter))
+	{
+		return;
+	}
 
-	PhysicsComponentAPI::AddForce(pelvisBodyID, force * _activeRagdoll.settings.recoveryLiftScale * recoveryAmount);
+	// 歩行できない傾斜なら腰高制御を行わない
+	Vector3 groundNormal{ hitInfo.normal };
+	groundNormal.Normalize();
+	if (Vector3::Dot(groundNormal, up) < _activeRagdoll.settings.minGroundDot)
+	{
+		return;
+	}
+
+	// 現在の腰高と目標腰高との差を求める
+	float currentHeight{ Vector3::Dot(pelvisPosition - hitInfo.point, groundNormal) };
+	float heightError{ _activeRagdoll.settings.targetPelvisHeight - currentHeight };
+
+	// 腰と胴体の質量平均速度から上下速度を求める
+	float pelvisMass{ PhysicsComponentAPI::GetMass(pelvisBodyID) };
+	float torsoMass{ PhysicsComponentAPI::GetMass(torsoBodyID) };
+	float totalMass{ pelvisMass + torsoMass };
+	Vector3 controlledVelocity{
+		(PhysicsComponentAPI::GetVelocity(pelvisBodyID) * pelvisMass +
+		 PhysicsComponentAPI::GetVelocity(torsoBodyID) * torsoMass) / totalMass
+	};
+	float verticalVelocity{ Vector3::Dot(controlledVelocity, groundNormal) };
+
+	// 重力補償とPD制御から持ち上げるForceを求める
+	float gravityCompensation{
+		std::max(-Vector3::Dot(gravity, groundNormal), 0.0f) * totalMass
+	};
+	float liftForce{
+		gravityCompensation +
+		heightError * _activeRagdoll.settings.pelvisHeightStiffness -
+		verticalVelocity * _activeRagdoll.settings.pelvisHeightDamping
+	};
+	liftForce = std::clamp(liftForce, 0.0f, _activeRagdoll.settings.maxPelvisLiftForce);
+
+	// 腰と胴体へ質量比でForceを分配する
+	Vector3 force{ groundNormal * liftForce };
+	PhysicsComponentAPI::AddForce(pelvisBodyID, force * (pelvisMass / totalMass));
+	PhysicsComponentAPI::AddForce(torsoBodyID, force * (torsoMass / totalMass));
 }
 
 // ジャンプリクエストを処理し、ジャンプの力を加える関数
@@ -379,8 +430,7 @@ void ActiveRagdollSystem::UpdateJump(const Ragdoll& _ragdoll, ActiveRagdoll& _ac
 	}
 	_activeRagdoll.jumpRequested = false;
 	// STANDINGかつ接地中か確認する
-	if (_activeRagdoll.controlState != ActiveRagdollControlState::STANDING ||
-		!_activeRagdoll.isGrounded)
+	if (!_activeRagdoll.isGrounded)
 	{
 		return;
 	}
@@ -716,6 +766,13 @@ void ActiveRagdollSystem::UpdateBalance(const Ragdoll& _ragdoll, ActiveRagdoll& 
 // Animationの目標姿勢から各関節Driveの目標相対回転を更新する関数
 void ActiveRagdollSystem::UpdateJointDrive(const Ragdoll& _ragdoll, const ActiveRagdoll& _activeRagdoll, const PoseBuffer& _targetPose)
 {
+	//// 立ち状態かつ地面に接地しているときのみやる
+	//if (_activeRagdoll.controlState != ActiveRagdollControlState::STANDING ||
+	//	!_activeRagdoll.isGrounded)
+	//{
+	//	return;
+	//}
+
 	for (int i{ 0 }; i < _activeRagdoll.jointDriveConstraints.size(); i++)
 	{
 		/*

@@ -28,7 +28,7 @@ private:
 	void UpdateControlState(ActiveRagdoll& _activeRagdoll);
 
 	// 立ち上がるための力を加える関数
-	void UpdateRecovery(const Ragdoll& _ragdoll, ActiveRagdoll& _activeRagdoll);
+	void UpdateRecovery(const Ragdoll& _ragdoll, ActiveRagdoll& _activeRagdoll, const CollisionFilter& _ignoreFilter);
 	// ジャンプリクエストを処理し、ジャンプの力を加える関数
 	void UpdateJump(const Ragdoll& _ragdoll, ActiveRagdoll& _activeRagdoll);
 	// 入力から目標速度を作り、移動または減速用のForceを加える関数

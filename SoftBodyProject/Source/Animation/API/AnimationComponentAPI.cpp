@@ -148,6 +148,87 @@ void AnimationComponentAPI::DestroyActiveRagdoll(ActiveRagdollID _id)
 	activeRagdollStorage->Destroy(_id);
 }
 
+// --- Body取得 ---
+
+// 指定した役割のRigidBody取得
+RigidBodyComponent AnimationComponentAPI::GetActiveRagdollBody(
+	ActiveRagdollID _id,
+	RagdollBoneRole _role)
+{
+	RagdollID ragdollID{ activeRagdollStorage->GetRagdollID(_id) };
+	const Ragdoll& ragdoll{ ragdollStorage->GetRagdoll(ragdollID) };
+	uint32_t boneIndex{ ragdoll.roles[static_cast<size_t>(_role)] };
+
+	return RigidBodyComponent{ ragdoll.bodyLinks[boneIndex].bodyID };
+}
+
+// --- 操作要求 ---
+
+// ワールド空間の移動入力取得
+const Vector3& AnimationComponentAPI::GetActiveRagdollMoveInput(ActiveRagdollID _id)
+{
+	return activeRagdollStorage->GetActiveRagdoll(_id).moveInput;
+}
+
+// ワールド空間の移動入力設定
+void AnimationComponentAPI::SetActiveRagdollMoveInput(
+	ActiveRagdollID _id,
+	const Vector3& _moveInput)
+{
+	activeRagdollStorage->EditActiveRagdoll(_id).moveInput = _moveInput;
+}
+
+// ジャンプ要求
+void AnimationComponentAPI::RequestActiveRagdollJump(ActiveRagdollID _id)
+{
+	activeRagdollStorage->EditActiveRagdoll(_id).jumpRequested = true;
+}
+
+// --- 状態取得 ---
+
+// 制御状態取得
+ActiveRagdollControlState AnimationComponentAPI::GetActiveRagdollControlState(ActiveRagdollID _id)
+{
+	return activeRagdollStorage->GetActiveRagdoll(_id).controlState;
+}
+
+// 接地状態取得
+bool AnimationComponentAPI::GetActiveRagdollGrounded(ActiveRagdollID _id)
+{
+	return activeRagdollStorage->GetActiveRagdoll(_id).isGrounded;
+}
+
+// 地面法線取得
+const Vector3& AnimationComponentAPI::GetActiveRagdollGroundNormal(ActiveRagdollID _id)
+{
+	return activeRagdollStorage->GetActiveRagdoll(_id).groundNormal;
+}
+
+// 水平速度取得
+const Vector3& AnimationComponentAPI::GetActiveRagdollPlanarVelocity(ActiveRagdollID _id)
+{
+	return activeRagdollStorage->GetActiveRagdoll(_id).planarVelocity;
+}
+
+// 重心位置取得
+const Vector3& AnimationComponentAPI::GetActiveRagdollCenterOfMass(ActiveRagdollID _id)
+{
+	return activeRagdollStorage->GetActiveRagdoll(_id).centerOfMass;
+}
+
+// 直立度取得
+float AnimationComponentAPI::GetActiveRagdollUprightDot(ActiveRagdollID _id)
+{
+	return activeRagdollStorage->GetActiveRagdoll(_id).uprightDot;
+}
+
+// Ragdoll全体を無視する衝突フィルター取得
+CollisionFilter AnimationComponentAPI::GetActiveRagdollIgnoreFilter(ActiveRagdollID _id)
+{
+	RagdollID ragdollID{ activeRagdollStorage->GetRagdollID(_id) };
+	return ragdollStorage->GetIgnoreFilter(ragdollID);
+}
+
 // --- IK ---
 
 // ハンドIK作成

@@ -174,7 +174,11 @@ bool ActiveRagdollLoaderHelper::LoadRecovery(const rapidjson::Value& _value, Act
 		return false;
 	}
 	return GetFloat(_value, "LiftScale", _setting.recoveryLiftScale) &&
-		GetFloat(_value, "UprightScale", _setting.recoveryUprightScale);
+		GetFloat(_value, "UprightScale", _setting.recoveryUprightScale) &&
+		GetFloat(_value, "TargetPelvisHeight", _setting.targetPelvisHeight) &&
+		GetFloat(_value, "HeightStiffness", _setting.pelvisHeightStiffness) &&
+		GetFloat(_value, "HeightDamping", _setting.pelvisHeightDamping) &&
+		GetFloat(_value, "MaxLiftForce", _setting.maxPelvisLiftForce);
 }
 
 // 指定メンバーからfloat値を取得する関数

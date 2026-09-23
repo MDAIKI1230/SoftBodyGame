@@ -7,9 +7,21 @@
 
 struct RigidBodyComponent
 {
+	friend class AnimationComponentAPI;
 public:
 	// --- コンストラクタ ---
 	RigidBodyComponent(EntityID _entity);
+
+	// --- 姿勢系 ---
+
+	// 位置取得
+	Vector3 GetPosition() const;
+	// 位置変更
+	void SetPosition(const Vector3& _position);
+	// 回転取得
+	Quaternion GetRotation() const;
+	// 回転変更
+	void SetRotation(const Quaternion& _rotation);
 
 	// --- 力加算系 ---
 
@@ -61,6 +73,12 @@ public:
 
 	// ID取得
 	BodyID GetID() const { return id; }
+private:
+	// 既存RigidBodyを参照するコンストラクタ
+	RigidBodyComponent(BodyID _id) :
+		id{ _id }
+	{
+	}
 private:
 	BodyID id{};
 };

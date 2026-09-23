@@ -86,7 +86,7 @@ void CameraRigSystem::UpdateTPS(CameraRigComponent& _cameraRig, TransformCompone
 	ray.maxDistance = _cameraRig.GetDistance();
 	RayCastHitInfo hitInfo;
 
-	if (PhysicsAPI::RayCastHit(ray, hitInfo))
+	if (PhysicsAPI::RayCastHit(ray, hitInfo,_cameraRig.GetRayFilter()))
 	{
 		targetPos = hitInfo.point;
 	}
