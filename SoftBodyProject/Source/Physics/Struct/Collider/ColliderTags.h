@@ -59,6 +59,29 @@ namespace
 	// カプセル
 	struct CapsuleTag
 	{
+		static Vector3 Support(ColliderStorage* _colliderStorage, ColliderID _id, PhysicsTransformStorage* _transformStorage, const Vector3& _dir)
+		{
+			PhysicsTransformID transformID{ _colliderStorage->GetTransformID(_id) };
 
+			const Vector3& position{ _transformStorage->GetPosition(transformID) };
+			const Quaternion& rotation{ _transformStorage->GetRotation(transformID) };
+			const Vector3& scale{ _transformStorage->GetScale(transformID) };
+
+			float halfHeight{
+				std::abs(_colliderStorage->GetCapsuleColliderHeight(_id) * scale.y) * 0.5f
+			};
+
+			//float radiusScale{ std::max(std::abs(scale.x), std::abs(scale.z)) };
+			float radius{ std::abs(_colliderStorage->GetCapsuleColliderRadius(_id)) };
+
+			Vector3 direction{ _dir.Normalized() };
+			Vector3 capsuleAxis{ rotation.Rotate(Vector3::UP) };
+
+			float endpointSign{Vector3::Dot(capsuleAxis, direction) >= 0.0f ? 1.0f : -1.0f};
+
+			Vector3 segmentEndpoint{ position + capsuleAxis * halfHeight * endpointSign };
+
+			return segmentEndpoint + direction * radius;
+		}
 	};
 }

@@ -27,4 +27,6 @@ private:
 	static bool GetCollider(const rapidjson::Value& _value, ColliderType& _type, RagdollColliderDefinition& _output);
 	// 拘束取得関数
 	static bool GetConstraint(const rapidjson::Value& _value, ConstraintType& _type, RagdollJointAngleLimitDefinition& _output);
+	// 役割取得関数
+	static bool GetRole(const rapidjson::Value& _value, RagdollBoneRole& _output);
 };

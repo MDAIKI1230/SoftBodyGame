@@ -380,6 +380,9 @@
     <Filter Include="ソース ファイル\Animation\Storage\IK\Solve">
       <UniqueIdentifier>{179091fa-8db8-4a9b-9cdd-e9ad7c6c104f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Animation\Load\Ragdoll\Active">
+      <UniqueIdentifier>{c9883aa3-b964-4929-8ccc-3a5a3a38c9b0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Objects\Camera.h">
@@ -1330,6 +1333,24 @@
     <ClInclude Include="Source\Animation\System\Update\FeatureIKSystem.h">
       <Filter>ソース ファイル\Animation\System\Update</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Animation\Constants\ActiveRagdollConstants.h">
+      <Filter>ソース ファイル\Animation\Constants</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Animation\Struct\Ragdoll\Active\ActiveRagdollSetting.h">
+      <Filter>ソース ファイル\Animation\Struct\Ragdoll\Active</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Animation\Struct\Ragdoll\Active\FootGroundInfo.h">
+      <Filter>ソース ファイル\Animation\Struct\Ragdoll\Active</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Animation\Load\Ragdoll\Active\ActiveRagdollLoader.h">
+      <Filter>ソース ファイル\Animation\Load\Ragdoll\Active</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Animation\Load\Ragdoll\Active\ActiveRagdollLoaderHelper.h">
+      <Filter>ソース ファイル\Animation\Load\Ragdoll\Active</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Animation\Struct\Ragdoll\Active\ActiveRagdollDefinition.h">
+      <Filter>ソース ファイル\Animation\Struct\Ragdoll\Active</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\System\Scenes\DebugScene.cpp">
@@ -1763,6 +1784,12 @@
     </ClCompile>
     <ClCompile Include="Source\Animation\System\Update\FeatureIKSystem.cpp">
       <Filter>ソース ファイル\Animation\System\Update</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Animation\Load\Ragdoll\Active\ActiveRagdollLoader.cpp">
+      <Filter>ソース ファイル\Animation\Load\Ragdoll\Active</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Animation\Load\Ragdoll\Active\ActiveRagdollLoaderHelper.cpp">
+      <Filter>ソース ファイル\Animation\Load\Ragdoll\Active</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

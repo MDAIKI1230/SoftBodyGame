@@ -2,10 +2,10 @@
 
 #include "PhysicsQuerySystem.h"
 
-bool PhysicsQuerySystem::RayCastHit(const Ray& _ray, RayCastHitInfo& _hitInfo, ColliderStorage* _colliderStorage, PhysicsTransformStorage* _transformStorage)
+bool PhysicsQuerySystem::RayCastHit(const Ray& _ray, RayCastHitInfo& _hitInfo, ColliderStorage* _colliderStorage, PhysicsTransformStorage* _transformStorage, const CollisionFilter& _filter)
 {
 	RayCastQueryHitInfo info;
-	if (RayCastHit(_ray, info, _colliderStorage, _transformStorage))
+	if (RayCastHit(_ray, info, _colliderStorage, _transformStorage, _filter))
 	{
 		_hitInfo.point = info.point;
 		_hitInfo.normal = info.normal;
@@ -17,7 +17,7 @@ bool PhysicsQuerySystem::RayCastHit(const Ray& _ray, RayCastHitInfo& _hitInfo, C
 	return false;
 }
 
-bool PhysicsQuerySystem::RayCastHit(const Ray& _ray, RayCastQueryHitInfo& _hitInfo, ColliderStorage* _colliderStorage, PhysicsTransformStorage* _transformStorage)
+bool PhysicsQuerySystem::RayCastHit(const Ray& _ray, RayCastQueryHitInfo& _hitInfo, ColliderStorage* _colliderStorage, PhysicsTransformStorage* _transformStorage, const CollisionFilter& _filter)
 {
 	bool found{ false };
 	float bestDistance{ _ray.maxDistance };
@@ -30,6 +30,12 @@ bool PhysicsQuerySystem::RayCastHit(const Ray& _ray, RayCastQueryHitInfo& _hitIn
 	{
 		// AABBの判定
 		const auto& aabb{ _colliderStorage->GetAABBBroadPhaseCollider(i) };
+
+		ColliderID colliderID{ aabb.colliderID };
+		if (!CanCollide(_filter, _colliderStorage->GetFilter(colliderID)))
+		{
+			continue;
+		}
 
 		PhysicsTransformID transformID{ aabb.transformID };
 
@@ -95,4 +101,35 @@ bool PhysicsQuerySystem::RayCastCollider(
 	}
 
 	return false;
+}
+
+bool PhysicsQuerySystem::CanCollide(const CollisionFilter& _aFilter, const CollisionFilter& _bFilter)
+{
+	// 種類単位の判定
+	if ((_aFilter.collideMask & _bFilter.categoryBits) == 0 ||
+		(_bFilter.collideMask & _aFilter.categoryBits) == 0)
+	{
+		return false;
+	}
+
+	// 同じ構造物内部の判定
+	if (_aFilter.groupID != CollisionFilter::INVALID_COLLISION_GROUP &&
+		_aFilter.groupID == _bFilter.groupID)
+	{
+		assert(_aFilter.memberIndex < 64);
+		assert(_bFilter.memberIndex < 64);
+
+		// bit情報に変換
+		uint64_t bitA{ 1ull << _aFilter.memberIndex };
+		uint64_t bitB{ 1ull << _bFilter.memberIndex };
+
+		// お互い無視相手じゃないかチェック
+		if ((_aFilter.ignoreMembers & bitB) != 0 ||
+			(_bFilter.ignoreMembers & bitA) != 0)
+		{
+			return false;
+		}
+	}
+
+	return true;
 }

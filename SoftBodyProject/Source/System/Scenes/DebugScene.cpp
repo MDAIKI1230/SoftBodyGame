@@ -37,6 +37,7 @@ DebugScene::DebugScene()
 void DebugScene::Initialize()
 {
 	InputSystem::LoadAsset("Res/Data/Input/CharacterInput.json");
+	ResourceManager::LoadModel("Res/Model/M_001_player_095_01_no_sword_walk.mv1");
 
 	std::unique_ptr<Camera> camera{ std::make_unique<Camera>(&worldStorage, objectManager.GenerateNewID()) };
 	ResourceManager::LoadCubeTexture("Res/Texture/Sky/NaturalDayMeadow_Cubemap.dds");
@@ -279,12 +280,13 @@ void DebugScene::Initialize()
 
 	// Ragdollデバッグ
 
-	// objectManager.Add(std::make_unique<DebugRagdoll>(&worldStorage, objectManager.GenerateNewID()));
+	objectManager.Add(std::make_unique<DebugRagdoll>(&worldStorage, objectManager.GenerateNewID()));
+	objectManager.Add(std::make_unique<DebugRagdoll>(&worldStorage, objectManager.GenerateNewID()));
 
 	//std::unique_ptr<EmptyObject> model{ std::make_unique<EmptyObject>(&worldStorage, objectManager.GenerateNewID()) };
 	//model->AddComponent<RendererComponent>(ResourceManager::GetModel("M_001_player_095_01_no_sword_tpose.mv1"));
 	//model->GetComponent<TransformComponent>()->SetPosition(Vector3{ 0.0f,-200.0f,0.0f });
 	//objectManager.Add(std::move(model));
 
-	objectManager.Add(std::make_unique<DebugActiveRagdoll>(&worldStorage, objectManager.GenerateNewID()));
+	// objectManager.Add(std::make_unique<DebugActiveRagdoll>(&worldStorage, objectManager.GenerateNewID()));
 }

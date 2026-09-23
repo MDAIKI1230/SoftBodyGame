@@ -1,4 +1,6 @@
-﻿#include "RagdollLoaderHelper.h"
+﻿#include <string_view>
+
+#include "RagdollLoaderHelper.h"
 
 // Rootから順に読む関数
 bool RagdollLoaderHelper::LoadRagdollDefinition(rapidjson::Document& _document, RagdollDefinition& _output)
@@ -41,6 +43,32 @@ bool RagdollLoaderHelper::LoadBone(const rapidjson::Value& _value, RagdollDefini
 		}
 
 		_output.boneToJoint[boneName] = jointDefinition;
+	}
+
+	// ロールはなくてもOK
+	if (_value.HasMember("Role"))
+	{
+		RagdollBoneRole role;
+
+		if (!GetRole(_value["Role"], role))
+		{
+			return false;
+		}
+
+		// 1つのRoleを複数ボーンへ割り当てない
+		for (const auto& [registeredBoneName, registeredRole] : _output.roles)
+		{
+			if (registeredRole == role)
+			{
+				return false;
+			}
+		}
+
+		// 同じボーン名の重複も不正扱い
+		if (!_output.roles.emplace(boneName, role).second)
+		{
+			return false;
+		}
 	}
 
 	// 子Bone情報のロード
@@ -355,6 +383,60 @@ bool RagdollLoaderHelper::GetConstraint(const rapidjson::Value& _value, Constrai
 		_output.swing.maxTwistAngleRadians = MDMath::DegToRad(angleLimit["TwistMaxDeg"].GetFloat());
 
 		return true;
+	}
+
+	return false;
+}
+
+// 役割取得関数
+bool RagdollLoaderHelper::GetRole(const rapidjson::Value& _value, RagdollBoneRole& _output)
+{
+	if (!_value.IsString())
+	{
+		return false;
+	}
+
+	const std::string_view roleName{
+		_value.GetString(),
+		_value.GetStringLength()
+	};
+
+	struct RoleEntry
+	{
+		std::string_view name;
+		RagdollBoneRole role;
+	};
+
+	static constexpr RoleEntry ROLE_TABLE[]
+	{
+		{ "Pelvis",        RagdollBoneRole::PELVIS },
+		{ "Torso",         RagdollBoneRole::TORSO },
+		{ "Head",          RagdollBoneRole::HEAD },
+
+		{ "LeftUpperArm",  RagdollBoneRole::LEFT_UPPER_ARM },
+		{ "LeftLowerArm",  RagdollBoneRole::LEFT_LOWER_ARM },
+		{ "LeftHand",      RagdollBoneRole::LEFT_HAND },
+
+		{ "RightUpperArm", RagdollBoneRole::RIGHT_UPPER_ARM },
+		{ "RightLowerArm", RagdollBoneRole::RIGHT_LOWER_ARM },
+		{ "RightHand",     RagdollBoneRole::RIGHT_HAND },
+
+		{ "LeftUpperLeg",  RagdollBoneRole::LEFT_UPPER_LEG },
+		{ "LeftLowerLeg",  RagdollBoneRole::LEFT_LOWER_LEG },
+		{ "LeftFoot",      RagdollBoneRole::LEFT_FOOT },
+
+		{ "RightUpperLeg", RagdollBoneRole::RIGHT_UPPER_LEG },
+		{ "RightLowerLeg", RagdollBoneRole::RIGHT_LOWER_LEG },
+		{ "RightFoot",     RagdollBoneRole::RIGHT_FOOT }
+	};
+
+	for (const RoleEntry& entry : ROLE_TABLE)
+	{
+		if (roleName == entry.name)
+		{
+			_output = entry.role;
+			return true;
+		}
 	}
 
 	return false;

@@ -2,11 +2,20 @@
   別種類のJSONを誤って読まないための識別
   "Format": "RagdollDefinition",
 
+  Boneの役割を指定するRoleは省略可能
+  使用可能な値:
+  Pelvis, Torso, Head,
+  LeftUpperArm, LeftLowerArm, LeftHand,
+  RightUpperArm, RightLowerArm, RightHand,
+  LeftUpperLeg, LeftLowerLeg, LeftFoot,
+  RightUpperLeg, RightLowerLeg, RightFoot
+
   Ragdoll階層の根
   Rootには接続先の親がないためJointは設定しない
   "Root": {
     モデル内のBone名
     "Bone": "モデル内の腰ボーン名",
+    "Role": "Pelvis",
 
     Bone空間から見たPhysics Bodyの設定
     "Body": {
@@ -32,6 +41,7 @@
     "Children": [
       {
         "Bone": "モデル内の左上脚ボーン名",
+        "Role": "LeftUpperLeg",
 
         "Body": {
           "LocalPosition": { "X": 0, "Y": -15, "Z": 0 },
@@ -70,6 +80,7 @@
         "Children": [
           {
             "Bone": "モデル内の左下脚ボーン名",
+            "Role": "LeftLowerLeg",
 
             "Body": {
               "LocalPosition": { "X": 0, "Y": -15, "Z": 0 },

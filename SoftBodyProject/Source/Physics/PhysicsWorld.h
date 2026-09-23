@@ -64,7 +64,7 @@ private:
 	void Solver();
 private:
 	// 解消回数
-	static constexpr float SOLVER_TIMES{ 10 };
+	static constexpr float SOLVER_TIMES{ 5 };
 private:
 	CollisionManifoldBuffer manifoldBuffer;
 	SolverBodyBuffer solverBodyBuffer;

@@ -484,6 +484,26 @@ void PhysicsComponentAPI::SetFilter(ColliderID _id, const CollisionFilter& _filt
 	colliderStorage->EditFilter(_id) = _filter;
 }
 
+// サポート関数
+Vector3 PhysicsComponentAPI::Support(ColliderID _id, const Vector3& _dir)
+{
+	switch (colliderStorage->GetType(_id))
+	{
+	case ColliderType::SPHERE:
+		return SphereTag::Support(colliderStorage, _id, transformStorage, _dir);
+		break;
+	case ColliderType::BOX:
+		return BoxTag::Support(colliderStorage, _id, transformStorage, _dir);
+		break;
+	case ColliderType::CAPSULE:
+		return CapsuleTag::Support(colliderStorage, _id, transformStorage, _dir);
+		break;
+	default:
+		return Vector3::ZERO;
+		break;
+	}
+}
+
 // --- 拘束系 ---
 
 // 点拘束作成

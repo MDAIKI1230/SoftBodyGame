@@ -11,6 +11,7 @@ public:
 	// --- Cast系 ---
 
 	static bool RayCastHit(const Ray& _ray, RayCastHitInfo& _hitInfo);
+	static bool RayCastHit(const Ray& _ray, RayCastHitInfo& _hitInfo, const CollisionFilter& _filter);
 
 
 	static void BindWorld(PhysicsWorld& _physicsWorld);

@@ -1,4 +1,9 @@
-﻿#include "InputSystem.h"
+﻿#include "ResourceManager.h"
+#include "InputSystem.h"
+
+#include "ActiveRagdollComponent.h"
+#include "AnimationComponent.h"
+#include "RendererComponent.h"
 
 #include "Player.h"
 
@@ -8,7 +13,6 @@ Player::Player(WorldStorage* _world, EntityID _entityID, Camera* _camera) :
 	camera{ _camera }
 {
 	AddComponent<TransformComponent>();
-	cc = AddComponent<CharacterControllerComponent>();
 
 	GetComponent<TransformComponent>()->SetPosition(Vector3{ 200.0f,0,0 });
 
@@ -17,12 +21,20 @@ Player::Player(WorldStorage* _world, EntityID _entityID, Camera* _camera) :
 	InputSystem::GetInputAction("Character", "Jump").AddPerformedCallback<&Player::Jump>(this);
 	InputSystem::GetInputAction("Camera", "LookMouse").AddPerformedCallback<&Player::CameraMove>(this);
 
+	cc = AddComponent<CharacterControllerComponent>();
 	cc->SetGroundDeceleration(2000.0f);
 	cc->SetJumpSpeed(100.0f);
 
-	camera->GetComponent<CameraRigComponent>()->SetMode(CameraMode::FPS);
+	camera->GetComponent<CameraRigComponent>()->SetMode(CameraMode::TPS);
 	camera->GetComponent<CameraRigComponent>()->SetFollowTarget(GetID());
 	camera->GetComponent<CameraComponent>()->SetNear(0.01f);
+
+	/*RendererComponent* renderer{ AddComponent<RendererComponent>(ResourceManager::GetModel("M_001_player_095_01_no_sword_walk.mv1")) };
+	AddComponent<ActiveRagdollComponent>(*renderer, "Res/Data/Ragdoll/Active/M_001_player_095_01_no_sword.json");
+	AnimationComponent* anim{ AddComponent<AnimationComponent>(renderer) };
+	anim->SetAnimationName("Walk");
+	anim->Play();
+	anim->SetLoop(true);*/
 }
 
 // --- 更新系 ---

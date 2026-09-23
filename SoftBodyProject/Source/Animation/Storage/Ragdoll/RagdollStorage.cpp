@@ -33,6 +33,27 @@ RagdollID RagdollStorage::Create(EntityID _entity, SkeletonID _skeletonID, Model
 	return result;
 }
 
+// 生成
+RagdollID RagdollStorage::Create(EntityID _entity, SkeletonID _skeletonID, ModelHandle _model, const SkeletonData* _skeleton, const RagdollDefinition& _definition)
+{
+	RagdollID result{ CreateID(CountID()) };
+
+	// ラグドール情報を生成時に失敗したら無効値を返す
+	if (!CreateRagdoll(_entity, _skeletonID, result, _model, _skeleton, _definition))
+	{
+		ReleaseID(result);
+		return {};
+	}
+
+	neesInitializes.emplace_back(true);
+
+	ids.push_back(result);
+
+	ownerEntities.push_back(_entity);
+
+	return result;
+}
+
 // 破棄
 void RagdollStorage::Destroy(RagdollID _id)
 {
@@ -56,6 +77,8 @@ void RagdollStorage::Destroy(RagdollID _id)
 
 		neesInitializes[denseIndex] = neesInitializes[lastIndex];
 
+		ignoreFilters[denseIndex] = ignoreFilters[lastIndex];
+
 		ownerEntities[denseIndex] = ownerEntities[lastIndex];
 
 		ids[denseIndex] = movedID;
@@ -66,6 +89,7 @@ void RagdollStorage::Destroy(RagdollID _id)
 
 	ragdolls.pop_back();
 	neesInitializes.pop_back();
+	ignoreFilters.pop_back();
 	ownerEntities.pop_back();
 	ids.pop_back();
 
@@ -88,6 +112,19 @@ bool RagdollStorage::CreateRagdoll(EntityID _entity, SkeletonID _skeletonID, Rag
 
 	std::unordered_map<uint32_t, uint8_t> bondeIndexToCollisionNumber;
 	uint8_t currentCollisionNumber{ 0 };
+
+	// ロール取得
+	for (const auto& [boneName, role] : _definition.roles)
+	{
+		const auto boneIt{ _skeleton->boneLookup.find(boneName) };
+
+		if (boneIt == _skeleton->boneLookup.end())
+		{
+			return false;
+		}
+
+		ragdoll.roles[static_cast<size_t>(role)] = boneIt->second;
+	}
 
 	for (uint32_t boneIndex{ 0 }; boneIndex < _skeleton->boneNames.size(); boneIndex++)
 	{
@@ -152,7 +189,7 @@ bool RagdollStorage::CreateRagdoll(EntityID _entity, SkeletonID _skeletonID, Rag
 			CollisionFilter filter;
 
 			// 0は無効値なので＋１
-			filter.groupID = _ragdollID.GetIndex() + 1;;
+			filter.groupID = _ragdollID.GetIndex() + 1;
 			filter.memberIndex = bondeIndexToCollisionNumber[boneIndex];
 
 			PhysicsComponentAPI::SetFilter(collider, filter);
@@ -350,6 +387,16 @@ bool RagdollStorage::CreateRagdoll(EntityID _entity, SkeletonID _skeletonID, Rag
 	}
 
 	ragdolls.push_back(std::move(ragdoll));
+
+	CollisionFilter ignoreFilter;
+
+	ignoreFilter.groupID = _ragdollID.GetIndex() + 1;
+
+	// 同じgroupIDに所属する全Colliderを無視する
+	ignoreFilter.ignoreMembers = UINT64_MAX;
+
+
+	ignoreFilters.push_back(ignoreFilter);
 
 	return true;
 }

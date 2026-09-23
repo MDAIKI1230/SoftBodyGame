@@ -3,6 +3,8 @@
 #include <string>
 #include <unordered_map>
 
+#include "RagdollConstants.h"
+
 #include "RagdollBodyDefinition.h"
 #include "RagdollJointDefinition.h"
 
@@ -14,4 +16,5 @@ struct RagdollDefinition
 {
 	std::unordered_map<std::string, RagdollBodyDefinition> boneToBody;
 	std::unordered_map<std::string, RagdollJointDefinition> boneToJoint;
+	std::unordered_map<std::string, RagdollBoneRole> roles;
 };

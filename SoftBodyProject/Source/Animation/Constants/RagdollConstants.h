@@ -4,7 +4,7 @@
 
 enum class RagdollBoneRole :uint8_t
 {
-	// 骨盤
+	// 腰
 	PELVIS,
 	// 胴体
 	TORSO,

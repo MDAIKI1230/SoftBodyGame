@@ -2,6 +2,7 @@
 	"Format": "RagdollDefinition",
 	"Root": {
 		"Bone": "A1_3",
+		"Role": "Pelvis",
 		"Body": {
 			"LocalPosition": { "X": 5.3579, "Y": 0.2641, "Z": -0.0304 },
 			"LocalRotationDeg": { "X": 0.0016, "Y": -10.6055, "Z": -88.1790 },
@@ -15,6 +16,7 @@
 		"Children": [
 			{
 				"Bone": "A1_2",
+				"Role": "Torso",
 				"Body": {
 					"LocalPosition": { "X": 4.1227, "Y": 0.0917, "Z": -0.0087 },
 					"LocalRotationDeg": { "X": -0.3340, "Y": 2.6382, "Z": -90.0111 },
@@ -38,6 +40,7 @@
 				"Children": [
 					{
 						"Bone": "A1_1",
+						"Role": "Head",
 						"Body": {
 							"LocalPosition": { "X": 12.5907, "Y": -0.8538, "Z": 2.7827 },
 							"LocalRotationDeg": { "X": 0.1361, "Y": -4.5039, "Z": -89.3239 },
@@ -61,6 +64,7 @@
 					},
 					{
 						"Bone": "D1_2",
+						"Role": "LeftUpperArm",
 						"Body": {
 							"LocalPosition": { "X": 5.7170, "Y": 0.0, "Z": 0.0 },
 							"LocalRotationDeg": { "X": -91.8449, "Y": 0.0042, "Z": -90.0043 },
@@ -84,6 +88,7 @@
 						"Children": [
 							{
 								"Bone": "D1_3",
+								"Role": "LeftLowerArm",
 								"Body": {
 									"LocalPosition": { "X": 5.9340, "Y": 0.0, "Z": 0.0 },
 									"LocalRotationDeg": { "X": -88.1675, "Y": 0.0035, "Z": -90.0036 },
@@ -106,6 +111,7 @@
 								"Children": [
 									{
 										"Bone": "D3_1",
+										"Role": "LeftHand",
 										"Body": {
 											"LocalPosition": { "X": 1.9538, "Y": -0.0137, "Z": -0.3046 },
 											"LocalRotationDeg": { "X": 2.8358, "Y": 9.8286, "Z": 173.3148 },
@@ -133,6 +139,7 @@
 					},
 					{
 						"Bone": "E1_2",
+						"Role": "RightUpperArm",
 						"Body": {
 							"LocalPosition": { "X": 5.5939, "Y": 0.0188, "Z": 0.0014 },
 							"LocalRotationDeg": { "X": -84.5130, "Y": -2.0169, "Z": -87.9879 },
@@ -156,6 +163,7 @@
 						"Children": [
 							{
 								"Bone": "E1_3",
+								"Role": "RightLowerArm",
 								"Body": {
 									"LocalPosition": { "X": 6.1034, "Y": 0.0, "Z": 0.0 },
 									"LocalRotationDeg": { "X": -89.9035, "Y": -0.0253, "Z": -89.9775 },
@@ -178,6 +186,7 @@
 								"Children": [
 									{
 										"Bone": "E3_1",
+										"Role": "RightHand",
 										"Body": {
 											"LocalPosition": { "X": 2.2583, "Y": -0.3096, "Z": -0.0638 },
 											"LocalRotationDeg": { "X": 81.1420, "Y": 81.8073, "Z": 92.7971 },
@@ -207,6 +216,7 @@
 			},
 			{
 				"Bone": "B1_2",
+				"Role": "LeftUpperLeg",
 				"Body": {
 					"LocalPosition": { "X": 11.5569, "Y": 0.0, "Z": 0.0 },
 					"LocalRotationDeg": { "X": -90.0, "Y": 0.0, "Z": -90.0 },
@@ -230,6 +240,7 @@
 				"Children": [
 					{
 						"Bone": "B1_3",
+						"Role": "LeftLowerLeg",
 						"Body": {
 							"LocalPosition": { "X": 8.8377, "Y": 0.0, "Z": 0.0 },
 							"LocalRotationDeg": { "X": -90.0, "Y": 0.0, "Z": -90.0 },
@@ -252,9 +263,10 @@
 						"Children": [
 							{
 								"Bone": "B1_4",
+								"Role": "LeftFoot",
 								"Body": {
 									"LocalPosition": { "X": 5.4793, "Y": -0.3637, "Z": 0.1244 },
-									"LocalRotationDeg": { "X": 1.5023, "Y": 23.8060, "Z": 121.7624 },
+									"LocalRotationDeg": { "X": 0.0, "Y": 0.0, "Z": 0.0 },
 									"Mass": 0.7,
 									"Collider": {
 										"Type": "Box",
@@ -279,6 +291,7 @@
 			},
 			{
 				"Bone": "C1_2",
+				"Role": "RightUpperLeg",
 				"Body": {
 					"LocalPosition": { "X": 11.1621, "Y": 0.0, "Z": 0.0 },
 					"LocalRotationDeg": { "X": -94.6895, "Y": -0.0001, "Z": -89.9999 },
@@ -302,6 +315,7 @@
 				"Children": [
 					{
 						"Bone": "C1_3",
+						"Role": "RightLowerLeg",
 						"Body": {
 							"LocalPosition": { "X": 8.9919, "Y": 0.0, "Z": 0.0 },
 							"LocalRotationDeg": { "X": -90.1903, "Y": -0.0308, "Z": -89.9668 },
@@ -324,9 +338,10 @@
 						"Children": [
 							{
 								"Bone": "C1_4",
+								"Role": "RightFoot",
 								"Body": {
 									"LocalPosition": { "X": 5.3265, "Y": 0.4917, "Z": 1.0314 },
-									"LocalRotationDeg": { "X": 49.1370, "Y": 28.2229, "Z": 83.6472 },
+									"LocalRotationDeg": { "X": 0.0, "Y": 0.0, "Z": 0.0 },
 									"Mass": 0.7,
 									"Collider": {
 										"Type": "Box",

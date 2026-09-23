@@ -11,6 +11,8 @@
 #include "SkeletonData.h"
 #include "RagdollDefinition.h"
 
+#include "CollisionFilter.h"
+
 /*
 	Ragdollに関係する情報を扱い管理する
 */
@@ -21,6 +23,8 @@ public:
 	MD_STORAGE_ID_READ_WRITE_COLUMN(RagdollID, Ragdoll, Ragdoll, ragdolls)
 	// 初期化が必要かフラグ
 	MD_STORAGE_ID_READ_WRITE_COLUMN(RagdollID, bool, NeedInitialize, neesInitializes)
+	// ラグドール全体を透かすフィルター
+	MD_STORAGE_ID_READ_ONLY_COLUMN(RagdollID, CollisionFilter, IgnoreFilter, ignoreFilters)
 	// 自身のID
 	MD_STORAGE_ID_READ_ONLY_COLUMN(RagdollID, RagdollID, ID, ids)
 	// Ownerは生成後に変えない
@@ -28,6 +32,8 @@ public:
 public:
 	// 生成
 	RagdollID Create(EntityID _entity, SkeletonID _skeletonID, ModelHandle _model, const SkeletonData* _skeleton, const std::string& _path);
+	// 生成
+	RagdollID Create(EntityID _entity, SkeletonID _skeletonID, ModelHandle _model, const SkeletonData* _skeleton, const RagdollDefinition& _definition);
 	// 破棄
 	void Destroy(RagdollID _id);
 

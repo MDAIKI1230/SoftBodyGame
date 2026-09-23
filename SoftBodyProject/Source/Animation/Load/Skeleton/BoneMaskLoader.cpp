@@ -63,7 +63,7 @@ bool BoneMaskLoader::Load(const char* _path, const SkeletonData* _skeleton, Bone
 
 	std::string_view format{ document["Format"].GetString(),document["Format"].GetStringLength() };
 
-	if (format != "RagdollDefinition")
+	if (format != "BoneMaskDefinition")
 	{
 		return false;
 	}

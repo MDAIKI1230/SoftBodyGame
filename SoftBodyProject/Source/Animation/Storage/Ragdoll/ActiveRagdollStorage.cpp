@@ -4,12 +4,12 @@
 #include "ActiveRagdollStorage.h"
 
 // 作成関数
-ActiveRagdollID ActiveRagdollStorage::Create(EntityID _entity, RagdollID _ragdollID, const Ragdoll& _ragdoll, const SkeletonData* _skeleton, const std::string& _path)
+ActiveRagdollID ActiveRagdollStorage::Create(EntityID _entity, RagdollID _ragdollID, const Ragdoll& _ragdoll, const SkeletonData* _skeleton, const ActiveRagdollSetting& _setting)
 {
 	ActiveRagdollID id{ CreateID(CountRagdollID()) };
 
 	// 失敗した場合は無効値を返す
-	if (!CreateActiveRagdoll(_entity, _ragdoll, _skeleton))
+	if (!CreateActiveRagdoll(_entity, _ragdoll, _skeleton, _setting))
 	{
 		ReleaseID(id);
 		return {};
@@ -62,7 +62,7 @@ void ActiveRagdollStorage::Destroy(ActiveRagdollID _id)
 }
 
 // ActiveRagdoll情報の作成関数
-bool ActiveRagdollStorage::CreateActiveRagdoll(EntityID _entity, const Ragdoll& _ragdoll, const SkeletonData* _skeleton)
+bool ActiveRagdollStorage::CreateActiveRagdoll(EntityID _entity, const Ragdoll& _ragdoll, const SkeletonData* _skeleton, const ActiveRagdollSetting& _setting)
 {
 	if (_skeleton == nullptr)
 	{
@@ -80,6 +80,12 @@ bool ActiveRagdollStorage::CreateActiveRagdoll(EntityID _entity, const Ragdoll& 
 			continue;
 		}
 
+		ConstraintTuning tuning;
+
+		tuning.stiffness = _setting.jointDriveStiffness;
+		tuning.damping = _setting.jointDriveDamping;
+		tuning.maxForce = _setting.maxJointDriveForce;
+
 		const EndPointFrame parentEndPoint{ PhysicsComponentAPI::GetEndPoint(bodyConstraint) };
 		for (const EndPointFrame& childEndPoint : PhysicsComponentAPI::GetOtherEndPoints(bodyConstraint))
 		{
@@ -95,11 +101,15 @@ bool ActiveRagdollStorage::CreateActiveRagdoll(EntityID _entity, const Ragdoll& 
 				childEndPoint.localPosition,
 				childEndPoint.localRotation);
 
+			PhysicsComponentAPI::SetTuning(constraintID, tuning);
+
 			activeRagdoll.childBoneIndex.push_back(boneIndex);
 			activeRagdoll.parentBoneIndex.push_back(_ragdoll.parentIndices[boneIndex]);
 			activeRagdoll.jointDriveConstraints.push_back(constraintID);
 		}
 	}
+
+	activeRagdoll.settings = std::move(_setting);
 
 	activeRagdolls.push_back(std::move(activeRagdoll));
 
@@ -109,7 +119,6 @@ bool ActiveRagdollStorage::CreateActiveRagdoll(EntityID _entity, const Ragdoll& 
 // ActiveRagdoll情報の破棄関数
 void ActiveRagdollStorage::DestroyActiveRagdoll(RagdollID _ragdollID, const ActiveRagdoll& _activeRagdoll)
 {
-	AnimationComponentAPI::DestroyRagdoll(_ragdollID);
 	for (auto jointDriveConstraint : _activeRagdoll.jointDriveConstraints)
 	{
 		PhysicsComponentAPI::DestroyConstraint(jointDriveConstraint);

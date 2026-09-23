@@ -20,7 +20,7 @@ void TimeManager::UpdateImpl()
 	nowTime = std::chrono::steady_clock::now();
 
 	deltaTime = std::chrono::duration<double>(nowTime - pastTime).count();
-	fixedTimer += deltaTime;
+	fixedTimer += std::min(fixedTimer + deltaTime, FIXED_TIME * MAX_FIXED_UPDATES_PER_FRAME);
 }
 
 // 次のフレーム始まるの待ち関数

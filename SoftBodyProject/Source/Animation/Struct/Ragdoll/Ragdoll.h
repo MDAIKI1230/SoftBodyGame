@@ -1,6 +1,9 @@
 ﻿#pragma once
 
+#include <array>
 #include <vector>
+
+#include "RagdollConstants.h"
 
 #include "SkeletonID.h"
 #include "ConstraintID.h"
@@ -15,6 +18,11 @@
 */
 struct Ragdoll
 {
+	Ragdoll()
+	{
+		roles.fill(UINT32_MAX);
+	}
+
 	SkeletonID skeleton;
 
 	// RagdollとPhysicsのデータの共有データ
@@ -27,4 +35,6 @@ struct Ragdoll
 	std::vector<PhysicsTransformID> transforms;
 	// Ragdoll上の親ボーンインデックス
 	std::vector<uint32_t> parentIndices;
+	// 役割ボーン対応表(RagdollBoneRoleの順番で入れていく)
+	std::array<uint32_t, static_cast<size_t>(RagdollBoneRole::COUNT)> roles;
 };

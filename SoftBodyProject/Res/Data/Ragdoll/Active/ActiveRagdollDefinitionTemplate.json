@@ -1,0 +1,126 @@
+{
+  別種類のJSONを誤って読まないための識別
+  "Format": "ActiveRagdollDefinition",
+
+  使用するRagdoll定義JSONのパス
+  このファイルが存在するディレクトリからの相対パスで指定する
+  "RagdollPath": "../RagdollDefinition.json",
+
+  ActiveRagdollの調整値
+  "Setting": {
+
+    接地判定
+    "GroundDetection": {
+      足Bodyの位置から地面探索レイを開始する際の上方向オフセット
+      "ProbeStartOffset": 0.0,
+
+      足から地面を探索するレイの最大距離
+      "ProbeDistance": 0.0,
+
+      地面法線と上方向の内積がこの値以上なら歩行可能と判定する
+      値の範囲は-1.0～1.0
+      "MinGroundDot": 0.0
+    },
+
+    移動制御
+    "Movement": {
+      移動入力による最大水平速度
+      "MaxSpeed": 0.0,
+
+      移動入力がある場合に目標速度へ近づける最大加速度
+      "Acceleration": 0.0,
+
+      移動入力がない場合に水平速度を減速させる最大加速度
+      "Deceleration": 0.0,
+
+      空中で移動操作へ掛ける倍率
+      0で空中操作なし、1で地上と同じ操作強度
+      "AirControlScale": 0.0
+    },
+
+    制御状態判定
+    "ControlState": {
+      接地を失ってからAIRBORNEへ遷移するまでの猶予時間
+      "AirborneDelay": 0.0,
+
+      胴体の直立度がこの値以下なら転倒判定を開始する
+      値の範囲は-1.0～1.0
+      "FallenUprightDot": 0.0,
+
+      転倒姿勢が継続してからFALLENへ遷移するまでの時間
+      "FallDelay": 0.0,
+
+      胴体の直立度がこの値以上なら立位への復帰判定を開始する
+      状態の往復を防ぐためFallenUprightDotより大きい値にする
+      "RecoveryUprightDot": 0.0,
+
+      復帰可能な姿勢が継続してからSTANDINGへ遷移するまでの時間
+      "RecoveryDelay": 0.0
+    },
+
+    直立制御
+    "Upright": {
+      腰と胴体の傾きを目標上方向へ戻す復元Torqueの比例係数
+      "Stiffness": 0.0,
+
+      腰と胴体の傾き方向の角速度を抑える減衰係数
+      "Damping": 0.0,
+
+      一つのBodyへ加える直立制御Torqueの最大値
+      "MaxTorque": 0.0,
+
+      空中で直立制御Torqueへ掛ける倍率
+      0で空中制御なし、1で地上と同じ制御強度
+      "AirborneScale": 0.0
+    },
+
+    バランス制御
+    "Balance": {
+      重心と足の支持範囲との位置誤差へ掛ける比例係数
+      "Stiffness": 0.0,
+
+      現在速度と目標移動速度との差へ掛ける減衰係数
+      "Damping": 0.0,
+
+      腰Bodyへ加えるバランス制御Forceの最大値
+      "MaxForce": 0.0,
+
+      重心が支持位置からこの距離以内にある場合は位置補正を行わない
+      "DeadZone": 0.0
+    },
+
+    関節駆動制御
+    "JointDrive": {
+      各関節をAnimationの目標相対姿勢へ戻す強さ
+      値を大きくすると目標姿勢へ強く追従する
+      "Stiffness": 0.0,
+
+      関節の回転速度を抑えて振動を減らす減衰係数
+      小さすぎると振動し、大きすぎると動きが重くなる
+      "Damping": 0.0,
+
+      一つの回転軸に対してJointDrive拘束が出せる最大強度
+      JointDriveは角度拘束のため実質的にはTorqueの上限として働く
+      "MaxForce": 0.0
+    },
+
+    ジャンプ制御
+    "Jump": {
+      ジャンプによって到達させたい高さ
+      "Height": 0.0,
+
+      ジャンプ直後に接地判定による着地遷移を禁止する時間
+      "GroundIgnoreTime": 0.0
+    },
+
+    立ち上がり制御
+    "Recovery": {
+      転倒中に上半身と足を引き離して身体を伸ばすForceの重力比
+      1でRagdoll全体へ掛かる重力と同じ大きさを基準にする
+      "LiftScale": 0.0,
+
+      転倒中の直立制御Torqueへ掛ける倍率
+      "UprightScale": 0.0
+    }
+  }
+}

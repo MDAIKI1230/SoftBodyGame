@@ -1,7 +1,11 @@
 ﻿#include "ResourceManager.h"
 
+#include "ActiveRagdollLoader.h"
+
+#include "ActiveRagdollDefinition.h"
+
 #include "AnimationComponentAPI.h"
-#include <SolverIKStorage.h>
+#include "SolverIKStorage.h"
 
 // --- 通常アニメーション ---
 
@@ -117,22 +121,30 @@ ActiveRagdollID AnimationComponentAPI::CreateActiveRagdoll(EntityID _entityID, c
 	SkeletonID skeletonID{ skeletonStorage->CreateOrGetID(_entityID,_rendererComponent.GetHandle()) };
 	const SkeletonData* skeleton{ skeletonStorage->GetSkeletonDataPtr(skeletonID) };
 
+	ActiveRagdollDefinition definition;
+	if (!ActiveRagdollLoader::Load(_path, definition))
+	{
+		return {};
+	}
+
 	RagdollID ragdollID{ ragdollStorage->Create(
 		_entityID,skeletonID,
 		_rendererComponent.GetHandle(),
 		skeleton,
-		_path) };
+		definition.ragdollDefinition) };
 
 	return activeRagdollStorage->Create(
 		_entityID,
 		ragdollID,
 		ragdollStorage->GetRagdoll(ragdollID),
 		skeleton,
-		_path);
+		definition.settings);
 }
 // 破棄
 void AnimationComponentAPI::DestroyActiveRagdoll(ActiveRagdollID _id)
 {
+	RagdollID ragdollID{ activeRagdollStorage->GetRagdollID(_id) };
+	DestroyRagdoll(ragdollID);
 	activeRagdollStorage->Destroy(_id);
 }
 

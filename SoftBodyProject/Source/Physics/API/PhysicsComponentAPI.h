@@ -225,6 +225,9 @@ public:
 	// フィルター変更
 	static void SetFilter(ColliderID _id, const CollisionFilter& _filter);
 
+	// サポート関数
+	static Vector3 Support(ColliderID _id, const Vector3& _dir);
+
 	// --- 拘束系 ---
 	// 破壊
 	static void DestroyConstraint(ConstraintID _id);

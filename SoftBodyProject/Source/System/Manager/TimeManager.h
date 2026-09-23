@@ -37,7 +37,7 @@ private:
 
 private:
 	static constexpr double FIXED_TIME{ 0.02 };
-
+	static constexpr double MAX_FIXED_UPDATES_PER_FRAME{ 3.0f };
 private:
 	// 一フレームにかかる時間(秒)
 	std::chrono::duration<double> timePerFps;

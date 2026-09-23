@@ -1,0 +1,49 @@
+{
+	"Format": "ActiveRagdollDefinition",
+	"RagdollPath": "../M_001_player_095_01_no_sword_tpose.json",
+	"Setting": {
+		"GroundDetection": {
+			"ProbeStartOffset": 3.0,
+			"ProbeDistance": 2.0,
+			"MinGroundDot": 0.65
+		},
+		"Movement": {
+			"MaxSpeed": 45.0,
+			"Acceleration": 180.0,
+			"Deceleration": 240.0,
+			"AirControlScale": 0.2
+		},
+		"ControlState": {
+			"AirborneDelay": 0.1,
+			"FallenUprightDot": 0.35,
+			"FallDelay": 0.35,
+			"RecoveryUprightDot": 0.8,
+			"RecoveryDelay": 0.25
+		},
+		"Upright": {
+			"Stiffness": 2500.0,
+			"Damping": 350.0,
+			"MaxTorque": 6000.0,
+			"AirborneScale": 0.35
+		},
+		"Balance": {
+			"Stiffness": 12.0,
+			"Damping": 4.0,
+			"MaxForce": 5000.0,
+			"DeadZone": 1.0
+		},
+		"JointDrive": {
+			"Stiffness": 300000.0,
+			"Damping": 2500.0,
+			"MaxForce": 3500.0
+		},
+		"Jump": {
+			"Height": 20.0,
+			"GroundIgnoreTime": 0.2
+		},
+		"Recovery": {
+			"LiftScale": 1.1,
+			"UprightScale": 1.0
+		}
+	}
+}
