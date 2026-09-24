@@ -278,9 +278,9 @@
 									"LocalRotationDeg": { "X": -88.3581, "Y": -0.0001, "Z": -89.9999 },
 									"Type": "LimitedBallJoint",
 									"AngleLimit": {
-										"SwingMaxDeg": 25.0,
-										"TwistMinDeg": -15.0,
-										"TwistMaxDeg": 15.0
+										"SwingMaxDeg": 70.0,
+										"TwistMinDeg": -60.0,
+										"TwistMaxDeg": 60.0
 									}
 								},
 								"Children": []
@@ -353,9 +353,9 @@
 									"LocalRotationDeg": { "X": -37.3166, "Y": 0.0006, "Z": -90.0 },
 									"Type": "LimitedBallJoint",
 									"AngleLimit": {
-										"SwingMaxDeg": 25.0,
-										"TwistMinDeg": -15.0,
-										"TwistMaxDeg": 15.0
+										"SwingMaxDeg": 70.0,
+										"TwistMinDeg": -60.0,
+										"TwistMaxDeg": 60.0
 									}
 								},
 								"Children": []

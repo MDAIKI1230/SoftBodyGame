@@ -26,6 +26,12 @@ struct ActiveRagdollSetting
 	// 空中で移動操作へ掛ける倍率
 	// 0で空中操作なし、1で地上と同じ操作強度
 	float airControlScale{};
+	// 移動方向へ向きを戻す旋回Torqueの比例係数
+	float turnStiffness{};
+	// 地面法線軸まわりの回転を抑える減衰係数
+	float turnDamping{};
+	// 腰Bodyへ加える旋回Torqueの最大値
+	float maxTurnTorque{};
 
 
 	// --- 制御状態判定 ---

@@ -581,6 +581,13 @@ void ActiveRagdollSystem::UpdateMovement(const Ragdoll& _ragdoll, ActiveRagdoll&
 
 	// 腰Bodyへ移動用Forceを加える
 	PhysicsComponentAPI::AddForce(pelvisBodyID, force);
+
+	// 入力がある場合は移動方向へ向きを変える
+	// 目標速度から地面に沿った目標前方向を作る
+	// 基準Bodyの現在の前方向を同じ移動平面へ射影する
+	// 現在の前方向から目標前方向までの符号付き角度を求める
+	// 角度へ旋回剛性を、地面法線軸の角速度へ旋回減衰を掛けてTorqueを作る
+	// 最大旋回Torqueへ制限し、腰Bodyへ加える
 }
 
 // 腰と胸へ姿勢を直立させるTorqueを加える関数

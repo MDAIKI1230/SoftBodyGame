@@ -51,6 +51,11 @@ void PhysicsWorld::Solver()
 	// 修正された速度で位置を再計算
 	collisionSolverSystem.ReCalcPosRot(&solverBodyBuffer);
 
+	for (int i{ 0 }; i < SOLVER_TIMES; i++)
+	{
+		collisionSolverSystem.PositionSolver(&manifoldBuffer, &solverBodyBuffer);
+	}
+
 	// 終了
 	collisionSolverSystem.End(&manifoldBuffer);
 

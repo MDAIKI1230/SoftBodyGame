@@ -16,7 +16,7 @@ Player::Player(WorldStorage* _world, EntityID _entityID, Camera* _camera) :
 	GetComponent<TransformComponent>()->SetPosition(Vector3{ 0.0f,200,200 });
 
 	InputSystem::GetInputAction("Character", "Move").AddPerformedCallback<&Player::Move>(this);
-	InputSystem::GetInputAction("Character", "Move").AddCanceledCallback<&Player::Move>(this);
+	InputSystem::GetInputAction("Character", "Move").AddCanceledCallback<&Player::Stop>(this);
 	InputSystem::GetInputAction("Character", "Jump").AddPerformedCallback<&Player::Jump>(this);
 	InputSystem::GetInputAction("Camera", "LookMouse").AddPerformedCallback<&Player::CameraMove>(this);
 
@@ -25,7 +25,7 @@ Player::Player(WorldStorage* _world, EntityID _entityID, Camera* _camera) :
 	camera->GetComponent<CameraComponent>()->SetNear(0.1f);
 	camera->GetComponent<CameraComponent>()->SetFar(2000.0f);
 
-	RendererComponent* renderer{ AddComponent<RendererComponent>(ResourceManager::GetModel("M_001_player_095_01_no_sword_walk.mv1")) };
+	RendererComponent* renderer{ AddComponent<RendererComponent>(ResourceManager::GetModel("M_001_player_095_01_no_sword_walk_high.mv1")) };
 	ActiveRagdollComponent* active{ AddComponent<ActiveRagdollComponent>(*renderer, "Res/Data/Ragdoll/Active/M_001_player_095_01_no_sword.json") };
 	AnimationComponent* anim{ AddComponent<AnimationComponent>(renderer,"Res/Data/Skeleton/M_001_player_095_01_no_sword_LegsBoneMask.json") };
 	anim->SetAnimationName("Walk");
@@ -39,16 +39,7 @@ Player::Player(WorldStorage* _world, EntityID _entityID, Camera* _camera) :
 // 更新処理
 void Player::Update()
 {
-	ActiveRagdollComponent* active{ GetComponent<ActiveRagdollComponent>() };
-
-	if (active->GetBody(RagdollBoneRole::PELVIS).GetVelocity().LengthSqr() >= MathConstants::EPSILON)
-	{
-		GetComponent<AnimationComponent>()->Play();
-	}
-	else
-	{
-		GetComponent<AnimationComponent>()->Stop();
-	}
+	// GetComponent<AnimationComponent>()->Play();
 }
 // 物理更新処理
 void Player::FixedUpdate()
@@ -80,10 +71,12 @@ void Player::Move(InputActionContext _input)
 	Vector2 input{ _input.ReadValue<Vector2>() };
 	Vector3 local{ camera->GetComponent<TransformComponent>()->GetRotation().Rotate(Vector3{ input.x,0.0f,input.y }) };
 	GetComponent<ActiveRagdollComponent>()->SetMoveInput(local);
+	GetComponent<AnimationComponent>()->Play();
 }
 void Player::Stop(InputActionContext _input)
 {
 	GetComponent<ActiveRagdollComponent>()->ClearMoveInput();
+	GetComponent<AnimationComponent>()->Stop();
 }
 void Player::Jump(InputActionContext _input)
 {

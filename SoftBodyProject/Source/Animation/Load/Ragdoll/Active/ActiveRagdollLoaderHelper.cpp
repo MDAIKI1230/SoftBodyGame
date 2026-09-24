@@ -100,7 +100,10 @@ bool ActiveRagdollLoaderHelper::LoadMovement(const rapidjson::Value& _value, Act
 	return GetFloat(_value, "MaxSpeed", _setting.maxSpeed) &&
 		GetFloat(_value, "Acceleration", _setting.moveAcceleration) &&
 		GetFloat(_value, "Deceleration", _setting.moveDeceleration) &&
-		GetFloat(_value, "AirControlScale", _setting.airControlScale);
+		GetFloat(_value, "AirControlScale", _setting.airControlScale) &&
+		GetFloat(_value, "TurnStiffness", _setting.turnStiffness) &&
+		GetFloat(_value, "TurnDamping", _setting.turnDamping) &&
+		GetFloat(_value, "MaxTurnTorque", _setting.maxTurnTorque);
 }
 
 // 制御状態判定の調整値を読み込む関数

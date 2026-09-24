@@ -118,6 +118,8 @@ void RagdollSystem::PostPhysicsFixedUpdate(SkeletonInstanceStorage* _skeletonSto
 		const SkeletonData* skeleton{ _skeletonStorage->GetSkeletonDataPtr(skeletonID) };
 		// 出力ポーズバッファ
 		PoseBuffer& outputPose{ _skeletonStorage->EditOutputPose(skeletonID) };
+		// 出力ポーズバッファ
+		PoseBuffer& targetPose{ _skeletonStorage->EditTargetPose(skeletonID) };
 
 		if (skeleton == nullptr)
 		{
@@ -163,7 +165,7 @@ void RagdollSystem::PostPhysicsFixedUpdate(SkeletonInstanceStorage* _skeletonSto
 			// BodyIDが無効値なのでリンクされてないBone
 			else
 			{
-				localMatrix = outputPose.localMatrices[boneIndex];
+				localMatrix = targetPose.localMatrices[boneIndex];
 			}
 
 			// TRS情報をアウトプットに入れる
@@ -181,7 +183,7 @@ void RagdollSystem::PostPhysicsFixedUpdate(SkeletonInstanceStorage* _skeletonSto
 			// RigidBodyを持つBoneのScaleはアニメーション側から維持する
 			const Vector3 localScale{
 				bodyID.IsValid()
-					? outputPose.localScales[boneIndex]
+					? targetPose.localScales[boneIndex]
 					: decomposedScale
 			};
 
