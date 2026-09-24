@@ -8,6 +8,7 @@ int DxlibSystem::Init()
 	DxLib::SetFullSceneAntiAliasingMode(4, 2);
 	DxLib::SetUseDirectInputFlag(true);
 	DxLib::SetZBufferBitDepth(32);
+	DxLib::SetMouseDispFlag(false);
 
     const int result = DxLib::DxLib_Init();
 

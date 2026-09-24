@@ -35,7 +35,7 @@ private:
 private:
 	const Vector3 POSITION_OFFSET{ 60.0f,200.0f,0.0f };
 	const Vector3 PARTS_COUNT_OFFSET{ 0.0f,220,0.0f };
-	const Vector3 BASE_POS{ 472.0f,0.0f,0.0f };
+	const Vector3 BASE_POS{ 478.0f,0.0f,0.0f };
 	const Vector3 CHECK_OFFSET{ -85.0f,-100.0f,0.0f };
 private:
 	// エスケープ構成パーツ

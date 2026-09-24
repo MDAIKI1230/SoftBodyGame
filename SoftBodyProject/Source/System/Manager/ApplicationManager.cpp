@@ -14,7 +14,7 @@ ApplicationManager::ApplicationManager(BackEnd&& _backEnd):
 	gpuConnecter{ std::move(_backEnd.gpuConnecter) },
 	sound{ std::move(_backEnd.sound) }
 {
-	system->ChangeWindowMode(true);
+	//system->ChangeWindowMode(true);
 	system->SetGraphMode(Config::WINDOW_SIZE_W, Config::WINDOW_SIZE_H, Config::COLOR_BIT);
 
 	// サービスロケータに登録
