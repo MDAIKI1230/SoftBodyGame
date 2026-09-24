@@ -54,6 +54,7 @@ void PhysicsWorld::Solver()
 	for (int i{ 0 }; i < SOLVER_TIMES; i++)
 	{
 		collisionSolverSystem.PositionSolver(&manifoldBuffer, &solverBodyBuffer);
+		constraintSolverSystem.PositionSolver(&solverBodyBuffer, &constraintBuffer);
 	}
 
 	// 終了

@@ -38,10 +38,10 @@
 		"JointDrive": {
 			"Stiffness": 150000.0,
 			"Damping": 2000.0,
-			"MaxForce": 19000.0
+			"MaxForce": 10000.0
 		},
 		"Jump": {
-			"Height": 40.0,
+			"Height": 80.0,
 			"GroundIgnoreTime": 0.2
 		},
 		"Recovery": {

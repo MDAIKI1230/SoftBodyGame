@@ -18,6 +18,8 @@ void SkyRenderingSystem::Initialize()
 	pixel = ResourceManager::GetPixelShader("SkyPS.pso");
 
 	cbHandle = ResourceManager::CreateConstantBuffer(sizeof(SkySolidConstantBuffer));
+
+	priority = 100;
 }
 
 // 描画

@@ -11,7 +11,8 @@
 ApplicationManager::ApplicationManager(BackEnd&& _backEnd):
 	renderer{ std::move(_backEnd.renderer) },
 	system{ std::move(_backEnd.system) },
-	gpuConnecter{ std::move(_backEnd.gpuConnecter) }
+	gpuConnecter{ std::move(_backEnd.gpuConnecter) },
+	sound{ std::move(_backEnd.sound) }
 {
 	system->ChangeWindowMode(true);
 	system->SetGraphMode(Config::WINDOW_SIZE_W, Config::WINDOW_SIZE_H, Config::COLOR_BIT);
@@ -19,6 +20,7 @@ ApplicationManager::ApplicationManager(BackEnd&& _backEnd):
 	// サービスロケータに登録
 	ServiceLocator::SetRenderer(renderer.get());
 	ServiceLocator::SetGPUConnecter(gpuConnecter.get());
+	ServiceLocator::SetSound(sound.get());
 
 	sceneManager = std::make_unique<SceneManager>();
 }

@@ -1,13 +1,13 @@
 ﻿#pragma once
 
-#include "ObjectBase.h"
+#include "EscapePart.h"
 
-class QuitUI :public ObjectBase
+class QuitUI :public EscapePart
 {
 public:
 	// コンストラクタ
 	QuitUI(WorldStorage* _world, EntityID _entityID);
 
 	// ゲーム終了
-	void Quit();
+	void Action() override;
 };

@@ -278,6 +278,8 @@ void InputSystem::EvaluateActions()
 // 作られたInputValueから、ActionのPhaseや時間の更新をする関数
 void InputSystem::UpdateInteractions()
 {
+	bool inputConsumed{ false };
+
 	for (const auto& actionMap : data.actionMaps)
 	{
 		for (const auto& action : actionMap.actions)
@@ -309,10 +311,10 @@ void InputSystem::UpdateInteractions()
 				break;
 			}
 
-			// イベントフラグが立ってる場合のみ発動
-			if (events.started || events.performed || events.canceled)
+			// イベントフラグが立ってる場合のみ発動(後続のアクションは起動しない)
+			if (!inputConsumed && (events.started || events.performed || events.canceled))
 			{
-				InvokePhaseCallbacks(stateIt->second, events);
+				inputConsumed = InvokePhaseCallbacks(stateIt->second, events);
 			}
 		}
 	}
@@ -853,7 +855,7 @@ bool InputSystem::IsActuated(const InputValue& _value, const float _threshold) c
 }
 
 // 対応するコールバック関数をすべて呼ぶ
-void InputSystem::InvokePhaseCallbacks(InputActionRuntimeData& _runtimeData, const InputInteractionEvents& _events)
+bool InputSystem::InvokePhaseCallbacks(InputActionRuntimeData& _runtimeData, const InputInteractionEvents& _events)
 {
 	InputActionContext context;
 	context.currentValue = _runtimeData.state.current;
@@ -862,20 +864,31 @@ void InputSystem::InvokePhaseCallbacks(InputActionRuntimeData& _runtimeData, con
 
 	if (_events.started)
 	{
-		InvokeCallbacks(_runtimeData.callbacks.started, context);
+		if (InvokeCallbacks(_runtimeData.callbacks.started, context))
+		{
+			return true;
+		}
 	}
 
 	if (_events.performed)
 	{
-		InvokeCallbacks(_runtimeData.callbacks.performed, context);
+		if (InvokeCallbacks(_runtimeData.callbacks.performed, context))
+		{
+			return true;
+		}
 	}
 	if(_events.canceled)
 	{
-		InvokeCallbacks(_runtimeData.callbacks.canceled, context);
+		if (InvokeCallbacks(_runtimeData.callbacks.canceled, context))
+		{
+			return true;
+		}
 	}
+
+	return false;
 }
 
-void InputSystem::InvokeCallbacks(std::vector<InputCallbackEntry>& _callbacks, InputActionContext& _context)
+bool InputSystem::InvokeCallbacks(std::vector<InputCallbackEntry>& _callbacks, InputActionContext& _context)
 {
 	for (const auto& callback : _callbacks)
 	{
@@ -886,9 +899,16 @@ void InputSystem::InvokeCallbacks(std::vector<InputCallbackEntry>& _callbacks, I
 			if (callback.userData)
 			{
 				callback.function(callback.userData, _context);
+
+				if (_context.IsConsumed())
+				{
+					return true;
+				}
 			}
 		}
 	}
+
+	return false;
 }
 
 bool InputSystem::AddCallback(std::vector<InputCallbackEntry>& _pendingAddList, InputCallbackEntry::InputActionCallbackFunc _function, void* _userData)

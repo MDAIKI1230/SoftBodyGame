@@ -11,7 +11,7 @@ PressToStart::PressToStart(WorldStorage* _world, EntityID _entityID) :
 	ObjectBase{ _world,_entityID }
 {
 	AddComponent<SpriteRendererComponent>(ResourceManager::GetTexture("PressToStart.png"));
-	AddComponent<TransformComponent>()->SetPosition(initialPos);
+	GetComponent<TransformComponent>()->SetPosition(initialPos);
 }
 
 // --- 更新系 ---

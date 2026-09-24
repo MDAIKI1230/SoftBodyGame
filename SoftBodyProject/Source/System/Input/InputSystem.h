@@ -128,8 +128,8 @@ private:
 	bool IsActuated(const InputValue& _value, const float _threshold = 0.0f) const;
 
 	// 対応するコールバック関数をすべて呼ぶ
-	void InvokePhaseCallbacks(InputActionRuntimeData& _runtimeData, const InputInteractionEvents& _events);
-	void InvokeCallbacks(std::vector<InputCallbackEntry>& _callbacks, InputActionContext& _context);
+	bool InvokePhaseCallbacks(InputActionRuntimeData& _runtimeData, const InputInteractionEvents& _events);
+	bool InvokeCallbacks(std::vector<InputCallbackEntry>& _callbacks, InputActionContext& _context);
 
 	bool AddCallback(std::vector<InputCallbackEntry>& _pendingAddList, InputCallbackEntry::InputActionCallbackFunc _function, void* _userData);
 	bool RemoveCallback(std::vector<InputCallbackEntry>& _callbacks, InputCallbackEntry::InputActionCallbackFunc _function, void* _userData);

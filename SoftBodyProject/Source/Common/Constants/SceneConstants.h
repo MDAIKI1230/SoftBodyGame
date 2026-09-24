@@ -14,5 +14,5 @@ enum class SceneRequestType
 {
 	NONE,
 	TITLE,
-	GAME
+	TUTORIAL,
 };

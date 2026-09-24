@@ -74,4 +74,10 @@ bool TimeManager::IsFixedUpdateTimeImpl()
 	return false;
 }
 
-
+// リセット関数シーン遷移後に呼ぶ
+void TimeManager::ResetTimeImpl()
+{
+	nextFrameTime = std::chrono::steady_clock::now();
+	nowTime = std::chrono::steady_clock::now();
+	pastTime = std::chrono::steady_clock::now();
+}

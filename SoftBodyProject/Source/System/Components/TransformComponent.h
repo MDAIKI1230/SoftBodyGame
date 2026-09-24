@@ -58,7 +58,7 @@ public:
     /// </summary>
     /// <param name="_parent">親のTransform</param>
     /// <param name="keepLocal">ローカル行列を維持するか</param>
-    void SetParent(Transform* _parent, bool keepLocal = true) { trans.SetParent(_parent, keepLocal); }
+    void SetParent(TransformComponent* _parent, bool keepLocal = true) { trans.SetParent(&_parent->GetData(), keepLocal); }
 
     // 取得系
     // 位置
@@ -73,6 +73,8 @@ public:
     const Matrix4x4& GetWorldMatrix()const { return trans.GetWorldMatrix(); }
     // 親
     const Transform* GetParent()const { return trans.GetParent(); }
+	// 生データ取得
+	Transform& GetData() { return trans; }
 private:
     // トランスフォーム
     Transform trans{};

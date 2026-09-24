@@ -2,6 +2,8 @@
 
 #include "TimeManager.h"
 #include "ResourceManager.h"
+#include "GameManager.h"
+#include "SoundPlayer.h"
 
 // 描画系
 #include "RendererComponentStorage.h"
@@ -130,6 +132,8 @@ void SceneBase::Execute()
 		systemManager.Initialize();
 		Initialize();
 		fade.StartFadeIn();
+		GameManager::StartScene();
+		TimeManager::ResetTime();
 		state = SceneState::FADEIN;
 		break;
 	case SceneState::LOADING:
@@ -184,6 +188,8 @@ void SceneBase::Update()
 	systemManager.Update(&worldStorage, &eventManager);
 	// アニメーションの更新
 	animationWorld.Update(&worldStorage);
+	// サウンドプレイヤーの更新
+	SoundPlayer::Update();
 
 	eventManager.Swap();
 
@@ -261,6 +267,7 @@ void SceneBase::LoadFile(std::string _filePath)
 
 void SceneBase::Terminate()
 {
+	SoundPlayer::StopAll();
 	ResourceManager::UnLoadAll();
 	isCompleteEnding = true;
 }
@@ -268,5 +275,4 @@ void SceneBase::Terminate()
 // 仮想デストラクタ
 SceneBase::~SceneBase()
 {
-	ResourceManager::UnLoadAll();
 }

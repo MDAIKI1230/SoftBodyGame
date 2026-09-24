@@ -7,6 +7,7 @@
 #include "Dxlib\DxlibInput.h"
 #include "Dxlib\DxlibSystem.h"
 #include "Dxlib\DxlibGPUConnecter.h"
+#include "Dxlib\DxlibSound.h"
 
 BackEnd BackEndFactory::CreateBackEnd()
 {
@@ -16,6 +17,7 @@ BackEnd BackEndFactory::CreateBackEnd()
 	InputSystem::SetNativeInput(std::make_unique<DxlibInput>());
 	backend.system = std::make_unique<DxlibSystem>();
 	backend.gpuConnecter = std::make_unique<DxlibGPUConnecter>();
+	backend.sound = std::make_unique<DxlibSound>();
 
 	return backend;
 }

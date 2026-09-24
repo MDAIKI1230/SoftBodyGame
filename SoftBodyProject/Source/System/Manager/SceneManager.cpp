@@ -2,6 +2,7 @@
 
 #include "Scenes/DebugScene.h"
 #include "Scenes/TitleScene.h"
+#include "Scenes/TutorialScene.h"
 
 #include "ApplicationRequest.h"
 
@@ -52,8 +53,8 @@ void SceneManager::ApplySceneChange()
 			currentScene = std::make_unique<TitleScene>();
 			ApplicationRequest::SceneRequest(SceneRequestType::NONE);
 			break;
-		case SceneRequestType::GAME:
-			currentScene = std::make_unique<DebugScene>();
+		case SceneRequestType::TUTORIAL:
+			currentScene = std::make_unique<TutorialScene>();
 			ApplicationRequest::SceneRequest(SceneRequestType::NONE);
 			break;
 		case SceneRequestType::NONE:

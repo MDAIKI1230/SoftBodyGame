@@ -22,6 +22,185 @@
   ],
   "ActionMaps": [
     {
+      "ID": 1000000000000000024,
+      "Name": "Escape",
+      "Actions": [
+        {
+          "ID": 1000000000000000040,
+          "Name": "Toggle",
+          "Type": "Button",
+          "ValueType": "Bool",
+          "Interaction": {
+            "Type": "Press"
+          },
+          "Bindings": [
+            {
+              "ID": 1000000000000000041,
+              "Name": "Escape",
+              "Kind": "Control",
+              "Path": "<Keyboard>/escape",
+              "SchemeIDs": [
+                1000000000000000002
+              ]
+            },
+            {
+              "ID": 1000000000000000042,
+              "Name": "Start",
+              "Kind": "Control",
+              "Path": "<GamePad>/start",
+              "SchemeIDs": [
+                1000000000000000003
+              ]
+            }
+          ]
+        },
+        {
+          "ID": 1000000000000000025,
+          "Name": "SelectUp",
+          "Type": "Button",
+          "ValueType": "Bool",
+          "Interaction": {
+            "Type": "Press"
+          },
+          "Bindings": [
+            {
+              "ID": 1000000000000000026,
+              "Name": "W",
+              "Kind": "Control",
+              "Path": "<Keyboard>/w",
+              "SchemeIDs": [
+                1000000000000000002
+              ]
+            },
+            {
+              "ID": 1000000000000000027,
+              "Name": "UpArrow",
+              "Kind": "Control",
+              "Path": "<Keyboard>/upArrow",
+              "SchemeIDs": [
+                1000000000000000002
+              ]
+            },
+            {
+              "ID": 1000000000000000028,
+              "Name": "DPadUp",
+              "Kind": "Control",
+              "Path": "<GamePad>/dpad/up",
+              "SchemeIDs": [
+                1000000000000000003
+              ]
+            }
+          ]
+        },
+        {
+          "ID": 1000000000000000029,
+          "Name": "SelectDown",
+          "Type": "Button",
+          "ValueType": "Bool",
+          "Interaction": {
+            "Type": "Press"
+          },
+          "Bindings": [
+            {
+              "ID": 1000000000000000030,
+              "Name": "S",
+              "Kind": "Control",
+              "Path": "<Keyboard>/s",
+              "SchemeIDs": [
+                1000000000000000002
+              ]
+            },
+            {
+              "ID": 1000000000000000031,
+              "Name": "DownArrow",
+              "Kind": "Control",
+              "Path": "<Keyboard>/downArrow",
+              "SchemeIDs": [
+                1000000000000000002
+              ]
+            },
+            {
+              "ID": 1000000000000000032,
+              "Name": "DPadDown",
+              "Kind": "Control",
+              "Path": "<GamePad>/dpad/down",
+              "SchemeIDs": [
+                1000000000000000003
+              ]
+            }
+          ]
+        },
+        {
+          "ID": 1000000000000000033,
+          "Name": "Navigate",
+          "Type": "Value",
+          "ValueType": "Vector2",
+          "Interaction": {
+            "Type": "Press"
+          },
+          "Bindings": [
+            {
+              "ID": 1000000000000000034,
+              "Name": "LeftStick",
+              "Kind": "Control",
+              "Path": "<GamePad>/leftStick",
+              "DeadZone": 0.5,
+              "SchemeIDs": [
+                1000000000000000003
+              ]
+            }
+          ]
+        },
+        {
+          "ID": 1000000000000000035,
+          "Name": "Confirm",
+          "Type": "Button",
+          "ValueType": "Bool",
+          "Interaction": {
+            "Type": "Press"
+          },
+          "Bindings": [
+            {
+              "ID": 1000000000000000036,
+              "Name": "F",
+              "Kind": "Control",
+              "Path": "<Keyboard>/f",
+              "SchemeIDs": [
+                1000000000000000002
+              ]
+            },
+            {
+              "ID": 1000000000000000037,
+              "Name": "Enter",
+              "Kind": "Control",
+              "Path": "<Keyboard>/enter",
+              "SchemeIDs": [
+                1000000000000000002
+              ]
+            },
+            {
+              "ID": 1000000000000000038,
+              "Name": "Space",
+              "Kind": "Control",
+              "Path": "<Keyboard>/space",
+              "SchemeIDs": [
+                1000000000000000002
+              ]
+            },
+            {
+              "ID": 1000000000000000039,
+              "Name": "EastButton",
+              "Kind": "Control",
+              "Path": "<GamePad>/buttonEast",
+              "SchemeIDs": [
+                1000000000000000003
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
       "ID": 1000000000000000004,
       "Name": "Character",
       "Actions": [

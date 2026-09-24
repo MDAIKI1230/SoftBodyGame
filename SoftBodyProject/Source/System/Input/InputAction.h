@@ -90,7 +90,7 @@ private:
     template<auto Method, class T>
     static void InvokeMember(
         void* _instance,
-        const InputActionContext& _context)
+        InputActionContext& _context)
     {
         static_assert(std::is_member_function_pointer_v<decltype(Method)>);
 

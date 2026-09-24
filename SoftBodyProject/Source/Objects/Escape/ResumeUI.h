@@ -1,13 +1,13 @@
 ﻿#pragma once
 
-#include "ObjectBase.h"
+#include "EscapePart.h"
 
-class ResumeUI :public ObjectBase
+class ResumeUI :public EscapePart
 {
 public:
 	// コンストラクタ
 	ResumeUI(WorldStorage* _world, EntityID _entityID);
 
-	// ゲーム終了
-	void Resume();
+	// 元のシーンに戻る
+	void Action() override;
 };

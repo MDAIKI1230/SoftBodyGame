@@ -25,6 +25,9 @@ public:
 	// FixedUpdateを呼び出すタイミングか
 	static bool IsFixedUpdateTime()
 	SingletonPublicFunction(bool, IsFixedUpdateTime, (), ())
+	// リセット関数シーン遷移後に呼ぶ
+	static void ResetTime()
+	SingletonPublicFunction(void, ResetTime, (), ())
 private:
 	// シングルトン
 	// コンストラクタ

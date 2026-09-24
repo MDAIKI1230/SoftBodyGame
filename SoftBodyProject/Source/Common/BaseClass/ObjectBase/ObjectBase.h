@@ -10,11 +10,7 @@ class ObjectBase
 {
 public:
 	// コンストラクタ
-	ObjectBase(WorldStorage* _world, EntityID _entityID) :
-		world{ _world },
-		id{ _entityID }
-	{
-	}
+	ObjectBase(WorldStorage* _world, EntityID _entityID);
 
 	// --- 更新系 ---
 

@@ -13,6 +13,5 @@ public:
 	void Initialize() override;
 
 private:
-	void Escape(InputActionContext _input);
 	void ToGameScene(InputActionContext _input);
 };

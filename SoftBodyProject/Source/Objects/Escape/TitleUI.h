@@ -1,13 +1,13 @@
 ﻿#pragma once
 
-#include "ObjectBase.h"
+#include "EscapePart.h"
 
-class TitleUI :public ObjectBase
+class TitleUI :public EscapePart
 {
 public:
 	// コンストラクタ
 	TitleUI(WorldStorage* _world, EntityID _entityID);
 
-	// ゲーム終了
-	void ToTitleScene();
+	// タイトルに戻る
+	void Action() override;
 };

@@ -1,7 +1,5 @@
 ﻿#pragma once
 
-#include "ActiveRagdollComponent.h"
-
 #include "InputActionContext.h"
 #include "InputAction.h"
 
@@ -34,9 +32,8 @@ private:
 	void Move(InputActionContext _input);
 	void Stop(InputActionContext _input);
 	void Jump(InputActionContext _input);
-	void CameraMove(InputActionContext _input);
-
-	void EndMGame(InputActionContext _input);
+	void CameraMoveMouse(InputActionContext _input);
+	void CameraMovePad(InputActionContext _input);
 private:
 	Camera* camera;
 

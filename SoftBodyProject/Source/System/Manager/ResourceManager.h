@@ -16,7 +16,7 @@
 #include "VertexShaderHandle.h"
 #include "PixelShaderHandle.h"
 #include "ShaderConstantBufferHandle.h"
-
+#include "SoundHandle.h"
 
 /*
 	リソース全般の管理を担当する
@@ -56,6 +56,11 @@ public:
 	/// <param name="_path">フルパス</param>
 	static bool LoadPixelShader(std::filesystem::path _path)
 	SingletonPublicFunction(bool, LoadPixelShader, (std::filesystem::path _path), (_path))
+	/// <summary>
+	/// 音源ロード
+	/// </summary>
+	static bool LoadSound(std::filesystem::path _path)
+	SingletonPublicFunction(bool, LoadSound, (std::filesystem::path _path), (_path))
 
 	/// <summary>
 	/// 定数バッファ作成
@@ -124,6 +129,11 @@ public:
 	/// <returns>成功したか</returns>
 	static float GetAnimTotalTime(ModelHandle _model, AnimationHandle _anim)
 	SingletonPublicFunction(float, GetAnimTotalTime, (ModelHandle _model, AnimationHandle _anim), (_model, _anim))
+	/// <summary>
+	/// 音源取得
+	/// </summary>
+	static SoundHandle GetSound(std::filesystem::path _path)
+	SingletonPublicFunction(SoundHandle, GetSound, (std::filesystem::path _path), (_path))
 
 	/// <summary>
 	/// モデルにTRS列を適用する
@@ -215,6 +225,11 @@ public:
 	static void UnLoadConstantBuffer(ShaderConstantBufferHandle _handle)
 	SingletonPublicFunction(void, UnLoadConstantBuffer, (ShaderConstantBufferHandle _handle), (_handle))
 	/// <summary>
+	// 音源破棄
+	/// </summary>
+	static void UnLoadSound(std::filesystem::path _path)
+	SingletonPublicFunction(void, UnLoadSound, (std::filesystem::path _path), (_path))
+	/// <summary>
 	/// すべてのリソースを破棄する
 	/// </summary>
 	static void UnLoadAll()
@@ -238,6 +253,7 @@ private:
 	std::unordered_map <std::filesystem::path, VertexShaderHandle> vertexShaderMasters;
 	std::unordered_map <std::filesystem::path, PixelShaderHandle> pixelShaderMasters;
 	std::unordered_map <std::filesystem::path, int> animationIndecies;
+	std::unordered_map<std::filesystem::path, SoundHandle> soundMasters;
 
 	std::unordered_map <ModelHandle, SkeletonHandle> modelToSkeleton;
 

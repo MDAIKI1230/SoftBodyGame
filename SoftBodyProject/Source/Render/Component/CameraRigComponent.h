@@ -4,7 +4,7 @@
 
 #include "CameraConstants.h"
 
-#include "TransformComponent.h"
+#include "CollisionFilter.h"
 
 /*
 * カメラをFPSやTPSの視点操作を実装するためのコンポーネント

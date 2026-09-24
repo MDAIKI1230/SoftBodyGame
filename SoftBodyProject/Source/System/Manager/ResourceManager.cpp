@@ -74,6 +74,35 @@ bool ResourceManager::LoadPixelShaderImpl(std::filesystem::path _path)
 	return pixelShaderMasters[key].GetGeneration() != 0;
 }
 
+// 音源ロード
+bool ResourceManager::LoadSoundImpl(std::filesystem::path _path)
+{
+	const auto key{ _path.filename() };
+
+	if (soundMasters.contains(key))
+	{
+		return true;
+	}
+
+	ISound* sound{ ServiceLocator::GetSound() };
+
+	if (sound == nullptr)
+	{
+		return false;
+	}
+
+	SoundHandle handle{ sound->LoadSound(_path.string()) };
+
+	if (!handle.IsValid())
+	{
+		return false;
+	}
+
+	soundMasters[key] = handle;
+
+	return true;
+}
+
 ShaderConstantBufferHandle ResourceManager::CreateConstantBufferImpl(uint32_t _size)
 {
 	return ServiceLocator::GetGPUConnecter()->CreateConstantBuffer(_size);
@@ -186,6 +215,19 @@ void ResourceManager::SetMatrixImpl(ModelHandle _model, const Matrix4x4& _mat)
 	ServiceLocator::GetRenderer()->ModelSetMatrix(_model, _mat);
 }
 
+// 音源取得
+SoundHandle ResourceManager::GetSoundImpl(std::filesystem::path _path)
+{
+	const auto key{ _path.filename() };
+
+	if (soundMasters.contains(key))
+	{
+		return soundMasters.at(key);
+	}
+
+	return {};
+}
+
 // モデルにポーズを適応させる(アニメーションを踏まえない)
 bool ResourceManager::ApplyPoseImpl(ModelHandle _model, const PoseBuffer& _pose)
 {
@@ -291,9 +333,43 @@ void ResourceManager::UnLoadConstantBufferImpl(ShaderConstantBufferHandle _handl
 	ServiceLocator::GetGPUConnecter()->DestroyConstantBuffer(_handle);
 }
 
+// 音源破棄
+void ResourceManager::UnLoadSoundImpl(std::filesystem::path _path)
+{
+	const auto key{ _path.filename() };
+	auto it{ soundMasters.find(key) };
+
+	if (it == soundMasters.end())
+	{
+		return;
+	}
+
+	ISound* sound{ ServiceLocator::GetSound() };
+
+	if (sound == nullptr)
+	{
+		return;
+	}
+
+	sound->DeleteSound(it->second);
+	soundMasters.erase(it);
+}
+
 // すべてのリソースを破棄する
 void ResourceManager::UnLoadAllImpl()
 {
+	ISound* sound{ ServiceLocator::GetSound() };
+
+	if (sound != nullptr)
+	{
+		for (const auto& [path, handle] : soundMasters)
+		{
+			sound->DeleteSound(handle);
+		}
+	}
+
+	soundMasters.clear();
+
 	ServiceLocator::GetGPUConnecter()->DeleteAll();
 	ServiceLocator::GetRenderer()->DeleteAll();
 }
