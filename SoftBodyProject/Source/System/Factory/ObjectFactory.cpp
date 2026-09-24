@@ -1,5 +1,5 @@
-﻿#include "DebugBox.h"
-#include "DebugSphere.h"
+﻿#include "Debug/DebugBox.h"
+#include "Debug/DebugSphere.h"
 #include "EmptyObject.h"
 
 #include "ObjectFactory.h"

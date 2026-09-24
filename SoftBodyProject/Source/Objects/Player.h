@@ -35,6 +35,8 @@ private:
 	void Stop(InputActionContext _input);
 	void Jump(InputActionContext _input);
 	void CameraMove(InputActionContext _input);
+
+	void EndMGame(InputActionContext _input);
 private:
 	Camera* camera;
 

@@ -56,6 +56,8 @@ protected:
 	virtual void DrawModel(ModelHandle _handle) = 0;
 	// 画像描画
 	virtual void DrawTexture(TextureHandle _handle, const Vector2& _pos, bool _transFlag) = 0;
+	// Fade描画
+	virtual void DrawFadeBox(float _alpha) = 0;
 	// 球描画
 	virtual void DrawSphere(const Vector3& _pos, float _radius, const Color& _color) = 0;
 	// メッシュ球描画

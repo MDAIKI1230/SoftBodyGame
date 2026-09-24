@@ -19,18 +19,18 @@ public:
 	// --- 更新系 ---
 
 	// 更新処理
-	virtual void Update() = 0;
+	virtual void Update() {};
 	// 物理更新処理
-	virtual void FixedUpdate() = 0;
+	virtual void FixedUpdate() {};
 
 	// --- 衝突系 ---
 	
 	// 衝突始め
-	virtual void OnCollisionEnter() = 0;
+	virtual void OnCollisionEnter() {};
 	// 衝突中ずっと
-	virtual void OnCollision() = 0;
+	virtual void OnCollision() {};
 	// 衝突終わり
-	virtual void OnCollisionExit() = 0;
+	virtual void OnCollisionExit() {};
 
 	// --- コンポーネント ---
 

@@ -9,3 +9,10 @@ enum class SceneState
 	TERMINATE,
 	FADEOUT
 };
+
+enum class SceneRequestType
+{
+	NONE,
+	TITLE,
+	GAME
+};

@@ -108,6 +108,9 @@ private:
 	// コントローラ列挙体を評価
 	InputValue EvaluateGamePadInput(GamePadConstants _input);
 
+	// 全キー探査を評価
+	InputValue EvaluateAnyButtonInput(InputDeviceType _device);
+
 	// InputCompositeTypeがAXIS2Dだった時の関数
 	InputValue EvaluateAxis2d(const InputCompositeBindingData& _binding);
 

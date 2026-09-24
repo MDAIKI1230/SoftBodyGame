@@ -4,10 +4,13 @@
 #include "ResourceManager.h"
 
 // 描画系
-#include "ModelRenderingSystem.h"
 #include "RendererComponentStorage.h"
 #include "CameraComponentStorage.h"
+#include "SpriteRendererComponentStorage.h"
+#include "ModelRenderingSystem.h"
 #include "SkyRenderingSystem.h"
+#include "SpriteRenderingSystem.h"
+
 
 // Transform
 #include "TransformComponentStorage.h"
@@ -63,13 +66,16 @@
 
 SceneBase::SceneBase()
 {
-	// レンダリングシステム追加
-	AddSystem(std::make_unique<ModelRenderingSystem>());
-	AddSystem(std::make_unique<SkyRenderingSystem>());
 	// レンダラーストレージ追加
 	AddStorage<RendererComponent>(std::make_unique<RendererComponentStorage>());
 	// カメラコンポーネントストレージ追加
 	AddStorage<CameraComponent>(std::make_unique<CameraComponentStorage>());
+	// スプライトコンポーネントストレージ追加
+	AddStorage<SpriteRendererComponent>(std::make_unique<SpriteRendererComponentStorage>());
+	// レンダリングシステム追加
+	AddSystem(std::make_unique<ModelRenderingSystem>());
+	AddSystem(std::make_unique<SkyRenderingSystem>());
+	AddSystem(std::make_unique<SpriteRenderingSystem>());
 	// Transformも同様
 	AddStorage<TransformComponent>(std::make_unique<TransformComponentStorage>());
 	// 物理関係
@@ -123,7 +129,8 @@ void SceneBase::Execute()
 		// 初期化タスクの生成
 		systemManager.Initialize();
 		Initialize();
-		state = SceneState::UPDATE;
+		fade.StartFadeIn();
+		state = SceneState::FADEIN;
 		break;
 	case SceneState::LOADING:
 		// wait処理
@@ -153,12 +160,20 @@ void SceneBase::Execute()
 
 void SceneBase::FadeIn()
 {
-	
+	fade.Update();
+	if (fade.IsFadeInFinished())
+	{
+		state = SceneState::UPDATE;
+	}
 }
 
 void SceneBase::FadeOut()
 {
-
+	fade.Update();
+	if (fade.IsFadeOutFinished())
+	{
+		state = SceneState::TERMINATE;
+	}
 }
 
 void SceneBase::Update()
@@ -203,12 +218,20 @@ void SceneBase::Render()
 #ifdef _DEBUG
 	physicsWorld.DebugRender();
 #endif // _DEBUG
+
+	fade.Draw();
 }
 
 // 終了
 void SceneBase::End()
 {
-	state = SceneState::TERMINATE;
+	if (state != SceneState::UPDATE)
+	{
+		return;
+	}
+
+	state = SceneState::FADEOUT;
+	fade.StartFadeOut();
 }
 
 // 切り替えていいよフラグ
@@ -239,6 +262,7 @@ void SceneBase::LoadFile(std::string _filePath)
 void SceneBase::Terminate()
 {
 	ResourceManager::UnLoadAll();
+	isCompleteEnding = true;
 }
 
 // 仮想デストラクタ

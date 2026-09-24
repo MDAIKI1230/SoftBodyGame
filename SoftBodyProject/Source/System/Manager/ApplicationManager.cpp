@@ -1,5 +1,6 @@
 ﻿#include "BaseConstants.h"
-#include "KeyConstants.h"
+
+#include "ApplicationRequest.h"
 
 #include "ServiceLocator.h"
 #include "TimeManager.h"
@@ -34,7 +35,7 @@ int ApplicationManager::ApplicationMain()
 
 	InputSystem::Initialize();
 
-	while (system->ProcessMessage() == 0)
+	while (system->ProcessMessage() == 0 && !ApplicationRequest::IsExitRequested())
 	{
 		InputSystem::Update();
 		TimeManager::Update();
@@ -45,6 +46,8 @@ int ApplicationManager::ApplicationMain()
 		sceneManager->Render();
 
 		renderer->ScreenFlip();
+
+		sceneManager->ApplySceneChange();
 
 		TimeManager::WaitNextFrame();
 	}

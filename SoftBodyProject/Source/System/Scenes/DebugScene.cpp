@@ -18,13 +18,13 @@
 #include "AngleLimitHingeConstraintComponent.h"
 #include "LimitedBallJointConstraintComponent.h"
 
-#include "DebugSphere.h"
-#include "DebugBox.h"
-#include "DebugCapsule.h"
+#include "Debug/DebugSphere.h"
+#include "Debug/DebugBox.h"
+#include "Debug/DebugCapsule.h"
 #include "EmptyObject.h"
 #include "Player.h"
-#include "DebugRagdoll.h"
-#include "DebugActiveRagdoll.h"
+#include "Debug/DebugRagdoll.h"
+#include "Debug/DebugActiveRagdoll.h"
 
 #include "DebugScene.h"
 

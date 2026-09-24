@@ -387,6 +387,11 @@ InputValue InputSystem::EvaluateControl(const InputControlBindingData& _binding)
 		return EvaluateGamePadInput(*composite);
 	}
 
+	if (const auto* anyButton = std::get_if<AnyButtonControl>(&_binding.control))
+	{
+		return EvaluateAnyButtonInput(anyButton->device);
+	}
+
 	return std::monostate{};
 }
 // 入力が複数の場合のバインド作成関数
@@ -449,6 +454,46 @@ InputValue InputSystem::EvaluateGamePadInput(GamePadConstants _input)
 	}
 
 	return std::monostate{};
+}
+
+// 全キー探査を評価
+InputValue InputSystem::EvaluateAnyButtonInput(InputDeviceType _device)
+{
+	switch (_device)
+	{
+	case InputDeviceType::KEYBOARD:
+		for (int i = 0; i < static_cast<int>(KeyConstants::Count); i++)
+		{
+			if (nativeInput->GetCurrentValue(static_cast<KeyConstants>(i)))
+			{
+				return true;
+			}
+		}
+		return false;
+
+	case InputDeviceType::MOUSE:
+		for (int i = 0; i < static_cast<int>(MouseButton::Count); i++)
+		{
+			if (nativeInput->GetCurrentValue(static_cast<MouseButton>(i)))
+			{
+				return true;
+			}
+		}
+		return false;
+
+	case InputDeviceType::GAMEPAD:
+		for (int i = 0; i < static_cast<int>(GamePadButton::Count); i++)
+		{
+			if (nativeInput->GetCurrentValue(static_cast<GamePadButton>(i), activeGamePadIndex))
+			{
+				return true;
+			}
+		}
+		return false;
+
+	default:
+		return false;
+	}
 }
 
 // InputCompositeTypeがAXIS2Dだった時の関数

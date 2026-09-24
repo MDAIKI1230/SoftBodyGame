@@ -780,6 +780,13 @@ bool InputAssetDataLoadHelper::GetResolvedInputControl(const rapidjson::Value& _
 
 	if (deviceName == "Keyboard")
 	{
+		if (controlName == "anyKey")
+		{
+			_output = AnyButtonControl{ InputDeviceType::KEYBOARD };
+
+			return true;
+		}
+
 		std::optional<KeyConstants> key{ ResolveKeyboardPath(controlName) };
 
 		if (key.has_value())
@@ -794,6 +801,13 @@ bool InputAssetDataLoadHelper::GetResolvedInputControl(const rapidjson::Value& _
 	}
 	else if (deviceName == "Mouse")
 	{
+		if (controlName == "anyButton")
+		{
+			_output = AnyButtonControl{ InputDeviceType::MOUSE };
+
+			return true;
+		}
+
 		MouseConstants control{ ResolveMousePath(controlName) };
 
 		if (std::holds_alternative<std::monostate>(control))
@@ -807,6 +821,13 @@ bool InputAssetDataLoadHelper::GetResolvedInputControl(const rapidjson::Value& _
 	}
 	else if (deviceName == "GamePad")
 	{
+		if (controlName == "anyButton")
+		{
+			_output = AnyButtonControl{ InputDeviceType::GAMEPAD };
+
+			return true;
+		}
+
 		GamePadConstants control{ ResolveGamePadPath(controlName) };
 
 		if (std::holds_alternative<std::monostate>(control))

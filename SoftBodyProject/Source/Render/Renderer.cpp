@@ -56,9 +56,15 @@ void Renderer::DrawModelImpl(ModelHandle _handle, const Material& _material)
 }
 
 // 画像描画
-void Renderer::DrawTextureImpl(TextureHandle _handle)
+void Renderer::DrawTextureImpl(TextureHandle _handle, const Vector3& _position)
 {
-	ServiceLocator::GetRenderer()->DrawTexture(_handle, Vector2{}, true);
+	ServiceLocator::GetRenderer()->DrawTexture(_handle, Vector2{ _position.x,_position.y }, true);
+}
+
+// Fade描画
+void Renderer::DrawFadeImpl(float _alpha)
+{
+	ServiceLocator::GetRenderer()->DrawFadeBox(_alpha);
 }
 
 // 球描画

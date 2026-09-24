@@ -283,6 +283,7 @@
     <ClInclude Include="Source\Common\ECS\Storage\WorldStorage.h" />
     <ClInclude Include="Source\Common\ECS\SystemManager.h" />
     <ClInclude Include="Source\Common\Events\Physics\PhysicsEvent.h" />
+    <ClInclude Include="Source\Common\Fade.h" />
     <ClInclude Include="Source\Common\Interface\IGPUConnecter.h" />
     <ClInclude Include="Source\Common\Interface\IInput.h" />
     <ClInclude Include="Source\Common\Interface\IRenderer.h" />
@@ -319,13 +320,18 @@
     <ClInclude Include="Source\Common\Struct\TextureHandle.h" />
     <ClInclude Include="Source\Common\Struct\VertexShaderHandle.h" />
     <ClInclude Include="Source\Objects\Camera.h" />
-    <ClInclude Include="Source\Objects\DebugActiveRagdoll.h" />
-    <ClInclude Include="Source\Objects\DebugBox.h" />
-    <ClInclude Include="Source\Objects\DebugCapsule.h" />
-    <ClInclude Include="Source\Objects\DebugRagdoll.h" />
-    <ClInclude Include="Source\Objects\DebugSphere.h" />
+    <ClInclude Include="Source\Objects\Debug\DebugActiveRagdoll.h" />
+    <ClInclude Include="Source\Objects\Debug\DebugBox.h" />
+    <ClInclude Include="Source\Objects\Debug\DebugCapsule.h" />
+    <ClInclude Include="Source\Objects\Debug\DebugRagdoll.h" />
+    <ClInclude Include="Source\Objects\Debug\DebugSphere.h" />
     <ClInclude Include="Source\Objects\EmptyObject.h" />
+    <ClInclude Include="Source\Objects\Escape\Escape.h" />
+    <ClInclude Include="Source\Objects\Escape\QuitUI.h" />
+    <ClInclude Include="Source\Objects\Escape\ResumeUI.h" />
+    <ClInclude Include="Source\Objects\Escape\TitleUI.h" />
     <ClInclude Include="Source\Objects\Player.h" />
+    <ClInclude Include="Source\Objects\Title\PressToStart.h" />
     <ClInclude Include="Source\Physics\API\PhysicsAPI.h" />
     <ClInclude Include="Source\Physics\API\PhysicsComponentAPI.h" />
     <ClInclude Include="Source\Physics\Component\Body\RigidBodyComponent.h" />
@@ -459,14 +465,17 @@
     <ClInclude Include="Source\Render\Component\CameraComponent.h" />
     <ClInclude Include="Source\Render\Component\CameraRigComponent.h" />
     <ClInclude Include="Source\Render\Component\RendererComponent.h" />
+    <ClInclude Include="Source\Render\Component\SpriteRendererComponent.h" />
     <ClInclude Include="Source\Render\Renderer.h" />
     <ClInclude Include="Source\Render\Storage\CameraComponentStorage.h" />
     <ClInclude Include="Source\Render\Storage\CameraRigComponentStorage.h" />
     <ClInclude Include="Source\Render\Storage\RendererComponentStorage.h" />
+    <ClInclude Include="Source\Render\Storage\SpriteRendererComponentStorage.h" />
     <ClInclude Include="Source\Render\System\CameraBindSystem.h" />
     <ClInclude Include="Source\Render\System\CameraRigSystem.h" />
     <ClInclude Include="Source\Render\System\ModelRenderingSystem.h" />
     <ClInclude Include="Source\Render\System\SkyRenderingSystem.h" />
+    <ClInclude Include="Source\Render\System\SpriteRenderingSystem.h" />
     <ClInclude Include="Source\System\Adapter\Dxlib\DxlibConstants.h" />
     <ClInclude Include="Source\System\Adapter\Dxlib\DxlibConvert.h" />
     <ClInclude Include="Source\System\Adapter\Dxlib\DxlibGPUConnecter.h" />
@@ -488,6 +497,7 @@
     <ClInclude Include="Source\System\Input\Struct\InputActionRuntimeData.h" />
     <ClInclude Include="Source\System\Input\Struct\InputInteractionEvents.h" />
     <ClInclude Include="Source\System\Input\Struct\InputValue.h" />
+    <ClInclude Include="Source\System\Manager\ApplicationRequest.h" />
     <ClInclude Include="Source\System\Manager\ApplicationManager.h" />
     <ClInclude Include="Source\System\Manager\ObjectManager.h" />
     <ClInclude Include="Source\System\Manager\ResourceManager.h" />
@@ -502,6 +512,7 @@
     <ClInclude Include="Source\System\SceneData\Struct\SceneFileData.h" />
     <ClInclude Include="Source\System\SceneData\Struct\SceneObjectData.h" />
     <ClInclude Include="Source\System\Scenes\DebugScene.h" />
+    <ClInclude Include="Source\System\Scenes\TitleScene.h" />
     <ClInclude Include="Source\System\ServiceLocator.h" />
     <ClInclude Include="Source\System\struct\BackEnd.h" />
     <ClInclude Include="Source\System\struct\ViewPort.h" />
@@ -546,6 +557,7 @@
     <ClCompile Include="Source\Common\ECS\SparseSet\Table\HashTable.cpp" />
     <ClCompile Include="Source\Common\ECS\SparseSet\Table\LinearTable.cpp" />
     <ClCompile Include="Source\Common\ECS\SystemManager.cpp" />
+    <ClCompile Include="Source\Common\Fade.cpp" />
     <ClCompile Include="Source\Common\Math\GeometryUtility.cpp" />
     <ClCompile Include="Source\Common\Math\Matrix\MatGenerateFunc.cpp" />
     <ClCompile Include="Source\Common\Math\Matrix\Matrix.cpp" />
@@ -559,13 +571,15 @@
     <ClCompile Include="Source\Common\Math\Vector\Vector3\Vector3Int.cpp" />
     <ClCompile Include="Source\Common\Math\Vector\Vector4\Vector4.cpp" />
     <ClCompile Include="Source\Main.cpp" />
-    <ClCompile Include="Source\Objects\DebugActiveRagdoll.cpp" />
-    <ClCompile Include="Source\Objects\DebugBox.cpp" />
-    <ClCompile Include="Source\Objects\DebugCapsule.cpp" />
-    <ClCompile Include="Source\Objects\DebugRagdoll.cpp" />
-    <ClCompile Include="Source\Objects\DebugSphere.cpp" />
+    <ClCompile Include="Source\Objects\Debug\DebugActiveRagdoll.cpp" />
+    <ClCompile Include="Source\Objects\Debug\DebugBox.cpp" />
+    <ClCompile Include="Source\Objects\Debug\DebugCapsule.cpp" />
+    <ClCompile Include="Source\Objects\Debug\DebugRagdoll.cpp" />
+    <ClCompile Include="Source\Objects\Debug\DebugSphere.cpp" />
     <ClCompile Include="Source\Objects\EmptyObject.cpp" />
+    <ClCompile Include="Source\Objects\Escape\Escape.cpp" />
     <ClCompile Include="Source\Objects\Player.cpp" />
+    <ClCompile Include="Source\Objects\Title\PressToStart.cpp" />
     <ClCompile Include="Source\Physics\API\PhysicsAPI.cpp" />
     <ClCompile Include="Source\Physics\API\PhysicsComponentAPI.cpp" />
     <ClCompile Include="Source\Physics\Component\Body\RigidBodyComponent.cpp" />
@@ -634,6 +648,7 @@
     <ClCompile Include="Source\Render\System\CameraRigSystem.cpp" />
     <ClCompile Include="Source\Render\System\ModelRenderingSystem.cpp" />
     <ClCompile Include="Source\Render\System\SkyRenderingSystem.cpp" />
+    <ClCompile Include="Source\Render\System\SpriteRenderingSystem.cpp" />
     <ClCompile Include="Source\System\Adapter\Dxlib\DxlibGPUConnecter.cpp" />
     <ClCompile Include="Source\System\Adapter\Dxlib\DxlibInput.cpp" />
     <ClCompile Include="Source\System\Adapter\Dxlib\DxlibRenderer.cpp" />
@@ -653,6 +668,7 @@
     <ClCompile Include="Source\System\SceneData\JsonLoadHelperFunc.cpp" />
     <ClCompile Include="Source\System\SceneData\SceneDataLoader.cpp" />
     <ClCompile Include="Source\System\Scenes\DebugScene.cpp" />
+    <ClCompile Include="Source\System\Scenes\TitleScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shader\Sky\SkyPS.hlsl">

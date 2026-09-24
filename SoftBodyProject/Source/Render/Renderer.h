@@ -42,8 +42,13 @@ public:
 	/// 画像描画
 	/// </summary>
 	/// <param name="_handle">画像ハンドル</param>
-	static void DrawTexture(TextureHandle _handle)
-	SingletonPublicFunction(void, DrawTexture, (TextureHandle _handle), (_handle))
+	static void DrawTexture(TextureHandle _handle, const Vector3& _position)
+	SingletonPublicFunction(void, DrawTexture, (TextureHandle _handle, const Vector3& _position), (_handle, _position))
+	/// <summary>
+	/// Fade描画
+	/// </summary>
+	static void DrawFade(float _alpha)
+	SingletonPublicFunction(void, DrawFade, (float _alpha), (_alpha))
 	/// <summary>
 	/// 球描画
 	/// </summary>

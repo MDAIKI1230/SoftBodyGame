@@ -2,6 +2,8 @@
 
 #include "AssertMacros.h"
 
+#include "BaseConstants.h"
+
 #include "DxlibConvert.h"
 
 #include "DxlibRenderer.h"
@@ -128,6 +130,18 @@ void DxlibRenderer::DrawTexture(TextureHandle _handle, const Vector2& _pos, bool
 	{
 		DxLib::DrawGraph(static_cast<int>(_pos.x), static_cast<int>(_pos.y), nativeHandle, _transFlag);
 	}
+}
+
+// Fade描画
+void DxlibRenderer::DrawFadeBox(float _alpha)
+{
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, _alpha * 255.0f);
+
+	DxLib::DrawBox(0.0f, 0.0f,
+		Config::WINDOW_SIZE_W, Config::WINDOW_SIZE_H,
+		GetColor(0, 0, 0), true);
+
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 }
 
 // 球描画

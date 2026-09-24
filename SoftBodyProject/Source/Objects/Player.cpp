@@ -4,6 +4,8 @@
 #include "AnimationComponent.h"
 #include "RendererComponent.h"
 
+#include "ApplicationRequest.h"
+
 #include "Player.h"
 
 // コンストラクタ
@@ -19,15 +21,24 @@ Player::Player(WorldStorage* _world, EntityID _entityID, Camera* _camera) :
 	InputSystem::GetInputAction("Character", "Move").AddCanceledCallback<&Player::Stop>(this);
 	InputSystem::GetInputAction("Character", "Jump").AddPerformedCallback<&Player::Jump>(this);
 	InputSystem::GetInputAction("Camera", "LookMouse").AddPerformedCallback<&Player::CameraMove>(this);
+	InputSystem::GetInputAction("Application", "Exit").AddStartedCallback<&Player::EndMGame>(this);
 
 	camera->GetComponent<CameraRigComponent>()->SetMode(CameraMode::TPS);
 	camera->GetComponent<CameraRigComponent>()->SetFollowTarget(GetID());
 	camera->GetComponent<CameraComponent>()->SetNear(0.1f);
 	camera->GetComponent<CameraComponent>()->SetFar(2000.0f);
 
-	RendererComponent* renderer{ AddComponent<RendererComponent>(ResourceManager::GetModel("M_001_player_095_01_no_sword_walk_high.mv1")) };
-	ActiveRagdollComponent* active{ AddComponent<ActiveRagdollComponent>(*renderer, "Res/Data/Ragdoll/Active/M_001_player_095_01_no_sword.json") };
-	AnimationComponent* anim{ AddComponent<AnimationComponent>(renderer,"Res/Data/Skeleton/M_001_player_095_01_no_sword_LegsBoneMask.json") };
+	RendererComponent* renderer{ AddComponent<RendererComponent>(
+		ResourceManager::GetModel("M_001_player_095_01_no_sword_walk_high.mv1")
+	) };
+
+	ActiveRagdollComponent* active{ AddComponent<ActiveRagdollComponent>(
+		*renderer, "Res/Data/Ragdoll/Active/M_001_player_095_01_no_sword.json"
+	) };
+
+	AnimationComponent* anim{ AddComponent<AnimationComponent>(
+		renderer,"Res/Data/Skeleton/M_001_player_095_01_no_sword_LegsBoneMask.json"
+	) };
 	anim->SetAnimationName("Walk");
 	anim->SetLoop(true);
 
@@ -88,4 +99,9 @@ void Player::Jump(InputActionContext _input)
 void Player::CameraMove(InputActionContext _input)
 {
 	camera->GetComponent<CameraRigComponent>()->AddLookDelta(_input.ReadValue<Vector2>() * 0.01f);
+}
+
+void Player::EndMGame(InputActionContext _input)
+{
+	ApplicationRequest::ExitRequest();
 }

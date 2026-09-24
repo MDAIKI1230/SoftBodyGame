@@ -154,6 +154,41 @@
           ]
         }
       ]
+    },
+    {
+      "ID": 1000000000000000020,
+      "Name": "Application",
+      "Actions": [
+        {
+          "ID": 1000000000000000021,
+          "Name": "Exit",
+          "Type": "Button",
+          "ValueType": "Bool",
+          "Interaction": {
+            "Type": "Press"
+          },
+          "Bindings": [
+            {
+              "ID": 1000000000000000022,
+              "Name": "Escape",
+              "Kind": "Control",
+              "Path": "<Keyboard>/escape",
+              "SchemeIDs": [
+                1000000000000000002
+              ]
+            },
+            {
+              "ID": 1000000000000000023,
+              "Name": "Start",
+              "Kind": "Control",
+              "Path": "<GamePad>/start",
+              "SchemeIDs": [
+                1000000000000000003
+              ]
+            }
+          ]
+        }
+      ]
     }
   ]
 }

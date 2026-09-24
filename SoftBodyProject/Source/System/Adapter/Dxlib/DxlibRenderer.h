@@ -40,6 +40,8 @@ private:
 	void DrawModel(ModelHandle _handle) override;
 	// 画像描画
 	void DrawTexture(TextureHandle _handle, const Vector2& _pos, bool _transFlag) override;
+	// Fade描画
+	void DrawFadeBox(float _alpha) override;
 	// 球描画
 	void DrawSphere(const Vector3& _pos, float _radius, const Color& _color) override;
 	// メッシュ球描画

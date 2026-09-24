@@ -18,6 +18,8 @@
 #include "FixedUpdateSystem.h"
 #include "RenderingSystem.h"
 
+#include "Fade.h"
+
 class SceneBase
 {
 public:
@@ -74,4 +76,7 @@ protected:
 
 	//シーン切り替えていいよフラグ
 	bool isCompleteEnding{ false };
+
+	// フェードクラス
+	Fade fade;
 };
