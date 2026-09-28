@@ -259,6 +259,8 @@ public:
 	static void SetEndPoint(ConstraintID _id,const EndPointFrame& _endPoint);
 	// 相手のEndPointすべて取得
 	static std::span<const EndPointFrame> GetOtherEndPoints(ConstraintID _id);
+	// 相手のEndPointすべて取得
+	static std::span<EndPointFrame> EditOtherEndPoints(ConstraintID _id);
 
 	// 拘束にEndPoint追加
 	static void AddEndPoint(ConstraintID _id, EntityID _entity, const Vector3& _localOffset, const Quaternion& _localRotation = Quaternion::IDENTITY);
@@ -356,6 +358,16 @@ public:
 	// カプセル半径設定
 	static void SetCharacterControllerColliderRadius(CharacterControllerID _id, float _radius);
 
+	// オフセット位置取得
+	static Vector3 GetColliderOffset(CharacterControllerID _id);
+	// オフセット位置設定
+	static void SetColliderOffset(CharacterControllerID _id, const Vector3& _offset);
+
+	// コリジョンフィルター取得
+	static CollisionFilter GetCharacterControllerCollisionFilter(CharacterControllerID _id);
+	// コリジョンフィルタ設定
+	static void SetCharacterControllerCollisionFilter(CharacterControllerID _id, const CollisionFilter& _filter);
+
 	// --- 移動設定 ---
 
 	// 最大移動速度取得
@@ -452,6 +464,11 @@ public:
 
 	// PhysicsTransform破棄(対応する他の奴も破棄する)
 	static void DestroyPhysicsTransform(PhysicsTransformID _transformID);
+
+	// PhysicsTransform位置取得
+	static Vector3 GetInternalPhysicsTransformPosition(PhysicsTransformID _transformID);
+	// PhysicsTransform位置変更
+	static void SetInternalPhysicsTransformPosition(PhysicsTransformID _transformID, const Vector3& _position);
 
 	static void BindWorld(PhysicsWorld& _physicsWorld, WorldStorage& _componentWorld);
 	static void UnbindWorld();

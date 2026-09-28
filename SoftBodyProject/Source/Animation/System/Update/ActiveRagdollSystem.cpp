@@ -19,7 +19,9 @@ void ActiveRagdollSystem::PrePhysicsFixedUpdate(SkeletonInstanceStorage* _skelet
 
 		const CollisionFilter& ignoreFilter{ _ragdollStorage->GetIgnoreFilter(ragdollID) };
 
-		UpdateGroundState(ragdoll, activeRagdoll, ignoreFilter);
+		const Matrix4x4& worldFromModel{ _skeletonStorage->GetWorldFromModel(ragdoll.skeleton) };
+
+		/*UpdateGroundState(ragdoll, activeRagdoll, ignoreFilter);
 		UpdateBodyState(ragdoll, activeRagdoll);
 		UpdateControlState(activeRagdoll);
 		
@@ -27,8 +29,9 @@ void ActiveRagdollSystem::PrePhysicsFixedUpdate(SkeletonInstanceStorage* _skelet
 		UpdateMovement(ragdoll, activeRagdoll);
 		UpdateUpright(ragdoll, activeRagdoll);
 		UpdateRecovery(ragdoll, activeRagdoll, ignoreFilter);
-		UpdateBalance(ragdoll, activeRagdoll);
+		UpdateBalance(ragdoll, activeRagdoll);*/
 		UpdateJointDrive(ragdoll, activeRagdoll, targetPose);
+		UpdatePointConstraint(ragdoll, activeRagdoll, targetPose, worldFromModel);
 	}
 }
 
@@ -826,6 +829,53 @@ void ActiveRagdollSystem::UpdateJointDrive(const Ragdoll& _ragdoll, const Active
 		targetRelativeRotation.Normalize();
 
 		PhysicsComponentAPI::SetTargetRelativeRotation(constraint, targetRelativeRotation);
+	}
+}
+
+// Animationの目標姿勢から各関節Pointの目標位置を更新する関数
+void ActiveRagdollSystem::UpdatePointConstraint(const Ragdoll& _ragdoll, const ActiveRagdoll& _activeRagdoll, const PoseBuffer& _targetPose, const Matrix4x4 _worldFromModel)
+{
+	for (int i{ 0 }; i < _activeRagdoll.pointConstraints.size(); i++)
+	{
+		ConstraintID constraint{ _activeRagdoll.pointConstraints[i] };
+
+		// 親ボーンインデックス
+		uint32_t parentBoneIndex{ _activeRagdoll.parentBoneIndex[i] };
+
+		const EndPointFrame& parentEndPoint{ PhysicsComponentAPI::GetEndPoint(constraint) };
+		// 一旦APIの関係上一対一だけどこれからしか取得できないから[0]があってすまぬ
+		EndPointFrame& targetEndPoint{ PhysicsComponentAPI::EditOtherEndPoints(constraint)[0] };
+
+		Vector3 scale;
+		Quaternion rot;
+		Vector3 parentModelPosition;
+
+		Transform::DecomposeTRS(
+			_targetPose.modelFromBoneMatrices[parentBoneIndex],
+			parentModelPosition,
+			rot,
+			scale
+		);
+
+		const RagdollBodyLink& parentLink{ _ragdoll.bodyLinks[parentBoneIndex] };
+
+		// モデル座標系とボディのオフセット分
+		Matrix4x4 modelFromParentBody{
+			_targetPose.modelFromBoneMatrices[parentBoneIndex] *
+			MatGenerateFunc::TRS(
+				parentLink.bodyPositionInBoneSpace,
+				parentLink.bodyRotationInBoneSpace,
+				Vector3::ONE)};
+
+		// ポイントのローカル位置をモデル座標に変換
+		Vector3 targetModelPoint{modelFromParentBody * parentEndPoint.localPosition};
+
+		// ワールドに変換
+		Vector3 targetWorldPoint{_worldFromModel * targetModelPoint};
+
+		PhysicsComponentAPI::SetInternalPhysicsTransformPosition(
+			_activeRagdoll.pointTransformIDs[i],
+			targetWorldPoint);
 	}
 }
 

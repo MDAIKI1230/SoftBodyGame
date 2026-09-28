@@ -53,6 +53,16 @@ public:
 	// カプセル半径設定
 	void SetColliderRadius(float _radius);
 
+	// オフセット位置取得
+	Vector3 GetColliderOffset();
+	// オフセット位置設定
+	void SetColliderOffset(const Vector3& _offset);
+
+	// コリジョンフィルター取得
+	CollisionFilter GetCollisionFilter();
+	// コリジョンフィルタ設定
+	void SetCollisionFilter(const CollisionFilter& _filter);
+
 	// --- 移動設定 ---
 
 	// 最大移動速度取得

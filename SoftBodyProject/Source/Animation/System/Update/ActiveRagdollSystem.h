@@ -40,6 +40,8 @@ private:
 
 	// Animationの目標姿勢から各関節Driveの目標相対回転を更新する関数
 	void UpdateJointDrive(const Ragdoll& _ragdoll, const ActiveRagdoll& _activeRagdoll, const PoseBuffer& _targetPose);
+	// Animationの目標姿勢から各関節Pointの目標位置を更新する関数
+	void UpdatePointConstraint(const Ragdoll& _ragdoll, const ActiveRagdoll& _activeRagdoll, const PoseBuffer& _targetPose, const Matrix4x4 _worldFromModel);
 
 	// 腰の速度から地面法線方向の成分を除いた水平速度を計算する関数
 	Vector3 CalculatePlanarVelocity(const ActiveRagdoll& _activeRagdoll, BodyID _pelvisBodyID) const;

@@ -89,23 +89,47 @@ bool ActiveRagdollStorage::CreateActiveRagdoll(EntityID _entity, const Ragdoll& 
 		const EndPointFrame parentEndPoint{ PhysicsComponentAPI::GetEndPoint(bodyConstraint) };
 		for (const EndPointFrame& childEndPoint : PhysicsComponentAPI::GetOtherEndPoints(bodyConstraint))
 		{
-			ConstraintID constraintID{ PhysicsComponentAPI::CreateInternalJointDriveConstraint(
+			// JointDrive拘束を作成してく
+			ConstraintID jointDriveID{ PhysicsComponentAPI::CreateInternalJointDriveConstraint(
 				_entity,
 				parentEndPoint.transformID,
 				parentEndPoint.localPosition,
 				parentEndPoint.localRotation) };
 
 			PhysicsComponentAPI::AddInternalEndPoint(
-				constraintID,
+				jointDriveID,
 				childEndPoint.transformID,
 				childEndPoint.localPosition,
 				childEndPoint.localRotation);
 
-			PhysicsComponentAPI::SetTuning(constraintID, tuning);
+			PhysicsComponentAPI::SetTuning(jointDriveID, tuning);
 
 			activeRagdoll.childBoneIndex.push_back(boneIndex);
 			activeRagdoll.parentBoneIndex.push_back(_ragdoll.parentIndices[boneIndex]);
-			activeRagdoll.jointDriveConstraints.push_back(constraintID);
+			activeRagdoll.jointDriveConstraints.push_back(jointDriveID);
+
+			// point拘束を作成していく
+			ConstraintID pointID{ PhysicsComponentAPI::CreateInternalPointConstraint(
+				_entity,
+				parentEndPoint.transformID,
+				parentEndPoint.localPosition) };
+
+			// 内部の目標位置を拘束に渡すようTransformID
+			PhysicsTransformID transformID{ PhysicsComponentAPI::CreateInternalPhysicsTransformID(
+				_entity,
+				childEndPoint.localPosition,
+				childEndPoint.localRotation,
+				Vector3::ONE) };
+
+			PhysicsComponentAPI::AddInternalEndPoint(
+				pointID,
+				transformID,
+				Vector3::ZERO);
+
+			PhysicsComponentAPI::SetTuning(pointID, tuning);
+
+			activeRagdoll.pointConstraints.push_back(pointID);
+			activeRagdoll.pointTransformIDs.push_back(transformID);
 		}
 	}
 

@@ -665,6 +665,37 @@ std::span<const EndPointFrame> PhysicsComponentAPI::GetOtherEndPoints(Constraint
 	}
 }
 
+// 相手のEndPointすべて取得
+std::span<EndPointFrame> PhysicsComponentAPI::EditOtherEndPoints(ConstraintID _id)
+{
+	switch (constraintStorage->GetType(_id))
+	{
+	case ConstraintType::POINTS:
+		return std::span{ constraintStorage->EditPointConstraint(_id).endPoints }.subspan(1);
+		break;
+	case ConstraintType::DISTANCE:
+		return std::span{ constraintStorage->EditDistanceConstraint(_id).endPoints }.subspan(1);
+		break;
+	case ConstraintType::HINGE:
+		return std::span{ constraintStorage->EditHingeConstraint(_id).endPoints };
+		break;
+	case ConstraintType::ANGLE_LIMIT_POINT:
+		return std::span{ constraintStorage->EditAngleLimitPointConstraint(_id).endPoints };
+		break;
+	case ConstraintType::ANGLE_LIMIT_HINGE:
+		return std::span{ constraintStorage->EditAngleLimitHingeConstraint(_id).endPoints };
+		break;
+	case ConstraintType::LIMITED_BALL_JOINT:
+		return std::span{ constraintStorage->EditLimitedBallJointConstraint(_id).endPoints };
+		break;
+	case ConstraintType::JOINT_DRIVE:
+		return std::span<EndPointFrame>{ &constraintStorage->EditJointDriveConstraint(_id).otherEndPoint, 1 };
+	default:
+		return {};
+		break;
+	}
+}
+
 // 拘束にEndPoint追加
 void PhysicsComponentAPI::AddEndPoint(ConstraintID _id, EntityID _entity, const Vector3& _localOffset, const Quaternion& _localRotation)
 {
@@ -1131,6 +1162,32 @@ void PhysicsComponentAPI::SetCharacterControllerColliderRadius(CharacterControll
 	MarkColliderDirty(colliderID, AABBChangeDiaryFlag::SHAPE);
 }
 
+// オフセット位置取得
+Vector3 PhysicsComponentAPI::GetColliderOffset(CharacterControllerID _id)
+{
+	return colliderStorage->GetCapsuleColliderOffsetPosition(GetCharacterControllerColliderID(_id));
+}
+// オフセット位置設定
+void PhysicsComponentAPI::SetColliderOffset(CharacterControllerID _id, const Vector3& _offset)
+{
+	ColliderID colliderID{ GetCharacterControllerColliderID(_id) };
+
+	colliderStorage->SetCapsuleColliderOffsetPosition(colliderID, _offset);
+}
+
+// コリジョンフィルター取得
+CollisionFilter PhysicsComponentAPI::GetCharacterControllerCollisionFilter(CharacterControllerID _id)
+{
+	return colliderStorage->GetFilter(GetCharacterControllerColliderID(_id));
+}
+// コリジョンフィルタ設定
+void PhysicsComponentAPI::SetCharacterControllerCollisionFilter(CharacterControllerID _id, const CollisionFilter& _filter)
+{
+	ColliderID colliderID{ GetCharacterControllerColliderID(_id) };
+
+	colliderStorage->EditFilter(colliderID) = _filter;
+}
+
 // --- 移動設定 ---
 
 // 最大移動速度取得
@@ -1415,6 +1472,25 @@ void PhysicsComponentAPI::DestroyPhysicsTransform(PhysicsTransformID _transformI
 	}
 
 	transformStorage->Destroy(_transformID);
+}
+
+// PhysicsTransform位置取得
+Vector3 PhysicsComponentAPI::GetInternalPhysicsTransformPosition(PhysicsTransformID _transformID)
+{
+	if (transformStorage->IsAlive(_transformID))
+	{
+		return transformStorage->GetPosition(_transformID);
+	}
+
+	return {};
+}
+// PhysicsTransform位置変更
+void PhysicsComponentAPI::SetInternalPhysicsTransformPosition(PhysicsTransformID _transformID, const Vector3& _position)
+{
+	if (transformStorage->IsAlive(_transformID))
+	{
+		transformStorage->SetPosition(_transformID, _position);
+	}
 }
 
 // --- World接続 ---

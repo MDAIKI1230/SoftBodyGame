@@ -5,6 +5,7 @@
 #include "AnimationComponent.h"
 #include "RendererComponent.h"
 #include "ActiveRagdollComponent.h"
+#include "CharacterControllerComponent.h"
 
 #include "ApplicationRequest.h"
 
@@ -45,6 +46,11 @@ Player::Player(WorldStorage* _world, EntityID _entityID, Camera* _camera) :
 	anim->SetLoop(true);
 
 	camera->GetComponent<CameraRigComponent>()->GetRayFilter(active->GetIgnoreFilter());
+
+	CharacterControllerComponent* cc{ AddComponent<CharacterControllerComponent>() };
+	cc->SetCollisionFilter(active->GetIgnoreFilter());
+	cc->SetColliderHeight(50.0f);
+	cc->SetColliderOffset(Vector3{ 0.0f,50.0f,0.0f });
 }
 
 // --- 更新系 ---
@@ -57,9 +63,7 @@ void Player::Update()
 // 物理更新処理
 void Player::FixedUpdate()
 {
-	ActiveRagdollComponent* active{ GetComponent<ActiveRagdollComponent>() };
 
-	GetComponent<TransformComponent>()->SetPosition(active->GetBody(RagdollBoneRole::PELVIS).GetPosition());
 }
 
 // --- 衝突系 ---
@@ -88,12 +92,12 @@ void Player::Move(InputActionContext _input)
 
 	Vector2 input{ _input.ReadValue<Vector2>() };
 	Vector3 local{ camera->GetComponent<TransformComponent>()->GetRotation().Rotate(Vector3{ input.x,0.0f,input.y }) };
-	GetComponent<ActiveRagdollComponent>()->SetMoveInput(local);
+	GetComponent<CharacterControllerComponent>()->SetMoveInput(local);
 	GetComponent<AnimationComponent>()->Play();
 }
 void Player::Stop(InputActionContext _input)
 {
-	GetComponent<ActiveRagdollComponent>()->ClearMoveInput();
+	GetComponent<CharacterControllerComponent>()->ClearMoveInput();
 	GetComponent<AnimationComponent>()->Stop();
 }
 void Player::Jump(InputActionContext _input)
@@ -105,7 +109,7 @@ void Player::Jump(InputActionContext _input)
 
 	if (_input.ReadValue<bool>())
 	{
-		GetComponent<ActiveRagdollComponent>()->RequestJump();
+		GetComponent<CharacterControllerComponent>()->RequestJump();
 	}
 }
 void Player::CameraMoveMouse(InputActionContext _input)

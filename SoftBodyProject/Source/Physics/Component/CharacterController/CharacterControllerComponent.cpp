@@ -92,6 +92,28 @@ void CharacterControllerComponent::SetColliderRadius(float _radius)
 	PhysicsComponentAPI::SetCharacterControllerColliderRadius(id, _radius);
 }
 
+// オフセット位置取得
+Vector3 CharacterControllerComponent::GetColliderOffset()
+{
+	return PhysicsComponentAPI::GetColliderOffset(id);
+}
+// オフセット位置設定
+void CharacterControllerComponent::SetColliderOffset(const Vector3& _offset)
+{
+	PhysicsComponentAPI::SetColliderOffset(id, _offset);
+}
+
+// コリジョンフィルター取得
+CollisionFilter CharacterControllerComponent::GetCollisionFilter()
+{
+	return PhysicsComponentAPI::GetCharacterControllerCollisionFilter(id);
+}
+// コリジョンフィルタ設定
+void CharacterControllerComponent::SetCollisionFilter(const CollisionFilter& _filter)
+{
+	PhysicsComponentAPI::SetCharacterControllerCollisionFilter(id, _filter);
+}
+
 // --- 移動設定 ---
 
 // 最大移動速度取得

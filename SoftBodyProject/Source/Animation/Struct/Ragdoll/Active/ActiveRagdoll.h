@@ -28,6 +28,9 @@ public:
 	std::vector<uint32_t> parentBoneIndex;
 	// 二者間に起きる拘束のID
 	std::vector<ConstraintID> jointDriveConstraints;
+	std::vector<ConstraintID> pointConstraints;
+	// 位置拘束用のTransformID
+	std::vector<PhysicsTransformID> pointTransformIDs;
 
 	// 操作目標
 	Vector3 moveInput{};
