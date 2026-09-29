@@ -2,18 +2,17 @@
 
 void PhysicsWorld::Initialize()
 {
+	// 速度を変更しない衝突の解消を行って、速度が暴走するのを防ぐ。
 	solverBodyBuildSystem.Build(&transformStorage, &bodyStorage, &solverBodyBuffer);
-	// 解消準備
+	
 	collisionSolverSystem.StartUp(&colliderStorage, &manifoldBuffer, &solverBodyBuffer);
 
 	for (int i{ 0 }; i < SOLVER_TIMES; i++)
 	{
-		constraintBuildSystem.FixedUpdate(&constraintStorage, &solverBodyBuffer, &constraintBuffer);
+		constraintBuildSystem.Build(&constraintStorage, &solverBodyBuffer, &constraintBuffer);
 		constraintSolverSystem.PBDPositionSolver(&solverBodyBuffer, &constraintBuffer);
 		constraintBuffer.Clear();
 	}
-
-	constraintSolverSystem.ReCalcVelocity(&solverBodyBuffer);
 
 	solverBodyCommitSystem.Commit(&transformStorage, &bodyStorage, &solverBodyBuffer);
 	solverBodyBuffer.Clear();
@@ -88,7 +87,7 @@ void PhysicsWorld::Solver()
 	for (int i{ 0 }; i < SOLVER_TIMES; i++)
 	{
 		collisionSolverSystem.PositionSolver(&manifoldBuffer, &solverBodyBuffer);
-		constraintBuildSystem.FixedUpdate(&constraintStorage, &solverBodyBuffer, &constraintBuffer);
+		constraintBuildSystem.Build(&constraintStorage, &solverBodyBuffer, &constraintBuffer);
 		constraintSolverSystem.PBDPositionSolver(&solverBodyBuffer, &constraintBuffer);
 		constraintBuffer.Clear();
 	}

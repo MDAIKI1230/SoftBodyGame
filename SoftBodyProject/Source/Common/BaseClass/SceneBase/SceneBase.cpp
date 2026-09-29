@@ -132,6 +132,9 @@ void SceneBase::Execute()
 		systemManager.Initialize();
 		Initialize();
 		fade.StartFadeIn();
+		//// アニメーションの物理更新前更新
+		//animationWorld.PrePhysicsFixedUpdate();
+		//physicsWorld.Initialize();
 		GameManager::StartScene();
 		TimeManager::ResetTime();
 		state = SceneState::FADEIN;

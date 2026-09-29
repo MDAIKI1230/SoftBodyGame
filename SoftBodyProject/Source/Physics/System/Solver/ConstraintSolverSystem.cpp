@@ -256,13 +256,18 @@ void ConstraintSolverSystem::PBDPositionSolver(SolverBodyBuffer* _solverBodyBuff
 			continue;
 		}
 
-		// λ計算(CFMも適応)
-		float lambda{ constraint.error / effectiveMass };
-
+		// λ計算
 		float oldLambda{ constraint.accumulatedLambda };
 
+		float deltaLambda{
+			(constraint.error - constraint.timeStepAdjustedCompliance * oldLambda) /
+			(effectiveMass + constraint.timeStepAdjustedCompliance)};
+
 		// 合計値を計算
-		constraint.accumulatedLambda = oldLambda + lambda;
+		constraint.accumulatedLambda = std::clamp(
+			oldLambda + deltaLambda,
+			constraint.minLambda,
+			constraint.maxLambda);
 
 		float applyLambda{ constraint.accumulatedLambda - oldLambda };
 

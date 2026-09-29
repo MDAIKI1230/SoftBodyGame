@@ -24,6 +24,8 @@ struct Constraint
 	float bias{ 0.0f };
 	// 柔らかさ
 	float softness{ 0.0f };
+	// 拘束の違反の許容値(0で固い拘束)
+	float timeStepAdjustedCompliance{ 0.0f };
 	// 加えれる力の最小値
 	float minLambda{ -FLT_MAX };
 	// 加えれる力の最大値

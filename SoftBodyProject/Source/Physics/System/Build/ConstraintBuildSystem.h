@@ -1,14 +1,21 @@
 ﻿#pragma once
 
 #include "ConstraintStorage.h"
+#include "ColliderStorage.h"
 
 #include "SolverBodyBuffer.h"
 #include "ConstraintBuffer.h"
+#include "CollisionManifoldBuffer.h"
 
 class ConstraintBuildSystem
 {
 public:
-	void FixedUpdate(ConstraintStorage* _constraintStorage, SolverBodyBuffer* _solverBodyBuffer, ConstraintBuffer* _constraintBuffer);
+	// 最初の拘束生成
+	void Build(ConstraintStorage* _constraintStorage, SolverBodyBuffer* _solverBodyBuffer, ConstraintBuffer* _constraintBuffer);
+	// 最初の衝突の拘束生成
+	void Build(ColliderStorage* _colliderStorage, SolverBodyBuffer* _solverBodyBuffer, CollisionManifoldBuffer* _manifoldBuffer, ConstraintBuffer* _constraintBuffer);
+	// エラー等の変化値の再計算
+	void RefreshRows(ConstraintStorage* _constraintStorage, SolverBodyBuffer* _solverBodyBuffer, ConstraintBuffer* _constraintBuffer);
 private:
 	// 点拘束の解く用の拘束構造体を作る
 	void BuildPointConstraint(ConstraintStorage* _constraintStorage, SolverBodyBuffer* _solverBodyBuffer, ConstraintBuffer* _constraintBuffer);

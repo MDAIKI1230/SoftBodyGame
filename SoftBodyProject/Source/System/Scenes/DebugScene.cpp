@@ -95,7 +95,7 @@ void DebugScene::Initialize()
 	objectManager.Add(std::move(debugBox03));*/
 
 	// 点拘束デバッグ
-	/*std::unique_ptr<DebugBox> debugBox02{ std::make_unique<DebugBox>(&worldStorage, objectManager.GenerateNewID(), 30.0f) };
+	std::unique_ptr<DebugBox> debugBox02{ std::make_unique<DebugBox>(&worldStorage, objectManager.GenerateNewID(), 30.0f) };
 	debugBox02->GetComponent<TransformComponent>()->SetPosition(Vector3{ 0,50,0 });
 	debugBox02->GetComponent<TransformComponent>()->Rotate(Quaternion::AngleAxis((3.141592f / 4.0f), Vector3{ 0,1,1 }));
 	debugBox02->AddComponent<RigidBodyComponent>()->SetIsGravity(true);
@@ -106,7 +106,7 @@ void DebugScene::Initialize()
 	debugBox04->GetComponent<TransformComponent>()->SetPosition(Vector3{ 0,100,0 });
 	debugBox04->AddComponent<RigidBodyComponent>()->SetIsGravity(true);
 	pointConstraint->AddEndPoint(debugBox04->GetID(), Vector3{ 15.0f,15.0f,15.0f });
-	objectManager.Add(std::move(debugBox04));*/
+	objectManager.Add(std::move(debugBox04));
 
 	// 距離拘束によるロープの実装
 	/*

@@ -1429,6 +1429,9 @@
     <ClInclude Include="Source\Sound\SoundPlayer.h">
       <Filter>ソース ファイル\Sound</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Physics\Struct\Constraint\ConstraintRowBatch.h">
+      <Filter>ソース ファイル\Physics\Struct\Constraint</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\System\Scenes\DebugScene.cpp">

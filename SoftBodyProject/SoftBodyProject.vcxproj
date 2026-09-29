@@ -435,6 +435,7 @@
     <ClInclude Include="Source\Physics\Struct\Command\BodyUpdate.h" />
     <ClInclude Include="Source\Physics\Struct\Constraint\Constraint.h" />
     <ClInclude Include="Source\Physics\Struct\Constraint\ConstraintID.h" />
+    <ClInclude Include="Source\Physics\Struct\Constraint\ConstraintRowBatch.h" />
     <ClInclude Include="Source\Physics\Struct\Constraint\ConstraintSlot.h" />
     <ClInclude Include="Source\Physics\Struct\Constraint\ConstraintTuning.h" />
     <ClInclude Include="Source\Physics\Struct\Constraint\Constraint\AngleLimitHingeConstraint.h" />

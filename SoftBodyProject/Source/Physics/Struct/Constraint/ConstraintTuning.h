@@ -4,6 +4,8 @@
 
 struct ConstraintTuning
 {
+	// 拘束の違反の許容値(0で固い拘束)
+	float compliance{ 0.0f };
     // 柔らかさ
     float stiffness{ 10000.0f };
     // 減衰係数

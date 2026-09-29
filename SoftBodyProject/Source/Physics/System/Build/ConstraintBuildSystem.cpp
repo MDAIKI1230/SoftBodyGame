@@ -1,12 +1,11 @@
 ﻿#include <algorithm>
 
-#include "AssertMacros.h"
-
 #include "TimeManager.h"
 
 #include "ConstraintBuildSystem.h"
 
-void ConstraintBuildSystem::FixedUpdate(ConstraintStorage* _constraintStorage, SolverBodyBuffer* _solverBodyBuffer, ConstraintBuffer* _constraintBuffer)
+// 最初の拘束生成
+void ConstraintBuildSystem::Build(ConstraintStorage* _constraintStorage, SolverBodyBuffer* _solverBodyBuffer, ConstraintBuffer* _constraintBuffer)
 {
 	BuildPointConstraint(_constraintStorage, _solverBodyBuffer, _constraintBuffer);
 	BuildDistanceConstraint(_constraintStorage, _solverBodyBuffer, _constraintBuffer);
@@ -15,6 +14,65 @@ void ConstraintBuildSystem::FixedUpdate(ConstraintStorage* _constraintStorage, S
 	BuildAngleLimitHingeConstraint(_constraintStorage, _solverBodyBuffer, _constraintBuffer);
 	BuildLimitedBallJointConstraint(_constraintStorage, _solverBodyBuffer, _constraintBuffer);
 	BuildJointDriveConstraint(_constraintStorage, _solverBodyBuffer, _constraintBuffer);
+}
+
+// 最初の衝突の拘束生成
+void ConstraintBuildSystem::Build(ColliderStorage* _colliderStorage, SolverBodyBuffer* _solverBodyBuffer, CollisionManifoldBuffer* _manifoldBuffer, ConstraintBuffer* _constraintBuffer)
+{
+	// すべての衝突情報から拘束条件の作成をする
+	for (auto& manifold : _manifoldBuffer->GetAll())
+	{
+		for (int i{ 0 }; i < manifold.pointCount; i++)
+		{
+			Constraint constraint;
+			// SolverBodyのIndexを取得
+			PhysicsTransformID transformID{ _colliderStorage->GetTransformID(manifold.colliderA) };
+			constraint.solverBodyAIndex = _solverBodyBuffer->GetIndex(transformID);
+			transformID = _colliderStorage->GetTransformID(manifold.colliderB);
+			constraint.solverBodyBIndex = _solverBodyBuffer->GetIndex(transformID);
+
+			Vector3 positionLocalA{ manifold.points[i].positionLocalA };
+			Vector3 positionLocalB{ manifold.points[i].positionLocalB };
+
+			Vector3 normal{ manifold.normal };
+
+			// ボディA
+			SolverBody& solverBodyA{ _solverBodyBuffer->Edit(constraint.solverBodyAIndex) };
+			// ボディB
+			SolverBody& solverBodyB{ _solverBodyBuffer->Edit(constraint.solverBodyBIndex) };
+
+			// 重心から衝突点ベクトル
+			Vector3 rA{ solverBodyA.rotation.Rotate(positionLocalA) };
+			Vector3 rB{ solverBodyB.rotation.Rotate(positionLocalB) };
+
+			// 重心から衝突点ベクトルAと法線の外積
+			Vector3 rACross{ Vector3::Cross(rA,normal) };
+			// 重心から衝突点ベクトルBと法線の外積
+			Vector3 rBCross{ Vector3::Cross(rB,normal) };
+
+			Vector3 pointA{ solverBodyA.position + rA };
+			Vector3 pointB{ solverBodyB.position + rB };
+
+			float sep{ Vector3::Dot((pointB - pointA), normal) };
+
+			constraint.error = std::max(-sep, 0.0f);
+			
+			constraint.jacobian[0] = normal;
+			constraint.jacobian[1] = rACross;
+			constraint.jacobian[2] = normal;
+			constraint.jacobian[3] = rBCross;
+
+			constraint.minLambda = 0.0f;
+
+			_constraintBuffer->Add(constraint);
+		}
+	}
+}
+
+// エラー等の変化値の再計算
+void ConstraintBuildSystem::RefreshRows(ConstraintStorage* _constraintStorage, SolverBodyBuffer* _solverBodyBuffer, ConstraintBuffer* _constraintBuffer)
+{
+
 }
 
 // 点拘束の解く用の拘束構造体を作る
@@ -684,15 +742,7 @@ void ConstraintBuildSystem::MakeConstraintInfo(Constraint& _constraint, const Co
 {
 	float deltaTime{ TimeManager::GetFixedDeltaTime() };
 
-	float denominator = _tuning.damping + deltaTime * _tuning.stiffness;
-
-	_constraint.softness = 1.0f / denominator;
-
-	float erp{ deltaTime * _tuning.stiffness / denominator };
-
-	_constraint.bias = erp / deltaTime * _constraint.error;
-
-	_constraint.targetVelocity = 0.0f;
+	_constraint.timeStepAdjustedCompliance = _tuning.compliance / (deltaTime * deltaTime);
 
 	_constraint.minLambda = -_tuning.maxForce * deltaTime;
 	_constraint.maxLambda = _tuning.maxForce * deltaTime;
