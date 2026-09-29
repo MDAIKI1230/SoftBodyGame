@@ -12,6 +12,10 @@ public:
 	void Solve(SolverBodyBuffer* _solverBodyBuffer, ConstraintBuffer* _constraintBuffer);
 	// 位置解決
 	void PositionSolver(SolverBodyBuffer* _solverBodyBuffer, ConstraintBuffer* _constraintBuffer);
+	// PBD法による位置解消関数
+	void PBDPositionSolver(SolverBodyBuffer* _solverBodyBuffer, ConstraintBuffer* _constraintBuffer);
+	// 速度再計算
+	void ReCalcVelocity(SolverBodyBuffer* _solverBodyBuffer);
 private:
 	// バネ定数
 	const float K;

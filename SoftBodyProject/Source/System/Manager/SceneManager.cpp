@@ -10,7 +10,7 @@
 
 SceneManager::SceneManager()
 {
-	currentScene = std::make_unique<TitleScene>();
+	currentScene = std::make_unique<DebugScene>();
 
 	// "Res/Data/Scene"内のフォルダを取得
 	//std::vector<std::filesystem::path> filePaths;

@@ -1,5 +1,24 @@
 ﻿#include "PhysicsWorld.h"
 
+void PhysicsWorld::Initialize()
+{
+	solverBodyBuildSystem.Build(&transformStorage, &bodyStorage, &solverBodyBuffer);
+	// 解消準備
+	collisionSolverSystem.StartUp(&colliderStorage, &manifoldBuffer, &solverBodyBuffer);
+
+	for (int i{ 0 }; i < SOLVER_TIMES; i++)
+	{
+		constraintBuildSystem.FixedUpdate(&constraintStorage, &solverBodyBuffer, &constraintBuffer);
+		constraintSolverSystem.PBDPositionSolver(&solverBodyBuffer, &constraintBuffer);
+		constraintBuffer.Clear();
+	}
+
+	constraintSolverSystem.ReCalcVelocity(&solverBodyBuffer);
+
+	solverBodyCommitSystem.Commit(&transformStorage, &bodyStorage, &solverBodyBuffer);
+	solverBodyBuffer.Clear();
+}
+
 void PhysicsWorld::FixedUpdate(WorldStorage* _worldStorage, EventManager* _eventManager)
 {
 	// コマンドバッファ処理
@@ -36,17 +55,32 @@ void PhysicsWorld::Solver()
 	collisionSolverSystem.StartUp(&colliderStorage, &manifoldBuffer, &solverBodyBuffer);
 
 	// 拘束生成
-	constraintBuildSystem.FixedUpdate(&constraintStorage, &solverBodyBuffer, &constraintBuffer);
+	//constraintBuildSystem.FixedUpdate(&constraintStorage, &solverBodyBuffer, &constraintBuffer);
 
-	// 速度解消を指定回数分回す
+	//// 速度解消を指定回数分回す
+	//for (int i{ 0 }; i < SOLVER_TIMES; i++)
+	//{
+	//	collisionSolverSystem.Solve(&manifoldBuffer, &solverBodyBuffer);
+
+	//	constraintSolverSystem.Solve(&solverBodyBuffer, &constraintBuffer);
+	//}
+
+	//// 修正された速度で位置を再計算
+	//collisionSolverSystem.ReCalcPosRot(&solverBodyBuffer);
+
+	//for (int i{ 0 }; i < SOLVER_TIMES; i++)
+	//{
+	//	constraintBuildSystem.FixedUpdate(&constraintStorage, &solverBodyBuffer, &constraintBuffer);
+	//	collisionSolverSystem.PositionSolver(&manifoldBuffer, &solverBodyBuffer);
+	//	constraintSolverSystem.PositionSolver(&solverBodyBuffer, &constraintBuffer);
+	//	constraintBuffer.Clear();
+	//}
+	// PBD版
+
 	for (int i{ 0 }; i < SOLVER_TIMES; i++)
 	{
 		collisionSolverSystem.Solve(&manifoldBuffer, &solverBodyBuffer);
-
-		constraintSolverSystem.Solve(&solverBodyBuffer, &constraintBuffer);
 	}
-
-	constraintBuffer.Clear();
 
 	// 修正された速度で位置を再計算
 	collisionSolverSystem.ReCalcPosRot(&solverBodyBuffer);
@@ -54,8 +88,12 @@ void PhysicsWorld::Solver()
 	for (int i{ 0 }; i < SOLVER_TIMES; i++)
 	{
 		collisionSolverSystem.PositionSolver(&manifoldBuffer, &solverBodyBuffer);
-		constraintSolverSystem.PositionSolver(&solverBodyBuffer, &constraintBuffer);
+		constraintBuildSystem.FixedUpdate(&constraintStorage, &solverBodyBuffer, &constraintBuffer);
+		constraintSolverSystem.PBDPositionSolver(&solverBodyBuffer, &constraintBuffer);
+		constraintBuffer.Clear();
 	}
+
+	constraintSolverSystem.ReCalcVelocity(&solverBodyBuffer);
 
 	// 終了
 	collisionSolverSystem.End(&manifoldBuffer);

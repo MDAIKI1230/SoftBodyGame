@@ -40,12 +40,14 @@ void DebugScene::Initialize()
 	ResourceManager::LoadModel("Res/Model/M_001_player_095_01_no_sword_walk.mv1");
 	ResourceManager::LoadModel("Res/Model/M_001_player_095_01_no_sword_walk_high.mv1");
 	ResourceManager::LoadModel("Res/Model/M_001_player_095_01_no_sword_walk_high_knee.mv1");
-	LoadFile("Res/Data/Scene/ExhibitionTutorialStageSceneData.json");
+	// LoadFile("Res/Data/Scene/ExhibitionTutorialStageSceneData.json");
 
 	std::unique_ptr<Camera> camera{ std::make_unique<Camera>(&worldStorage, objectManager.GenerateNewID()) };
 	ResourceManager::LoadCubeTexture("Res/Texture/Sky/NaturalDayMeadow_Cubemap.dds");
 	camera->GetComponent<CameraComponent>()->SetSkyTextureHandle(ResourceManager::GetCubeTexture("NaturalDayMeadow_Cubemap.dds"));
 	camera->GetComponent<CameraComponent>()->SetClearMode(ClearMode::SKY);
+	camera->GetComponent<CameraComponent>()->SetNear(0.1f);
+	camera->GetComponent<CameraComponent>()->SetFar(2000.0f);
 	camera->GetComponent<TransformComponent>()->SetPosition(Vector3{ 0.0f,-200.0f,-500.0f });
 
 	Camera* cameraPtr{ camera.get()};
@@ -81,7 +83,8 @@ void DebugScene::Initialize()
 	// 距離拘束デバッグ(宙ぶらりんなせいで力が減衰する要素がほぼないので凄い動く)
 	/*std::unique_ptr<EmptyObject> emptyObject{ std::make_unique<EmptyObject>(&worldStorage, objectManager.GenerateNewID()) };
 	emptyObject->GetComponent<TransformComponent>()->SetPosition(Vector3{ 200.0f,0.0f,0.0f });
-	DistanceConstraintComponent* distanceConstraint{ emptyObject->AddComponent<DistanceConstraintComponent>(Vector3{ 15.0f,15.0f,15.0f },100.0f) };
+	DistanceConstraintComponent* distanceConstraint{ emptyObject->AddComponent<DistanceConstraintComponent>(Vector3{ 15.0f,15.0f,15.0f }) };
+	distanceConstraint->SetDistance(100.0f);
 	objectManager.Add(std::move(emptyObject));
 
 

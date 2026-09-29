@@ -20,7 +20,7 @@ void CollisionSolverSystem::StartUp(ColliderStorage* _colliderStorage, Collision
 	// メモリの確保
 	contactConstraints.reserve(_manifoldBuffer->GetSize() * 2);
 
-	// すべての衝突情報から拘束条件とソルバ用Bodyの作成をする
+	// すべての衝突情報から拘束条件の作成をする
 	for (auto& manifold : _manifoldBuffer->GetAll())
 	{
 		for (int i{ 0 }; i < manifold.pointCount; i++)

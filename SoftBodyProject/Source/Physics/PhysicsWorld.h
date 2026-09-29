@@ -41,6 +41,8 @@ class PhysicsWorld
 	friend class PhysicsComponentAPI;
 
 public:
+	// 初期化
+	void Initialize();
 	// 物理更新
 	void FixedUpdate(WorldStorage* _worldStorage, EventManager* _eventManager);
 

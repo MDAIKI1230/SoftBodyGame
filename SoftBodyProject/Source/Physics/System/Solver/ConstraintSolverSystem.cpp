@@ -190,3 +190,116 @@ void ConstraintSolverSystem::PositionSolver(SolverBodyBuffer* _solverBodyBuffer,
 		solverBodyB.rotation = rotOmega * solverBodyB.rotation;
 	}
 }
+
+// PBD法による位置解消関数
+void ConstraintSolverSystem::PBDPositionSolver(SolverBodyBuffer* _solverBodyBuffer, ConstraintBuffer* _constraintBuffer)
+{
+	for (auto& constraint : _constraintBuffer->EditAll())
+	{
+		// ボディA
+		SolverBody& solverBodyA{ _solverBodyBuffer->Edit(constraint.solverBodyAIndex) };
+		// ボディB
+		SolverBody& solverBodyB{ _solverBodyBuffer->Edit(constraint.solverBodyBIndex) };
+		// 質量から両者がBodyを持っているかの判定をする(どちらかがBodyを持っているなら合計は0じゃないはず)
+		float totalInvMass{ solverBodyA.inverseMass + solverBodyB.inverseMass };
+		if (totalInvMass <= 0)
+		{
+			continue;
+		}
+
+		// 慣性テンソル求める
+		Matrix4x4 rotMat{ MatGenerateFunc::Rotate(solverBodyA.rotation) };
+		Matrix4x4 worldInverseInertiaTnesorA{ rotMat * solverBodyA.localInverseInertiaTensor * rotMat.Transposed() };
+
+		rotMat = MatGenerateFunc::Rotate(solverBodyB.rotation);
+		Matrix4x4 worldInverseInertiaTnesorB{ rotMat * solverBodyB.localInverseInertiaTensor * rotMat.Transposed() };
+
+		// Factorを計算した各種速度計算
+		Vector3 linearResponseA{
+			BodyStorage::ApplyLinearInverseMass(
+				constraint.jacobian[0],
+				solverBodyA.inverseMass,
+				solverBodyA.linearFactor)
+		};
+
+		Vector3 angularResponseA{
+			BodyStorage::ApplyAngularInverseInertia(
+				worldInverseInertiaTnesorA,
+				constraint.jacobian[1],
+				solverBodyA.angularFactor)
+		};
+
+		Vector3 linearResponseB{
+			BodyStorage::ApplyLinearInverseMass(
+				constraint.jacobian[2],
+				solverBodyB.inverseMass,
+				solverBodyB.linearFactor)
+		};
+
+		Vector3 angularResponseB{
+			BodyStorage::ApplyAngularInverseInertia(
+				worldInverseInertiaTnesorB,
+				constraint.jacobian[3],
+				solverBodyB.angularFactor)
+		};
+
+		// 質量と慣性テンソルが速度に影響する度合い
+		float effectiveMass{
+			Vector3::Dot(constraint.jacobian[0], linearResponseA) +
+			Vector3::Dot(constraint.jacobian[1], angularResponseA) +
+			Vector3::Dot(constraint.jacobian[2], linearResponseB) +
+			Vector3::Dot(constraint.jacobian[3], angularResponseB)
+		};
+
+		if (effectiveMass < MathConstants::EPSILON)
+		{
+			continue;
+		}
+
+		// λ計算(CFMも適応)
+		float lambda{ constraint.error / effectiveMass };
+
+		float oldLambda{ constraint.accumulatedLambda };
+
+		// 合計値を計算
+		constraint.accumulatedLambda = oldLambda + lambda;
+
+		float applyLambda{ constraint.accumulatedLambda - oldLambda };
+
+		// Aの位置/姿勢制御
+		solverBodyA.position -= linearResponseA * applyLambda;
+		Vector3 angVec{ angularResponseA * applyLambda };
+		Quaternion rotOmega{ Quaternion::AngleAxis(angVec.Length(), -angVec) };
+		solverBodyA.rotation = rotOmega * solverBodyA.rotation;
+
+		// Bの位置/姿勢制御
+		solverBodyB.position -= linearResponseB * applyLambda;
+		angVec = angularResponseB * applyLambda;
+		rotOmega = Quaternion::AngleAxis(angVec.Length(), -angVec);
+		solverBodyB.rotation = rotOmega * solverBodyB.rotation;
+	}
+}
+// 速度再計算
+void ConstraintSolverSystem::ReCalcVelocity(SolverBodyBuffer* _solverBodyBuffer)
+{
+	for (auto& body : _solverBodyBuffer->EditAll())
+	{
+		if (body.inverseMass != 0.0f)
+		{
+			// 変化した速度から位置を再計算
+			// 計算後位置 - 計算前位置を移動距離として速度を計算
+			body.velocity = (body.position - body.pastPos) / TimeManager::GetFixedDeltaTime();
+			body.velocity = SIMDVectorMath::Mul(body.velocity, body.linearFactor);
+
+			// 変化前姿勢と変化後姿勢の差分から角速度を計算
+			Quaternion deltaRot{ body.rotation * body.pastRot.Conjugate() };
+			// 軸と角度に分解
+			Vector3 axis;
+			float theta;
+			deltaRot.ToAxisAngle(axis, theta);
+			// 時間ステップで割って角速度にする
+			theta /= TimeManager::GetFixedDeltaTime();
+			body.angularVelocity = SIMDVectorMath::Mul(axis * theta, body.angularFactor);
+		}
+	}
+}

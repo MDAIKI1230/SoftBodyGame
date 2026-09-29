@@ -7,8 +7,6 @@
 #include "ActiveRagdollComponent.h"
 #include "CharacterControllerComponent.h"
 
-#include "ApplicationRequest.h"
-
 #include "Player.h"
 
 // コンストラクタ
@@ -18,7 +16,8 @@ Player::Player(WorldStorage* _world, EntityID _entityID, Camera* _camera) :
 {
 	AddComponent<TransformComponent>();
 
-	GetComponent<TransformComponent>()->SetPosition(Vector3{ 0.0f,200.0f,-300.0f });
+	//GetComponent<TransformComponent>()->SetPosition(Vector3{ 0.0f,200.0f,-300.0f });
+	GetComponent<TransformComponent>()->SetPosition(Vector3{ 0.0f,1200.0f,0.0f });
 
 	InputSystem::GetInputAction("Character", "Move").AddPerformedCallback<&Player::Move>(this);
 	InputSystem::GetInputAction("Character", "Move").AddCanceledCallback<&Player::Stop>(this);
@@ -58,7 +57,6 @@ Player::Player(WorldStorage* _world, EntityID _entityID, Camera* _camera) :
 // 更新処理
 void Player::Update()
 {
-	
 }
 // 物理更新処理
 void Player::FixedUpdate()
