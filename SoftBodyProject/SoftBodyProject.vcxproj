@@ -364,6 +364,7 @@
     <ClInclude Include="Source\Physics\Constants\SyncConstants.h" />
     <ClInclude Include="Source\Physics\DebugRender\ColliderDebugRenderingSystem.h" />
     <ClInclude Include="Source\Physics\DebugRender\ConstraintDebugRenderingSystem.h" />
+    <ClInclude Include="Source\Physics\Function\ConstraintFunction.h" />
     <ClInclude Include="Source\Physics\Function\ContactFunction.h" />
     <ClInclude Include="Source\Physics\Function\GJKEPA.h" />
     <ClInclude Include="Source\Physics\Function\ManifoldFunction.h" />
@@ -617,6 +618,7 @@
     <ClCompile Include="Source\Physics\Component\Constraint\PointConstraintComponent.cpp" />
     <ClCompile Include="Source\Physics\DebugRender\ColliderDebugRenderingSystem.cpp" />
     <ClCompile Include="Source\Physics\DebugRender\ConstraintDebugRenderingSystem.cpp" />
+    <ClCompile Include="Source\Physics\Function\ConstraintFunction.cpp" />
     <ClCompile Include="Source\Physics\Function\ContactFunction.cpp" />
     <ClCompile Include="Source\Physics\Function\GJKEPA.cpp" />
     <ClCompile Include="Source\Physics\Function\ManifoldFunction.cpp" />

@@ -219,29 +219,29 @@ void DebugScene::Initialize()
 	//RigidBodyComponent* hingeBody{ hingeBox->AddComponent<RigidBodyComponent>() };
 
 	//// 固定側と箱側で同じヒンジ軸を指定
-	//hinge->AddEndPoint(hingeBox->GetID(), Vector3{ 50.0f,0.0f,0.0f }, Quaternion::Identity());
+	//hinge->AddEndPoint(hingeBox->GetID(), Vector3{ 50.0f,0.0f,0.0f }, Quaternion::IDENTITY);
 
 	//objectManager.Add(std::move(hingeBox));
 
 	// 角度制限付き点拘束
-	/*std::unique_ptr<EmptyObject> angleLimitPointEmpty{ std::make_unique<EmptyObject>(&worldStorage, objectManager.GenerateNewID()) };
+	//std::unique_ptr<EmptyObject> angleLimitPointEmpty{ std::make_unique<EmptyObject>(&worldStorage, objectManager.GenerateNewID()) };
 
-	angleLimitPointEmpty->GetComponent<TransformComponent>()->SetPosition(Vector3{ 0.0f,-100.0f,0.0f });
+	//angleLimitPointEmpty->GetComponent<TransformComponent>()->SetPosition(Vector3{ 0.0f,-100.0f,0.0f });
 
-	AngleLimitPointConstraintComponent* angleLimitPoint{ angleLimitPointEmpty->AddComponent<AngleLimitPointConstraintComponent>() };
+	//AngleLimitPointConstraintComponent* angleLimitPoint{ angleLimitPointEmpty->AddComponent<AngleLimitPointConstraintComponent>() };
 
-	angleLimitPoint->SetAngleMax(MathConstants::PI_FLT / 1.5f);
-	angleLimitPoint->SetAngleMin(MathConstants::PI_FLT / 2.0f);
+	//angleLimitPoint->SetAngleMax(MathConstants::PI_FLT / 1.5f);
+	//angleLimitPoint->SetAngleMin(MathConstants::PI_FLT / 2.0f);
 
-	objectManager.Add(std::move(angleLimitPointEmpty));
+	//objectManager.Add(std::move(angleLimitPointEmpty));
 
-	std::unique_ptr<DebugBox> angleLimitPointBox{ std::make_unique<DebugBox>(&worldStorage, objectManager.GenerateNewID(), 100.0f, 100.0f, 20.0f) };
+	//std::unique_ptr<DebugBox> angleLimitPointBox{ std::make_unique<DebugBox>(&worldStorage, objectManager.GenerateNewID(), 100.0f, 100.0f, 20.0f) };
 
-	angleLimitPointBox->AddComponent<RigidBodyComponent>();
+	//angleLimitPointBox->AddComponent<RigidBodyComponent>();
 
-	angleLimitPoint->AddEndPoint(angleLimitPointBox->GetID(), Vector3{ 50.0f,0.0f,0.0f }, Quaternion::Identity());
+	//angleLimitPoint->AddEndPoint(angleLimitPointBox->GetID(), Vector3{ 50.0f,0.0f,0.0f }, Quaternion::IDENTITY);
 
-	objectManager.Add(std::move(angleLimitPointBox));*/
+	//objectManager.Add(std::move(angleLimitPointBox));
 
 	// 角度制限付きヒンジ拘束
 	/*std::unique_ptr<EmptyObject> angleLimitHingeEmpty{ std::make_unique<EmptyObject>(&worldStorage, objectManager.GenerateNewID()) };
@@ -259,7 +259,7 @@ void DebugScene::Initialize()
 
 	angleLimitHingeBox->AddComponent<RigidBodyComponent>();
 
-	angleLimitHinge->AddEndPoint(angleLimitHingeBox->GetID(), Vector3{ 50.0f,0.0f,10.0f }, Quaternion::Identity());
+	angleLimitHinge->AddEndPoint(angleLimitHingeBox->GetID(), Vector3{ 50.0f,0.0f,10.0f });
 
 	objectManager.Add(std::move(angleLimitHingeBox));*/
 	// SwingTwist拘束

@@ -34,6 +34,11 @@ public:
 	{
 		return contactBatches[_index];
 	}
+	// 拘束範囲取得
+	std::span<Constraint> GetConstraints(uint32_t _start, uint32_t _count)
+	{
+		return { values.begin() + _start,_count };
+	}
 private:
 	std::vector<ConstraintRowBatch> batches;
 	std::vector<uint32_t> contactBatches;

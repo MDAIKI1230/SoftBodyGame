@@ -1432,6 +1432,9 @@
     <ClInclude Include="Source\Physics\Struct\Constraint\ConstraintRowBatch.h">
       <Filter>ソース ファイル\Physics\Struct\Constraint</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Physics\Function\ConstraintFunction.h">
+      <Filter>ソース ファイル\Physics\Function</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\System\Scenes\DebugScene.cpp">
@@ -1916,6 +1919,9 @@
     </ClCompile>
     <ClCompile Include="Source\Sound\SoundPlayer.cpp">
       <Filter>ソース ファイル\Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Physics\Function\ConstraintFunction.cpp">
+      <Filter>ソース ファイル\Physics\Function</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

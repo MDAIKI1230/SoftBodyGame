@@ -10,8 +10,8 @@
 struct ConstraintRowBatch
 {
 	ConstraintID sourceConstraintID;
-	uint32_t endpointIndex;
+	size_t endpointIndex{ 0 };
 
-	uint32_t firstRow;
-	uint32_t rowCount;
+	size_t firstRow{ 0 };
+	size_t rowCount{ 0 };
 };

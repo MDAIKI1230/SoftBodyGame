@@ -4,6 +4,9 @@
 
 struct Constraint
 {
+	// 起動フラグ
+	bool isActive{ true };
+
 	// ソルバボディA
 	uint32_t solverBodyAIndex{ 0 };
 	// ソルバボディB

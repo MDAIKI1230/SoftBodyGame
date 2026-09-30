@@ -196,6 +196,10 @@ void ConstraintSolverSystem::PBDPositionSolver(SolverBodyBuffer* _solverBodyBuff
 {
 	for (auto& constraint : _constraintBuffer->EditAll())
 	{
+		if (!constraint.isActive)
+		{
+			continue;
+		}
 		// ボディA
 		SolverBody& solverBodyA{ _solverBodyBuffer->Edit(constraint.solverBodyAIndex) };
 		// ボディB

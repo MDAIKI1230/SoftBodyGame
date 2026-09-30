@@ -34,9 +34,9 @@ Player::Player(WorldStorage* _world, EntityID _entityID, Camera* _camera) :
 		ResourceManager::GetModel("M_001_player_095_01_no_sword_walk_high_knee.mv1")
 	) };
 
-	ActiveRagdollComponent* active{ AddComponent<ActiveRagdollComponent>(
+	/*ActiveRagdollComponent* active{ AddComponent<ActiveRagdollComponent>(
 		*renderer, "Res/Data/Ragdoll/Active/M_001_player_095_01_no_sword.json"
-	) };
+	) };*/
 
 	AnimationComponent* anim{ AddComponent<AnimationComponent>(
 		renderer,"Res/Data/Skeleton/M_001_player_095_01_no_sword_LegsBoneMask.json"
@@ -44,10 +44,10 @@ Player::Player(WorldStorage* _world, EntityID _entityID, Camera* _camera) :
 	anim->SetAnimationName("Walk");
 	anim->SetLoop(true);
 
-	camera->GetComponent<CameraRigComponent>()->GetRayFilter(active->GetIgnoreFilter());
+	// camera->GetComponent<CameraRigComponent>()->GetRayFilter(active->GetIgnoreFilter());
 
 	CharacterControllerComponent* cc{ AddComponent<CharacterControllerComponent>() };
-	cc->SetCollisionFilter(active->GetIgnoreFilter());
+	// cc->SetCollisionFilter(active->GetIgnoreFilter());
 	cc->SetColliderHeight(50.0f);
 	cc->SetColliderOffset(Vector3{ 0.0f,50.0f,0.0f });
 }

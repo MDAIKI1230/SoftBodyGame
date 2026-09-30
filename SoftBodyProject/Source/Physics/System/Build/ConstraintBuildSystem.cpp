@@ -1,5 +1,7 @@
 ﻿#include <algorithm>
 
+#include "ConstraintFunction.h"
+
 #include "TimeManager.h"
 
 #include "ConstraintBuildSystem.h"
@@ -72,7 +74,20 @@ void ConstraintBuildSystem::Build(ColliderStorage* _colliderStorage, SolverBodyB
 // エラー等の変化値の再計算
 void ConstraintBuildSystem::RefreshRows(ConstraintStorage* _constraintStorage, SolverBodyBuffer* _solverBodyBuffer, ConstraintBuffer* _constraintBuffer)
 {
-
+	// 点拘束の解く用の拘束のヤコビアンと違反値の再計算
+	RefreshPointConstraint(_constraintStorage, _solverBodyBuffer, _constraintBuffer);
+	// 距離拘束の解く用の拘束のヤコビアンと違反値の再計算
+	RefreshDistanceConstraint(_constraintStorage, _solverBodyBuffer, _constraintBuffer);
+	// ヒンジ拘束の解く用の拘束のヤコビアンと違反値の再計算
+	RefreshHingeConstraint(_constraintStorage, _solverBodyBuffer, _constraintBuffer);
+	// 角度制限付き点拘束の解く用の拘束のヤコビアンと違反値の再計算
+	RefreshAngleLimitPointConstraint(_constraintStorage, _solverBodyBuffer, _constraintBuffer);
+	// 角度制限付きヒンジ拘束の解く用の拘束のヤコビアンと違反値の再計算
+	RefreshAngleLimitHingeConstraint(_constraintStorage, _solverBodyBuffer, _constraintBuffer);
+	// SwingTwist拘束の解く用の拘束のヤコビアンと違反値の再計算
+	RefreshLimitedBallJointConstraint(_constraintStorage, _solverBodyBuffer, _constraintBuffer);
+	// 関節駆動拘束の解く用の拘束のヤコビアンと違反値の再計算
+	RefreshJointDriveConstraint(_constraintStorage, _solverBodyBuffer, _constraintBuffer);
 }
 
 // 点拘束の解く用の拘束構造体を作る
@@ -83,8 +98,9 @@ void ConstraintBuildSystem::BuildPointConstraint(ConstraintStorage* _constraintS
 	{
 		return;
 	}
-	for (auto& pointConstraint : _constraintStorage->GetPointConstraintRange())
+	for (auto id : _constraintStorage->GetPointConstraintIDRange())
 	{
+		const PointConstraint& pointConstraint{ _constraintStorage->GetPointConstraint(id) };
 		// ポイントが2つ以上じゃないと拘束なんて発生しない
 		if (pointConstraint.endPoints.size() <= 1)
 		{
@@ -111,6 +127,14 @@ void ConstraintBuildSystem::BuildPointConstraint(ConstraintStorage* _constraintS
 			Vector3 rA = basePoint - solverBodyBase.position;
 			Vector3	rB = point - solverBody.position;
 
+			ConstraintRowBatch batch;
+			batch.sourceConstraintID = id;
+			batch.endpointIndex = i;
+			batch.firstRow = _constraintBuffer->GetSize();
+			batch.rowCount = 3;
+
+			_constraintBuffer->AddBatch(batch);
+
 			AddPointConstraint(
 				constraint, pointConstraint.tuning,
 				rA, basePoint,
@@ -129,8 +153,9 @@ void ConstraintBuildSystem::BuildDistanceConstraint(ConstraintStorage* _constrai
 	{
 		return;
 	}
-	for (auto& distanceConstraint : _constraintStorage->GetDistanceConstraintRange())
+	for (auto id : _constraintStorage->GetDistanceConstraintIDRange())
 	{
+		const DistanceConstraint& distanceConstraint{ _constraintStorage->GetDistanceConstraint(id) };
 		// ポイントが2つ以上じゃないと拘束なんて発生しない
 		if (distanceConstraint.endPoints.size() <= 1)
 		{
@@ -154,31 +179,23 @@ void ConstraintBuildSystem::BuildDistanceConstraint(ConstraintStorage* _constrai
 			constraint.solverBodyAIndex = basePointIndex;
 			constraint.solverBodyBIndex = pointIndex;
 
-			Vector3 rA = basePoint - solverBodyBase.position;
-			Vector3	rB = point - solverBody.position;
+			Vector3 rA{ basePoint - solverBodyBase.position };
+			Vector3	rB{ point - solverBody.position };
 
-			// 差
-			Vector3 diff{ basePoint - point };
-			// 差をそのまま拘束Cの結果とする
-			constraint.error = diff.Length() - distanceConstraint.distance;
+			ConstraintRowBatch batch;
+			batch.sourceConstraintID = id;
+			batch.endpointIndex = i;
+			batch.firstRow = _constraintBuffer->GetSize();
+			batch.rowCount = 1;
 
-			Vector3 normal;
+			_constraintBuffer->AddBatch(batch);
 
-			if (diff.LengthSqr() <= MathConstants::EPSILON)
-			{
-				normal = Vector3::UP;
-			}
-			else
-			{
-				normal = diff.Normalized();
-			}
-
-			
-			// ヤコビアンの計算
-			constraint.jacobian[0] = normal;
-			constraint.jacobian[1] = Vector3::Cross(rA, normal);
-			constraint.jacobian[2] = -normal;
-			constraint.jacobian[3] = -Vector3::Cross(rB, normal);
+			ConstraintFunction::CalcDistanceJacobianAndError(
+				distanceConstraint.distance,
+				basePoint, rA,
+				point, rB,
+				constraint
+			);
 
 			MakeConstraintInfo(constraint, distanceConstraint.tuning);
 
@@ -197,8 +214,9 @@ void ConstraintBuildSystem::BuildHingeConstraint(ConstraintStorage* _constraintS
 		return;
 	}
 
-	for (auto& hingeConstraint : _constraintStorage->EditHingeConstraintRange())
+	for (auto id : _constraintStorage->GetHingeConstraintIDRange())
 	{
+		const HingeConstraint& hingeConstraint{ _constraintStorage->GetHingeConstraint(id) };
 		// 対象がいないとダメ
 		if (hingeConstraint.endPoints.size() < 1)
 		{
@@ -214,8 +232,9 @@ void ConstraintBuildSystem::BuildHingeConstraint(ConstraintStorage* _constraintS
 
 		axis = solverBodyBase.rotation.Rotate(axis).Normalized();
 
-		for (auto& directionEndPoint : hingeConstraint.endPoints)
+		for (size_t i{ 0 }; i < hingeConstraint.endPoints.size(); i++)
 		{
+			const EndPointFrame& directionEndPoint{ hingeConstraint.endPoints[i] };
 			// 対象の位置を取得
 			uint32_t pointIndex{ _solverBodyBuffer->GetIndex(directionEndPoint.transformID) };
 			const SolverBody& solverBody{ _solverBodyBuffer->Get(pointIndex) };
@@ -236,62 +255,46 @@ void ConstraintBuildSystem::BuildHingeConstraint(ConstraintStorage* _constraintS
 
 			axisB.Normalize();
 
-			// ヒンジ軸を「向きのない直線」として扱う。
-			// 逆向きなら、Aに近い向きへ反転する。
-			if (Vector3::Dot(axis, axisB) < 0.0f)
+			Constraint constraints[5];
+
+			ConstraintRowBatch batch;
+			batch.sourceConstraintID = id;
+			batch.endpointIndex = i;
+			batch.firstRow = _constraintBuffer->GetSize();
+			batch.rowCount = 5;
+
+			_constraintBuffer->AddBatch(batch);
+
+			ConstraintFunction::CalcHingeJacobianAndError(
+				basePoint, rA, axis,
+				point, rB, axisB,
+				constraints);
+
+			// 点拘束の情報づくり
+			for (size_t i{ 0 }; i < 3; i++)
 			{
-				axisB = -axisB;
+				// インデックスを詰める
+				constraints[i].solverBodyAIndex = basePointIndex;
+				constraints[i].solverBodyBIndex = pointIndex;
+
+				// 情報詰め
+				MakeConstraintInfo(constraints[i], hingeConstraint.positionTuning);
+
+				_constraintBuffer->Add(constraints[i]);
 			}
 
-			Constraint constraint;
-
-			constraint.solverBodyAIndex = basePointIndex;
-			constraint.solverBodyBIndex = pointIndex;
-
-			// Row 1～3：アンカー位置を一致させる
-			AddPointConstraint(
-				constraint, hingeConstraint.positionTuning,
-				rA, basePoint,
-				rB, point,
-				_constraintBuffer
-			);
-
-			// axisと平行になりにくい基準軸を選ぶ。
-			float rightDot{ Vector3::Dot(axis, Vector3::RIGHT) };
-
-			Vector3 seed{ rightDot * rightDot < 0.81f ? Vector3::RIGHT : Vector3::UP };
-
-			Vector3 tangent1{ Vector3::Cross(axis, seed).Normalized() };
-
-			Vector3 tangent2{ Vector3::Cross(axis, tangent1).Normalized() };
-
-			// A軸からB軸へ向かう軸ずれの回転ベクトル
-			Vector3 crossAB{ Vector3::Cross(axis, axisB) };
-
-			float sinTheta{ crossAB.Length() };
-
-			float cosTheta{ std::clamp(Vector3::Dot(axis, axisB),-1.0f,1.0f) };
-
-			Vector3 axisError{ Vector3::ZERO };
-
-			if (sinTheta > MathConstants::EPSILON)
+			// 軸拘束の情報づくり
+			for (size_t i{ 3 }; i < 5; i++)
 			{
-				float theta{ std::atan2(sinTheta, cosTheta) };
+				// インデックスを詰める
+				constraints[i].solverBodyAIndex = basePointIndex;
+				constraints[i].solverBodyBIndex = pointIndex;
 
-				// 方向 = crossAB / sinTheta
-				// 長さ = theta
-				axisError = crossAB * (theta / sinTheta);
+				// 情報詰め
+				MakeConstraintInfo(constraints[i], hingeConstraint.angularTuning);
+
+				_constraintBuffer->Add(constraints[i]);
 			}
-
-			// Row 4～5：軸に垂直な回転を止める
-			AddAxisConstraint(
-				constraint, hingeConstraint.angularTuning,
-				tangent1, axisError,
-				_constraintBuffer);
-			AddAxisConstraint(
-				constraint, hingeConstraint.angularTuning,
-				tangent2, axisError,
-				_constraintBuffer);
 		}
 	}
 }
@@ -305,8 +308,9 @@ void ConstraintBuildSystem::BuildAngleLimitPointConstraint(ConstraintStorage* _c
 		return;
 	}
 
-	for (auto& angleLimitPointConstraint : _constraintStorage->EditAngleLimitPointConstraintRange())
+	for (auto id : _constraintStorage->GetAngleLimitPointConstraintIDRange())
 	{
+		const AngleLimitPointConstraint& angleLimitPointConstraint{ _constraintStorage->GetAngleLimitPointConstraint(id) };
 		// ポイントが2つ以上じゃないと拘束なんて発生しない
 		if (angleLimitPointConstraint.endPoints.size() < 1)
 		{
@@ -320,10 +324,9 @@ void ConstraintBuildSystem::BuildAngleLimitPointConstraint(ConstraintStorage* _c
 		Vector3 baseDir{ angleLimitPointConstraint.ownerEndPoint.localRotation.Rotate(Vector3::UP) };
 		baseDir = solverBodyBase.rotation.Rotate(baseDir);
 
-		for (const auto& endPoint: angleLimitPointConstraint.endPoints)
+		for (size_t i{ 0 }; i < angleLimitPointConstraint.endPoints.size(); i++)
 		{
-			Constraint constraint;
-
+			const EndPointFrame& endPoint{ angleLimitPointConstraint.endPoints[i] };
 			// 対象の位置を取得
 			uint32_t pointIndex{ _solverBodyBuffer->GetIndex(endPoint.transformID) };
 			const SolverBody& solverBody{ _solverBodyBuffer->Get(pointIndex) };
@@ -331,67 +334,34 @@ void ConstraintBuildSystem::BuildAngleLimitPointConstraint(ConstraintStorage* _c
 			Vector3 dir{ endPoint.localRotation.Rotate(Vector3::RIGHT) };
 			dir = solverBody.rotation.Rotate(dir);
 
-			constraint.solverBodyAIndex = basePointIndex;
-			constraint.solverBodyBIndex = pointIndex;
-
 			Vector3 rA = basePoint - solverBodyBase.position;
 			Vector3	rB = point - solverBody.position;
 
-			// 通常の点拘束を入れる
-			AddPointConstraint(
-				constraint, angleLimitPointConstraint.tuning,
-				rA, basePoint,
-				rB, point,
-				_constraintBuffer
-			);
+			Constraint constraints[4];
 
-			// 角度の制限を入れる
-			Vector3 crossAB{ Vector3::Cross(baseDir, dir) };
+			ConstraintFunction::CalcAngleLimitPointJacobianAndError(
+				angleLimitPointConstraint.angleMax, angleLimitPointConstraint.angleMin,
+				basePoint, rA, baseDir,
+				point, rB, dir,
+				constraints);
 
-			float sinTheta{ crossAB.Length() };
-			float cosTheta{ Vector3::Dot(baseDir, dir) };
+			ConstraintRowBatch batch;
+			batch.sourceConstraintID = id;
+			batch.endpointIndex = i;
+			batch.firstRow = _constraintBuffer->GetSize();
+			batch.rowCount = 4;
 
-			float theta{ std::atan2(sinTheta, cosTheta) };
+			_constraintBuffer->AddBatch(batch);
 
-			if (theta > angleLimitPointConstraint.angleMax)
+			for (size_t i{ 0 }; i < 4; i++)
 			{
-				Vector3 n{ crossAB / sinTheta };
+				constraints[i].solverBodyAIndex = basePointIndex;
+				constraints[i].solverBodyBIndex = pointIndex;
 
-				constraint.error = theta - angleLimitPointConstraint.angleMax;
+				MakeConstraintInfo(constraints[i], angleLimitPointConstraint.tuning);
 
-				constraint.jacobian[0] = Vector3::ZERO; // linear A
-				constraint.jacobian[1] = -n;            // angular A
-				constraint.jacobian[2] = Vector3::ZERO; // linear B
-				constraint.jacobian[3] = n;            // angular B
-
-				MakeConstraintInfo(constraint, angleLimitPointConstraint.tuning);
-
-				constraint.minLambda = 0.0f;
-				constraint.maxLambda = angleLimitPointConstraint.tuning.maxForce * TimeManager::GetFixedDeltaTime();
-
-				// 拘束として追加
-				_constraintBuffer->Add(constraint);
+				_constraintBuffer->Add(constraints[i]);
 			}
-			else if (theta < angleLimitPointConstraint.angleMin)
-			{
-				Vector3 n{ crossAB / sinTheta };
-
-				constraint.error = angleLimitPointConstraint.angleMin - theta;
-
-				constraint.jacobian[0] = Vector3::ZERO;
-				constraint.jacobian[1] = n;
-				constraint.jacobian[2] = Vector3::ZERO;
-				constraint.jacobian[3] = -n;
-
-				MakeConstraintInfo(constraint, angleLimitPointConstraint.tuning);
-
-				constraint.minLambda = 0.0f;
-				constraint.maxLambda = angleLimitPointConstraint.tuning.maxForce * TimeManager::GetFixedDeltaTime();
-
-				// 拘束として追加
-				_constraintBuffer->Add(constraint);
-			}
-			// 範囲内なら角度Constraintを生成しない
 		}
 	}
 }
@@ -405,8 +375,9 @@ void ConstraintBuildSystem::BuildAngleLimitHingeConstraint(ConstraintStorage* _c
 		return;
 	}
 
-	for (auto& angleLimitHingeConstraint : _constraintStorage->EditAngleLimitHingeConstraintRange())
+	for (auto id  : _constraintStorage->GetAngleLimitHingeConstraintIDRange())
 	{
+		const AngleLimitHingeConstraint& angleLimitHingeConstraint{ _constraintStorage->GetAngleLimitHingeConstraint(id) };
 		// 対象がいないとダメ
 		if (angleLimitHingeConstraint.endPoints.size() < 1)
 		{
@@ -414,7 +385,7 @@ void ConstraintBuildSystem::BuildAngleLimitHingeConstraint(ConstraintStorage* _c
 		}
 
 		// 基準側
-		EndPointFrame& endPoint{ angleLimitHingeConstraint.ownerEndPoint };
+		const EndPointFrame& endPoint{ angleLimitHingeConstraint.ownerEndPoint };
 		uint32_t basePointIndex{ _solverBodyBuffer->GetIndex(endPoint.transformID) };
 		const SolverBody& solverBodyBase{ _solverBodyBuffer->Get(basePointIndex) };
 		Vector3 basePoint{ solverBodyBase.position + solverBodyBase.rotation.Rotate(endPoint.localPosition) };
@@ -423,19 +394,16 @@ void ConstraintBuildSystem::BuildAngleLimitHingeConstraint(ConstraintStorage* _c
 		// A側の角度0基準方向
 		Vector3 referenceA{ solverBodyBase.rotation.Rotate(endPoint.localRotation.Rotate(Vector3::RIGHT)) };
 
-		// ヒンジ軸に垂直な2方向
-		float rightDot{ Vector3::Dot(axis, Vector3::RIGHT) };
-		Vector3 seed{ rightDot * rightDot < 0.81f ? Vector3::RIGHT : Vector3::UP };
-		Vector3 tangent1{ Vector3::Cross(axis, seed).Normalized() };
-		Vector3 tangent2{ Vector3::Cross(axis, tangent1).Normalized() };
-
-		for (auto& endPoint : angleLimitHingeConstraint.endPoints)
+		for (size_t i{ 0 }; i < angleLimitHingeConstraint.endPoints.size(); i++)
 		{
+			const EndPointFrame endPoint{ angleLimitHingeConstraint.endPoints[i] };
 			// 対象側
 			uint32_t pointIndex{ _solverBodyBuffer->GetIndex(endPoint.transformID) };
 			const SolverBody& solverBody{ _solverBodyBuffer->Get(pointIndex) };
 			Vector3 point{ solverBody.position + solverBody.rotation.Rotate(endPoint.localPosition) };
 			Vector3 axisB{ solverBody.rotation.Rotate(endPoint.localRotation.Rotate(Vector3::UP)) };
+			// B側の基準方向をA側ヒンジ軸の平面へ射影
+			Vector3 referenceB{ solverBody.rotation.Rotate(endPoint.localRotation.Rotate(Vector3::RIGHT)) };
 
 			if (axisB.LengthSqr() <= MathConstants::EPSILON)
 			{
@@ -444,74 +412,45 @@ void ConstraintBuildSystem::BuildAngleLimitHingeConstraint(ConstraintStorage* _c
 
 			axisB.Normalize();
 
-			// 通常Hingeと同じく軸を直線として扱う
-			if (Vector3::Dot(axis, axisB) < 0.0f)
-			{
-				axisB = -axisB;
-			}
-
 			Vector3 rA{ basePoint - solverBodyBase.position };
 			Vector3 rB{ point - solverBody.position };
 
-			Constraint constraint;
-			constraint.solverBodyAIndex = basePointIndex;
-			constraint.solverBodyBIndex = pointIndex;
+			Constraint constraints[6];
 
-			// Row 1～3：アンカー位置
-			AddPointConstraint(constraint, angleLimitHingeConstraint.positionTuning, rA, basePoint, rB, point, _constraintBuffer);
+			ConstraintFunction::CalcAngleLimitHingeJacobianAndError(
+				angleLimitHingeConstraint.angleMax, angleLimitHingeConstraint.angleMin,
+				basePoint, rA, axis, referenceA,
+				point, rB, axisB, referenceB,
+				constraints);
 
-			// Row 4～5：ヒンジ軸
-			Vector3 crossAB{ Vector3::Cross(axis, axisB) };
-			float sinTheta{ crossAB.Length() };
-			float cosTheta{ std::clamp(Vector3::Dot(axis, axisB), -1.0f, 1.0f) };
-			Vector3 axisError{ Vector3::ZERO };
+			ConstraintRowBatch batch;
+			batch.sourceConstraintID = id;
+			batch.endpointIndex = i;
+			batch.firstRow = _constraintBuffer->GetSize();
+			batch.rowCount = 6;
 
-			if (sinTheta > MathConstants::EPSILON)
+			_constraintBuffer->AddBatch(batch);
+
+			// 最初の三つは点拘束
+			for (size_t i{ 0 }; i < 3; i++)
 			{
-				float theta{ std::atan2(sinTheta, cosTheta) };
-				axisError = crossAB * (theta / sinTheta);
+				constraints[i].solverBodyAIndex = basePointIndex;
+				constraints[i].solverBodyBIndex = pointIndex;
+
+				MakeConstraintInfo(constraints[i], angleLimitHingeConstraint.positionTuning);
+
+				_constraintBuffer->Add(constraints[i]);
 			}
-
-			AddAxisConstraint(constraint, angleLimitHingeConstraint.angularTuning, tangent1, axisError, _constraintBuffer);
-			AddAxisConstraint(constraint, angleLimitHingeConstraint.angularTuning, tangent2, axisError, _constraintBuffer);
-
-			// B側の基準方向をA側ヒンジ軸の平面へ射影
-			Vector3 referenceB{ solverBody.rotation.Rotate(endPoint.localRotation.Rotate(Vector3::RIGHT)) };
-
-			// Aの基準方向からBの基準方向への符号付き角度
-			float sinAngle{ Vector3::Dot(axis, Vector3::Cross(referenceA, referenceB)) };
-			float cosAngle{ Vector3::Dot(referenceA, referenceB) };
-			float angle{ std::atan2(sinAngle, cosAngle) };
-
-			// Row 6：範囲外の場合だけ片側角度拘束を作る
-			if (angle > angleLimitHingeConstraint.angleMax)
+			// 残りは角度
+			for (size_t i{ 3 }; i < 6; i++)
 			{
-				constraint.error = angle - angleLimitHingeConstraint.angleMax;
-				constraint.jacobian[0] = Vector3::ZERO;
-				constraint.jacobian[1] = -axis;
-				constraint.jacobian[2] = Vector3::ZERO;
-				constraint.jacobian[3] = axis;
-			}
-			else if (angle < angleLimitHingeConstraint.angleMin)
-			{
-				constraint.error = angleLimitHingeConstraint.angleMin - angle;
-				constraint.jacobian[0] = Vector3::ZERO;
-				constraint.jacobian[1] = axis;
-				constraint.jacobian[2] = Vector3::ZERO;
-				constraint.jacobian[3] = -axis;
-			}
-			else
-			{
-				continue;
-			}
+				constraints[i].solverBodyAIndex = basePointIndex;
+				constraints[i].solverBodyBIndex = pointIndex;
 
-			MakeConstraintInfo(constraint, angleLimitHingeConstraint.angularTuning);
+				MakeConstraintInfo(constraints[i], angleLimitHingeConstraint.angularTuning);
 
-			// Limitなので片側拘束
-			constraint.minLambda = 0.0f;
-			constraint.maxLambda = angleLimitHingeConstraint.angularTuning.maxForce * TimeManager::GetFixedDeltaTime();
-
-			_constraintBuffer->Add(constraint);
+				_constraintBuffer->Add(constraints[i]);
+			}
 		}
 	}
 }
@@ -525,8 +464,9 @@ void ConstraintBuildSystem::BuildLimitedBallJointConstraint(ConstraintStorage* _
 		return;
 	}
 
-	for (auto& limitedBallJointConstraint : _constraintStorage->EditLimitedBallJointConstraintRange())
+	for (auto id : _constraintStorage->GetLimitedBallJointConstraintIDRange())
 	{
+		const LimitedBallJointConstraint& limitedBallJointConstraint{ _constraintStorage->GetLimitedBallJointConstraint(id) };
 		// ポイントが2つ以上じゃないと拘束なんて発生しない
 		if (limitedBallJointConstraint.endPoints.size() < 1)
 		{
@@ -539,104 +479,63 @@ void ConstraintBuildSystem::BuildLimitedBallJointConstraint(ConstraintStorage* _
 		uint32_t basePointIndex{ _solverBodyBuffer->GetIndex(ownerEndPoint.transformID) };
 		const SolverBody& solverBodyBase{ _solverBodyBuffer->Get(basePointIndex) };
 		Vector3 basePoint{ solverBodyBase.position + solverBodyBase.rotation.Rotate(ownerEndPoint.localPosition) };
-		Vector3 baseDir{ ownerEndPoint.localRotation.Rotate(Vector3::UP) };
-		baseDir = solverBodyBase.rotation.Rotate(baseDir);
+		Vector3 baseAxis{ ownerEndPoint.localRotation.Rotate(Vector3::UP) };
+		baseAxis = solverBodyBase.rotation.Rotate(baseAxis);
 
 		// A側の角度0基準方向
 		Vector3 referenceA{ solverBodyBase.rotation.Rotate(ownerEndPoint.localRotation.Rotate(Vector3::RIGHT)) };
 
-		for (const auto& endPoint : limitedBallJointConstraint.endPoints)
+		for (size_t i{ 0 }; i < limitedBallJointConstraint.endPoints.size(); i++)
 		{
-			Constraint constraint;
-
+			const EndPointFrame& endPoint{ limitedBallJointConstraint.endPoints[i] };
 			// 対象の位置を取得
 			uint32_t pointIndex{ _solverBodyBuffer->GetIndex(endPoint.transformID) };
 			const SolverBody& solverBody{ _solverBodyBuffer->Get(pointIndex) };
 			Vector3 point{ solverBody.position + solverBody.rotation.Rotate(endPoint.localPosition) };
-			Vector3 dir{ endPoint.localRotation.Rotate(Vector3::UP) };
-			dir = solverBody.rotation.Rotate(dir);
-
-			constraint.solverBodyAIndex = basePointIndex;
-			constraint.solverBodyBIndex = pointIndex;
-
-			Vector3 rA = basePoint - solverBodyBase.position;
-			Vector3	rB = point - solverBody.position;
-
-			// 通常の点拘束を入れる
-			AddPointConstraint(
-				constraint, limitedBallJointConstraint.positionTuning,
-				rA, basePoint,
-				rB, point,
-				_constraintBuffer
-			);
-
-			// Swing角度の制限を入れる
-			Vector3 crossAB{ Vector3::Cross(baseDir, dir) };
-
-			float sinTheta{ crossAB.Length() };
-			float cosTheta{ Vector3::Dot(baseDir, dir) };
-
-			float theta{ std::atan2(sinTheta, cosTheta) };
-
-			if (theta > limitedBallJointConstraint.swingAngle)
-			{
-				Vector3 n{ crossAB / sinTheta };
-
-				constraint.error = theta - limitedBallJointConstraint.swingAngle;
-
-				constraint.jacobian[0] = Vector3::ZERO; // linear A
-				constraint.jacobian[1] = -n;            // angular A
-				constraint.jacobian[2] = Vector3::ZERO; // linear B
-				constraint.jacobian[3] = n;            // angular B
-
-				MakeConstraintInfo(constraint, limitedBallJointConstraint.angularTuning);
-
-				constraint.minLambda = 0.0f;
-				constraint.maxLambda = limitedBallJointConstraint.angularTuning.maxForce * TimeManager::GetFixedDeltaTime();
-
-				// 拘束として追加
-				_constraintBuffer->Add(constraint);
-			}
-			
-			// Twist角度の制限を入れる
-
+			Vector3 axis{ endPoint.localRotation.Rotate(Vector3::UP) };
+			axis = solverBody.rotation.Rotate(axis);
 			// B側の基準方向
 			Vector3 referenceB{ solverBody.rotation.Rotate(endPoint.localRotation.Rotate(Vector3::RIGHT)) };
 
-			// Aの基準方向からBの基準方向への符号付き角度
-			float sinAngle{ Vector3::Dot(baseDir, Vector3::Cross(referenceA, referenceB)) };
-			float cosAngle{ Vector3::Dot(referenceA, referenceB) };
-			float angle{ std::atan2(sinAngle, cosAngle) };
+			Vector3 rA{ basePoint - solverBodyBase.position };
+			Vector3	rB{ point - solverBody.position };
 
-			// 範囲外の場合だけ片側角度拘束を作る
-			if (angle > limitedBallJointConstraint.twistAngleMax)
+			Constraint constraints[5];
+
+			ConstraintFunction::CalcLimitedBallJointJacobianAndError(
+				limitedBallJointConstraint.swingAngle, limitedBallJointConstraint.twistAngleMax, limitedBallJointConstraint.twistAngleMin,
+				basePoint, rA, baseAxis, referenceA,
+				point, rB, axis, referenceB,
+				constraints);
+
+			ConstraintRowBatch batch;
+			batch.sourceConstraintID = id;
+			batch.endpointIndex = i;
+			batch.firstRow = _constraintBuffer->GetSize();
+			batch.rowCount = 5;
+
+			_constraintBuffer->AddBatch(batch);
+
+			// 最初の三つは点拘束
+			for (size_t i{ 0 }; i < 3; i++)
 			{
-				constraint.error = angle - limitedBallJointConstraint.twistAngleMax;
-				constraint.jacobian[0] = Vector3::ZERO;
-				constraint.jacobian[1] = -baseDir;
-				constraint.jacobian[2] = Vector3::ZERO;
-				constraint.jacobian[3] = baseDir;
+				constraints[i].solverBodyAIndex = basePointIndex;
+				constraints[i].solverBodyBIndex = pointIndex;
+
+				MakeConstraintInfo(constraints[i], limitedBallJointConstraint.positionTuning);
+
+				_constraintBuffer->Add(constraints[i]);
 			}
-			else if (angle < limitedBallJointConstraint.twistAngleMin)
+			// 残りの角度をやる
+			for (size_t i{ 3 }; i < 5; i++)
 			{
-				constraint.error = limitedBallJointConstraint.twistAngleMin - angle;
-				constraint.jacobian[0] = Vector3::ZERO;
-				constraint.jacobian[1] = baseDir;
-				constraint.jacobian[2] = Vector3::ZERO;
-				constraint.jacobian[3] = -baseDir;
+				constraints[i].solverBodyAIndex = basePointIndex;
+				constraints[i].solverBodyBIndex = pointIndex;
+
+				MakeConstraintInfo(constraints[i], limitedBallJointConstraint.angularTuning);
+
+				_constraintBuffer->Add(constraints[i]);
 			}
-			else
-			{
-				continue;
-			}
-
-			MakeConstraintInfo(constraint, limitedBallJointConstraint.angularTuning);
-
-			// Limitなので片側拘束
-			constraint.minLambda = 0.0f;
-			constraint.maxLambda = limitedBallJointConstraint.angularTuning.maxForce * TimeManager::GetFixedDeltaTime();
-
-			_constraintBuffer->Add(constraint);
 		}
 	}
 }
@@ -650,8 +549,9 @@ void ConstraintBuildSystem::BuildJointDriveConstraint(ConstraintStorage* _constr
 		return;
 	}
 
-	for (auto& jointDrive : _constraintStorage->EditJointDriveConstraintRange())
+	for (auto id : _constraintStorage->GetJointDriveConstraintConstraintIDRange())
 	{
+		const JointDriveConstraint& jointDrive{ _constraintStorage->GetJointDriveConstraint(id) };
 		// 相手ポイントが無効値なら飛ばす
 		if (!jointDrive.otherEndPoint.transformID.IsValid())
 		{
@@ -672,69 +572,31 @@ void ConstraintBuildSystem::BuildJointDriveConstraint(ConstraintStorage* _constr
 		const SolverBody& solverBodyOther{ _solverBodyBuffer->Get(otherPointIndex) };
 		const Quaternion& otherRot{ solverBodyOther.rotation * otherEndPoint.localRotation };
 
-		// 相対姿勢を求める
-		Quaternion relativeRotation{ baseRot.Conjugate() * otherRot };
-		// C(Quaternion版)
-		Quaternion errorRot{ relativeRotation * jointDrive.targetRelativeRotation.Conjugate() };
+		Constraint constraints[3];
 
-		// このままでは使えないので、書く方向にどれだけズレてるかに変更する
+		ConstraintFunction::CalcJointDriveJacobianAndError(
+			jointDrive.targetRelativeRotation,
+			baseRot,
+			otherRot,
+			constraints);
 
-		Vector3 axis;
-		float theta;
-		errorRot.ToAxisAngle(axis, theta);
+		ConstraintRowBatch batch;
+		batch.sourceConstraintID = id;
+		batch.endpointIndex = 0;
+		batch.firstRow = _constraintBuffer->GetSize();
+		batch.rowCount = 3;
 
-		// 角度が0に限りなく近いならやる意味も内でやんしょう
-		if (theta <= MathConstants::EPSILON)
+		_constraintBuffer->AddBatch(batch);
+
+		for (size_t i{ 0 }; i < 3; i++)
 		{
-			continue;
+			constraints[i].solverBodyAIndex = basePointIndex;
+			constraints[i].solverBodyBIndex = otherPointIndex;
+
+			MakeConstraintInfo(constraints[i], jointDrive.tuning);
+
+			_constraintBuffer->Add(constraints[i]);
 		}
-
-		Constraint constraint;
-
-		constraint.solverBodyAIndex = basePointIndex;
-		constraint.solverBodyBIndex = otherPointIndex;
-
-		Vector3 axisError{ axis * theta };
-
-		Vector3 axisX{ baseRot.Rotate(Vector3::RIGHT) };
-		Vector3 axisY{ baseRot.Rotate(Vector3::UP) };
-		Vector3 axisZ{ baseRot.Rotate(Vector3::FORWARD) };
-
-		constraint.jacobian[0] = Vector3::ZERO;
-		constraint.jacobian[2] = Vector3::ZERO;
-
-		// ヤコビアンの計算
-		constraint.error = axisError.x;
-
-		constraint.jacobian[1] = -axisX;
-		constraint.jacobian[3] = axisX;
-
-		MakeConstraintInfo(constraint, jointDrive.tuning);
-
-		// 拘束として追加
-		_constraintBuffer->Add(constraint);
-
-		constraint.error = axisError.y;
-
-		// ヤコビアンの計算
-		constraint.jacobian[1] = -axisY;
-		constraint.jacobian[3] = axisY;
-
-		MakeConstraintInfo(constraint, jointDrive.tuning);
-
-		// 拘束として追加
-		_constraintBuffer->Add(constraint);
-
-		constraint.error = axisError.z;
-
-		// ヤコビアンの計算
-		constraint.jacobian[1] = -axisZ;
-		constraint.jacobian[3] = axisZ;
-
-		MakeConstraintInfo(constraint, jointDrive.tuning);
-
-		// 拘束として追加
-		_constraintBuffer->Add(constraint);
 	}
 }
 
@@ -748,6 +610,85 @@ void ConstraintBuildSystem::MakeConstraintInfo(Constraint& _constraint, const Co
 	_constraint.maxLambda = _tuning.maxForce * deltaTime;
 }
 
+// 点拘束の解く用の拘束のヤコビアンと違反値の再計算
+void ConstraintBuildSystem::RefreshPointConstraint(ConstraintStorage* _constraintStorage, SolverBodyBuffer* _solverBodyBuffer, ConstraintBuffer* _constraintBuffer)
+{
+	// 拘束が存在するかチェック
+	if (_constraintStorage->CountPointConstraint() <= 0)
+	{
+		return;
+	}
+
+	uint32_t batchCount{ 0 };
+	for (auto id : _constraintStorage->GetPointConstraintIDRange())
+	{
+		const PointConstraint& pointConstraint{ _constraintStorage->GetPointConstraint(id) };
+		// ポイントが2つ以上じゃないと拘束なんて発生しない
+		if (pointConstraint.endPoints.size() <= 1)
+		{
+			continue;
+		}
+
+		// 基準点となるボディから位置を持ってくる。
+		uint32_t basePointIndex{ _solverBodyBuffer->GetIndex(pointConstraint.endPoints[0].transformID) };
+		const SolverBody& solverBodyBase{ _solverBodyBuffer->Get(basePointIndex) };
+		Vector3 basePoint{ solverBodyBase.position + solverBodyBase.rotation.Rotate(pointConstraint.endPoints[0].localPosition) };
+
+		for (int i{ 1 }; i < pointConstraint.endPoints.size(); i++)
+		{
+			Constraint constraint;
+
+			// 対象の位置を取得
+			uint32_t pointIndex{ _solverBodyBuffer->GetIndex(pointConstraint.endPoints[i].transformID) };
+			const SolverBody& solverBody{ _solverBodyBuffer->Get(pointIndex) };
+			Vector3 point{ solverBody.position + solverBody.rotation.Rotate(pointConstraint.endPoints[i].localPosition) };
+
+			constraint.solverBodyAIndex = basePointIndex;
+			constraint.solverBodyBIndex = pointIndex;
+
+			Vector3 rA{ basePoint - solverBodyBase.position };
+			Vector3	rB{ point - solverBody.position };
+
+			const ConstraintRowBatch& batch(_constraintBuffer->GetBatch(batchCount));
+
+			ConstraintFunction::CalcPointJacobianAndError(
+				basePoint, rA,
+				point, rB,
+				_constraintBuffer->GetConstraints(batch.firstRow, batch.rowCount).first<3>());
+		}
+	}
+}
+// 距離拘束の解く用の拘束のヤコビアンと違反値の再計算
+void ConstraintBuildSystem::RefreshDistanceConstraint(ConstraintStorage* _constraintStorage, SolverBodyBuffer* _solverBodyBuffer, ConstraintBuffer* _constraintBuffer)
+{
+
+}
+// ヒンジ拘束の解く用の拘束のヤコビアンと違反値の再計算
+void ConstraintBuildSystem::RefreshHingeConstraint(ConstraintStorage* _constraintStorage, SolverBodyBuffer* _solverBodyBuffer, ConstraintBuffer* _constraintBuffer)
+{
+
+}
+// 角度制限付き点拘束の解く用の拘束のヤコビアンと違反値の再計算
+void ConstraintBuildSystem::RefreshAngleLimitPointConstraint(ConstraintStorage* _constraintStorage, SolverBodyBuffer* _solverBodyBuffer, ConstraintBuffer* _constraintBuffer)
+{
+
+}
+// 角度制限付きヒンジ拘束の解く用の拘束のヤコビアンと違反値の再計算
+void ConstraintBuildSystem::RefreshAngleLimitHingeConstraint(ConstraintStorage* _constraintStorage, SolverBodyBuffer* _solverBodyBuffer, ConstraintBuffer* _constraintBuffer)
+{
+
+}
+// SwingTwist拘束の解く用の拘束のヤコビアンと違反値の再計算
+void ConstraintBuildSystem::RefreshLimitedBallJointConstraint(ConstraintStorage* _constraintStorage, SolverBodyBuffer* _solverBodyBuffer, ConstraintBuffer* _constraintBuffer)
+{
+
+}
+// 関節駆動拘束の解く用の拘束のヤコビアンと違反値の再計算
+void ConstraintBuildSystem::RefreshJointDriveConstraint(ConstraintStorage* _constraintStorage, SolverBodyBuffer* _solverBodyBuffer, ConstraintBuffer* _constraintBuffer)
+{
+
+}
+
 // 点拘束を情報からソルバ用拘束に変換してバッファに入れる
 void ConstraintBuildSystem::AddPointConstraint(
 	Constraint _constraint, const ConstraintTuning& _tuning,
@@ -755,52 +696,17 @@ void ConstraintBuildSystem::AddPointConstraint(
 	const Vector3& _rB, const Vector3& _pointB,
 	ConstraintBuffer* _constraintBuffer)
 {
-	// 差
-	Vector3 diff{ _pointA - _pointB };
-	// 差をそのまま拘束Cの結果とする
-	_constraint.error = diff.x;
+	Constraint constraints[3]{ _constraint,_constraint,_constraint };
+	ConstraintFunction::CalcPointJacobianAndError(
+		_pointA, _rA,
+		_pointB, _rB,
+		constraints);
 
-
-	// ヤコビアンの計算
-	_constraint.jacobian[0] = Vector3::RIGHT;
-	_constraint.jacobian[1] = Vector3::Cross(_rA, Vector3::RIGHT);
-	_constraint.jacobian[2] = -Vector3::RIGHT;
-	_constraint.jacobian[3] = -Vector3::Cross(_rB, Vector3::RIGHT);
-
-	MakeConstraintInfo(_constraint, _tuning);
-
-	// 拘束として追加
-	_constraintBuffer->Add(_constraint);
-
-	// 差をそのまま拘束Cの結果とする
-	_constraint.error = diff.y;
-
-
-	// ヤコビアンの計算
-	_constraint.jacobian[0] = Vector3::UP;
-	_constraint.jacobian[1] = Vector3::Cross(_rA, Vector3::UP);
-	_constraint.jacobian[2] = -Vector3::UP;
-	_constraint.jacobian[3] = -Vector3::Cross(_rB, Vector3::UP);
-
-	MakeConstraintInfo(_constraint, _tuning);
-
-	// 拘束として追加
-	_constraintBuffer->Add(_constraint);
-
-	// 差をそのまま拘束Cの結果とする
-	_constraint.error = diff.z;
-
-
-	// ヤコビアンの計算
-	_constraint.jacobian[0] = Vector3::FORWARD;
-	_constraint.jacobian[1] = Vector3::Cross(_rA, Vector3::FORWARD);
-	_constraint.jacobian[2] = -Vector3::FORWARD;
-	_constraint.jacobian[3] = -Vector3::Cross(_rB, Vector3::FORWARD);
-
-	MakeConstraintInfo(_constraint, _tuning);
-
-	// 拘束として追加
-	_constraintBuffer->Add(_constraint);
+	for (Constraint& constraint : constraints)
+	{
+		MakeConstraintInfo(constraint, _tuning);
+		_constraintBuffer->Add(constraint);
+	}
 }
 
 void ConstraintBuildSystem::AddAxisConstraint(
@@ -808,15 +714,7 @@ void ConstraintBuildSystem::AddAxisConstraint(
 	const Vector3& _tangent, const Vector3& _axisError,
 	ConstraintBuffer* _constraintBuffer)
 {
-	// 軸ずれをtangent方向へ射影
-	_constraint.error = Vector3::Dot(_axisError, _tangent);
-
-	// Jω =
-	// -tangent・ωA + tangent・ωB
-	_constraint.jacobian[0] = Vector3::ZERO;
-	_constraint.jacobian[1] = -_tangent;
-	_constraint.jacobian[2] = Vector3::ZERO;
-	_constraint.jacobian[3] = _tangent;
+	ConstraintFunction::CalcAxisJacobianAndError(_tangent, _axisError, _constraint);
 
 	MakeConstraintInfo(_constraint, _tuning);
 

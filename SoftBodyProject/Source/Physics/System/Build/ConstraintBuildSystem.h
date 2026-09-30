@@ -32,6 +32,21 @@ private:
 	// 関節駆動拘束の解く用の拘束構造体を作る
 	void BuildJointDriveConstraint(ConstraintStorage* _constraintStorage, SolverBodyBuffer* _solverBodyBuffer, ConstraintBuffer* _constraintBuffer);
 
+	// 点拘束の解く用の拘束のヤコビアンと違反値の再計算
+	void RefreshPointConstraint(ConstraintStorage* _constraintStorage, SolverBodyBuffer* _solverBodyBuffer, ConstraintBuffer* _constraintBuffer);
+	// 距離拘束の解く用の拘束のヤコビアンと違反値の再計算
+	void RefreshDistanceConstraint(ConstraintStorage* _constraintStorage, SolverBodyBuffer* _solverBodyBuffer, ConstraintBuffer* _constraintBuffer);
+	// ヒンジ拘束の解く用の拘束のヤコビアンと違反値の再計算
+	void RefreshHingeConstraint(ConstraintStorage* _constraintStorage, SolverBodyBuffer* _solverBodyBuffer, ConstraintBuffer* _constraintBuffer);
+	// 角度制限付き点拘束の解く用の拘束のヤコビアンと違反値の再計算
+	void RefreshAngleLimitPointConstraint(ConstraintStorage* _constraintStorage, SolverBodyBuffer* _solverBodyBuffer, ConstraintBuffer* _constraintBuffer);
+	// 角度制限付きヒンジ拘束の解く用の拘束のヤコビアンと違反値の再計算
+	void RefreshAngleLimitHingeConstraint(ConstraintStorage* _constraintStorage, SolverBodyBuffer* _solverBodyBuffer, ConstraintBuffer* _constraintBuffer);
+	// SwingTwist拘束の解く用の拘束のヤコビアンと違反値の再計算
+	void RefreshLimitedBallJointConstraint(ConstraintStorage* _constraintStorage, SolverBodyBuffer* _solverBodyBuffer, ConstraintBuffer* _constraintBuffer);
+	// 関節駆動拘束の解く用の拘束のヤコビアンと違反値の再計算
+	void RefreshJointDriveConstraint(ConstraintStorage* _constraintStorage, SolverBodyBuffer* _solverBodyBuffer, ConstraintBuffer* _constraintBuffer);
+
 	void MakeConstraintInfo(Constraint& _constraint, const ConstraintTuning& _tuning);
 
 	// 点拘束を情報からソルバ用拘束に変換してバッファに入れる(ソルバボディの情報だけ入れた奴を渡す)
