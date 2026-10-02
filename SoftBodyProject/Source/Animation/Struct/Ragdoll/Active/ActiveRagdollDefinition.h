@@ -7,4 +7,5 @@ struct ActiveRagdollDefinition
 {
 	RagdollDefinition ragdollDefinition;
 	ActiveRagdollSetting settings;
+	std::string boneMaskPath;
 };

@@ -4,12 +4,12 @@
 #include "ActiveRagdollStorage.h"
 
 // 作成関数
-ActiveRagdollID ActiveRagdollStorage::Create(EntityID _entity, RagdollID _ragdollID, const Ragdoll& _ragdoll, const SkeletonData* _skeleton, const ActiveRagdollSetting& _setting)
+ActiveRagdollID ActiveRagdollStorage::Create(EntityID _entity, RagdollID _ragdollID, const Ragdoll& _ragdoll, const SkeletonData* _skeleton, const ActiveRagdollSetting& _setting, const BoneMask* _mask)
 {
 	ActiveRagdollID id{ CreateID(CountRagdollID()) };
 
 	// 失敗した場合は無効値を返す
-	if (!CreateActiveRagdoll(_entity, _ragdoll, _skeleton, _setting))
+	if (!CreateActiveRagdoll(_entity, _ragdoll, _skeleton, _setting, _mask))
 	{
 		ReleaseID(id);
 		return {};
@@ -62,7 +62,7 @@ void ActiveRagdollStorage::Destroy(ActiveRagdollID _id)
 }
 
 // ActiveRagdoll情報の作成関数
-bool ActiveRagdollStorage::CreateActiveRagdoll(EntityID _entity, const Ragdoll& _ragdoll, const SkeletonData* _skeleton, const ActiveRagdollSetting& _setting)
+bool ActiveRagdollStorage::CreateActiveRagdoll(EntityID _entity, const Ragdoll& _ragdoll, const SkeletonData* _skeleton, const ActiveRagdollSetting& _setting, const BoneMask* _mask)
 {
 	if (_skeleton == nullptr)
 	{
@@ -76,6 +76,11 @@ bool ActiveRagdollStorage::CreateActiveRagdoll(EntityID _entity, const Ragdoll& 
 		ConstraintID bodyConstraint{ _ragdoll.constraints[boneIndex] };
 		// 無効値であれば飛ばすでな。
 		if (!bodyConstraint.IsValid())
+		{
+			continue;
+		}
+		// ウェイトが0以下なら無効ボーンとして生成しない
+		if (_mask != nullptr && _mask->weights[boneIndex] <= 0.0f)
 		{
 			continue;
 		}
@@ -145,5 +150,10 @@ void ActiveRagdollStorage::DestroyActiveRagdoll(RagdollID _ragdollID, const Acti
 	for (auto jointDriveConstraint : _activeRagdoll.jointDriveConstraints)
 	{
 		PhysicsComponentAPI::DestroyConstraint(jointDriveConstraint);
+	}
+
+	for (auto transformID : _activeRagdoll.pointTransformIDs)
+	{
+		PhysicsComponentAPI::DestroyPhysicsTransform(transformID);
 	}
 }

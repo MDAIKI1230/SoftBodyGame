@@ -1,6 +1,7 @@
 {
 	"Format": "ActiveRagdollDefinition",
 	"RagdollPath": "../M_001_player_095_01_no_sword_tpose.json",
+	"BoneMaskPath": "Res/Data/Skeleton/M_001_player_095_01_no_sword_NoArmsAndHeadBoneMask.json",
 	"Setting": {
 		"GroundDetection": {
 			"ProbeStartOffset": 8.0,

@@ -7,6 +7,8 @@
 #include "AnimationComponentAPI.h"
 #include "SolverIKStorage.h"
 
+#include "BoneMaskLoader.h"
+
 // --- 通常アニメーション ---
 
 // 生成
@@ -133,12 +135,36 @@ ActiveRagdollID AnimationComponentAPI::CreateActiveRagdoll(EntityID _entityID, c
 		skeleton,
 		definition.ragdollDefinition) };
 
-	return activeRagdollStorage->Create(
-		_entityID,
-		ragdollID,
-		ragdollStorage->GetRagdoll(ragdollID),
-		skeleton,
-		definition.settings);
+	if (definition.boneMaskPath.empty())
+	{
+		return activeRagdollStorage->Create(
+			_entityID,
+			ragdollID,
+			ragdollStorage->GetRagdoll(ragdollID),
+			skeleton,
+			definition.settings);
+	}
+
+	BoneMask boneMask;
+	if (BoneMaskLoader::Load(definition.boneMaskPath.c_str(), skeleton, boneMask))
+	{
+		return activeRagdollStorage->Create(
+			_entityID,
+			ragdollID,
+			ragdollStorage->GetRagdoll(ragdollID),
+			skeleton,
+			definition.settings,
+			&boneMask);
+	}
+	else
+	{
+		return activeRagdollStorage->Create(
+			_entityID,
+			ragdollID,
+			ragdollStorage->GetRagdoll(ragdollID),
+			skeleton,
+			definition.settings);
+	}
 }
 // 破棄
 void AnimationComponentAPI::DestroyActiveRagdoll(ActiveRagdollID _id)

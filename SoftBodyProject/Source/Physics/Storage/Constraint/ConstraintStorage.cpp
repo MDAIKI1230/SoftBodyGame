@@ -182,6 +182,9 @@ void ConstraintStorage::Destory(ConstraintID _id)
 	case ConstraintType::LIMITED_BALL_JOINT:
 		movedId = limitedBallJointConstraintStorage->Remove(GetDenseIndex(_id));
 		break;
+	case ConstraintType::JOINT_DRIVE:
+		movedId = jointDriveConstraintStorage->Remove(GetDenseIndex(_id));
+		break;
 	default:
 		break;
 	}

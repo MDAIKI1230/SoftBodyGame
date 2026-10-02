@@ -6,8 +6,7 @@
 
 #include "ActiveRagdollID.h"
 #include "RagdollID.h"
-#include "SkeletonID.h"
-#include "ModelHandle.h"
+#include "BoneMask.h"
 
 #include "Ragdoll.h"
 #include "ActiveRagdoll.h"
@@ -31,13 +30,13 @@ public:
 	MD_STORAGE_ID_READ_ONLY_COLUMN(ActiveRagdollID, EntityID, OwnerEntity, ownerEntities)
 public:
 	// 作成関数
-	ActiveRagdollID Create(EntityID _entity, RagdollID _ragdollID, const Ragdoll& _ragdoll, const SkeletonData* _skeleton, const ActiveRagdollSetting& _setting);
+	ActiveRagdollID Create(EntityID _entity, RagdollID _ragdollID, const Ragdoll& _ragdoll, const SkeletonData* _skeleton, const ActiveRagdollSetting& _setting, const BoneMask* _mask = nullptr);
 	// 破棄
 	void Destroy(ActiveRagdollID _id);
 
 private:
 	// ActiveRagdoll情報の作成関数
-	bool CreateActiveRagdoll(EntityID _entity, const Ragdoll& _ragdoll, const SkeletonData* _skeleton, const ActiveRagdollSetting& _setting);
+	bool CreateActiveRagdoll(EntityID _entity, const Ragdoll& _ragdoll, const SkeletonData* _skeleton, const ActiveRagdollSetting& _setting, const BoneMask* _mask);
 	// ActiveRagdoll情報の破棄関数
 	void DestroyActiveRagdoll(RagdollID _ragdollID, const ActiveRagdoll& _activeRagdoll);
 };

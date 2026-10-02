@@ -13,6 +13,7 @@ public:
 	static bool LoadDefinitionData(
 		const rapidjson::Document& _document,
 		std::string& _ragdollPath,
+		std::string& _maskPath,
 		ActiveRagdollSetting& _setting);
 private:
 	// 各グループの調整値を読み込む関数

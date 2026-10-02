@@ -6,6 +6,7 @@
 bool ActiveRagdollLoaderHelper::LoadDefinitionData(
 	const rapidjson::Document& _document,
 	std::string& _ragdollPath,
+	std::string& _maskPath,
 	ActiveRagdollSetting& _setting)
 {
 	// Ragdoll定義JSONへのパスを取得する
@@ -20,6 +21,18 @@ bool ActiveRagdollLoaderHelper::LoadDefinitionData(
 	if (ragdollPath.empty())
 	{
 		return false;
+	}
+	// Mask定義JSONへのパスを取得する(なくてもよい)
+	if (_document.HasMember("BoneMaskPath") && _document["BoneMaskPath"].IsString())
+	{
+		std::string maskPath{
+		_document["BoneMaskPath"].GetString(),
+		_document["BoneMaskPath"].GetStringLength() };
+
+		if (!maskPath.empty())
+		{
+			_maskPath = std::move(maskPath);
+		}
 	}
 
 	// ActiveRagdoll調整値のRootを取得する

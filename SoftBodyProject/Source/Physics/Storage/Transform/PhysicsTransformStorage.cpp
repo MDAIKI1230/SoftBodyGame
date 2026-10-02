@@ -69,6 +69,15 @@ void PhysicsTransformStorage::Destroy(PhysicsTransformID _id)
 		return;
 	}
 
+	// 配列を書き換える前に、所有者との対応を解除する
+	const EntityID ownerEntity{ GetOwnerEntity(_id) };
+	auto it = entityMap.find(ownerEntity);
+
+	if (it != entityMap.end() && it->second == _id)
+	{
+		entityMap.erase(it);
+	}
+
 	size_t last = ids.size() - 1;
 	PhysicsTransformID movedId = ids[last];
 
@@ -103,13 +112,6 @@ void PhysicsTransformStorage::Destroy(PhysicsTransformID _id)
 	syncPolicies.pop_back();
 	ownerEntities.pop_back();
 	ids.pop_back();
-
-	auto it = entityMap.find(GetOwnerEntity(_id));
-
-	if (!entityMap.empty())
-	{
-		entityMap.erase(it);
-	}
 
 	if (!(movedId.GetIndex() == _id.GetIndex() && movedId.GetGeneration() == _id.GetGeneration()))
 	{

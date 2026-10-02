@@ -61,7 +61,8 @@ bool ActiveRagdollLoader::Load(const std::string& _path, ActiveRagdollDefinition
 	// 出力を書き換える前に必要な定義をすべて読み込む
 	ActiveRagdollDefinition loaded;
 	std::string ragdollPathString;
-	if (!ActiveRagdollLoaderHelper::LoadDefinitionData(document, ragdollPathString, loaded.settings))
+	std::string maskPathString;
+	if (!ActiveRagdollLoaderHelper::LoadDefinitionData(document, ragdollPathString, maskPathString, loaded.settings))
 	{
 		return false;
 	}
@@ -79,6 +80,8 @@ bool ActiveRagdollLoader::Load(const std::string& _path, ActiveRagdollDefinition
 	{
 		return false;
 	}
+
+	loaded.boneMaskPath = std::move(maskPathString);
 
 	_output = std::move(loaded);
 	return true;
