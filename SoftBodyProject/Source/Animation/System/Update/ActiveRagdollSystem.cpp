@@ -847,13 +847,13 @@ void ActiveRagdollSystem::UpdatePointConstraint(const Ragdoll& _ragdoll, const A
 		EndPointFrame& targetEndPoint{ PhysicsComponentAPI::EditOtherEndPoints(constraint)[0] };
 
 		Vector3 scale;
-		Quaternion rot;
+		Quaternion parentModelRotation;
 		Vector3 parentModelPosition;
 
 		Transform::DecomposeTRS(
 			_targetPose.modelFromBoneMatrices[parentBoneIndex],
 			parentModelPosition,
-			rot,
+			parentModelRotation,
 			scale
 		);
 
@@ -861,7 +861,10 @@ void ActiveRagdollSystem::UpdatePointConstraint(const Ragdoll& _ragdoll, const A
 
 		// モデル座標系とボディのオフセット分
 		Matrix4x4 modelFromParentBody{
-			_targetPose.modelFromBoneMatrices[parentBoneIndex] *
+			MatGenerateFunc::TRS(
+				parentModelPosition ,
+				parentModelRotation ,
+				Vector3::ONE) *
 			MatGenerateFunc::TRS(
 				parentLink.bodyPositionInBoneSpace,
 				parentLink.bodyRotationInBoneSpace,
