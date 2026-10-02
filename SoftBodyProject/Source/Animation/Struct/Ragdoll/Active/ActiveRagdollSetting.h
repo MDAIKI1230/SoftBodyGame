@@ -76,10 +76,8 @@ struct ActiveRagdollSetting
 
 	// --- 関節駆動制御 ---
 
-	// Animationの目標相対姿勢へ戻す関節駆動拘束の比例係数
-	float jointDriveStiffness{};
-	// 関節駆動による回転の振動を抑える減衰係数
-	float jointDriveDamping{};
+	// Animationの目標相対姿勢へ戻す関節駆動拘束のコンプライアンス値
+	float jointDriveCompliance{};
 	// 関節駆動拘束が一つの回転軸へ出せる最大強度
 	float maxJointDriveForce{};
 

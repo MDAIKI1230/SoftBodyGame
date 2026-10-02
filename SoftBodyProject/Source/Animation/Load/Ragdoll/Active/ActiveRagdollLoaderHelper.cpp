@@ -153,8 +153,7 @@ bool ActiveRagdollLoaderHelper::LoadJointDrive(const rapidjson::Value& _value, A
 	{
 		return false;
 	}
-	return GetFloat(_value, "Stiffness", _setting.jointDriveStiffness) &&
-		GetFloat(_value, "Damping", _setting.jointDriveDamping) &&
+	return GetFloat(_value, "Compliance", _setting.jointDriveCompliance) &&
 		GetFloat(_value, "MaxForce", _setting.maxJointDriveForce);
 }
 

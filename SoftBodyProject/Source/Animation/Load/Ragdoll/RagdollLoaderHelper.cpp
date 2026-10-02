@@ -5,6 +5,15 @@
 // Rootから順に読む関数
 bool RagdollLoaderHelper::LoadRagdollDefinition(rapidjson::Document& _document, RagdollDefinition& _output)
 {
+	// コンプライアンス値を取得
+	// コンプライアンスがあるかチェック
+	if (!_document.HasMember("DefaultCompliance") || !_document["DefaultCompliance"].IsFloat())
+	{
+		return false;
+	}
+
+	_output.defaultCompliance = _document["DefaultCompliance"].GetFloat();
+
 	// Rootかチェック
 	if (!_document.HasMember("Root") || !_document["Root"].IsObject())
 	{

@@ -9,9 +9,7 @@ void PhysicsWorld::Initialize()
 
 	for (int i{ 0 }; i < SOLVER_TIMES; i++)
 	{
-		constraintBuildSystem.Build(&constraintStorage, &solverBodyBuffer, &constraintBuffer);
-		constraintSolverSystem.PBDPositionSolver(&solverBodyBuffer, &constraintBuffer);
-		constraintBuffer.Clear();
+		constraintSolverSystem.Solve(&constraintStorage, &solverBodyBuffer, &constraintBuffer);
 	}
 
 	solverBodyCommitSystem.Commit(&transformStorage, &bodyStorage, &solverBodyBuffer);
@@ -53,29 +51,6 @@ void PhysicsWorld::Solver()
 	// 解消準備
 	collisionSolverSystem.StartUp(&colliderStorage, &manifoldBuffer, &solverBodyBuffer);
 
-	// 拘束生成
-	//constraintBuildSystem.FixedUpdate(&constraintStorage, &solverBodyBuffer, &constraintBuffer);
-
-	//// 速度解消を指定回数分回す
-	//for (int i{ 0 }; i < SOLVER_TIMES; i++)
-	//{
-	//	collisionSolverSystem.Solve(&manifoldBuffer, &solverBodyBuffer);
-
-	//	constraintSolverSystem.Solve(&solverBodyBuffer, &constraintBuffer);
-	//}
-
-	//// 修正された速度で位置を再計算
-	//collisionSolverSystem.ReCalcPosRot(&solverBodyBuffer);
-
-	//for (int i{ 0 }; i < SOLVER_TIMES; i++)
-	//{
-	//	constraintBuildSystem.FixedUpdate(&constraintStorage, &solverBodyBuffer, &constraintBuffer);
-	//	collisionSolverSystem.PositionSolver(&manifoldBuffer, &solverBodyBuffer);
-	//	constraintSolverSystem.PositionSolver(&solverBodyBuffer, &constraintBuffer);
-	//	constraintBuffer.Clear();
-	//}
-	// PBD版
-
 	for (int i{ 0 }; i < SOLVER_TIMES; i++)
 	{
 		collisionSolverSystem.Solve(&manifoldBuffer, &solverBodyBuffer);
@@ -84,13 +59,11 @@ void PhysicsWorld::Solver()
 	// 修正された速度で位置を再計算
 	collisionSolverSystem.ReCalcPosRot(&solverBodyBuffer);
 
-	constraintBuildSystem.Build(&constraintStorage, &solverBodyBuffer, &constraintBuffer);
 
 	for (int i{ 0 }; i < SOLVER_TIMES; i++)
 	{
 		collisionSolverSystem.PositionSolver(&manifoldBuffer, &solverBodyBuffer);
-		constraintBuildSystem.RefreshRows(&constraintStorage, &solverBodyBuffer, &constraintBuffer);
-		constraintSolverSystem.PBDPositionSolver(&solverBodyBuffer, &constraintBuffer);
+		constraintSolverSystem.Solve(&constraintStorage, &solverBodyBuffer, &constraintBuffer);
 	}
 
 	constraintSolverSystem.ReCalcVelocity(&solverBodyBuffer);

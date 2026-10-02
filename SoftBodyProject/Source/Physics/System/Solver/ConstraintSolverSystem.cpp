@@ -6,288 +6,27 @@
 
 #include "ConstraintSolverSystem.h"
 
-ConstraintSolverSystem::ConstraintSolverSystem() :
-	K{ 0.4f },
-	K_DELTA_TIME{ K * TimeManager::GetFixedDeltaTime() },
-	C{ 0.4f },
-	ERP{ K_DELTA_TIME / (K_DELTA_TIME + C) },
-	GAMMA{ 1 / (C + K_DELTA_TIME) }
+#include "ConstraintFunction.h"
+
+void ConstraintSolverSystem::Solve(ConstraintStorage* _constraintStorage, SolverBodyBuffer* _solverBodyBuffer, ConstraintBuffer* _constraintBuffer)
 {
+	size_t batchCount{ 0 };
+	// 点拘束の解く用の拘束のヤコビアンと違反値の再計算
+	SolvePointConstraint(_constraintStorage, _solverBodyBuffer, _constraintBuffer, batchCount);
+	// 距離拘束の解く用の拘束のヤコビアンと違反値の再計算
+	SolveDistanceConstraint(_constraintStorage, _solverBodyBuffer, _constraintBuffer, batchCount);
+	// ヒンジ拘束の解く用の拘束のヤコビアンと違反値の再計算
+	SolveHingeConstraint(_constraintStorage, _solverBodyBuffer, _constraintBuffer, batchCount);
+	// 角度制限付き点拘束の解く用の拘束のヤコビアンと違反値の再計算
+	SolveAngleLimitPointConstraint(_constraintStorage, _solverBodyBuffer, _constraintBuffer, batchCount);
+	// 角度制限付きヒンジ拘束の解く用の拘束のヤコビアンと違反値の再計算
+	SolveAngleLimitHingeConstraint(_constraintStorage, _solverBodyBuffer, _constraintBuffer, batchCount);
+	// SwingTwist拘束の解く用の拘束のヤコビアンと違反値の再計算
+	SolveLimitedBallJointConstraint(_constraintStorage, _solverBodyBuffer, _constraintBuffer, batchCount);
+	// 関節駆動拘束の解く用の拘束のヤコビアンと違反値の再計算
+	SolveJointDriveConstraint(_constraintStorage, _solverBodyBuffer, _constraintBuffer, batchCount);
 }
 
-void ConstraintSolverSystem::Solve(SolverBodyBuffer* _solverBodyBuffer, ConstraintBuffer* _constraintBuffer)
-{
-	for (auto& constraint : _constraintBuffer->EditAll())
-	{
-		// ボディA
-		SolverBody& solverBodyA{ _solverBodyBuffer->Edit(constraint.solverBodyAIndex) };
-		// ボディB
-		SolverBody& solverBodyB{ _solverBodyBuffer->Edit(constraint.solverBodyBIndex) };
-		// 質量から両者がBodyを持っているかの判定をする(どちらかがBodyを持っているなら合計は0じゃないはず)
-		float totalInvMass{ solverBodyA.inverseMass + solverBodyB.inverseMass };
-		if (totalInvMass <= 0)
-		{
-			continue;
-		}
-
-		// 慣性テンソル求める
-		Matrix4x4 rotMat{ MatGenerateFunc::Rotate(solverBodyA.rotation) };
-		Matrix4x4 worldInverseInertiaTnesorA{ rotMat * solverBodyA.localInverseInertiaTensor * rotMat.Transposed() };
-
-		rotMat = MatGenerateFunc::Rotate(solverBodyB.rotation);
-		Matrix4x4 worldInverseInertiaTnesorB{ rotMat * solverBodyB.localInverseInertiaTensor * rotMat.Transposed() };
-
-		// Factorを計算した各種速度計算
-		Vector3 linearResponseA{
-			BodyStorage::ApplyLinearInverseMass(
-				constraint.jacobian[0],
-				solverBodyA.inverseMass,
-				solverBodyA.linearFactor)
-		};
-
-		Vector3 angularResponseA{
-			BodyStorage::ApplyAngularInverseInertia(
-				worldInverseInertiaTnesorA,
-				constraint.jacobian[1],
-				solverBodyA.angularFactor)
-		};
-
-		Vector3 linearResponseB{
-			BodyStorage::ApplyLinearInverseMass(
-				constraint.jacobian[2],
-				solverBodyB.inverseMass,
-				solverBodyB.linearFactor)
-		};
-
-		Vector3 angularResponseB{
-			BodyStorage::ApplyAngularInverseInertia(
-				worldInverseInertiaTnesorB,
-				constraint.jacobian[3],
-				solverBodyB.angularFactor)
-		};
-
-		// 変化量ベクトル
-		Vector3 deltaVector[4]{
-			solverBodyA.velocity,
-			solverBodyA.angularVelocity,
-			solverBodyB.velocity,
-			solverBodyB.angularVelocity,
-		};
-		// λを求める λ = (Jv + bias) / M^-1
-		// ヤコビアンと変化量ベクトルから速度拘束条件Jv = 0のJv作成
-		float jv{ 0 };
-		for (int i{ 0 }; i < 4; i++)
-		{
-			jv += Vector3::Dot(constraint.jacobian[i], deltaVector[i]);
-		}
-
-		// 質量と慣性テンソルが速度に影響する度合い
-		float effectiveMass{
-			Vector3::Dot(constraint.jacobian[0], linearResponseA) +
-			Vector3::Dot(constraint.jacobian[1], angularResponseA) +
-			Vector3::Dot(constraint.jacobian[2], linearResponseB) +
-			Vector3::Dot(constraint.jacobian[3], angularResponseB)
-		};
-
-		// 0チェック
-		if (effectiveMass <= MathConstants::EPSILON)
-		{
-			continue;
-		}
-
-		// λ計算(CFMも適応)
-		float lambda{ (jv + constraint.bias) / (effectiveMass + GAMMA) };
-
-		float oldLambda{ constraint.accumulatedLambda };
-
-		float denominator{ effectiveMass + constraint.softness };
-
-		if (denominator <= MathConstants::EPSILON)
-		{
-			continue;
-		}
-
-		// 今回のiterationで加えるλ
-		float deltaLambda{ (jv - constraint.targetVelocity + constraint.bias - constraint.softness * oldLambda) / denominator };
-
-		// 蓄積λ全体をClampする
-		constraint.accumulatedLambda = std::clamp(
-			oldLambda + deltaLambda,
-			constraint.minLambda,
-			constraint.maxLambda
-		);
-
-		// Clampによって実際に変化した分だけ適用
-		float applyLambda{ constraint.accumulatedLambda - oldLambda };
-
-		// A速度の解消
-		solverBodyA.velocity -= linearResponseA * applyLambda;
-		solverBodyA.angularVelocity -= angularResponseA * applyLambda;
-
-		// B速度の解消
-		solverBodyB.velocity -= linearResponseB * applyLambda;
-		solverBodyB.angularVelocity -= angularResponseB * applyLambda;
-	}
-}
-
-void ConstraintSolverSystem::PositionSolver(SolverBodyBuffer* _solverBodyBuffer, ConstraintBuffer* _constraintBuffer)
-{
-	for (auto& constraint : _constraintBuffer->EditAll())
-	{
-		// ボディA
-		SolverBody& solverBodyA{ _solverBodyBuffer->Edit(constraint.solverBodyAIndex) };
-		// ボディB
-		SolverBody& solverBodyB{ _solverBodyBuffer->Edit(constraint.solverBodyBIndex) };
-		// 質量から両者がBodyを持っているかの判定をする(どちらかがBodyを持っているなら合計は0じゃないはず)
-		float totalInvMass{ solverBodyA.inverseMass + solverBodyB.inverseMass };
-		if (totalInvMass <= 0)
-		{
-			continue;
-		}
-
-		// 慣性テンソル求める
-		Matrix4x4 rotMat{ MatGenerateFunc::Rotate(solverBodyA.rotation) };
-		Matrix4x4 worldInertiaTnesorA{ rotMat * solverBodyA.localInverseInertiaTensor * rotMat.Transposed() };
-
-		rotMat = MatGenerateFunc::Rotate(solverBodyB.rotation);
-		Matrix4x4 worldInertiaTnesorB{ rotMat * solverBodyB.localInverseInertiaTensor * rotMat.Transposed() };
-
-		// 質量と慣性テンソルが速度に影響する度合い
-		float effectiveMass{
-			solverBodyA.inverseMass +
-			Vector3::Dot(constraint.jacobian[1],worldInertiaTnesorA * constraint.jacobian[1]) +
-			solverBodyB.inverseMass +
-			Vector3::Dot(constraint.jacobian[3],worldInertiaTnesorB * constraint.jacobian[3])
-		};
-
-		float depth = constraint.error;
-		// 解消の割合から解消量を計算
-		float correction = 0.2f * depth;
-
-		// λ計算(CFMも適応)
-		float lambda{ correction / effectiveMass };
-
-		float oldLambda{ constraint.accumulatedLambda };
-
-		//
-		constraint.accumulatedLambda = oldLambda + lambda;
-
-		float applyLambda{ constraint.accumulatedLambda - oldLambda };
-
-		// 解消した分だけ減らす
-		constraint.error -= correction;
-
-		// Aの位置/姿勢制御
-		solverBodyA.position -= constraint.jacobian[0] * applyLambda * solverBodyA.inverseMass;
-		Vector3 angVec{ worldInertiaTnesorA * constraint.jacobian[1] * applyLambda };
-		Quaternion rotOmega{ Quaternion::AngleAxis(angVec.Length(), -angVec) };
-		solverBodyA.rotation = rotOmega * solverBodyA.rotation;
-
-		// Bの位置/姿勢制御
-		solverBodyB.position -= constraint.jacobian[2] * applyLambda * solverBodyB.inverseMass;
-		angVec = worldInertiaTnesorB * constraint.jacobian[3] * applyLambda;
-		rotOmega = Quaternion::AngleAxis(angVec.Length(), -angVec);
-		solverBodyB.rotation = rotOmega * solverBodyB.rotation;
-	}
-}
-
-// PBD法による位置解消関数
-void ConstraintSolverSystem::PBDPositionSolver(SolverBodyBuffer* _solverBodyBuffer, ConstraintBuffer* _constraintBuffer)
-{
-	for (auto& constraint : _constraintBuffer->EditAll())
-	{
-		if (!constraint.isActive)
-		{
-			continue;
-		}
-		// ボディA
-		SolverBody& solverBodyA{ _solverBodyBuffer->Edit(constraint.solverBodyAIndex) };
-		// ボディB
-		SolverBody& solverBodyB{ _solverBodyBuffer->Edit(constraint.solverBodyBIndex) };
-		// 質量から両者がBodyを持っているかの判定をする(どちらかがBodyを持っているなら合計は0じゃないはず)
-		float totalInvMass{ solverBodyA.inverseMass + solverBodyB.inverseMass };
-		if (totalInvMass <= 0)
-		{
-			continue;
-		}
-
-		// 慣性テンソル求める
-		Matrix4x4 rotMat{ MatGenerateFunc::Rotate(solverBodyA.rotation) };
-		Matrix4x4 worldInverseInertiaTnesorA{ rotMat * solverBodyA.localInverseInertiaTensor * rotMat.Transposed() };
-
-		rotMat = MatGenerateFunc::Rotate(solverBodyB.rotation);
-		Matrix4x4 worldInverseInertiaTnesorB{ rotMat * solverBodyB.localInverseInertiaTensor * rotMat.Transposed() };
-
-		// Factorを計算した各種速度計算
-		Vector3 linearResponseA{
-			BodyStorage::ApplyLinearInverseMass(
-				constraint.jacobian[0],
-				solverBodyA.inverseMass,
-				solverBodyA.linearFactor)
-		};
-
-		Vector3 angularResponseA{
-			BodyStorage::ApplyAngularInverseInertia(
-				worldInverseInertiaTnesorA,
-				constraint.jacobian[1],
-				solverBodyA.angularFactor)
-		};
-
-		Vector3 linearResponseB{
-			BodyStorage::ApplyLinearInverseMass(
-				constraint.jacobian[2],
-				solverBodyB.inverseMass,
-				solverBodyB.linearFactor)
-		};
-
-		Vector3 angularResponseB{
-			BodyStorage::ApplyAngularInverseInertia(
-				worldInverseInertiaTnesorB,
-				constraint.jacobian[3],
-				solverBodyB.angularFactor)
-		};
-
-		// 質量と慣性テンソルが速度に影響する度合い
-		float effectiveMass{
-			Vector3::Dot(constraint.jacobian[0], linearResponseA) +
-			Vector3::Dot(constraint.jacobian[1], angularResponseA) +
-			Vector3::Dot(constraint.jacobian[2], linearResponseB) +
-			Vector3::Dot(constraint.jacobian[3], angularResponseB)
-		};
-
-		if (effectiveMass < MathConstants::EPSILON)
-		{
-			continue;
-		}
-
-		// λ計算
-		float oldLambda{ constraint.accumulatedLambda };
-
-		float deltaLambda{
-			(constraint.error - constraint.timeStepAdjustedCompliance * oldLambda) /
-			(effectiveMass + constraint.timeStepAdjustedCompliance)};
-
-		// 合計値を計算
-		constraint.accumulatedLambda = std::clamp(
-			oldLambda + deltaLambda,
-			constraint.minLambda,
-			constraint.maxLambda);
-
-		float applyLambda{ constraint.accumulatedLambda - oldLambda };
-
-		// Aの位置/姿勢制御
-		solverBodyA.position -= linearResponseA * applyLambda;
-		Vector3 angVec{ angularResponseA * applyLambda };
-		Quaternion rotOmega{ Quaternion::AngleAxis(angVec.Length(), -angVec) };
-		solverBodyA.rotation = rotOmega * solverBodyA.rotation;
-
-		// Bの位置/姿勢制御
-		solverBodyB.position -= linearResponseB * applyLambda;
-		angVec = angularResponseB * applyLambda;
-		rotOmega = Quaternion::AngleAxis(angVec.Length(), -angVec);
-		solverBodyB.rotation = rotOmega * solverBodyB.rotation;
-	}
-}
 // 速度再計算
 void ConstraintSolverSystem::ReCalcVelocity(SolverBodyBuffer* _solverBodyBuffer)
 {
@@ -310,5 +49,596 @@ void ConstraintSolverSystem::ReCalcVelocity(SolverBodyBuffer* _solverBodyBuffer)
 			theta /= TimeManager::GetFixedDeltaTime();
 			body.angularVelocity = SIMDVectorMath::Mul(axis * theta, body.angularFactor);
 		}
+	}
+}
+
+// 拘束生成
+void ConstraintSolverSystem::Build(ConstraintBuffer* _constraintBuffer, const ConstraintTuning& _tuning, size_t _buildSize, size_t _batchCount)
+{
+	if (_batchCount != _constraintBuffer->BatchCount())
+	{
+		return;
+	}
+
+	ConstraintRowBatch batch;
+	batch.firstRow = _constraintBuffer->GetSize();
+	batch.rowCount = _buildSize;
+
+	_constraintBuffer->AddBatch(batch);
+
+	for (size_t i{ 0 }; i < _buildSize; i++)
+	{
+		Constraint constraint;
+
+		MakeConstraintInfo(constraint, _tuning);
+
+		_constraintBuffer->Add(constraint);
+	}
+}
+
+// 拘束生成
+void ConstraintSolverSystem::Build(ConstraintBuffer* _constraintBuffer,
+	const ConstraintTuning& _positionTuning, size_t _positionSize,
+	const ConstraintTuning& _angulerTuning, size_t _angulerSize,
+	size_t _batchCount)
+{
+	if (_batchCount != _constraintBuffer->BatchCount())
+	{
+		return;
+	}
+
+	ConstraintRowBatch batch;
+	batch.firstRow = _constraintBuffer->GetSize();
+	batch.rowCount = _positionSize + _angulerSize;
+
+	_constraintBuffer->AddBatch(batch);
+
+	for (size_t i{ 0 }; i < _positionSize; i++)
+	{
+		Constraint constraint;
+
+		MakeConstraintInfo(constraint, _positionTuning);
+
+		_constraintBuffer->Add(constraint);
+	}
+	for (size_t i{ 0 }; i < _angulerSize; i++)
+	{
+		Constraint constraint;
+
+		MakeConstraintInfo(constraint, _angulerTuning);
+
+		_constraintBuffer->Add(constraint);
+	}
+}
+
+void ConstraintSolverSystem::MakeConstraintInfo(Constraint& _constraint, const ConstraintTuning& _tuning)
+{
+	float deltaTime{ TimeManager::GetFixedDeltaTime() };
+
+	_constraint.timeStepAdjustedCompliance = _tuning.compliance / (deltaTime * deltaTime);
+
+	_constraint.minLambda = -_tuning.maxForce * deltaTime;
+	_constraint.maxLambda = _tuning.maxForce * deltaTime;
+}
+
+// XPBD法による位置解消関数
+void ConstraintSolverSystem::SolveRow(SolverBody& _solverBodyA, SolverBody& _solverBodyB, Constraint _constraint)
+{
+	if (!_constraint.isActive)
+	{
+		return;
+	}
+	// 質量から両者がBodyを持っているかの判定をする(どちらかがBodyを持っているなら合計は0じゃないはず)
+	float totalInvMass{ _solverBodyA.inverseMass + _solverBodyB.inverseMass };
+	if (totalInvMass <= 0)
+	{
+		return;
+	}
+
+	// 慣性テンソル求める
+	Matrix4x4 rotMat{ MatGenerateFunc::Rotate(_solverBodyA.rotation) };
+	Matrix4x4 worldInverseInertiaTnesorA{ rotMat * _solverBodyA.localInverseInertiaTensor * rotMat.Transposed() };
+
+	rotMat = MatGenerateFunc::Rotate(_solverBodyB.rotation);
+	Matrix4x4 worldInverseInertiaTnesorB{ rotMat * _solverBodyB.localInverseInertiaTensor * rotMat.Transposed() };
+
+	// Factorを計算した各種速度計算
+	Vector3 linearResponseA{
+		BodyStorage::ApplyLinearInverseMass(
+			_constraint.jacobian[0],
+			_solverBodyA.inverseMass,
+			_solverBodyA.linearFactor)
+	};
+
+	Vector3 angularResponseA{
+		BodyStorage::ApplyAngularInverseInertia(
+			worldInverseInertiaTnesorA,
+			_constraint.jacobian[1],
+			_solverBodyA.angularFactor)
+	};
+
+	Vector3 linearResponseB{
+		BodyStorage::ApplyLinearInverseMass(
+			_constraint.jacobian[2],
+			_solverBodyB.inverseMass,
+			_solverBodyB.linearFactor)
+	};
+
+	Vector3 angularResponseB{
+		BodyStorage::ApplyAngularInverseInertia(
+			worldInverseInertiaTnesorB,
+			_constraint.jacobian[3],
+			_solverBodyB.angularFactor)
+	};
+
+	// 質量と慣性テンソルが速度に影響する度合い
+	float effectiveMass{
+		Vector3::Dot(_constraint.jacobian[0], linearResponseA) +
+		Vector3::Dot(_constraint.jacobian[1], angularResponseA) +
+		Vector3::Dot(_constraint.jacobian[2], linearResponseB) +
+		Vector3::Dot(_constraint.jacobian[3], angularResponseB)
+	};
+
+	if (effectiveMass < MathConstants::EPSILON)
+	{
+		return;
+	}
+
+	// λ計算
+	float oldLambda{ _constraint.accumulatedLambda };
+
+	float deltaLambda{
+		(_constraint.error - _constraint.timeStepAdjustedCompliance * oldLambda) /
+		(effectiveMass + _constraint.timeStepAdjustedCompliance) };
+
+	// 合計値を計算
+	_constraint.accumulatedLambda = std::clamp(
+		oldLambda + deltaLambda,
+		_constraint.minLambda,
+		_constraint.maxLambda);
+
+	float applyLambda{ _constraint.accumulatedLambda - oldLambda };
+
+	// Aの位置/姿勢制御
+	_solverBodyA.position -= linearResponseA * applyLambda;
+	Vector3 angVec{ angularResponseA * applyLambda };
+	Quaternion rotOmega{ Quaternion::AngleAxis(angVec.Length(), -angVec) };
+	_solverBodyA.rotation = rotOmega * _solverBodyA.rotation;
+
+	// Bの位置/姿勢制御
+	_solverBodyB.position -= linearResponseB * applyLambda;
+	angVec = angularResponseB * applyLambda;
+	rotOmega = Quaternion::AngleAxis(angVec.Length(), -angVec);
+	_solverBodyB.rotation = rotOmega * _solverBodyB.rotation;
+}
+
+// 点拘束の解く用の拘束のヤコビアンと違反値の再計算
+void ConstraintSolverSystem::SolvePointConstraint(ConstraintStorage* _constraintStorage, SolverBodyBuffer* _solverBodyBuffer, ConstraintBuffer* _constraintBuffer, size_t& _batchCount)
+{
+	// 拘束が存在するかチェック
+	if (_constraintStorage->CountPointConstraint() <= 0)
+	{
+		return;
+	}
+
+	for (auto id : _constraintStorage->GetPointConstraintIDRange())
+	{
+		const PointConstraint& pointConstraint{ _constraintStorage->GetPointConstraint(id) };
+		// ポイントが2つ以上じゃないと拘束なんて発生しない
+		if (pointConstraint.endPoints.size() <= 1)
+		{
+			continue;
+		}
+
+		// 基準点となるボディから位置を持ってくる。
+		uint32_t basePointIndex{ _solverBodyBuffer->GetIndex(pointConstraint.endPoints[0].transformID) };
+		SolverBody& solverBodyBase{ _solverBodyBuffer->Edit(basePointIndex) };
+		Vector3 basePoint{ solverBodyBase.position + solverBodyBase.rotation.Rotate(pointConstraint.endPoints[0].localPosition) };
+
+		for (int i{ 1 }; i < pointConstraint.endPoints.size(); i++)
+		{
+			// 対象の位置を取得
+			uint32_t pointIndex{ _solverBodyBuffer->GetIndex(pointConstraint.endPoints[i].transformID) };
+			SolverBody& solverBody{ _solverBodyBuffer->Edit(pointIndex) };
+			Vector3 point{ solverBody.position + solverBody.rotation.Rotate(pointConstraint.endPoints[i].localPosition) };
+
+			Vector3 rA{ basePoint - solverBodyBase.position };
+			Vector3	rB{ point - solverBody.position };
+
+			Build(_constraintBuffer, pointConstraint.tuning, 3, _batchCount);
+
+			const ConstraintRowBatch& batch(_constraintBuffer->GetBatch(_batchCount));
+
+			std::span<Constraint, 3> constraints{ _constraintBuffer->GetConstraints(batch.firstRow, batch.rowCount).first<3>() };
+
+			ConstraintFunction::CalcPointJacobianAndError(
+				basePoint, rA,
+				point, rB,
+				constraints);
+
+			for (Constraint& constraint: constraints)
+			{
+				SolveRow(solverBodyBase, solverBody, constraint);
+			}
+
+			_batchCount++;
+		}
+	}
+}
+// 距離拘束の解く用の拘束のヤコビアンと違反値の再計算
+void ConstraintSolverSystem::SolveDistanceConstraint(ConstraintStorage* _constraintStorage, SolverBodyBuffer* _solverBodyBuffer, ConstraintBuffer* _constraintBuffer, size_t& _batchCount)
+{
+	// 拘束が存在するかチェック
+	if (_constraintStorage->CountDistanceConstraint() <= 0)
+	{
+		return;
+	}
+	for (auto id : _constraintStorage->GetDistanceConstraintIDRange())
+	{
+		const DistanceConstraint& distanceConstraint{ _constraintStorage->GetDistanceConstraint(id) };
+		// ポイントが2つ以上じゃないと拘束なんて発生しない
+		if (distanceConstraint.endPoints.size() <= 1)
+		{
+			continue;
+		}
+
+		// 基準点となるボディから位置を持ってくる。
+		uint32_t basePointIndex{ _solverBodyBuffer->GetIndex(distanceConstraint.endPoints[0].transformID) };
+		SolverBody& solverBodyBase{ _solverBodyBuffer->Edit(basePointIndex) };
+		Vector3 basePoint{ solverBodyBase.position + solverBodyBase.rotation.Rotate(distanceConstraint.endPoints[0].localPosition) };
+
+		for (int i{ 1 }; i < distanceConstraint.endPoints.size(); i++)
+		{
+			// 対象の位置を取得
+			uint32_t pointIndex{ _solverBodyBuffer->GetIndex(distanceConstraint.endPoints[i].transformID) };
+			SolverBody& solverBody{ _solverBodyBuffer->Edit(pointIndex) };
+			Vector3 point{ solverBody.position + solverBody.rotation.Rotate(distanceConstraint.endPoints[i].localPosition) };
+
+			Vector3 rA{ basePoint - solverBodyBase.position };
+			Vector3	rB{ point - solverBody.position };
+
+			Build(_constraintBuffer, distanceConstraint.tuning, 1, _batchCount);
+
+			const ConstraintRowBatch& batch(_constraintBuffer->GetBatch(_batchCount));
+
+			Constraint& constraint{ _constraintBuffer->Edit(static_cast<uint32_t>(batch.firstRow)) };
+
+			ConstraintFunction::CalcDistanceJacobianAndError(
+				distanceConstraint.distance,
+				basePoint, rA,
+				point, rB,
+				constraint
+			);
+
+			SolveRow(solverBodyBase, solverBody, constraint);
+
+			_batchCount++;
+		}
+	}
+}
+// ヒンジ拘束の解く用の拘束のヤコビアンと違反値の再計算
+void ConstraintSolverSystem::SolveHingeConstraint(ConstraintStorage* _constraintStorage, SolverBodyBuffer* _solverBodyBuffer, ConstraintBuffer* _constraintBuffer, size_t& _batchCount)
+{
+	// 拘束が存在するかチェック
+	if (_constraintStorage->CountHingeConstraint() <= 0)
+	{
+		return;
+	}
+
+	for (auto id : _constraintStorage->GetHingeConstraintIDRange())
+	{
+		const HingeConstraint& hingeConstraint{ _constraintStorage->GetHingeConstraint(id) };
+		// 対象がいないとダメ
+		if (hingeConstraint.endPoints.size() < 1)
+		{
+			continue;
+		}
+
+		// 基準点となるボディから位置を持ってくる。
+		uint32_t basePointIndex{ _solverBodyBuffer->GetIndex(hingeConstraint.ownerEndPoint.transformID) };
+		SolverBody& solverBodyBase{ _solverBodyBuffer->Edit(basePointIndex) };
+		Vector3 basePoint{ solverBodyBase.position + solverBodyBase.rotation.Rotate(hingeConstraint.ownerEndPoint.localPosition) };
+
+		Vector3 axis{ hingeConstraint.ownerEndPoint.localRotation.Rotate(Vector3::UP) };
+
+		axis = solverBodyBase.rotation.Rotate(axis).Normalized();
+
+		for (size_t i{ 0 }; i < hingeConstraint.endPoints.size(); i++)
+		{
+			const EndPointFrame& directionEndPoint{ hingeConstraint.endPoints[i] };
+			// 対象の位置を取得
+			uint32_t pointIndex{ _solverBodyBuffer->GetIndex(directionEndPoint.transformID) };
+			SolverBody& solverBody{ _solverBodyBuffer->Edit(pointIndex) };
+			Vector3 point{ solverBody.position + solverBody.rotation.Rotate(directionEndPoint.localPosition) };
+
+			Vector3 rA{ basePoint - solverBodyBase.position };
+			Vector3 rB{ point - solverBody.position };
+
+			// B側ヒンジ軸
+			Vector3 axisB{ directionEndPoint.localRotation.Rotate(Vector3::UP) };
+			axisB = solverBody.rotation.Rotate(axisB);
+
+			// 不正なヒンジ軸
+			if (axisB.LengthSqr() <= MathConstants::EPSILON)
+			{
+				continue;
+			}
+
+			axisB.Normalize();
+
+			const ConstraintRowBatch& batch(_constraintBuffer->GetBatch(_batchCount));
+
+			Build(_constraintBuffer,
+				hingeConstraint.positionTuning, 3,
+				hingeConstraint.angularTuning, 2,
+				_batchCount);
+
+			std::span<Constraint, 5> constraints{ _constraintBuffer->GetConstraints(batch.firstRow, batch.rowCount).first<5>() };
+
+			ConstraintFunction::CalcHingeJacobianAndError(
+				basePoint, rA, axis,
+				point, rB, axisB,
+				constraints);
+
+			for (Constraint& constraint : constraints)
+			{
+				SolveRow(solverBodyBase, solverBody, constraint);
+			}
+
+			_batchCount++;
+		}
+	}
+}
+// 角度制限付き点拘束の解く用の拘束のヤコビアンと違反値の再計算
+void ConstraintSolverSystem::SolveAngleLimitPointConstraint(ConstraintStorage* _constraintStorage, SolverBodyBuffer* _solverBodyBuffer, ConstraintBuffer* _constraintBuffer, size_t& _batchCount)
+{
+	// 拘束が存在するかチェック
+	if (_constraintStorage->CountAngleLimitPointConstraint() <= 0)
+	{
+		return;
+	}
+
+	for (auto id : _constraintStorage->GetAngleLimitPointConstraintIDRange())
+	{
+		const AngleLimitPointConstraint& angleLimitPointConstraint{ _constraintStorage->GetAngleLimitPointConstraint(id) };
+		// ポイントが2つ以上じゃないと拘束なんて発生しない
+		if (angleLimitPointConstraint.endPoints.size() < 1)
+		{
+			continue;
+		}
+
+		// 基準点となるボディから位置を持ってくる。
+		uint32_t basePointIndex{ _solverBodyBuffer->GetIndex(angleLimitPointConstraint.ownerEndPoint.transformID) };
+		SolverBody& solverBodyBase{ _solverBodyBuffer->Edit(basePointIndex) };
+		Vector3 basePoint{ solverBodyBase.position + solverBodyBase.rotation.Rotate(angleLimitPointConstraint.ownerEndPoint.localPosition) };
+		Vector3 baseDir{ angleLimitPointConstraint.ownerEndPoint.localRotation.Rotate(Vector3::UP) };
+		baseDir = solverBodyBase.rotation.Rotate(baseDir);
+
+		for (size_t i{ 0 }; i < angleLimitPointConstraint.endPoints.size(); i++)
+		{
+			const EndPointFrame& endPoint{ angleLimitPointConstraint.endPoints[i] };
+			// 対象の位置を取得
+			uint32_t pointIndex{ _solverBodyBuffer->GetIndex(endPoint.transformID) };
+			SolverBody& solverBody{ _solverBodyBuffer->Edit(pointIndex) };
+			Vector3 point{ solverBody.position + solverBody.rotation.Rotate(endPoint.localPosition) };
+			Vector3 dir{ endPoint.localRotation.Rotate(Vector3::RIGHT) };
+			dir = solverBody.rotation.Rotate(dir);
+
+			Vector3 rA = basePoint - solverBodyBase.position;
+			Vector3	rB = point - solverBody.position;
+
+			const ConstraintRowBatch& batch(_constraintBuffer->GetBatch(_batchCount));
+
+			Build(_constraintBuffer, angleLimitPointConstraint.tuning, 4, _batchCount);
+
+			std::span<Constraint, 4> constraints{ _constraintBuffer->GetConstraints(batch.firstRow, batch.rowCount).first<4>() };
+
+			ConstraintFunction::CalcAngleLimitPointJacobianAndError(
+				angleLimitPointConstraint.angleMax, angleLimitPointConstraint.angleMin,
+				basePoint, rA, baseDir,
+				point, rB, dir,
+				constraints);
+
+			for (Constraint& constraint : constraints)
+			{
+				SolveRow(solverBodyBase, solverBody, constraint);
+			}
+
+			_batchCount++;
+		}
+	}
+}
+// 角度制限付きヒンジ拘束の解く用の拘束のヤコビアンと違反値の再計算
+void ConstraintSolverSystem::SolveAngleLimitHingeConstraint(ConstraintStorage* _constraintStorage, SolverBodyBuffer* _solverBodyBuffer, ConstraintBuffer* _constraintBuffer, size_t& _batchCount)
+{
+	// 拘束が存在するかチェック
+	if (_constraintStorage->CountAngleLimitHingeConstraint() <= 0)
+	{
+		return;
+	}
+
+	for (auto id : _constraintStorage->GetAngleLimitHingeConstraintIDRange())
+	{
+		const AngleLimitHingeConstraint& angleLimitHingeConstraint{ _constraintStorage->GetAngleLimitHingeConstraint(id) };
+		// 対象がいないとダメ
+		if (angleLimitHingeConstraint.endPoints.size() < 1)
+		{
+			continue;
+		}
+
+		// 基準側
+		const EndPointFrame& endPoint{ angleLimitHingeConstraint.ownerEndPoint };
+		uint32_t basePointIndex{ _solverBodyBuffer->GetIndex(endPoint.transformID) };
+		SolverBody& solverBodyBase{ _solverBodyBuffer->Edit(basePointIndex) };
+		Vector3 basePoint{ solverBodyBase.position + solverBodyBase.rotation.Rotate(endPoint.localPosition) };
+		Vector3 axis{ solverBodyBase.rotation.Rotate(endPoint.localRotation.Rotate(Vector3::UP)) };
+
+		// A側の角度0基準方向
+		Vector3 referenceA{ solverBodyBase.rotation.Rotate(endPoint.localRotation.Rotate(Vector3::RIGHT)) };
+
+		for (size_t i{ 0 }; i < angleLimitHingeConstraint.endPoints.size(); i++)
+		{
+			const EndPointFrame endPoint{ angleLimitHingeConstraint.endPoints[i] };
+			// 対象側
+			uint32_t pointIndex{ _solverBodyBuffer->GetIndex(endPoint.transformID) };
+			SolverBody& solverBody{ _solverBodyBuffer->Edit(pointIndex) };
+			Vector3 point{ solverBody.position + solverBody.rotation.Rotate(endPoint.localPosition) };
+			Vector3 axisB{ solverBody.rotation.Rotate(endPoint.localRotation.Rotate(Vector3::UP)) };
+			// B側の基準方向をA側ヒンジ軸の平面へ射影
+			Vector3 referenceB{ solverBody.rotation.Rotate(endPoint.localRotation.Rotate(Vector3::RIGHT)) };
+
+			if (axisB.LengthSqr() <= MathConstants::EPSILON)
+			{
+				continue;
+			}
+
+			axisB.Normalize();
+
+			Vector3 rA{ basePoint - solverBodyBase.position };
+			Vector3 rB{ point - solverBody.position };
+
+			Build(_constraintBuffer,
+				angleLimitHingeConstraint.positionTuning, 3,
+				angleLimitHingeConstraint.angularTuning, 3,
+				_batchCount);
+
+			const ConstraintRowBatch& batch(_constraintBuffer->GetBatch(_batchCount));
+
+			std::span<Constraint, 6> constraints{ _constraintBuffer->GetConstraints(batch.firstRow, batch.rowCount).first<6>() };
+
+			ConstraintFunction::CalcAngleLimitHingeJacobianAndError(
+				angleLimitHingeConstraint.angleMax, angleLimitHingeConstraint.angleMin,
+				basePoint, rA, axis, referenceA,
+				point, rB, axisB, referenceB,
+				constraints);
+
+			for (Constraint& constraint : constraints)
+			{
+				SolveRow(solverBodyBase, solverBody, constraint);
+			}
+
+			_batchCount++;
+		}
+	}
+}
+// SwingTwist拘束の解く用の拘束のヤコビアンと違反値の再計算
+void ConstraintSolverSystem::SolveLimitedBallJointConstraint(ConstraintStorage* _constraintStorage, SolverBodyBuffer* _solverBodyBuffer, ConstraintBuffer* _constraintBuffer, size_t& _batchCount)
+{
+	// 拘束が存在するかチェック
+	if (_constraintStorage->CountLimitedBallJointConstraint() <= 0)
+	{
+		return;
+	}
+
+	for (auto id : _constraintStorage->GetLimitedBallJointConstraintIDRange())
+	{
+		const LimitedBallJointConstraint& limitedBallJointConstraint{ _constraintStorage->GetLimitedBallJointConstraint(id) };
+		// ポイントが2つ以上じゃないと拘束なんて発生しない
+		if (limitedBallJointConstraint.endPoints.size() < 1)
+		{
+			continue;
+		}
+
+		const EndPointFrame& ownerEndPoint{ limitedBallJointConstraint.ownerEndPoint };
+
+		// 基準点となるボディから位置を持ってくる。
+		uint32_t basePointIndex{ _solverBodyBuffer->GetIndex(ownerEndPoint.transformID) };
+		SolverBody& solverBodyBase{ _solverBodyBuffer->Edit(basePointIndex) };
+		Vector3 basePoint{ solverBodyBase.position + solverBodyBase.rotation.Rotate(ownerEndPoint.localPosition) };
+		Vector3 baseAxis{ ownerEndPoint.localRotation.Rotate(Vector3::UP) };
+		baseAxis = solverBodyBase.rotation.Rotate(baseAxis);
+
+		// A側の角度0基準方向
+		Vector3 referenceA{ solverBodyBase.rotation.Rotate(ownerEndPoint.localRotation.Rotate(Vector3::RIGHT)) };
+
+		for (size_t i{ 0 }; i < limitedBallJointConstraint.endPoints.size(); i++)
+		{
+			const EndPointFrame& endPoint{ limitedBallJointConstraint.endPoints[i] };
+			// 対象の位置を取得
+			uint32_t pointIndex{ _solverBodyBuffer->GetIndex(endPoint.transformID) };
+			SolverBody& solverBody{ _solverBodyBuffer->Edit(pointIndex) };
+			Vector3 point{ solverBody.position + solverBody.rotation.Rotate(endPoint.localPosition) };
+			Vector3 axis{ endPoint.localRotation.Rotate(Vector3::UP) };
+			axis = solverBody.rotation.Rotate(axis);
+			// B側の基準方向
+			Vector3 referenceB{ solverBody.rotation.Rotate(endPoint.localRotation.Rotate(Vector3::RIGHT)) };
+
+			Vector3 rA{ basePoint - solverBodyBase.position };
+			Vector3	rB{ point - solverBody.position };
+
+			Build(_constraintBuffer,
+				limitedBallJointConstraint.positionTuning, 3,
+				limitedBallJointConstraint.angularTuning,23,
+				_batchCount);
+
+			const ConstraintRowBatch& batch(_constraintBuffer->GetBatch(_batchCount));
+
+			std::span<Constraint, 5> constraints{ _constraintBuffer->GetConstraints(batch.firstRow, batch.rowCount).first<5>() };
+
+			ConstraintFunction::CalcLimitedBallJointJacobianAndError(
+				limitedBallJointConstraint.swingAngle, limitedBallJointConstraint.twistAngleMax, limitedBallJointConstraint.twistAngleMin,
+				basePoint, rA, baseAxis, referenceA,
+				point, rB, axis, referenceB,
+				constraints);
+
+			for (Constraint& constraint : constraints)
+			{
+				SolveRow(solverBodyBase, solverBody, constraint);
+			}
+
+			_batchCount++;
+		}
+	}
+}
+// 関節駆動拘束の解く用の拘束のヤコビアンと違反値の再計算
+void ConstraintSolverSystem::SolveJointDriveConstraint(ConstraintStorage* _constraintStorage, SolverBodyBuffer* _solverBodyBuffer, ConstraintBuffer* _constraintBuffer, size_t& _batchCount)
+{
+	// 拘束が存在するかチェック
+	if (_constraintStorage->CountJointDriveConstraint() <= 0)
+	{
+		return;
+	}
+
+	for (auto id : _constraintStorage->GetJointDriveConstraintConstraintIDRange())
+	{
+		const JointDriveConstraint& jointDrive{ _constraintStorage->GetJointDriveConstraint(id) };
+		// 相手ポイントが無効値なら飛ばす
+		if (!jointDrive.otherEndPoint.transformID.IsValid())
+		{
+			continue;
+		}
+
+		// 基準点となるボディから位置を持ってくる。
+		const EndPointFrame& ownerEndPoint{ jointDrive.ownerEndPoint };
+
+		uint32_t basePointIndex{ _solverBodyBuffer->GetIndex(ownerEndPoint.transformID) };
+		SolverBody& solverBodyBase{ _solverBodyBuffer->Edit(basePointIndex) };
+		const Quaternion& baseRot{ solverBodyBase.rotation * ownerEndPoint.localRotation };
+
+		// 相手となるボディから位置を持ってくる。
+		const EndPointFrame& otherEndPoint{ jointDrive.otherEndPoint };
+
+		uint32_t otherPointIndex{ _solverBodyBuffer->GetIndex(otherEndPoint.transformID) };
+		SolverBody& solverBodyOther{ _solverBodyBuffer->Edit(otherPointIndex) };
+		const Quaternion& otherRot{ solverBodyOther.rotation * otherEndPoint.localRotation };
+
+		Build(_constraintBuffer, jointDrive.tuning, 3, _batchCount);
+
+		const ConstraintRowBatch& batch(_constraintBuffer->GetBatch(_batchCount));
+
+		std::span<Constraint,3> constraints{ _constraintBuffer->GetConstraints(batch.firstRow, batch.rowCount).first<3>() };
+
+		ConstraintFunction::CalcJointDriveJacobianAndError(
+			jointDrive.targetRelativeRotation,
+			baseRot,
+			otherRot,
+			_constraintBuffer->GetConstraints(batch.firstRow, batch.rowCount).first<3>());
+
+		for (Constraint& constraint : constraints)
+		{
+			SolveRow(solverBodyBase, solverBodyOther, constraint);
+		}
+
+		_batchCount++;
 	}
 }

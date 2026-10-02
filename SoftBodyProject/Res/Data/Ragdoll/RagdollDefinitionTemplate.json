@@ -2,6 +2,9 @@
   別種類のJSONを誤って読まないための識別
   "Format": "RagdollDefinition",
 
+  全体のデフォルトコンプライアンス値
+  "DefaultCompliance":2.0,
+
   Boneの役割を指定するRoleは省略可能
   使用可能な値:
   Pelvis, Torso, Head,

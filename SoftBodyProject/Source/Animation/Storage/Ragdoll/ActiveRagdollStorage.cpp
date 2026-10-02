@@ -82,8 +82,7 @@ bool ActiveRagdollStorage::CreateActiveRagdoll(EntityID _entity, const Ragdoll& 
 
 		ConstraintTuning tuning;
 
-		tuning.stiffness = _setting.jointDriveStiffness;
-		tuning.damping = _setting.jointDriveDamping;
+		tuning.compliance = _setting.jointDriveCompliance;
 		tuning.maxForce = _setting.maxJointDriveForce;
 
 		const EndPointFrame parentEndPoint{ PhysicsComponentAPI::GetEndPoint(bodyConstraint) };

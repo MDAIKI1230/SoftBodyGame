@@ -95,7 +95,7 @@ void DebugScene::Initialize()
 	objectManager.Add(std::move(debugBox03));*/
 
 	// 点拘束デバッグ
-	std::unique_ptr<DebugBox> debugBox02{ std::make_unique<DebugBox>(&worldStorage, objectManager.GenerateNewID(), 30.0f) };
+	/*std::unique_ptr<DebugBox> debugBox02{ std::make_unique<DebugBox>(&worldStorage, objectManager.GenerateNewID(), 30.0f) };
 	debugBox02->GetComponent<TransformComponent>()->SetPosition(Vector3{ 0,50,0 });
 	debugBox02->GetComponent<TransformComponent>()->Rotate(Quaternion::AngleAxis((3.141592f / 4.0f), Vector3{ 0,1,1 }));
 	debugBox02->AddComponent<RigidBodyComponent>()->SetIsGravity(true);
@@ -106,7 +106,7 @@ void DebugScene::Initialize()
 	debugBox04->GetComponent<TransformComponent>()->SetPosition(Vector3{ 0,100,0 });
 	debugBox04->AddComponent<RigidBodyComponent>()->SetIsGravity(true);
 	pointConstraint->AddEndPoint(debugBox04->GetID(), Vector3{ 15.0f,15.0f,15.0f });
-	objectManager.Add(std::move(debugBox04));
+	objectManager.Add(std::move(debugBox04));*/
 
 	// 距離拘束によるロープの実装
 	/*
@@ -117,18 +117,20 @@ void DebugScene::Initialize()
 
 	Vector3 ropePosition{ -200.0f,0.0f,0.0f };
 
-	std::unique_ptr<EmptyObject> empty1{ std::make_unique<EmptyObject>(worldStorage, objectManager.GenerateNewID()) };
+	std::unique_ptr<EmptyObject> empty1{ std::make_unique<EmptyObject>(&worldStorage, objectManager.GenerateNewID()) };
 	empty1->GetComponent<TransformComponent>()->SetPosition(ropePosition);
-	DistanceConstraintComponent* distanceConstraintRope = empty1->AddComponent<DistanceConstraintComponent>(distanceRope);
+	DistanceConstraintComponent* distanceConstraintRope = empty1->AddComponent<DistanceConstraintComponent>();
+	distanceConstraintRope->SetDistance(distanceRope);
 	objectManager.Add(std::move(empty1));
 
 	for (int i{ 0 }; i < 10; i++)
 	{
-		std::unique_ptr<DebugSphere> point{ std::make_unique<DebugSphere>(worldStorage, objectManager.GenerateNewID()) };
+		std::unique_ptr<DebugSphere> point{ std::make_unique<DebugSphere>(&worldStorage, objectManager.GenerateNewID()) };
 		point->GetComponent<SphereColliderComponent>()->SetRadius(2.0f);
 		point->GetComponent<TransformComponent>()->SetPosition(ropePosition + Vector3{ distanceRope * i,0.0f,0.0f });
 		distanceConstraintRope->AddEndPoint(point->GetID(), Vector3::ZERO);
-		distanceConstraintRope = point->AddComponent<DistanceConstraintComponent>(distanceRope);
+		distanceConstraintRope = point->AddComponent<DistanceConstraintComponent>();
+		distanceConstraintRope->SetDistance(distanceRope);
 		objectManager.Add(std::move(point));
 	}*/
 
@@ -244,24 +246,30 @@ void DebugScene::Initialize()
 	//objectManager.Add(std::move(angleLimitPointBox));
 
 	// 角度制限付きヒンジ拘束
-	/*std::unique_ptr<EmptyObject> angleLimitHingeEmpty{ std::make_unique<EmptyObject>(&worldStorage, objectManager.GenerateNewID()) };
+	//std::unique_ptr<EmptyObject> angleLimitHingeEmpty{ std::make_unique<EmptyObject>(&worldStorage, objectManager.GenerateNewID()) };
 
-	angleLimitHingeEmpty->GetComponent<TransformComponent>()->SetPosition(Vector3{ 0.0f,-100.0f,0.0f });
+	//angleLimitHingeEmpty->GetComponent<TransformComponent>()->SetPosition(Vector3{ 0.0f,-100.0f,0.0f });
 
-	AngleLimitHingeConstraintComponent* angleLimitHinge{ angleLimitHingeEmpty->AddComponent<AngleLimitHingeConstraintComponent>() };
+	//AngleLimitHingeConstraintComponent* angleLimitHinge{ angleLimitHingeEmpty->AddComponent<AngleLimitHingeConstraintComponent>() };
 
-	angleLimitHinge->SetAngleMax(MathConstants::PI_FLT / 2.0f);
-	angleLimitHinge->SetAngleMin(-MathConstants::PI_FLT / 2.0f);
+	//angleLimitHinge->SetAngleMax(MathConstants::PI_FLT / 2.0f);
+	//angleLimitHinge->SetAngleMin(-MathConstants::PI_FLT / 2.0f);
 
-	objectManager.Add(std::move(angleLimitHingeEmpty));
+	//ConstraintTuning tuning;
 
-	std::unique_ptr<DebugBox> angleLimitHingeBox{ std::make_unique<DebugBox>(&worldStorage, objectManager.GenerateNewID(), 100.0f, 100.0f, 20.0f) };
+	//tuning.compliance = 1e-6f;
 
-	angleLimitHingeBox->AddComponent<RigidBodyComponent>();
+	//angleLimitHinge->SetAngularTuning(tuning);
 
-	angleLimitHinge->AddEndPoint(angleLimitHingeBox->GetID(), Vector3{ 50.0f,0.0f,10.0f });
+	//objectManager.Add(std::move(angleLimitHingeEmpty));
 
-	objectManager.Add(std::move(angleLimitHingeBox));*/
+	//std::unique_ptr<DebugBox> angleLimitHingeBox{ std::make_unique<DebugBox>(&worldStorage, objectManager.GenerateNewID(), 100.0f, 100.0f, 20.0f) };
+
+	//angleLimitHingeBox->AddComponent<RigidBodyComponent>();
+
+	//angleLimitHinge->AddEndPoint(angleLimitHingeBox->GetID(), Vector3{ 50.0f,0.0f,10.0f });
+
+	//objectManager.Add(std::move(angleLimitHingeBox));
 	// SwingTwist拘束
 	/*std::unique_ptr<EmptyObject> limitedBallJointEmpty{ std::make_unique<EmptyObject>(&worldStorage, objectManager.GenerateNewID()) };
 

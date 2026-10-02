@@ -646,9 +646,6 @@
     <ClInclude Include="Source\Physics\System\Solver\ConstraintSolverSystem.h">
       <Filter>ソース ファイル\Physics\System\Solver</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Physics\System\Build\ConstraintBuildSystem.h">
-      <Filter>ソース ファイル\Physics\System\Build</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Physics\System\Build\SolverBodyBuildSystem.h">
       <Filter>ソース ファイル\Physics\System\Build</Filter>
     </ClInclude>
@@ -1550,9 +1547,6 @@
     </ClCompile>
     <ClCompile Include="Source\Physics\System\Solver\CollisionSolverSystem.cpp">
       <Filter>ソース ファイル\Physics\System\Solver</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Physics\System\Build\ConstraintBuildSystem.cpp">
-      <Filter>ソース ファイル\Physics\System\Build</Filter>
     </ClCompile>
     <ClCompile Include="Source\Physics\System\Build\SolverBodyBuildSystem.cpp">
       <Filter>ソース ファイル\Physics\System\Build</Filter>

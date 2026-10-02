@@ -455,7 +455,6 @@
     <ClInclude Include="Source\Physics\Struct\SnapShot\RigidBodySnapshotFrame.h" />
     <ClInclude Include="Source\Physics\Struct\Transform\PhysicsTransformID.h" />
     <ClInclude Include="Source\Physics\System\Build\BodySnapshotBuildSystem.h" />
-    <ClInclude Include="Source\Physics\System\Build\ConstraintBuildSystem.h" />
     <ClInclude Include="Source\Physics\System\Build\SolverBodyBuildSystem.h" />
     <ClInclude Include="Source\Physics\System\Collision\CollisionSystem.h" />
     <ClInclude Include="Source\Physics\System\Collision\NarrowPhasePairBuilder.h" />
@@ -647,7 +646,6 @@
     <ClCompile Include="Source\Physics\Storage\Constraint\ConstraintStorage.cpp" />
     <ClCompile Include="Source\Physics\Storage\Transform\PhysicsTransformStorage.cpp" />
     <ClCompile Include="Source\Physics\System\Build\BodySnapshotBuildSystem.cpp" />
-    <ClCompile Include="Source\Physics\System\Build\ConstraintBuildSystem.cpp" />
     <ClCompile Include="Source\Physics\System\Build\SolverBodyBuildSystem.cpp" />
     <ClCompile Include="Source\Physics\System\Collision\CollisionSystem.cpp" />
     <ClCompile Include="Source\Physics\System\Collision\NarrowPhasePairBuilder.cpp" />

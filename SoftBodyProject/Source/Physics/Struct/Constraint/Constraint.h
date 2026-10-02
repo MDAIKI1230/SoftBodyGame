@@ -21,12 +21,6 @@ struct Constraint
 	float accumulatedLambda{ 0 };
 	float accumulatedFrictionLambda{ 0 };
 
-	// 目標速度
-	float targetVelocity{ 0.0f };
-	// ERPから作られるバイアス
-	float bias{ 0.0f };
-	// 柔らかさ
-	float softness{ 0.0f };
 	// 拘束の違反の許容値(0で固い拘束)
 	float timeStepAdjustedCompliance{ 0.0f };
 	// 加えれる力の最小値

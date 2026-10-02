@@ -24,7 +24,6 @@
 #include "CollisionSystem.h"
 #include "SolverBodyBuildSystem.h"
 #include "CollisionSolverSystem.h"
-#include "ConstraintBuildSystem.h"
 #include "ConstraintSolverSystem.h"
 #include "SolverBodyCommitSystem.h"
 #include "PhysicsCommitSystem.h"
@@ -88,7 +87,6 @@ private:
 	CollisionSystem collisionSystem;
 	SolverBodyBuildSystem solverBodyBuildSystem;
 	CollisionSolverSystem collisionSolverSystem;
-	ConstraintBuildSystem constraintBuildSystem;
 	ConstraintSolverSystem constraintSolverSystem;
 	SolverBodyCommitSystem solverBodyCommitSystem;
 	PhysicsCommitSystem physicsCommitSystem;

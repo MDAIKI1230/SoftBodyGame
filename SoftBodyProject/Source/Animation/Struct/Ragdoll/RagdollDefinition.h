@@ -17,4 +17,6 @@ struct RagdollDefinition
 	std::unordered_map<std::string, RagdollBodyDefinition> boneToBody;
 	std::unordered_map<std::string, RagdollJointDefinition> boneToJoint;
 	std::unordered_map<std::string, RagdollBoneRole> roles;
+
+	float defaultCompliance{ 0.0f };
 };

@@ -314,6 +314,10 @@ bool RagdollStorage::CreateRagdoll(EntityID _entity, SkeletonID _skeletonID, Rag
 
 			ConstraintID constraint;
 
+			ConstraintTuning tuning;
+
+			tuning.compliance = _definition.defaultCompliance;
+
 			switch (jointDefinition.type)
 			{
 			case ConstraintType::ANGLE_LIMIT_HINGE:
@@ -331,6 +335,9 @@ bool RagdollStorage::CreateRagdoll(EntityID _entity, SkeletonID _skeletonID, Rag
 				PhysicsComponentAPI::SetAngleMax(
 					constraint,
 					jointDefinition.angleLimit.hinge.maxAngleRadians);
+
+				PhysicsComponentAPI::SetPositionTuning(constraint, tuning);
+				PhysicsComponentAPI::SetAngularTuning(constraint, tuning);
 				break;
 
 			case ConstraintType::LIMITED_BALL_JOINT:
@@ -352,6 +359,9 @@ bool RagdollStorage::CreateRagdoll(EntityID _entity, SkeletonID _skeletonID, Rag
 				PhysicsComponentAPI::SetTwistAngleMax(
 					constraint,
 					jointDefinition.angleLimit.swing.maxTwistAngleRadians);
+
+				PhysicsComponentAPI::SetPositionTuning(constraint, tuning);
+				PhysicsComponentAPI::SetAngularTuning(constraint, tuning);
 				break;
 
 			default:
