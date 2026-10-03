@@ -38,6 +38,11 @@ public:
 	void Play();
 	// 停止
 	void Stop();
+
+	// アクティブフラグ取得
+	bool GetActive();
+	// アクティブフラグ変更
+	void SetActive(bool _isActive);
 private:
 	AnimationID id;
 };

@@ -41,6 +41,11 @@ public:
 	// 再生フラグ変更
 	static void SetPlaying(AnimationID _id, bool _isPlay);
 
+	// アクティブフラグ取得
+	static bool GetActive(AnimationID _id);
+	// アクティブフラグ変更
+	static void SetActive(AnimationID _id, bool _isActive);
+
 	// --- ラグドール ---
 
 	// 作成

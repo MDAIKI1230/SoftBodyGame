@@ -92,11 +92,14 @@ void Player::Move(InputActionContext _input)
 	Vector3 local{ camera->GetComponent<TransformComponent>()->GetRotation().Rotate(Vector3{ input.x,0.0f,input.y }) };
 	GetComponent<CharacterControllerComponent>()->SetMoveInput(local);
 	GetComponent<AnimationComponent>()->Play();
+	GetComponent<AnimationComponent>()->SetActive(true);
 }
 void Player::Stop(InputActionContext _input)
 {
 	GetComponent<CharacterControllerComponent>()->ClearMoveInput();
 	GetComponent<AnimationComponent>()->Stop();
+	GetComponent<AnimationComponent>()->SetTime(0.0f);
+	GetComponent<AnimationComponent>()->SetActive(false);
 }
 void Player::Jump(InputActionContext _input)
 {

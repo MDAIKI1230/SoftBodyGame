@@ -25,4 +25,7 @@ struct PoseLayer
 
 	// 優先度
 	int priority{ 0 };
+
+	// アクティブフラグ
+	bool isActive{ true };
 };

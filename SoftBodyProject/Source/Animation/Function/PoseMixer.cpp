@@ -2,6 +2,11 @@
 
 void PoseMixer::MakeTargetPose(PoseBuffer& _targetPose, const PoseLayer& _layer)
 {
+	if (_layer.isActive == false)
+	{
+		return;
+	}
+
 	for (int boneIndex{ 0 }; boneIndex < _targetPose.localMatrices.size(); boneIndex++)
 	{
 		// 重み

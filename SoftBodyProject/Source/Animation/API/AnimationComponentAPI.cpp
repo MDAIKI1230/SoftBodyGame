@@ -95,6 +95,22 @@ void AnimationComponentAPI::SetPlaying(AnimationID _id, bool _isPlay)
 	animationStorage->EditAnimationInstanceData(_id).playing = _isPlay;
 }
 
+// アクティブフラグ取得
+bool AnimationComponentAPI::GetActive(AnimationID _id)
+{
+	PoseLayerID layerID{ animationStorage->GetAnimationInstanceData(_id).layerID };
+
+	return poseLayerStorage->GetPoseLayer(layerID).isActive;
+}
+
+// アクティブフラグ変更
+void AnimationComponentAPI::SetActive(AnimationID _id, bool _isActive)
+{
+	PoseLayerID layerID{ animationStorage->GetAnimationInstanceData(_id).layerID };
+
+	poseLayerStorage->EditPoseLayer(layerID).isActive = _isActive;
+}
+
 // --- ラグドール ---
 
 // ラグドール作成

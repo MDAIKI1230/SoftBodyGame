@@ -71,3 +71,14 @@ void AnimationComponent::Stop()
 {
 	AnimationComponentAPI::SetPlaying(id, false);
 }
+// アクティブフラグ取得
+bool AnimationComponent::GetActive()
+{
+	return AnimationComponentAPI::GetActive(id);
+}
+
+// アクティブフラグ変更
+void AnimationComponent::SetActive(bool _isActive)
+{
+	AnimationComponentAPI::SetActive(id, _isActive);
+}
