@@ -72,6 +72,14 @@ public:
 	static bool SetActiveRagdollBranchWeight(ActiveRagdollID _id, uint32_t _rootBoneIndex, float _weight);
 	static bool SetActiveRagdollBranchWeight(ActiveRagdollID _id, RagdollBoneRole _rootRole, float _weight);
 
+	// ワールド空間の目標位置を設定。解除するまで継続する
+	static bool SetActiveRagdollTargetPosition(ActiveRagdollID _id, uint32_t _boneIndex, const Vector3& _worldPosition);
+	static bool SetActiveRagdollTargetPosition(ActiveRagdollID _id, RagdollBoneRole _role, const Vector3& _worldPosition);
+
+	// 位置指定を解除。次の更新からアニメーションの目標姿勢に戻る
+	static bool ClearActiveRagdollTargetPosition(ActiveRagdollID _id, uint32_t _boneIndex);
+	static bool ClearActiveRagdollTargetPosition(ActiveRagdollID _id, RagdollBoneRole _role);
+
 	// --- Body取得 ---
 
 	// 指定した役割のRigidBody取得

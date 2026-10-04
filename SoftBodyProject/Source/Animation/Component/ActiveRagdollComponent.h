@@ -38,6 +38,16 @@ public:
 	bool SetBranchWeight(uint32_t _rootBoneIndex, float _weight);
 	bool SetBranchWeight(RagdollBoneRole _rootRole, float _weight);
 
+	// ワールド空間の目標位置を設定。関連するボーンのWeightは呼び出し側で調整する
+	bool SetTargetPosition(uint32_t _boneIndex, const Vector3& _worldPosition);
+	// ワールド空間の目標位置を設定。関連するボーンのWeightは呼び出し側で調整する
+	bool SetTargetPosition(RagdollBoneRole _role, const Vector3& _worldPosition);
+
+	// 位置指定を解除
+	bool ClearTargetPosition(uint32_t _boneIndex);
+	// 位置指定を解除
+	bool ClearTargetPosition(RagdollBoneRole _role);
+
 	// --- 操作要求 ---
 
 	// ワールド空間の移動入力取得

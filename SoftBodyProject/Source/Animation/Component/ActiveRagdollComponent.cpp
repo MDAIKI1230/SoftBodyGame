@@ -51,6 +51,30 @@ bool ActiveRagdollComponent::SetBranchWeight(RagdollBoneRole _rootRole, float _w
 	return AnimationComponentAPI::SetActiveRagdollBranchWeight(id, _rootRole, _weight);
 }
 
+// インデックス指定で目標位置を設定
+bool ActiveRagdollComponent::SetTargetPosition(uint32_t _boneIndex, const Vector3& _worldPosition)
+{
+	return AnimationComponentAPI::SetActiveRagdollTargetPosition(id, _boneIndex, _worldPosition);
+}
+
+// 役割指定で目標位置を設定
+bool ActiveRagdollComponent::SetTargetPosition(RagdollBoneRole _role, const Vector3& _worldPosition)
+{
+	return AnimationComponentAPI::SetActiveRagdollTargetPosition(id, _role, _worldPosition);
+}
+
+// インデックス指定で位置指定を解除
+bool ActiveRagdollComponent::ClearTargetPosition(uint32_t _boneIndex)
+{
+	return AnimationComponentAPI::ClearActiveRagdollTargetPosition(id, _boneIndex);
+}
+
+// 役割指定で位置指定を解除
+bool ActiveRagdollComponent::ClearTargetPosition(RagdollBoneRole _role)
+{
+	return AnimationComponentAPI::ClearActiveRagdollTargetPosition(id, _role);
+}
+
 // --- 操作要求 ---
 
 // ワールド空間の移動入力取得

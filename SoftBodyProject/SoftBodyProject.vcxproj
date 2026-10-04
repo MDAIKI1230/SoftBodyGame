@@ -234,6 +234,7 @@
     <ClInclude Include="Source\Animation\Struct\Skeleton\BoneMask.h" />
     <ClInclude Include="Source\Animation\Struct\Skeleton\PoseLayer.h" />
     <ClInclude Include="Source\Animation\Struct\Skeleton\PoseLayerID.h" />
+    <ClInclude Include="Source\Animation\Struct\Skeleton\PositionTarget.h" />
     <ClInclude Include="Source\Animation\Struct\Skeleton\SkeletonID.h" />
     <ClInclude Include="Source\Animation\System\Solver\IKSolverSystem.h" />
     <ClInclude Include="Source\Animation\System\Sync\AnimationCommitSystem.h" />

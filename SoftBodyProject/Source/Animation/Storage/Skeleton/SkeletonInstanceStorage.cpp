@@ -15,6 +15,7 @@ SkeletonID SkeletonInstanceStorage::Create(EntityID _entity, ModelHandle _model)
 	outputPoses.back() = targetPoses.back();
 
 	worldFromModels.emplace_back();
+	positionTargets.emplace_back();
 	ids.push_back(id);
 	ownerEntities.push_back(_entity);
 
@@ -47,6 +48,8 @@ void SkeletonInstanceStorage::Destroy(SkeletonID _id)
 
 		worldFromModels[denseIndex] = worldFromModels[lastIndex];
 
+		positionTargets[denseIndex] = std::move(positionTargets[lastIndex]);
+
         ownerEntities[denseIndex] = ownerEntities[lastIndex];
 
         ids[denseIndex] = movedID;
@@ -59,6 +62,7 @@ void SkeletonInstanceStorage::Destroy(SkeletonID _id)
 	targetPoses.pop_back();
 	outputPoses.pop_back();
 	worldFromModels.pop_back();
+	positionTargets.pop_back();
     ownerEntities.pop_back();
     ids.pop_back();
 

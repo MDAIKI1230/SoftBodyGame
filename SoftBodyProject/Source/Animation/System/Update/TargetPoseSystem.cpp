@@ -9,6 +9,8 @@ void TargetPoseSystem::Update(SkeletonInstanceStorage* _skeletonStorage, PoseLay
 	InitialePose(_skeletonStorage);
 	MixPose(_skeletonStorage, _poseLayerStorage);
 	ReBuildMatrix(_skeletonStorage);
+	ApplyPositionTarget(_skeletonStorage);
+	ReBuildMatrix(_skeletonStorage);
 }
 
 void TargetPoseSystem::InitialePose(SkeletonInstanceStorage* _skeletonStorage)
@@ -41,6 +43,52 @@ void TargetPoseSystem::MixPose(SkeletonInstanceStorage* _skeletonStorage, PoseLa
 	for (const PoseLayer& layer : _poseLayerStorage->GetPoseLayerRange())
 	{
 		PoseMixer::MakeTargetPose(_skeletonStorage->EditTargetPose(layer.skeletonID), layer);
+	}
+}
+
+void TargetPoseSystem::ApplyPositionTarget(SkeletonInstanceStorage* _skeletonStorage)
+{
+	for (auto id : _skeletonStorage->GetIDRange())
+	{
+		auto& positionTargets{ _skeletonStorage->EditPositionTargets(id) };
+
+		// コンテナ内に何もないなら飛ばす
+		if (positionTargets.empty())
+		{
+			continue;
+		}
+
+		PoseBuffer& targetPose{ _skeletonStorage->EditTargetPose(id) };
+		const Matrix4x4& worldFromModel{ _skeletonStorage->GetWorldFromModel(id)};
+		const SkeletonData* skeleton{ _skeletonStorage->GetSkeletonDataPtr(id) };
+
+		Vector3 pos, scale;
+		Quaternion rot;
+
+		Transform::DecomposeTRS(
+			worldFromModel,
+			pos,
+			rot,
+			scale
+		);
+
+		Matrix4x4 modelFromWorld{ MatGenerateFunc::InverseTRS(
+			pos,
+			rot,
+			scale
+		) };
+
+		for (const PositionTarget& target : positionTargets)
+		{
+			uint32_t boneIndex{ target.boneIndex };
+			uint32_t parentIndex{ skeleton->parentIndices[boneIndex] };
+			Vector3 modelPos{ modelFromWorld * target.worldPosition };
+			Vector3 localPos{
+				parentIndex != UINT32_MAX ?
+					targetPose.boneFromModelMatrices[parentIndex] * modelPos :
+					modelPos };
+			targetPose.localPositions[boneIndex] = localPos;
+		}
 	}
 }
 

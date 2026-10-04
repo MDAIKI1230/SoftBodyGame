@@ -254,6 +254,97 @@ bool AnimationComponentAPI::SetActiveRagdollBranchWeight(ActiveRagdollID _id, Ra
 	return SetActiveRagdollBranchWeight(_id, GetActiveRagdollBoneIndex(_id, _rootRole), _weight);
 }
 
+// インデックス指定で目標位置を設定
+bool AnimationComponentAPI::SetActiveRagdollTargetPosition(ActiveRagdollID _id, uint32_t _boneIndex, const Vector3& _worldPosition)
+{
+	if (!activeRagdollStorage->IsAlive(_id) || !std::isfinite(_worldPosition.x) || !std::isfinite(_worldPosition.y) || !std::isfinite(_worldPosition.z))
+	{
+		return false;
+	}
+
+	RagdollID ragdollID{ activeRagdollStorage->GetRagdollID(_id) };
+	if (!ragdollStorage->IsAlive(ragdollID))
+	{
+		return false;
+	}
+
+	SkeletonID skeletonID{ ragdollStorage->GetRagdoll(ragdollID).skeleton };
+	if (!skeletonStorage->IsAlive(skeletonID))
+	{
+		return false;
+	}
+
+	const SkeletonData* skeleton{ skeletonStorage->GetSkeletonDataPtr(skeletonID) };
+	if (skeleton == nullptr || _boneIndex >= skeleton->Size())
+	{
+		return false;
+	}
+
+	auto& positionTargets{ skeletonStorage->EditPositionTargets(skeletonID) };
+	for (PositionTarget& target : positionTargets)
+	{
+		if (target.boneIndex == _boneIndex)
+		{
+			target.worldPosition = _worldPosition;
+			return true;
+		}
+	}
+
+	positionTargets.push_back(PositionTarget{ _boneIndex, _worldPosition });
+	return true;
+}
+
+// 役割指定で目標位置を設定
+bool AnimationComponentAPI::SetActiveRagdollTargetPosition(ActiveRagdollID _id, RagdollBoneRole _role, const Vector3& _worldPosition)
+{
+	return SetActiveRagdollTargetPosition(_id, GetActiveRagdollBoneIndex(_id, _role), _worldPosition);
+}
+
+// インデックス指定で位置指定を解除
+bool AnimationComponentAPI::ClearActiveRagdollTargetPosition(ActiveRagdollID _id, uint32_t _boneIndex)
+{
+	if (!activeRagdollStorage->IsAlive(_id))
+	{
+		return false;
+	}
+
+	RagdollID ragdollID{ activeRagdollStorage->GetRagdollID(_id) };
+	if (!ragdollStorage->IsAlive(ragdollID))
+	{
+		return false;
+	}
+
+	SkeletonID skeletonID{ ragdollStorage->GetRagdoll(ragdollID).skeleton };
+	if (!skeletonStorage->IsAlive(skeletonID))
+	{
+		return false;
+	}
+
+	const SkeletonData* skeleton{ skeletonStorage->GetSkeletonDataPtr(skeletonID) };
+	if (skeleton == nullptr || _boneIndex >= skeleton->Size())
+	{
+		return false;
+	}
+
+	auto& positionTargets{ skeletonStorage->EditPositionTargets(skeletonID) };
+	for (auto it{ positionTargets.begin() }; it != positionTargets.end(); ++it)
+	{
+		if (it->boneIndex == _boneIndex)
+		{
+			positionTargets.erase(it);
+			return true;
+		}
+	}
+
+	return false;
+}
+
+// 役割指定で位置指定を解除
+bool AnimationComponentAPI::ClearActiveRagdollTargetPosition(ActiveRagdollID _id, RagdollBoneRole _role)
+{
+	return ClearActiveRagdollTargetPosition(_id, GetActiveRagdollBoneIndex(_id, _role));
+}
+
 // --- Body取得 ---
 
 // 指定した役割のRigidBody取得

@@ -11,6 +11,7 @@
 
 #include "Buffer/PoseBuffer.h"
 #include "SkeletonData.h"
+#include "PositionTarget.h"
 
 /*
 	モデルのインスタンスごとのスケルトンを扱うストレージ
@@ -27,6 +28,8 @@ public:
 	MD_STORAGE_ID_READ_WRITE_COLUMN(SkeletonID, PoseBuffer, OutputPose, outputPoses)
 	// モデルの姿勢をワールド姿勢に変換する行列
 	MD_STORAGE_ID_READ_WRITE_COLUMN(SkeletonID, Matrix4x4, WorldFromModel, worldFromModels)
+	// 位置の指定
+	MD_STORAGE_ID_READ_WRITE_COLUMN(SkeletonID, std::vector<PositionTarget>, PositionTargets, positionTargets)
 	// 自身のID
 	MD_STORAGE_ID_READ_ONLY_COLUMN(SkeletonID, SkeletonID, ID, ids)
 	// Ownerは生成後に変えない

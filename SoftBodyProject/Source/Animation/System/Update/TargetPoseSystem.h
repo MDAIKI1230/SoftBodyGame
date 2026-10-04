@@ -19,5 +19,7 @@ private:
 
 	void MixPose(SkeletonInstanceStorage* _skeletonStorage, PoseLayerStorage* _poseLayerStorage);
 
+	void ApplyPositionTarget(SkeletonInstanceStorage* _skeletonStorage);
+
 	void ReBuildMatrix(SkeletonInstanceStorage* _skeletonStorage);
 };
