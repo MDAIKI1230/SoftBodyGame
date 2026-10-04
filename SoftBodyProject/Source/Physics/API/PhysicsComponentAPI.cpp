@@ -1444,6 +1444,11 @@ void PhysicsComponentAPI::AddInternalEndPoint(ConstraintID _constraintID, Physic
 // PhysicsTransform破棄(対応する他の奴も破棄する)
 void PhysicsComponentAPI::DestroyPhysicsTransform(PhysicsTransformID _transformID)
 {
+	if (!transformStorage->IsAlive(_transformID))
+	{
+		return;
+	}
+
 	BodyID bodyID;
 	if (bodyStorage->TryGetRigidBodyID(_transformID, bodyID))
 	{

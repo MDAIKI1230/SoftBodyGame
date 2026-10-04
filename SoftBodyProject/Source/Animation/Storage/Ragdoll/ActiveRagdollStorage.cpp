@@ -74,9 +74,11 @@ bool ActiveRagdollStorage::CreateActiveRagdoll(EntityID _entity, const Ragdoll& 
 	for (int boneIndex{ 0 }; boneIndex < _ragdoll.constraints.size(); boneIndex++)
 	{
 		ConstraintID bodyConstraint{ _ragdoll.constraints[boneIndex] };
-		// 無効値であれば飛ばすでな。
+		// 無効値であれば無効値を入れる
 		if (!bodyConstraint.IsValid())
 		{
+			activeRagdoll.pointConstraints.emplace_back();
+			activeRagdoll.pointTransformIDs.emplace_back();
 			continue;
 		}
 		ConstraintTuning tuning;
@@ -106,30 +108,31 @@ bool ActiveRagdollStorage::CreateActiveRagdoll(EntityID _entity, const Ragdoll& 
 			activeRagdoll.childBoneIndex.push_back(boneIndex);
 			activeRagdoll.parentBoneIndex.push_back(_ragdoll.parentIndices[boneIndex]);
 			activeRagdoll.jointDriveConstraints.push_back(jointDriveID);
-
-			// point拘束を作成していく
-			ConstraintID pointID{ PhysicsComponentAPI::CreateInternalPointConstraint(
-				_entity,
-				parentEndPoint.transformID,
-				parentEndPoint.localPosition) };
-
-			// 内部の目標位置を拘束に渡すようTransformID
-			PhysicsTransformID transformID{ PhysicsComponentAPI::CreateInternalPhysicsTransformID(
-				_entity,
-				childEndPoint.localPosition,
-				childEndPoint.localRotation,
-				Vector3::ONE) };
-
-			PhysicsComponentAPI::AddInternalEndPoint(
-				pointID,
-				transformID,
-				Vector3::ZERO);
-
-			PhysicsComponentAPI::SetTuning(pointID, tuning);
-
-			activeRagdoll.pointConstraints.push_back(pointID);
-			activeRagdoll.pointTransformIDs.push_back(transformID);
 		}
+
+		const RagdollBodyLink& link{ _ragdoll.bodyLinks[boneIndex] };
+		PhysicsTransformID boneTransformID{ _ragdoll.transforms[boneIndex] };
+		Vector3 localPoint{ link.bodyFromBone * Vector3::ZERO };
+
+		// point拘束を作成していく
+		ConstraintID pointID{ PhysicsComponentAPI::CreateInternalPointConstraint(_entity, _ragdoll.transforms[boneIndex], localPoint) };
+
+		// 内部の目標位置を拘束に渡すようTransformID
+		PhysicsTransformID transformID{ PhysicsComponentAPI::CreateInternalPhysicsTransformID(
+			_entity,
+			Vector3::ZERO,
+			Quaternion::IDENTITY,
+			Vector3::ONE) };
+
+		PhysicsComponentAPI::AddInternalEndPoint(
+			pointID,
+			transformID,
+			Vector3::ZERO);
+
+		PhysicsComponentAPI::SetTuning(pointID, tuning);
+
+		activeRagdoll.pointConstraints.push_back(pointID);
+		activeRagdoll.pointTransformIDs.push_back(transformID);
 	}
 
 	activeRagdoll.settings = _setting;

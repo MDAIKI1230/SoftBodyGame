@@ -542,7 +542,7 @@ bool AnimationComponentAPI::SetActiveRagdollWeightInternal(ActiveRagdollID _id, 
 			continue;
 		}
 
-		ConstraintID constraints[]{ activeRagdoll.jointDriveConstraints[i], activeRagdoll.pointConstraints[i] };
+		ConstraintID constraints[]{ activeRagdoll.jointDriveConstraints[i], activeRagdoll.pointConstraints[activeRagdoll.childBoneIndex[i]] };
 
 		for (ConstraintID constraint : constraints)
 		{

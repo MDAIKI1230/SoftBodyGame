@@ -828,35 +828,37 @@ void ActiveRagdollSystem::UpdateJointDrive(const Ragdoll& _ragdoll, const Active
 // Animationの目標姿勢から各関節Pointの目標位置を更新する関数
 void ActiveRagdollSystem::UpdatePointConstraint(const Ragdoll& _ragdoll, const ActiveRagdoll& _activeRagdoll, const PoseBuffer& _targetPose, const Matrix4x4 _worldFromModel)
 {
-	for (int i{ 0 }; i < _activeRagdoll.pointConstraints.size(); i++)
+	for (uint32_t boneIndex{ 0 }; boneIndex < _activeRagdoll.pointConstraints.size(); boneIndex++)
 	{
-		ConstraintID constraint{ _activeRagdoll.pointConstraints[i] };
+		ConstraintID constraint{ _activeRagdoll.pointConstraints[boneIndex] };
 
-		// 親ボーンインデックス
-		uint32_t parentBoneIndex{ _activeRagdoll.parentBoneIndex[i] };
+		if (!constraint.IsValid())
+		{
+			continue;
+		}
 
 		const EndPointFrame& parentEndPoint{ PhysicsComponentAPI::GetEndPoint(constraint) };
 		// 一旦APIの関係上一対一だけどこれからしか取得できないから[0]があってすまぬ
 		EndPointFrame& targetEndPoint{ PhysicsComponentAPI::EditOtherEndPoints(constraint)[0] };
 
 		Vector3 scale;
-		Quaternion parentModelRotation;
-		Vector3 parentModelPosition;
+		Quaternion modelRotation;
+		Vector3 modelPosition;
 
 		Transform::DecomposeTRS(
-			_targetPose.modelFromBoneMatrices[parentBoneIndex],
-			parentModelPosition,
-			parentModelRotation,
+			_targetPose.modelFromBoneMatrices[boneIndex],
+			modelPosition,
+			modelRotation,
 			scale
 		);
 
-		const RagdollBodyLink& parentLink{ _ragdoll.bodyLinks[parentBoneIndex] };
+		const RagdollBodyLink& parentLink{ _ragdoll.bodyLinks[boneIndex] };
 
 		// モデル座標系とボディのオフセット分
 		Matrix4x4 modelFromParentBody{
 			MatGenerateFunc::TRS(
-				parentModelPosition ,
-				parentModelRotation ,
+				modelPosition ,
+				modelRotation ,
 				Vector3::ONE) *
 			MatGenerateFunc::TRS(
 				parentLink.bodyPositionInBoneSpace,
@@ -870,7 +872,7 @@ void ActiveRagdollSystem::UpdatePointConstraint(const Ragdoll& _ragdoll, const A
 		Vector3 targetWorldPoint{_worldFromModel * targetModelPoint};
 
 		PhysicsComponentAPI::SetInternalPhysicsTransformPosition(
-			_activeRagdoll.pointTransformIDs[i],
+			_activeRagdoll.pointTransformIDs[boneIndex],
 			targetWorldPoint);
 	}
 }
