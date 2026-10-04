@@ -40,5 +40,5 @@ private:
 	void SolveJointDriveConstraint(ConstraintStorage* _constraintStorage, SolverBodyBuffer* _solverBodyBuffer, ConstraintBuffer* _constraintBuffer, size_t& _batchCount);
 
 	// XPBD法による位置解消関数
-	void SolveRow(SolverBody& _solverBodyA, SolverBody& _solverBodyB, Constraint _constraint);
+	void SolveRow(SolverBody& _solverBodyA, SolverBody& _solverBodyB, Constraint& _constraint);
 };

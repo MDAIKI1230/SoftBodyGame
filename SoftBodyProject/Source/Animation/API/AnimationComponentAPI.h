@@ -60,6 +60,18 @@ public:
 	// 破棄
 	static void DestroyActiveRagdoll(ActiveRagdollID _id);
 
+	// 名前・役割からボーンインデックス取得
+	static uint32_t GetActiveRagdollBoneIndex(ActiveRagdollID _id, const char* _boneName);
+	static uint32_t GetActiveRagdollBoneIndex(ActiveRagdollID _id, RagdollBoneRole _role);
+
+	// 指定したボーンのウェイト変更
+	static bool SetActiveRagdollWeight(ActiveRagdollID _id, uint32_t _boneIndex, float _weight);
+	static bool SetActiveRagdollWeight(ActiveRagdollID _id, RagdollBoneRole _role, float _weight);
+
+	// 指定したボーン自身と子孫のウェイト変更
+	static bool SetActiveRagdollBranchWeight(ActiveRagdollID _id, uint32_t _rootBoneIndex, float _weight);
+	static bool SetActiveRagdollBranchWeight(ActiveRagdollID _id, RagdollBoneRole _rootRole, float _weight);
+
 	// --- Body取得 ---
 
 	// 指定した役割のRigidBody取得
@@ -148,6 +160,9 @@ private:
 	static uint32_t FindHandBoneIndex(FeatureIKID _id, const char* _boneName);
 	// ボーンインデックスから名前取得
 	static std::string_view GetHandBoneName(FeatureIKID _id, uint32_t _boneIndex);
+
+	// ウェイト変更の共通処理
+	static bool SetActiveRagdollWeightInternal(ActiveRagdollID _id, uint32_t _boneIndex, float _weight, bool _includeChildren);
 private:
 	static SkeletonInstanceStorage* skeletonStorage;
 	static AnimationStorage* animationStorage;

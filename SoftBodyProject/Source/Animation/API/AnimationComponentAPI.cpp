@@ -1,13 +1,17 @@
-﻿#include "ResourceManager.h"
+﻿#include <algorithm>
+#include <cmath>
+
+#include "ResourceManager.h"
 
 #include "ActiveRagdollLoader.h"
+#include "BoneMaskLoader.h"
 
 #include "ActiveRagdollDefinition.h"
 
 #include "AnimationComponentAPI.h"
+#include "PhysicsComponentAPI.h"
 #include "SolverIKStorage.h"
 
-#include "BoneMaskLoader.h"
 
 // --- 通常アニメーション ---
 
@@ -188,6 +192,66 @@ void AnimationComponentAPI::DestroyActiveRagdoll(ActiveRagdollID _id)
 	RagdollID ragdollID{ activeRagdollStorage->GetRagdollID(_id) };
 	DestroyRagdoll(ragdollID);
 	activeRagdollStorage->Destroy(_id);
+}
+
+// 名前からボーンインデックス取得
+uint32_t AnimationComponentAPI::GetActiveRagdollBoneIndex(ActiveRagdollID _id, const char* _boneName)
+{
+	if (!activeRagdollStorage->IsAlive(_id) || _boneName == nullptr)
+	{
+		return UINT32_MAX;
+	}
+
+	RagdollID ragdollID{ activeRagdollStorage->GetRagdollID(_id) };
+	const Ragdoll& ragdoll{ ragdollStorage->GetRagdoll(ragdollID) };
+	const SkeletonData* skeleton{ skeletonStorage->GetSkeletonDataPtr(ragdoll.skeleton) };
+
+	if (skeleton == nullptr)
+	{
+		return UINT32_MAX;
+	}
+
+	const auto it{ skeleton->boneLookup.find(_boneName) };
+	return it != skeleton->boneLookup.end() ? it->second : UINT32_MAX;
+}
+
+// 役割からボーンインデックス取得
+uint32_t AnimationComponentAPI::GetActiveRagdollBoneIndex(ActiveRagdollID _id, RagdollBoneRole _role)
+{
+	if (!activeRagdollStorage->IsAlive(_id))
+	{
+		return UINT32_MAX;
+	}
+
+	RagdollID ragdollID{ activeRagdollStorage->GetRagdollID(_id) };
+	const Ragdoll& ragdoll{ ragdollStorage->GetRagdoll(ragdollID) };
+
+	size_t roleIndex{ static_cast<size_t>(_role) };
+	return roleIndex < ragdoll.roles.size() ? ragdoll.roles[roleIndex] : UINT32_MAX;
+}
+
+// インデックス指定で個別変更
+bool AnimationComponentAPI::SetActiveRagdollWeight(ActiveRagdollID _id, uint32_t _boneIndex, float _weight)
+{
+	return SetActiveRagdollWeightInternal(_id, _boneIndex, _weight, false);
+}
+
+// 役割指定で個別変更
+bool AnimationComponentAPI::SetActiveRagdollWeight(ActiveRagdollID _id, RagdollBoneRole _role, float _weight)
+{
+	return SetActiveRagdollWeight(_id, GetActiveRagdollBoneIndex(_id, _role), _weight);
+}
+
+// インデックス指定で自身と子孫を変更
+bool AnimationComponentAPI::SetActiveRagdollBranchWeight(ActiveRagdollID _id, uint32_t _rootBoneIndex, float _weight)
+{
+	return SetActiveRagdollWeightInternal(_id, _rootBoneIndex, _weight, true);
+}
+
+// 役割指定で自身と子孫を変更
+bool AnimationComponentAPI::SetActiveRagdollBranchWeight(ActiveRagdollID _id, RagdollBoneRole _rootRole, float _weight)
+{
+	return SetActiveRagdollBranchWeight(_id, GetActiveRagdollBoneIndex(_id, _rootRole), _weight);
 }
 
 // --- Body取得 ---
@@ -435,6 +499,67 @@ std::string_view AnimationComponentAPI::GetHandBoneName(FeatureIKID _id, uint32_
 	const SkeletonData* skeleton{ skeletonStorage->GetSkeletonDataPtr(skeletonID) };
 
 	return skeleton->boneNames.at(_boneIndex);
+}
+
+// ウェイト変更の共通処理
+bool AnimationComponentAPI::SetActiveRagdollWeightInternal(ActiveRagdollID _id, uint32_t _boneIndex, float _weight, bool _includeChildren)
+{
+	if (!activeRagdollStorage->IsAlive(_id) || !std::isfinite(_weight))
+	{
+		return false;
+	}
+
+	RagdollID ragdollID{ activeRagdollStorage->GetRagdollID(_id) };
+	const Ragdoll& ragdoll{ ragdollStorage->GetRagdoll(ragdollID) };
+	const SkeletonData* skeleton{ skeletonStorage->GetSkeletonDataPtr(ragdoll.skeleton) };
+
+	if (skeleton == nullptr || _boneIndex >= skeleton->Size())
+	{
+		return false;
+	}
+
+	const ActiveRagdoll& activeRagdoll{ activeRagdollStorage->GetActiveRagdoll(_id) };
+
+	float weight{ std::clamp(_weight, 0.0f, 1.0f) };
+	float maxForce{ activeRagdoll.settings.maxJointDriveForce * weight };
+	bool updated{ false };
+
+	for (size_t i{ 0 }; i < activeRagdoll.childBoneIndex.size(); ++i)
+	{
+		uint32_t boneIndex{ activeRagdoll.childBoneIndex[i] };
+
+		if (_includeChildren)
+		{
+			// Skeletonの親をたどり、指定ボーンの子孫か判定する
+			for (size_t depth{ 0 }; depth < skeleton->Size() && boneIndex < skeleton->Size() && boneIndex != _boneIndex; ++depth)
+			{
+				boneIndex = skeleton->parentIndices[boneIndex];
+			}
+		}
+
+		if (boneIndex != _boneIndex)
+		{
+			continue;
+		}
+
+		ConstraintID constraints[]{ activeRagdoll.jointDriveConstraints[i], activeRagdoll.pointConstraints[i] };
+
+		for (ConstraintID constraint : constraints)
+		{
+			if (!constraint.IsValid())
+			{
+				continue;
+			}
+
+			ConstraintTuning tuning{ PhysicsComponentAPI::GetTuning(constraint) };
+			tuning.maxForce = maxForce;
+			PhysicsComponentAPI::SetTuning(constraint, tuning);
+
+			updated = true;
+		}
+	}
+
+	return updated;
 }
 
 void AnimationComponentAPI::BindWorld(AnimationWorld* _world)

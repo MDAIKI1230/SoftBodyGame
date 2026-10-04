@@ -15,6 +15,42 @@ RigidBodyComponent ActiveRagdollComponent::GetBody(RagdollBoneRole _role) const
 	return AnimationComponentAPI::GetActiveRagdollBody(id, _role);
 }
 
+// 名前からボーンインデックス取得
+uint32_t ActiveRagdollComponent::GetBoneIndex(const char* _boneName) const
+{
+	return AnimationComponentAPI::GetActiveRagdollBoneIndex(id, _boneName);
+}
+
+// 役割からボーンインデックス取得
+uint32_t ActiveRagdollComponent::GetBoneIndex(RagdollBoneRole _role) const
+{
+	return AnimationComponentAPI::GetActiveRagdollBoneIndex(id, _role);
+}
+
+// インデックス指定で個別変更
+bool ActiveRagdollComponent::SetWeight(uint32_t _boneIndex, float _weight)
+{
+	return AnimationComponentAPI::SetActiveRagdollWeight(id, _boneIndex, _weight);
+}
+
+// 役割指定で個別変更
+bool ActiveRagdollComponent::SetWeight(RagdollBoneRole _role, float _weight)
+{
+	return AnimationComponentAPI::SetActiveRagdollWeight(id, _role, _weight);
+}
+
+// インデックス指定で自身と子孫を変更
+bool ActiveRagdollComponent::SetBranchWeight(uint32_t _rootBoneIndex, float _weight)
+{
+	return AnimationComponentAPI::SetActiveRagdollBranchWeight(id, _rootBoneIndex, _weight);
+}
+
+// 役割指定で自身と子孫を変更
+bool ActiveRagdollComponent::SetBranchWeight(RagdollBoneRole _rootRole, float _weight)
+{
+	return AnimationComponentAPI::SetActiveRagdollBranchWeight(id, _rootRole, _weight);
+}
+
 // --- 操作要求 ---
 
 // ワールド空間の移動入力取得

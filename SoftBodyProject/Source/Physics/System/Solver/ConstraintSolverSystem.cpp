@@ -122,7 +122,7 @@ void ConstraintSolverSystem::MakeConstraintInfo(Constraint& _constraint, const C
 }
 
 // XPBD法による位置解消関数
-void ConstraintSolverSystem::SolveRow(SolverBody& _solverBodyA, SolverBody& _solverBodyB, Constraint _constraint)
+void ConstraintSolverSystem::SolveRow(SolverBody& _solverBodyA, SolverBody& _solverBodyB, Constraint& _constraint)
 {
 	if (!_constraint.isActive)
 	{

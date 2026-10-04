@@ -776,13 +776,6 @@ void ActiveRagdollSystem::UpdateBalance(const Ragdoll& _ragdoll, ActiveRagdoll& 
 // Animationの目標姿勢から各関節Driveの目標相対回転を更新する関数
 void ActiveRagdollSystem::UpdateJointDrive(const Ragdoll& _ragdoll, const ActiveRagdoll& _activeRagdoll, const PoseBuffer& _targetPose)
 {
-	//// 立ち状態かつ地面に接地しているときのみやる
-	//if (_activeRagdoll.controlState != ActiveRagdollControlState::STANDING ||
-	//	!_activeRagdoll.isGrounded)
-	//{
-	//	return;
-	//}
-
 	for (int i{ 0 }; i < _activeRagdoll.jointDriveConstraints.size(); i++)
 	{
 		/*

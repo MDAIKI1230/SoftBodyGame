@@ -26,6 +26,18 @@ public:
 	// 指定した役割のRigidBody取得
 	RigidBodyComponent GetBody(RagdollBoneRole _role) const;
 
+	// 名前・役割からボーンインデックス取得
+	uint32_t GetBoneIndex(const char* _boneName) const;
+	uint32_t GetBoneIndex(RagdollBoneRole _role) const;
+
+	// 指定したボーンのウェイト変更
+	bool SetWeight(uint32_t _boneIndex, float _weight);
+	bool SetWeight(RagdollBoneRole _role, float _weight);
+
+	// 指定したボーン自身と子孫のウェイト変更
+	bool SetBranchWeight(uint32_t _rootBoneIndex, float _weight);
+	bool SetBranchWeight(RagdollBoneRole _rootRole, float _weight);
+
 	// --- 操作要求 ---
 
 	// ワールド空間の移動入力取得
