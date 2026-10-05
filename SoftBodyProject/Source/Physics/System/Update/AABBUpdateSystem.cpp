@@ -55,7 +55,24 @@ void AABBUpdateSystem::FixedUpdate(PhysicsTransformStorage* _transformStorage, C
 
 		if (_colliderStorage->GetAABBDiaryFlag(i) & AABBChangeDiaryFlag::SHAPE)
 		{
+			ColliderID id{ _colliderStorage->GetAABBBroadPhaseCollider(i).colliderID };
 
+			switch (_colliderStorage->GetType(id))
+			{
+			case ColliderType::SPHERE:
+				ComputeSphere(_colliderStorage->EditAABBBroadPhaseCollider(i), _colliderStorage, id, _transformStorage);
+				break;
+			case ColliderType::BOX:
+				ComputeBox(_colliderStorage->EditAABBBroadPhaseCollider(i), _colliderStorage, id, _transformStorage);
+				break;
+			case ColliderType::CAPSULE:
+				ComputeCapsule(_colliderStorage->EditAABBBroadPhaseCollider(i), _colliderStorage, id, _transformStorage);
+				break;
+			default:
+				break;
+			}
+
+			_colliderStorage->EditAABBDiaryFlag(i) = AABBChangeDiaryFlag::NONE;
 		}
 	}
 }

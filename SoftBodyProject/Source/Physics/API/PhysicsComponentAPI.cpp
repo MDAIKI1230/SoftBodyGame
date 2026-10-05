@@ -356,6 +356,8 @@ float PhysicsComponentAPI::GetSphereRadius(ColliderID _id)
 void PhysicsComponentAPI::SetSphereRadius(ColliderID _id, float _radius)
 {
 	colliderStorage->SetSphereColliderRadius(_id, _radius);
+
+	MarkColliderDirty(_id, AABBChangeDiaryFlag::SHAPE);
 }
 
 // オフセット位置取得
@@ -367,6 +369,8 @@ Vector3 PhysicsComponentAPI::GetSphereOffsetPosition(ColliderID _id)
 void PhysicsComponentAPI::SetSphereOffsetPosition(ColliderID _id, const Vector3& _offset)
 {
 	colliderStorage->SetSphereColliderOffsetPosition(_id, _offset);
+
+	MarkColliderDirty(_id, AABBChangeDiaryFlag::TRANSFORM);
 }
 // オフセット回転取得
 Quaternion PhysicsComponentAPI::GetSphereOffsetRotation(ColliderID _id)
@@ -377,6 +381,8 @@ Quaternion PhysicsComponentAPI::GetSphereOffsetRotation(ColliderID _id)
 void PhysicsComponentAPI::SetSphereOffsetRotation(ColliderID _id, const Quaternion& _offset)
 {
 	colliderStorage->SetSphereColliderOffsetRotation(_id, _offset);
+
+	MarkColliderDirty(_id, AABBChangeDiaryFlag::TRANSFORM);
 }
 
 // X方向の長さ取得
@@ -388,6 +394,8 @@ float PhysicsComponentAPI::GetBoxWidth(ColliderID _id)
 void PhysicsComponentAPI::SetBoxWidth(ColliderID _id, float _width)
 {
 	colliderStorage->EditBoxColliderScale(_id).x = _width;
+
+	MarkColliderDirty(_id, AABBChangeDiaryFlag::SHAPE);
 }
 // Y方向の長さ取得
 float PhysicsComponentAPI::GetBoxHeight(ColliderID _id)
@@ -398,6 +406,8 @@ float PhysicsComponentAPI::GetBoxHeight(ColliderID _id)
 void PhysicsComponentAPI::SetBoxHeight(ColliderID _id, float _height)
 {
 	colliderStorage->EditBoxColliderScale(_id).y = _height;
+
+	MarkColliderDirty(_id, AABBChangeDiaryFlag::SHAPE);
 }
 // Z方向の長さ取得
 float PhysicsComponentAPI::GetBoxDepth(ColliderID _id)
@@ -408,6 +418,8 @@ float PhysicsComponentAPI::GetBoxDepth(ColliderID _id)
 void PhysicsComponentAPI::SetBoxDepth(ColliderID _id, float _depth)
 {
 	colliderStorage->EditBoxColliderScale(_id).z = _depth;
+
+	MarkColliderDirty(_id, AABBChangeDiaryFlag::SHAPE);
 }
 
 // オフセット位置取得
@@ -419,6 +431,8 @@ Vector3 PhysicsComponentAPI::GetBoxOffsetPosition(ColliderID _id)
 void PhysicsComponentAPI::SetBoxOffsetPosition(ColliderID _id, const Vector3& _offset)
 {
 	colliderStorage->SetBoxColliderOffsetPosition(_id, _offset);
+
+	MarkColliderDirty(_id, AABBChangeDiaryFlag::TRANSFORM);
 }
 // オフセット回転取得
 Quaternion PhysicsComponentAPI::GetBoxOffsetRotation(ColliderID _id)
@@ -429,6 +443,8 @@ Quaternion PhysicsComponentAPI::GetBoxOffsetRotation(ColliderID _id)
 void PhysicsComponentAPI::SetBoxOffsetRotation(ColliderID _id, const Quaternion& _offset)
 {
 	colliderStorage->SetBoxColliderOffsetRotation(_id, _offset);
+
+	MarkColliderDirty(_id, AABBChangeDiaryFlag::TRANSFORM);
 }
 
 // 高さ取得
@@ -440,6 +456,8 @@ float PhysicsComponentAPI::GetCapsuleHeight(ColliderID _id)
 void PhysicsComponentAPI::SetCapsuleHeight(ColliderID _id, float _height)
 {
 	colliderStorage->SetCapsuleColliderHeight(_id, _height);
+
+	MarkColliderDirty(_id, AABBChangeDiaryFlag::SHAPE);
 }
 // 半径取得
 float PhysicsComponentAPI::GetCapsuleRadius(ColliderID _id)
@@ -450,6 +468,8 @@ float PhysicsComponentAPI::GetCapsuleRadius(ColliderID _id)
 void PhysicsComponentAPI::SetCapsuleRadius(ColliderID _id, float _radius)
 {
 	colliderStorage->SetCapsuleColliderRadius(_id, _radius);
+
+	MarkColliderDirty(_id, AABBChangeDiaryFlag::SHAPE);
 }
 
 // オフセット位置取得
@@ -461,6 +481,8 @@ Vector3 PhysicsComponentAPI::GetCapsuleOffsetPosition(ColliderID _id)
 void PhysicsComponentAPI::SetCapsuleOffsetPosition(ColliderID _id, const Vector3& _offset)
 {
 	colliderStorage->SetCapsuleColliderOffsetPosition(_id, _offset);
+
+	MarkColliderDirty(_id, AABBChangeDiaryFlag::TRANSFORM);
 }
 // オフセット回転取得
 Quaternion PhysicsComponentAPI::GetCapsuleOffsetRotation(ColliderID _id)
@@ -471,6 +493,8 @@ Quaternion PhysicsComponentAPI::GetCapsuleOffsetRotation(ColliderID _id)
 void PhysicsComponentAPI::SetCapsuleOffsetRotation(ColliderID _id, const Quaternion& _offset)
 {
 	colliderStorage->SetCapsuleColliderOffsetRotation(_id, _offset);
+
+	MarkColliderDirty(_id, AABBChangeDiaryFlag::TRANSFORM);
 }
 
 // フィルター取得

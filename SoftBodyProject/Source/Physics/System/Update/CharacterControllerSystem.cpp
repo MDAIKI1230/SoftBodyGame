@@ -28,7 +28,9 @@ void CharacterControllerSystem::UpdateGroundState(
 
 		ColliderID colliderID{ _characterControllerStorage->GetCapsuleColliderID(id) };
 
-		const Vector3& position{ _transformStorage->GetPosition(transformID) };
+		const Quaternion& rotation{ _transformStorage->GetRotation(transformID) };
+
+		const Vector3& position{ _transformStorage->GetPosition(transformID) + rotation.Rotate(_colliderStorage->GetOffsetPosition(colliderID)) };
 		const Vector3& gravity{ _bodyStorage->GetRigidBodyGravity(bodyID) };
 
 		// リセット
@@ -52,13 +54,15 @@ void CharacterControllerSystem::UpdateGroundState(
 		// カプセルの下側。
 		float capsuleBottom{ height * 0.5f + radius };
 
+		CollisionFilter filter{ _colliderStorage->GetFilter(colliderID) };
+
 		RayCastQueryHitInfo hitInfo;
 		Ray ray;
 		ray.origin = position;
 		ray.direction = gravity.Normalized();
 		ray.maxDistance = capsuleBottom + _characterControllerStorage->GetGroundProbeDistance(id);
 
-		if (PhysicsQuerySystem::RayCastHit(ray, hitInfo, _colliderStorage, _transformStorage))
+		if (PhysicsQuerySystem::RayCastHit(ray, hitInfo, _colliderStorage, _transformStorage, filter))
 		{
 			// ヒット情報を残す
 			_characterControllerStorage->SetGroundNormal(id, hitInfo.normal);

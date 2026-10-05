@@ -39,7 +39,9 @@ bool PhysicsQuerySystem::RayCastHit(const Ray& _ray, RayCastQueryHitInfo& _hitIn
 
 		PhysicsTransformID transformID{ aabb.transformID };
 
-		Vector3 position{ _transformStorage->GetPosition(transformID) };
+		Quaternion rotation{ _transformStorage->GetRotation(transformID) };
+
+		Vector3 position{ _transformStorage->GetPosition(transformID) + rotation.Rotate(_colliderStorage->GetOffsetPosition(colliderID)) };
 
 		Vector3 worldMin{ aabb.min + position };
 		Vector3 worldMax{ aabb.max + position };
@@ -84,8 +86,10 @@ bool PhysicsQuerySystem::RayCastCollider(
 {
 	ColliderType type{ _colliderStorage->GetType(_colliderID) };
 
-	const Vector3& position{ _transformStorage->GetPosition(transformID) };
-	const Quaternion& rotation{ _transformStorage->GetRotation(transformID) };
+	Quaternion transformRot{ _transformStorage->GetRotation(transformID) };
+
+	const Vector3& position{ _transformStorage->GetPosition(transformID) + transformRot.Rotate(_colliderStorage->GetOffsetPosition(_colliderID)) };
+	const Quaternion& rotation{ transformRot * _colliderStorage->GetOffsetRotation(_colliderID) };
 	const Vector3& scale{ _transformStorage->GetScale(transformID) };
 	switch (type)
 	{
