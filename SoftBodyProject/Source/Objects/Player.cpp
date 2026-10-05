@@ -158,25 +158,24 @@ void Player::RaiseLeftHand(InputActionContext _input)
 		return;
 	}
 
+	// カメラの回転を取得
 	TransformComponent* cameraTransform{ camera->GetComponent<TransformComponent>() };
 	const Quaternion& cameraRot{ cameraTransform->GetRotation() };
-	CameraRigComponent* cameraRig{ camera->GetComponent<CameraRigComponent>() };
-	float handPitch{ std::clamp(cameraRig->GetPitch() - MDMath::DegToRad(CAMERA_ROTATION_OFFSET), -HAND_LIMIT_ANGLE_RAD, HAND_LIMIT_ANGLE_RAD) };
-	Quaternion forwardRotate{ Quaternion::Euler(handPitch, cameraRig->GetYaw(), 0.0f) };
+	// 前方向の取得
+	Quaternion forwardRotate{ CalcHandForwardRotation() };
 
 	Vector3 handPosition{ shoulderPosition +
 		forwardRotate.Rotate(Vector3::FORWARD * HAND_DISTANCE) +
 		cameraRot.Rotate(HAND_SIDE_OFFSET) };
 
-	activeRagdoll->SetTargetPosition(RagdollBoneRole::LEFT_HAND, handPosition);
-	activeRagdoll->SetPositionWeight(RagdollBoneRole::LEFT_HAND, 0.2f);
-	activeRagdoll->SetRotationWeight(RagdollBoneRole::LEFT_HAND, 1.0f);
+	StartActiveRagdollHand(activeRagdoll, RagdollBoneRole::LEFT_HAND, handPosition);
+
+	canLeftHandGrab = true;
 }
 void Player::RaiseLeftHandEnd(InputActionContext _input)
 {
-	ActiveRagdollComponent* activeRagdoll{ GetComponent<ActiveRagdollComponent>() };
-	activeRagdoll->ClearTargetPosition(RagdollBoneRole::LEFT_HAND);
-	activeRagdoll->SetPositionWeight(RagdollBoneRole::LEFT_HAND, 0.0f);
+	StopActiveRagdollHand(RagdollBoneRole::LEFT_HAND);
+	canLeftHandGrab = false;
 }
 void Player::RaiseRightHand(InputActionContext _input)
 {
@@ -194,23 +193,44 @@ void Player::RaiseRightHand(InputActionContext _input)
 		return;
 	}
 
+	// カメラの回転を取得
 	TransformComponent* cameraTransform{ camera->GetComponent<TransformComponent>() };
 	const Quaternion& cameraRot{ cameraTransform->GetRotation() };
-	CameraRigComponent* cameraRig{ camera->GetComponent<CameraRigComponent>() };
-	float handPitch{ std::clamp(cameraRig->GetPitch() - MDMath::DegToRad(CAMERA_ROTATION_OFFSET), -HAND_LIMIT_ANGLE_RAD, HAND_LIMIT_ANGLE_RAD) };
-	Quaternion forwardRotate{ Quaternion::Euler(handPitch, cameraRig->GetYaw(), 0.0f) };
+	// 前方向の取得
+	Quaternion forwardRotate{ CalcHandForwardRotation()};
 
 	Vector3 handPosition{ shoulderPosition +
 		forwardRotate.Rotate(Vector3::FORWARD * HAND_DISTANCE) -
 		cameraRot.Rotate(HAND_SIDE_OFFSET) };
 
-	activeRagdoll->SetTargetPosition(RagdollBoneRole::RIGHT_HAND, handPosition);
-	activeRagdoll->SetPositionWeight(RagdollBoneRole::RIGHT_HAND, 0.2f);
-	activeRagdoll->SetRotationWeight(RagdollBoneRole::RIGHT_HAND, 1.0f);
+	StartActiveRagdollHand(activeRagdoll, RagdollBoneRole::RIGHT_HAND, handPosition);
+
+	canRightHandGrab = true;
 }
 void Player::RaiseRightHandEnd(InputActionContext _input)
 {
+	StopActiveRagdollHand(RagdollBoneRole::RIGHT_HAND);
+	canRightHandGrab = false;
+}
+
+// 手の位置を計算する関数
+Quaternion Player::CalcHandForwardRotation()
+{
+	CameraRigComponent* cameraRig{ camera->GetComponent<CameraRigComponent>() };
+	// 回転が行き過ぎないようにクランプ
+	float handPitch{ std::clamp(cameraRig->GetPitch() - MDMath::DegToRad(CAMERA_ROTATION_OFFSET), -HAND_LIMIT_ANGLE_RAD, HAND_LIMIT_ANGLE_RAD) };
+	return Quaternion::Euler(handPitch, cameraRig->GetYaw(), 0.0f);
+}
+// 手の動きに対してウェイトを設定する関数
+void Player::StartActiveRagdollHand(ActiveRagdollComponent* _activeRagdoll, RagdollBoneRole _handRole, const Vector3 _handPosition)
+{
+	_activeRagdoll->SetTargetPosition(_handRole, _handPosition);
+	_activeRagdoll->SetPositionWeight(_handRole, HAND_GRAB_WEIGHT);
+}
+// 手の動きを解除する際のウェイトの設定関数
+void Player::StopActiveRagdollHand(RagdollBoneRole _handRole)
+{
 	ActiveRagdollComponent* activeRagdoll{ GetComponent<ActiveRagdollComponent>() };
-	activeRagdoll->ClearTargetPosition(RagdollBoneRole::RIGHT_HAND);
-	activeRagdoll->SetPositionWeight(RagdollBoneRole::RIGHT_HAND, 0.0f);
+	activeRagdoll->ClearTargetPosition(_handRole);
+	activeRagdoll->SetPositionWeight(_handRole, 0.0f);
 }
