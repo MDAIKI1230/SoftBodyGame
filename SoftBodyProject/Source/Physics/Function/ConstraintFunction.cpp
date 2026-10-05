@@ -163,6 +163,8 @@ void ConstraintFunction::CalcAngleLimitPointJacobianAndError(
 		 _output[3].jacobian[2] = Vector3::ZERO; // linear B
 		 _output[3].jacobian[3] = n;             // angular B
 		 count++;
+
+		 _output[3].isActive = true;
 	 }
 	 else if (theta < _angleMin)
 	 {
@@ -185,6 +187,8 @@ void ConstraintFunction::CalcAngleLimitPointJacobianAndError(
 		 _output[3].jacobian[2] = Vector3::ZERO;
 		 _output[3].jacobian[3] = -n;
 		 count++;
+
+		 _output[3].isActive = true;
 	 }
 	 else
 	 {
@@ -246,6 +250,8 @@ void ConstraintFunction::CalcAngleLimitHingeJacobianAndError(
 		_output[5].jacobian[2] = Vector3::ZERO;
 		_output[5].jacobian[3] = _axisA;
 		count++;
+
+		_output[5].isActive = true;
 	}
 	else if (angle < _angleMin)
 	{
@@ -255,6 +261,8 @@ void ConstraintFunction::CalcAngleLimitHingeJacobianAndError(
 		_output[5].jacobian[2] = Vector3::ZERO;
 		_output[5].jacobian[3] = -_axisA;
 		count++;
+
+		_output[5].isActive = true;
 	}
 	else
 	{
@@ -303,6 +311,8 @@ void ConstraintFunction::CalcLimitedBallJointJacobianAndError(
 		_output[3].jacobian[1] = -n;            // angular A
 		_output[3].jacobian[2] = Vector3::ZERO; // linear B
 		_output[3].jacobian[3] = n;             // angular B
+
+		_output[3].isActive = true;
 	}
 	else
 	{
@@ -323,6 +333,8 @@ void ConstraintFunction::CalcLimitedBallJointJacobianAndError(
 		_output[4].jacobian[1] = -_axisA;
 		_output[4].jacobian[2] = Vector3::ZERO;
 		_output[4].jacobian[3] = _axisA;
+
+		_output[4].isActive = true;
 	}
 	else if (angle < _twistAngleMin)
 	{
@@ -331,6 +343,8 @@ void ConstraintFunction::CalcLimitedBallJointJacobianAndError(
 		_output[4].jacobian[1] = _axisA;
 		_output[4].jacobian[2] = Vector3::ZERO;
 		_output[4].jacobian[3] = -_axisA;
+
+		_output[4].isActive = true;
 	}
 	else
 	{
@@ -364,6 +378,11 @@ void ConstraintFunction::CalcJointDriveJacobianAndError(
 			output.isActive = false;
 		}
 		return;
+	}
+
+	for (auto& output : _output)
+	{
+		output.isActive = true;
 	}
 
 	Vector3 axisError{ axis * theta };

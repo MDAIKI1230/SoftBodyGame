@@ -38,6 +38,22 @@ public:
 	bool SetBranchWeight(uint32_t _rootBoneIndex, float _weight);
 	bool SetBranchWeight(RagdollBoneRole _rootRole, float _weight);
 
+	// 指定したボーンの位置拘束の強さを変更
+	bool SetPositionWeight(uint32_t _boneIndex, float _weight);
+	bool SetPositionWeight(RagdollBoneRole _role, float _weight);
+
+	// 指定したボーンの回転拘束の強さを変更
+	bool SetRotationWeight(uint32_t _boneIndex, float _weight);
+	bool SetRotationWeight(RagdollBoneRole _role, float _weight);
+
+	// 指定したボーン自身と子孫の位置拘束の強さを変更
+	bool SetBranchPositionWeight(uint32_t _rootBoneIndex, float _weight);
+	bool SetBranchPositionWeight(RagdollBoneRole _rootRole, float _weight);
+
+	// 指定したボーン自身と子孫の回転拘束の強さを変更
+	bool SetBranchRotationWeight(uint32_t _rootBoneIndex, float _weight);
+	bool SetBranchRotationWeight(RagdollBoneRole _rootRole, float _weight);
+
 	// ワールド空間の目標位置を設定。関連するボーンのWeightは呼び出し側で調整する
 	bool SetTargetPosition(uint32_t _boneIndex, const Vector3& _worldPosition);
 	// ワールド空間の目標位置を設定。関連するボーンのWeightは呼び出し側で調整する
@@ -47,6 +63,10 @@ public:
 	bool ClearTargetPosition(uint32_t _boneIndex);
 	// 位置指定を解除
 	bool ClearTargetPosition(RagdollBoneRole _role);
+
+	// 現在のボーンのワールド位置を取得
+	bool GetBoneWorldPosition(uint32_t _boneIndex, Vector3& _worldPosition) const;
+	bool GetBoneWorldPosition(RagdollBoneRole _role, Vector3& _worldPosition) const;
 
 	// --- 操作要求 ---
 

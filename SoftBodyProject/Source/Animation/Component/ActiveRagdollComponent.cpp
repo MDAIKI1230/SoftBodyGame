@@ -51,6 +51,46 @@ bool ActiveRagdollComponent::SetBranchWeight(RagdollBoneRole _rootRole, float _w
 	return AnimationComponentAPI::SetActiveRagdollBranchWeight(id, _rootRole, _weight);
 }
 
+bool ActiveRagdollComponent::SetPositionWeight(uint32_t _boneIndex, float _weight)
+{
+	return AnimationComponentAPI::SetActiveRagdollPositionWeight(id, _boneIndex, _weight);
+}
+
+bool ActiveRagdollComponent::SetPositionWeight(RagdollBoneRole _role, float _weight)
+{
+	return AnimationComponentAPI::SetActiveRagdollPositionWeight(id, _role, _weight);
+}
+
+bool ActiveRagdollComponent::SetRotationWeight(uint32_t _boneIndex, float _weight)
+{
+	return AnimationComponentAPI::SetActiveRagdollRotationWeight(id, _boneIndex, _weight);
+}
+
+bool ActiveRagdollComponent::SetRotationWeight(RagdollBoneRole _role, float _weight)
+{
+	return AnimationComponentAPI::SetActiveRagdollRotationWeight(id, _role, _weight);
+}
+
+bool ActiveRagdollComponent::SetBranchPositionWeight(uint32_t _rootBoneIndex, float _weight)
+{
+	return AnimationComponentAPI::SetActiveRagdollBranchPositionWeight(id, _rootBoneIndex, _weight);
+}
+
+bool ActiveRagdollComponent::SetBranchPositionWeight(RagdollBoneRole _rootRole, float _weight)
+{
+	return AnimationComponentAPI::SetActiveRagdollBranchPositionWeight(id, _rootRole, _weight);
+}
+
+bool ActiveRagdollComponent::SetBranchRotationWeight(uint32_t _rootBoneIndex, float _weight)
+{
+	return AnimationComponentAPI::SetActiveRagdollBranchRotationWeight(id, _rootBoneIndex, _weight);
+}
+
+bool ActiveRagdollComponent::SetBranchRotationWeight(RagdollBoneRole _rootRole, float _weight)
+{
+	return AnimationComponentAPI::SetActiveRagdollBranchRotationWeight(id, _rootRole, _weight);
+}
+
 // インデックス指定で目標位置を設定
 bool ActiveRagdollComponent::SetTargetPosition(uint32_t _boneIndex, const Vector3& _worldPosition)
 {
@@ -73,6 +113,16 @@ bool ActiveRagdollComponent::ClearTargetPosition(uint32_t _boneIndex)
 bool ActiveRagdollComponent::ClearTargetPosition(RagdollBoneRole _role)
 {
 	return AnimationComponentAPI::ClearActiveRagdollTargetPosition(id, _role);
+}
+
+bool ActiveRagdollComponent::GetBoneWorldPosition(uint32_t _boneIndex, Vector3& _worldPosition) const
+{
+	return AnimationComponentAPI::GetActiveRagdollBoneWorldPosition(id, _boneIndex, _worldPosition);
+}
+
+bool ActiveRagdollComponent::GetBoneWorldPosition(RagdollBoneRole _role, Vector3& _worldPosition) const
+{
+	return AnimationComponentAPI::GetActiveRagdollBoneWorldPosition(id, _role, _worldPosition);
 }
 
 // --- 操作要求 ---

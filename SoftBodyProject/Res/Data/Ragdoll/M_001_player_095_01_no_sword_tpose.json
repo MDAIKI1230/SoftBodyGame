@@ -1,6 +1,6 @@
 {
 	"Format": "RagdollDefinition",
-	"DefaultCompliance":0.000,
+	"DefaultCompliance":0.0,
 	"Root": {
 		"Bone": "A1_3",
 		"Role": "Pelvis",

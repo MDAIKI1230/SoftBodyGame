@@ -284,6 +284,64 @@
               ]
             }
           ]
+        },
+        {
+          "ID": 1000000000000000043,
+          "Name": "GrabLeft",
+          "Type": "Button",
+          "ValueType": "Bool",
+          "Interaction": {
+            "Type": "Press"
+          },
+          "Bindings": [
+            {
+              "ID": 1000000000000000044,
+              "Name": "LeftMouseButton",
+              "Kind": "Control",
+              "Path": "<Mouse>/leftButton",
+              "SchemeIDs": [
+                1000000000000000002
+              ]
+            },
+            {
+              "ID": 1000000000000000045,
+              "Name": "LeftShoulder",
+              "Kind": "Control",
+              "Path": "<GamePad>/leftShoulder",
+              "SchemeIDs": [
+                1000000000000000003
+              ]
+            }
+          ]
+        },
+        {
+          "ID": 1000000000000000046,
+          "Name": "GrabRight",
+          "Type": "Button",
+          "ValueType": "Bool",
+          "Interaction": {
+            "Type": "Press"
+          },
+          "Bindings": [
+            {
+              "ID": 1000000000000000047,
+              "Name": "RightMouseButton",
+              "Kind": "Control",
+              "Path": "<Mouse>/rightButton",
+              "SchemeIDs": [
+                1000000000000000002
+              ]
+            },
+            {
+              "ID": 1000000000000000048,
+              "Name": "RightShoulder",
+              "Kind": "Control",
+              "Path": "<GamePad>/rightShoulder",
+              "SchemeIDs": [
+                1000000000000000003
+              ]
+            }
+          ]
         }
       ]
     },

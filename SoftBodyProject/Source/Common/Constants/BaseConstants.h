@@ -3,7 +3,7 @@
 namespace Config
 {
 	inline constexpr float FPS{ 60.0f };
-	inline constexpr int WINDOW_SIZE_W{ 500 };
+	inline constexpr int WINDOW_SIZE_W{ 1000 };
 	inline constexpr int WINDOW_SIZE_H{ 500 };
 	inline constexpr int COLOR_BIT{ 32 };
 }

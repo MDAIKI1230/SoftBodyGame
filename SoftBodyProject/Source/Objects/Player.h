@@ -34,6 +34,16 @@ private:
 	void Jump(InputActionContext _input);
 	void CameraMoveMouse(InputActionContext _input);
 	void CameraMovePad(InputActionContext _input);
+	void RaiseLeftHand(InputActionContext _input);
+	void RaiseLeftHandEnd(InputActionContext _input);
+	void RaiseRightHand(InputActionContext _input);
+	void RaiseRightHandEnd(InputActionContext _input);
+private:
+	static constexpr float HAND_DISTANCE{ 25.0f };
+	static constexpr float HAND_LIMIT_ANGLE_DEG{ 85.0f };
+	const float HAND_LIMIT_ANGLE_RAD;
+	const Vector3 HAND_SIDE_OFFSET{ 20.0f,0.0f,0.0f };
+	const float CAMERA_ROTATION_OFFSET{ 20.0f };
 private:
 	Camera* camera;
 

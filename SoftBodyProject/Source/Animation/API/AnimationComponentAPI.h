@@ -72,6 +72,30 @@ public:
 	static bool SetActiveRagdollBranchWeight(ActiveRagdollID _id, uint32_t _rootBoneIndex, float _weight);
 	static bool SetActiveRagdollBranchWeight(ActiveRagdollID _id, RagdollBoneRole _rootRole, float _weight);
 
+	// 指定したボーンの位置拘束の強さを変更
+	bool SetPositionWeight(uint32_t _boneIndex, float _weight);
+	bool SetPositionWeight(RagdollBoneRole _role, float _weight);
+
+	// 指定したボーンの回転拘束の強さを変更
+	bool SetRotationWeight(uint32_t _boneIndex, float _weight);
+	bool SetRotationWeight(RagdollBoneRole _role, float _weight);
+
+	// 指定したボーンの位置拘束の強さを変更
+	static bool SetActiveRagdollPositionWeight(ActiveRagdollID _id, uint32_t _boneIndex, float _weight);
+	static bool SetActiveRagdollPositionWeight(ActiveRagdollID _id, RagdollBoneRole _role, float _weight);
+
+	// 指定したボーンの回転拘束の強さを変更
+	static bool SetActiveRagdollRotationWeight(ActiveRagdollID _id, uint32_t _boneIndex, float _weight);
+	static bool SetActiveRagdollRotationWeight(ActiveRagdollID _id, RagdollBoneRole _role, float _weight);
+
+	// 指定したボーン自身と子孫の位置拘束の強さを変更
+	static bool SetActiveRagdollBranchPositionWeight(ActiveRagdollID _id, uint32_t _rootBoneIndex, float _weight);
+	static bool SetActiveRagdollBranchPositionWeight(ActiveRagdollID _id, RagdollBoneRole _rootRole, float _weight);
+
+	// 指定したボーン自身と子孫の回転拘束の強さを変更
+	static bool SetActiveRagdollBranchRotationWeight(ActiveRagdollID _id, uint32_t _rootBoneIndex, float _weight);
+	static bool SetActiveRagdollBranchRotationWeight(ActiveRagdollID _id, RagdollBoneRole _rootRole, float _weight);
+
 	// ワールド空間の目標位置を設定。解除するまで継続する
 	static bool SetActiveRagdollTargetPosition(ActiveRagdollID _id, uint32_t _boneIndex, const Vector3& _worldPosition);
 	static bool SetActiveRagdollTargetPosition(ActiveRagdollID _id, RagdollBoneRole _role, const Vector3& _worldPosition);
@@ -79,6 +103,10 @@ public:
 	// 位置指定を解除。次の更新からアニメーションの目標姿勢に戻る
 	static bool ClearActiveRagdollTargetPosition(ActiveRagdollID _id, uint32_t _boneIndex);
 	static bool ClearActiveRagdollTargetPosition(ActiveRagdollID _id, RagdollBoneRole _role);
+
+	// 現在のボーンのワールド位置を取得
+	static bool GetActiveRagdollBoneWorldPosition(ActiveRagdollID _id, uint32_t _boneIndex, Vector3& _worldPosition);
+	static bool GetActiveRagdollBoneWorldPosition(ActiveRagdollID _id, RagdollBoneRole _role, Vector3& _worldPosition);
 
 	// --- Body取得 ---
 
@@ -169,8 +197,11 @@ private:
 	// ボーンインデックスから名前取得
 	static std::string_view GetHandBoneName(FeatureIKID _id, uint32_t _boneIndex);
 
-	// ウェイト変更の共通処理
-	static bool SetActiveRagdollWeightInternal(ActiveRagdollID _id, uint32_t _boneIndex, float _weight, bool _includeChildren);
+	// ウェイト変更の共通処理。既存APIは位置・回転の両方に適用する
+	static bool SetActiveRagdollWeightInternal(
+		ActiveRagdollID _id, uint32_t _boneIndex,
+		float _weight, bool _includeChildren,
+		bool _position = true, bool _rotation = true);
 private:
 	static SkeletonInstanceStorage* skeletonStorage;
 	static AnimationStorage* animationStorage;
