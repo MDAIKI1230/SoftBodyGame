@@ -1,9 +1,8 @@
 ﻿#pragma once
 
-#include "ObjectBase.h"
-#include "WorldStorage.h"
+#include "MonoBehaviour.h"
 
-class EmptyObject :public ObjectBase
+class EmptyObject :public MonoBehaviour
 {
 public:
 	// コンストラクタ
@@ -15,7 +14,7 @@ public:
 
 	// --- 衝突系 ---
 
-	void OnCollisionEnter() override;
-	void OnCollision() override;
-	void OnCollisionExit() override;
+	void OnCollisionEnter(CollisionInfo _info) override;
+	void OnCollision(CollisionInfo _info) override;
+	void OnCollisionExit(CollisionInfo _info) override;
 };

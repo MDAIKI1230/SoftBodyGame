@@ -246,6 +246,7 @@
     <ClInclude Include="Source\Animation\System\Update\TargetPoseSystem.h" />
     <ClInclude Include="Source\Common\BaseClass\FixedUpdateSystem.h" />
     <ClInclude Include="Source\Common\BaseClass\LateUpdateSystem.h" />
+    <ClInclude Include="Source\Common\BaseClass\MonoBehaviour.h" />
     <ClInclude Include="Source\Common\BaseClass\ObjectBase\ObjectBase.h" />
     <ClInclude Include="Source\Common\BaseClass\RenderingSystem.h" />
     <ClInclude Include="Source\Common\BaseClass\SceneBase\SceneBase.h" />
@@ -428,6 +429,7 @@
     <ClInclude Include="Source\Physics\Struct\Collider\ColliderSlot.h" />
     <ClInclude Include="Source\Physics\Struct\Collider\ColliderTags.h" />
     <ClInclude Include="Source\Physics\Struct\Collider\CollisionFilter.h" />
+    <ClInclude Include="Source\Physics\Struct\Collision\CollisionInfo.h" />
     <ClInclude Include="Source\Physics\Struct\Collision\CollisionPair.h" />
     <ClInclude Include="Source\Physics\Struct\Collision\ContactInfo.h" />
     <ClInclude Include="Source\Physics\Struct\Collision\Edge.h" />

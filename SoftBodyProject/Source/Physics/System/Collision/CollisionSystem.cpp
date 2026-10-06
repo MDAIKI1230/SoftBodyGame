@@ -447,22 +447,41 @@ void CollisionSystem::Solve<CapsuleTag, CapsuleTag, CollisionPair::CapsuleCapsul
 	}
 }
 
-void CollisionSystem::RegisterEvent(
-	ColliderID _a,
-	ColliderID _b,
-	ColliderStorage* _colliderStorage,
-	EventManager* _eventManager)
+void CollisionSystem::RegisterEvent(ColliderID _a, ColliderID _b, ColliderStorage* _colliderStorage, EventManager* _eventManager)
 {
 	// 今回のペア追加
 	currentFramePair.insert(CollisionPair::Pair{ _a, _b });
 
+	OnCollisionEvent onCollisionEvent{ _colliderStorage->GetOwnerEntity(_a),_colliderStorage->GetOwnerEntity(_b) };
+
+	CollisionInfo infoA;
+
+	ColliderComponent colliderA{ _a };
+	ColliderComponent colliderB{ _b };
+
+	infoA.otherCollider = colliderB;
+	infoA.selfCollider = colliderA;
+
+	CollisionInfo infoB;
+
+	infoA.otherCollider = colliderA;
+	infoA.selfCollider = colliderB;
+
+	onCollisionEvent.infoA = infoA;
+	onCollisionEvent.infoB = infoB;
+	
 	// 当たっているのでとりあえずよべる
-	_eventManager->Push<OnCollisionEvent>({ _colliderStorage->GetOwnerEntity(_a),_colliderStorage->GetOwnerEntity(_b) });
+	_eventManager->Push<OnCollisionEvent>({ onCollisionEvent });
 
 	// 前回のフレーム当たってなくて今回当たってるため衝突開始のイベントを呼ぶ
 	if (!prevFramePair.contains(CollisionPair::Pair{ _a, _b }))
 	{
-		_eventManager->Push<OnCollisionEnterEvent>({ _colliderStorage->GetOwnerEntity(_a),_colliderStorage->GetOwnerEntity(_b) });
+		OnCollisionEnterEvent onCollisionEnterEvent{ _colliderStorage->GetOwnerEntity(_a),_colliderStorage->GetOwnerEntity(_b) };
+
+		onCollisionEnterEvent.infoA = infoA;
+		onCollisionEnterEvent.infoB = infoB;
+
+		_eventManager->Push<OnCollisionEnterEvent>({ onCollisionEnterEvent });
 	}
 }
 
@@ -476,8 +495,26 @@ void CollisionSystem::RegisterExitEvent(ColliderStorage* _colliderStorage, Event
 		// 前フレーム当たってて今回の衝突ペアにいないから衝突しなくなった
 		if (!currentFramePair.contains(pair))
 		{
+			OnCollisionExitEvent onCollisionExitEvent{ _colliderStorage->GetOwnerEntity(pair.a),_colliderStorage->GetOwnerEntity(pair.b) };
+
+			CollisionInfo infoA;
+
+			ColliderComponent colliderA{ pair.a };
+			ColliderComponent colliderB{ pair.b };
+
+			infoA.otherCollider = colliderB;
+			infoA.selfCollider = colliderA;
+
+			CollisionInfo infoB;
+
+			infoA.otherCollider = colliderA;
+			infoA.selfCollider = colliderB;
+
+			onCollisionExitEvent.infoA = infoA;
+			onCollisionExitEvent.infoB = infoB;
+
 			// イベント呼び出し
-			_eventManager->Push<OnCollisionExitEvent>({ _colliderStorage->GetOwnerEntity(pair.a),_colliderStorage->GetOwnerEntity(pair.b) });
+			_eventManager->Push<OnCollisionExitEvent>({ onCollisionExitEvent });
 
 			erasePair.insert(pair);
 		}

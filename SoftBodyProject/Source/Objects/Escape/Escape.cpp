@@ -12,7 +12,7 @@
 
 // コンストラクタ
 Escape::Escape(WorldStorage* _world, EntityID _entityID) :
-	ObjectBase{ _world,_entityID }
+	MonoBehaviour{ _world,_entityID }
 {
 	ResourceManager::LoadTexture("Res/Texture/Escape.png");
 

@@ -15,6 +15,18 @@ RigidBodyComponent ActiveRagdollComponent::GetBody(RagdollBoneRole _role) const
 	return AnimationComponentAPI::GetActiveRagdollBody(id, _role);
 }
 
+// 指定したボーンのCollider取得
+ColliderComponent ActiveRagdollComponent::GetCollider(uint32_t _boneIndex) const
+{
+	return AnimationComponentAPI::GetActiveRagdollCollider(id, _boneIndex);
+}
+
+// 指定した役割のCollider取得
+ColliderComponent ActiveRagdollComponent::GetCollider(RagdollBoneRole _role) const
+{
+	return AnimationComponentAPI::GetActiveRagdollCollider(id, _role);
+}
+
 // 名前からボーンインデックス取得
 uint32_t ActiveRagdollComponent::GetBoneIndex(const char* _boneName) const
 {

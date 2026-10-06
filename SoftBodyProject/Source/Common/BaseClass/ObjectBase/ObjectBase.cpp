@@ -1,6 +1,6 @@
 ﻿#include "TransformComponent.h"
 
-#include "ObjectBase.h"
+#include "MonoBehaviour.h"
 
 // コンストラクタ
 ObjectBase::ObjectBase(WorldStorage* _world, EntityID _entityID) :

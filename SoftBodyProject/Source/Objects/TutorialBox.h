@@ -3,11 +3,11 @@
 #include "InputActionContext.h"
 #include "InputAction.h"
 
-#include "ObjectBase.h"
+#include "MonoBehaviour.h"
 
 #include "Camera.h"
 
-class TutorialBox :public ObjectBase
+class TutorialBox :public MonoBehaviour
 {
 public:
 	// コンストラクタ

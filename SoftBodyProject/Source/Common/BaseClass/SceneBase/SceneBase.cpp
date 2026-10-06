@@ -257,7 +257,7 @@ void SceneBase::LoadFile(std::string _filePath)
 	for (auto& objData : fileData.objectDatas)
 	{
 		// 対応オブジェクトを作成
-		std::unique_ptr<ObjectBase> obj{ std::move(ObjectFactory::CreateFuncs[objData.type](&worldStorage, objectManager.GenerateNewID())) };
+		std::unique_ptr<MonoBehaviour> obj{ std::move(ObjectFactory::CreateFuncs[objData.type](&worldStorage, objectManager.GenerateNewID())) };
 
 		for (auto& componentData : objData.components)
 		{

@@ -5,11 +5,11 @@
 #include "InputActionContext.h"
 #include "SoundPlayInfo.h"
 
-#include "ObjectBase.h"
+#include "MonoBehaviour.h"
 #include "EscapePart.h"
 #include "Check.h"
 
-class Escape :public ObjectBase
+class Escape :public MonoBehaviour
 {
 public:
 	// コンストラクタ

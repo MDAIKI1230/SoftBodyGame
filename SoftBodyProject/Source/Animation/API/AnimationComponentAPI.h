@@ -6,6 +6,7 @@
 #include "ActiveRagdollConstants.h"
 #include "RagdollConstants.h"
 #include "RigidBodyComponent.h"
+#include "ColliderComponent.h"
 #include "CollisionFilter.h"
 
 class AnimationComponentAPI
@@ -121,6 +122,11 @@ public:
 	static void SetActiveRagdollMoveInput(ActiveRagdollID _id, const Vector3& _moveInput);
 	// ジャンプ要求
 	static void RequestActiveRagdollJump(ActiveRagdollID _id);
+
+	// 指定したボーンのCollider取得
+	static ColliderComponent GetActiveRagdollCollider(ActiveRagdollID _id, uint32_t _boneIndex);
+	// 指定した役割のCollider取得
+	static ColliderComponent GetActiveRagdollCollider(ActiveRagdollID _id, RagdollBoneRole _role);
 
 	// --- 状態取得 ---
 

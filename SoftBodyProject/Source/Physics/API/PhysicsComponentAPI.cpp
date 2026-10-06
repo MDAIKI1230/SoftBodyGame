@@ -535,6 +535,23 @@ ConstraintID PhysicsComponentAPI::CreatePointConstraint(EntityID _entity, const 
 {
 	return constraintStorage->CreatePointConstraint(_entity, transformStorage->GetOrCreateTransform(_entity), _localOffset);
 }
+// Bodyを指定して点拘束を作成
+ConstraintID PhysicsComponentAPI::CreatePointConstraint(EntityID _entity, BodyID _bodyID, const Vector3& _localOffset)
+{
+	if (!bodyStorage->IsAlive(_bodyID))
+	{
+		return ConstraintID{};
+	}
+
+	PhysicsTransformID transformID{ bodyStorage->GetTransformID(_bodyID) };
+
+	if (!transformStorage->IsAlive(transformID))
+	{
+		return ConstraintID{};
+	}
+
+	return constraintStorage->CreatePointConstraint(_entity, transformID, _localOffset);
+}
 // 距離拘束作成
 ConstraintID PhysicsComponentAPI::CreateDistanceConstraint(EntityID _entity, const Vector3& _localOffset)
 {
@@ -790,6 +807,77 @@ void  PhysicsComponentAPI::RemoveEndPoint(ConstraintID _id, EntityID _entity)
 			break;
 		}
 
+	}
+}
+
+// Bodyを指定してEndPointを追加
+void PhysicsComponentAPI::AddEndPoint(ConstraintID _id, BodyID _bodyID, const Vector3& _localOffset, const Quaternion& _localRotation)
+{
+	if (!constraintStorage->IsAlive(_id) || !bodyStorage->IsAlive(_bodyID))
+	{
+		return;
+	}
+
+	PhysicsTransformID transformID{ bodyStorage->GetTransformID(_bodyID) };
+
+	// 同じBody同士を拘束しない
+	if (!transformStorage->IsAlive(transformID) || GetEndPoint(_id).transformID == transformID)
+	{
+		return;
+	}
+
+	AddInternalEndPoint(_id, transformID, _localOffset, _localRotation);
+}
+
+// Bodyを指定してEndPointを削除
+void PhysicsComponentAPI::RemoveEndPoint(ConstraintID _id, BodyID _bodyID)
+{
+	if (!constraintStorage->IsAlive(_id) || !bodyStorage->IsAlive(_bodyID))
+	{
+		return;
+	}
+
+	PhysicsTransformID transformID{ bodyStorage->GetTransformID(_bodyID) };
+
+	// 自身の基準点は残す
+	if (GetEndPoint(_id).transformID == transformID)
+	{
+		return;
+	}
+
+	switch (constraintStorage->GetType(_id))
+	{
+	case ConstraintType::POINTS:
+		constraintStorage->EditPointConstraint(_id).RemoveEndpoint(transformID);
+		break;
+	case ConstraintType::DISTANCE:
+		constraintStorage->EditDistanceConstraint(_id).RemoveEndpoint(transformID);
+		break;
+	case ConstraintType::HINGE:
+		constraintStorage->EditHingeConstraint(_id).RemoveEndpoint(transformID);
+		break;
+	case ConstraintType::ANGLE_LIMIT_POINT:
+		constraintStorage->EditAngleLimitPointConstraint(_id).RemoveEndpoint(transformID);
+		break;
+	case ConstraintType::ANGLE_LIMIT_HINGE:
+		constraintStorage->EditAngleLimitHingeConstraint(_id).RemoveEndpoint(transformID);
+		break;
+	case ConstraintType::LIMITED_BALL_JOINT:
+		constraintStorage->EditLimitedBallJointConstraint(_id).RemoveEndpoint(transformID);
+		break;
+	case ConstraintType::JOINT_DRIVE:
+	{
+		JointDriveConstraint& constraint{ constraintStorage->EditJointDriveConstraint(_id) };
+
+		if (constraint.otherEndPoint.transformID == transformID)
+		{
+			constraint.RemoveEndpoint();
+		}
+
+		break;
+	}
+	default:
+		break;
 	}
 }
 

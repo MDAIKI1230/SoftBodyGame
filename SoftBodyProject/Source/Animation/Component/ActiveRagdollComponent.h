@@ -13,6 +13,7 @@
 
 #include "RendererComponent.h"
 #include "RigidBodyComponent.h"
+#include "ColliderComponent.h"
 
 struct ActiveRagdollComponent
 {
@@ -25,6 +26,11 @@ public:
 
 	// 指定した役割のRigidBody取得
 	RigidBodyComponent GetBody(RagdollBoneRole _role) const;
+
+	// 指定したボーンのCollider取得
+	ColliderComponent GetCollider(uint32_t _boneIndex) const;
+	// 指定した役割のCollider取得
+	ColliderComponent GetCollider(RagdollBoneRole _role) const;
 
 	// 名前・役割からボーンインデックス取得
 	uint32_t GetBoneIndex(const char* _boneName) const;

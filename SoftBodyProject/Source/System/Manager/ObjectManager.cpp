@@ -1,7 +1,7 @@
 ﻿#include "ObjectManager.h"
 
 
-void ObjectManager::Add(std::unique_ptr<ObjectBase> _object)
+void ObjectManager::Add(std::unique_ptr<MonoBehaviour> _object)
 {
 	objects.push_back(std::move(_object));
 }
@@ -22,7 +22,7 @@ void ObjectManager::FixedUpdate()
 	}
 }
 
-ObjectBase* ObjectManager::Get(EntityID _index)
+MonoBehaviour* ObjectManager::Get(EntityID _index)
 {
 	// サイズチェック
 	if (_index.GetIndex() >= objects.size())

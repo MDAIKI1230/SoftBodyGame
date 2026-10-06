@@ -2,9 +2,9 @@
 
 #include "MDMath.h"
 
-#include "ObjectBase.h"
+#include "MonoBehaviour.h"
 
-class PressToStart :public ObjectBase
+class PressToStart :public MonoBehaviour
 {
 public:
 	// コンストラクタ

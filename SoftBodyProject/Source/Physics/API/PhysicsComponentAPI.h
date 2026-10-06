@@ -234,6 +234,8 @@ public:
 
 	// 点拘束作成
 	static ConstraintID CreatePointConstraint(EntityID _entity, const Vector3& _localOffset);
+	// Bodyを指定して点拘束を作成
+	static ConstraintID CreatePointConstraint(EntityID _entity, BodyID _bodyID, const Vector3& _localOffset);
 	// 距離拘束作成
 	static ConstraintID CreateDistanceConstraint(EntityID _entity, const Vector3& _localOffset);
 
@@ -266,6 +268,12 @@ public:
 	static void AddEndPoint(ConstraintID _id, EntityID _entity, const Vector3& _localOffset, const Quaternion& _localRotation = Quaternion::IDENTITY);
 	// 拘束からEndPoint除外
 	static void RemoveEndPoint(ConstraintID _id, EntityID _entity);
+
+	// Bodyを指定してEndPointを追加
+	static void AddEndPoint(ConstraintID _id, BodyID _bodyID, const Vector3& _localOffset, const Quaternion& _localRotation = Quaternion::IDENTITY);
+
+	// Bodyを指定してEndPointを削除
+	static void RemoveEndPoint(ConstraintID _id, BodyID _bodyID);
 
 	// Swing角度取得
 	static float GetSwingAngle(ConstraintID _id);

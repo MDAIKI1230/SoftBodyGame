@@ -1,13 +1,13 @@
 ﻿#pragma once
 
-#include "ObjectBase.h"
+#include "MonoBehaviour.h"
 
-class EscapePart :public ObjectBase
+class EscapePart :public MonoBehaviour
 {
 public:
 	// コンストラクタ
 	EscapePart(WorldStorage* _world, EntityID _entityID) :
-		ObjectBase{ _world ,_entityID }
+		MonoBehaviour{ _world ,_entityID }
 	{
 	}
 

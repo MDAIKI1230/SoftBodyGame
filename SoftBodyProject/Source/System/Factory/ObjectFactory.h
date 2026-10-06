@@ -6,15 +6,15 @@
 
 #include "WorldStorage.h"
 
-#include "ObjectBase.h"
+#include "MonoBehaviour.h"
 
 class ObjectFactory
 {
-	using CreateObjectFunc = std::unique_ptr<ObjectBase>(*)(WorldStorage*, EntityID);
+	using CreateObjectFunc = std::unique_ptr<MonoBehaviour>(*)(WorldStorage*, EntityID);
 public:
-	static std::unique_ptr<ObjectBase> CreateEmptyObject(WorldStorage* world, EntityID _entity);
-	static std::unique_ptr<ObjectBase> CreateDebugBox(WorldStorage* world, EntityID _entity);
-	static std::unique_ptr<ObjectBase> CreateSphereBox(WorldStorage* world, EntityID _entity);
+	static std::unique_ptr<MonoBehaviour> CreateEmptyObject(WorldStorage* world, EntityID _entity);
+	static std::unique_ptr<MonoBehaviour> CreateDebugBox(WorldStorage* world, EntityID _entity);
+	static std::unique_ptr<MonoBehaviour> CreateSphereBox(WorldStorage* world, EntityID _entity);
 public:
 	static std::unordered_map<std::string, CreateObjectFunc> CreateFuncs;
 };

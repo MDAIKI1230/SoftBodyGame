@@ -4,17 +4,17 @@
 
 #include "ObjectFactory.h"
 
-std::unique_ptr<ObjectBase> ObjectFactory::CreateEmptyObject(WorldStorage* world, EntityID _entity)
+std::unique_ptr<MonoBehaviour> ObjectFactory::CreateEmptyObject(WorldStorage* world, EntityID _entity)
 {
 	return std::make_unique<EmptyObject>(world, _entity);
 }
 
-std::unique_ptr<ObjectBase> ObjectFactory::CreateDebugBox(WorldStorage* world, EntityID _entity)
+std::unique_ptr<MonoBehaviour> ObjectFactory::CreateDebugBox(WorldStorage* world, EntityID _entity)
 {
 	return std::make_unique<DebugBox>(world, _entity);
 }
 
-std::unique_ptr<ObjectBase> ObjectFactory::CreateSphereBox(WorldStorage* world, EntityID _entity)
+std::unique_ptr<MonoBehaviour> ObjectFactory::CreateSphereBox(WorldStorage* world, EntityID _entity)
 {
 	return std::make_unique<DebugSphere>(world, _entity);
 }

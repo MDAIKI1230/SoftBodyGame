@@ -1435,6 +1435,12 @@
     <ClInclude Include="Source\Animation\Struct\Skeleton\PositionTarget.h">
       <Filter>ソース ファイル\Animation\Struct\Skeleton</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Physics\Struct\Collision\CollisionInfo.h">
+      <Filter>ソース ファイル\Physics\Struct\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Common\BaseClass\MonoBehaviour.h">
+      <Filter>ソース ファイル\Common\BaseClass</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\System\Scenes\DebugScene.cpp">

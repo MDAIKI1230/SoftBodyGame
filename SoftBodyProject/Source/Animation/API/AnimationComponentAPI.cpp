@@ -495,6 +495,59 @@ void AnimationComponentAPI::RequestActiveRagdollJump(ActiveRagdollID _id)
 	activeRagdollStorage->EditActiveRagdoll(_id).jumpRequested = true;
 }
 
+// 指定したボーンのCollider取得
+ColliderComponent AnimationComponentAPI::GetActiveRagdollCollider(ActiveRagdollID _id, uint32_t _boneIndex)
+{
+	if (activeRagdollStorage == nullptr || ragdollStorage == nullptr || !activeRagdollStorage->IsAlive(_id))
+	{
+		return ColliderComponent{};
+	}
+
+	RagdollID ragdollID{ activeRagdollStorage->GetRagdollID(_id) };
+
+	if (!ragdollStorage->IsAlive(ragdollID))
+	{
+		return ColliderComponent{};
+	}
+
+	const Ragdoll& ragdoll{ ragdollStorage->GetRagdoll(ragdollID) };
+
+	if (_boneIndex >= ragdoll.colliders.size())
+	{
+		return ColliderComponent{};
+	}
+
+	ColliderComponent collider{ ragdoll.colliders[_boneIndex] };
+
+	return collider.IsValid() ? collider : ColliderComponent{};
+}
+
+// 指定した役割のCollider取得
+ColliderComponent AnimationComponentAPI::GetActiveRagdollCollider(ActiveRagdollID _id, RagdollBoneRole _role)
+{
+	if (activeRagdollStorage == nullptr || ragdollStorage == nullptr || !activeRagdollStorage->IsAlive(_id))
+	{
+		return ColliderComponent{};
+	}
+
+	RagdollID ragdollID{ activeRagdollStorage->GetRagdollID(_id) };
+
+	if (!ragdollStorage->IsAlive(ragdollID))
+	{
+		return ColliderComponent{};
+	}
+
+	const Ragdoll& ragdoll{ ragdollStorage->GetRagdoll(ragdollID) };
+	size_t roleIndex{ static_cast<size_t>(_role) };
+
+	if (roleIndex >= ragdoll.roles.size())
+	{
+		return ColliderComponent{};
+	}
+
+	return GetActiveRagdollCollider(_id, ragdoll.roles[roleIndex]);
+}
+
 // --- 状態取得 ---
 
 // 制御状態取得

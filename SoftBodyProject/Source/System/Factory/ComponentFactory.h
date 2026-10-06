@@ -3,7 +3,7 @@
 #include <unordered_map>
 #include <string>
 
-#include "ObjectBase.h"
+#include "MonoBehaviour.h"
 
 #include "SceneComponentData.h"
 

@@ -1,8 +1,8 @@
 ﻿#pragma once
 
-#include "ObjectBase.h"
+#include "MonoBehaviour.h"
 
-class Check :public ObjectBase
+class Check :public MonoBehaviour
 {
 public:
 	// コンストラクタ

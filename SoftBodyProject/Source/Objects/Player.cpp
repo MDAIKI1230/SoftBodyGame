@@ -12,9 +12,11 @@
 
 // コンストラクタ
 Player::Player(WorldStorage* _world, EntityID _entityID, Camera* _camera) :
-	ObjectBase(_world, _entityID),
+	MonoBehaviour{_world, _entityID},
 	camera{ _camera },
-	HAND_LIMIT_ANGLE_RAD{ MDMath::DegToRad(HAND_LIMIT_ANGLE_DEG) }
+	HAND_LIMIT_ANGLE_RAD{ MDMath::DegToRad(HAND_LIMIT_ANGLE_DEG) },
+	leftHandConstraint{ _entityID },
+	rightHandConstraint{ _entityID }
 {
 	AddComponent<TransformComponent>();
 
@@ -59,6 +61,15 @@ Player::Player(WorldStorage* _world, EntityID _entityID, Camera* _camera) :
 
 	active->SetRotationWeight(RagdollBoneRole::TORSO, 0.2f);
 	active->SetPositionWeight(RagdollBoneRole::TORSO, 0.2f);
+
+	RigidBodyComponent leftHandBody{ active->GetBody(RagdollBoneRole::LEFT_HAND) };
+	leftHandConstraint = *AddComponent<PointConstraintComponent>(leftHandBody);
+
+	RigidBodyComponent rightHandBody{ active->GetBody(RagdollBoneRole::RIGHT_HAND) };
+	rightHandConstraint = *AddComponent<PointConstraintComponent>(rightHandBody);
+
+	leftHandCollider = active->GetCollider(RagdollBoneRole::LEFT_HAND);
+	rightHandCollider = active->GetCollider(RagdollBoneRole::RIGHT_HAND);
 }
 
 // --- 更新系 ---
@@ -76,16 +87,30 @@ void Player::FixedUpdate()
 // --- 衝突系 ---
 
 // 衝突始め
-void Player::OnCollisionEnter()
+void Player::OnCollisionEnter(CollisionInfo _info)
 {
+	if (canLeftHandGrab)
+	{
+		if (_info.selfCollider == leftHandCollider)
+		{
 
+		}
+	}
+
+	if (canRightHandGrab)
+	{
+		if (_info.selfCollider == rightHandCollider)
+		{
+
+		}
+	}
 }
-void Player::OnCollision()
+void Player::OnCollision(CollisionInfo _info)
 {
 
 }
 // 衝突終わり
-void Player::OnCollisionExit()
+void Player::OnCollisionExit(CollisionInfo _info)
 {
 
 }

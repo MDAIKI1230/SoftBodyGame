@@ -11,23 +11,6 @@ class ObjectBase
 public:
 	// コンストラクタ
 	ObjectBase(WorldStorage* _world, EntityID _entityID);
-
-	// --- 更新系 ---
-
-	// 更新処理
-	virtual void Update() {};
-	// 物理更新処理
-	virtual void FixedUpdate() {};
-
-	// --- 衝突系 ---
-	
-	// 衝突始め
-	virtual void OnCollisionEnter() {};
-	// 衝突中ずっと
-	virtual void OnCollision() {};
-	// 衝突終わり
-	virtual void OnCollisionExit() {};
-
 	// --- コンポーネント ---
 
 	// 追加

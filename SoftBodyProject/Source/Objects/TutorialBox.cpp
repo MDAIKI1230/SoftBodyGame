@@ -7,7 +7,7 @@
 #include "TutorialBox.h"
 
 TutorialBox::TutorialBox(WorldStorage* _world, EntityID _entityID) :
-	ObjectBase{ _world,_entityID }
+	MonoBehaviour{ _world,_entityID }
 {
 	AddComponent<RigidBodyComponent>()->SetMass(100.0f);
 	AddComponent<BoxColliderComponent>(100.0f, 70.0f, 100.0f);

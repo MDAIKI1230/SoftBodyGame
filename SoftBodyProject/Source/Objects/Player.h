@@ -3,12 +3,13 @@
 #include "InputActionContext.h"
 
 #include "ActiveRagdollComponent.h"
+#include "PointConstraintComponent.h"
 
-#include "ObjectBase.h"
+#include "MonoBehaviour.h"
 
 #include "Camera.h"
 
-class Player :public ObjectBase
+class Player :public MonoBehaviour
 {
 public:
 	// コンストラクタ
@@ -24,11 +25,11 @@ public:
 	// --- 衝突系 ---
 
 	// 衝突始め
-	void OnCollisionEnter() override;
+	void OnCollisionEnter(CollisionInfo _info) override;
 	// 衝突中ずっと
-	 void OnCollision() override;
+	 void OnCollision(CollisionInfo _info) override;
 	// 衝突終わり
-	void OnCollisionExit() override;
+	void OnCollisionExit(CollisionInfo _info) override;
 private:
 	void Move(InputActionContext _input);
 	void Stop(InputActionContext _input);
@@ -57,4 +58,10 @@ private:
 
 	bool canLeftHandGrab{ false };
 	bool canRightHandGrab{ false };
+
+	PointConstraintComponent leftHandConstraint;
+	PointConstraintComponent rightHandConstraint;
+
+	ColliderComponent leftHandCollider;
+	ColliderComponent rightHandCollider;
 };

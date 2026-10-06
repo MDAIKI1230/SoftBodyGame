@@ -8,7 +8,7 @@
 
 // コンストラクタ
 PressToStart::PressToStart(WorldStorage* _world, EntityID _entityID) :
-	ObjectBase{ _world,_entityID }
+	MonoBehaviour{ _world,_entityID }
 {
 	AddComponent<SpriteRendererComponent>(ResourceManager::GetTexture("PressToStart.png"));
 	GetComponent<TransformComponent>()->SetPosition(initialPos);

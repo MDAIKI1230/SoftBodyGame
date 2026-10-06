@@ -7,6 +7,8 @@
 #include "ConstraintID.h"
 #include "EntityID.h"
 
+#include "RigidBodyComponent.h"
+
 struct ConstraintComponentBase
 {
 public:
@@ -25,6 +27,12 @@ public:
 	void AddEndPoint(EntityID _entityID, const Vector3& _localOffset, const Quaternion& _rotation = Quaternion::IDENTITY);
 	// 対応点削除
 	void RemoveEndPoint(EntityID _entityID);
+
+	// Bodyを指定して対応点を追加
+	void AddEndPoint(const RigidBodyComponent& _body, const Vector3& _localOffset, const Quaternion& _rotation = Quaternion::IDENTITY);
+
+	// Bodyを指定して対応点を削除
+	void RemoveEndPoint(const RigidBodyComponent& _body);
 
 	// ID取得
 	ConstraintID GetID() const { return id; }

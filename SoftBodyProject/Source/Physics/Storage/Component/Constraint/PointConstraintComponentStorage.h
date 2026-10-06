@@ -1,11 +1,10 @@
 ﻿#pragma once
 
-#include "UniqueComponentStorageBase.h"
+#include "MultiComponentStorageBase.h"
 
 #include "PointConstraintComponent.h"
 
-class PointConstraintComponentStorage :public UniqueComponentStorageBase<PointConstraintComponent>
+class PointConstraintComponentStorage : public MultiComponentStorageBase<PointConstraintComponent>
 {
-	void OnRemoving(EntityID _entity, const  PointConstraintComponent& _component) override;
+	void OnRemoving(EntityID _entity, const PointConstraintComponent& _component) override;
 };
-

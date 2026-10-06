@@ -3,7 +3,7 @@
 #include "EmptyObject.h"
 
 EmptyObject::EmptyObject(WorldStorage* world, EntityID _entity) :
-	ObjectBase{ world,_entity }
+	MonoBehaviour{ world,_entity }
 {
 	AddComponent<TransformComponent>();
 }
@@ -18,17 +18,17 @@ void EmptyObject::FixedUpdate()
 
 }
 
-void EmptyObject::OnCollisionEnter()
+void EmptyObject::OnCollisionEnter(CollisionInfo _info)
 {
 
 }
 
-void EmptyObject::OnCollision()
+void EmptyObject::OnCollision(CollisionInfo _info)
 {
 
 }
 
-void EmptyObject::OnCollisionExit()
+void EmptyObject::OnCollisionExit(CollisionInfo _info)
 {
 
 }
