@@ -37,7 +37,7 @@
 			"DeadZone": 0.25
 		},
 		"JointDrive": {
-			"Compliance":0.0000,
+			"Compliance":0.0001,
 			"MaxForce": 300.0
 		},
 		"Jump": {

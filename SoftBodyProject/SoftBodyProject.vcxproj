@@ -431,6 +431,7 @@
     <ClInclude Include="Source\Physics\Struct\Collider\CollisionFilter.h" />
     <ClInclude Include="Source\Physics\Struct\Collision\CollisionInfo.h" />
     <ClInclude Include="Source\Physics\Struct\Collision\CollisionPair.h" />
+    <ClInclude Include="Source\Physics\Struct\Collision\BoxBoxContactInfo.h" />
     <ClInclude Include="Source\Physics\Struct\Collision\ContactInfo.h" />
     <ClInclude Include="Source\Physics\Struct\Collision\Edge.h" />
     <ClInclude Include="Source\Physics\Struct\Collision\MinkowskiVertex.h" />

@@ -2,26 +2,37 @@
 
 #include "MDMath.h"
 
-#include "ColliderID.h"
-
-struct BoxBoxContactInfo
+/*
+	法線
+*/
+struct  ContactInfo
 {
-    ColliderID colliderA;
-    ColliderID colliderB;
+public:
+	ContactInfo() :
+		contactLocalPositions{},
+		depths{ 0.0f,0.0f,0.0f,0.0f }
+	{
+	}
 
-    Vector3 normal;
-    float depth{ 0.0f };
+public:
+	// 衝突時のコライダー法線
+	Vector3 normal;
+	union  
+	{
+		// 衝突ローカル位置すべて
+		Vector3 contactLocalPositions[4];
+		// 衝突ローカル位置(先頭要素のみ)
+		Vector3 contactLocalPosition;
+	};
+	union 
+	{
+		// 重なり深さすべて
+		float depths[4];
+		// 重なり深さ(先頭要素のみ)
+		float depth;
+	};
+	
 
-    enum Type
-    {
-        FaceA,
-        FaceB,
-        EdgeEdge
-    } 
-    type{ FaceA };
-
-    // FaceAならAの面軸、EdgeEdgeならAの辺軸
-    int axisA{ -1 };
-    // FaceBならBの面軸、EdgeEdgeならBの辺軸
-    int axisB{ -1 };
+	// 衝突点の数
+	uint32_t contactCount{ 0 };
 };

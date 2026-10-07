@@ -302,9 +302,10 @@ void CollisionSystem::Solve<SphereTag, SphereTag, CollisionPair::SphereSpherePai
 {
 	for (auto& pair : pairList)
 	{
-		if (ContactFunction::SphereSphere(pair.a, pair.b, _colliderStorage, _transformStorage, _manifoldBuffer))
+		ContactInfo infoA, infoB;
+		if (ContactFunction::SphereSphere(pair.a, pair.b, infoA, infoB, _colliderStorage, _transformStorage, _manifoldBuffer))
 		{
-			RegisterEvent(pair.a, pair.b, _colliderStorage, _eventManager);
+			RegisterEvent(pair.a, infoA, pair.b, infoB, _colliderStorage, _eventManager);
 		}
 	}
 }
@@ -319,9 +320,10 @@ void CollisionSystem::Solve<SphereTag, BoxTag, CollisionPair::SphereBoxPair>(
 {
 	for (auto& pair : pairList)
 	{
-		if (ContactFunction::SphereBox(pair.a, pair.b, _colliderStorage, _transformStorage, _manifoldBuffer))
+		ContactInfo infoA, infoB;
+		if (ContactFunction::SphereBox(pair.a, pair.b, infoA, infoB, _colliderStorage, _transformStorage, _manifoldBuffer))
 		{
-			RegisterEvent(pair.a, pair.b, _colliderStorage, _eventManager);
+			RegisterEvent(pair.a, infoA, pair.b, infoB, _colliderStorage, _eventManager);
 		}
 	}
 }
@@ -336,9 +338,10 @@ void CollisionSystem::Solve<SphereTag, CapsuleTag, CollisionPair::SphereCapsuleP
 {
 	for (auto& pair : pairList)
 	{
-		if (ContactFunction::SphereCapsule(pair.a, pair.b, _colliderStorage, _transformStorage, _manifoldBuffer))
+		ContactInfo infoA, infoB;
+		if (ContactFunction::SphereCapsule(pair.a, pair.b, infoA, infoB, _colliderStorage, _transformStorage, _manifoldBuffer))
 		{
-			RegisterEvent(pair.a, pair.b, _colliderStorage, _eventManager);
+			RegisterEvent(pair.a, infoA, pair.b, infoB, _colliderStorage, _eventManager);
 		}
 	}
 }
@@ -354,9 +357,10 @@ void CollisionSystem::Solve<BoxTag, SphereTag, CollisionPair::BoxSpherePair>(
 {
 	for (auto& pair : pairList)
 	{
-		if (ContactFunction::SphereBox(pair.b, pair.a, _colliderStorage, _transformStorage, _manifoldBuffer))
+		ContactInfo infoA, infoB;
+		if (ContactFunction::SphereBox(pair.b, pair.a, infoB, infoA, _colliderStorage, _transformStorage, _manifoldBuffer))
 		{
-			RegisterEvent(pair.a, pair.b, _colliderStorage, _eventManager);
+			RegisterEvent(pair.a, infoA, pair.b, infoB, _colliderStorage, _eventManager);
 		}
 	}
 }
@@ -371,9 +375,10 @@ void CollisionSystem::Solve<BoxTag, BoxTag, CollisionPair::BoxBoxPair>(
 {
 	for (auto& pair : pairList)
 	{
-		if (ContactFunction::BoxBox(pair.a, pair.b, _colliderStorage, _transformStorage, _manifoldBuffer))
+		ContactInfo infoA, infoB;
+		if (ContactFunction::BoxBox(pair.a, pair.b, infoA, infoB, _colliderStorage, _transformStorage, _manifoldBuffer))
 		{
-			RegisterEvent(pair.a, pair.b, _colliderStorage, _eventManager);
+			RegisterEvent(pair.a, infoA, pair.b, infoB, _colliderStorage, _eventManager);
 		}
 	}
 }
@@ -388,9 +393,10 @@ void CollisionSystem::Solve<BoxTag, CapsuleTag, CollisionPair::BoxCapsulePair>(
 {
 	for (auto& pair : pairList)
 	{
-		if (ContactFunction::BoxCapsule(pair.a, pair.b, _colliderStorage, _transformStorage, _manifoldBuffer))
+		ContactInfo infoA, infoB;
+		if (ContactFunction::BoxCapsule(pair.a, pair.b, infoA, infoB, _colliderStorage, _transformStorage, _manifoldBuffer))
 		{
-			RegisterEvent(pair.a, pair.b, _colliderStorage, _eventManager);
+			RegisterEvent(pair.a, infoA, pair.b, infoB, _colliderStorage, _eventManager);
 		}
 	}
 }
@@ -406,9 +412,10 @@ void CollisionSystem::Solve<CapsuleTag, SphereTag, CollisionPair::CapsuleSphereP
 {
 	for (auto& pair : pairList)
 	{
-		if (ContactFunction::SphereCapsule(pair.b, pair.a, _colliderStorage, _transformStorage, _manifoldBuffer))
+		ContactInfo infoA, infoB;
+		if (ContactFunction::SphereCapsule(pair.b, pair.a, infoB, infoA, _colliderStorage, _transformStorage, _manifoldBuffer))
 		{
-			RegisterEvent(pair.b, pair.a, _colliderStorage, _eventManager);
+			RegisterEvent(pair.a, infoA, pair.b, infoB, _colliderStorage, _eventManager);
 		}
 	}
 }
@@ -423,9 +430,10 @@ void CollisionSystem::Solve<CapsuleTag, BoxTag, CollisionPair::CapsuleBoxPair>(
 {
 	for (auto& pair : pairList)
 	{
-		if (ContactFunction::BoxCapsule(pair.b, pair.a, _colliderStorage, _transformStorage, _manifoldBuffer))
+		ContactInfo infoA, infoB;
+		if (ContactFunction::BoxCapsule(pair.b, pair.a, infoB, infoA, _colliderStorage, _transformStorage, _manifoldBuffer))
 		{
-			RegisterEvent(pair.b, pair.a, _colliderStorage, _eventManager);
+			RegisterEvent(pair.a, infoA, pair.b, infoB, _colliderStorage, _eventManager);
 		}
 	}
 }
@@ -440,32 +448,42 @@ void CollisionSystem::Solve<CapsuleTag, CapsuleTag, CollisionPair::CapsuleCapsul
 {
 	for (auto& pair : pairList)
 	{
-		if (ContactFunction::CapsuleCapsule(pair.a, pair.b, _colliderStorage, _transformStorage, _manifoldBuffer))
+		ContactInfo infoA, infoB;
+		if (ContactFunction::CapsuleCapsule(pair.a, pair.b, infoA, infoB, _colliderStorage, _transformStorage, _manifoldBuffer))
 		{
-			RegisterEvent(pair.a, pair.b, _colliderStorage, _eventManager);
+			RegisterEvent(pair.a, infoA, pair.b, infoB, _colliderStorage, _eventManager);
 		}
 	}
 }
 
-void CollisionSystem::RegisterEvent(ColliderID _a, ColliderID _b, ColliderStorage* _colliderStorage, EventManager* _eventManager)
+void CollisionSystem::RegisterEvent(
+	ColliderID _colliderA, const ContactInfo& _contactInfoA,
+	ColliderID _colliderB, const ContactInfo& _contactInfoB,
+	ColliderStorage* _colliderStorage,
+	EventManager* _eventManager)
 {
+	CollisionPair::Pair pair{ _colliderA, _colliderB };
 	// 今回のペア追加
-	currentFramePair.insert(CollisionPair::Pair{ _a, _b });
+	currentFramePair.insert(pair);
 
-	OnCollisionEvent onCollisionEvent{ _colliderStorage->GetOwnerEntity(_a),_colliderStorage->GetOwnerEntity(_b) };
+	OnCollisionEvent onCollisionEvent{ _colliderStorage->GetOwnerEntity(_colliderA),_colliderStorage->GetOwnerEntity(_colliderB) };
 
 	CollisionInfo infoA;
 
-	ColliderComponent colliderA{ _a };
-	ColliderComponent colliderB{ _b };
+	ColliderComponent colliderA{ _colliderA };
+	ColliderComponent colliderB{ _colliderB };
 
 	infoA.otherCollider = colliderB;
 	infoA.selfCollider = colliderA;
+	infoA.selfContact = _contactInfoA;
+	infoA.otherContact = _contactInfoB;
 
 	CollisionInfo infoB;
 
-	infoA.otherCollider = colliderA;
-	infoA.selfCollider = colliderB;
+	infoB.otherCollider = colliderA;
+	infoB.selfCollider = colliderB;
+	infoB.selfContact = _contactInfoB;
+	infoB.otherContact = _contactInfoA;
 
 	onCollisionEvent.infoA = infoA;
 	onCollisionEvent.infoB = infoB;
@@ -474,9 +492,9 @@ void CollisionSystem::RegisterEvent(ColliderID _a, ColliderID _b, ColliderStorag
 	_eventManager->Push<OnCollisionEvent>({ onCollisionEvent });
 
 	// 前回のフレーム当たってなくて今回当たってるため衝突開始のイベントを呼ぶ
-	if (!prevFramePair.contains(CollisionPair::Pair{ _a, _b }))
+	if (!prevFramePair.contains(pair))
 	{
-		OnCollisionEnterEvent onCollisionEnterEvent{ _colliderStorage->GetOwnerEntity(_a),_colliderStorage->GetOwnerEntity(_b) };
+		OnCollisionEnterEvent onCollisionEnterEvent{ _colliderStorage->GetOwnerEntity(_colliderA),_colliderStorage->GetOwnerEntity(_colliderB) };
 
 		onCollisionEnterEvent.infoA = infoA;
 		onCollisionEnterEvent.infoB = infoB;
@@ -507,8 +525,8 @@ void CollisionSystem::RegisterExitEvent(ColliderStorage* _colliderStorage, Event
 
 			CollisionInfo infoB;
 
-			infoA.otherCollider = colliderA;
-			infoA.selfCollider = colliderB;
+			infoB.otherCollider = colliderA;
+			infoB.selfCollider = colliderB;
 
 			onCollisionExitEvent.infoA = infoA;
 			onCollisionExitEvent.infoB = infoB;

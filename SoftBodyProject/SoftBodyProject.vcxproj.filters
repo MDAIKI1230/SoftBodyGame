@@ -604,7 +604,7 @@
     <ClInclude Include="Source\Physics\Function\ManifoldFunction.h">
       <Filter>ソース ファイル\Physics\Function</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Physics\Struct\Collision\ContactInfo.h">
+    <ClInclude Include="Source\Physics\Struct\Collision\BoxBoxContactInfo.h">
       <Filter>ソース ファイル\Physics\Struct\Collision</Filter>
     </ClInclude>
     <ClInclude Include="Source\System\SceneData\Struct\SceneComponentData.h">
@@ -1440,6 +1440,9 @@
     </ClInclude>
     <ClInclude Include="Source\Common\BaseClass\MonoBehaviour.h">
       <Filter>ソース ファイル\Common\BaseClass</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Struct\Collision\ContactInfo.h">
+      <Filter>ソース ファイル\Physics\Struct\Collision</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

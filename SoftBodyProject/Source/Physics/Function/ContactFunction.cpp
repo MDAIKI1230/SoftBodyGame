@@ -1,9 +1,15 @@
 ﻿#include <algorithm>
 
+#include "ManifoldFunction.h"
+
 #include "ContactFunction.h"
 
 // 球 VS 球
-bool ContactFunction::SphereSphere(ColliderID _colliderA, ColliderID _colliderB, ColliderStorage* _colliderStorage, PhysicsTransformStorage* _transformStorage, CollisionManifoldBuffer* _manifoldBuffer)
+bool ContactFunction::SphereSphere(
+	ColliderID _colliderA, ColliderID _colliderB,
+	ContactInfo& _outputContactA, ContactInfo& _outputContactB,
+	ColliderStorage* _colliderStorage, PhysicsTransformStorage* _transformStorage,
+	CollisionManifoldBuffer* _manifoldBuffer)
 {
 	// Aの情報取得
 	float radiusA{ _colliderStorage->GetSphereColliderRadius(_colliderA) };
@@ -68,6 +74,9 @@ bool ContactFunction::SphereSphere(ColliderID _colliderA, ColliderID _colliderB,
 
 		_manifoldBuffer->Add(manifold);
 
+		// 法線方向はA→B
+		ManifoldFunction::CreateContactInfo(_outputContactA, _outputContactB, manifold);
+
 		return true;
 	}
 
@@ -75,7 +84,11 @@ bool ContactFunction::SphereSphere(ColliderID _colliderA, ColliderID _colliderB,
 }
 
 // 球 VS ボックス
-bool ContactFunction::SphereBox(ColliderID _colliderSphere, ColliderID _colliderBox, ColliderStorage* _colliderStorage, PhysicsTransformStorage* _transformStorage, CollisionManifoldBuffer* _manifoldBuffer)
+bool ContactFunction::SphereBox(
+	ColliderID _colliderSphere, ColliderID _colliderBox,
+	ContactInfo& _outputContactSphere, ContactInfo& _outputContactBox,
+	ColliderStorage* _colliderStorage, PhysicsTransformStorage* _transformStorage,
+	CollisionManifoldBuffer* _manifoldBuffer)
 {
 	// Sphereの情報取得
 	PhysicsTransformID transformSphere{ _colliderStorage->GetTransformID(_colliderSphere) };
@@ -158,6 +171,9 @@ bool ContactFunction::SphereBox(ColliderID _colliderSphere, ColliderID _collider
 
 		_manifoldBuffer->Add(manifold);
 
+		// 法線は球→ボックス
+		ManifoldFunction::CreateContactInfo(_outputContactSphere, _outputContactBox, manifold);
+
 		return true;
 	}
 
@@ -228,17 +244,23 @@ bool ContactFunction::SphereBox(ColliderID _colliderSphere, ColliderID _collider
 	contactPoint.positionLocalB =
 		_transformStorage->GetRotation(transformBox).Conjugate().Rotate(
 			worldPointBox - _transformStorage->GetPosition(transformBox));
-
 	// 点追加
 	manifold.AddPoints(contactPoint);
 
 	_manifoldBuffer->Add(manifold);
 
+	// 法線は球→ボックス
+	ManifoldFunction::CreateContactInfo(_outputContactSphere, _outputContactBox, manifold);
+
 	return true;
 }
 
 // ボックス VS ボックス
-bool ContactFunction::BoxBox(ColliderID _colliderA, ColliderID _colliderB, ColliderStorage* _colliderStorage, PhysicsTransformStorage* _transformStorage, CollisionManifoldBuffer* _manifoldBuffer)
+bool ContactFunction::BoxBox(
+	ColliderID _colliderA, ColliderID _colliderB,
+	ContactInfo& _outputContactA, ContactInfo& _outputContactB,
+	ColliderStorage* _colliderStorage, PhysicsTransformStorage* _transformStorage,
+	CollisionManifoldBuffer* _manifoldBuffer)
 {
 	// Aの情報取得
 	Vector3 halfScaleA{ _colliderStorage->GetBoxColliderScale(_colliderA) * 0.5f };
@@ -336,15 +358,19 @@ bool ContactFunction::BoxBox(ColliderID _colliderA, ColliderID _colliderB, Colli
 
 	ManifoldFunction::BoxBox(
 		_transformStorage,
-		transformA, positionA, candidateAxisA, halfsA,
-		transformB, positionB, candidateAxisB, halfsB,
+		transformA, positionA, candidateAxisA, halfsA, _outputContactA,
+		transformB, positionB, candidateAxisB, halfsB, _outputContactB,
 		info, _manifoldBuffer);
 
 	return true;
 }
 
 // カプセル VS カプセル
-bool ContactFunction::CapsuleCapsule(ColliderID _colliderA, ColliderID _colliderB, ColliderStorage* _colliderStorage, PhysicsTransformStorage* _transformStorage, CollisionManifoldBuffer* _manifoldBuffer)
+bool ContactFunction::CapsuleCapsule(
+	ColliderID _colliderA, ColliderID _colliderB,
+	ContactInfo& _outputContactA, ContactInfo& _outputContactB,
+	ColliderStorage* _colliderStorage, PhysicsTransformStorage* _transformStorage,
+	CollisionManifoldBuffer* _manifoldBuffer)
 {
 	const PhysicsTransformID transformA{ _colliderStorage->GetTransformID(_colliderA) };
 	const PhysicsTransformID transformB{ _colliderStorage->GetTransformID(_colliderB) };
@@ -431,11 +457,18 @@ bool ContactFunction::CapsuleCapsule(ColliderID _colliderA, ColliderID _collider
 
 	_manifoldBuffer->Add(manifold);
 
+	// 法線はA→B
+	ManifoldFunction::CreateContactInfo(_outputContactA, _outputContactB, manifold);
+
 	return true;
 }
 
 // ボックス VS カプセル
-bool ContactFunction::BoxCapsule(ColliderID _colliderBox, ColliderID _colliderCapsule, ColliderStorage* _colliderStorage, PhysicsTransformStorage* _transformStorage, CollisionManifoldBuffer* _manifoldBuffer)
+bool ContactFunction::BoxCapsule(
+	ColliderID _colliderBox, ColliderID _colliderCapsule,
+	ContactInfo& _outputContactBox, ContactInfo& _outputContactCapsule,
+	ColliderStorage* _colliderStorage, PhysicsTransformStorage* _transformStorage,
+	CollisionManifoldBuffer* _manifoldBuffer)
 {
 	// TransformのDenseIndex
 	PhysicsTransformID boxTransID{ _colliderStorage->GetTransformID(_colliderBox) };
@@ -710,11 +743,18 @@ bool ContactFunction::BoxCapsule(ColliderID _colliderBox, ColliderID _colliderCa
 	manifold.AddPoints(contactPoint);
 	_manifoldBuffer->Add(manifold);
 
+	// 法線はカプセル→ボックス
+	ManifoldFunction::CreateContactInfo(_outputContactCapsule, _outputContactBox, manifold);
+
 	return true;
 }
 
 // 球 VS カプセル
-bool ContactFunction::SphereCapsule(ColliderID _colliderSphere, ColliderID _colliderCapsule, ColliderStorage* _colliderStorage, PhysicsTransformStorage* _transformStorage, CollisionManifoldBuffer* _manifoldBuffer)
+bool ContactFunction::SphereCapsule(
+	ColliderID _colliderSphere, ColliderID _colliderCapsule,
+	ContactInfo& _outputContactSphere, ContactInfo& _outputContactCapsule,
+	ColliderStorage* _colliderStorage, PhysicsTransformStorage* _transformStorage,
+	CollisionManifoldBuffer* _manifoldBuffer)
 {
 	const PhysicsTransformID sphereTransID{ _colliderStorage->GetTransformID(_colliderSphere) };
 	const PhysicsTransformID capsuleTransID{ _colliderStorage->GetTransformID(_colliderCapsule) };
@@ -790,6 +830,9 @@ bool ContactFunction::SphereCapsule(ColliderID _colliderSphere, ColliderID _coll
 	manifold.AddPoints(contactPoint);
 
 	_manifoldBuffer->Add(manifold);
+
+	// 法線は球→カプセル
+	ManifoldFunction::CreateContactInfo(_outputContactSphere, _outputContactCapsule, manifold);
 
 	return true;
 }

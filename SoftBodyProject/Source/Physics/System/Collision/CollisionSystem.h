@@ -121,8 +121,8 @@ private:
 		EventManager* _eventManager);
 
 	void RegisterEvent(
-		ColliderID _colliderA,
-		ColliderID _colliderB,
+		ColliderID _colliderA, const ContactInfo& _contactInfoA,
+		ColliderID _colliderB, const ContactInfo& _contactInfoB,
 		ColliderStorage* _colliderStorage,
 		EventManager* _eventManager);
 

@@ -1,9 +1,8 @@
 ﻿#pragma once
 
-#include "MDMath.h"
-
 #include "ColliderComponent.h"
 #include "ObjectBase.h"
+#include "ContactInfo.h"
 
 /*
 	衝突のイベントでコライダーを持つゲームオブジェクトに渡す情報構造体
@@ -17,8 +16,8 @@ struct CollisionInfo
 	ColliderComponent selfCollider;
 	// 相手のゲームオブジェクト
 	ObjectBase* other{ nullptr };
-	// 衝突法線
-	Vector3 normal;
-	// 重なり深さ
-	float depth{ 0.0f };
+	// 相手の衝突情報
+	ContactInfo otherContact;
+	// 衝突自分の情報
+	ContactInfo selfContact;
 };

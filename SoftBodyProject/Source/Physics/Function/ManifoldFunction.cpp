@@ -4,327 +4,353 @@
 
 void ManifoldFunction::AddUniquePoint(Manifold& _manifold, const ContactPoint& _point)
 {
-    // 近すぎる点は追加しない
-    for (int i = 0; i < _manifold.pointCount; i++)
-    {
-        if (Vector3::DistanceSqr(_manifold.points[i].positionLocalA, _point.positionLocalA) < MathConstants::EPSILON * MathConstants::EPSILON)
-        {
-            return;
-        }
-    }
+	// 近すぎる点は追加しない
+	for (int i = 0; i < _manifold.pointCount; i++)
+	{
+		if (Vector3::DistanceSqr(_manifold.points[i].positionLocalA, _point.positionLocalA) < MathConstants::EPSILON * MathConstants::EPSILON)
+		{
+			return;
+		}
+	}
 
-    _manifold.AddPoints(_point);
+	_manifold.AddPoints(_point);
 }
 
 void ManifoldFunction::BoxBox(
 	PhysicsTransformStorage* _transformStorage,
-	PhysicsTransformID _transformA, const Vector3& _positionA, const Vector3* _candidateAxisA, const float* _halfsA,
-	PhysicsTransformID _transformB, const Vector3& _positionB, const Vector3* _candidateAxisB, const float* _halfsB,
-    const BoxBoxContactInfo& _info, CollisionManifoldBuffer* _manifoldBuffer)
+	PhysicsTransformID _transformA, const Vector3& _positionA, const Vector3* _candidateAxisA, const float* _halfsA, ContactInfo& _outputContactA,
+	PhysicsTransformID _transformB, const Vector3& _positionB, const Vector3* _candidateAxisB, const float* _halfsB, ContactInfo& _outputContactB,
+	const BoxBoxContactInfo& _info, CollisionManifoldBuffer* _manifoldBuffer)
 {
-    switch (_info.type)
-    {
-    case BoxBoxContactInfo::FaceA:
+	switch (_info.type)
+	{
+	case BoxBoxContactInfo::FaceA:
 		AddFaceAManifold(
 			_transformStorage,
-			_transformA, _positionA, _candidateAxisA, _halfsA,
-			_transformB, _positionB, _candidateAxisB, _halfsB,
+			_transformA, _positionA, _candidateAxisA, _halfsA, _outputContactA,
+			_transformB, _positionB, _candidateAxisB, _halfsB, _outputContactB,
 			_info, _manifoldBuffer);
-        break;
-    case BoxBoxContactInfo::FaceB:
+		break;
+	case BoxBoxContactInfo::FaceB:
 		AddFaceBManifold(_transformStorage,
-			_transformA, _positionA, _candidateAxisA, _halfsA,
-			_transformB, _positionB, _candidateAxisB, _halfsB,
+			_transformA, _positionA, _candidateAxisA, _halfsA, _outputContactA,
+			_transformB, _positionB, _candidateAxisB, _halfsB, _outputContactB,
 			_info, _manifoldBuffer);
-        break;
-    case BoxBoxContactInfo::EdgeEdge:
+		break;
+	case BoxBoxContactInfo::EdgeEdge:
 		AddEdgeManifold(_transformStorage,
-			_transformA, _positionA, _candidateAxisA, _halfsA,
-			_transformB, _positionB, _candidateAxisB, _halfsB,
+			_transformA, _positionA, _candidateAxisA, _halfsA, _outputContactA,
+			_transformB, _positionB, _candidateAxisB, _halfsB, _outputContactB,
 			_info, _manifoldBuffer);
-        break;
-    }
+		break;
+	}
 }
 
 void ManifoldFunction::AddFaceAManifold(
 	PhysicsTransformStorage* _transformStorage,
-	PhysicsTransformID _transformA, const Vector3& _positionA, const Vector3* _candidateAxisA, const float* _halfsA,
-	PhysicsTransformID _transformB, const Vector3& _positionB, const Vector3* _candidateAxisB, const float* _halfsB,
-    const BoxBoxContactInfo& _info, CollisionManifoldBuffer* _manifoldBuffer)
+	PhysicsTransformID _transformA, const Vector3& _positionA, const Vector3* _candidateAxisA, const float* _halfsA, ContactInfo& _outputContactA,
+	PhysicsTransformID _transformB, const Vector3& _positionB, const Vector3* _candidateAxisB, const float* _halfsB, ContactInfo& _outputContactB,
+	const BoxBoxContactInfo& _info, CollisionManifoldBuffer* _manifoldBuffer)
 {
-    Manifold manifold;
-    manifold.colliderA = _info.colliderA;
-    manifold.colliderB = _info.colliderB;
-    manifold.normal = _info.normal;
+	Manifold manifold;
+	manifold.colliderA = _info.colliderA;
+	manifold.colliderB = _info.colliderB;
+	manifold.normal = _info.normal;
 
-    // 基準の面の法線
-    Vector3 faceNormal{ _candidateAxisA[_info.axisA] };
+	// 基準の面の法線
+	Vector3 faceNormal{ _candidateAxisA[_info.axisA] };
 
-    // 法線をAからB向きにそろえる
-    if (Vector3::Dot(faceNormal, _info.normal) < 0.0f)
-    {
-        faceNormal = -faceNormal;
-    }
+	// 法線をAからB向きにそろえる
+	if (Vector3::Dot(faceNormal, _info.normal) < 0.0f)
+	{
+		faceNormal = -faceNormal;
+	}
 
-    // 基準面の中心
-    Vector3 faceCenter{ _positionA + faceNormal * _halfsA[_info.axisA] };
+	// 基準面の中心
+	Vector3 faceCenter{ _positionA + faceNormal * _halfsA[_info.axisA] };
 
-    std::vector<Vector3> poly{ GenerateFaceContact(
-        _positionA, _candidateAxisA, _halfsA,
-        _positionB, _candidateAxisB, _halfsB,
-        faceNormal, faceCenter, _info.axisA
-    ) };
+	std::vector<Vector3> poly{ GenerateFaceContact(
+		_positionA, _candidateAxisA, _halfsA,
+		_positionB, _candidateAxisB, _halfsB,
+		faceNormal, faceCenter, _info.axisA
+	) };
 
-    // 得られたBの位置からAの位置も作る
-    for (const Vector3& positionB : poly)
-    {
-        float penetration{ Vector3::Dot(positionB - faceCenter, faceNormal) };
+	// 得られたBの位置からAの位置も作る
+	for (const Vector3& positionB : poly)
+	{
+		float penetration{ Vector3::Dot(positionB - faceCenter, faceNormal) };
 
-        if (penetration <= 0.0f)
-        {
-            ContactPoint contactPoint;
-
-
+		if (penetration <= 0.0f)
+		{
+			ContactPoint contactPoint;
 
 			contactPoint.positionLocalA = _transformStorage->GetRotation(_transformA).Conjugate().Rotate(
 				(positionB - faceNormal * penetration) -
 				_transformStorage->GetPosition(_transformA));
-            contactPoint.positionLocalB = _transformStorage->GetRotation(_transformB).Conjugate().Rotate(
+			contactPoint.positionLocalB = _transformStorage->GetRotation(_transformB).Conjugate().Rotate(
 				positionB -
 				_transformStorage->GetPosition(_transformB));
-            contactPoint.penetration = -penetration;
+			contactPoint.penetration = -penetration;
 
-            AddUniquePoint(manifold, contactPoint);
-        }
-    }
+			AddUniquePoint(manifold, contactPoint);
+		}
+	}
 
-    if (manifold.pointCount <= 0)
-    {
-        return;
-    }
+	if (manifold.pointCount <= 0)
+	{
+		return;
+	}
 
-    _manifoldBuffer->Add(manifold);
+	_manifoldBuffer->Add(manifold);
+
+	CreateContactInfo(_outputContactA, _outputContactB, manifold);
 }
 void ManifoldFunction::AddFaceBManifold(
 	PhysicsTransformStorage* _transformStorage,
-	PhysicsTransformID _transformA, const Vector3& _positionA, const Vector3* _candidateAxisA, const float* _halfsA,
-	PhysicsTransformID _transformB, const Vector3& _positionB, const Vector3* _candidateAxisB, const float* _halfsB,
-    const BoxBoxContactInfo& _info, CollisionManifoldBuffer* _manifoldBuffer)
+	PhysicsTransformID _transformA, const Vector3& _positionA, const Vector3* _candidateAxisA, const float* _halfsA, ContactInfo& _outputContactA,
+	PhysicsTransformID _transformB, const Vector3& _positionB, const Vector3* _candidateAxisB, const float* _halfsB, ContactInfo& _outputContactB,
+	const BoxBoxContactInfo& _info, CollisionManifoldBuffer* _manifoldBuffer)
 {
-    Manifold manifold;
-    manifold.colliderA = _info.colliderA;
-    manifold.colliderB = _info.colliderB;
-    manifold.normal = _info.normal;
+	Manifold manifold;
+	manifold.colliderA = _info.colliderA;
+	manifold.colliderB = _info.colliderB;
+	manifold.normal = _info.normal;
 
-    // 基準の面の法線
-    Vector3 faceNormal{ _candidateAxisB[_info.axisB] };
+	// 基準の面の法線
+	Vector3 faceNormal{ _candidateAxisB[_info.axisB] };
 
-    // 法線をBからA向きにそろえる
-    if (Vector3::Dot(faceNormal, _info.normal) > 0.0f)
-    {
-        faceNormal = -faceNormal;
-    }
+	// 法線をBからA向きにそろえる
+	if (Vector3::Dot(faceNormal, _info.normal) > 0.0f)
+	{
+		faceNormal = -faceNormal;
+	}
 
-    // 基準面の中心
-    Vector3 faceCenter{ _positionB + faceNormal * _halfsB[_info.axisB] };
+	// 基準面の中心
+	Vector3 faceCenter{ _positionB + faceNormal * _halfsB[_info.axisB] };
 
 
-    std::vector<Vector3> poly{ GenerateFaceContact(
-        _positionB, _candidateAxisB, _halfsB,
-        _positionA, _candidateAxisA, _halfsA,
-        faceNormal, faceCenter, _info.axisB
-    ) };
+	std::vector<Vector3> poly{ GenerateFaceContact(
+		_positionB, _candidateAxisB, _halfsB,
+		_positionA, _candidateAxisA, _halfsA,
+		faceNormal, faceCenter, _info.axisB
+	) };
 
-    // 得られたBの位置からAの位置も作る
-    for (const Vector3& positionA : poly)
-    {
-        float penetration{ Vector3::Dot(positionA - faceCenter, faceNormal) };
+	// 得られたBの位置からAの位置も作る
+	for (const Vector3& positionA : poly)
+	{
+		float penetration{ Vector3::Dot(positionA - faceCenter, faceNormal) };
 
-        if (penetration <= 0.0f)
-        {
-            ContactPoint cp;
+		if (penetration <= 0.0f)
+		{
+			ContactPoint cp;
 
-            cp.positionLocalA = _transformStorage->GetRotation(_transformA).Conjugate().Rotate(
+			cp.positionLocalA = _transformStorage->GetRotation(_transformA).Conjugate().Rotate(
 				positionA -
 				_transformStorage->GetPosition(_transformA));
-            cp.positionLocalB = _transformStorage->GetRotation(_transformB).Conjugate().Rotate(
+			cp.positionLocalB = _transformStorage->GetRotation(_transformB).Conjugate().Rotate(
 				(positionA - faceNormal * penetration) -
 				_transformStorage->GetPosition(_transformB));
-            cp.penetration = -penetration;
+			cp.penetration = -penetration;
 
-            AddUniquePoint(manifold, cp);
-        }
-    }
+			AddUniquePoint(manifold, cp);
+		}
+	}
 
-    if (manifold.pointCount <= 0)
-    {
-        return;
-    }
+	if (manifold.pointCount <= 0)
+	{
+		return;
+	}
 
-    _manifoldBuffer->Add(manifold);
+	_manifoldBuffer->Add(manifold);
+
+	CreateContactInfo(_outputContactA, _outputContactB, manifold);
 }
 
 void ManifoldFunction::AddEdgeManifold(
 	PhysicsTransformStorage* _transformStorage,
-	PhysicsTransformID _transformA, const Vector3& _positionA, const Vector3* _candidateAxisA, const float* _halfsA,
-	PhysicsTransformID _transformB, const Vector3& _positionB, const Vector3* _candidateAxisB, const float* _halfsB,
-    const BoxBoxContactInfo& _info, CollisionManifoldBuffer* _manifoldBuffer)
+	PhysicsTransformID _transformA, const Vector3& _positionA, const Vector3* _candidateAxisA, const float* _halfsA, ContactInfo& _outputContactA,
+	PhysicsTransformID _transformB, const Vector3& _positionB, const Vector3* _candidateAxisB, const float* _halfsB, ContactInfo& _outputContactB,
+	const BoxBoxContactInfo& _info, CollisionManifoldBuffer* _manifoldBuffer)
 {
-    Manifold manifold;
-    manifold.colliderA = _info.colliderA;
-    manifold.colliderB = _info.colliderB;
-    manifold.normal = _info.normal;
+	Manifold manifold;
+	manifold.colliderA = _info.colliderA;
+	manifold.colliderB = _info.colliderB;
+	manifold.normal = _info.normal;
 
-    Vector3 edgeCenterA{ _positionA };
-    Vector3  edgeCenterB{ _positionB };
+	Vector3 edgeCenterA{ _positionA };
+	Vector3  edgeCenterB{ _positionB };
 
-    for (int i = 0; i < 3; ++i)
-    {
-        if (i != _info.axisA)
-        {
-            float sign = (Vector3::Dot(_candidateAxisA[i], _info.normal) >= 0.0f) ? 1.0f : -1.0f;
-            edgeCenterA += _candidateAxisA[i] * (_halfsA[i] * sign);
-        }
+	for (int i = 0; i < 3; ++i)
+	{
+		if (i != _info.axisA)
+		{
+			float sign = (Vector3::Dot(_candidateAxisA[i], _info.normal) >= 0.0f) ? 1.0f : -1.0f;
+			edgeCenterA += _candidateAxisA[i] * (_halfsA[i] * sign);
+		}
 
-        if (i != _info.axisB)
-        {
-            float sign = (Vector3::Dot(_candidateAxisB[i], _info.normal) >= 0.0f) ? -1.0f : 1.0f;
-            edgeCenterB += _candidateAxisB[i] * (_halfsB[i] * sign);
-        }
-    }
+		if (i != _info.axisB)
+		{
+			float sign = (Vector3::Dot(_candidateAxisB[i], _info.normal) >= 0.0f) ? -1.0f : 1.0f;
+			edgeCenterB += _candidateAxisB[i] * (_halfsB[i] * sign);
+		}
+	}
 
-    // 各辺の端を計算
-    Vector3 startA = edgeCenterA - _candidateAxisA[_info.axisA] * _halfsA[_info.axisA];
-    Vector3 endA = edgeCenterA + _candidateAxisA[_info.axisA] * _halfsA[_info.axisA];
-    Vector3 startB = edgeCenterB - _candidateAxisB[_info.axisB] * _halfsB[_info.axisB];
-    Vector3 endB = edgeCenterB + _candidateAxisB[_info.axisB] * _halfsB[_info.axisB];
+	// 各辺の端を計算
+	Vector3 startA = edgeCenterA - _candidateAxisA[_info.axisA] * _halfsA[_info.axisA];
+	Vector3 endA = edgeCenterA + _candidateAxisA[_info.axisA] * _halfsA[_info.axisA];
+	Vector3 startB = edgeCenterB - _candidateAxisB[_info.axisB] * _halfsB[_info.axisB];
+	Vector3 endB = edgeCenterB + _candidateAxisB[_info.axisB] * _halfsB[_info.axisB];
 
-    // 最近点を求める
-    const auto closestPoints{ MDMath::ClosestSegmentOnSegment(startA,endA,startB,endB) };
+	// 最近点を求める
+	const auto closestPoints{ MDMath::ClosestSegmentOnSegment(startA,endA,startB,endB) };
 
-    const Vector3& closestA = closestPoints.pointA;
-    const Vector3& closestB = closestPoints.pointB;
+	const Vector3& closestA = closestPoints.pointA;
+	const Vector3& closestB = closestPoints.pointB;
 
-    ContactPoint cp;
-    cp.positionLocalA =
+	ContactPoint cp;
+	cp.positionLocalA =
 		_transformStorage->GetRotation(_transformA).Conjugate().Rotate(
 		closestA -
 		_transformStorage->GetPosition(_transformA));
-    cp.positionLocalB =
+	cp.positionLocalB =
 		_transformStorage->GetRotation(_transformB).Conjugate().Rotate(
 			closestB -
 			_transformStorage->GetPosition(_transformB));
-    cp.penetration = _info.depth;
+	cp.penetration = _info.depth;
 
-    // 追加
-    AddUniquePoint(manifold, cp);
+	// 追加
+	AddUniquePoint(manifold, cp);
 
-    if (manifold.pointCount <= 0)
-    {
-        return;
-    }
+	if (manifold.pointCount <= 0)
+	{
+		return;
+	}
 
-    // バッファに追加
-    _manifoldBuffer->Add(manifold);
+	// バッファに追加
+	_manifoldBuffer->Add(manifold);
+
+	CreateContactInfo(_outputContactA, _outputContactB, manifold);
 }
 
 
 std::vector<Vector3> ManifoldFunction::GenerateFaceContact(
-    const Vector3& _refarencePos, const Vector3* const _refarenceAxis, const  float* _refarenceHalfs,
-    const Vector3& _incidentPos, const Vector3* const _incidentAxis, const float* _incidentHalfs,
-    const Vector3& _faceNormal, const Vector3& _faceCenter, int _refarenceIndex)
+	const Vector3& _refarencePos, const Vector3* const _refarenceAxis, const  float* _refarenceHalfs,
+	const Vector3& _incidentPos, const Vector3* const _incidentAxis, const float* _incidentHalfs,
+	const Vector3& _faceNormal, const Vector3& _faceCenter, int _refarenceIndex)
 {
-    // 基準面の横幅と縦幅の方向と大きさを用意
-    int vIndex{ (_refarenceIndex + 1) % 3 };
-    int hIndex{ (_refarenceIndex + 2) % 3 };
+	// 基準面の横幅と縦幅の方向と大きさを用意
+	int vIndex{ (_refarenceIndex + 1) % 3 };
+	int hIndex{ (_refarenceIndex + 2) % 3 };
 
-    Vector3 vNormal{ _refarenceAxis[vIndex] };
-    Vector3 hNormal{ _refarenceAxis[hIndex] };
+	Vector3 vNormal{ _refarenceAxis[vIndex] };
+	Vector3 hNormal{ _refarenceAxis[hIndex] };
 
-    float vHalf{ _refarenceHalfs[vIndex] };
-    float hHalf{ _refarenceHalfs[hIndex] };
+	float vHalf{ _refarenceHalfs[vIndex] };
+	float hHalf{ _refarenceHalfs[hIndex] };
 
-    // normalと一番逆向きの入射面の法線を探す
-    int bIndex{ 0 };
-    float bestDot{ std::abs(Vector3::Dot(_incidentAxis[0], _faceNormal)) };
+	// normalと一番逆向きの入射面の法線を探す
+	int bIndex{ 0 };
+	float bestDot{ std::abs(Vector3::Dot(_incidentAxis[0], _faceNormal)) };
 
-    for (int i{ 1 }; i < 3; ++i)
-    {
-        float d{ std::abs(Vector3::Dot(_incidentAxis[i], _faceNormal)) };
-        if (d > bestDot)
-        {
-            bestDot = d;
-            bIndex = i;
-        }
-    }
+	for (int i{ 1 }; i < 3; ++i)
+	{
+		float d{ std::abs(Vector3::Dot(_incidentAxis[i], _faceNormal)) };
+		if (d > bestDot)
+		{
+			bestDot = d;
+			bIndex = i;
+		}
+	}
 
-    Vector3 bNormal{ _incidentAxis[bIndex] };
+	Vector3 bNormal{ _incidentAxis[bIndex] };
 
-    if (Vector3::Dot(bNormal, _faceNormal) > 0.0f)
-    {
-        bNormal = -bNormal;
-    }
+	if (Vector3::Dot(bNormal, _faceNormal) > 0.0f)
+	{
+		bNormal = -bNormal;
+	}
 
-    // 入射面の中心
-    Vector3 bCenter{ _incidentPos + bNormal * _incidentHalfs[bIndex] };
+	// 入射面の中心
+	Vector3 bCenter{ _incidentPos + bNormal * _incidentHalfs[bIndex] };
 
-    // 選ばれた法線の横と縦に該当するIndex
-    int bVIndex{ (bIndex + 1) % 3 };
-    int bHIndex{ (bIndex + 2) % 3 };
+	// 選ばれた法線の横と縦に該当するIndex
+	int bVIndex{ (bIndex + 1) % 3 };
+	int bHIndex{ (bIndex + 2) % 3 };
 
 
-    // 入射側の選ばれた面の4頂点
-    std::vector<Vector3> poly;
-    poly.reserve(4);
+	// 入射側の選ばれた面の4頂点
+	std::vector<Vector3> poly;
+	poly.reserve(4);
 
-    poly.push_back(bCenter + _incidentAxis[bVIndex] * _incidentHalfs[bVIndex] + _incidentAxis[bHIndex] * _incidentHalfs[bHIndex]);
-    poly.push_back(bCenter - _incidentAxis[bVIndex] * _incidentHalfs[bVIndex] + _incidentAxis[bHIndex] * _incidentHalfs[bHIndex]);
-    poly.push_back(bCenter - _incidentAxis[bVIndex] * _incidentHalfs[bVIndex] - _incidentAxis[bHIndex] * _incidentHalfs[bHIndex]);
-    poly.push_back(bCenter + _incidentAxis[bVIndex] * _incidentHalfs[bVIndex] - _incidentAxis[bHIndex] * _incidentHalfs[bHIndex]);
+	poly.push_back(bCenter + _incidentAxis[bVIndex] * _incidentHalfs[bVIndex] + _incidentAxis[bHIndex] * _incidentHalfs[bHIndex]);
+	poly.push_back(bCenter - _incidentAxis[bVIndex] * _incidentHalfs[bVIndex] + _incidentAxis[bHIndex] * _incidentHalfs[bHIndex]);
+	poly.push_back(bCenter - _incidentAxis[bVIndex] * _incidentHalfs[bVIndex] - _incidentAxis[bHIndex] * _incidentHalfs[bHIndex]);
+	poly.push_back(bCenter + _incidentAxis[bVIndex] * _incidentHalfs[bVIndex] - _incidentAxis[bHIndex] * _incidentHalfs[bHIndex]);
 
-    // 入射面を基準面内に収める
-    poly = ClipFace(poly, vNormal, Vector3::Dot(vNormal, _faceCenter) + vHalf);
-    poly = ClipFace(poly, -vNormal, Vector3::Dot(-vNormal, _faceCenter) + vHalf);
-    poly = ClipFace(poly, hNormal, Vector3::Dot(hNormal, _faceCenter) + hHalf);
-    poly = ClipFace(poly, -hNormal, Vector3::Dot(-hNormal, _faceCenter) + hHalf);
+	// 入射面を基準面内に収める
+	poly = ClipFace(poly, vNormal, Vector3::Dot(vNormal, _faceCenter) + vHalf);
+	poly = ClipFace(poly, -vNormal, Vector3::Dot(-vNormal, _faceCenter) + vHalf);
+	poly = ClipFace(poly, hNormal, Vector3::Dot(hNormal, _faceCenter) + hHalf);
+	poly = ClipFace(poly, -hNormal, Vector3::Dot(-hNormal, _faceCenter) + hHalf);
 
-    return poly;
+	return poly;
 }
 
 std::vector<Vector3> ManifoldFunction::ClipFace(const std::vector<Vector3>& _input, const Vector3& _faceNormal, float _planeOffset)
 {
-    std::vector<Vector3> output;
+	std::vector<Vector3> output;
 
-    for (int i = 0; i < _input.size(); ++i)
-    {
-        // 辺を作る
-        Vector3 start = _input[i];
-        Vector3 end = _input[(i + 1) % _input.size()];
+	for (int i = 0; i < _input.size(); ++i)
+	{
+		// 辺を作る
+		Vector3 start = _input[i];
+		Vector3 end = _input[(i + 1) % _input.size()];
 
-        float dStart = Vector3::Dot(_faceNormal, start) - _planeOffset;
-        float dEnd = Vector3::Dot(_faceNormal, end) - _planeOffset;
+		float dStart = Vector3::Dot(_faceNormal, start) - _planeOffset;
+		float dEnd = Vector3::Dot(_faceNormal, end) - _planeOffset;
 
-        // 面の中にあるか判定
-        bool insideStart = dStart <= 0.0f;
-        bool insideEnd = dEnd <= 0.0f;
+		// 面の中にあるか判定
+		bool insideStart = dStart <= 0.0f;
+		bool insideEnd = dEnd <= 0.0f;
 
-        // 面の中にあった点の対応によって、追加する点を変える
-        if (insideStart && insideEnd)
-        {
-            output.push_back(end);
-        }
-        else if (insideStart && !insideEnd)
-        {
-            float t = dStart / (dStart - dEnd);
-            output.push_back(start + (end - start) * t);
-        }
-        else if (!insideStart && insideEnd)
-        {
-            float t = dStart / (dStart - dEnd);
-            output.push_back(start + (end - start) * t);
-            output.push_back(end);
-        }
-    }
+		// 面の中にあった点の対応によって、追加する点を変える
+		if (insideStart && insideEnd)
+		{
+			output.push_back(end);
+		}
+		else if (insideStart && !insideEnd)
+		{
+			float t = dStart / (dStart - dEnd);
+			output.push_back(start + (end - start) * t);
+		}
+		else if (!insideStart && insideEnd)
+		{
+			float t = dStart / (dStart - dEnd);
+			output.push_back(start + (end - start) * t);
+			output.push_back(end);
+		}
+	}
 
-    return output;
+	return output;
+}
+
+// 出力用情報作成関数(法線方向がA→Bで作られている前提で動くことに注意)
+void ManifoldFunction::CreateContactInfo(ContactInfo& _outputA, ContactInfo& _outputB, const Manifold& _manifold)
+{
+	// 出力用の情報作り(法線はA→Bで作られている前提とし、自身のコライダーの法線を渡したいため、Bでは反転して渡す
+	_outputA.normal = _manifold.normal;
+	_outputB.normal = -_manifold.normal;
+
+	_outputA.contactCount = _manifold.pointCount;
+	_outputB.contactCount = _manifold.pointCount;
+	
+	for (size_t i{ 0 }; i < _manifold.pointCount; i++)
+	{
+		const ContactPoint& contactPoint{ _manifold.points[i] };
+
+		_outputA.contactLocalPositions[i] = contactPoint.positionLocalA;
+		_outputA.depths[i] = contactPoint.penetration;
+
+		_outputB.contactLocalPositions[i] = contactPoint.positionLocalB;
+		_outputB.depths[i] = contactPoint.penetration;
+	}
 }
