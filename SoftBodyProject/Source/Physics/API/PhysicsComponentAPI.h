@@ -258,7 +258,7 @@ public:
 	// 自信のEndPoint取得
 	static const EndPointFrame& GetEndPoint(ConstraintID _id);
 	// 自信のEndPoint変更
-	static void SetEndPoint(ConstraintID _id,const EndPointFrame& _endPoint);
+	static void SetEndPoint(ConstraintID _id, EndPointFrame _endPoint);
 	// 相手のEndPointすべて取得
 	static std::span<const EndPointFrame> GetOtherEndPoints(ConstraintID _id);
 	// 相手のEndPointすべて取得
@@ -268,6 +268,9 @@ public:
 	static void AddEndPoint(ConstraintID _id, EntityID _entity, const Vector3& _localOffset, const Quaternion& _localRotation = Quaternion::IDENTITY);
 	// 拘束からEndPoint除外
 	static void RemoveEndPoint(ConstraintID _id, EntityID _entity);
+
+	// 拘束からEndPointすべて除外
+	static void RemoveEndPointOtherAll(ConstraintID _id);
 
 	// Bodyを指定してEndPointを追加
 	static void AddEndPoint(ConstraintID _id, BodyID _bodyID, const Vector3& _localOffset, const Quaternion& _localRotation = Quaternion::IDENTITY);

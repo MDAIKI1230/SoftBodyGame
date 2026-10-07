@@ -80,7 +80,7 @@ public:
 	}
 
 	// --- ゲッター　---
-	EntityID GetID() { return id; }
+	EntityID GetID() const { return id; }
 	// 仮想デストラクタ
 	virtual ~ObjectBase() = default;
 private:

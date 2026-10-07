@@ -15,4 +15,6 @@ struct EndPointFrame
 	Vector3 localPosition;
 	// 拘束点のローカル姿勢
 	Quaternion localRotation;
+	// 重みづけ
+	float weight{ 1.0f };
 };

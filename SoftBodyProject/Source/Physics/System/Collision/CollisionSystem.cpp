@@ -585,30 +585,5 @@ bool CollisionSystem::CanCollide(ColliderID _a, ColliderID _b, ColliderStorage* 
 	CollisionFilter& bFilter{ _colliderStorage->EditFilter(_b) };
 
 	// 種類単位の判定
-	if ((aFilter.collideMask & bFilter.categoryBits) == 0 ||
-		(bFilter.collideMask & aFilter.categoryBits) == 0)
-	{
-		return false;
-	}
-
-	// 同じ構造物内部の判定
-	if (aFilter.groupID != CollisionFilter::INVALID_COLLISION_GROUP &&
-		aFilter.groupID == bFilter.groupID)
-	{
-		assert(aFilter.memberIndex < 64);
-		assert(bFilter.memberIndex < 64);
-
-		// bit情報に変換
-		uint64_t bitA{ 1ull << aFilter.memberIndex };
-		uint64_t bitB{ 1ull << bFilter.memberIndex };
-
-		// お互い無視相手じゃないかチェック
-		if ((aFilter.ignoreMembers & bitB) != 0 ||
-			(bFilter.ignoreMembers & bitA) != 0)
-		{
-			return false;
-		}
-	}
-
-	return true;
+	return aFilter.CanCollide(bFilter);
 }

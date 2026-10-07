@@ -58,6 +58,7 @@ void DebugScene::Initialize()
 
 	objectManager.Add(std::move(player));
 
+	// オフセットデバッグ
 	/*std::unique_ptr<DebugSphere> sphere{ std::make_unique<DebugSphere>(&worldStorage, objectManager.GenerateNewID()) };
 	sphere->GetComponent<SphereColliderComponent>()->SetOffsetPosition(-Vector3::UP * 100.0f);
 	sphere->GetComponent<SphereColliderComponent>()->SetOffsetRotation(Quaternion::Euler(MathConstants::PI_FLT / 2.0f, 0.0f, 0.0f));
@@ -79,6 +80,12 @@ void DebugScene::Initialize()
 	std::unique_ptr<DebugBox> debugBox01{ std::make_unique<DebugBox>(&worldStorage, objectManager.GenerateNewID(), 500.0f, 50.0f, 500.0f)};
 	debugBox01->GetComponent<TransformComponent>()->SetPosition(Vector3{ 0,-200,0 });
 	objectManager.Add(std::move(debugBox01));
+
+	std::unique_ptr<DebugBox> debugBox02{ std::make_unique<DebugBox>(&worldStorage, objectManager.GenerateNewID(), 100.0f, 100.0f, 100.0f)};
+	debugBox02->GetComponent<TransformComponent>()->SetPosition(Vector3{ 0,-100,0 });
+	RigidBodyComponent* debugBoxRigid{ debugBox02->AddComponent<RigidBodyComponent>() };
+	debugBoxRigid->SetMass(20.0f);
+	objectManager.Add(std::move(debugBox02));
 
 	// 距離拘束デバッグ(宙ぶらりんなせいで力が減衰する要素がほぼないので凄い動く)
 	/*std::unique_ptr<EmptyObject> emptyObject{ std::make_unique<EmptyObject>(&worldStorage, objectManager.GenerateNewID()) };

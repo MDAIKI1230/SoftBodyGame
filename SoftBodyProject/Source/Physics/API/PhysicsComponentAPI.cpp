@@ -645,8 +645,9 @@ const EndPointFrame& PhysicsComponentAPI::GetEndPoint(ConstraintID _id)
 	MD_UNREACHABLE("変な拘束IDを使おうとしてんなぁ");
 }
 // 自信のEndPoint変更
-void PhysicsComponentAPI::SetEndPoint(ConstraintID _id, const EndPointFrame& _endPoint)
+void PhysicsComponentAPI::SetEndPoint(ConstraintID _id, EndPointFrame _endPoint)
 {
+	_endPoint.transformID = constraintStorage->GetTransformID(_id);
 	switch (constraintStorage->GetType(_id))
 	{
 	case ConstraintType::POINTS:
@@ -806,7 +807,40 @@ void  PhysicsComponentAPI::RemoveEndPoint(ConstraintID _id, EntityID _entity)
 		default:
 			break;
 		}
+	}
+}
 
+// 拘束からEndPointすべて除外
+void PhysicsComponentAPI::RemoveEndPointOtherAll(ConstraintID _id)
+{
+	PhysicsTransformID transformID;
+
+	uint32_t index{ constraintStorage->GetDenseIndex(_id) };
+	switch (constraintStorage->GetType(_id))
+	{
+	case ConstraintType::POINTS:
+		constraintStorage->EditPointConstraint(_id).RemoveEndpointOtherAll();
+		break;
+	case ConstraintType::DISTANCE:
+		constraintStorage->EditDistanceConstraint(_id).RemoveEndpointOtherAll();
+		break;
+	case ConstraintType::HINGE:
+		constraintStorage->EditHingeConstraint(_id).RemoveEndpointOtherAll();
+		break;
+	case ConstraintType::ANGLE_LIMIT_POINT:
+		constraintStorage->EditAngleLimitPointConstraint(_id).RemoveEndpointOtherAll();
+		break;
+	case ConstraintType::ANGLE_LIMIT_HINGE:
+		constraintStorage->EditAngleLimitHingeConstraint(_id).RemoveEndpointOtherAll();
+		break;
+	case ConstraintType::LIMITED_BALL_JOINT:
+		constraintStorage->EditLimitedBallJointConstraint(_id).RemoveEndpointOtherAll();
+		break;
+	case ConstraintType::JOINT_DRIVE:
+		constraintStorage->EditJointDriveConstraint(_id).RemoveEndpoint();
+		break;
+	default:
+		break;
 	}
 }
 

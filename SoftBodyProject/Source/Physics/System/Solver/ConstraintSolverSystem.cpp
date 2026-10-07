@@ -53,7 +53,9 @@ void ConstraintSolverSystem::ReCalcVelocity(SolverBodyBuffer* _solverBodyBuffer)
 }
 
 // 拘束生成
-void ConstraintSolverSystem::Build(ConstraintBuffer* _constraintBuffer, const ConstraintTuning& _tuning, size_t _buildSize, size_t _batchCount)
+void ConstraintSolverSystem::Build(
+	ConstraintBuffer* _constraintBuffer, const ConstraintTuning& _tuning,
+	float _weightA, float _weightB, size_t _buildSize, size_t _batchCount)
 {
 	if (_batchCount != _constraintBuffer->BatchCount())
 	{
@@ -70,6 +72,9 @@ void ConstraintSolverSystem::Build(ConstraintBuffer* _constraintBuffer, const Co
 	{
 		Constraint constraint;
 
+		constraint.weightA = _weightA;
+		constraint.weightB = _weightB;
+
 		MakeConstraintInfo(constraint, _tuning);
 
 		_constraintBuffer->Add(constraint);
@@ -80,6 +85,7 @@ void ConstraintSolverSystem::Build(ConstraintBuffer* _constraintBuffer, const Co
 void ConstraintSolverSystem::Build(ConstraintBuffer* _constraintBuffer,
 	const ConstraintTuning& _positionTuning, size_t _positionSize,
 	const ConstraintTuning& _angulerTuning, size_t _angulerSize,
+	float _weightA, float _weightB,
 	size_t _batchCount)
 {
 	if (_batchCount != _constraintBuffer->BatchCount())
@@ -97,6 +103,9 @@ void ConstraintSolverSystem::Build(ConstraintBuffer* _constraintBuffer,
 	{
 		Constraint constraint;
 
+		constraint.weightA = _weightA;
+		constraint.weightB = _weightB;
+
 		MakeConstraintInfo(constraint, _positionTuning);
 
 		_constraintBuffer->Add(constraint);
@@ -104,6 +113,9 @@ void ConstraintSolverSystem::Build(ConstraintBuffer* _constraintBuffer,
 	for (size_t i{ 0 }; i < _angulerSize; i++)
 	{
 		Constraint constraint;
+
+		constraint.weightA = _weightA;
+		constraint.weightB = _weightB;
 
 		MakeConstraintInfo(constraint, _angulerTuning);
 
@@ -129,7 +141,7 @@ void ConstraintSolverSystem::SolveRow(SolverBody& _solverBodyA, SolverBody& _sol
 		return;
 	}
 	// 質量から両者がBodyを持っているかの判定をする(どちらかがBodyを持っているなら合計は0じゃないはず)
-	float totalInvMass{ _solverBodyA.inverseMass + _solverBodyB.inverseMass };
+	float totalInvMass{ _solverBodyA.inverseMass * _constraint.weightA + _solverBodyB.inverseMass * _constraint.weightB };
 	if (totalInvMass <= 0)
 	{
 		return;
@@ -245,7 +257,10 @@ void ConstraintSolverSystem::SolvePointConstraint(ConstraintStorage* _constraint
 			Vector3 rA{ basePoint - solverBodyBase.position };
 			Vector3	rB{ point - solverBody.position };
 
-			Build(_constraintBuffer, pointConstraint.tuning, 3, _batchCount);
+			Build(
+				_constraintBuffer, pointConstraint.tuning,
+				pointConstraint.endPoints[0].weight, pointConstraint.endPoints[i].weight,
+				3, _batchCount);
 
 			const ConstraintRowBatch& batch(_constraintBuffer->GetBatch(_batchCount));
 
@@ -297,7 +312,10 @@ void ConstraintSolverSystem::SolveDistanceConstraint(ConstraintStorage* _constra
 			Vector3 rA{ basePoint - solverBodyBase.position };
 			Vector3	rB{ point - solverBody.position };
 
-			Build(_constraintBuffer, distanceConstraint.tuning, 1, _batchCount);
+			Build(
+				_constraintBuffer, distanceConstraint.tuning,
+				distanceConstraint.endPoints[0].weight, distanceConstraint.endPoints[i].weight,
+				1, _batchCount);
 
 			const ConstraintRowBatch& batch(_constraintBuffer->GetBatch(_batchCount));
 
@@ -368,9 +386,11 @@ void ConstraintSolverSystem::SolveHingeConstraint(ConstraintStorage* _constraint
 
 			const ConstraintRowBatch& batch(_constraintBuffer->GetBatch(_batchCount));
 
-			Build(_constraintBuffer,
+			Build(
+				_constraintBuffer,
 				hingeConstraint.positionTuning, 3,
 				hingeConstraint.angularTuning, 2,
+				hingeConstraint.ownerEndPoint.weight, directionEndPoint.weight,
 				_batchCount);
 
 			std::span<Constraint, 5> constraints{ _constraintBuffer->GetConstraints(batch.firstRow, batch.rowCount).first<5>() };
@@ -429,7 +449,10 @@ void ConstraintSolverSystem::SolveAngleLimitPointConstraint(ConstraintStorage* _
 
 			const ConstraintRowBatch& batch(_constraintBuffer->GetBatch(_batchCount));
 
-			Build(_constraintBuffer, angleLimitPointConstraint.tuning, 4, _batchCount);
+			Build(
+				_constraintBuffer, angleLimitPointConstraint.tuning,
+				angleLimitPointConstraint.ownerEndPoint.weight, endPoint.weight,
+				4, _batchCount);
 
 			std::span<Constraint, 4> constraints{ _constraintBuffer->GetConstraints(batch.firstRow, batch.rowCount).first<4>() };
 
@@ -467,18 +490,18 @@ void ConstraintSolverSystem::SolveAngleLimitHingeConstraint(ConstraintStorage* _
 		}
 
 		// 基準側
-		const EndPointFrame& endPoint{ angleLimitHingeConstraint.ownerEndPoint };
-		uint32_t basePointIndex{ _solverBodyBuffer->GetIndex(endPoint.transformID) };
+		const EndPointFrame& ownerEndPoint{ angleLimitHingeConstraint.ownerEndPoint };
+		uint32_t basePointIndex{ _solverBodyBuffer->GetIndex(ownerEndPoint.transformID) };
 		SolverBody& solverBodyBase{ _solverBodyBuffer->Edit(basePointIndex) };
-		Vector3 basePoint{ solverBodyBase.position + solverBodyBase.rotation.Rotate(endPoint.localPosition) };
-		Vector3 axis{ solverBodyBase.rotation.Rotate(endPoint.localRotation.Rotate(Vector3::UP)) };
+		Vector3 basePoint{ solverBodyBase.position + solverBodyBase.rotation.Rotate(ownerEndPoint.localPosition) };
+		Vector3 axis{ solverBodyBase.rotation.Rotate(ownerEndPoint.localRotation.Rotate(Vector3::UP)) };
 
 		// A側の角度0基準方向
-		Vector3 referenceA{ solverBodyBase.rotation.Rotate(endPoint.localRotation.Rotate(Vector3::RIGHT)) };
+		Vector3 referenceA{ solverBodyBase.rotation.Rotate(ownerEndPoint.localRotation.Rotate(Vector3::RIGHT)) };
 
 		for (size_t i{ 0 }; i < angleLimitHingeConstraint.endPoints.size(); i++)
 		{
-			const EndPointFrame endPoint{ angleLimitHingeConstraint.endPoints[i] };
+			const EndPointFrame& endPoint{ angleLimitHingeConstraint.endPoints[i] };
 			// 対象側
 			uint32_t pointIndex{ _solverBodyBuffer->GetIndex(endPoint.transformID) };
 			SolverBody& solverBody{ _solverBodyBuffer->Edit(pointIndex) };
@@ -497,9 +520,11 @@ void ConstraintSolverSystem::SolveAngleLimitHingeConstraint(ConstraintStorage* _
 			Vector3 rA{ basePoint - solverBodyBase.position };
 			Vector3 rB{ point - solverBody.position };
 
-			Build(_constraintBuffer,
+			Build(
+				_constraintBuffer,
 				angleLimitHingeConstraint.positionTuning, 3,
 				angleLimitHingeConstraint.angularTuning, 3,
+				ownerEndPoint.weight, endPoint.weight,
 				_batchCount);
 
 			const ConstraintRowBatch& batch(_constraintBuffer->GetBatch(_batchCount));
@@ -568,7 +593,8 @@ void ConstraintSolverSystem::SolveLimitedBallJointConstraint(ConstraintStorage* 
 
 			Build(_constraintBuffer,
 				limitedBallJointConstraint.positionTuning, 3,
-				limitedBallJointConstraint.angularTuning,23,
+				limitedBallJointConstraint.angularTuning, 2,
+				ownerEndPoint.weight, endPoint.weight,
 				_batchCount);
 
 			const ConstraintRowBatch& batch(_constraintBuffer->GetBatch(_batchCount));
@@ -616,13 +642,16 @@ void ConstraintSolverSystem::SolveJointDriveConstraint(ConstraintStorage* _const
 		const Quaternion& baseRot{ solverBodyBase.rotation * ownerEndPoint.localRotation };
 
 		// 相手となるボディから位置を持ってくる。
-		const EndPointFrame& otherEndPoint{ jointDrive.otherEndPoint };
+		const EndPointFrame& endPoint{ jointDrive.otherEndPoint };
 
-		uint32_t otherPointIndex{ _solverBodyBuffer->GetIndex(otherEndPoint.transformID) };
+		uint32_t otherPointIndex{ _solverBodyBuffer->GetIndex(endPoint.transformID) };
 		SolverBody& solverBodyOther{ _solverBodyBuffer->Edit(otherPointIndex) };
-		const Quaternion& otherRot{ solverBodyOther.rotation * otherEndPoint.localRotation };
+		const Quaternion& otherRot{ solverBodyOther.rotation * endPoint.localRotation };
 
-		Build(_constraintBuffer, jointDrive.tuning, 3, _batchCount);
+		Build(
+			_constraintBuffer, jointDrive.tuning,
+			ownerEndPoint.weight, endPoint.weight,
+			3, _batchCount);
 
 		const ConstraintRowBatch& batch(_constraintBuffer->GetBatch(_batchCount));
 

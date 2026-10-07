@@ -15,11 +15,15 @@ public:
 
 private:
 	// 拘束生成
-	void Build(ConstraintBuffer* _constraintBuffer, const ConstraintTuning& _tuning, size_t _buildSize, size_t _batchCount);
+	void Build(
+		ConstraintBuffer* _constraintBuffer, const ConstraintTuning& _tuning,
+		float _weightA, float _weightB, size_t _buildSize, size_t _batchCount);
 	// 拘束生成
-	void Build(ConstraintBuffer* _constraintBuffer,
+	void Build(
+		ConstraintBuffer* _constraintBuffer,
 		const ConstraintTuning& _positionTuning, size_t _positionSize,
 		const ConstraintTuning& _angulerTuning, size_t _angulerSize,
+		float _weightA, float _weightB,
 		size_t _batchCount);
 	// 情報の作成関数
 	void MakeConstraintInfo(Constraint& _constraint, const ConstraintTuning& _tuning);

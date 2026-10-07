@@ -21,7 +21,7 @@ Player::Player(WorldStorage* _world, EntityID _entityID, Camera* _camera) :
 	AddComponent<TransformComponent>();
 
 	//GetComponent<TransformComponent>()->SetPosition(Vector3{ 0.0f,200.0f,-300.0f });
-	GetComponent<TransformComponent>()->SetPosition(Vector3{ 0.0f,200.0f,0.0f });
+	GetComponent<TransformComponent>()->SetPosition(Vector3{ 150.0f,200.0f,0.0f });
 
 	InputSystem::GetInputAction("Character", "Move").AddPerformedCallback<&Player::Move>(this);
 	InputSystem::GetInputAction("Character", "Move").AddCanceledCallback<&Player::Stop>(this);
@@ -70,6 +70,8 @@ Player::Player(WorldStorage* _world, EntityID _entityID, Camera* _camera) :
 
 	leftHandCollider = active->GetCollider(RagdollBoneRole::LEFT_HAND);
 	rightHandCollider = active->GetCollider(RagdollBoneRole::RIGHT_HAND);
+
+	ignoreActiveRagdoll = active->GetIgnoreFilter();
 }
 
 // --- 更新系 ---
@@ -89,11 +91,20 @@ void Player::FixedUpdate()
 // 衝突始め
 void Player::OnCollisionEnter(CollisionInfo _info)
 {
+	if (_info.otherCollider.CompareGroup(ignoreActiveRagdoll.groupID))
+	{
+		return;
+	}
+
 	if (canLeftHandGrab)
 	{
 		if (_info.selfCollider == leftHandCollider)
 		{
-
+			EndPointFrame endPoint;
+			// endPoint.localPosition = _info.selfContact.contactLocalPosition;
+			endPoint.weight = 0.0f;
+			leftHandConstraint.SetEndPoint(endPoint);
+			leftHandConstraint.AddEndPoint(_info.other, _info.otherContact.contactLocalPosition);
 		}
 	}
 
@@ -101,7 +112,11 @@ void Player::OnCollisionEnter(CollisionInfo _info)
 	{
 		if (_info.selfCollider == rightHandCollider)
 		{
-
+			EndPointFrame endPoint;
+			// endPoint.localPosition = _info.selfContact.contactLocalPosition;
+			endPoint.weight = 0.0f;
+			rightHandConstraint.SetEndPoint(endPoint);
+			rightHandConstraint.AddEndPoint(_info.other, _info.otherContact.contactLocalPosition);
 		}
 	}
 }
@@ -201,6 +216,7 @@ void Player::RaiseLeftHandEnd(InputActionContext _input)
 {
 	StopActiveRagdollHand(RagdollBoneRole::LEFT_HAND);
 	canLeftHandGrab = false;
+	leftHandConstraint.RemoveEndPointOtherAll();
 }
 void Player::RaiseRightHand(InputActionContext _input)
 {
@@ -236,6 +252,7 @@ void Player::RaiseRightHandEnd(InputActionContext _input)
 {
 	StopActiveRagdollHand(RagdollBoneRole::RIGHT_HAND);
 	canRightHandGrab = false;
+	rightHandConstraint.RemoveEndPointOtherAll();
 }
 
 // 手の位置を計算する関数

@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "InputActionContext.h"
+#include "CollisionFilter.h"
 
 #include "ActiveRagdollComponent.h"
 #include "PointConstraintComponent.h"
@@ -64,4 +65,6 @@ private:
 
 	ColliderComponent leftHandCollider;
 	ColliderComponent rightHandCollider;
+
+	CollisionFilter ignoreActiveRagdoll;
 };

@@ -12,6 +12,11 @@ struct Constraint
 	// ソルバボディB
 	uint32_t solverBodyBIndex{ 0 };
 
+	// 解く際の重みA
+	float weightA{ 1.0f };
+	// 解く際の重みB
+	float weightB{ 1.0f };
+
 	// ズレの数値(拘束条件Cの値と考えてOK)
 	float error{ 0.0f };
 	// Aの速度、Aの角速度、Bの速度、Bの角速度

@@ -21,6 +21,11 @@ public:
 			}
 		}
 	}
+	// EndPoint自分以外削除処理
+	void RemoveEndpointOtherAll()
+	{
+		endPoints.clear();
+	}
 public:
 	// 自身の情報
 	EndPointFrame ownerEndPoint;

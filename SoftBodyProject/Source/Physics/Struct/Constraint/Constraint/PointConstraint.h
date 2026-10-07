@@ -23,6 +23,22 @@ public:
 			}
 		}
 	}
+	// EndPoint自分以外削除処理
+	void RemoveEndpointOtherAll()
+	{
+		if (endPoints.size() <= 1)
+		{
+			return;
+		}
+		while (true)
+		{
+			endPoints.pop_back();
+			if (endPoints.size() == 1)
+			{
+				return;
+			}
+		}
+	}
 public:
 	// 拘束のメンバー
 	std::vector<EndPointFrame> endPoints;

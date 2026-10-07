@@ -21,6 +21,11 @@ public:
 			}
 		}
 	}
+	// EndPoint自分以外削除処理
+	void RemoveEndpointOtherAll()
+	{
+		endPoints.clear();
+	}
 public:
 	EndPointFrame ownerEndPoint;
 	// 拘束のメンバー
