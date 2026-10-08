@@ -92,7 +92,7 @@ bool PhysicsQuerySystem::SphereCastHit(
 	ColliderStorage* _colliderStorage, PhysicsTransformStorage* _transformStorage,
 	const CollisionFilter& _filter)
 {
-
+	return true;
 }
 bool PhysicsQuerySystem::SphereCastHit(
 	const SphereRay& _ray, RayCastQueryHitInfo& _hitInfo,
