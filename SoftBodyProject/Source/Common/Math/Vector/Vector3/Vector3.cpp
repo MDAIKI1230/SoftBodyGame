@@ -138,6 +138,33 @@ float Vector3::Angle(const Vector3& _from, const Vector3& _to)
 	return acosf(Dot(_from, _to) / (fromLen * toLen));
 }
 
+// 2つのベクトル間の角度(実数のみ)(引数正規化済み)
+float Vector3::AngleNormal(const Vector3& _normalFrom, const Vector3& _normalTo)
+{
+	return acosf(Dot(_normalFrom, _normalTo));
+}
+
+// 2つのベクトル間の符号付角度(実数のみ)
+float Vector3::SignedAngle(const Vector3& _from, const Vector3& _to, const Vector3& _axis)
+{
+	Vector3 normalFrom{ _from.Normalized() };
+	Vector3 normalTo{ _to.Normalized() };
+	Vector3 normalAxis{ _axis.Normalized() };
+
+	Vector3 cross{ Cross(normalFrom, normalTo) };
+
+	float angle{ atan2f(cross.Length(), Dot(normalFrom, normalTo)) };
+	return Dot(normalAxis, cross) < 0.0f ? -angle : angle;
+}
+
+// 2つのベクトル間の符号付角度(実数のみ)(軸が正規化済み)(軸が水平)
+float Vector3::SignedAngleNormal(const Vector3& _from, const Vector3& _to, const Vector3& _normalAxis)
+{
+	return atan2f(
+		Vector3::Dot(_normalAxis,Vector3::Cross(_from, _to)),
+		Vector3::Dot(_from, _to));
+}
+
 // 正規化(値の変化有)(実数のみ)
 Vector3& Vector3::Normalize()
 {

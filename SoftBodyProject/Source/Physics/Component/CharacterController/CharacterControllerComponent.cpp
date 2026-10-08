@@ -188,6 +188,28 @@ void CharacterControllerComponent::SetSlopeAcceleration(float _acceleration)
 	PhysicsComponentAPI::SetCharacterControllerSlopeAcceleration(id, _acceleration);
 }
 
+// 移動方向を向く際の最大修正角度取得(弧度法)
+float CharacterControllerComponent::GetMovementAngularVelocityRad()
+{
+	return PhysicsComponentAPI::GetCharacterControllerMovementAngularVelocity(id);
+}
+// 移動方向を向く際の最大修正角度設定(弧度法)
+void CharacterControllerComponent::SetMovementAngularVelocityRad(float _movementAngularVelocity)
+{
+	PhysicsComponentAPI::SetCharacterControllerMovementAngularVelocity(id, _movementAngularVelocity);
+}
+
+// 移動方向を向く際の最大修正角度取得(度数法)
+float CharacterControllerComponent::GetMovementAngularVelocityDeg()
+{
+	return MDMath::DegToRad(PhysicsComponentAPI::GetCharacterControllerMovementAngularVelocity(id));
+}
+// 移動方向を向く際の最大修正角度設定(度数法)
+void CharacterControllerComponent::SetMovementAngularVelocityDeg(float _movementAngularVelocity)
+{
+	PhysicsComponentAPI::SetCharacterControllerMovementAngularVelocity(id, MDMath::DegToRad(_movementAngularVelocity));
+}
+
 // --- 接地設定 ---
 
 // 地面探索距離取得

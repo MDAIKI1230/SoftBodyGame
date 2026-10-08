@@ -95,6 +95,16 @@ public:
 	// 急斜面での滑り加速度設定
 	void SetSlopeAcceleration(float _acceleration);
 
+	// 移動方向を向く際の最大修正角度取得(弧度法)
+	float GetMovementAngularVelocityRad();
+	// 移動方向を向く際の最大修正角度設定(弧度法)
+	void SetMovementAngularVelocityRad(float _movementAngularVelocity);
+
+	// 移動方向を向く際の最大修正角度取得(度数法)
+	float GetMovementAngularVelocityDeg();
+	// 移動方向を向く際の最大修正角度設定(度数法)
+	void SetMovementAngularVelocityDeg(float _movementAngularVelocity);
+
 	// --- 接地設定 ---
 
 	// 地面探索距離取得

@@ -40,6 +40,8 @@ class CharacterControllerStorage :public DataStorageBase<CharacterControllerID>
 	MD_STORAGE_ID_READ_WRITE_COLUMN(CharacterControllerID, float, JumpSpeed, jumpSpeeds);
 	// 滑り強める力
 	MD_STORAGE_ID_READ_WRITE_COLUMN(CharacterControllerID, float, SlopeAcceleration, slopeAccelerations);
+	// 移動方向を向く際の角速度(弧度法)
+	MD_STORAGE_ID_READ_WRITE_COLUMN(CharacterControllerID, float, MovementAngularVelocity, movementAngularVelocities);
 
 	// --- 接地設定 ---
 

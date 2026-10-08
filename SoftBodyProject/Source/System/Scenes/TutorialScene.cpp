@@ -18,7 +18,7 @@
 void TutorialScene::Initialize()
 {
 	InputSystem::LoadAsset("Res/Data/Input/CharacterInput.json");
-	ResourceManager::LoadModel("Res/Model/M_001_player_095_01_no_sword_walk_high_knee.mv1");
+	ResourceManager::LoadModel("Res/Model/M_001_player_095_01.mv1");
 	ResourceManager::LoadModel("Res/Model/MovableStageRiser.mv1");
 	LoadFile("Res/Data/Scene/ExhibitionTutorialStageSceneData.json");
 	ResourceManager::LoadSound("Res/Sound/BGM/TutorialBGM.wav");

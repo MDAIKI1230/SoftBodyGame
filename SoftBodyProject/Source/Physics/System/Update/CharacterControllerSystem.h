@@ -15,14 +15,17 @@ private:
 	// 地面との状態を更新する関数
 	void UpdateGroundState(CharacterControllerStorage* _characterControllerStorage, PhysicsTransformStorage* _transformStorage, BodyStorage* _bodyStorage, ColliderStorage* _colliderStorage);
 	// 移動更新関数
-	void UpdateMovement(CharacterControllerStorage* _characterControllerStorage, BodyStorage* _bodyStorage);
+	void UpdateMovement(CharacterControllerStorage* _characterControllerStorage, PhysicsTransformStorage* _transformStorage, BodyStorage* _bodyStorage);
 	// ジャンプリクエスト処理関数
 	void UpdateJump(CharacterControllerStorage* _characterControllerStorage, BodyStorage* _bodyStorage);
 
 	// 空中にいる時の移動更新関数
-	void UpdateAirboneState(CharacterControllerID _id, CharacterControllerStorage* _characterControllerStorage, BodyStorage* _bodyStorage, float _deltaTime);
+	void UpdateAirboneState(CharacterControllerID _id, CharacterControllerStorage* _characterControllerStorage, PhysicsTransformStorage* _transformStorage, BodyStorage* _bodyStorage, float _deltaTime);
 	// 歩ける状態の時の移動更新関数
-	void UpdateWalkableState(CharacterControllerID _id, CharacterControllerStorage* _characterControllerStorage, BodyStorage* _bodyStorage, float _deltaTime);
+	void UpdateWalkableState(CharacterControllerID _id, CharacterControllerStorage* _characterControllerStorage, PhysicsTransformStorage* _transformStorage, BodyStorage* _bodyStorage, float _deltaTime);
 	// 滑る地面の上にいる時の移動更新関数
-	void UpdateSteepSlopeState(CharacterControllerID _id, CharacterControllerStorage* _characterControllerStorage, BodyStorage* _bodyStorage, float _deltaTime);
+	void UpdateSteepSlopeState(CharacterControllerID _id, CharacterControllerStorage* _characterControllerStorage, PhysicsTransformStorage* _transformStorage, BodyStorage* _bodyStorage, float _deltaTime);
+
+	// 姿勢の制御
+	void UpdateRotation(Quaternion& _rotation, const Vector3& _velocity, float _movementAngularVelocity, float _deltaTime);
 };

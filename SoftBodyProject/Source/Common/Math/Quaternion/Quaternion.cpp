@@ -361,5 +361,5 @@ Quaternion Quaternion::FromToRotation(const Vector3& _from, const Vector3& _to)
 
 	Vector3 cross{ Vector3::Cross(fromNormal,toNormal) };
 
-	return Quaternion{ cross.x,cross.y,cross.z,d }.Normalize();
+	return Quaternion{ cross.x, cross.y, cross.z, 1.0f + d }.Normalize();
 }

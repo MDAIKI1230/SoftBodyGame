@@ -11,7 +11,7 @@ void CharacterControllerSystem::FixedUpdate(
 	BodyStorage* _bodyStorage, ColliderStorage* _colliderStorage)
 {
 	UpdateGroundState(_characterControllerStorage, _transformStorage, _bodyStorage, _colliderStorage);
-	UpdateMovement(_characterControllerStorage, _bodyStorage);
+	UpdateMovement(_characterControllerStorage,_transformStorage, _bodyStorage);
 	UpdateJump(_characterControllerStorage, _bodyStorage);
 }
 
@@ -82,20 +82,20 @@ void CharacterControllerSystem::UpdateGroundState(
 	}
 }
 // 移動更新関数
-void CharacterControllerSystem::UpdateMovement(CharacterControllerStorage* _characterControllerStorage, BodyStorage* _bodyStorage)
+void CharacterControllerSystem::UpdateMovement(CharacterControllerStorage* _characterControllerStorage, PhysicsTransformStorage* _transformStorage, BodyStorage* _bodyStorage)
 {
 	for (auto id : _characterControllerStorage->GetIDRange())
 	{
 		switch (_characterControllerStorage->GetGroundState(id))
 		{
 		case CharacterGroundState::AIRBORNE:
-			UpdateAirboneState(id, _characterControllerStorage, _bodyStorage, TimeManager::GetFixedDeltaTime());
+			UpdateAirboneState(id, _characterControllerStorage, _transformStorage, _bodyStorage, TimeManager::GetFixedDeltaTime());
 			break;
 		case CharacterGroundState::WALKABLE:
-			UpdateWalkableState(id, _characterControllerStorage, _bodyStorage, TimeManager::GetFixedDeltaTime());
+			UpdateWalkableState(id, _characterControllerStorage, _transformStorage, _bodyStorage, TimeManager::GetFixedDeltaTime());
 			break;
 		case CharacterGroundState::STEEP_SLOPE:
-			UpdateSteepSlopeState(id, _characterControllerStorage, _bodyStorage, TimeManager::GetFixedDeltaTime());
+			UpdateSteepSlopeState(id, _characterControllerStorage, _transformStorage, _bodyStorage, TimeManager::GetFixedDeltaTime());
 			break;
 		default:
 			break;
@@ -138,7 +138,7 @@ void CharacterControllerSystem::UpdateJump(CharacterControllerStorage* _characte
 }
 
 // 空中にいる時の移動更新関数
-void CharacterControllerSystem::UpdateAirboneState(CharacterControllerID _id, CharacterControllerStorage* _characterControllerStorage, BodyStorage* _bodyStorage, float _deltaTime)
+void CharacterControllerSystem::UpdateAirboneState(CharacterControllerID _id, CharacterControllerStorage* _characterControllerStorage, PhysicsTransformStorage* _transformStorage, BodyStorage* _bodyStorage, float _deltaTime)
 {
 	// 入力
 	const Vector3& input{ _characterControllerStorage->GetMoveInput(_id) };
@@ -203,10 +203,18 @@ void CharacterControllerSystem::UpdateAirboneState(CharacterControllerID _id, Ch
 	}
 
 	velocity += deltaVelocity;
+
+	PhysicsTransformID transformID{ _characterControllerStorage->GetTransformID(_id) };
+
+	// 現在の姿勢
+	Quaternion& rotation{ _transformStorage->EditRotation(transformID) };
+	float movementAngularVelocity{ _characterControllerStorage->GetMovementAngularVelocity(_id) };
+
+	UpdateRotation(rotation, velocity, movementAngularVelocity, _deltaTime);
 }
 
 // 歩ける状態の時の移動更新関数
-void CharacterControllerSystem::UpdateWalkableState(CharacterControllerID _id, CharacterControllerStorage* _characterControllerStorage, BodyStorage* _bodyStorage, float _deltaTime)
+void CharacterControllerSystem::UpdateWalkableState(CharacterControllerID _id, CharacterControllerStorage* _characterControllerStorage, PhysicsTransformStorage* _transformStorage, BodyStorage* _bodyStorage, float _deltaTime)
 {
 	// 入力
 	const Vector3& input{ _characterControllerStorage->GetMoveInput(_id) };
@@ -286,10 +294,25 @@ void CharacterControllerSystem::UpdateWalkableState(CharacterControllerID _id, C
 
 		force -= slopeGravity * mass;
 	}
+
+	// 現在の速度から前方を決めそちらを向く処理
+
+	if (velocity.LengthSqr() <= MathConstants::EPSILON)
+	{
+		return;
+	}
+
+	PhysicsTransformID transformID{ _characterControllerStorage->GetTransformID(_id) };
+
+	// 現在の姿勢
+	Quaternion& rotation{ _transformStorage->EditRotation(transformID) };
+	float movementAngularVelocity{ _characterControllerStorage->GetMovementAngularVelocity(_id) };
+
+	UpdateRotation(rotation, velocity, movementAngularVelocity, _deltaTime);
 }
 
 // 滑る地面の上にいる時の移動更新関数
-void CharacterControllerSystem::UpdateSteepSlopeState(CharacterControllerID _id, CharacterControllerStorage* _characterControllerStorage, BodyStorage* _bodyStorage, float _deltaTime)
+void CharacterControllerSystem::UpdateSteepSlopeState(CharacterControllerID _id, CharacterControllerStorage* _characterControllerStorage, PhysicsTransformStorage* _transformStorage, BodyStorage* _bodyStorage, float _deltaTime)
 {
 	// 地面の法線
 	const Vector3& groundNormal{ _characterControllerStorage->GetGroundNormal(_id) };
@@ -307,7 +330,7 @@ void CharacterControllerSystem::UpdateSteepSlopeState(CharacterControllerID _id,
 	// 重力の有無
 	bool isGravity{ _bodyStorage->GetRigidBodyIsGravity(bodyID) };
 
-	UpdateAirboneState(_id, _characterControllerStorage, _bodyStorage, _deltaTime);
+	UpdateAirboneState(_id, _characterControllerStorage, _transformStorage, _bodyStorage, _deltaTime);
 
 	// 重力による滑りを強める
 	if (isGravity)
@@ -323,4 +346,42 @@ void CharacterControllerSystem::UpdateSteepSlopeState(CharacterControllerID _id,
 			force += slopeGravity.Normalize() * slopeAcc * mass;
 		}
 	}
+}
+
+// 姿勢の制御
+void CharacterControllerSystem::UpdateRotation(Quaternion& _rotation, const Vector3& _velocity, float _movementAngularVelocity, float _deltaTime)
+{
+
+	Vector3 nowForward{ _rotation.Rotate(Vector3::FORWARD) };
+
+	nowForward = SIMDVectorMath::Mul(nowForward, Vector3::FORWARD + Vector3::RIGHT);
+
+	if (nowForward.LengthSqr() <= MathConstants::EPSILON)
+	{
+		return;
+	}
+
+	Vector3 targetForward{ _velocity.Normalized() };
+
+	targetForward = SIMDVectorMath::Mul(targetForward, Vector3::FORWARD + Vector3::RIGHT);
+
+	if (targetForward.LengthSqr() <= MathConstants::EPSILON)
+	{
+		return;
+	}
+
+	float theta{ Vector3::SignedAngleNormal(nowForward,targetForward,Vector3::UP) };
+
+	if (fabs(theta) <= MathConstants::EPSILON)
+	{
+		return;
+	}
+
+	float maxTheta{ _movementAngularVelocity * _deltaTime };
+
+	theta = std::clamp(theta, -maxTheta, maxTheta);
+
+	Quaternion deltaRot{ Quaternion::AngleAxis(theta,Vector3::UP) };
+
+	_rotation = deltaRot * _rotation;
 }

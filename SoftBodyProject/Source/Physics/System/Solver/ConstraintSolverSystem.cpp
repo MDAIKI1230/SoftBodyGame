@@ -129,8 +129,8 @@ void ConstraintSolverSystem::MakeConstraintInfo(Constraint& _constraint, const C
 
 	_constraint.timeStepAdjustedCompliance = _tuning.compliance / (deltaTime * deltaTime);
 
-	_constraint.minLambda = -_tuning.maxForce * deltaTime;
-	_constraint.maxLambda = _tuning.maxForce * deltaTime;
+	_constraint.minLambda = -_tuning.maxForce * deltaTime * deltaTime;
+	_constraint.maxLambda = _tuning.maxForce * deltaTime * deltaTime;
 }
 
 // XPBD法による位置解消関数

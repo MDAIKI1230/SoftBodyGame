@@ -39,7 +39,7 @@ Player::Player(WorldStorage* _world, EntityID _entityID, Camera* _camera) :
 	camera->GetComponent<CameraComponent>()->SetFar(2000.0f);
 
 	RendererComponent* renderer{ AddComponent<RendererComponent>(
-		ResourceManager::GetModel("M_001_player_095_01_no_sword_walk_high_knee.mv1")
+		ResourceManager::GetModel("M_001_player_095_01.mv1")
 	) };
 
 	ActiveRagdollComponent* active{ AddComponent<ActiveRagdollComponent>(

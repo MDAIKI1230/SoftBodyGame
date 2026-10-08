@@ -26,6 +26,7 @@ CharacterControllerID CharacterControllerStorage::Create(EntityID _entity, Physi
 	airAccelerations.emplace_back(500.0f);
 	jumpSpeeds.emplace_back(600.0f);
 	slopeAccelerations.emplace_back(500.0f);
+	movementAngularVelocities.emplace_back(MathConstants::PI_FLT);
 
 	// --- 接地設定 ---
 
@@ -82,6 +83,7 @@ void CharacterControllerStorage::Destroy(CharacterControllerID _id)
 		airAccelerations[denseIndex] = airAccelerations[lastIndex];
 		jumpSpeeds[denseIndex] = jumpSpeeds[lastIndex];
 		slopeAccelerations[denseIndex] = slopeAccelerations[lastIndex];
+		movementAngularVelocities[denseIndex] = movementAngularVelocities[lastIndex];
 
 		// --- 接地設定 ---
 

@@ -1,6 +1,6 @@
 {
 	"Format": "ActiveRagdollDefinition",
-	"RagdollPath": "../M_001_player_095_01_no_sword_tpose.json",
+	"RagdollPath": "../M_001_player_095_01.json",
 	"BoneMaskPath": "Res/Data/Skeleton/M_001_player_095_01_no_sword_NoArmsAndHeadBoneMask.json",
 	"Setting": {
 		"GroundDetection": {
@@ -37,8 +37,8 @@
 			"DeadZone": 0.25
 		},
 		"JointDrive": {
-			"Compliance":0.0001,
-			"MaxForce": 500.0
+			"Compliance":0.000,
+			"MaxForce": 5000.0
 		},
 		"Jump": {
 			"Height": 80.0,

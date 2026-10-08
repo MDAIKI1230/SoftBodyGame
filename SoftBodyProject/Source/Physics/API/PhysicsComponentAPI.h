@@ -411,6 +411,11 @@ public:
 	// 急斜面での滑り加速度設定
 	static void SetCharacterControllerSlopeAcceleration(CharacterControllerID _id, float _acceleration);
 
+	// 移動方向を向く際の最大修正角度取得(弧度法)
+	static float GetCharacterControllerMovementAngularVelocity(CharacterControllerID _id);
+	// 移動方向を向く際の最大修正角度設定(弧度法)
+	static void SetCharacterControllerMovementAngularVelocity(CharacterControllerID _id, float _movementAngularVelocity);
+
 	// --- 接地設定 ---
 
 	// 地面探索距離取得
