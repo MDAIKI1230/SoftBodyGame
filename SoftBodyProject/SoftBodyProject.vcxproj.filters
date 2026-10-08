@@ -1444,6 +1444,12 @@
     <ClInclude Include="Source\Physics\Struct\Collision\ContactInfo.h">
       <Filter>ソース ファイル\Physics\Struct\Collision</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Physics\Struct\Ray\SphereRay.h">
+      <Filter>ソース ファイル\Physics\Struct\Ray</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Function\SphereCastFunction.h">
+      <Filter>ソース ファイル\Physics\Function</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\System\Scenes\DebugScene.cpp">
@@ -1927,6 +1933,9 @@
       <Filter>ソース ファイル\Sound</Filter>
     </ClCompile>
     <ClCompile Include="Source\Physics\Function\ConstraintFunction.cpp">
+      <Filter>ソース ファイル\Physics\Function</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Physics\Function\SphereCastFunction.cpp">
       <Filter>ソース ファイル\Physics\Function</Filter>
     </ClCompile>
   </ItemGroup>

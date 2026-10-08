@@ -6,5 +6,5 @@ struct Ray
 {
     Vector3 origin;
     Vector3 direction;
-    float maxDistance{};
+    float maxDistance{ 0.0f };
 };

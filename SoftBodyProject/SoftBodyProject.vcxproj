@@ -371,6 +371,7 @@
     <ClInclude Include="Source\Physics\Function\GJKEPA.h" />
     <ClInclude Include="Source\Physics\Function\ManifoldFunction.h" />
     <ClInclude Include="Source\Physics\Function\RayCastFunction.h" />
+    <ClInclude Include="Source\Physics\Function\SphereCastFunction.h" />
     <ClInclude Include="Source\Physics\PhysicsWorld.h" />
     <ClInclude Include="Source\Physics\Storage\Body\BodyStorage.h" />
     <ClInclude Include="Source\Physics\Storage\Body\Rigid\RigidBodyStorage.h" />
@@ -455,6 +456,7 @@
     <ClInclude Include="Source\Physics\Struct\Ray\Ray.h" />
     <ClInclude Include="Source\Physics\Struct\Ray\RayCastHitInfo.h" />
     <ClInclude Include="Source\Physics\Struct\Ray\RayCastQueryHitInfo.h" />
+    <ClInclude Include="Source\Physics\Struct\Ray\SphereRay.h" />
     <ClInclude Include="Source\Physics\Struct\SnapShot\RigidBodySnapshot.h" />
     <ClInclude Include="Source\Physics\Struct\SnapShot\RigidBodySnapshotFrame.h" />
     <ClInclude Include="Source\Physics\Struct\Transform\PhysicsTransformID.h" />
@@ -626,6 +628,7 @@
     <ClCompile Include="Source\Physics\Function\GJKEPA.cpp" />
     <ClCompile Include="Source\Physics\Function\ManifoldFunction.cpp" />
     <ClCompile Include="Source\Physics\Function\RaycastFunction.cpp" />
+    <ClCompile Include="Source\Physics\Function\SphereCastFunction.cpp" />
     <ClCompile Include="Source\Physics\PhysicsWorld.cpp" />
     <ClCompile Include="Source\Physics\Storage\Body\BodyStorage.cpp" />
     <ClCompile Include="Source\Physics\Storage\Body\Rigid\RigidBodyStorage.cpp" />

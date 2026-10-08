@@ -2,7 +2,6 @@
 
 #include "Ray.h"
 #include "RayCastHitInfo.h"
-#include "RayCastQueryHitInfo.h"
 
 namespace RayCastFunction
 {
