@@ -75,6 +75,11 @@ bool ColliderComponent::CompareGroup(uint32_t _groupID) const
 	return IsValid() && GetFilter().CompareGroup(_groupID);
 }
 
+bool ColliderComponent::CompareGroup(const CollisionFilter& _other) const
+{
+	return IsValid() && GetFilter().CompareGroup(_other);
+}
+
 bool ColliderComponent::CompareGroup(const ColliderComponent& _other) const
 {
 	return IsValid() && _other.IsValid() && GetFilter().CompareGroup(_other.GetFilter());
@@ -83,6 +88,11 @@ bool ColliderComponent::CompareGroup(const ColliderComponent& _other) const
 bool ColliderComponent::CompareMember(const ColliderComponent& _other) const
 {
 	return IsValid() && _other.IsValid() && GetFilter().CompareMember(_other.GetFilter());
+}
+
+bool ColliderComponent::CompareMember(const CollisionFilter& _other) const
+{
+	return IsValid() && GetFilter().CompareMember(_other);
 }
 
 bool ColliderComponent::IsMemberIgnored(uint32_t _memberIndex) const

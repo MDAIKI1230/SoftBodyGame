@@ -1938,6 +1938,9 @@
     <ClCompile Include="Source\Physics\Function\SphereCastFunction.cpp">
       <Filter>ソース ファイル\Physics\Function</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Physics\Struct\Collision\CollisionFilter.cpp">
+      <Filter>ソース ファイル\Physics\Struct\Collision</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shader\Sky\SkyVS.hlsl">

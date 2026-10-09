@@ -112,6 +112,10 @@ bool RagdollStorage::CreateRagdoll(EntityID _entity, SkeletonID _skeletonID, Rag
 
 	std::unordered_map<uint32_t, uint8_t> bondeIndexToCollisionNumber;
 	uint8_t currentCollisionNumber{ 0 };
+	CollisionFilter colliderFilter;
+
+	colliderFilter.categoryBits = CollisionTag::RAGDOLL;
+	uint32_t groupID{ colliderFilter.CreateGroup() };
 
 	// ロール取得
 	for (const auto& [boneName, role] : _definition.roles)
@@ -182,17 +186,12 @@ bool RagdollStorage::CreateRagdoll(EntityID _entity, SkeletonID _skeletonID, Rag
 				break;
 			}
 
+			colliderFilter.memberIndex = currentCollisionNumber;
 			// コリジョンフィルター作るときの番号を保持
 			bondeIndexToCollisionNumber[boneIndex] = currentCollisionNumber;
 			currentCollisionNumber++;
 
-			CollisionFilter filter;
-
-			// 0は無効値なので＋１
-			filter.groupID = _ragdollID.GetIndex() + 1;
-			filter.memberIndex = bondeIndexToCollisionNumber[boneIndex];
-
-			PhysicsComponentAPI::SetFilter(collider, filter);
+			PhysicsComponentAPI::SetFilter(collider, colliderFilter);
 
 			ragdoll.colliders.push_back(collider);
 
@@ -400,7 +399,7 @@ bool RagdollStorage::CreateRagdoll(EntityID _entity, SkeletonID _skeletonID, Rag
 
 	CollisionFilter ignoreFilter;
 
-	ignoreFilter.groupID = _ragdollID.GetIndex() + 1;
+	ignoreFilter.SetGroup(groupID);
 
 	// 同じgroupIDに所属する全Colliderを無視する
 	ignoreFilter.ignoreMembers = UINT64_MAX;

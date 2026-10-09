@@ -652,6 +652,7 @@
     <ClCompile Include="Source\Physics\Storage\Component\Constraint\PointConstraintComponentStorage.cpp" />
     <ClCompile Include="Source\Physics\Storage\Constraint\ConstraintStorage.cpp" />
     <ClCompile Include="Source\Physics\Storage\Transform\PhysicsTransformStorage.cpp" />
+    <ClCompile Include="Source\Physics\Struct\Collision\CollisionFilter.cpp" />
     <ClCompile Include="Source\Physics\System\Build\BodySnapshotBuildSystem.cpp" />
     <ClCompile Include="Source\Physics\System\Build\SolverBodyBuildSystem.cpp" />
     <ClCompile Include="Source\Physics\System\Collision\CollisionSystem.cpp" />

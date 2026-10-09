@@ -52,10 +52,11 @@ Player::Player(WorldStorage* _world, EntityID _entityID, Camera* _camera) :
 	anim->SetAnimationName("Walk");
 	anim->SetLoop(true);
 
-	camera->GetComponent<CameraRigComponent>()->GetRayFilter(active->GetIgnoreFilter());
+	CollisionFilter ragdollFilter{ active->GetIgnoreFilter() };
+	camera->GetComponent<CameraRigComponent>()->GetRayFilter(ragdollFilter);
 
 	CharacterControllerComponent* cc{ AddComponent<CharacterControllerComponent>() };
-	cc->SetCollisionFilter(active->GetIgnoreFilter());
+	cc->SetCollisionFilter(ragdollFilter);
 	cc->SetColliderHeight(50.0f);
 	cc->SetColliderOffset(Vector3{ 0.0f,50.0f,0.0f });
 
@@ -91,7 +92,7 @@ void Player::FixedUpdate()
 // 衝突始め
 void Player::OnCollisionEnter(CollisionInfo _info)
 {
-	if (_info.otherCollider.CompareGroup(ignoreActiveRagdoll.groupID))
+	if (_info.otherCollider.CompareGroup(ignoreActiveRagdoll))
 	{
 		return;
 	}
@@ -101,7 +102,6 @@ void Player::OnCollisionEnter(CollisionInfo _info)
 		if (_info.selfCollider == leftHandCollider)
 		{
 			EndPointFrame endPoint;
-			// endPoint.localPosition = _info.selfContact.contactLocalPosition;
 			endPoint.weight = 0.0f;
 			leftHandConstraint.SetEndPoint(endPoint);
 			leftHandConstraint.AddEndPoint(_info.other, _info.otherContact.contactLocalPosition);
@@ -113,7 +113,6 @@ void Player::OnCollisionEnter(CollisionInfo _info)
 		if (_info.selfCollider == rightHandCollider)
 		{
 			EndPointFrame endPoint;
-			// endPoint.localPosition = _info.selfContact.contactLocalPosition;
 			endPoint.weight = 0.0f;
 			rightHandConstraint.SetEndPoint(endPoint);
 			rightHandConstraint.AddEndPoint(_info.other, _info.otherContact.contactLocalPosition);

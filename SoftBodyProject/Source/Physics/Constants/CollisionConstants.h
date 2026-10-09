@@ -30,3 +30,14 @@ enum AABBChangeDiaryFlag :uint8_t
 };
 
 using AABBDiaryFlag = uint8_t;
+
+namespace CollisionTag
+{
+	enum Type :uint32_t
+	{
+		NONE = 1,
+		TERRAIN = 1 << 1,   // 地面・壁など
+		CARRYABLE = 1 << 2, // 持ち運べる物
+		RAGDOLL = 1 << 3,   // ラグドール
+	};
+}

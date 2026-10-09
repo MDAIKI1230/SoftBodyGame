@@ -61,8 +61,12 @@ public:
 	bool CompareGroup(uint32_t _groupID) const;
 	// 相手と同じグループか
 	bool CompareGroup(const ColliderComponent& _other) const;
+	// 相手と同じグループか
+	bool CompareGroup(const CollisionFilter& _other) const;
 	// 相手と同じグループの同じ部位か
 	bool CompareMember(const ColliderComponent& _other) const;
+	// 相手と同じグループの同じ部位か
+	bool CompareMember(const CollisionFilter& _other) const;
 
 	// 指定した部位を無視する設定になっているか
 	bool IsMemberIgnored(uint32_t _memberIndex) const;
