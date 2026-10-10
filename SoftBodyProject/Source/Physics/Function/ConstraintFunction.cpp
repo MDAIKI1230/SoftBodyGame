@@ -483,7 +483,7 @@ void ConstraintFunction::CalcLimitedPointOnLineJacobianAndError(
 
 		row.error = Vector3::Dot(diffWorld, n);
 
-		if (row.error <= maxDistances[i])
+		if (std::abs(row.error) <= maxDistances[i])
 		{
 			row.isActive = false;
 			continue;
@@ -491,7 +491,7 @@ void ConstraintFunction::CalcLimitedPointOnLineJacobianAndError(
 		}
 
 		row.isActive = true;
-		row.error -= maxDistances[i];
+		row.error -= std::copysign(maxDistance, row.error);
 
 		row.jacobian[0] = n;
 		row.jacobian[1] = Vector3::Cross(_rA - diffWorld, n);
