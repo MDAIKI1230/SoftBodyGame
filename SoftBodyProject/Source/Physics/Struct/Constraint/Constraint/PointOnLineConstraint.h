@@ -42,7 +42,7 @@ struct PointOnLineConstraint
 	}
 public:
 	// 自身のポイント
-	EndPointFrame wonedEndPoint;
+	EndPointFrame ownerEndPoint;
 	// 拘束のメンバー
 	std::vector<EndPointFrame> endPoints;
 

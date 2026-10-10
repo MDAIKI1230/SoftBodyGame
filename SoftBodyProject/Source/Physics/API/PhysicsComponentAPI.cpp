@@ -530,34 +530,6 @@ Vector3 PhysicsComponentAPI::Support(ColliderID _id, const Vector3& _dir)
 
 // --- 拘束系 ---
 
-// 点拘束作成
-ConstraintID PhysicsComponentAPI::CreatePointConstraint(EntityID _entity, const Vector3& _localOffset)
-{
-	return constraintStorage->CreatePointConstraint(_entity, transformStorage->GetOrCreateTransform(_entity), _localOffset);
-}
-// Bodyを指定して点拘束を作成
-ConstraintID PhysicsComponentAPI::CreatePointConstraint(EntityID _entity, BodyID _bodyID, const Vector3& _localOffset)
-{
-	if (!bodyStorage->IsAlive(_bodyID))
-	{
-		return ConstraintID{};
-	}
-
-	PhysicsTransformID transformID{ bodyStorage->GetTransformID(_bodyID) };
-
-	if (!transformStorage->IsAlive(transformID))
-	{
-		return ConstraintID{};
-	}
-
-	return constraintStorage->CreatePointConstraint(_entity, transformID, _localOffset);
-}
-// 距離拘束作成
-ConstraintID PhysicsComponentAPI::CreateDistanceConstraint(EntityID _entity, const Vector3& _localOffset)
-{
-	return constraintStorage->CreateDistanceConstraint(_entity, transformStorage->GetOrCreateTransform(_entity), _localOffset);
-}
-
 // 破壊
 void PhysicsComponentAPI::DestroyConstraint(ConstraintID _id)
 {
@@ -575,55 +547,16 @@ void PhysicsComponentAPI::SetDistance(ConstraintID _id, float _distance)
 	constraintStorage->EditDistanceConstraint(_id).distance = _distance;
 }
 
-// ヒンジ拘束作成
-ConstraintID PhysicsComponentAPI::CreateHingeConstraint(EntityID _entity, const Vector3& _localOffset, const Quaternion& _localRotation)
-{
-	return constraintStorage->CreateHingeConstraint(_entity, transformStorage->GetOrCreateTransform(_entity), _localOffset, _localRotation);
-}
-
-// 角度制限付き点拘束作成
-ConstraintID PhysicsComponentAPI::CreateAngleLimitPointConstraint(EntityID _entity, const Vector3& _localOffset, const Quaternion& _localRotation)
-{
-	return constraintStorage->CreateAngleLimitPointConstraint(_entity, transformStorage->GetOrCreateTransform(_entity), _localOffset, _localRotation);
-}
-
-// 角度制限付きヒンジ拘束作成
-ConstraintID PhysicsComponentAPI::CreateAngleLimitHingeConstraint(
-	EntityID _entity, const Vector3& _localOffset, const Quaternion& _localRotation)
-{
-	return constraintStorage->CreateAngleLimitHingeConstraint(
-		_entity, transformStorage->GetOrCreateTransform(_entity),
-		_localOffset, _localRotation);
-}
-
-// SwingTwist拘束作成関数
-ConstraintID PhysicsComponentAPI::CreateLimitedBallJointConstraint(EntityID _entity, const Vector3& _localOffset, const Quaternion& _localRotation)
-{
-	return constraintStorage->CreateLimitedBallJointConstraint(
-		_entity, transformStorage->GetOrCreateTransform(_entity),
-		_localOffset, _localRotation
-	);
-}
-
-// 関節駆動拘束作成関数
-ConstraintID PhysicsComponentAPI::CreateJointDriveConstraint(EntityID _entity, const Vector3& _localOffset, const Quaternion& _localRotation)
-{
-	return constraintStorage->CreateJointDriveConstraint(
-		_entity, transformStorage->GetOrCreateTransform(_entity),
-		_localOffset, _localRotation
-	);
-}
-
 // 自信のEndPoint取得
 const EndPointFrame& PhysicsComponentAPI::GetEndPoint(ConstraintID _id)
 {
 	switch (constraintStorage->GetType(_id))
 	{
 	case ConstraintType::POINTS:
-		return constraintStorage->GetPointConstraint(_id).endPoints[0];
+		return constraintStorage->GetPointConstraint(_id).ownerEndPoint;
 		break;
 	case ConstraintType::DISTANCE:
-		return constraintStorage->GetDistanceConstraint(_id).endPoints[0];
+		return constraintStorage->GetDistanceConstraint(_id).ownerEndPoint;
 		break;
 	case ConstraintType::HINGE:
 		return constraintStorage->GetHingeConstraint(_id).ownerEndPoint;
@@ -651,10 +584,10 @@ void PhysicsComponentAPI::SetEndPoint(ConstraintID _id, EndPointFrame _endPoint)
 	switch (constraintStorage->GetType(_id))
 	{
 	case ConstraintType::POINTS:
-		constraintStorage->EditPointConstraint(_id).endPoints[0] = _endPoint;
+		constraintStorage->EditPointConstraint(_id).ownerEndPoint = _endPoint;
 		break;
 	case ConstraintType::DISTANCE:
-		constraintStorage->EditDistanceConstraint(_id).endPoints[0] = _endPoint;
+		constraintStorage->EditDistanceConstraint(_id).ownerEndPoint = _endPoint;
 		break;
 	case ConstraintType::HINGE:
 		constraintStorage->EditHingeConstraint(_id).ownerEndPoint = _endPoint;
@@ -713,10 +646,10 @@ std::span<EndPointFrame> PhysicsComponentAPI::EditOtherEndPoints(ConstraintID _i
 	switch (constraintStorage->GetType(_id))
 	{
 	case ConstraintType::POINTS:
-		return std::span{ constraintStorage->EditPointConstraint(_id).endPoints }.subspan(1);
+		return std::span{ constraintStorage->EditPointConstraint(_id).endPoints };
 		break;
 	case ConstraintType::DISTANCE:
-		return std::span{ constraintStorage->EditDistanceConstraint(_id).endPoints }.subspan(1);
+		return std::span{ constraintStorage->EditDistanceConstraint(_id).endPoints };
 		break;
 	case ConstraintType::HINGE:
 		return std::span{ constraintStorage->EditHingeConstraint(_id).endPoints };
@@ -1509,64 +1442,6 @@ ColliderID PhysicsComponentAPI::CreateInternalBoxCollider(EntityID _entity, Phys
 {
 	return colliderStorage->CreateBox(_entity, _transformID, _scale);
 }
-
-// 内部用の点拘束作成(寿命管理をちゃんを忘れない)
-ConstraintID PhysicsComponentAPI::CreateInternalPointConstraint(EntityID _entity, PhysicsTransformID _transformID, const Vector3& _localOffset)
-{
-	return constraintStorage->CreatePointConstraint(_entity, _transformID, _localOffset);
-}
-
-// 内部用の距離拘束作成(寿命管理をちゃんを忘れない)
-ConstraintID PhysicsComponentAPI::CreateInternalDistanceConstraint(EntityID _entity, PhysicsTransformID _transformID, const Vector3& _localOffset)
-{
-	return constraintStorage->CreateDistanceConstraint(_entity, _transformID, _localOffset);
-}
-
-// 内部用のヒンジ拘束作成(寿命管理をちゃんを忘れない)
-ConstraintID PhysicsComponentAPI::CreateInternalHingeConstraint(EntityID _entity, PhysicsTransformID _transformID, const Vector3& _localOffset, const Quaternion& _localRotation)
-{
-	return constraintStorage->CreateHingeConstraint(_entity, _transformID, _localOffset, _localRotation);
-}
-
-// 内部用の角度制限付き点拘束作成(寿命管理をちゃんを忘れない)
-ConstraintID PhysicsComponentAPI::CreateInternalAngleLimitPointConstraint(EntityID _entity, PhysicsTransformID _transformID, const Vector3& _localOffset, const Quaternion& _localRotation)
-{
-	return constraintStorage->CreateAngleLimitPointConstraint(_entity, _transformID, _localOffset, _localRotation);
-}
-
-// 内部用の角度制限付きヒンジ拘束作成(寿命管理をちゃんを忘れない)
-ConstraintID PhysicsComponentAPI::CreateInternalAngleLimitHingeConstraint(
-	EntityID _entity, PhysicsTransformID _transformID,
-	const Vector3& _localOffset, const Quaternion& _localRotation)
-{
-
-	return constraintStorage->CreateAngleLimitHingeConstraint(
-		_entity, _transformID,
-		_localOffset, _localRotation);
-}
-
-// SwingTwist拘束作成関数(寿命管理をちゃんを忘れない)
-ConstraintID PhysicsComponentAPI::CreateInternalLimitedBallJointConstraint(
-	EntityID _entity, PhysicsTransformID _transformID,
-	const Vector3& _localOffset, const Quaternion& _localRotation)
-{
-	return constraintStorage->CreateLimitedBallJointConstraint(
-		_entity, _transformID,
-		_localOffset, _localRotation
-	);
-}
-
-// 関節駆動拘束作成関数
-ConstraintID PhysicsComponentAPI::CreateInternalJointDriveConstraint(
-	EntityID _entity, PhysicsTransformID _transformID,
-	const Vector3& _localOffset, const Quaternion& _localRotation)
-{
-	return constraintStorage->CreateJointDriveConstraint(
-		_entity, _transformID,
-		_localOffset, _localRotation
-	);
-}
-
 
 // 内部用拘束のEndPoint追加(寿命管理をちゃんを忘れない)
 void PhysicsComponentAPI::AddInternalEndPoint(ConstraintID _constraintID, PhysicsTransformID _transformID, const Vector3& _localOffset, const Quaternion& _localRotation)

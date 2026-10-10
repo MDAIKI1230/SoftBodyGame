@@ -321,7 +321,7 @@ bool RagdollStorage::CreateRagdoll(EntityID _entity, SkeletonID _skeletonID, Rag
 			{
 			case ConstraintType::ANGLE_LIMIT_HINGE:
 				constraint =
-					PhysicsComponentAPI::CreateInternalAngleLimitHingeConstraint(
+					PhysicsComponentAPI::CreateInternal<AngleLimitHingeConstraint>(
 						_entity,
 						ragdoll.transforms[parentIndex],
 						parentJointPosition,
@@ -341,7 +341,7 @@ bool RagdollStorage::CreateRagdoll(EntityID _entity, SkeletonID _skeletonID, Rag
 
 			case ConstraintType::LIMITED_BALL_JOINT:
 				constraint =
-					PhysicsComponentAPI::CreateInternalLimitedBallJointConstraint(
+					PhysicsComponentAPI::CreateInternal<LimitedBallJointConstraint>(
 						_entity,
 						ragdoll.transforms[parentIndex],
 						parentJointPosition,

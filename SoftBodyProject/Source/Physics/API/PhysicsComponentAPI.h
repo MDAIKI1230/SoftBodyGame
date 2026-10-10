@@ -232,28 +232,35 @@ public:
 	// 破壊
 	static void DestroyConstraint(ConstraintID _id);
 
-	// 点拘束作成
-	static ConstraintID CreatePointConstraint(EntityID _entity, const Vector3& _localOffset);
-	// Bodyを指定して点拘束を作成
-	static ConstraintID CreatePointConstraint(EntityID _entity, BodyID _bodyID, const Vector3& _localOffset);
-	// 距離拘束作成
-	static ConstraintID CreateDistanceConstraint(EntityID _entity, const Vector3& _localOffset);
+	// 拘束作成
+	template<class Constraint>
+	static ConstraintID Create(EntityID _entity, const Vector3& _localOffset, const Quaternion& _localRotation = Quaternion::IDENTITY)
+	{
+		return constraintStorage->Create<Constraint>(_entity, transformStorage->GetOrCreateTransform(_entity), _localOffset, _localRotation);
+	}
+	// 拘束作成
+	template<class Constraint>
+	static ConstraintID Create(EntityID _entity, BodyID _bodyID, const Vector3& _localOffset, const Quaternion& _localRotation = Quaternion::IDENTITY)
+	{
+		if (!bodyStorage->IsAlive(_bodyID))
+		{
+			return ConstraintID{};
+		}
+
+		PhysicsTransformID transformID{ bodyStorage->GetTransformID(_bodyID) };
+
+		if (!transformStorage->IsAlive(transformID))
+		{
+			return ConstraintID{};
+		}
+
+		return constraintStorage->Create<PointConstraint>(_entity, transformID, _localOffset, _localRotation);
+	}
 
 	// 距離拘束の距離取得
 	static float GetDistance(ConstraintID _id);
 	// 距離拘束の距離設定
 	static void SetDistance(ConstraintID _id, float _distance);
-
-	// ヒンジ拘束作成
-	static ConstraintID CreateHingeConstraint(EntityID _entity, const Vector3& _localOffset, const Quaternion& _localRotation);
-	// 角度制限付き点拘束作成
-	static ConstraintID CreateAngleLimitPointConstraint(EntityID _entity, const Vector3& _localOffset, const Quaternion& _localRotation);
-	// 角度制限付きヒンジ拘束作成
-	static ConstraintID CreateAngleLimitHingeConstraint(EntityID _entity, const Vector3& _localOffset, const Quaternion& _localRotation);
-	// SwingTwist拘束作成関数
-	static ConstraintID CreateLimitedBallJointConstraint(EntityID _entity, const Vector3& _localOffset, const Quaternion& _localRotation);
-	// 関節駆動拘束作成関数
-	static ConstraintID CreateJointDriveConstraint(EntityID _entity, const Vector3& _localOffset, const Quaternion& _localRotation);
 
 	// 自信のEndPoint取得
 	static const EndPointFrame& GetEndPoint(ConstraintID _id);
@@ -455,26 +462,12 @@ public:
 	static ColliderID CreateInternalBoxCollider(EntityID _entity, PhysicsTransformID _transformID, const Vector3& _scale);
 
 	// 内部用の点拘束作成(寿命管理をちゃんを忘れない)
-	static ConstraintID CreateInternalPointConstraint(EntityID _entity, PhysicsTransformID _transformID, const Vector3& _localOffset);
-	// 内部用の距離拘束作成(寿命管理をちゃんを忘れない)
-	static ConstraintID CreateInternalDistanceConstraint(EntityID _entity, PhysicsTransformID _transformID, const Vector3& _localOffset);
-	// 内部用のヒンジ拘束作成(寿命管理をちゃんを忘れない)
-	static ConstraintID CreateInternalHingeConstraint(EntityID _entity, PhysicsTransformID _transformID, const Vector3& _localOffset, const Quaternion& _localRotation);
-	// 内部用の角度制限付き点拘束作成(寿命管理をちゃんを忘れない)
-	static ConstraintID CreateInternalAngleLimitPointConstraint(EntityID _entity, PhysicsTransformID _transformID, const Vector3& _localOffset, const Quaternion& _localRotation);
-	// 内部用の角度制限付きヒンジ拘束作成(寿命管理をちゃんを忘れない)
-	static ConstraintID CreateInternalAngleLimitHingeConstraint(
-		EntityID _entity, PhysicsTransformID _transformID,
-		const Vector3& _localOffset, const Quaternion& _localRotation);
-	// SwingTwist拘束作成関数(寿命管理をちゃんを忘れない)
-	static ConstraintID CreateInternalLimitedBallJointConstraint(
-		EntityID _entity, PhysicsTransformID _transformID,
-		const Vector3& _localOffset, const Quaternion& _localRotation);
-	// 関節駆動拘束作成関数
-	static ConstraintID CreateInternalJointDriveConstraint(
-		EntityID _entity, PhysicsTransformID _transformID,
-		const Vector3& _localOffset, const Quaternion& _localRotation);
-
+	template<class Constraint>
+	static ConstraintID CreateInternal(EntityID _entity, PhysicsTransformID _transformID, const Vector3& _localOffset, const Quaternion& _localRotation = Quaternion::IDENTITY)
+	{
+		return constraintStorage->Create<Constraint>(_entity, _transformID, _localOffset, _localRotation);
+	}
+	
 	// 内部用拘束のEndPoint追加(寿命管理をちゃんを忘れない)
 	static void AddInternalEndPoint(ConstraintID _constraintID, PhysicsTransformID _transformID, const Vector3& _localOffset, const Quaternion& _localRotation = Quaternion::IDENTITY);
 

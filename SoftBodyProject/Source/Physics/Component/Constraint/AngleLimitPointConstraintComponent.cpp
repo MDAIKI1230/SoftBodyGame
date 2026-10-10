@@ -4,19 +4,19 @@
 
 // コンストラクタ
 AngleLimitPointConstraintComponent::AngleLimitPointConstraintComponent(EntityID _entity) :
-	ConstraintComponentBase{ PhysicsComponentAPI::CreateAngleLimitPointConstraint(_entity, Vector3::ZERO, Quaternion::IDENTITY) }
+	ConstraintComponentBase{ PhysicsComponentAPI::Create<AngleLimitPointConstraint>(_entity, Vector3::ZERO, Quaternion::IDENTITY) }
 {
 }
 
 // コンストラクタ
 AngleLimitPointConstraintComponent::AngleLimitPointConstraintComponent(EntityID _entity, const Vector3& _localOffset) :
-	ConstraintComponentBase{ PhysicsComponentAPI::CreateAngleLimitPointConstraint(_entity, _localOffset, Quaternion::IDENTITY) }
+	ConstraintComponentBase{ PhysicsComponentAPI::Create<AngleLimitPointConstraint>(_entity, _localOffset, Quaternion::IDENTITY) }
 {
 }
 
 // コンストラクタ
 AngleLimitPointConstraintComponent::AngleLimitPointConstraintComponent(EntityID _entity, const Vector3& _localOffset, const Quaternion& _localRotation) :
-	ConstraintComponentBase{ PhysicsComponentAPI::CreateAngleLimitPointConstraint(_entity, _localOffset, _localRotation) }
+	ConstraintComponentBase{ PhysicsComponentAPI::Create<AngleLimitPointConstraint>(_entity, _localOffset, _localRotation) }
 {
 }
 

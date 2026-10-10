@@ -91,7 +91,7 @@ bool ActiveRagdollStorage::CreateActiveRagdoll(EntityID _entity, const Ragdoll& 
 		for (const EndPointFrame& childEndPoint : PhysicsComponentAPI::GetOtherEndPoints(bodyConstraint))
 		{
 			// JointDrive拘束を作成してく
-			ConstraintID jointDriveID{ PhysicsComponentAPI::CreateInternalJointDriveConstraint(
+			ConstraintID jointDriveID{ PhysicsComponentAPI::CreateInternal<JointDriveConstraint>(
 				_entity,
 				parentEndPoint.transformID,
 				parentEndPoint.localPosition,
@@ -115,7 +115,7 @@ bool ActiveRagdollStorage::CreateActiveRagdoll(EntityID _entity, const Ragdoll& 
 		Vector3 localPoint{ link.bodyFromBone * Vector3::ZERO };
 
 		// point拘束を作成していく
-		ConstraintID pointID{ PhysicsComponentAPI::CreateInternalPointConstraint(_entity, _ragdoll.transforms[boneIndex], localPoint) };
+		ConstraintID pointID{ PhysicsComponentAPI::CreateInternal<PointConstraint>(_entity, _ragdoll.transforms[boneIndex], localPoint) };
 
 		// 内部の目標位置を拘束に渡すようTransformID
 		PhysicsTransformID transformID{ PhysicsComponentAPI::CreateInternalPhysicsTransformID(

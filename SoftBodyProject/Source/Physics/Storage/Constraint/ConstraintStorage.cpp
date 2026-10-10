@@ -2,153 +2,17 @@
 
 ConstraintStorage::ConstraintStorage()
 {
-	pointConstraintStorage = std::make_unique<PointConstraintStorage>();
-	distanceConstraintStorage = std::make_unique<DistanceConstraintStorage>();
-	hingeConstraintStorage = std::make_unique<HingeConstraintStorage>();
-	angleLimitPointConstraintStorage = std::make_unique<AngleLimitPointConstraintStorage>();
-	angleLimitHingeConstraintStorage = std::make_unique<AngleLimitHingeConstraintStorage>();
-	limitedBallJointConstraintStorage = std::make_unique<LimitedBallJointConstraintStorage>();
-	jointDriveConstraintStorage = std::make_unique<JointDriveConstraintStorage>();
-}
-
-ConstraintID ConstraintStorage::CreatePointConstraint(EntityID _entity, PhysicsTransformID _transformID,const Vector3& _localOffset)
-{
-	// ID作成
-	ConstraintID id{ CreateID(ConstraintType::POINTS,pointConstraintStorage->CountConstraint(),_entity,_transformID)};
-
-	// 実態を作る
-	PointConstraint pointConstraint;
-	pointConstraint.endPoints.emplace_back(_transformID, _localOffset);
-
-	// 追加
-	pointConstraintStorage->Add(id, pointConstraint);
-
-	// 対応表
-	transformMap[_transformID].push_back(id);
-
-	// ID返して終了
-	return id;
-}
-
-ConstraintID ConstraintStorage::CreateDistanceConstraint(EntityID _entity, PhysicsTransformID _transformID, const Vector3& _localOffset)
-{
-	// ID作成
-	ConstraintID id{ CreateID(ConstraintType::DISTANCE,distanceConstraintStorage->CountConstraint(),_entity,_transformID)};
-	
-	// 実態を作る
-	DistanceConstraint distanceConstraint;
-	distanceConstraint.endPoints.emplace_back(_transformID, _localOffset);
-
-	// 追加
-	distanceConstraintStorage->Add(id, distanceConstraint);
-
-	// 対応表
-	transformMap[_transformID].push_back(id);
-
-	// ID返して終了
-	return id;
-}
-
-// ヒンジ拘束作成関数
-ConstraintID ConstraintStorage::CreateHingeConstraint(EntityID _entity, PhysicsTransformID _transformID, const Vector3& _localOffset, const Quaternion& _localRotation)
-{
-	// ID作成
-	ConstraintID id{ CreateID(ConstraintType::HINGE,hingeConstraintStorage->CountConstraint(),_entity,_transformID) };
-
-	// 実態を作る
-	HingeConstraint hingeConstraint;
-	hingeConstraint.ownerEndPoint = EndPointFrame{ _transformID,_localOffset,_localRotation };
-
-	// 追加
-	hingeConstraintStorage->Add(id, hingeConstraint);
-
-	// 対応表
-	transformMap[_transformID].push_back(id);
-
-	// ID返して終了
-	return id;
-}
-
-// 角度制限付き点拘束作成関数
-ConstraintID ConstraintStorage::CreateAngleLimitPointConstraint(EntityID _entity, PhysicsTransformID _transformID, const Vector3& _localOffset, const Quaternion& _localRotation)
-{
-	// ID作成
-	ConstraintID id{ CreateID(ConstraintType::ANGLE_LIMIT_POINT,angleLimitPointConstraintStorage->CountConstraint(),_entity,_transformID) };
-
-	// 実態を作る
-	AngleLimitPointConstraint angleLimitPointConstraint;
-	angleLimitPointConstraint.ownerEndPoint = EndPointFrame{ _transformID, _localOffset, _localRotation };
-
-	// 追加
-	angleLimitPointConstraintStorage->Add(id, angleLimitPointConstraint);
-
-	// 対応表
-	transformMap[_transformID].push_back(id);
-
-	// ID返して終了
-	return id;
-}
-
-// 角度制限付きヒンジ拘束作成関数
-ConstraintID ConstraintStorage::CreateAngleLimitHingeConstraint(
-	EntityID _entity, PhysicsTransformID _transformID,
-	const Vector3& _localOffset, const Quaternion& _localRotation)
-{
-	// ID作成
-	ConstraintID id{ CreateID(ConstraintType::ANGLE_LIMIT_HINGE,angleLimitHingeConstraintStorage->CountConstraint(),_entity,_transformID) };
-
-	// 実態を作る
-	AngleLimitHingeConstraint angleLimitHingeConstraint;
-	angleLimitHingeConstraint.ownerEndPoint = EndPointFrame{ _transformID ,_localOffset ,_localRotation };
-
-	// 追加
-	angleLimitHingeConstraintStorage->Add(id, angleLimitHingeConstraint);
-
-	// 対応表
-	transformMap[_transformID].push_back(id);
-
-	// ID返して終了
-	return id;
-}
-
-// SwingTwist拘束作成関数
-ConstraintID ConstraintStorage::CreateLimitedBallJointConstraint(EntityID _entity, PhysicsTransformID _transformID, const Vector3& _localOffset, const Quaternion& _localRotation)
-{
-	// ID作成
-	ConstraintID id{ CreateID(ConstraintType::LIMITED_BALL_JOINT,limitedBallJointConstraintStorage->CountConstraint(),_entity,_transformID) };
-
-	// 実態を作る
-	LimitedBallJointConstraint limitedBallJointConstraint;
-	limitedBallJointConstraint.ownerEndPoint = EndPointFrame{ _transformID ,_localOffset ,_localRotation };
-
-	// 追加
-	limitedBallJointConstraintStorage->Add(id, limitedBallJointConstraint);
-
-	// 対応表
-	transformMap[_transformID].push_back(id);
-
-	// ID返して終了
-	return id;
-}
-
-// 関節駆動拘束作成関数
-ConstraintID ConstraintStorage::CreateJointDriveConstraint(EntityID _entity, PhysicsTransformID _transformID, const Vector3& _localOffset, const Quaternion& _localRotation)
-{
-	// ID作成
-	ConstraintID id{ CreateID(ConstraintType::JOINT_DRIVE,jointDriveConstraintStorage->CountConstraint(),_entity,_transformID) };
-
-	// 実態を作る
-	JointDriveConstraint jointDriveConstraint;
-	jointDriveConstraint.ownerEndPoint = EndPointFrame{ _transformID ,_localOffset ,_localRotation };
-
-	// 追加
-	jointDriveConstraintStorage->Add(id, jointDriveConstraint);
-
-	// 対応表
-	transformMap[_transformID].push_back(id);
-
-	// ID返して終了
-	return id;
+	pointConstraintStorage = std::make_unique<ConstraintStorageBase<PointConstraint>>();
+	distanceConstraintStorage = std::make_unique<ConstraintStorageBase<DistanceConstraint>> ();
+	hingeConstraintStorage = std::make_unique<ConstraintStorageBase<HingeConstraint>> ();
+	angleLimitPointConstraintStorage = std::make_unique<ConstraintStorageBase<AngleLimitPointConstraint>> ();
+	angleLimitHingeConstraintStorage = std::make_unique<ConstraintStorageBase<AngleLimitHingeConstraint>> ();
+	limitedBallJointConstraintStorage = std::make_unique<ConstraintStorageBase<LimitedBallJointConstraint>> ();
+	jointDriveConstraintStorage = std::make_unique<ConstraintStorageBase<JointDriveConstraint>> ();
+	pointOnLineConstraintStorage = std::make_unique<ConstraintStorageBase<PointOnLineConstraint>>();
+	sliderConstraintStorage = std::make_unique<ConstraintStorageBase<SliderConstraint>>();
+	limitedPointOnLineConstraintStorage = std::make_unique<ConstraintStorageBase<LimitedPointOnLineConstraint>>();
+	limitedSliderConstraintStorage = std::make_unique<ConstraintStorageBase<LimitedSliderConstraint>>();
 }
 
 void ConstraintStorage::Destory(ConstraintID _id)

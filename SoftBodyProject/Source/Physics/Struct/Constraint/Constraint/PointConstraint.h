@@ -40,6 +40,8 @@ public:
 		}
 	}
 public:
+	// 本体
+	EndPointFrame ownerEndPoint;
 	// 拘束のメンバー
 	std::vector<EndPointFrame> endPoints;
 

@@ -2,17 +2,17 @@
 
 #include "StorageAccessorsMacros.h"
 
-#include "AngleLimitHingeConstraint.h"
 #include "ConstraintID.h"
 
-class AngleLimitHingeConstraintStorage
+template<class Constraint>
+class ConstraintStorageBase
 {
 public:
 	MD_STORAGE_READ_ONLY_COLUMN(ConstraintID, ID, ids);
-	MD_STORAGE_READ_WRITE_COLUMN(AngleLimitHingeConstraint, Constraint, constraints);
+	MD_STORAGE_READ_WRITE_COLUMN(Constraint, Constraint, constraints);
 public:
 	// 追加関数
-	void Add(ConstraintID _id, AngleLimitHingeConstraint& _constraint)
+	void Add(ConstraintID _id, Constraint& _constraint)
 	{
 		ids.push_back(_id);
 		constraints.push_back(std::move(_constraint));

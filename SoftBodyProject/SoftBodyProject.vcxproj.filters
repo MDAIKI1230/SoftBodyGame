@@ -398,6 +398,9 @@
     <Filter Include="ソース ファイル\Sound">
       <UniqueIdentifier>{dc8429d8-c8f3-4b3a-adb4-b29725bc421f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Physics\Storage\Constraint\Base">
+      <UniqueIdentifier>{2cf57192-5ce0-454d-acce-f4c1d62e0e90}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Objects\Camera.h">
@@ -679,17 +682,11 @@
     <ClInclude Include="Source\Physics\Struct\Constraint\ConstraintSlot.h">
       <Filter>ソース ファイル\Physics\Struct\Constraint</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Physics\Storage\Constraint\PointConstraintStorage.h">
-      <Filter>ソース ファイル\Physics\Storage\Constraint</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Physics\System\Solver\SolverBodyCommitSystem.h">
       <Filter>ソース ファイル\Physics\System\Solver</Filter>
     </ClInclude>
     <ClInclude Include="Source\Physics\Component\Constraint\DistanceConstraintComponent.h">
       <Filter>ソース ファイル\Physics\Component\Constraint</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Physics\Storage\Constraint\DistanceConstraintStorage.h">
-      <Filter>ソース ファイル\Physics\Storage\Constraint</Filter>
     </ClInclude>
     <ClInclude Include="Source\Objects\EmptyObject.h">
       <Filter>ソース ファイル\GameObject</Filter>
@@ -1138,15 +1135,6 @@
     <ClInclude Include="Source\Animation\Struct\Ragdoll\RagdollColliderDefinition.h">
       <Filter>ソース ファイル\Animation\Struct\Ragdoll</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Physics\Storage\Constraint\AngleLimitPointConstraintStorage.h">
-      <Filter>ソース ファイル\Physics\Storage\Constraint</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Physics\Storage\Constraint\HingeConstraintStorage.h">
-      <Filter>ソース ファイル\Physics\Storage\Constraint</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Physics\Storage\Constraint\AngleLimitHingeConstraintStorage.h">
-      <Filter>ソース ファイル\Physics\Storage\Constraint</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Physics\Component\Constraint\AngleLimitPointConstraintComponent.h">
       <Filter>ソース ファイル\Physics\Component\Constraint</Filter>
     </ClInclude>
@@ -1192,9 +1180,6 @@
     <ClInclude Include="Source\Physics\Struct\Constraint\Constraint\LimitedBallJointConstraint.h">
       <Filter>ソース ファイル\Physics\Struct\Constraint\Constraint</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Physics\Storage\Constraint\LimitedBallJointConstraintStorage.h">
-      <Filter>ソース ファイル\Physics\Storage\Constraint</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Physics\Component\Constraint\LimitedBallJointConstraintComponent.h">
       <Filter>ソース ファイル\Physics\Component\Constraint</Filter>
     </ClInclude>
@@ -1230,9 +1215,6 @@
     </ClInclude>
     <ClInclude Include="Source\Physics\Struct\Constraint\Constraint\JointDriveConstraint.h">
       <Filter>ソース ファイル\Physics\Struct\Constraint\Constraint</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Physics\Storage\Constraint\JointDriveConstraintStorage.h">
-      <Filter>ソース ファイル\Physics\Storage\Constraint</Filter>
     </ClInclude>
     <ClInclude Include="Source\Animation\Struct\Ragdoll\Active\ActiveRagdollID.h">
       <Filter>ソース ファイル\Animation\Struct\Ragdoll\Active</Filter>
@@ -1461,6 +1443,9 @@
     </ClInclude>
     <ClInclude Include="Source\Physics\Struct\Constraint\Constraint\LimitedSliderConstraint.h">
       <Filter>ソース ファイル\Physics\Struct\Constraint\Constraint</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Storage\Constraint\Base\ConstraintStorageBase.h">
+      <Filter>ソース ファイル\Physics\Storage\Constraint\Base</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

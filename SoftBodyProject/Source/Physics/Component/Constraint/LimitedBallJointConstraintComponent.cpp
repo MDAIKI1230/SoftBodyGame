@@ -4,7 +4,7 @@
 
 // コンストラクタ
 LimitedBallJointConstraintComponent::LimitedBallJointConstraintComponent(EntityID _entity) :
-	ConstraintComponentBase{ PhysicsComponentAPI::CreateLimitedBallJointConstraint(_entity, Vector3::ZERO, Quaternion::IDENTITY) }
+	ConstraintComponentBase{ PhysicsComponentAPI::Create<LimitedBallJointConstraint>(_entity, Vector3::ZERO, Quaternion::IDENTITY) }
 {
 }
 

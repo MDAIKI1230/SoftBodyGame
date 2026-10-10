@@ -237,17 +237,17 @@ void ConstraintSolverSystem::SolvePointConstraint(ConstraintStorage* _constraint
 	{
 		const PointConstraint& pointConstraint{ _constraintStorage->GetPointConstraint(id) };
 		// ポイントが2つ以上じゃないと拘束なんて発生しない
-		if (pointConstraint.endPoints.size() <= 1)
+		if (pointConstraint.endPoints.size() <= 0)
 		{
 			continue;
 		}
 
 		// 基準点となるボディから位置を持ってくる。
-		uint32_t basePointIndex{ _solverBodyBuffer->GetIndex(pointConstraint.endPoints[0].transformID) };
+		uint32_t basePointIndex{ _solverBodyBuffer->GetIndex(pointConstraint.ownerEndPoint.transformID) };
 		SolverBody& solverBodyBase{ _solverBodyBuffer->Edit(basePointIndex) };
-		Vector3 basePoint{ solverBodyBase.position + solverBodyBase.rotation.Rotate(pointConstraint.endPoints[0].localPosition) };
+		Vector3 basePoint{ solverBodyBase.position + solverBodyBase.rotation.Rotate(pointConstraint.ownerEndPoint.localPosition) };
 
-		for (int i{ 1 }; i < pointConstraint.endPoints.size(); i++)
+		for (int i{ 0 }; i < pointConstraint.endPoints.size(); i++)
 		{
 			// 対象の位置を取得
 			uint32_t pointIndex{ _solverBodyBuffer->GetIndex(pointConstraint.endPoints[i].transformID) };
@@ -292,17 +292,17 @@ void ConstraintSolverSystem::SolveDistanceConstraint(ConstraintStorage* _constra
 	{
 		const DistanceConstraint& distanceConstraint{ _constraintStorage->GetDistanceConstraint(id) };
 		// ポイントが2つ以上じゃないと拘束なんて発生しない
-		if (distanceConstraint.endPoints.size() <= 1)
+		if (distanceConstraint.endPoints.size() <= 0)
 		{
 			continue;
 		}
 
 		// 基準点となるボディから位置を持ってくる。
-		uint32_t basePointIndex{ _solverBodyBuffer->GetIndex(distanceConstraint.endPoints[0].transformID) };
+		uint32_t basePointIndex{ _solverBodyBuffer->GetIndex(distanceConstraint.ownerEndPoint.transformID) };
 		SolverBody& solverBodyBase{ _solverBodyBuffer->Edit(basePointIndex) };
-		Vector3 basePoint{ solverBodyBase.position + solverBodyBase.rotation.Rotate(distanceConstraint.endPoints[0].localPosition) };
+		Vector3 basePoint{ solverBodyBase.position + solverBodyBase.rotation.Rotate(distanceConstraint.ownerEndPoint.localPosition) };
 
-		for (int i{ 1 }; i < distanceConstraint.endPoints.size(); i++)
+		for (int i{ 0 }; i < distanceConstraint.endPoints.size(); i++)
 		{
 			// 対象の位置を取得
 			uint32_t pointIndex{ _solverBodyBuffer->GetIndex(distanceConstraint.endPoints[i].transformID) };
@@ -625,7 +625,7 @@ void ConstraintSolverSystem::SolveJointDriveConstraint(ConstraintStorage* _const
 		return;
 	}
 
-	for (auto id : _constraintStorage->GetJointDriveConstraintConstraintIDRange())
+	for (auto id : _constraintStorage->GetJointDriveConstraintIDRange())
 	{
 		const JointDriveConstraint& jointDrive{ _constraintStorage->GetJointDriveConstraint(id) };
 		// 相手ポイントが無効値なら飛ばす
