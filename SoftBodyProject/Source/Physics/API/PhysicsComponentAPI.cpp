@@ -548,15 +548,38 @@ std::span<const EndPointFrame> PhysicsComponentAPI::GetOtherEndPoints(Constraint
 	return constraintStorage->GetOtherEndPoints(_id);
 }
 
-// 距離拘束の距離取得
+// 距離取得
 float PhysicsComponentAPI::GetDistance(ConstraintID _id)
 {
-	return constraintStorage->GetDistanceConstraint(_id).distance;
+	switch (constraintStorage->GetType(_id))
+	{
+	case ConstraintType::DISTANCE:
+		return constraintStorage->GetDistanceConstraint(_id).distance;
+	case ConstraintType::LIMITED_POINT_ON_LINE:
+		return constraintStorage->GetLimitedPointOnLineConstraint(_id).distance;
+	case ConstraintType::LIMITED_SLIDER:
+		return constraintStorage->GetLimitedSliderConstraint(_id).distance;
+	default:
+		return 0.0f;
+	}
 }
-// 距離拘束の距離設定
+// 距離変更
 void PhysicsComponentAPI::SetDistance(ConstraintID _id, float _distance)
 {
-	constraintStorage->EditDistanceConstraint(_id).distance = _distance;
+	switch (constraintStorage->GetType(_id))
+	{
+	case ConstraintType::DISTANCE:
+		constraintStorage->EditDistanceConstraint(_id).distance = _distance;
+		break;
+	case ConstraintType::LIMITED_POINT_ON_LINE:
+		constraintStorage->EditLimitedPointOnLineConstraint(_id).distance = _distance;
+		break;
+	case ConstraintType::LIMITED_SLIDER:
+		constraintStorage->EditLimitedSliderConstraint(_id).distance = _distance;
+		break;
+	default:
+		break;
+	}
 }
 
 // Swing角度取得
@@ -701,6 +724,14 @@ ConstraintTuning PhysicsComponentAPI::GetTuning(ConstraintID _id)
 		return constraintStorage->GetAngleLimitPointConstraint(_id).tuning;
 	case ConstraintType::JOINT_DRIVE:
 		return constraintStorage->GetJointDriveConstraint(_id).tuning;
+	case ConstraintType::POINT_ON_LINE:
+		return constraintStorage->GetPointOnLineConstraint(_id).tuning;
+	case ConstraintType::SLIDER:
+		return constraintStorage->GetSliderConstraint(_id).tuning;
+	case ConstraintType::LIMITED_POINT_ON_LINE:
+		return constraintStorage->GetLimitedPointOnLineConstraint(_id).tuning;
+	case ConstraintType::LIMITED_SLIDER:
+		return constraintStorage->GetLimitedSliderConstraint(_id).tuning;
 	default:
 		return {};
 	}
@@ -722,6 +753,18 @@ void PhysicsComponentAPI::SetTuning(ConstraintID _id, const ConstraintTuning& _t
 		break;
 	case ConstraintType::JOINT_DRIVE:
 		constraintStorage->EditJointDriveConstraint(_id).tuning = _tuning;
+		break;
+	case ConstraintType::POINT_ON_LINE:
+		constraintStorage->EditPointOnLineConstraint(_id).tuning = _tuning;
+		break;
+	case ConstraintType::SLIDER:
+		constraintStorage->EditSliderConstraint(_id).tuning = _tuning;
+		break;
+	case ConstraintType::LIMITED_POINT_ON_LINE:
+		constraintStorage->EditLimitedPointOnLineConstraint(_id).tuning = _tuning;
+		break;
+	case ConstraintType::LIMITED_SLIDER:
+		constraintStorage->EditLimitedSliderConstraint(_id).tuning = _tuning;
 		break;
 	default:
 		break;

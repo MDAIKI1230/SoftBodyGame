@@ -17,6 +17,10 @@
 #include "AngleLimitPointConstraintComponent.h"
 #include "AngleLimitHingeConstraintComponent.h"
 #include "LimitedBallJointConstraintComponent.h"
+#include "PointOnLineConstraintComponent.h"
+#include "SliderConstraintComponent.h"
+#include "LimitedPointOnLineConstraintComponent.h"
+#include "LimitedSliderConstraintComponent.h"
 
 #include "Debug/DebugSphere.h"
 #include "Debug/DebugBox.h"
@@ -301,4 +305,112 @@ void DebugScene::Initialize()
 	//objectManager.Add(std::make_unique<DebugRagdoll>(&worldStorage, objectManager.GenerateNewID()));
 
 	//objectManager.Add(std::make_unique<DebugActiveRagdoll>(&worldStorage, objectManager.GenerateNewID()));
+
+	//// ある点を線上の動きに制限する拘束のデバッグ
+	//std::unique_ptr<EmptyObject> pointOnLineEmpty{ std::make_unique<EmptyObject>(&worldStorage, objectManager.GenerateNewID()) };
+
+	//pointOnLineEmpty->GetComponent<TransformComponent>()->SetPosition(Vector3{ -180.0f,0.0f,0.0f });
+
+	//PointOnLineConstraintComponent* pointOnLine{ pointOnLineEmpty->AddComponent<PointOnLineConstraintComponent>() };
+
+	//ConstraintTuning tuning;
+	//tuning.compliance = 1e-6f;
+	//pointOnLine->SetTuning(tuning);
+
+	//objectManager.Add(std::move(pointOnLineEmpty));
+
+	//std::unique_ptr<DebugBox> pointOnLineBox{ std::make_unique<DebugBox>(&worldStorage, objectManager.GenerateNewID(), 30.0f, 50.0f, 20.0f) };
+
+	//pointOnLineBox->GetComponent<TransformComponent>()->SetPosition(Vector3{ -180.0f,-40.0f,0.0f });
+	//pointOnLineBox->GetComponent<TransformComponent>()->Rotate(Quaternion::AngleAxis(MathConstants::PI_FLT / 6.0f, Vector3::FORWARD));
+
+	//RigidBodyComponent* pointOnLineBody{ pointOnLineBox->AddComponent<RigidBodyComponent>() };
+	//pointOnLineBody->SetIsGravity(true);
+	//pointOnLineBody->SetVelocity(Vector3{ 0.0f,-30.0f,0.0f });
+	//pointOnLineBody->SetAngularVelocity(Vector3{ 0.0f,0.0f,1.0f });
+
+	//pointOnLine->AddEndPoint(pointOnLineBox.get(), Vector3{ 0.0f,25.0f,0.0f }, Quaternion::IDENTITY);
+
+	//objectManager.Add(std::move(pointOnLineBox));
+
+	//// スライダー拘束のデバッグ
+	//std::unique_ptr<EmptyObject> sliderEmpty{ std::make_unique<EmptyObject>(&worldStorage, objectManager.GenerateNewID()) };
+
+	//sliderEmpty->GetComponent<TransformComponent>()->SetPosition(Vector3{ -60.0f,0.0f,0.0f });
+
+	//SliderConstraintComponent* slider{ sliderEmpty->AddComponent<SliderConstraintComponent>() };
+
+	//ConstraintTuning tuning;
+	//tuning.compliance = 1e-6f;
+	//slider->SetTuning(tuning);
+
+	//objectManager.Add(std::move(sliderEmpty));
+
+	//std::unique_ptr<DebugBox> sliderBox{ std::make_unique<DebugBox>(&worldStorage, objectManager.GenerateNewID(), 30.0f, 50.0f, 20.0f) };
+
+	//sliderBox->GetComponent<TransformComponent>()->SetPosition(Vector3{ -60.0f,-40.0f,0.0f });
+	//sliderBox->GetComponent<TransformComponent>()->Rotate(Quaternion::AngleAxis(MathConstants::PI_FLT / 6.0f, Vector3::FORWARD));
+
+	//RigidBodyComponent* sliderBody{ sliderBox->AddComponent<RigidBodyComponent>() };
+	//sliderBody->SetIsGravity(true);
+	//sliderBody->SetVelocity(Vector3{ 0.0f,-30.0f,0.0f });
+
+	//slider->AddEndPoint(sliderBox.get(), Vector3{ 0.0f,25.0f,0.0f }, Quaternion::IDENTITY);
+
+	//objectManager.Add(std::move(sliderBox));
+
+	//// 距離制限のある、ある点を線上の動きに制限する拘束のデバッグ
+	//std::unique_ptr<EmptyObject> limitedPointOnLineEmpty{ std::make_unique<EmptyObject>(&worldStorage, objectManager.GenerateNewID()) };
+
+	//limitedPointOnLineEmpty->GetComponent<TransformComponent>()->SetPosition(Vector3{ 60.0f,0.0f,0.0f });
+
+	//LimitedPointOnLineConstraintComponent* limitedPointOnLine{ limitedPointOnLineEmpty->AddComponent<LimitedPointOnLineConstraintComponent>() };
+
+	//ConstraintTuning tuning;
+	//tuning.compliance = 1e-6f;
+	//limitedPointOnLine->SetTuning(tuning);
+	//limitedPointOnLine->SetDistance(80.0f);
+
+	//objectManager.Add(std::move(limitedPointOnLineEmpty));
+
+	//std::unique_ptr<DebugBox> limitedPointOnLineBox{ std::make_unique<DebugBox>(&worldStorage, objectManager.GenerateNewID(), 30.0f, 50.0f, 20.0f) };
+
+	//limitedPointOnLineBox->GetComponent<TransformComponent>()->SetPosition(Vector3{ 60.0f,-40.0f,0.0f });
+	//limitedPointOnLineBox->GetComponent<TransformComponent>()->Rotate(Quaternion::AngleAxis(MathConstants::PI_FLT / 6.0f, Vector3::FORWARD));
+
+	//RigidBodyComponent* limitedPointOnLineBody{ limitedPointOnLineBox->AddComponent<RigidBodyComponent>() };
+	//limitedPointOnLineBody->SetIsGravity(true);
+	//limitedPointOnLineBody->SetVelocity(Vector3{ 0.0f,-30.0f,0.0f });
+	//limitedPointOnLineBody->SetAngularVelocity(Vector3{ 0.0f,0.0f,1.0f });
+
+	//limitedPointOnLine->AddEndPoint(limitedPointOnLineBox.get(), Vector3{ 0.0f,25.0f,0.0f }, Quaternion::IDENTITY);
+
+	//objectManager.Add(std::move(limitedPointOnLineBox));
+
+	//// 距離制限のある、スライダー拘束のデバッグ
+	//std::unique_ptr<EmptyObject> limitedSliderEmpty{ std::make_unique<EmptyObject>(&worldStorage, objectManager.GenerateNewID()) };
+
+	//limitedSliderEmpty->GetComponent<TransformComponent>()->SetPosition(Vector3{ 180.0f,0.0f,0.0f });
+
+	//LimitedSliderConstraintComponent* limitedSlider{ limitedSliderEmpty->AddComponent<LimitedSliderConstraintComponent>() };
+
+	//ConstraintTuning tuning;
+	//tuning.compliance = 1e-6f;
+	//limitedSlider->SetTuning(tuning);
+	//limitedSlider->SetDistance(80.0f);
+
+	//objectManager.Add(std::move(limitedSliderEmpty));
+
+	//std::unique_ptr<DebugBox> limitedSliderBox{ std::make_unique<DebugBox>(&worldStorage, objectManager.GenerateNewID(), 30.0f, 50.0f, 20.0f) };
+
+	//limitedSliderBox->GetComponent<TransformComponent>()->SetPosition(Vector3{ 180.0f,-40.0f,0.0f });
+	//limitedSliderBox->GetComponent<TransformComponent>()->Rotate(Quaternion::AngleAxis(MathConstants::PI_FLT / 6.0f, Vector3::FORWARD));
+
+	//RigidBodyComponent* limitedSliderBody{ limitedSliderBox->AddComponent<RigidBodyComponent>() };
+	//limitedSliderBody->SetIsGravity(true);
+	//limitedSliderBody->SetVelocity(Vector3{ 0.0f,-30.0f,0.0f });
+
+	//limitedSlider->AddEndPoint(limitedSliderBox.get(), Vector3{ 0.0f,25.0f,0.0f }, Quaternion::IDENTITY);
+
+	//objectManager.Add(std::move(limitedSliderBox));
 }

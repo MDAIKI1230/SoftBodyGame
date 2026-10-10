@@ -36,6 +36,10 @@
 #include "AngleLimitPointConstraintComponentStorage.h"
 #include "AngleLimitHingeConstraintComponentStorage.h"
 #include "LimitedBallJointConstraintComponentStorage.h"
+#include "PointOnLineConstraintComponentStorage.h"
+#include "SliderConstraintComponentStorage.h"
+#include "LimitedPointOnLineConstraintComponentStorage.h"
+#include "LimitedSliderConstraintComponentStorage.h"
 
 // キャラクターコントローラー
 #include "CharacterControllerComponentStorage.h"
@@ -99,6 +103,10 @@ SceneBase::SceneBase()
 	AddStorage<AngleLimitPointConstraintComponent>(std::make_unique<AngleLimitPointConstraintComponentStorage>());
 	AddStorage<AngleLimitHingeConstraintComponent>(std::make_unique<AngleLimitHingeConstraintComponentStorage>());
 	AddStorage<LimitedBallJointConstraintComponent>(std::make_unique<LimitedBallJointConstraintComponentStorage>());
+	AddStorage<PointOnLineConstraintComponent>(std::make_unique<PointOnLineConstraintComponentStorage>());
+	AddStorage<SliderConstraintComponent>(std::make_unique<SliderConstraintComponentStorage>());
+	AddStorage<LimitedPointOnLineConstraintComponent>(std::make_unique<LimitedPointOnLineConstraintComponentStorage>());
+	AddStorage<LimitedSliderConstraintComponent>(std::make_unique<LimitedSliderConstraintComponentStorage>());
 
 	// キャラクターコントローラー
 	AddStorage<CharacterControllerComponent>(std::make_unique<CharacterControllerComponentStorage>());

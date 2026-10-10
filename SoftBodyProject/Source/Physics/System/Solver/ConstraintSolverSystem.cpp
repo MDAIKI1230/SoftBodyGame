@@ -25,6 +25,14 @@ void ConstraintSolverSystem::Solve(ConstraintStorage* _constraintStorage, Solver
 	SolveLimitedBallJointConstraint(_constraintStorage, _solverBodyBuffer, _constraintBuffer, batchCount);
 	// 関節駆動拘束の解く用の拘束のヤコビアンと違反値の再計算
 	SolveJointDriveConstraint(_constraintStorage, _solverBodyBuffer, _constraintBuffer, batchCount);
+	// ある点を線上の動きに制限する拘束のヤコビアンと違反値の計算
+	SolvePointOnLineConstraint(_constraintStorage, _solverBodyBuffer, _constraintBuffer, batchCount);
+	// スライダー拘束のヤコビアンと違反値の計算
+	SolveSliderConstraint(_constraintStorage, _solverBodyBuffer, _constraintBuffer, batchCount);
+	// 距離制限のある、ある点を線上の動きに制限する拘束のヤコビアンと違反値の計算
+	SolveLimitedPointOnLineConstraint(_constraintStorage, _solverBodyBuffer, _constraintBuffer, batchCount);
+	// 距離制限のある、スライダー拘束のヤコビアンと違反値の計算
+	SolveLimitedSliderConstraint(_constraintStorage, _solverBodyBuffer, _constraintBuffer, batchCount);
 }
 
 // 速度再計算
@@ -675,23 +683,295 @@ void ConstraintSolverSystem::SolveJointDriveConstraint(ConstraintStorage* _const
 // ある点を線上の動きに制限する拘束のヤコビアンと違反値の計算
 void ConstraintSolverSystem::SolvePointOnLineConstraint(ConstraintStorage* _constraintStorage, SolverBodyBuffer* _solverBodyBuffer, ConstraintBuffer* _constraintBuffer, size_t& _batchCount)
 {
+	// 拘束が存在するかチェック
+	if (_constraintStorage->CountPointOnLineConstraint() <= 0)
+	{
+		return;
+	}
 
+	for (auto id : _constraintStorage->GetPointOnLineConstraintIDRange())
+	{
+		const PointOnLineConstraint& pointOnLineConstraint{ _constraintStorage->GetPointOnLineConstraint(id) };
+		// 対象がいないとダメ
+		if (pointOnLineConstraint.endPoints.size() < 1)
+		{
+			continue;
+		}
+
+		const EndPointFrame& ownerEndPoint{ pointOnLineConstraint.ownerEndPoint };
+		// 基準側のSolverBodyがないなら飛ばす
+		if (!_solverBodyBuffer->Has(ownerEndPoint.transformID))
+		{
+			continue;
+		}
+
+		uint32_t basePointIndex{ _solverBodyBuffer->GetIndex(ownerEndPoint.transformID) };
+		SolverBody& solverBodyBase{ _solverBodyBuffer->Edit(basePointIndex) };
+
+		for (size_t i{ 0 }; i < pointOnLineConstraint.endPoints.size(); i++)
+		{
+			const EndPointFrame& endPoint{ pointOnLineConstraint.endPoints[i] };
+			// 相手側がないか同じボディなら飛ばす
+			if (!_solverBodyBuffer->Has(endPoint.transformID) || ownerEndPoint.transformID == endPoint.transformID)
+			{
+				continue;
+			}
+
+			// 基準点となるボディから位置と回転を持ってくる。
+			Vector3 basePoint{ solverBodyBase.position + solverBodyBase.rotation.Rotate(ownerEndPoint.localPosition) };
+			Quaternion baseRot{ solverBodyBase.rotation * ownerEndPoint.localRotation };
+
+			// 対象の位置を取得
+			uint32_t pointIndex{ _solverBodyBuffer->GetIndex(endPoint.transformID) };
+			SolverBody& solverBody{ _solverBodyBuffer->Edit(pointIndex) };
+			Vector3 point{ solverBody.position + solverBody.rotation.Rotate(endPoint.localPosition) };
+
+			Vector3 rA{ basePoint - solverBodyBase.position };
+			Vector3 rB{ point - solverBody.position };
+
+			Build(
+				_constraintBuffer, pointOnLineConstraint.tuning,
+				ownerEndPoint.weight, endPoint.weight,
+				2, _batchCount);
+
+			const ConstraintRowBatch& batch(_constraintBuffer->GetBatch(_batchCount));
+
+			std::span<Constraint, 2> constraints{ _constraintBuffer->GetConstraints(batch.firstRow, batch.rowCount).first<2>() };
+
+			ConstraintFunction::CalcPointOnLineJacobianAndError(
+				baseRot, basePoint, rA,
+				point, rB,
+				constraints);
+
+			for (Constraint& constraint : constraints)
+			{
+				SolveRow(solverBodyBase, solverBody, constraint);
+			}
+
+			_batchCount++;
+		}
+	}
 }
 
 // スライダー拘束のヤコビアンと違反値の計算
 void ConstraintSolverSystem::SolveSliderConstraint(ConstraintStorage* _constraintStorage, SolverBodyBuffer* _solverBodyBuffer, ConstraintBuffer* _constraintBuffer, size_t& _batchCount)
 {
+	// 拘束が存在するかチェック
+	if (_constraintStorage->CountSliderConstraint() <= 0)
+	{
+		return;
+	}
 
+	for (auto id : _constraintStorage->GetSliderConstraintIDRange())
+	{
+		const SliderConstraint& sliderConstraint{ _constraintStorage->GetSliderConstraint(id) };
+		// 対象がいないとダメ
+		if (sliderConstraint.endPoints.size() < 1)
+		{
+			continue;
+		}
+
+		const EndPointFrame& ownerEndPoint{ sliderConstraint.ownerEndPoint };
+		// 基準側のSolverBodyがないなら飛ばす
+		if (!_solverBodyBuffer->Has(ownerEndPoint.transformID))
+		{
+			continue;
+		}
+
+		uint32_t basePointIndex{ _solverBodyBuffer->GetIndex(ownerEndPoint.transformID) };
+		SolverBody& solverBodyBase{ _solverBodyBuffer->Edit(basePointIndex) };
+
+		for (size_t i{ 0 }; i < sliderConstraint.endPoints.size(); i++)
+		{
+			const EndPointFrame& endPoint{ sliderConstraint.endPoints[i] };
+			// 相手側がないか同じボディなら飛ばす
+			if (!_solverBodyBuffer->Has(endPoint.transformID) || ownerEndPoint.transformID == endPoint.transformID)
+			{
+				continue;
+			}
+
+			// 基準点となるボディから位置と回転を持ってくる。
+			Vector3 basePoint{ solverBodyBase.position + solverBodyBase.rotation.Rotate(ownerEndPoint.localPosition) };
+			Quaternion baseRot{ solverBodyBase.rotation * ownerEndPoint.localRotation };
+
+			// 対象の位置を取得
+			uint32_t pointIndex{ _solverBodyBuffer->GetIndex(endPoint.transformID) };
+			SolverBody& solverBody{ _solverBodyBuffer->Edit(pointIndex) };
+			Vector3 point{ solverBody.position + solverBody.rotation.Rotate(endPoint.localPosition) };
+			Quaternion rot{ solverBody.rotation * endPoint.localRotation };
+
+			Vector3 rA{ basePoint - solverBodyBase.position };
+			Vector3 rB{ point - solverBody.position };
+
+			Build(
+				_constraintBuffer, sliderConstraint.tuning,
+				ownerEndPoint.weight, endPoint.weight,
+				5, _batchCount);
+
+			const ConstraintRowBatch& batch(_constraintBuffer->GetBatch(_batchCount));
+
+			std::span<Constraint, 5> constraints{ _constraintBuffer->GetConstraints(batch.firstRow, batch.rowCount).first<5>() };
+
+			ConstraintFunction::CalcSliderJacobianAndError(
+				baseRot, basePoint, rA,
+				rot, point, rB,
+				constraints);
+
+			for (Constraint& constraint : constraints)
+			{
+				SolveRow(solverBodyBase, solverBody, constraint);
+			}
+
+			_batchCount++;
+		}
+	}
 }
 
 // 距離制限のある、ある点を線上の動きに制限する拘束のヤコビアンと違反値の計算
 void ConstraintSolverSystem::SolveLimitedPointOnLineConstraint(ConstraintStorage* _constraintStorage, SolverBodyBuffer* _solverBodyBuffer, ConstraintBuffer* _constraintBuffer, size_t& _batchCount)
 {
+	// 拘束が存在するかチェック
+	if (_constraintStorage->CountLimitedPointOnLineConstraint() <= 0)
+	{
+		return;
+	}
 
+	for (auto id : _constraintStorage->GetLimitedPointOnLineConstraintIDRange())
+	{
+		const LimitedPointOnLineConstraint& limitedPointOnLineConstraint{ _constraintStorage->GetLimitedPointOnLineConstraint(id) };
+		// 対象がいないとダメ
+		if (limitedPointOnLineConstraint.endPoints.size() < 1)
+		{
+			continue;
+		}
+
+		const EndPointFrame& ownerEndPoint{ limitedPointOnLineConstraint.ownerEndPoint };
+		// 基準側のSolverBodyがないなら飛ばす
+		if (!_solverBodyBuffer->Has(ownerEndPoint.transformID))
+		{
+			continue;
+		}
+
+		uint32_t basePointIndex{ _solverBodyBuffer->GetIndex(ownerEndPoint.transformID) };
+		SolverBody& solverBodyBase{ _solverBodyBuffer->Edit(basePointIndex) };
+
+		for (size_t i{ 0 }; i < limitedPointOnLineConstraint.endPoints.size(); i++)
+		{
+			const EndPointFrame& endPoint{ limitedPointOnLineConstraint.endPoints[i] };
+			// 相手側がないか同じボディなら飛ばす
+			if (!_solverBodyBuffer->Has(endPoint.transformID) || ownerEndPoint.transformID == endPoint.transformID)
+			{
+				continue;
+			}
+
+			// 基準点となるボディから位置と回転を持ってくる。
+			Vector3 basePoint{ solverBodyBase.position + solverBodyBase.rotation.Rotate(ownerEndPoint.localPosition) };
+			Quaternion baseRot{ solverBodyBase.rotation * ownerEndPoint.localRotation };
+
+			// 対象の位置を取得
+			uint32_t pointIndex{ _solverBodyBuffer->GetIndex(endPoint.transformID) };
+			SolverBody& solverBody{ _solverBodyBuffer->Edit(pointIndex) };
+			Vector3 point{ solverBody.position + solverBody.rotation.Rotate(endPoint.localPosition) };
+
+			Vector3 rA{ basePoint - solverBodyBase.position };
+			Vector3 rB{ point - solverBody.position };
+
+			Build(
+				_constraintBuffer, limitedPointOnLineConstraint.tuning,
+				ownerEndPoint.weight, endPoint.weight,
+				3, _batchCount);
+
+			const ConstraintRowBatch& batch(_constraintBuffer->GetBatch(_batchCount));
+
+			std::span<Constraint, 3> constraints{ _constraintBuffer->GetConstraints(batch.firstRow, batch.rowCount).first<3>() };
+
+			ConstraintFunction::CalcLimitedPointOnLineJacobianAndError(
+				limitedPointOnLineConstraint.distance,
+				baseRot, basePoint, rA,
+				point, rB,
+				constraints);
+
+			for (Constraint& constraint : constraints)
+			{
+				SolveRow(solverBodyBase, solverBody, constraint);
+			}
+
+			_batchCount++;
+		}
+	}
 }
 
 // 距離制限のある、スライダー拘束のヤコビアンと違反値の計算
 void ConstraintSolverSystem::SolveLimitedSliderConstraint(ConstraintStorage* _constraintStorage, SolverBodyBuffer* _solverBodyBuffer, ConstraintBuffer* _constraintBuffer, size_t& _batchCount)
 {
+	// 拘束が存在するかチェック
+	if (_constraintStorage->CountLimitedSliderConstraint() <= 0)
+	{
+		return;
+	}
 
+	for (auto id : _constraintStorage->GetLimitedSliderConstraintIDRange())
+	{
+		const LimitedSliderConstraint& limitedSliderConstraint{ _constraintStorage->GetLimitedSliderConstraint(id) };
+		// 対象がいないとダメ
+		if (limitedSliderConstraint.endPoints.size() < 1)
+		{
+			continue;
+		}
+
+		const EndPointFrame& ownerEndPoint{ limitedSliderConstraint.ownerEndPoint };
+		// 基準側のSolverBodyがないなら飛ばす
+		if (!_solverBodyBuffer->Has(ownerEndPoint.transformID))
+		{
+			continue;
+		}
+
+		uint32_t basePointIndex{ _solverBodyBuffer->GetIndex(ownerEndPoint.transformID) };
+		SolverBody& solverBodyBase{ _solverBodyBuffer->Edit(basePointIndex) };
+
+		for (size_t i{ 0 }; i < limitedSliderConstraint.endPoints.size(); i++)
+		{
+			const EndPointFrame& endPoint{ limitedSliderConstraint.endPoints[i] };
+			// 相手側がないか同じボディなら飛ばす
+			if (!_solverBodyBuffer->Has(endPoint.transformID) || ownerEndPoint.transformID == endPoint.transformID)
+			{
+				continue;
+			}
+
+			// 基準点となるボディから位置と回転を持ってくる。
+			Vector3 basePoint{ solverBodyBase.position + solverBodyBase.rotation.Rotate(ownerEndPoint.localPosition) };
+			Quaternion baseRot{ solverBodyBase.rotation * ownerEndPoint.localRotation };
+
+			// 対象の位置を取得
+			uint32_t pointIndex{ _solverBodyBuffer->GetIndex(endPoint.transformID) };
+			SolverBody& solverBody{ _solverBodyBuffer->Edit(pointIndex) };
+			Vector3 point{ solverBody.position + solverBody.rotation.Rotate(endPoint.localPosition) };
+			Quaternion rot{ solverBody.rotation * endPoint.localRotation };
+
+			Vector3 rA{ basePoint - solverBodyBase.position };
+			Vector3 rB{ point - solverBody.position };
+
+			Build(
+				_constraintBuffer, limitedSliderConstraint.tuning,
+				ownerEndPoint.weight, endPoint.weight,
+				6, _batchCount);
+
+			const ConstraintRowBatch& batch(_constraintBuffer->GetBatch(_batchCount));
+
+			std::span<Constraint, 6> constraints{ _constraintBuffer->GetConstraints(batch.firstRow, batch.rowCount).first<6>() };
+
+			ConstraintFunction::CalcLimitedSliderJacobianAndError(
+				limitedSliderConstraint.distance,
+				baseRot, basePoint, rA,
+				rot, point, rB,
+				constraints);
+
+			for (Constraint& constraint : constraints)
+			{
+				SolveRow(solverBodyBase, solverBody, constraint);
+			}
+
+			_batchCount++;
+		}
+	}
 }

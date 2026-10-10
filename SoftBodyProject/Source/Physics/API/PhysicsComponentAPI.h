@@ -381,9 +381,9 @@ public:
 		RemoveInternalEndPoint<Constraint>(_id, transformID);
 	}
 
-	// 距離拘束の距離取得
+	// 距離取得
 	static float GetDistance(ConstraintID _id);
-	// 距離拘束の距離設定
+	// 距離変更
 	static void SetDistance(ConstraintID _id, float _distance);
 
 	// Swing角度取得

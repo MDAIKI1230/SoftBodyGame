@@ -356,6 +356,10 @@
     <ClInclude Include="Source\Physics\Component\Constraint\Base\ConstraintComponentBase.h" />
     <ClInclude Include="Source\Physics\Component\Constraint\DistanceConstraintComponent.h" />
     <ClInclude Include="Source\Physics\Component\Constraint\HingeConstraintComponent.h" />
+    <ClInclude Include="Source\Physics\Component\Constraint\PointOnLineConstraintComponent.h" />
+    <ClInclude Include="Source\Physics\Component\Constraint\SliderConstraintComponent.h" />
+    <ClInclude Include="Source\Physics\Component\Constraint\LimitedPointOnLineConstraintComponent.h" />
+    <ClInclude Include="Source\Physics\Component\Constraint\LimitedSliderConstraintComponent.h" />
     <ClInclude Include="Source\Physics\Component\Constraint\LimitedBallJointConstraintComponent.h" />
     <ClInclude Include="Source\Physics\Component\Constraint\PointConstraintComponent.h" />
     <ClInclude Include="Source\Physics\Constants\BodyConstants.h" />
@@ -402,6 +406,10 @@
     <ClInclude Include="Source\Physics\Storage\Component\Constraint\AngleLimitPointConstraintComponentStorage.h" />
     <ClInclude Include="Source\Physics\Storage\Component\Constraint\DistanceConstraintComponentStorage.h" />
     <ClInclude Include="Source\Physics\Storage\Component\Constraint\HingeConstraintComponentStorage.h" />
+    <ClInclude Include="Source\Physics\Storage\Component\Constraint\PointOnLineConstraintComponentStorage.h" />
+    <ClInclude Include="Source\Physics\Storage\Component\Constraint\SliderConstraintComponentStorage.h" />
+    <ClInclude Include="Source\Physics\Storage\Component\Constraint\LimitedPointOnLineConstraintComponentStorage.h" />
+    <ClInclude Include="Source\Physics\Storage\Component\Constraint\LimitedSliderConstraintComponentStorage.h" />
     <ClInclude Include="Source\Physics\Storage\Component\Constraint\LimitedBallJointConstraintComponentStorage.h" />
     <ClInclude Include="Source\Physics\Storage\Component\Constraint\PointConstraintComponentStorage.h" />
     <ClInclude Include="Source\Physics\Storage\Constraint\Base\ConstraintStorageBase.h" />
@@ -618,6 +626,10 @@
     <ClCompile Include="Source\Physics\Component\Constraint\AngleLimitPointConstraintComponent.cpp" />
     <ClCompile Include="Source\Physics\Component\Constraint\DistanceConstraintComponent.cpp" />
     <ClCompile Include="Source\Physics\Component\Constraint\HingeConstraintComponent.cpp" />
+    <ClCompile Include="Source\Physics\Component\Constraint\PointOnLineConstraintComponent.cpp" />
+    <ClCompile Include="Source\Physics\Component\Constraint\SliderConstraintComponent.cpp" />
+    <ClCompile Include="Source\Physics\Component\Constraint\LimitedPointOnLineConstraintComponent.cpp" />
+    <ClCompile Include="Source\Physics\Component\Constraint\LimitedSliderConstraintComponent.cpp" />
     <ClCompile Include="Source\Physics\Component\Constraint\LimitedBallJointConstraintComponent.cpp" />
     <ClCompile Include="Source\Physics\Component\Constraint\PointConstraintComponent.cpp" />
     <ClCompile Include="Source\Physics\DebugRender\ColliderDebugRenderingSystem.cpp" />
@@ -647,6 +659,10 @@
     <ClCompile Include="Source\Physics\Storage\Component\Constraint\AngleLimitPointConstraintComponentStorage.cpp" />
     <ClCompile Include="Source\Physics\Storage\Component\Constraint\DistanceConstraintComponentStorage.cpp" />
     <ClCompile Include="Source\Physics\Storage\Component\Constraint\HingeConstraintComponentStorage.cpp" />
+    <ClCompile Include="Source\Physics\Storage\Component\Constraint\PointOnLineConstraintComponentStorage.cpp" />
+    <ClCompile Include="Source\Physics\Storage\Component\Constraint\SliderConstraintComponentStorage.cpp" />
+    <ClCompile Include="Source\Physics\Storage\Component\Constraint\LimitedPointOnLineConstraintComponentStorage.cpp" />
+    <ClCompile Include="Source\Physics\Storage\Component\Constraint\LimitedSliderConstraintComponentStorage.cpp" />
     <ClCompile Include="Source\Physics\Storage\Component\Constraint\LimitedBallJointConstraintComponentStorage.cpp" />
     <ClCompile Include="Source\Physics\Storage\Component\Constraint\PointConstraintComponentStorage.cpp" />
     <ClCompile Include="Source\Physics\Storage\Constraint\ConstraintStorage.cpp" />
