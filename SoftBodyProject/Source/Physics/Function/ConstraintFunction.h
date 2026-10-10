@@ -46,6 +46,28 @@ namespace ConstraintFunction
 		const Quaternion& _rotationA,
 		const Quaternion& _rotationB,
 		std::span<Constraint, 3> _output);
+	// ある点を線上の動きに制限する拘束のヤコビアンと違反値の計算
+	void CalcPointOnLineJacobianAndError(
+		const Quaternion& _rotationA, const Vector3& _positionA, const Vector3& _rA,
+		const Vector3& _positionB, const Vector3& _rB,
+		std::span<Constraint, 2> _output);
+	// スライダー拘束のヤコビアンと違反値の計算
+	void CalcSliderJacobianAndError(
+		const Quaternion& _rotationA, const Vector3& _positionA, const Vector3& _rA,
+		const Quaternion& _rotationB, const Vector3& _positionB, const Vector3& _rB,
+		std::span<Constraint, 5> _output);
+	// 距離制限のある、ある点を線上の動きに制限する拘束のヤコビアンと違反値の計算
+	void CalcLimitedPointOnLineJacobianAndError(
+		const float _distance,
+		const Quaternion& _rotationA, const Vector3& _positionA, const Vector3& _rA,
+		const Vector3& _positionB, const Vector3& _rB,
+		std::span<Constraint, 3> _output);
+	// 距離制限のある、スライダー拘束のヤコビアンと違反値の計算
+	void CalcLimitedSliderJacobianAndError(
+		const float _distance,
+		const Quaternion& _rotationA, const Vector3& _positionA, const Vector3& _rA,
+		const Quaternion& _rotationB, const Vector3& _positionB, const Vector3& _rB,
+		std::span<Constraint, 6> _output);
 
 	// 軸合わせヤコビアンと違反値の計算
 	void CalcAxisJacobianAndError(const Vector3& _tangent, const Vector3& _axisError, Constraint& _output);

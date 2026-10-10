@@ -451,7 +451,11 @@
     <ClInclude Include="Source\Physics\Struct\Constraint\Constraint\JointDriveConstraint.h" />
     <ClInclude Include="Source\Physics\Struct\Constraint\Constraint\HingeConstraint.h" />
     <ClInclude Include="Source\Physics\Struct\Constraint\Constraint\LimitedBallJointConstraint.h" />
+    <ClInclude Include="Source\Physics\Struct\Constraint\Constraint\LimitedPointOnLineConstraint.h" />
+    <ClInclude Include="Source\Physics\Struct\Constraint\Constraint\LimitedSliderConstraint.h" />
     <ClInclude Include="Source\Physics\Struct\Constraint\Constraint\PointConstraint.h" />
+    <ClInclude Include="Source\Physics\Struct\Constraint\Constraint\PointOnLineConstraint.h" />
+    <ClInclude Include="Source\Physics\Struct\Constraint\Constraint\SliderConstraint.h" />
     <ClInclude Include="Source\Physics\Struct\Constraint\EndPoint\EndPointFrame.h" />
     <ClInclude Include="Source\Physics\Struct\Ray\Ray.h" />
     <ClInclude Include="Source\Physics\Struct\Ray\RayCastHitInfo.h" />

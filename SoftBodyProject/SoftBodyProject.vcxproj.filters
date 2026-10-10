@@ -1450,6 +1450,18 @@
     <ClInclude Include="Source\Physics\Function\SphereCastFunction.h">
       <Filter>ソース ファイル\Physics\Function</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Physics\Struct\Constraint\Constraint\PointOnLineConstraint.h">
+      <Filter>ソース ファイル\Physics\Struct\Constraint\Constraint</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Struct\Constraint\Constraint\SliderConstraint.h">
+      <Filter>ソース ファイル\Physics\Struct\Constraint\Constraint</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Struct\Constraint\Constraint\LimitedPointOnLineConstraint.h">
+      <Filter>ソース ファイル\Physics\Struct\Constraint\Constraint</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Struct\Constraint\Constraint\LimitedSliderConstraint.h">
+      <Filter>ソース ファイル\Physics\Struct\Constraint\Constraint</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\System\Scenes\DebugScene.cpp">

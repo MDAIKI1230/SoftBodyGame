@@ -671,3 +671,27 @@ void ConstraintSolverSystem::SolveJointDriveConstraint(ConstraintStorage* _const
 		_batchCount++;
 	}
 }
+
+// ある点を線上の動きに制限する拘束のヤコビアンと違反値の計算
+void ConstraintSolverSystem::SolvePointOnLineConstraint(ConstraintStorage* _constraintStorage, SolverBodyBuffer* _solverBodyBuffer, ConstraintBuffer* _constraintBuffer, size_t& _batchCount)
+{
+
+}
+
+// スライダー拘束のヤコビアンと違反値の計算
+void ConstraintSolverSystem::SolveSliderConstraint(ConstraintStorage* _constraintStorage, SolverBodyBuffer* _solverBodyBuffer, ConstraintBuffer* _constraintBuffer, size_t& _batchCount)
+{
+
+}
+
+// 距離制限のある、ある点を線上の動きに制限する拘束のヤコビアンと違反値の計算
+void ConstraintSolverSystem::SolveLimitedPointOnLineConstraint(ConstraintStorage* _constraintStorage, SolverBodyBuffer* _solverBodyBuffer, ConstraintBuffer* _constraintBuffer, size_t& _batchCount)
+{
+
+}
+
+// 距離制限のある、スライダー拘束のヤコビアンと違反値の計算
+void ConstraintSolverSystem::SolveLimitedSliderConstraint(ConstraintStorage* _constraintStorage, SolverBodyBuffer* _solverBodyBuffer, ConstraintBuffer* _constraintBuffer, size_t& _batchCount)
+{
+
+}

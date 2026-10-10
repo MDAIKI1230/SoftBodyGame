@@ -410,6 +410,120 @@ void ConstraintFunction::CalcJointDriveJacobianAndError(
 	_output[2].jacobian[3] = axisZ;
 }
 
+// ある点を線上の動きに制限する拘束のヤコビアンと違反値の計算
+void ConstraintFunction::CalcPointOnLineJacobianAndError(
+	const Quaternion& _rotationA, const Vector3& _positionA, const Vector3& _rA,
+	const Vector3& _positionB, const Vector3& _rB,
+	std::span<Constraint, 2> _output)
+{
+	Vector3 diffWorld{ _positionA - _positionB };
+
+	Vector3 normals[2]{
+		_rotationA.Rotate(Vector3::RIGHT),
+		_rotationA.Rotate(Vector3::FORWARD)
+	};
+
+	for (int i = 0; i < 2; ++i)
+	{
+		const Vector3& n{ normals[i] };
+		Constraint& row{ _output[i] };
+
+		row.error = Vector3::Dot(diffWorld, n);
+
+		row.jacobian[0] = n;
+		row.jacobian[1] = Vector3::Cross(_rA - diffWorld, n);
+		row.jacobian[2] = -n;
+		row.jacobian[3] = -Vector3::Cross(_rB, n);
+	}
+}
+
+// スライダー拘束のヤコビアンと違反値の計算
+void ConstraintFunction::CalcSliderJacobianAndError(
+	const Quaternion& _rotationA, const Vector3& _positionA, const Vector3& _rA,
+	const Quaternion& _rotationB, const Vector3& _positionB, const Vector3& _rB,
+	std::span<Constraint, 5> _output)
+{
+	// ある点を線上の動きに制限する
+	CalcPointOnLineJacobianAndError(
+		_rotationA, _positionA, _rA,
+		_positionB, _rB,
+		_output.first<2>());
+
+	// 姿勢を軸に合わせる
+	CalcJointDriveJacobianAndError(
+		Quaternion::IDENTITY,
+		_rotationA,
+		_rotationB,
+		_output.subspan<2, 3>()
+	);
+}
+
+// 距離制限のある、ある点を線上の動きに制限する拘束のヤコビアンと違反値の計算
+void ConstraintFunction::CalcLimitedPointOnLineJacobianAndError(
+	const float _distance,
+	const Quaternion& _rotationA, const Vector3& _positionA, const Vector3& _rA,
+	const Vector3& _positionB, const Vector3& _rB,
+	std::span<Constraint, 3> _output)
+{
+	Vector3 diffWorld{ _positionA - _positionB };
+
+	Vector3 normals[3]{
+		_rotationA.Rotate(Vector3::RIGHT),
+		_rotationA.Rotate(Vector3::UP),
+		_rotationA.Rotate(Vector3::FORWARD),
+	};
+
+	float maxDistances[3]{ 0.0f,_distance,0.0f };
+
+	for (int i = 0; i < 3; i++)
+	{
+		const Vector3& n{ normals[i] };
+		Constraint& row{ _output[i] };
+		float maxDistance{ maxDistances[i] };
+
+		row.error = Vector3::Dot(diffWorld, n);
+
+		if (row.error <= maxDistances[i])
+		{
+			row.isActive = false;
+			continue;
+			
+		}
+
+		row.isActive = true;
+		row.error -= maxDistances[i];
+
+		row.jacobian[0] = n;
+		row.jacobian[1] = Vector3::Cross(_rA - diffWorld, n);
+		row.jacobian[2] = -n;
+		row.jacobian[3] = -Vector3::Cross(_rB, n);
+	}
+}
+
+// 距離制限のある、スライダー拘束のヤコビアンと違反値の計算
+void ConstraintFunction::CalcLimitedSliderJacobianAndError(
+	const float _distance,
+	const Quaternion& _rotationA, const Vector3& _positionA, const Vector3& _rA,
+	const Quaternion& _rotationB, const Vector3& _positionB, const Vector3& _rB,
+	std::span<Constraint, 6> _output)
+{
+	// 距離制限付きで、ある点を線上に拘束する
+	CalcLimitedPointOnLineJacobianAndError(
+		_distance,
+		_rotationA, _positionA, _rA,
+		_positionB, _rB,
+		_output.first<3>()
+	);
+
+	// 姿勢を軸に合わせる
+	CalcJointDriveJacobianAndError(
+		Quaternion::IDENTITY,
+		_rotationA,
+		_rotationB,
+		_output.subspan<3, 3>()
+	);
+}
+
 // 軸合わせヤコビアンと違反値の計算
 void ConstraintFunction::CalcAxisJacobianAndError(const Vector3& _tangent, const Vector3& _axisError, Constraint& _output)
 {
