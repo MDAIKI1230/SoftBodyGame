@@ -337,6 +337,12 @@ bool RagdollStorage::CreateRagdoll(EntityID _entity, SkeletonID _skeletonID, Rag
 
 				PhysicsComponentAPI::SetPositionTuning(constraint, tuning);
 				PhysicsComponentAPI::SetAngularTuning(constraint, tuning);
+
+				PhysicsComponentAPI::AddInternalEndPoint<AngleLimitHingeConstraint>(
+					constraint,
+					ragdoll.transforms[boneIndex],
+					childJointPosition,
+					childJointRotation);
 				break;
 
 			case ConstraintType::LIMITED_BALL_JOINT:
@@ -361,6 +367,12 @@ bool RagdollStorage::CreateRagdoll(EntityID _entity, SkeletonID _skeletonID, Rag
 
 				PhysicsComponentAPI::SetPositionTuning(constraint, tuning);
 				PhysicsComponentAPI::SetAngularTuning(constraint, tuning);
+
+				PhysicsComponentAPI::AddInternalEndPoint<LimitedBallJointConstraint>(
+					constraint,
+					ragdoll.transforms[boneIndex],
+					childJointPosition,
+					childJointRotation);
 				break;
 
 			default:
@@ -375,12 +387,6 @@ bool RagdollStorage::CreateRagdoll(EntityID _entity, SkeletonID _skeletonID, Rag
 			childFilter.ignoreMembers |= 1ull << bondeIndexToCollisionNumber.at(parentIndex);
 
 			PhysicsComponentAPI::SetFilter(collider, childFilter);
-
-			PhysicsComponentAPI::AddInternalEndPoint(
-				constraint,
-				ragdoll.transforms[boneIndex],
-				childJointPosition,
-				childJointRotation);
 
 			ragdoll.parentIndices.push_back(parentIndex);
 

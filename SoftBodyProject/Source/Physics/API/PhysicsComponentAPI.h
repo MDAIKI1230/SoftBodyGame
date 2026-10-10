@@ -254,36 +254,137 @@ public:
 			return ConstraintID{};
 		}
 
-		return constraintStorage->Create<PointConstraint>(_entity, transformID, _localOffset, _localRotation);
+		return constraintStorage->Create<Constraint>(_entity, transformID, _localOffset, _localRotation);
+	}
+
+	// 自信のEndPoint取得
+	template<class Constraint>
+	static const EndPointFrame& GetEndPoint(ConstraintID _id)
+	{
+		return constraintStorage->GetEndPoint<Constraint>(_id);
+	}
+	// 自信のEndPoint取得
+	static const EndPointFrame& GetEndPoint(ConstraintID _id);
+	// 自信のEndPoint変更
+	template<class Constraint>
+	static void SetEndPoint(ConstraintID _id, EndPointFrame _endPoint)
+	{
+		constraintStorage->SetEndPoint<Constraint>(_id, _endPoint);
+	}
+	// 自信のEndPoint変更
+	template<class Constraint>
+	static EndPointFrame& EditEndPoint(ConstraintID _id)
+	{
+		return constraintStorage->EditEndPoint<Constraint>(_id);
+	}
+	// 相手のEndPointすべて取得
+	template<class Constraint>
+	static std::span<const EndPointFrame> GetOtherEndPoints(ConstraintID _id)
+	{
+		return constraintStorage->GetOtherEndPoints<Constraint>(_id);
+	}
+	// 相手のEndPointすべて取得
+	static std::span<const EndPointFrame> GetOtherEndPoints(ConstraintID _id);
+	// 相手のEndPointすべて取得
+	template<class Constraint>
+	static std::span<EndPointFrame> EditOtherEndPoints(ConstraintID _id)
+	{
+		return constraintStorage->EditOtherEndPoints<Constraint>(_id);
+	}
+
+	// 相手のEndPoint取得
+	template<class Constraint>
+	static const EndPointFrame& GetOtherEndPoint(ConstraintID _id)
+	{
+		return constraintStorage->GetOtherEndPoint<Constraint>(_id);
+	}
+	// 相手のEndPoint取得
+	template<class Constraint>
+	static EndPointFrame& EditOtherEndPoint(ConstraintID _id)
+	{
+		return constraintStorage->EditOtherEndPoint<Constraint>(_id);
+	}
+
+	// 拘束にEndPoint追加
+	template<class Constraint>
+	static void AddEndPoint(ConstraintID _id, EntityID _entity, const Vector3& _localOffset, const Quaternion& _localRotation = Quaternion::IDENTITY)
+	{
+		PhysicsTransformID transformID;
+		// エンティティに対応したTransformがあるならそれを追加ないなら何もしない
+		if (transformStorage->TryGet(_entity, transformID))
+		{
+			constraintStorage->AddEndPoint<Constraint>(_id, transformID, _localOffset, _localRotation);
+		}
+	}
+	// 拘束からEndPoint除外
+	template<class Constraint>
+	static void RemoveEndPoint(ConstraintID _id, EntityID _entity)
+	{
+		PhysicsTransformID transformID;
+		// エンティティに対応したTransformがあるならそれを追加ないなら何もしない
+		if (transformStorage->TryGet(_entity, transformID))
+		{
+			constraintStorage->RemoveEndPoint<Constraint>(_id, transformID);
+		}
+	}
+	// 拘束からEndPoint除外(一つ版)
+	template<class Constraint>
+	static void RemoveEndPoint(ConstraintID _id)
+	{
+		constraintStorage->RemoveEndPoint<Constraint>(_id);
+	}
+
+	// 拘束からEndPointすべて除外
+	template<class Constraint>
+	static void RemoveEndPointOtherAll(ConstraintID _id)
+	{
+		constraintStorage->RemoveEndPointOtherAll<Constraint>(_id);
+	}
+
+	// Bodyを指定してEndPointを追加
+	template<class Constraint>
+	static void AddEndPoint(ConstraintID _id, BodyID _bodyID, const Vector3& _localOffset, const Quaternion& _localRotation = Quaternion::IDENTITY)
+	{
+		if (!constraintStorage->IsAlive(_id) || !bodyStorage->IsAlive(_bodyID))
+		{
+			return;
+		}
+
+		PhysicsTransformID transformID{ bodyStorage->GetTransformID(_bodyID) };
+
+		// 同じBody同士を拘束しない
+		if (!transformStorage->IsAlive(transformID) || GetEndPoint<Constraint>(_id).transformID == transformID)
+		{
+			return;
+		}
+
+		AddInternalEndPoint<Constraint>(_id, transformID, _localOffset, _localRotation);
+	}
+
+	// Bodyを指定してEndPointを削除
+	template<class Constraint>
+	static void RemoveEndPoint(ConstraintID _id, BodyID _bodyID)
+	{
+		if (!constraintStorage->IsAlive(_id) || !bodyStorage->IsAlive(_bodyID))
+		{
+			return;
+		}
+
+		PhysicsTransformID transformID{ bodyStorage->GetTransformID(_bodyID) };
+
+		// 自身の基準点は残す
+		if (GetEndPoint<Constraint>(_id).transformID == transformID)
+		{
+			return;
+		}
+
+		RemoveInternalEndPoint<Constraint>(_id, transformID);
 	}
 
 	// 距離拘束の距離取得
 	static float GetDistance(ConstraintID _id);
 	// 距離拘束の距離設定
 	static void SetDistance(ConstraintID _id, float _distance);
-
-	// 自信のEndPoint取得
-	static const EndPointFrame& GetEndPoint(ConstraintID _id);
-	// 自信のEndPoint変更
-	static void SetEndPoint(ConstraintID _id, EndPointFrame _endPoint);
-	// 相手のEndPointすべて取得
-	static std::span<const EndPointFrame> GetOtherEndPoints(ConstraintID _id);
-	// 相手のEndPointすべて取得
-	static std::span<EndPointFrame> EditOtherEndPoints(ConstraintID _id);
-
-	// 拘束にEndPoint追加
-	static void AddEndPoint(ConstraintID _id, EntityID _entity, const Vector3& _localOffset, const Quaternion& _localRotation = Quaternion::IDENTITY);
-	// 拘束からEndPoint除外
-	static void RemoveEndPoint(ConstraintID _id, EntityID _entity);
-
-	// 拘束からEndPointすべて除外
-	static void RemoveEndPointOtherAll(ConstraintID _id);
-
-	// Bodyを指定してEndPointを追加
-	static void AddEndPoint(ConstraintID _id, BodyID _bodyID, const Vector3& _localOffset, const Quaternion& _localRotation = Quaternion::IDENTITY);
-
-	// Bodyを指定してEndPointを削除
-	static void RemoveEndPoint(ConstraintID _id, BodyID _bodyID);
 
 	// Swing角度取得
 	static float GetSwingAngle(ConstraintID _id);
@@ -468,8 +569,19 @@ public:
 		return constraintStorage->Create<Constraint>(_entity, _transformID, _localOffset, _localRotation);
 	}
 	
-	// 内部用拘束のEndPoint追加(寿命管理をちゃんを忘れない)
-	static void AddInternalEndPoint(ConstraintID _constraintID, PhysicsTransformID _transformID, const Vector3& _localOffset, const Quaternion& _localRotation = Quaternion::IDENTITY);
+	// 内部用拘束のEndPoint追加(寿命管理をちゃんを忘れない)(正しい拘束をテンプレートに入れないとバグるよ)
+	template<class Constraint>
+	static void AddInternalEndPoint(ConstraintID _constraintID, PhysicsTransformID _transformID, const Vector3& _localOffset, const Quaternion& _localRotation = Quaternion::IDENTITY)
+	{
+		constraintStorage->AddEndPoint<Constraint>(_constraintID, _transformID, _localOffset, _localRotation);
+	}
+
+	// 内部用拘束のEndPoint除外(寿命管理をちゃんを忘れない)(正しい拘束をテンプレートに入れないとバグるよ)
+	template<class Constraint>
+	static void RemoveInternalEndPoint(ConstraintID _constraintID, PhysicsTransformID _transformID)
+	{
+		constraintStorage->RemoveEndPoint<Constraint>(_constraintID, _transformID);
+	}
 
 	// PhysicsTransform破棄(対応する他の奴も破棄する)
 	static void DestroyPhysicsTransform(PhysicsTransformID _transformID);

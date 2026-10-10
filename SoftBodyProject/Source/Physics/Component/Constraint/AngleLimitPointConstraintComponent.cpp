@@ -1,6 +1,10 @@
-﻿#include "PhysicsComponentAPI.h"
+﻿#include "Base/ConstraintComponentBase.inl"
+
+#include "PhysicsComponentAPI.h"
 
 #include "AngleLimitPointConstraintComponent.h"
+
+template struct ConstraintComponentBase<AngleLimitPointConstraint, false>;
 
 // コンストラクタ
 AngleLimitPointConstraintComponent::AngleLimitPointConstraintComponent(EntityID _entity) :

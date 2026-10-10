@@ -4,10 +4,11 @@
 
 #include "EntityID.h"
 #include "ConstraintTuning.h"
+#include "AngleLimitHingeConstraint.h"
 
 #include "Base/ConstraintComponentBase.h"
 
-struct AngleLimitHingeConstraintComponent :public ConstraintComponentBase
+struct AngleLimitHingeConstraintComponent :public ConstraintComponentBase<AngleLimitHingeConstraint, false>
 {
 public:
 	// コンストラクタ

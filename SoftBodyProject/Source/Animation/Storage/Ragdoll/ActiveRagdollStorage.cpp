@@ -87,7 +87,7 @@ bool ActiveRagdollStorage::CreateActiveRagdoll(EntityID _entity, const Ragdoll& 
 		float weight{ _mask != nullptr ? _mask->weights[boneIndex] : 1.0f };
 		tuning.maxForce = _setting.maxJointDriveForce * weight;
 
-		const EndPointFrame parentEndPoint{ PhysicsComponentAPI::GetEndPoint(bodyConstraint) };
+		const EndPointFrame& parentEndPoint{ PhysicsComponentAPI::GetEndPoint(bodyConstraint) };
 		for (const EndPointFrame& childEndPoint : PhysicsComponentAPI::GetOtherEndPoints(bodyConstraint))
 		{
 			// JointDrive拘束を作成してく
@@ -97,7 +97,7 @@ bool ActiveRagdollStorage::CreateActiveRagdoll(EntityID _entity, const Ragdoll& 
 				parentEndPoint.localPosition,
 				parentEndPoint.localRotation) };
 
-			PhysicsComponentAPI::AddInternalEndPoint(
+			PhysicsComponentAPI::AddInternalEndPoint<JointDriveConstraint>(
 				jointDriveID,
 				childEndPoint.transformID,
 				childEndPoint.localPosition,
@@ -124,7 +124,7 @@ bool ActiveRagdollStorage::CreateActiveRagdoll(EntityID _entity, const Ragdoll& 
 			Quaternion::IDENTITY,
 			Vector3::ONE) };
 
-		PhysicsComponentAPI::AddInternalEndPoint(
+		PhysicsComponentAPI::AddInternalEndPoint<PointConstraint>(
 			pointID,
 			transformID,
 			Vector3::ZERO);

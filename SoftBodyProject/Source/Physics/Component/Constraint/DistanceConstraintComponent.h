@@ -2,9 +2,11 @@
 
 #include "MDMath.h"
 
+#include "DistanceConstraint.h"
+
 #include "Base/ConstraintComponentBase.h"
 
-struct DistanceConstraintComponent :public ConstraintComponentBase
+struct DistanceConstraintComponent :public ConstraintComponentBase<DistanceConstraint, false>
 {
 public:
 	// コンストラクタ

@@ -440,6 +440,8 @@
     <ClInclude Include="Source\Physics\Struct\Constraint\ConstraintTuning.h" />
     <ClInclude Include="Source\Physics\Struct\Constraint\Constraint\AngleLimitHingeConstraint.h" />
     <ClInclude Include="Source\Physics\Struct\Constraint\Constraint\AngleLimitPointConstraint.h" />
+    <ClInclude Include="Source\Physics\Struct\Constraint\Constraint\Base\ConstraintBase.h" />
+    <ClInclude Include="Source\Physics\Struct\Constraint\Constraint\Base\ConstraintOneBase.h" />
     <ClInclude Include="Source\Physics\Struct\Constraint\Constraint\ContactConstraint.h" />
     <ClInclude Include="Source\Physics\Struct\Constraint\Constraint\DistanceConstraint.h" />
     <ClInclude Include="Source\Physics\Struct\Constraint\Constraint\JointDriveConstraint.h" />
@@ -614,7 +616,6 @@
     <ClCompile Include="Source\Physics\Component\Collider\SphereColliderComponent.cpp" />
     <ClCompile Include="Source\Physics\Component\Constraint\AngleLimitHingeConstraintComponent.cpp" />
     <ClCompile Include="Source\Physics\Component\Constraint\AngleLimitPointConstraintComponent.cpp" />
-    <ClCompile Include="Source\Physics\Component\Constraint\Base\ConstraintComponentBase.cpp" />
     <ClCompile Include="Source\Physics\Component\Constraint\DistanceConstraintComponent.cpp" />
     <ClCompile Include="Source\Physics\Component\Constraint\HingeConstraintComponent.cpp" />
     <ClCompile Include="Source\Physics\Component\Constraint\LimitedBallJointConstraintComponent.cpp" />
@@ -710,6 +711,9 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='DebugDxlib|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='ReleaseDxlib|x64'">true</ExcludedFromBuild>
     </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Source\Physics\Component\Constraint\Base\ConstraintComponentBase.inl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

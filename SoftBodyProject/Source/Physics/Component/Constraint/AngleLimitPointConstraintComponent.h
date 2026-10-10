@@ -3,10 +3,11 @@
 #include "MDMath.h"
 
 #include "ConstraintTuning.h"
+#include "AngleLimitPointConstraint.h"
 
 #include "Base/ConstraintComponentBase.h"
 
-struct AngleLimitPointConstraintComponent :public ConstraintComponentBase
+struct AngleLimitPointConstraintComponent :public ConstraintComponentBase<AngleLimitPointConstraint, false>
 {
 	friend class AngleLimitPointConstraintComponentStorage;
 public:

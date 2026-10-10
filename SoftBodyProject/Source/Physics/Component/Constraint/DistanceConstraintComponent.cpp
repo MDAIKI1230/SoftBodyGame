@@ -1,6 +1,10 @@
-﻿#include "PhysicsComponentAPI.h"
+﻿#include "Base/ConstraintComponentBase.inl"
+
+#include "PhysicsComponentAPI.h"
 
 #include "DistanceConstraintComponent.h"
+
+template struct ConstraintComponentBase<DistanceConstraint, false>;
 
 
 DistanceConstraintComponent::DistanceConstraintComponent(EntityID _entity) :

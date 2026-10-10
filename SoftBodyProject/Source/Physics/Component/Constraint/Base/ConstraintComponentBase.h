@@ -10,6 +10,7 @@
 
 #include "RigidBodyComponent.h"
 
+template<class T, bool ONE>
 struct ConstraintComponentBase
 {
 public:
@@ -24,19 +25,26 @@ public:
 	// 自身のEndPoint変更
 	void SetEndPoint(EndPointFrame _endPoint);
 
+	// 相手EndPoint取得
+	const EndPointFrame& GetOtherEndPoint() requires (ONE);
+	// 相手EndPointすべて取得
+	std::span<const EndPointFrame> GetOtherEndPoints() requires (!ONE);
+
 	// 対応点追加
 	void AddEndPoint(const ObjectBase* _object, const Vector3& _localOffset, const Quaternion& _rotation = Quaternion::IDENTITY);
 	// 対応点削除
-	void RemoveEndPoint(const ObjectBase* _object);
+	void RemoveEndPoint(const ObjectBase* _object) requires (!ONE);
+	// 対応点削除
+	void RemoveEndPoint() requires (ONE);
 
 	// Bodyを指定して対応点を追加
 	void AddEndPoint(const RigidBodyComponent& _body, const Vector3& _localOffset, const Quaternion& _rotation = Quaternion::IDENTITY);
 
 	// Bodyを指定して対応点を削除
-	void RemoveEndPoint(const RigidBodyComponent& _body);
+	void RemoveEndPoint(const RigidBodyComponent& _body) requires (!ONE);
 
 	// 拘束からEndPointすべて除外
-	void RemoveEndPointOtherAll();
+	void RemoveEndPointOtherAll() requires (!ONE);
 
 	// ID取得
 	ConstraintID GetID() const { return id; }

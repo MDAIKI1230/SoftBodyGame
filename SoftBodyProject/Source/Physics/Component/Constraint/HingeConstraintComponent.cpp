@@ -1,6 +1,10 @@
-﻿#include "PhysicsComponentAPI.h"
+﻿#include "Base/ConstraintComponentBase.inl"
+
+#include "PhysicsComponentAPI.h"
 
 #include "HingeConstraintComponent.h"
+
+template struct ConstraintComponentBase<HingeConstraint, false>;
 
 // コンストラクタ
 HingeConstraintComponent::HingeConstraintComponent(EntityID _entity) :

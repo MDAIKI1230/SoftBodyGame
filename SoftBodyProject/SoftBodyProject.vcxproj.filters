@@ -401,6 +401,9 @@
     <Filter Include="ソース ファイル\Physics\Storage\Constraint\Base">
       <UniqueIdentifier>{2cf57192-5ce0-454d-acce-f4c1d62e0e90}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Physics\Struct\Constraint\Constraint\Base">
+      <UniqueIdentifier>{1f94040a-e0e2-496d-8282-c347a5be101f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Objects\Camera.h">
@@ -1447,6 +1450,12 @@
     <ClInclude Include="Source\Physics\Storage\Constraint\Base\ConstraintStorageBase.h">
       <Filter>ソース ファイル\Physics\Storage\Constraint\Base</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Physics\Struct\Constraint\Constraint\Base\ConstraintBase.h">
+      <Filter>ソース ファイル\Physics\Struct\Constraint\Constraint\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Struct\Constraint\Constraint\Base\ConstraintOneBase.h">
+      <Filter>ソース ファイル\Physics\Struct\Constraint\Constraint\Base</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\System\Scenes\DebugScene.cpp">
@@ -1785,9 +1794,6 @@
     <ClCompile Include="Source\Physics\Storage\Component\Constraint\AngleLimitHingeConstraintComponentStorage.cpp">
       <Filter>ソース ファイル\Physics\Storage\Component\Constraint</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Physics\Component\Constraint\Base\ConstraintComponentBase.cpp">
-      <Filter>ソース ファイル\Physics\Component\Constraint\Base</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Physics\Component\Constraint\LimitedBallJointConstraintComponent.cpp">
       <Filter>ソース ファイル\Physics\Component\Constraint</Filter>
     </ClCompile>
@@ -1946,5 +1952,10 @@
     <FxCompile Include="Shader\Sky\SkyPS.hlsl">
       <Filter>Shader\Sky</Filter>
     </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Source\Physics\Component\Constraint\Base\ConstraintComponentBase.inl">
+      <Filter>ソース ファイル\Physics\Component\Constraint\Base</Filter>
+    </None>
   </ItemGroup>
 </Project>

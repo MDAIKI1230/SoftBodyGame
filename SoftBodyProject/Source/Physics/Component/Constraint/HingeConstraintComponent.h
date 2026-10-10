@@ -3,10 +3,11 @@
 #include "MDMath.h"
 
 #include "ConstraintTuning.h"
+#include "HingeConstraint.h"
 
 #include "Base/ConstraintComponentBase.h"
 
-struct HingeConstraintComponent :public ConstraintComponentBase
+struct HingeConstraintComponent :public ConstraintComponentBase<HingeConstraint, false>
 {
 	friend class HingeConstraintComponentStorage;
 public:

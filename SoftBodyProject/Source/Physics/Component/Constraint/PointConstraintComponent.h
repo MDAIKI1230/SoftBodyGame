@@ -2,9 +2,11 @@
 
 #include "MDMath.h"
 
+#include "PointConstraint.h"
+
 #include "Base/ConstraintComponentBase.h"
 
-struct PointConstraintComponent :public ConstraintComponentBase
+struct PointConstraintComponent :public ConstraintComponentBase<PointConstraint, false>
 {
 public:
 	// コンストラクタ

@@ -1,4 +1,6 @@
-﻿#include "ConstraintStorage.h"
+﻿#include "AssertMacros.h"
+
+#include "ConstraintStorage.h"
 
 ConstraintStorage::ConstraintStorage()
 {
@@ -13,6 +15,31 @@ ConstraintStorage::ConstraintStorage()
 	sliderConstraintStorage = std::make_unique<ConstraintStorageBase<SliderConstraint>>();
 	limitedPointOnLineConstraintStorage = std::make_unique<ConstraintStorageBase<LimitedPointOnLineConstraint>>();
 	limitedSliderConstraintStorage = std::make_unique<ConstraintStorageBase<LimitedSliderConstraint>>();
+}
+
+// 種類がわからない時用のエンドポイント取得関数
+const EndPointFrame& ConstraintStorage::GetEndPoint(ConstraintID _id)
+{
+	switch (GetType(_id))
+	{
+		CONSTRAINT_LIST(GET_ENDPOINT_CASE);
+	default:
+		break;
+	}
+
+	MD_UNREACHABLE("そんな拘束はありませーん");
+}
+// 種類がわからない時用の対応エンドポイント取得関数
+std::span<const EndPointFrame> ConstraintStorage::GetOtherEndPoints(ConstraintID _id)
+{
+	switch (GetType(_id))
+	{
+		CONSTRAINT_LIST(GET_OTHERENDPOINTS_CASE);
+	default:
+		break;
+	}
+
+	MD_UNREACHABLE("そんな拘束はありませーん");
 }
 
 void ConstraintStorage::Destory(ConstraintID _id)

@@ -1,6 +1,10 @@
-﻿#include "PhysicsComponentAPI.h"
+﻿#include "Base/ConstraintComponentBase.inl"
+
+#include "PhysicsComponentAPI.h"
 
 #include "PointConstraintComponent.h"
+
+template struct ConstraintComponentBase<PointConstraint, false>;
 
 PointConstraintComponent::PointConstraintComponent(EntityID _entity) :
 	ConstraintComponentBase{ PhysicsComponentAPI::Create<PointConstraint>(_entity, Vector3::ZERO) }

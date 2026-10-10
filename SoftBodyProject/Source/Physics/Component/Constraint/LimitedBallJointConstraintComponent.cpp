@@ -1,6 +1,10 @@
-﻿#include "PhysicsComponentAPI.h"
+﻿#include "Base/ConstraintComponentBase.inl"
+
+#include "PhysicsComponentAPI.h"
 
 #include "LimitedBallJointConstraintComponent.h"
+
+template struct ConstraintComponentBase<LimitedBallJointConstraint, false>;
 
 // コンストラクタ
 LimitedBallJointConstraintComponent::LimitedBallJointConstraintComponent(EntityID _entity) :

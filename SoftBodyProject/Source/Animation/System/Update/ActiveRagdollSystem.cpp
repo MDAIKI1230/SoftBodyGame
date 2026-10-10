@@ -788,9 +788,9 @@ void ActiveRagdollSystem::UpdateJointDrive(const Ragdoll& _ragdoll, const Active
 		// 子ボーンインデックス
 		uint32_t childBoneIndex{ _activeRagdoll.childBoneIndex[i] };
 
-		const EndPointFrame& parentEndPoint{ PhysicsComponentAPI::GetEndPoint(constraint) };
+		const EndPointFrame& parentEndPoint{ PhysicsComponentAPI::GetEndPoint<JointDriveConstraint>(constraint) };
 		// 一旦APIの関係上一対一だけどこれからしか取得できないから[0]があってすまぬ
-		const EndPointFrame& childEndPoint{ PhysicsComponentAPI::GetOtherEndPoints(constraint)[0] };
+		const EndPointFrame& childEndPoint{ PhysicsComponentAPI::GetOtherEndPoint<JointDriveConstraint>(constraint) };
 
 		Vector3 pos, scale;
 		Quaternion childModelRoatation, parentModelRotation;
@@ -837,9 +837,9 @@ void ActiveRagdollSystem::UpdatePointConstraint(const Ragdoll& _ragdoll, const A
 			continue;
 		}
 
-		const EndPointFrame& parentEndPoint{ PhysicsComponentAPI::GetEndPoint(constraint) };
+		const EndPointFrame& parentEndPoint{ PhysicsComponentAPI::GetEndPoint<PointConstraint>(constraint) };
 		// 一旦APIの関係上一対一だけどこれからしか取得できないから[0]があってすまぬ
-		EndPointFrame& targetEndPoint{ PhysicsComponentAPI::EditOtherEndPoints(constraint)[0] };
+		EndPointFrame& targetEndPoint{ PhysicsComponentAPI::EditOtherEndPoints<PointConstraint>(constraint)[0] };
 
 		Vector3 scale;
 		Quaternion modelRotation;

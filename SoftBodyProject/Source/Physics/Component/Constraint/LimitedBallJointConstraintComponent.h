@@ -3,10 +3,11 @@
 #include "EntityID.h"
 
 #include "ConstraintTuning.h"
+#include "LimitedBallJointConstraint.h"
 
 #include "Base/ConstraintComponentBase.h"
 
-struct LimitedBallJointConstraintComponent :public ConstraintComponentBase
+struct LimitedBallJointConstraintComponent :public ConstraintComponentBase<LimitedBallJointConstraint, false>
 {
 	friend class LimitedBallJointConstraintComponentStorage;
 public:
