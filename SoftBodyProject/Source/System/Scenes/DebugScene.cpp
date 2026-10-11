@@ -380,27 +380,27 @@ void DebugScene::Initialize()
 
 	//objectManager.Add(std::move(limitedPointOnLineBox));
 
-	// 距離制限のある、スライダー拘束のデバッグ
-	std::unique_ptr<EmptyObject> limitedSliderEmpty{ std::make_unique<EmptyObject>(&worldStorage, objectManager.GenerateNewID()) };
+	//// 距離制限のある、スライダー拘束のデバッグ
+	//std::unique_ptr<EmptyObject> limitedSliderEmpty{ std::make_unique<EmptyObject>(&worldStorage, objectManager.GenerateNewID()) };
 
-	limitedSliderEmpty->GetComponent<TransformComponent>()->SetPosition(Vector3{ 180.0f,0.0f,0.0f });
+	//limitedSliderEmpty->GetComponent<TransformComponent>()->SetPosition(Vector3{ 180.0f,0.0f,0.0f });
 
-	LimitedSliderConstraintComponent* limitedSlider{ limitedSliderEmpty->AddComponent<LimitedSliderConstraintComponent>() };
+	//LimitedSliderConstraintComponent* limitedSlider{ limitedSliderEmpty->AddComponent<LimitedSliderConstraintComponent>() };
 
-	limitedSlider->SetDistance(80.0f);
+	//limitedSlider->SetDistance(80.0f);
 
-	objectManager.Add(std::move(limitedSliderEmpty));
+	//objectManager.Add(std::move(limitedSliderEmpty));
 
-	std::unique_ptr<DebugBox> limitedSliderBox{ std::make_unique<DebugBox>(&worldStorage, objectManager.GenerateNewID(), 30.0f, 50.0f, 20.0f) };
+	//std::unique_ptr<DebugBox> limitedSliderBox{ std::make_unique<DebugBox>(&worldStorage, objectManager.GenerateNewID(), 30.0f, 50.0f, 20.0f) };
 
-	limitedSliderBox->GetComponent<TransformComponent>()->SetPosition(Vector3{ 180.0f,-40.0f,0.0f });
-	limitedSliderBox->GetComponent<TransformComponent>()->Rotate(Quaternion::AngleAxis(MathConstants::PI_FLT / 6.0f, Vector3::FORWARD));
+	//limitedSliderBox->GetComponent<TransformComponent>()->SetPosition(Vector3{ 180.0f,-40.0f,0.0f });
+	//limitedSliderBox->GetComponent<TransformComponent>()->Rotate(Quaternion::AngleAxis(MathConstants::PI_FLT / 6.0f, Vector3::FORWARD));
 
-	RigidBodyComponent* limitedSliderBody{ limitedSliderBox->AddComponent<RigidBodyComponent>() };
-	limitedSliderBody->SetIsGravity(true);
-	limitedSliderBody->SetVelocity(Vector3{ 0.0f,-30.0f,0.0f });
+	//RigidBodyComponent* limitedSliderBody{ limitedSliderBox->AddComponent<RigidBodyComponent>() };
+	//limitedSliderBody->SetIsGravity(true);
+	//limitedSliderBody->SetVelocity(Vector3{ 0.0f,-30.0f,0.0f });
 
-	limitedSlider->AddEndPoint(limitedSliderBox.get(), Vector3{ 0.0f,25.0f,0.0f }, Quaternion::IDENTITY);
+	//limitedSlider->AddEndPoint(limitedSliderBox.get(), Vector3{ 0.0f,25.0f,0.0f }, Quaternion::IDENTITY);
 
-	objectManager.Add(std::move(limitedSliderBox));
+	//objectManager.Add(std::move(limitedSliderBox));
 }

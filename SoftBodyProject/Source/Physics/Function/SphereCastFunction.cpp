@@ -1,8 +1,18 @@
-﻿#include "SphereCastFunction.h"
+﻿#include <cmath>
+#include <algorithm>
+
+#include "SphereCastFunction.h"
 
 // SphereRayと球の当たり判定
 bool SphereCastFunction::Sphere(const SphereRay& _ray, RayCastHitInfo& _hitInfo, const Vector3& _center, const Vector3& _scale, float _radius)
 {
+	float targetRadius{ _radius * std::max({
+	std::abs(_scale.x),
+	std::abs(_scale.y),
+	std::abs(_scale.z)
+		}) };
+
+	float totalRadius{ targetRadius + _ray.radius };
 	return true;
 }
 // SphereRayとボックスの当たり判定
