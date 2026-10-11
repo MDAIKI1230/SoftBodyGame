@@ -12,6 +12,10 @@ void ConstraintDebugRenderingSystem::Render(PhysicsTransformStorage* _transformS
 	AngleLimitPointConstraintRender(_transformStorage, _constraintStorage);
 	AngleLimitHingeConstraintRender(_transformStorage, _constraintStorage);
 	LimitedBallJointConstraintRender(_transformStorage, _constraintStorage);
+	PointOnLineConstraintRender(_transformStorage, _constraintStorage);
+	SliderConstraintRender(_transformStorage, _constraintStorage);
+	LimitedPointOnLineConstraintRender(_transformStorage, _constraintStorage);
+	LimitedSliderConstraintRender(_transformStorage, _constraintStorage);
 }
 
 void ConstraintDebugRenderingSystem::PointConstraintRender(PhysicsTransformStorage* _transformStorage, ConstraintStorage* _constraintStorage)
@@ -280,6 +284,276 @@ void ConstraintDebugRenderingSystem::LimitedBallJointConstraintRender(PhysicsTra
 				length,
 				limitedBallJointConstraint.twistAngleMin, limitedBallJointConstraint.twistAngleMax,
 				32, Color{ 0.0f, 1.0f, 0.0f });
+		}
+	}
+}
+
+// ある点を線上に制限する拘束描画
+void ConstraintDebugRenderingSystem::PointOnLineConstraintRender(PhysicsTransformStorage* _transformStorage, ConstraintStorage* _constraintStorage)
+{
+	for (auto& pointOnLineConstraint : _constraintStorage->GetPointOnLineConstraintRange())
+	{
+		const EndPointFrame& basePoint{ pointOnLineConstraint.ownerEndPoint };
+		PhysicsTransformID basePointTransID{ basePoint.transformID };
+
+		// 基準点のTransformがないなら飛ばす
+		if (!_transformStorage->IsAlive(basePointTransID))
+		{
+			continue;
+		}
+
+		const Quaternion& baseRotation{ _transformStorage->GetRotation(basePointTransID) };
+
+		// 基準点となる位置と移動軸を持ってくる。
+		Vector3 basePosition{ _transformStorage->GetPosition(basePointTransID) + baseRotation.Rotate(basePoint.localPosition) };
+		Vector3 baseDirection{ baseRotation.Rotate(basePoint.localRotation.Rotate(Vector3::UP)) };
+
+		if (baseDirection.LengthSqr() <= MathConstants::EPSILON)
+		{
+			continue;
+		}
+
+		baseDirection.Normalize();
+
+		Renderer::DrawSphereMesh(basePosition, 3.0f, Color{ 0.0f,1.0f,0.0f });
+
+		// 移動軸がわかりやすいように線を書く
+		float length{ 30.0f };
+		Renderer::DrawLine(basePosition - baseDirection * length, basePosition + baseDirection * length, Color{ 0.0f,1.0f,0.0f });
+
+		for (const auto& point : pointOnLineConstraint.endPoints)
+		{
+			PhysicsTransformID pointTransID{ point.transformID };
+
+			// 対象のTransformがないなら飛ばす
+			if (!_transformStorage->IsAlive(pointTransID))
+			{
+				continue;
+			}
+
+			const Quaternion& rotation{ _transformStorage->GetRotation(pointTransID) };
+			Vector3 position{ _transformStorage->GetPosition(pointTransID) + rotation.Rotate(point.localPosition) };
+
+			// 対象点を移動軸へ射影する
+			float pointDistance{ Vector3::Dot(position - basePosition, baseDirection) };
+			Vector3 projectedPosition{ basePosition + baseDirection * pointDistance };
+
+			Renderer::DrawLine(basePosition, projectedPosition, Color{ 0.0f,1.0f,0.0f });
+
+			Renderer::DrawSphereMesh(position, 3.0f, Color{ 0.0f,1.0f,0.0f });
+			Renderer::DrawSphereMesh(projectedPosition, 2.0f, Color{ 0.0f,1.0f,0.0f });
+			// 拘束位置からのズレは赤で描画
+			Renderer::DrawLine(position, projectedPosition, Color{ 1.0f,0.0f,0.0f });
+		}
+	}
+}
+
+// スライダー拘束描画
+void ConstraintDebugRenderingSystem::SliderConstraintRender(PhysicsTransformStorage* _transformStorage, ConstraintStorage* _constraintStorage)
+{
+	for (auto& sliderConstraint : _constraintStorage->GetSliderConstraintRange())
+	{
+		const EndPointFrame& basePoint{ sliderConstraint.ownerEndPoint };
+		PhysicsTransformID basePointTransID{ basePoint.transformID };
+
+		// 基準点のTransformがないなら飛ばす
+		if (!_transformStorage->IsAlive(basePointTransID))
+		{
+			continue;
+		}
+
+		const Quaternion& baseRotation{ _transformStorage->GetRotation(basePointTransID) };
+
+		// 基準点となる位置と移動軸を持ってくる。
+		Vector3 basePosition{ _transformStorage->GetPosition(basePointTransID) + baseRotation.Rotate(basePoint.localPosition) };
+		Vector3 baseDirection{ baseRotation.Rotate(basePoint.localRotation.Rotate(Vector3::UP)) };
+
+		if (baseDirection.LengthSqr() <= MathConstants::EPSILON)
+		{
+			continue;
+		}
+
+		baseDirection.Normalize();
+
+		Renderer::DrawSphereMesh(basePosition, 3.0f, Color{ 0.0f,1.0f,0.0f });
+
+		// 移動軸がわかりやすいように線を書く
+		float length{ 30.0f };
+		Renderer::DrawLine(basePosition - baseDirection * length, basePosition + baseDirection * length, Color{ 0.0f,1.0f,0.0f });
+
+		// 基準側の姿勢がわかりやすいように線を書く
+		Vector3 baseReference{ baseRotation.Rotate(basePoint.localRotation.Rotate(Vector3::RIGHT)) };
+		Renderer::DrawLine(basePosition, basePosition + baseReference * 15.0f, Color{ 0.0f,1.0f,0.0f });
+
+		for (const auto& point : sliderConstraint.endPoints)
+		{
+			PhysicsTransformID pointTransID{ point.transformID };
+
+			// 対象のTransformがないなら飛ばす
+			if (!_transformStorage->IsAlive(pointTransID))
+			{
+				continue;
+			}
+
+			const Quaternion& rotation{ _transformStorage->GetRotation(pointTransID) };
+			Vector3 position{ _transformStorage->GetPosition(pointTransID) + rotation.Rotate(point.localPosition) };
+
+			// 対象点を移動軸へ射影する
+			float pointDistance{ Vector3::Dot(position - basePosition, baseDirection) };
+			Vector3 projectedPosition{ basePosition + baseDirection * pointDistance };
+
+			Renderer::DrawLine(basePosition, projectedPosition, Color{ 0.0f,1.0f,0.0f });
+
+			Renderer::DrawSphereMesh(position, 3.0f, Color{ 0.0f,1.0f,0.0f });
+			Renderer::DrawSphereMesh(projectedPosition, 2.0f, Color{ 0.0f,1.0f,0.0f });
+			// 拘束位置からのズレは赤で描画
+			Renderer::DrawLine(position, projectedPosition, Color{ 1.0f,0.0f,0.0f });
+
+			// 対象側の現在の姿勢
+			Vector3 direction{ rotation.Rotate(point.localRotation.Rotate(Vector3::UP)) };
+			Vector3 reference{ rotation.Rotate(point.localRotation.Rotate(Vector3::RIGHT)) };
+
+			Renderer::DrawLine(position - direction * 15.0f, position + direction * 15.0f, Color{ 0.0f,1.0f,0.0f });
+			Renderer::DrawLine(position, position + reference * 15.0f, Color{ 0.0f,1.0f,0.0f });
+		}
+	}
+}
+
+// 距離制限付きで点を線上に制限する拘束描画
+void ConstraintDebugRenderingSystem::LimitedPointOnLineConstraintRender(PhysicsTransformStorage* _transformStorage, ConstraintStorage* _constraintStorage)
+{
+	for (auto& limitedPointOnLineConstraint : _constraintStorage->GetLimitedPointOnLineConstraintRange())
+	{
+		const EndPointFrame& basePoint{ limitedPointOnLineConstraint.ownerEndPoint };
+		PhysicsTransformID basePointTransID{ basePoint.transformID };
+
+		// 基準点のTransformがないなら飛ばす
+		if (!_transformStorage->IsAlive(basePointTransID))
+		{
+			continue;
+		}
+
+		const Quaternion& baseRotation{ _transformStorage->GetRotation(basePointTransID) };
+
+		// 基準点となる位置と移動軸を持ってくる。
+		Vector3 basePosition{ _transformStorage->GetPosition(basePointTransID) + baseRotation.Rotate(basePoint.localPosition) };
+		Vector3 baseDirection{ baseRotation.Rotate(basePoint.localRotation.Rotate(Vector3::UP)) };
+
+		if (baseDirection.LengthSqr() <= MathConstants::EPSILON)
+		{
+			continue;
+		}
+
+		baseDirection.Normalize();
+
+		Renderer::DrawSphereMesh(basePosition, 3.0f, Color{ 0.0f,1.0f,0.0f });
+
+		// 移動できる範囲と両端の描画
+		float distance{ std::max(limitedPointOnLineConstraint.distance, 0.0f) };
+		Vector3 minPosition{ basePosition - baseDirection * distance };
+		Vector3 maxPosition{ basePosition + baseDirection * distance };
+
+		Renderer::DrawLine(minPosition, maxPosition, Color{ 0.0f,1.0f,0.0f });
+		Renderer::DrawRing(minPosition, baseDirection, 5.0f, 16, Color{ 0.0f,1.0f,0.0f });
+		Renderer::DrawRing(maxPosition, baseDirection, 5.0f, 16, Color{ 0.0f,1.0f,0.0f });
+
+		for (const auto& point : limitedPointOnLineConstraint.endPoints)
+		{
+			PhysicsTransformID pointTransID{ point.transformID };
+
+			// 対象のTransformがないなら飛ばす
+			if (!_transformStorage->IsAlive(pointTransID))
+			{
+				continue;
+			}
+
+			const Quaternion& rotation{ _transformStorage->GetRotation(pointTransID) };
+			Vector3 position{ _transformStorage->GetPosition(pointTransID) + rotation.Rotate(point.localPosition) };
+
+			// 対象点を移動できる範囲へ射影する
+			float pointDistance{ Vector3::Dot(position - basePosition, baseDirection) };
+			pointDistance = std::clamp(pointDistance, -distance, distance);
+			Vector3 projectedPosition{ basePosition + baseDirection * pointDistance };
+
+			Renderer::DrawSphereMesh(position, 3.0f, Color{ 0.0f,1.0f,0.0f });
+			Renderer::DrawSphereMesh(projectedPosition, 2.0f, Color{ 0.0f,1.0f,0.0f });
+			// 拘束位置からのズレは赤で描画
+			Renderer::DrawLine(position, projectedPosition, Color{ 1.0f,0.0f,0.0f });
+		}
+	}
+}
+
+// 距離制限付きスライダー拘束描画
+void ConstraintDebugRenderingSystem::LimitedSliderConstraintRender(PhysicsTransformStorage* _transformStorage, ConstraintStorage* _constraintStorage)
+{
+	for (auto& limitedSliderConstraint : _constraintStorage->GetLimitedSliderConstraintRange())
+	{
+		const EndPointFrame& basePoint{ limitedSliderConstraint.ownerEndPoint };
+		PhysicsTransformID basePointTransID{ basePoint.transformID };
+
+		// 基準点のTransformがないなら飛ばす
+		if (!_transformStorage->IsAlive(basePointTransID))
+		{
+			continue;
+		}
+
+		const Quaternion& baseRotation{ _transformStorage->GetRotation(basePointTransID) };
+
+		// 基準点となる位置と移動軸を持ってくる。
+		Vector3 basePosition{ _transformStorage->GetPosition(basePointTransID) + baseRotation.Rotate(basePoint.localPosition) };
+		Vector3 baseDirection{ baseRotation.Rotate(basePoint.localRotation.Rotate(Vector3::UP)) };
+
+		if (baseDirection.LengthSqr() <= MathConstants::EPSILON)
+		{
+			continue;
+		}
+
+		baseDirection.Normalize();
+
+		Renderer::DrawSphereMesh(basePosition, 3.0f, Color{ 0.0f,1.0f,0.0f });
+
+		// 移動できる範囲と両端の描画
+		float distance{ std::max(limitedSliderConstraint.distance, 0.0f) };
+		Vector3 minPosition{ basePosition - baseDirection * distance };
+		Vector3 maxPosition{ basePosition + baseDirection * distance };
+
+		Renderer::DrawLine(minPosition, maxPosition, Color{ 0.0f,1.0f,0.0f });
+		Renderer::DrawRing(minPosition, baseDirection, 5.0f, 16, Color{ 0.0f,1.0f,0.0f });
+		Renderer::DrawRing(maxPosition, baseDirection, 5.0f, 16, Color{ 0.0f,1.0f,0.0f });
+
+		// 基準側の姿勢がわかりやすいように線を書く
+		Vector3 baseReference{ baseRotation.Rotate(basePoint.localRotation.Rotate(Vector3::RIGHT)) };
+		Renderer::DrawLine(basePosition, basePosition + baseReference * 15.0f, Color{ 0.0f,1.0f,0.0f });
+
+		for (const auto& point : limitedSliderConstraint.endPoints)
+		{
+			PhysicsTransformID pointTransID{ point.transformID };
+
+			// 対象のTransformがないなら飛ばす
+			if (!_transformStorage->IsAlive(pointTransID))
+			{
+				continue;
+			}
+
+			const Quaternion& rotation{ _transformStorage->GetRotation(pointTransID) };
+			Vector3 position{ _transformStorage->GetPosition(pointTransID) + rotation.Rotate(point.localPosition) };
+
+			// 対象点を移動できる範囲へ射影する
+			float pointDistance{ Vector3::Dot(position - basePosition, baseDirection) };
+			pointDistance = std::clamp(pointDistance, -distance, distance);
+			Vector3 projectedPosition{ basePosition + baseDirection * pointDistance };
+
+			Renderer::DrawSphereMesh(position, 3.0f, Color{ 0.0f,1.0f,0.0f });
+			Renderer::DrawSphereMesh(projectedPosition, 2.0f, Color{ 0.0f,1.0f,0.0f });
+			// 拘束位置からのズレは赤で描画
+			Renderer::DrawLine(position, projectedPosition, Color{ 1.0f,0.0f,0.0f });
+
+			// 対象側の現在の姿勢
+			Vector3 direction{ rotation.Rotate(point.localRotation.Rotate(Vector3::UP)) };
+			Vector3 reference{ rotation.Rotate(point.localRotation.Rotate(Vector3::RIGHT)) };
+
+			Renderer::DrawLine(position - direction * 15.0f, position + direction * 15.0f, Color{ 0.0f,1.0f,0.0f });
+			Renderer::DrawLine(position, position + reference * 15.0f, Color{ 0.0f,1.0f,0.0f });
 		}
 	}
 }

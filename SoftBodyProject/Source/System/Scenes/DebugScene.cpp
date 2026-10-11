@@ -83,11 +83,11 @@ void DebugScene::Initialize()
 	debugBox01->GetComponent<TransformComponent>()->SetPosition(Vector3{ 0,-200,0 });
 	objectManager.Add(std::move(debugBox01));
 
-	std::unique_ptr<DebugBox> debugBox02{ std::make_unique<DebugBox>(&worldStorage, objectManager.GenerateNewID(), 100.0f, 100.0f, 100.0f)};
+	/*std::unique_ptr<DebugBox> debugBox02{ std::make_unique<DebugBox>(&worldStorage, objectManager.GenerateNewID(), 100.0f, 100.0f, 100.0f)};
 	debugBox02->GetComponent<TransformComponent>()->SetPosition(Vector3{ 0,-100,0 });
 	RigidBodyComponent* debugBoxRigid{ debugBox02->AddComponent<RigidBodyComponent>() };
 	debugBoxRigid->SetMass(20.0f);
-	objectManager.Add(std::move(debugBox02));
+	objectManager.Add(std::move(debugBox02));*/
 
 	// 距離拘束デバッグ(宙ぶらりんなせいで力が減衰する要素がほぼないので凄い動く)
 	/*std::unique_ptr<EmptyObject> emptyObject{ std::make_unique<EmptyObject>(&worldStorage, objectManager.GenerateNewID()) };
@@ -340,10 +340,6 @@ void DebugScene::Initialize()
 
 	//SliderConstraintComponent* slider{ sliderEmpty->AddComponent<SliderConstraintComponent>() };
 
-	//ConstraintTuning tuning;
-	//tuning.compliance = 1e-6f;
-	//slider->SetTuning(tuning);
-
 	//objectManager.Add(std::move(sliderEmpty));
 
 	//std::unique_ptr<DebugBox> sliderBox{ std::make_unique<DebugBox>(&worldStorage, objectManager.GenerateNewID(), 30.0f, 50.0f, 20.0f) };
@@ -366,9 +362,6 @@ void DebugScene::Initialize()
 
 	//LimitedPointOnLineConstraintComponent* limitedPointOnLine{ limitedPointOnLineEmpty->AddComponent<LimitedPointOnLineConstraintComponent>() };
 
-	//ConstraintTuning tuning;
-	//tuning.compliance = 1e-6f;
-	//limitedPointOnLine->SetTuning(tuning);
 	//limitedPointOnLine->SetDistance(80.0f);
 
 	//objectManager.Add(std::move(limitedPointOnLineEmpty));
@@ -387,30 +380,27 @@ void DebugScene::Initialize()
 
 	//objectManager.Add(std::move(limitedPointOnLineBox));
 
-	//// 距離制限のある、スライダー拘束のデバッグ
-	//std::unique_ptr<EmptyObject> limitedSliderEmpty{ std::make_unique<EmptyObject>(&worldStorage, objectManager.GenerateNewID()) };
+	// 距離制限のある、スライダー拘束のデバッグ
+	std::unique_ptr<EmptyObject> limitedSliderEmpty{ std::make_unique<EmptyObject>(&worldStorage, objectManager.GenerateNewID()) };
 
-	//limitedSliderEmpty->GetComponent<TransformComponent>()->SetPosition(Vector3{ 180.0f,0.0f,0.0f });
+	limitedSliderEmpty->GetComponent<TransformComponent>()->SetPosition(Vector3{ 180.0f,0.0f,0.0f });
 
-	//LimitedSliderConstraintComponent* limitedSlider{ limitedSliderEmpty->AddComponent<LimitedSliderConstraintComponent>() };
+	LimitedSliderConstraintComponent* limitedSlider{ limitedSliderEmpty->AddComponent<LimitedSliderConstraintComponent>() };
 
-	//ConstraintTuning tuning;
-	//tuning.compliance = 1e-6f;
-	//limitedSlider->SetTuning(tuning);
-	//limitedSlider->SetDistance(80.0f);
+	limitedSlider->SetDistance(80.0f);
 
-	//objectManager.Add(std::move(limitedSliderEmpty));
+	objectManager.Add(std::move(limitedSliderEmpty));
 
-	//std::unique_ptr<DebugBox> limitedSliderBox{ std::make_unique<DebugBox>(&worldStorage, objectManager.GenerateNewID(), 30.0f, 50.0f, 20.0f) };
+	std::unique_ptr<DebugBox> limitedSliderBox{ std::make_unique<DebugBox>(&worldStorage, objectManager.GenerateNewID(), 30.0f, 50.0f, 20.0f) };
 
-	//limitedSliderBox->GetComponent<TransformComponent>()->SetPosition(Vector3{ 180.0f,-40.0f,0.0f });
-	//limitedSliderBox->GetComponent<TransformComponent>()->Rotate(Quaternion::AngleAxis(MathConstants::PI_FLT / 6.0f, Vector3::FORWARD));
+	limitedSliderBox->GetComponent<TransformComponent>()->SetPosition(Vector3{ 180.0f,-40.0f,0.0f });
+	limitedSliderBox->GetComponent<TransformComponent>()->Rotate(Quaternion::AngleAxis(MathConstants::PI_FLT / 6.0f, Vector3::FORWARD));
 
-	//RigidBodyComponent* limitedSliderBody{ limitedSliderBox->AddComponent<RigidBodyComponent>() };
-	//limitedSliderBody->SetIsGravity(true);
-	//limitedSliderBody->SetVelocity(Vector3{ 0.0f,-30.0f,0.0f });
+	RigidBodyComponent* limitedSliderBody{ limitedSliderBox->AddComponent<RigidBodyComponent>() };
+	limitedSliderBody->SetIsGravity(true);
+	limitedSliderBody->SetVelocity(Vector3{ 0.0f,-30.0f,0.0f });
 
-	//limitedSlider->AddEndPoint(limitedSliderBox.get(), Vector3{ 0.0f,25.0f,0.0f }, Quaternion::IDENTITY);
+	limitedSlider->AddEndPoint(limitedSliderBox.get(), Vector3{ 0.0f,25.0f,0.0f }, Quaternion::IDENTITY);
 
-	//objectManager.Add(std::move(limitedSliderBox));
+	objectManager.Add(std::move(limitedSliderBox));
 }
