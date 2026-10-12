@@ -4,12 +4,12 @@
 #include "ActiveRagdollStorage.h"
 
 // 作成関数
-ActiveRagdollID ActiveRagdollStorage::Create(EntityID _entity, RagdollID _ragdollID, const Ragdoll& _ragdoll, const SkeletonData* _skeleton, const ActiveRagdollSetting& _setting, const BoneMask* _mask)
+ActiveRagdollID ActiveRagdollStorage::Create(EntityID _entity, RagdollID _ragdollID, const Ragdoll& _ragdoll, const SkeletonData* _skeleton, const ActiveRagdollDefinition& _definition)
 {
 	ActiveRagdollID id{ CreateID(CountRagdollID()) };
 
 	// 失敗した場合は無効値を返す
-	if (!CreateActiveRagdoll(_entity, _ragdoll, _skeleton, _setting, _mask))
+	if (!CreateActiveRagdoll(_entity, _ragdoll, _skeleton, _definition))
 	{
 		ReleaseID(id);
 		return {};
@@ -62,30 +62,44 @@ void ActiveRagdollStorage::Destroy(ActiveRagdollID _id)
 }
 
 // ActiveRagdoll情報の作成関数
-bool ActiveRagdollStorage::CreateActiveRagdoll(EntityID _entity, const Ragdoll& _ragdoll, const SkeletonData* _skeleton, const ActiveRagdollSetting& _setting, const BoneMask* _mask)
+bool ActiveRagdollStorage::CreateActiveRagdoll(EntityID _entity, const Ragdoll& _ragdoll, const SkeletonData* _skeleton, const ActiveRagdollDefinition& _definition)
 {
 	if (_skeleton == nullptr)
 	{
 		return false;
 	}
 
-	ActiveRagdoll activeRagdoll;
+	const ActiveRagdollSetting& setting{ _definition.settings };
 
+	ActiveRagdoll activeRagdoll;
+	activeRagdoll.rotationWeights.ReSize(static_cast<uint32_t>(_skeleton->Size()), 1.0f);
+	activeRagdoll.positionWeights.ReSize(static_cast<uint32_t>(_skeleton->Size()), 1.0f);
+
+	if (_definition.isRotationWeight)
+	{
+		activeRagdoll.rotationWeights = _definition.rotationWeights;
+	}
+	if (_definition.isPositionWeight)
+	{
+		activeRagdoll.positionWeights = _definition.positionWeights;
+	}
+
+	// 姿勢制御用拘束生成
 	for (int boneIndex{ 0 }; boneIndex < _ragdoll.constraints.size(); boneIndex++)
 	{
 		ConstraintID bodyConstraint{ _ragdoll.constraints[boneIndex] };
 		// 無効値であれば無効値を入れる
 		if (!bodyConstraint.IsValid())
 		{
-			activeRagdoll.pointConstraints.emplace_back();
+			activeRagdoll.positionConstraints.emplace_back();
 			activeRagdoll.pointTransformIDs.emplace_back();
 			continue;
 		}
-		ConstraintTuning tuning;
+		ConstraintTuning rotationTuning;
 
-		tuning.compliance = _setting.jointDriveCompliance;
-		float weight{ _mask != nullptr ? _mask->weights[boneIndex] : 1.0f };
-		tuning.maxForce = _setting.maxJointDriveForce * weight;
+		rotationTuning.compliance = setting.rotationConstraintCompliances[boneIndex];
+		rotationTuning.maxForce = setting.roatationConstraintMaxPowers[boneIndex] *
+			activeRagdoll.rotationWeights.weights[boneIndex];
 
 		const EndPointFrame& parentEndPoint{ PhysicsComponentAPI::GetEndPoint(bodyConstraint) };
 		for (const EndPointFrame& childEndPoint : PhysicsComponentAPI::GetOtherEndPoints(bodyConstraint))
@@ -103,11 +117,11 @@ bool ActiveRagdollStorage::CreateActiveRagdoll(EntityID _entity, const Ragdoll& 
 				childEndPoint.localPosition,
 				childEndPoint.localRotation);
 
-			PhysicsComponentAPI::SetTuning(jointDriveID, tuning);
+			PhysicsComponentAPI::SetTuning(jointDriveID, rotationTuning);
 
 			activeRagdoll.childBoneIndex.push_back(boneIndex);
 			activeRagdoll.parentBoneIndex.push_back(_ragdoll.parentIndices[boneIndex]);
-			activeRagdoll.jointDriveConstraints.push_back(jointDriveID);
+			activeRagdoll.rotationConstraints.push_back(jointDriveID);
 		}
 
 		const RagdollBodyLink& link{ _ragdoll.bodyLinks[boneIndex] };
@@ -129,13 +143,37 @@ bool ActiveRagdollStorage::CreateActiveRagdoll(EntityID _entity, const Ragdoll& 
 			transformID,
 			Vector3::ZERO);
 
-		PhysicsComponentAPI::SetTuning(pointID, tuning);
+		ConstraintTuning positionTuning;
 
-		activeRagdoll.pointConstraints.push_back(pointID);
+		positionTuning.compliance = setting.positionConstraintCompliances[boneIndex];
+		positionTuning.maxForce = setting.positionConstraintMaxPowers[boneIndex] *
+			activeRagdoll.positionWeights.weights[boneIndex];
+
+		PhysicsComponentAPI::SetTuning(pointID, positionTuning);
+
+		activeRagdoll.positionConstraints.push_back(pointID);
 		activeRagdoll.pointTransformIDs.push_back(transformID);
 	}
 
-	activeRagdoll.settings = _setting;
+	// 腰用拘束生成
+	uint32_t pelvisBoneIndex{ _ragdoll.roles[static_cast<uint32_t>(RagdollBoneRole::PELVIS)] };
+	BodyID pelvisBodyID{ _ragdoll.bodyLinks[pelvisBoneIndex].bodyID };
+	if (!pelvisBodyID.IsValid())
+	{
+		return false;
+	}
+
+	activeRagdoll.pelvisConstraintTransformID = PhysicsComponentAPI::CreateInternalPhysicsTransformID(
+		_entity,
+		Vector3::ZERO,
+		Quaternion::IDENTITY,
+		Vector3::ONE);
+
+	activeRagdoll.pelvisConstraintID = PhysicsComponentAPI::CreateInternal<PointOnLineConstraint>(_entity, activeRagdoll.pelvisConstraintTransformID, Vector3::ZERO);
+
+	PhysicsComponentAPI::AddEndPoint<PointOnLineConstraint>(activeRagdoll.pelvisConstraintID, pelvisBodyID, Vector3::ZERO);
+
+	activeRagdoll.settings = setting;
 
 	activeRagdolls.push_back(std::move(activeRagdoll));
 
@@ -145,7 +183,7 @@ bool ActiveRagdollStorage::CreateActiveRagdoll(EntityID _entity, const Ragdoll& 
 // ActiveRagdoll情報の破棄関数
 void ActiveRagdollStorage::DestroyActiveRagdoll(RagdollID _ragdollID, const ActiveRagdoll& _activeRagdoll)
 {
-	for (auto jointDriveConstraint : _activeRagdoll.jointDriveConstraints)
+	for (auto jointDriveConstraint : _activeRagdoll.rotationConstraints)
 	{
 		PhysicsComponentAPI::DestroyConstraint(jointDriveConstraint);
 	}
@@ -154,4 +192,7 @@ void ActiveRagdollStorage::DestroyActiveRagdoll(RagdollID _ragdollID, const Acti
 	{
 		PhysicsComponentAPI::DestroyPhysicsTransform(transformID);
 	}
+
+	PhysicsComponentAPI::DestroyConstraint(_activeRagdoll.pelvisConstraintID);
+	PhysicsComponentAPI::DestroyPhysicsTransform(_activeRagdoll.pelvisConstraintTransformID);
 }

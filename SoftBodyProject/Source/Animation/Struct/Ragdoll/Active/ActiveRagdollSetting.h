@@ -73,14 +73,6 @@ struct ActiveRagdollSetting
 	// 重心が支持位置からこの距離以内にある場合は位置補正を行わない
 	float balanceDeadZone{};
 
-
-	// --- 関節駆動制御 ---
-
-	// Animationの目標相対姿勢へ戻す関節駆動拘束のコンプライアンス値
-	float jointDriveCompliance{};
-	// 関節駆動拘束が一つの回転軸へ出せる最大強度
-	float maxJointDriveForce{};
-
 	// --- ジャンプ制御 ---
 
 	// 到達させたいジャンプの高さ
@@ -105,4 +97,15 @@ struct ActiveRagdollSetting
 	float pelvisHeightDamping{};
 	// 腰高制御が出せる最大Force
 	float maxPelvisLiftForce{};
+
+	// --- 姿勢制御(BoneIndexに合わせる) ---
+
+	// Animationの目標相対姿勢へ戻す関節駆動拘束のコンプライアンス値
+	std::vector<float> rotationConstraintCompliances;
+	// 位置拘束が一つの回転軸へ出せる最大強度
+	std::vector<float> roatationConstraintMaxPowers;
+	// Animationの目標相対姿勢へ戻す関節駆動拘束のコンプライアンス値
+	std::vector<float> positionConstraintCompliances;
+	// 位置拘束が一つの回転軸へ出せる最大強度
+	std::vector<float> positionConstraintMaxPowers;
 };

@@ -37,6 +37,8 @@ private:
 	void UpdateUpright(const Ragdoll& _ragdoll, ActiveRagdoll& _activeRagdoll);
 	// 重心と足の支持範囲から姿勢を安定させる補助Forceを加える関数
 	void UpdateBalance(const Ragdoll& _ragdoll, ActiveRagdoll& _activeRagdoll);
+	// 腰の拘束の位置更新関数
+	void UpdatePelvisConstraint(ActiveRagdoll& _activeRagdoll, const Matrix4x4 _worldFromModel);
 
 	// Animationの目標姿勢から各関節Driveの目標相対回転を更新する関数
 	void UpdateJointDrive(const Ragdoll& _ragdoll, const ActiveRagdoll& _activeRagdoll, const PoseBuffer& _targetPose);

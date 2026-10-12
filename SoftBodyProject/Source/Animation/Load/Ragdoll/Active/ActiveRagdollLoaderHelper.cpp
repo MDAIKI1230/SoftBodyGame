@@ -1,13 +1,16 @@
 ﻿#include <utility>
+#include <unordered_map>
 
 #include "ActiveRagdollLoaderHelper.h"
 
 // Ragdoll定義のパスとActiveRagdoll調整値を読み込む関数
 bool ActiveRagdollLoaderHelper::LoadDefinitionData(
 	const rapidjson::Document& _document,
+	const SkeletonData* _skeleton,
 	std::string& _ragdollPath,
-	std::string& _maskPath,
-	ActiveRagdollSetting& _setting)
+	std::string& _rotationWeightPathString,
+	std::string& _positionWeightPathString,
+	ActiveRagdollDefinition& _definition)
 {
 	// Ragdoll定義JSONへのパスを取得する
 	if (!_document.HasMember("RagdollPath") || !_document["RagdollPath"].IsString())
@@ -23,16 +26,16 @@ bool ActiveRagdollLoaderHelper::LoadDefinitionData(
 		return false;
 	}
 	// Mask定義JSONへのパスを取得する(なくてもよい)
-	if (_document.HasMember("BoneMaskPath") && _document["BoneMaskPath"].IsString())
+	std::string maskPath;
+	if (GetString(_document, "BoneMaskPath", maskPath))
 	{
-		std::string maskPath{
-		_document["BoneMaskPath"].GetString(),
-		_document["BoneMaskPath"].GetStringLength() };
-
-		if (!maskPath.empty())
-		{
-			_maskPath = std::move(maskPath);
-		}
+		_rotationWeightPathString = maskPath;
+		_positionWeightPathString = maskPath;
+	}
+	else
+	{
+		GetString(_document, "RotationWeightPathString", _rotationWeightPathString);
+		GetString(_document, "PositionWeightPathString", _positionWeightPathString);
 	}
 
 	// ActiveRagdoll調整値のRootを取得する
@@ -70,11 +73,6 @@ bool ActiveRagdollLoaderHelper::LoadDefinitionData(
 	{
 		return false;
 	}
-	if (!settingValue.HasMember("JointDrive") ||
-		!LoadJointDrive(settingValue["JointDrive"], setting))
-	{
-		return false;
-	}
 	if (!settingValue.HasMember("Jump") ||
 		!LoadJump(settingValue["Jump"], setting))
 	{
@@ -85,9 +83,14 @@ bool ActiveRagdollLoaderHelper::LoadDefinitionData(
 	{
 		return false;
 	}
+	if (!settingValue.HasMember("Constraint") ||
+		!LoadConstraint(settingValue["Constraint"], _skeleton, setting))
+	{
+		return false;
+	}
 
 	_ragdollPath = std::move(ragdollPath);
-	_setting = setting;
+	_definition.settings = setting;
 	return true;
 }
 
@@ -160,14 +163,16 @@ bool ActiveRagdollLoaderHelper::LoadBalance(const rapidjson::Value& _value, Acti
 }
 
 // 関節駆動制御の調整値を読み込む関数
-bool ActiveRagdollLoaderHelper::LoadJointDrive(const rapidjson::Value& _value, ActiveRagdollSetting& _setting)
+bool ActiveRagdollLoaderHelper::LoadConstraint(const rapidjson::Value& _value, const SkeletonData* _skeleton, ActiveRagdollSetting& _setting)
 {
 	if (!_value.IsObject())
 	{
 		return false;
 	}
-	return GetFloat(_value, "Compliance", _setting.jointDriveCompliance) &&
-		GetFloat(_value, "MaxForce", _setting.maxJointDriveForce);
+	return GetFloatContainer(_value, "RotationConstraintCompliances", _skeleton, _setting.rotationConstraintCompliances) &&
+		GetFloatContainer(_value, "RoatationConstraintMaxPowers", _skeleton, _setting.roatationConstraintMaxPowers) &&
+		GetFloatContainer(_value, "PositionConstraintCompliances", _skeleton, _setting.positionConstraintCompliances) &&
+		GetFloatContainer(_value, "PositionConstraintMaxPowers", _skeleton, _setting.positionConstraintMaxPowers);
 }
 
 // ジャンプ制御の調整値を読み込む関数
@@ -205,4 +210,161 @@ bool ActiveRagdollLoaderHelper::GetFloat(const rapidjson::Value& _value, const c
 	}
 	_output = _value[_name].GetFloat();
 	return true;
+}
+
+// 拘束の強さ読み込み
+bool ActiveRagdollLoaderHelper::GetFloatContainer(const rapidjson::Value& _value, const char* _name, const SkeletonData* _skeleton, std::vector<float>& _output)
+{
+	if (!_value.HasMember(_name) || !_value[_name].IsObject())
+	{
+		return false;
+	}
+
+	return GetDefaultPower(_value[_name], _skeleton, _output) &&
+		GetBranchesPower(_value[_name], _skeleton, _output) &&
+		GetPower(_value[_name], _skeleton, _output);
+}
+
+// 全体のデフォルト力決める
+bool ActiveRagdollLoaderHelper::GetDefaultPower(const rapidjson::Value& _value, const SkeletonData* _skeleton, std::vector<float>& _output)
+{
+	// 存在確認
+	if (!_value.HasMember("DefaultPower") || !_value["DefaultPower"].IsFloat())
+	{
+		return false;
+	}
+
+	_output.resize(_skeleton->Size());
+
+	float defaultWeight{ _value["DefaultPower"].GetFloat() };
+
+	for (auto& weight : _output)
+	{
+		weight = defaultWeight;
+	}
+
+	return true;
+}
+
+// 階層以下の力決定
+bool ActiveRagdollLoaderHelper::GetBranchesPower(const rapidjson::Value& _value, const SkeletonData* _skeleton, std::vector<float>& _output)
+{
+	// 存在確認
+	if (!_value.HasMember("Branches") || !_value["Branches"].IsArray())
+	{
+		return false;
+	}
+
+	const std::unordered_map<std::string, uint32_t>& boneLookup{ _skeleton->boneLookup };
+
+	// Branches内が空でもOK
+	for (auto& branch : _value["Branches"].GetArray())
+	{
+		if (!branch.HasMember("RootBoneName") || !branch["RootBoneName"].IsString())
+		{
+			continue;
+		}
+
+		std::string boneName{ branch["RootBoneName"].GetString(),branch["RootBoneName"].GetStringLength() };
+
+		// ボーンの名前がないなら失敗
+		if (!boneLookup.contains(boneName))
+		{
+			return false;
+		}
+
+		if (!branch.HasMember("Power") || !branch["Power"].IsFloat())
+		{
+			continue;
+		}
+
+		float weight{ branch["Power"].GetFloat() };
+
+		uint32_t boneIndex{ boneLookup.at(boneName) };
+
+		_output[boneIndex] = weight;
+
+		SetChildrenPower(boneIndex, weight, _skeleton, _output);
+	}
+
+	return true;
+}
+
+// ボーン各個人の力決定
+bool ActiveRagdollLoaderHelper::GetPower(const rapidjson::Value& _value, const SkeletonData* _skeleton, std::vector<float>& _output)
+{
+	// 存在確認
+	if (!_value.HasMember("Bones") || !_value["Bones"].IsArray())
+	{
+		return false;
+	}
+
+	const std::unordered_map<std::string, uint32_t>& boneLookup{ _skeleton->boneLookup };
+
+	// Bones内が空でもOK
+	for (auto& bone : _value["Bones"].GetArray())
+	{
+		if (!bone.HasMember("BoneName") || !bone["BoneName"].IsString())
+		{
+			continue;
+		}
+
+		std::string boneName{ bone["BoneName"].GetString(),bone["BoneName"].GetStringLength() };
+
+		// ボーンの名前がないなら失敗
+		if (!boneLookup.contains(boneName))
+		{
+			return false;
+		}
+
+		if (!bone.HasMember("Power") || !bone["Power"].IsFloat())
+		{
+			continue;
+		}
+
+		float weight{ bone["Power"].GetFloat() };
+
+		uint32_t boneIndex{ boneLookup.at(boneName) };
+
+		_output[boneIndex] = weight;
+	}
+
+	return true;
+}
+
+// パスを取得する関数
+bool ActiveRagdollLoaderHelper::GetString(const rapidjson::Value& _value, const char* _name, std::string& _output)
+{
+	if (!_value.HasMember(_name) || !_value[_name].IsString())
+	{
+		return false;
+	}
+
+	std::string path{
+		_value[_name].GetString(),
+		_value[_name].GetStringLength() };
+
+	if (path.empty())
+	{
+		return false;
+	}
+
+	_output = std::move(path);
+
+	return true;
+}
+
+// 階層以下すべてにパワーを設定する関数
+void ActiveRagdollLoaderHelper::SetChildrenPower(uint32_t _parentIndex, float _weight, const SkeletonData* _skeleton, std::vector<float>& _output)
+{
+	for (uint32_t boneIndex{ 0 }; boneIndex < _output.size(); boneIndex++)
+	{
+		if (_skeleton->parentIndices[boneIndex] != _parentIndex)
+		{
+			continue;
+		}
+
+		_output[boneIndex] = _weight;
+		SetChildrenPower(boneIndex, _weight, _skeleton, _output);
+	}
 }

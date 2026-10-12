@@ -13,8 +13,9 @@
 
 #include "ActiveRagdollLoader.h"
 #include "ActiveRagdollLoaderHelper.h"
+#include "BoneMaskLoader.h"
 
-bool ActiveRagdollLoader::Load(const std::string& _path, ActiveRagdollDefinition& _output)
+bool ActiveRagdollLoader::Load(const std::string& _path, const SkeletonData* _skeleton, ActiveRagdollDefinition& _output)
 {
 	// ActiveRagdoll定義JSONを開く
 	FILE* file{ nullptr };
@@ -61,8 +62,9 @@ bool ActiveRagdollLoader::Load(const std::string& _path, ActiveRagdollDefinition
 	// 出力を書き換える前に必要な定義をすべて読み込む
 	ActiveRagdollDefinition loaded;
 	std::string ragdollPathString;
-	std::string maskPathString;
-	if (!ActiveRagdollLoaderHelper::LoadDefinitionData(document, ragdollPathString, maskPathString, loaded.settings))
+	std::string rotationWightPathString;
+	std::string positionWightPathString;
+	if (!ActiveRagdollLoaderHelper::LoadDefinitionData(document, _skeleton, ragdollPathString, rotationWightPathString, positionWightPathString, loaded))
 	{
 		return false;
 	}
@@ -81,7 +83,14 @@ bool ActiveRagdollLoader::Load(const std::string& _path, ActiveRagdollDefinition
 		return false;
 	}
 
-	loaded.boneMaskPath = std::move(maskPathString);
+	if (BoneMaskLoader::Load(rotationWightPathString.c_str(), _skeleton, loaded.rotationWeights))
+	{
+		loaded.isRotationWeight = true;
+	}
+	if (BoneMaskLoader::Load(positionWightPathString.c_str(), _skeleton, loaded.positionWeights))
+	{
+		loaded.isPositionWeight = true;
+	}
 
 	_output = std::move(loaded);
 	return true;

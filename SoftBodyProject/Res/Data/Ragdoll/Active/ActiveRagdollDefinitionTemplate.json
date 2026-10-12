@@ -10,8 +10,8 @@
   省略・空文字・読み込み失敗の場合は全ボーンを追従させる
   絶対パス、または実行時のカレントディレクトリ基準の相対パスで指定する
   日本語を含まないパスを使用する
-  Weightが0.0以下のボーンには追従用拘束を生成せず、物理関節のみで動かす
-  Weightが0.0より大きい場合は通常の追従強度を使用する
+  WeightはConstraintに指定した回転・位置拘束の最大強度に掛ける
+  Weightが0.0なら最大強度は0.0となり、1.0なら指定した最大強度を使用する
   "BoneMaskPath": "",
 
   ActiveRagdollの調整値
@@ -106,14 +106,90 @@
       "DeadZone": 0.0
     },
 
-    関節駆動制御
-    "JointDrive": {
-      姿勢を決める拘束のコンプライアンス値
-      "Compliance":0.0002,
+    姿勢追従用拘束の設定
+    各項目はDefaultPower、Branches、Bonesの順に上書きする
+    BranchesはRootBone自身と、その子孫Boneすべてに適用する
+    Bonesは特定Boneだけに適用し、Branchesの値を個別に上書きする
+    BranchesとBonesは使わない場合も空配列を指定する
+    Powerは倍率ではなく、各項目のコンプライアンス値または最大強度を指定する
+    "Constraint": {
+      アニメーションの目標相対姿勢へ戻す回転拘束のコンプライアンス値
+      0.0で硬い拘束になり、大きくするほど柔らかくなる
+      "RotationConstraintCompliances": {
+        何も指定していないBoneに適用する値
+        "DefaultPower": 0.0002,
 
-      一つの回転軸に対してJointDrive拘束が出せる最大強度
-      JointDriveは角度拘束のため実質的にはTorqueの上限として働く
-      "MaxForce": 0.0
+        階層以下のBoneをまとめて指定する
+        "Branches": [
+          {
+            "RootBoneName": "モデル内の右上腕ボーン名",
+            "Power": 0.0004
+          }
+        ],
+
+        特定Boneだけを個別指定する
+        "Bones": [
+          {
+            "BoneName": "モデル内の右手ボーン名",
+            "Power": 0.0001
+          }
+        ]
+      },
+
+      回転拘束が一つの回転軸へ出せる最大強度
+      角度拘束のため実質的にはTorqueの上限として働き、0.0なら追従力を出さない
+      RoatationConstraintMaxPowersは読み込み側と同じキー名で指定する
+      "RoatationConstraintMaxPowers": {
+        "DefaultPower": 0.0,
+        "Branches": [
+          {
+            "RootBoneName": "モデル内の右上腕ボーン名",
+            "Power": 5000.0
+          }
+        ],
+        "Bones": [
+          {
+            "BoneName": "モデル内の右手ボーン名",
+            "Power": 2500.0
+          }
+        ]
+      },
+
+      アニメーションの目標位置へ戻す位置拘束のコンプライアンス値
+      0.0で硬い拘束になり、大きくするほど柔らかくなる
+      "PositionConstraintCompliances": {
+        "DefaultPower": 0.0002,
+        "Branches": [
+          {
+            "RootBoneName": "モデル内の右上腕ボーン名",
+            "Power": 0.0004
+          }
+        ],
+        "Bones": [
+          {
+            "BoneName": "モデル内の右手ボーン名",
+            "Power": 0.0001
+          }
+        ]
+      },
+
+      位置拘束が出せる最大強度
+      Forceの上限として働き、0.0なら追従力を出さない
+      "PositionConstraintMaxPowers": {
+        "DefaultPower": 0.0,
+        "Branches": [
+          {
+            "RootBoneName": "モデル内の右上腕ボーン名",
+            "Power": 5000.0
+          }
+        ],
+        "Bones": [
+          {
+            "BoneName": "モデル内の右手ボーン名",
+            "Power": 2500.0
+          }
+        ]
+      }
     },
 
     ジャンプ制御

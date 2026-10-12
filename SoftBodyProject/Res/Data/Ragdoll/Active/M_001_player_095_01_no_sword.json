@@ -36,9 +36,27 @@
 			"MaxForce": 30000.0,
 			"DeadZone": 0.25
 		},
-		"JointDrive": {
-			"Compliance":0.000,
-			"MaxForce": 5000.0
+		"Constraint": {
+			"RotationConstraintCompliances": {
+				"DefaultPower": 0.000,
+				"Branches": [],
+				"Bones": []
+			},
+			"RoatationConstraintMaxPowers": {
+				"DefaultPower": 5000.0,
+				"Branches": [],
+				"Bones": []
+			},
+			"PositionConstraintCompliances": {
+				"DefaultPower": 0.000,
+				"Branches": [],
+				"Bones": []
+			},
+			"PositionConstraintMaxPowers": {
+				"DefaultPower": 5000.0,
+				"Branches": [],
+				"Bones": []
+			}
 		},
 		"Jump": {
 			"Height": 80.0,

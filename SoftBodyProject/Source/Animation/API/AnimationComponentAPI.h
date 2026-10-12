@@ -74,14 +74,6 @@ public:
 	static bool SetActiveRagdollBranchWeight(ActiveRagdollID _id, RagdollBoneRole _rootRole, float _weight);
 
 	// 指定したボーンの位置拘束の強さを変更
-	bool SetPositionWeight(uint32_t _boneIndex, float _weight);
-	bool SetPositionWeight(RagdollBoneRole _role, float _weight);
-
-	// 指定したボーンの回転拘束の強さを変更
-	bool SetRotationWeight(uint32_t _boneIndex, float _weight);
-	bool SetRotationWeight(RagdollBoneRole _role, float _weight);
-
-	// 指定したボーンの位置拘束の強さを変更
 	static bool SetActiveRagdollPositionWeight(ActiveRagdollID _id, uint32_t _boneIndex, float _weight);
 	static bool SetActiveRagdollPositionWeight(ActiveRagdollID _id, RagdollBoneRole _role, float _weight);
 

@@ -98,7 +98,7 @@ bool BoneMaskLoaderHelper::LoadBoneWeight(rapidjson::Document& _document, const 
 
 	const std::unordered_map<std::string, uint32_t>& boneLookup{ _skeleton->boneLookup };
 
-	// Branches内が空でもOK
+	// Bones内が空でもOK
 	for (auto& bone : _document["Bones"].GetArray())
 	{
 		if (!bone.HasMember("BoneName") || !bone["BoneName"].IsString())

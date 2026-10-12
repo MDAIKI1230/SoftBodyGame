@@ -21,15 +21,16 @@ void ActiveRagdollSystem::PrePhysicsFixedUpdate(SkeletonInstanceStorage* _skelet
 
 		const Matrix4x4& worldFromModel{ _skeletonStorage->GetWorldFromModel(ragdoll.skeleton) };
 
-		/*UpdateGroundState(ragdoll, activeRagdoll, ignoreFilter);
+		UpdateGroundState(ragdoll, activeRagdoll, ignoreFilter);
 		UpdateBodyState(ragdoll, activeRagdoll);
 		UpdateControlState(activeRagdoll);
 		
-		UpdateJump(ragdoll, activeRagdoll);
+		/*UpdateJump(ragdoll, activeRagdoll);
 		UpdateMovement(ragdoll, activeRagdoll);
 		UpdateUpright(ragdoll, activeRagdoll);
 		UpdateRecovery(ragdoll, activeRagdoll, ignoreFilter);
 		UpdateBalance(ragdoll, activeRagdoll);*/
+		UpdatePelvisConstraint(activeRagdoll, worldFromModel);
 		UpdateJointDrive(ragdoll, activeRagdoll, targetPose);
 		UpdatePointConstraint(ragdoll, activeRagdoll, targetPose, worldFromModel);
 	}
@@ -773,15 +774,44 @@ void ActiveRagdollSystem::UpdateBalance(const Ragdoll& _ragdoll, ActiveRagdoll& 
 	PhysicsComponentAPI::AddForce(pelvisBodyID, force);
 }
 
+// 腰の拘束の位置更新関数
+void ActiveRagdollSystem::UpdatePelvisConstraint(ActiveRagdoll& _activeRagdoll, const Matrix4x4 _worldFromModel)
+{
+	Vector3 pos, scale;
+	Quaternion rot;
+
+	Transform::DecomposeTRS(
+		_worldFromModel,
+		pos,
+		rot,
+		scale);
+
+	PhysicsComponentAPI::SetInternalPhysicsTransformPosition(_activeRagdoll.pelvisConstraintTransformID, pos);
+}
+
 // Animationの目標姿勢から各関節Driveの目標相対回転を更新する関数
 void ActiveRagdollSystem::UpdateJointDrive(const Ragdoll& _ragdoll, const ActiveRagdoll& _activeRagdoll, const PoseBuffer& _targetPose)
 {
-	for (int i{ 0 }; i < _activeRagdoll.jointDriveConstraints.size(); i++)
+	if (!_activeRagdoll.isGrounded && _activeRagdoll.controlState != ActiveRagdollControlState::STANDING)
+	{
+		for (int i{ 0 }; i < _activeRagdoll.rotationConstraints.size(); i++)
+		{
+			ConstraintID constraint{ _activeRagdoll.rotationConstraints[i] };
+
+			ConstraintTuning tuning;
+			tuning.maxForce = 0.0f;
+
+			PhysicsComponentAPI::SetTuning(constraint, tuning);
+		}
+		return;
+	}
+
+	for (int i{ 0 }; i < _activeRagdoll.rotationConstraints.size(); i++)
 	{
 		/*
 			親をオーナーとしている事に注意
 		*/
-		ConstraintID constraint{ _activeRagdoll.jointDriveConstraints[i] };
+		ConstraintID constraint{ _activeRagdoll.rotationConstraints[i] };
 
 		// 親ボーンインデックス
 		uint32_t parentBoneIndex{ _activeRagdoll.parentBoneIndex[i] };
@@ -822,15 +852,41 @@ void ActiveRagdollSystem::UpdateJointDrive(const Ragdoll& _ragdoll, const Active
 		targetRelativeRotation.Normalize();
 
 		PhysicsComponentAPI::SetTargetRelativeRotation(constraint, targetRelativeRotation);
+
+		ConstraintTuning tuning;
+		tuning.compliance = _activeRagdoll.settings.rotationConstraintCompliances[childBoneIndex];
+		tuning.maxForce = _activeRagdoll.settings.roatationConstraintMaxPowers[childBoneIndex] *
+			_activeRagdoll.rotationWeights.weights[childBoneIndex];
+
+		PhysicsComponentAPI::SetTuning(constraint, tuning);
 	}
 }
 
 // Animationの目標姿勢から各関節Pointの目標位置を更新する関数
 void ActiveRagdollSystem::UpdatePointConstraint(const Ragdoll& _ragdoll, const ActiveRagdoll& _activeRagdoll, const PoseBuffer& _targetPose, const Matrix4x4 _worldFromModel)
 {
-	for (uint32_t boneIndex{ 0 }; boneIndex < _activeRagdoll.pointConstraints.size(); boneIndex++)
+	if (!_activeRagdoll.isGrounded && _activeRagdoll.controlState != ActiveRagdollControlState::STANDING)
 	{
-		ConstraintID constraint{ _activeRagdoll.pointConstraints[boneIndex] };
+		for (uint32_t boneIndex{ 0 }; boneIndex < _activeRagdoll.positionConstraints.size(); boneIndex++)
+		{
+			ConstraintID constraint{ _activeRagdoll.positionConstraints[boneIndex] };
+
+			if (!constraint.IsValid())
+			{
+				continue;
+			}
+
+			ConstraintTuning tuning;
+			tuning.maxForce = 0.0f;
+
+			PhysicsComponentAPI::SetTuning(constraint, tuning);
+		}
+		return;
+	}
+
+	for (uint32_t boneIndex{ 0 }; boneIndex < _activeRagdoll.positionConstraints.size(); boneIndex++)
+	{
+		ConstraintID constraint{ _activeRagdoll.positionConstraints[boneIndex] };
 
 		if (!constraint.IsValid())
 		{
@@ -874,6 +930,13 @@ void ActiveRagdollSystem::UpdatePointConstraint(const Ragdoll& _ragdoll, const A
 		PhysicsComponentAPI::SetInternalPhysicsTransformPosition(
 			_activeRagdoll.pointTransformIDs[boneIndex],
 			targetWorldPoint);
+
+		ConstraintTuning tuning;
+		tuning.compliance = _activeRagdoll.settings.positionConstraintCompliances[boneIndex];
+		tuning.maxForce = _activeRagdoll.settings.positionConstraintMaxPowers[boneIndex] *
+			_activeRagdoll.positionWeights.weights[boneIndex];
+
+		PhysicsComponentAPI::SetTuning(constraint, tuning);
 	}
 }
 

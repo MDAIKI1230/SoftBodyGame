@@ -14,6 +14,10 @@ public:
 	{
 		weights.resize(_size);
 	}
+	void ReSize(uint32_t _size, float _initilizeValue)
+	{
+		weights.resize(_size, _initilizeValue);
+	}
 public:
 	std::vector<float> weights;
 };
