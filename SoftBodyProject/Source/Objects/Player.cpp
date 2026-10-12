@@ -35,6 +35,7 @@ Player::Player(WorldStorage* _world, EntityID _entityID, Camera* _camera) :
 
 	camera->GetComponent<CameraRigComponent>()->SetMode(CameraMode::TPS);
 	camera->GetComponent<CameraRigComponent>()->SetFollowTarget(GetID());
+	camera->GetComponent<CameraRigComponent>()->SetPivotOffset(CHARACTER_OFFSET);
 	camera->GetComponent<CameraComponent>()->SetNear(0.1f);
 	camera->GetComponent<CameraComponent>()->SetFar(2000.0f);
 
@@ -58,7 +59,7 @@ Player::Player(WorldStorage* _world, EntityID _entityID, Camera* _camera) :
 	CharacterControllerComponent* cc{ AddComponent<CharacterControllerComponent>() };
 	cc->SetCollisionFilter(ragdollFilter);
 	cc->SetColliderHeight(50.0f);
-	cc->SetColliderOffset(Vector3{ 0.0f,50.0f,0.0f });
+	cc->SetColliderOffset(CHARACTER_OFFSET);
 
 	active->SetRotationWeight(RagdollBoneRole::TORSO, 0.2f);
 	active->SetPositionWeight(RagdollBoneRole::TORSO, 0.2f);

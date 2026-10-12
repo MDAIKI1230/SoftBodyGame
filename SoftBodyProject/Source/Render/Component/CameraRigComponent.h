@@ -65,14 +65,19 @@ public:
 	const Vector2& GetLookDelta() const noexcept { return lookDelta; }
 	// 今フレームの視点回転量消費
 	void ClearLookDelta() noexcept { lookDelta = Vector2{}; }
-	// TPS距離取得
-	float GetDistance() const noexcept { return distance; }
-	// TPS距離変更
-	void SetDistance(float _distance) noexcept { distance = _distance; }
 	// 位置追従の平滑化時間取得
 	float GetPositionDamping() const noexcept { return positionDamping; }
 	// 位置追従の平滑化時間変更
 	void SetPositionDamping(float _damping) noexcept { positionDamping = _damping; }
+	// TPS距離取得
+	float GetDistance() const noexcept { return distance; }
+	// TPS距離変更
+	void SetDistance(float _distance) noexcept { distance = _distance; }
+	// スフィアキャストの半径取得
+	float GetSphereRadius() const noexcept { return sphereRadius; }
+	// スフィアキャストの半径変更
+	void SetSphereRadius(float _sphereRadius) noexcept { sphereRadius = _sphereRadius; }
+	
 
 	// レイのフィルター取得
 	const CollisionFilter& GetRayFilter()const { return rayFilter; }
@@ -109,6 +114,8 @@ private:
 	float positionDamping{ 0.0f };
 	// TPS距離
 	float distance{ 300.0f };
+	// スフィアキャストの半径
+	float sphereRadius{ 20.0f };
 
 	// レイのフィルター
 	CollisionFilter rayFilter;

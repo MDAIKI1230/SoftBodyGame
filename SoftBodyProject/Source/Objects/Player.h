@@ -53,6 +53,7 @@ private:
 	static constexpr float HAND_GRAB_WEIGHT{ 0.2f };
 	const float HAND_LIMIT_ANGLE_RAD;
 	const Vector3 HAND_SIDE_OFFSET{ 20.0f,0.0f,0.0f };
+	const Vector3 CHARACTER_OFFSET{ 0.0f,50.0f,0.0f };
 	const float CAMERA_ROTATION_OFFSET{ 20.0f };
 private:
 	Camera* camera;

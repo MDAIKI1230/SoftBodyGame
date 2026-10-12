@@ -8,12 +8,10 @@ bool PhysicsQuerySystem::RayCastHit(
 	ColliderStorage* _colliderStorage, PhysicsTransformStorage* _transformStorage,
 	const CollisionFilter& _filter)
 {
-	RayCastQueryHitInfo info;
-	if (RayCastHit(_ray, info, _colliderStorage, _transformStorage, _filter))
+	RayCastQueryHitInfo hitQueryInfo;
+	if (RayCastHit(_ray, hitQueryInfo, _colliderStorage, _transformStorage, _filter))
 	{
-		_hitInfo.point = info.point;
-		_hitInfo.normal = info.normal;
-		_hitInfo.distance = info.distance;
+		_hitInfo = CastHitInfo(hitQueryInfo);
 
 		return true;
 	}
@@ -92,7 +90,19 @@ bool PhysicsQuerySystem::SphereCastHit(
 	ColliderStorage* _colliderStorage, PhysicsTransformStorage* _transformStorage,
 	const CollisionFilter& _filter)
 {
-	return true;
+	RayCastQueryHitInfo hitQueryInfo;
+
+	if (SphereCastHit(
+		_ray, hitQueryInfo,
+		_colliderStorage, _transformStorage,
+		_filter))
+	{
+		_hitInfo = CastHitInfo(hitQueryInfo);
+
+		return true;
+	}
+
+	return false;
 }
 bool PhysicsQuerySystem::SphereCastHit(
 	const SphereRay& _ray, RayCastQueryHitInfo& _hitInfo,
@@ -212,4 +222,15 @@ bool PhysicsQuerySystem::SphereCastCollider(
 	}
 
 	return false;
+}
+
+RayCastHitInfo PhysicsQuerySystem::CastHitInfo(const RayCastQueryHitInfo& _info)
+{
+	RayCastHitInfo result;
+
+	result.point = _info.point;
+	result.normal = _info.normal;
+	result.distance = _info.distance;
+
+	return result;
 }

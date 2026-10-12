@@ -34,4 +34,6 @@ private:
 	static bool SphereCastCollider(
 		const SphereRay& _ray, RayCastHitInfo& _hitInfo, ColliderID _colliderID, PhysicsTransformID transformID,
 		ColliderStorage* _colliderStorage, PhysicsTransformStorage* _transformStorage);
+
+	static RayCastHitInfo CastHitInfo(const RayCastQueryHitInfo& _info);
 };

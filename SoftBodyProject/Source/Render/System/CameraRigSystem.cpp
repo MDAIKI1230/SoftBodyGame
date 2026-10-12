@@ -80,15 +80,16 @@ void CameraRigSystem::UpdateTPS(CameraRigComponent& _cameraRig, TransformCompone
 	Vector3 targetPos{ pivot + rotation.Rotate(_cameraRig.GetShoulderOffset() - (Vector3::FORWARD * _cameraRig.GetDistance())) };
 
 	// 壁の判定をして壁とぶつかったらぶつかった位置に
-	Ray ray;
+	SphereRay ray;
 	ray.origin = pivot;
 	ray.direction = (targetPos - pivot).Normalize();
 	ray.maxDistance = _cameraRig.GetDistance();
+	ray.radius = _cameraRig.GetSphereRadius();
 	RayCastHitInfo hitInfo;
 
-	if (PhysicsAPI::RayCastHit(ray, hitInfo,_cameraRig.GetRayFilter()))
+	if (PhysicsAPI::SphereCastHit(ray, hitInfo,_cameraRig.GetRayFilter()))
 	{
-		targetPos = hitInfo.point;
+		targetPos = ray.origin + ray.direction * hitInfo.distance;
 	}
 
 	if (_cameraRig.GetPositionDamping() <= MathConstants::EPSILON)

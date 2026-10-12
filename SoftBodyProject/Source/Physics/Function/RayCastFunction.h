@@ -7,6 +7,8 @@ namespace RayCastFunction
 {
 	// Rayと球の当たり判定
 	bool Sphere(const Ray& _ray, RayCastHitInfo& _hitInfo, const Vector3& _center, const Vector3& _scale, float _radius);
+	// Rayと球の当たり判定
+	bool Sphere(const Ray& _ray, RayCastHitInfo& _hitInfo, const Vector3& _center, float _radius);
 	// Rayとボックスの当たり判定
 	bool Box(const Ray& _ray, RayCastHitInfo& _hitInfo, const Vector3& _center, const Quaternion& _rot, const Vector3& _scale, const Vector3& _halfScale);
 	// Rayとカプセルの当たり判定

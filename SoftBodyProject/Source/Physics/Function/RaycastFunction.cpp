@@ -8,14 +8,20 @@
 // Rayと球の当たり判定
 bool RayCastFunction::Sphere(const Ray& _ray, RayCastHitInfo& _hitInfo, const Vector3& _center, const Vector3& _scale, float _radius)
 {
+	float radius{ _radius * std::max({std::abs(_scale.x), std::abs(_scale.y), std::abs(_scale.z)}) };
+	
+	return Sphere(_ray, _hitInfo, _center, _radius);
+}
+
+// Rayと球の当たり判定
+bool RayCastFunction::Sphere(const Ray& _ray, RayCastHitInfo& _hitInfo, const Vector3& _center, float _radius)
+{
 	// Rayの始点とコライダーの位置の差
 	Vector3 originDist{ _ray.origin - _center };
 	// 半径の2乗
-	float radius{ _radius * std::max(std::max(std::abs(_scale.x), std::abs(_scale.y)), std::abs(_scale.z)) };
-	float radiusSqr{ radius * radius };
+	float radiusSqr{ _radius * _radius };
 	// Rayの始点とコライダーの位置の距離の2乗
-	float originDistanceSqr{ originDist.LengthSqr()};
-
+	float originDistanceSqr{ originDist.LengthSqr() };
 	// 始点を内包する形状は検索対象外
 	if (originDistanceSqr < radiusSqr)
 	{
@@ -34,18 +40,18 @@ bool RayCastFunction::Sphere(const Ray& _ray, RayCastHitInfo& _hitInfo, const Ve
 	}
 
 	/*
-		              Ray上の点は P(t) = O + tD
+					  Ray上の点は P(t) = O + tD
 					O：Rayの始点
 					D：Rayの進行方向(正規化済み)
 					t：始点からの距離
 
-		           球上の点は|P - C|^2 = r^2 を満たす
-				    C：球の中心座標
+				   球上の点は|P - C|^2 = r^2 を満たす
+					C：球の中心座標
 					r：球の半径
-		    これに、PにRayの式を代入さらに、展開すると
-		              |(O + tD) - C|^2 = r^2
+			これに、PにRayの式を代入さらに、展開すると
+					  |(O + tD) - C|^2 = r^2
 		　                 m = O - Cとすると
-						    |m + tD|^2 = r^2 これを内積として展開
+							|m + tD|^2 = r^2 これを内積として展開
 					(m + tD)・(m + tD) = r^2
 	  m^2 + 2t(m・D) + t^2(D・D) - r^2 = 0 Dは正規化済みなのでD・D = 1
 	  　　　m^2 + 2t(m・D) + t^2 - r^2 = 0

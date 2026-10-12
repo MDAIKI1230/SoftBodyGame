@@ -375,6 +375,7 @@
     <ClInclude Include="Source\Physics\Function\GJKEPA.h" />
     <ClInclude Include="Source\Physics\Function\ManifoldFunction.h" />
     <ClInclude Include="Source\Physics\Function\RayCastFunction.h" />
+    <ClInclude Include="Source\Physics\Function\RayCastHelper.h" />
     <ClInclude Include="Source\Physics\Function\SphereCastFunction.h" />
     <ClInclude Include="Source\Physics\PhysicsWorld.h" />
     <ClInclude Include="Source\Physics\Storage\Body\BodyStorage.h" />
@@ -639,6 +640,7 @@
     <ClCompile Include="Source\Physics\Function\GJKEPA.cpp" />
     <ClCompile Include="Source\Physics\Function\ManifoldFunction.cpp" />
     <ClCompile Include="Source\Physics\Function\RaycastFunction.cpp" />
+    <ClCompile Include="Source\Physics\Function\RayCastHelper.cpp" />
     <ClCompile Include="Source\Physics\Function\SphereCastFunction.cpp" />
     <ClCompile Include="Source\Physics\PhysicsWorld.cpp" />
     <ClCompile Include="Source\Physics\Storage\Body\BodyStorage.cpp" />

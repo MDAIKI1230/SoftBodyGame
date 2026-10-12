@@ -1480,6 +1480,9 @@
     <ClInclude Include="Source\Physics\Struct\Constraint\Constraint\Base\ConstraintOneBase.h">
       <Filter>ソース ファイル\Physics\Struct\Constraint\Constraint\Base</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Physics\Function\RayCastHelper.h">
+      <Filter>ソース ファイル\Physics\Function</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\System\Scenes\DebugScene.cpp">
@@ -1991,6 +1994,9 @@
     </ClCompile>
     <ClCompile Include="Source\Physics\Struct\Collision\CollisionFilter.cpp">
       <Filter>ソース ファイル\Physics\Struct\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Physics\Function\RayCastHelper.cpp">
+      <Filter>ソース ファイル\Physics\Function</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -7,11 +7,13 @@
 // SphereRayと球の当たり判定
 bool SphereCastFunction::Sphere(const SphereRay& _ray, RayCastHitInfo& _hitInfo, const Vector3& _center, const Vector3& _scale, float _radius)
 {
-	float totalRadius{ _radius + _ray.radius };
-
 	Ray ray{ _ray.origin, _ray.direction, _ray.maxDistance };
 
-	if (!RayCastFunction::Sphere(ray, _hitInfo, _center, _scale, totalRadius))
+	float scaledRadius{ _radius * std::max({std::abs(_scale.x), std::abs(_scale.y), std::abs(_scale.z)}) };
+
+	float totalRadius{ scaledRadius + _ray.radius };
+
+	if (!RayCastFunction::Sphere(ray, _hitInfo, _center, totalRadius))
 	{
 		return false;
 	}
