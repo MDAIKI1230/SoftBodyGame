@@ -3,6 +3,7 @@
 #include "PhysicsWorld.h"
 
 #include "Ray.h"
+#include "SphereRay.h"
 #include "RayCastHitInfo.h"
 
 class PhysicsAPI
@@ -12,6 +13,9 @@ public:
 
 	static bool RayCastHit(const Ray& _ray, RayCastHitInfo& _hitInfo);
 	static bool RayCastHit(const Ray& _ray, RayCastHitInfo& _hitInfo, const CollisionFilter& _filter);
+
+	static bool SphereCastHit(const SphereRay& _ray, RayCastHitInfo& _hitInfo);
+	static bool SphereCastHit(const SphereRay& _ray, RayCastHitInfo& _hitInfo, const CollisionFilter& _filter);
 
 
 	static void BindWorld(PhysicsWorld& _physicsWorld);

@@ -70,7 +70,7 @@ bool PhysicsQuerySystem::RayCastHit(
 		}
 
 		// 当たっていたならベスト距離より近いなら値を更新する
-		if (hitInfo.distance < bestDistance)
+		if (hitInfo.distance <= bestDistance)
 		{
 			bestDistance = hitInfo.distance;
 			bestHit = RayCastQueryHitInfo{ hitInfo.point,hitInfo.normal,hitInfo.distance,aabb.colliderID };
@@ -143,7 +143,7 @@ bool PhysicsQuerySystem::SphereCastHit(
 		}
 
 		// 当たっていたならベスト距離より近いなら値を更新する
-		if (hitInfo.distance < bestDistance)
+		if (hitInfo.distance <= bestDistance)
 		{
 			bestDistance = hitInfo.distance;
 			bestHit = RayCastQueryHitInfo{ hitInfo.point,hitInfo.normal,hitInfo.distance,aabb.colliderID };

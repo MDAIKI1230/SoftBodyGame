@@ -12,6 +12,16 @@ bool PhysicsAPI::RayCastHit(const Ray& _ray, RayCastHitInfo& _hitInfo, const Col
 	return PhysicsQuerySystem::RayCastHit(_ray, _hitInfo, colliderStorage, transformStorage, _filter);
 }
 
+bool PhysicsAPI::SphereCastHit(const SphereRay& _ray, RayCastHitInfo& _hitInfo)
+{
+	return PhysicsQuerySystem::SphereCastHit(_ray, _hitInfo, colliderStorage, transformStorage);
+}
+
+bool PhysicsAPI::SphereCastHit(const SphereRay& _ray, RayCastHitInfo& _hitInfo, const CollisionFilter& _filter)
+{
+	return PhysicsQuerySystem::SphereCastHit(_ray, _hitInfo, colliderStorage, transformStorage, _filter);
+}
+
 void PhysicsAPI::BindWorld(PhysicsWorld& _physicsWorld)
 {
 	physicsWorld = &_physicsWorld;
