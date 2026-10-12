@@ -531,6 +531,11 @@ public:
 	// 地面探索距離設定
 	static void SetCharacterControllerGroundProbeDistance(CharacterControllerID _id, float _distance);
 
+	// 接地判定用スフィアキャストの半径オフセット取得
+	static float GetCharacterControllerGroundSphereRayOffsetRadius(CharacterControllerID _id);
+	// 接地判定用スフィアキャストの半径オフセット設定
+	static void SetCharacterControllerGroundSphereRayOffsetRadius(CharacterControllerID _id, float _offsetRadius);
+
 	// 歩行可能判定の最小法線内積取得
 	static float GetCharacterControllerMinGroundDot(CharacterControllerID _id);
 	// 歩行可能判定の最小法線内積設定

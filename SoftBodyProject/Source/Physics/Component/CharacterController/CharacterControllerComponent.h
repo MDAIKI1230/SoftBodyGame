@@ -112,6 +112,11 @@ public:
 	// 地面探索距離設定
 	void SetGroundProbeDistance(float _distance);
 
+	// 接地判定用スフィアキャストの半径オフセット取得
+	float GetGroundSphereRayOffsetRadius() const;
+	// 接地判定用スフィアキャストの半径オフセット設定
+	void SetGroundSphereRayOffsetRadius(float _offsetRadius);
+
 	// 歩行可能判定の最小法線内積取得
 	float GetMinGroundDot() const;
 	// 歩行可能判定の最小法線内積設定

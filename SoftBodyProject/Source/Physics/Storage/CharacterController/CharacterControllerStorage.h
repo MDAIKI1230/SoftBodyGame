@@ -47,6 +47,8 @@ class CharacterControllerStorage :public DataStorageBase<CharacterControllerID>
 
 	// 地面との距離
 	MD_STORAGE_ID_READ_WRITE_COLUMN(CharacterControllerID, float, GroundProbeDistance, groundProbeDistances);
+	// 設置判定に使うスフィアキャストに、コライダーの半径からの差分
+	MD_STORAGE_ID_READ_WRITE_COLUMN(CharacterControllerID, float, GroundSphereRayOffsetRadius, groundSphereRayOffsetRadius);
 	// 最大移動できる地面の内積
 	MD_STORAGE_ID_READ_WRITE_COLUMN(CharacterControllerID, float, MinGroundDot, minGroundDots);
 

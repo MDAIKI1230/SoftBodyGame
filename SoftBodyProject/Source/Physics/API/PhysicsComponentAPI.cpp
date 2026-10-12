@@ -1121,6 +1121,18 @@ void PhysicsComponentAPI::SetCharacterControllerGroundProbeDistance(CharacterCon
 	characterControllerStorage->SetGroundProbeDistance(_id, _distance);
 }
 
+// 接地判定用スフィアキャストの半径オフセット取得
+float PhysicsComponentAPI::GetCharacterControllerGroundSphereRayOffsetRadius(CharacterControllerID _id)
+{
+	return characterControllerStorage->GetGroundSphereRayOffsetRadius(_id);
+}
+
+// 接地判定用スフィアキャストの半径オフセット設定
+void PhysicsComponentAPI::SetCharacterControllerGroundSphereRayOffsetRadius(CharacterControllerID _id, float _offsetRadius)
+{
+	characterControllerStorage->SetGroundSphereRayOffsetRadius(_id, _offsetRadius);
+}
+
 // 歩行可能判定の最小法線内積取得
 float PhysicsComponentAPI::GetCharacterControllerMinGroundDot(CharacterControllerID _id)
 {

@@ -57,12 +57,13 @@ void CharacterControllerSystem::UpdateGroundState(
 		CollisionFilter filter{ _colliderStorage->GetFilter(colliderID) };
 
 		RayCastQueryHitInfo hitInfo;
-		Ray ray;
+		SphereRay ray;
 		ray.origin = position;
 		ray.direction = gravity.Normalized();
 		ray.maxDistance = capsuleBottom + _characterControllerStorage->GetGroundProbeDistance(id);
+		ray.radius = radius - _characterControllerStorage->GetGroundSphereRayOffsetRadius(id);
 
-		if (PhysicsQuerySystem::RayCastHit(ray, hitInfo, _colliderStorage, _transformStorage, filter))
+		if (PhysicsQuerySystem::SphereCastHit(ray, hitInfo, _colliderStorage, _transformStorage, filter))
 		{
 			// ヒット情報を残す
 			_characterControllerStorage->SetGroundNormal(id, hitInfo.normal);

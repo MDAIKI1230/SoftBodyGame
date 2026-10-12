@@ -31,6 +31,7 @@ CharacterControllerID CharacterControllerStorage::Create(EntityID _entity, Physi
 	// --- 接地設定 ---
 
 	groundProbeDistances.emplace_back(10.0f);
+	groundSphereRayOffsetRadius.emplace_back(5.0f);
 	minGroundDots.emplace_back(0.70710678f);
 
 	// --- 実行時状態 ---
@@ -88,6 +89,7 @@ void CharacterControllerStorage::Destroy(CharacterControllerID _id)
 		// --- 接地設定 ---
 
 		groundProbeDistances[denseIndex] = groundProbeDistances[lastIndex];
+		groundSphereRayOffsetRadius[denseIndex] = groundSphereRayOffsetRadius[lastIndex];
 		minGroundDots[denseIndex] = minGroundDots[lastIndex];
 
 		// --- 実行時状態 ---
@@ -125,6 +127,7 @@ void CharacterControllerStorage::Destroy(CharacterControllerID _id)
 	// --- 接地設定 ---
 
 	groundProbeDistances.pop_back();
+	groundSphereRayOffsetRadius.pop_back();
 	minGroundDots.pop_back();
 
 	// --- 実行時状態 ---
