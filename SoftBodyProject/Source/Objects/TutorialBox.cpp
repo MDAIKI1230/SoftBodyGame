@@ -2,7 +2,7 @@
 
 #include "RigidBodyComponent.h"
 #include "BoxColliderComponent.h"
-#include "RendererComponent.h"
+#include "ModelRendererComponent.h"
 
 #include "TutorialBox.h"
 
@@ -11,7 +11,7 @@ TutorialBox::TutorialBox(WorldStorage* _world, EntityID _entityID) :
 {
 	AddComponent<RigidBodyComponent>()->SetMass(100.0f);
 	AddComponent<BoxColliderComponent>(100.0f, 70.0f, 100.0f);
-	AddComponent<RendererComponent>(ResourceManager::GetModel("MovableStageRiser.mv1"));
+	AddComponent<ModelRendererComponent>(ResourceManager::GetModel("MovableStageRiser.mv1"));
 
 	TransformComponent* trans{ GetComponent<TransformComponent>() };
 	trans->SetPosition(Vector3{ 0.0f,30.0f,445.0f });

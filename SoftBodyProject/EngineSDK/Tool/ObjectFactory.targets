@@ -1,0 +1,33 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MDEngineObjectFactoryScript>$(MSBuildThisFileDirectory)GenerateObjectFactory.ps1</MDEngineObjectFactoryScript>
+    <MDEngineBuildCacheRoot Condition="'$(MDEngineBuildCacheRoot)' == ''">$([System.IO.Path]::GetFullPath('$(MSBuildProjectDirectory)\.cache'))</MDEngineBuildCacheRoot>
+    <MDEngineObjectFactoryCacheDir>$(MDEngineBuildCacheRoot)\$(Platform)\$(Configuration)\</MDEngineObjectFactoryCacheDir>
+    <MDEngineObjectFactoryCpp>$(MDEngineObjectFactoryCacheDir)ObjectFactory.cpp</MDEngineObjectFactoryCpp>
+  </PropertyGroup>
+
+  <Target Name="MDEngineGenerateObjectFactory"
+          AfterTargets="BuildGenerateSources"
+          Condition="'$(DesignTimeBuild)' != 'true'">
+
+    <Exec
+      Command="powershell.exe -NoProfile -ExecutionPolicy Bypass -File &quot;$(MDEngineObjectFactoryScript)&quot; -projectRoot &quot;$(MSBuildProjectDirectory)&quot; -platform &quot;$(Platform)&quot; -configuration &quot;$(Configuration)&quot; -cacheRoot &quot;$(MDEngineBuildCacheRoot)&quot;"
+      ConsoleToMSBuild="true">
+      <Output TaskParameter="ConsoleOutput"
+              PropertyName="MDEngineObjectFactoryCpp" />
+    </Exec>
+
+    <!-- 件数の通知を生成パスへ混ぜず、0件も正常終了として表示する。 -->
+    <Message Text="ObjectFactory: 対象は0件でした。空の登録コードを生成しました。"
+             Importance="high"
+             Condition="!$([System.IO.File]::ReadAllText('$(MDEngineObjectFactoryCpp)').Contains('&amp;ObjectFactory::Create&lt;'))" />
+
+
+    <ItemGroup>
+      <ClCompile Include="$(MDEngineObjectFactoryCpp)">
+        <ObjectFileName>$(MDEngineObjectFactoryCacheDir)ObjectFactory.obj</ObjectFileName>
+        <ProgramDataBaseFileName>$(MDEngineObjectFactoryCacheDir)ObjectFactory.pdb</ProgramDataBaseFileName>
+      </ClCompile>
+    </ItemGroup>
+  </Target>
+</Project>

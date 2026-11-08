@@ -1,0 +1,8 @@
+{
+  "WindowWidth": 1000,
+  "WindowHeight": 500,
+  "ColorBit": 32,
+  "TargetFPS": 60,
+  "InitialScene": "TitleScene",
+  "WindowMode": true
+}

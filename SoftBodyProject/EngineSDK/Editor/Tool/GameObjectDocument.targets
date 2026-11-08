@@ -1,0 +1,33 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MDEditorGameObjectDocumentScript>$(MSBuildThisFileDirectory)GenerateGameObjectDocument.ps1</MDEditorGameObjectDocumentScript>
+    <MDEditorGameObjectDocumentCacheRoot Condition="'$(MDEditorGameObjectDocumentCacheRoot)' == ''">$([System.IO.Path]::GetFullPath('$(MSBuildProjectDirectory)\.cache'))</MDEditorGameObjectDocumentCacheRoot>
+    <MDEditorGameObjectDocumentCacheDir>$(MDEditorGameObjectDocumentCacheRoot)\$(Platform)\$(Configuration)\</MDEditorGameObjectDocumentCacheDir>
+    <MDEditorGameObjectDocumentCpp>$(MDEditorGameObjectDocumentCacheDir)GameObjectDocumentRegistry.cpp</MDEditorGameObjectDocumentCpp>
+  </PropertyGroup>
+
+  <Target Name="MDEditorGenerateGameObjectDocument"
+          AfterTargets="BuildGenerateSources"
+          Condition="'$(DesignTimeBuild)' != 'true'">
+
+    <Exec
+      Command="powershell.exe -NoProfile -ExecutionPolicy Bypass -File &quot;$(MDEditorGameObjectDocumentScript)&quot; -projectRoot &quot;$(MSBuildProjectDirectory)&quot; -platform &quot;$(Platform)&quot; -configuration &quot;$(Configuration)&quot; -cacheRoot &quot;$(MDEditorGameObjectDocumentCacheRoot)&quot;"
+      ConsoleToMSBuild="true">
+      <Output TaskParameter="ConsoleOutput"
+              PropertyName="MDEditorGameObjectDocumentCpp" />
+    </Exec>
+
+    <!-- 件数の通知を生成パスへ混ぜず、0件も正常終了として表示する。 -->
+    <Message Text="Editor Object: 対象は0件でした。空の登録コードを生成しました。"
+             Importance="high"
+             Condition="!$([System.IO.File]::ReadAllText('$(MDEditorGameObjectDocumentCpp)').Contains('Register&lt;'))" />
+
+
+    <ItemGroup>
+      <ClCompile Include="$(MDEditorGameObjectDocumentCpp)">
+        <ObjectFileName>$(MDEditorGameObjectDocumentCacheDir)GameObjectDocumentRegistry.obj</ObjectFileName>
+        <ProgramDataBaseFileName>$(MDEditorGameObjectDocumentCacheDir)GameObjectDocumentRegistry.pdb</ProgramDataBaseFileName>
+      </ClCompile>
+    </ItemGroup>
+  </Target>
+</Project>

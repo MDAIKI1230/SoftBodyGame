@@ -1,0 +1,53 @@
+﻿#pragma 
+
+#include "ModelRendererComponent.h"
+
+#include "EntityID.h"
+#include "AnimationID.h"
+
+struct AnimationComponent
+{
+	friend class AnimationComponentStorage;
+public:
+	// コンストラクタ
+	AnimationComponent(EntityID _entity, const ModelRendererComponent* _renderer);
+	// コンストラクタ
+	AnimationComponent(EntityID _entity, const ModelRendererComponent* _renderer, const char* _maskPath);
+
+	// アニメーションの名前の取得
+	std::string_view GetAnimationName();
+	// アニメーションの名前の変更
+	void SetAnimationName(const char* _path);
+	// クロスフェード開始
+	void StartCrossFade(const char* _animationName, float _transitionDuration);
+
+	// 初期ポーズへのクロスフェード開始
+	void StartCrossFadeToBindPose(float _transitionDuration);
+
+	// アニメーション再生時間取得
+	float GetTime();
+	// アニメーション再生時間変更
+	void SetTime(float _time);
+	// アニメーションスピード取得
+	float GetSpeed();
+	// アニメーションスピード変更
+	void SetSpeed(float _speed);
+
+	// ループ再生フラグ取得
+	bool GetLoop();
+	// ループ再生フラグ変更
+	void SetLoop(bool _isLoop);
+	// 再生フラグ取得
+	bool GetPlaying();
+	// 再生
+	void Play();
+	// 停止
+	void Stop();
+
+	// アクティブフラグ取得
+	bool GetActive();
+	// アクティブフラグ変更
+	void SetActive(bool _isActive);
+private:
+	AnimationID id;
+};

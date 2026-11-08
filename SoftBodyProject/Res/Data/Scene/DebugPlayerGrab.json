@@ -1,0 +1,206 @@
+{
+    "Version": 2,
+    "Objects": [
+        {
+            "ID": 1,
+            "Type": "EmptyObject",
+            "Name": "floor",
+            "Components": [
+                {
+                    "ParentObjectID": 0,
+                    "Position": {
+                        "X": 0.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    },
+                    "RotationDeg": {
+                        "X": 0.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    },
+                    "Scale": {
+                        "X": 1.0,
+                        "Y": 1.0,
+                        "Z": 1.0
+                    },
+                    "Name": "Transform"
+                },
+                {
+                    "Size": {
+                        "X": 1000.0,
+                        "Y": 50.0,
+                        "Z": 1000.0
+                    },
+                    "OffsetPosition": {
+                        "X": 0.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    },
+                    "Name": "BoxCollider"
+                }
+            ],
+            "Children": []
+        },
+        {
+            "ID": 4,
+            "Type": "EmptyObject",
+            "Name": "wall",
+            "Components": [
+                {
+                    "ParentObjectID": 0,
+                    "Position": {
+                        "X": 0.0,
+                        "Y": 0.0,
+                        "Z": 300.1000061035156
+                    },
+                    "RotationDeg": {
+                        "X": 90.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    },
+                    "Scale": {
+                        "X": 1.0,
+                        "Y": 1.0,
+                        "Z": 1.0
+                    },
+                    "Name": "Transform"
+                },
+                {
+                    "Size": {
+                        "X": 1000.0,
+                        "Y": 50.0,
+                        "Z": 1000.0
+                    },
+                    "OffsetPosition": {
+                        "X": 0.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    },
+                    "Name": "BoxCollider"
+                }
+            ],
+            "Children": []
+        },
+        {
+            "ID": 6,
+            "Type": "EmptyObject",
+            "Name": "30floor",
+            "Components": [
+                {
+                    "ParentObjectID": 0,
+                    "Position": {
+                        "X": 100.90899658203125,
+                        "Y": 52.32899856567383,
+                        "Z": 0.0
+                    },
+                    "RotationDeg": {
+                        "X": 0.0,
+                        "Y": 0.0,
+                        "Z": 30.0
+                    },
+                    "Scale": {
+                        "X": 1.0,
+                        "Y": 1.0,
+                        "Z": 1.0
+                    },
+                    "Name": "Transform"
+                },
+                {
+                    "Size": {
+                        "X": 300.0,
+                        "Y": 10.0,
+                        "Z": 150.0
+                    },
+                    "OffsetPosition": {
+                        "X": 0.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    },
+                    "Name": "BoxCollider"
+                }
+            ],
+            "Children": []
+        },
+        {
+            "ID": 7,
+            "Type": "EmptyObject",
+            "Name": "45floor",
+            "Components": [
+                {
+                    "ParentObjectID": 0,
+                    "Position": {
+                        "X": 100.90899658203125,
+                        "Y": 50.0,
+                        "Z": 150.0
+                    },
+                    "RotationDeg": {
+                        "X": 0.0,
+                        "Y": 0.0,
+                        "Z": 45.0
+                    },
+                    "Scale": {
+                        "X": 1.0,
+                        "Y": 1.0,
+                        "Z": 1.0
+                    },
+                    "Name": "Transform"
+                },
+                {
+                    "Size": {
+                        "X": 300.0,
+                        "Y": 10.0,
+                        "Z": 150.0
+                    },
+                    "OffsetPosition": {
+                        "X": 0.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    },
+                    "Name": "BoxCollider"
+                }
+            ],
+            "Children": []
+        },
+        {
+            "ID": 8,
+            "Type": "EmptyObject",
+            "Name": "Light",
+            "Components": [
+                {
+                    "ParentObjectID": 0,
+                    "Position": {
+                        "X": 0.0,
+                        "Y": 179.47476196289063,
+                        "Z": 0.0
+                    },
+                    "RotationDeg": {
+                        "X": 90.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    },
+                    "Scale": {
+                        "X": 1.0,
+                        "Y": 1.0,
+                        "Z": 1.0
+                    },
+                    "Name": "Transform"
+                },
+                {
+                    "Type": 1,
+                    "Color": {
+                        "X": 1.0,
+                        "Y": 1.0,
+                        "Z": 1.0
+                    },
+                    "Enabled": true,
+                    "Intensity": 1.0,
+                    "Range": 0.0,
+                    "InnerAngleDeg": 0.0,
+                    "OuterAngleDeg": 0.0,
+                    "Name": "Light"
+                }
+            ],
+            "Children": []
+        }
+    ]
+}

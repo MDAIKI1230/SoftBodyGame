@@ -1,0 +1,50 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MDEngineSceneFactoryScript>$(MSBuildThisFileDirectory)GenerateSceneFactory.ps1</MDEngineSceneFactoryScript>
+    <MDEngineBuildCacheRoot Condition="'$(MDEngineBuildCacheRoot)' == ''">$([System.IO.Path]::GetFullPath('$(MSBuildProjectDirectory)\.cache'))</MDEngineBuildCacheRoot>
+    <MDEngineSceneFactoryCacheDir>$(MDEngineBuildCacheRoot)\$(Platform)\$(Configuration)\</MDEngineSceneFactoryCacheDir>
+    <MDEngineSceneFactoryInl>$(MDEngineSceneFactoryCacheDir)SceneFactory.inl</MDEngineSceneFactoryInl>
+    <MDEngineSceneFactoryCpp>$(MDEngineSceneFactoryCacheDir)SceneFactory.cpp</MDEngineSceneFactoryCpp>
+  </PropertyGroup>
+
+  <!-- ビルド前の評価でも、IntelliSenseへ生成先を渡す。 -->
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(MDEngineSceneFactoryCacheDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
+
+  <Target Name="MDEngineGenerateSceneFactory"
+          AfterTargets="BuildGenerateSources"
+          Condition="'$(DesignTimeBuild)' != 'true'">
+
+    <Exec
+      Command="powershell.exe -NoProfile -ExecutionPolicy Bypass -File &quot;$(MDEngineSceneFactoryScript)&quot; -projectRoot &quot;$(MSBuildProjectDirectory)&quot; -platform &quot;$(Platform)&quot; -configuration &quot;$(Configuration)&quot; -cacheRoot &quot;$(MDEngineBuildCacheRoot)&quot;"
+      ConsoleToMSBuild="true">
+      <Output TaskParameter="ConsoleOutput"
+              PropertyName="MDEngineSceneFactoryInl" />
+    </Exec>
+
+    <!-- 件数の通知を生成パスへ混ぜず、0件も正常終了として表示する。 -->
+    <Message Text="SceneFactory: 対象は0件でした。空の登録コードを生成しました。"
+             Importance="high"
+             Condition="!$([System.IO.File]::ReadAllText('$(MDEngineSceneFactoryInl)').Contains('SceneFactory::Create&lt;'))" />
+
+    <!-- 生成cppはビルド時だけ追加し、objとPDBもキャッシュへ出す。 -->
+    <ItemGroup>
+      <ClCompile Include="$(MDEngineSceneFactoryCpp)">
+        <ObjectFileName>$(MDEngineSceneFactoryCacheDir)SceneFactory.obj</ObjectFileName>
+        <ProgramDataBaseFileName>$(MDEngineSceneFactoryCacheDir)SceneFactory.pdb</ProgramDataBaseFileName>
+      </ClCompile>
+    </ItemGroup>
+
+  </Target>
+
+  <Target Name="MDEngineUseCachedSceneFactory"
+          BeforeTargets="SelectClCompile"
+          DependsOnTargets="MDEngineGenerateSceneFactory"
+          Condition="'$(DesignTimeBuild)' != 'true'">
+
+    <!-- 生成タイミングだけ維持し、検索先は上のItemDefinitionGroupで共有する。 -->
+  </Target>
+</Project>

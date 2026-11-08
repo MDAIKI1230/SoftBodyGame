@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "EscapePart.h"
+#include "Base/EscapePart.h"
 
 class QuitUI :public EscapePart
 {
