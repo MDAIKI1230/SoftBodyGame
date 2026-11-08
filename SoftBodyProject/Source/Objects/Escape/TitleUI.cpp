@@ -18,5 +18,5 @@ TitleUI::TitleUI(WorldStorage* _world, EntityID _entityID) :
 // タイトルに戻る
 void TitleUI::Action()
 {
-	ApplicationRequest::SceneRequest(SceneRequestType::TITLE);
+	ApplicationRequest::SceneRequest<"TitleScene">();
 }

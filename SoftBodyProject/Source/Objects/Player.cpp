@@ -1,26 +1,49 @@
 ﻿#include "ResourceManager.h"
 #include "InputSystem.h"
 #include "GameManager.h"
-#include "Renderer.h"
+#include "TimeManager.h"
 
 #include "AnimationComponent.h"
-#include "RendererComponent.h"
+#include "ModelRendererComponent.h"
 #include "ActiveRagdollComponent.h"
 #include "CharacterControllerComponent.h"
+#include "CapsuleColliderComponent.h"
 
 #include "Player.h"
 
 // コンストラクタ
-Player::Player(WorldStorage* _world, EntityID _entityID, Camera* _camera) :
+Player::Player(WorldStorage* _world, EntityID _entityID) :
 	MonoBehaviour{_world, _entityID},
-	camera{ _camera },
 	HAND_LIMIT_ANGLE_RAD{ MDMath::DegToRad(HAND_LIMIT_ANGLE_DEG) },
 	leftHandConstraint{ _entityID },
 	rightHandConstraint{ _entityID }
 {
-	AddComponent<TransformComponent>();
+}
+
+Player::Player(WorldStorage* _world, EntityID _entityID, Camera* _camera) :
+	MonoBehaviour{_world, _entityID},
+	camera{ camera },
+	HAND_LIMIT_ANGLE_RAD{ MDMath::DegToRad(HAND_LIMIT_ANGLE_DEG) },
+	leftHandConstraint{ _entityID },
+	rightHandConstraint{ _entityID }
+{
+}
+
+void Player::Start()
+{
+	camera = Camera::main;
+
+	if (!camera)
+	{
+		return;
+	}
 
 	//GetComponent<TransformComponent>()->SetPosition(Vector3{ 0.0f,200.0f,-300.0f });
+	CapsuleColliderComponent* collider{ AddComponent<CapsuleColliderComponent>(50.0f, 25.0f) };
+	collider->SetOffsetPosition(Vector3::UP * 50.0f);
+	CollisionFilter testFilter;
+	testFilter.categoryBits = CollisionTag::Type::CARRYABLE;
+	collider->SetFilter(testFilter);
 	GetComponent<TransformComponent>()->SetPosition(Vector3{ 150.0f,200.0f,0.0f });
 
 	InputSystem::GetInputAction("Character", "Move").AddPerformedCallback<&Player::Move>(this);
@@ -39,13 +62,13 @@ Player::Player(WorldStorage* _world, EntityID _entityID, Camera* _camera) :
 	camera->GetComponent<CameraComponent>()->SetNear(0.1f);
 	camera->GetComponent<CameraComponent>()->SetFar(2000.0f);
 
-	RendererComponent* renderer{ AddComponent<RendererComponent>(
+	ModelRendererComponent* renderer{ AddComponent<ModelRendererComponent>(
 		ResourceManager::GetModel("M_001_player_095_01.mv1")
 	) };
 
-	ActiveRagdollComponent* active{ AddComponent<ActiveRagdollComponent>(
+	/*ActiveRagdollComponent* active{ AddComponent<ActiveRagdollComponent>(
 		*renderer, "Res/Data/Ragdoll/Active/M_001_player_095_01_no_sword.json"
-	) };
+	) };*/
 
 	AnimationComponent* anim{ AddComponent<AnimationComponent>(
 		renderer,"Res/Data/Skeleton/M_001_player_095_01_no_sword_LegsBoneMask.json"
@@ -53,18 +76,23 @@ Player::Player(WorldStorage* _world, EntityID _entityID, Camera* _camera) :
 	anim->SetAnimationName("Walk");
 	anim->SetLoop(true);
 
-	CollisionFilter ragdollFilter{ active->GetIgnoreFilter() };
-	camera->GetComponent<CameraRigComponent>()->GetRayFilter(ragdollFilter);
+	//CollisionFilter ragdollFilter{ active->GetIgnoreFilter() };
+	testFilter.IgnoreCategory(CollisionTag::Type::CARRYABLE);
+	camera->GetComponent<CameraRigComponent>()->GetRayFilter(testFilter);
+	// collider->SetFilter(ragdollFilter);
 
-	CharacterControllerComponent* cc{ AddComponent<CharacterControllerComponent>() };
-	cc->SetCollisionFilter(ragdollFilter);
-	cc->SetColliderHeight(50.0f);
-	cc->SetColliderOffset(CHARACTER_OFFSET);
+	CharacterControllerComponent* cc{ AddComponent<CharacterControllerComponent>(*AddComponent<RigidBodyComponent>()) };
+	cc->SetCollisionFilter(testFilter);
+	cc->SetGroundProbeDistance(5.0f);
+	cc->SetSkirtRadius(25.0f);
+	cc->SetSkirtRayCount(8);
+	cc->SetMaxJumpTime(2.0f);
+	cc->SetMaxMoverForceSlopeAngleDeg(45.0f);
 
-	active->SetRotationWeight(RagdollBoneRole::TORSO, 0.2f);
-	active->SetPositionWeight(RagdollBoneRole::TORSO, 0.2f);
+	/*active->SetRotationWeight(RagdollBoneRole::TORSO, 0.2f);
+	active->SetPositionWeight(RagdollBoneRole::TORSO, 0.2f);*/
 
-	RigidBodyComponent leftHandBody{ active->GetBody(RagdollBoneRole::LEFT_HAND) };
+	/*RigidBodyComponent leftHandBody{ active->GetBody(RagdollBoneRole::LEFT_HAND) };
 	leftHandConstraint = *AddComponent<PointConstraintComponent>(leftHandBody);
 
 	RigidBodyComponent rightHandBody{ active->GetBody(RagdollBoneRole::RIGHT_HAND) };
@@ -73,7 +101,7 @@ Player::Player(WorldStorage* _world, EntityID _entityID, Camera* _camera) :
 	leftHandCollider = active->GetCollider(RagdollBoneRole::LEFT_HAND);
 	rightHandCollider = active->GetCollider(RagdollBoneRole::RIGHT_HAND);
 
-	ignoreActiveRagdoll = active->GetIgnoreFilter();
+	ignoreActiveRagdoll = active->GetIgnoreFilter();*/
 }
 
 // --- 更新系 ---
@@ -81,11 +109,57 @@ Player::Player(WorldStorage* _world, EntityID _entityID, Camera* _camera) :
 // 更新処理
 void Player::Update()
 {
+	CharacterGroundState state{ GetComponent<CharacterControllerComponent>()->GetGroundState() };
+
+	if (state == CharacterGroundState::WALKABLE || state == CharacterGroundState::JUMPING)
+	{
+		//GetComponent<ActiveRagdollComponent>()->SetControlState(ActiveRagdollControlState::STANDING);
+	}
+	else
+	{
+		//GetComponent<ActiveRagdollComponent>()->SetControlState(ActiveRagdollControlState::AIRBORNE);
+	}
 }
 // 物理更新処理
 void Player::FixedUpdate()
 {
+	CharacterControllerComponent* cc{ GetComponent<CharacterControllerComponent>() };
 
+	Quaternion rotation{ cc->GetRotation() };
+	Vector3 velocity{ cc->GetVelocity() };
+
+	Vector3 nowForward{ rotation.Rotate(Vector3::FORWARD) };
+
+	nowForward = SIMDVectorMath::Mul(nowForward, Vector3::FORWARD + Vector3::RIGHT);
+
+	if (nowForward.LengthSqr() <= MathConstants::EPSILON)
+	{
+		return;
+	}
+
+	Vector3 targetForward{ velocity.Normalized() };
+
+	targetForward = SIMDVectorMath::Mul(targetForward, Vector3::FORWARD + Vector3::RIGHT);
+
+	if (targetForward.LengthSqr() <= MathConstants::EPSILON)
+	{
+		return;
+	}
+
+	float theta{ Vector3::SignedAngleNormal(nowForward,targetForward,Vector3::UP) };
+
+	if (fabs(theta) <= MathConstants::EPSILON)
+	{
+		return;
+	}
+
+	float maxTheta{ ANGULER_VELOCITY * TimeManager::GetFixedDeltaTime() };
+
+	theta = std::clamp(theta, -maxTheta, maxTheta);
+
+	Quaternion deltaRot{ Quaternion::AngleAxis(theta,Vector3::UP) };
+
+	cc->Rotate(deltaRot);
 }
 
 // --- 衝突系 ---
@@ -140,15 +214,14 @@ void Player::Move(InputActionContext _input)
 	Vector2 input{ _input.ReadValue<Vector2>() };
 	Vector3 local{ camera->GetComponent<TransformComponent>()->GetRotation().Rotate(Vector3{ input.x,0.0f,input.y }) };
 	GetComponent<CharacterControllerComponent>()->SetMoveInput(local);
+	GetComponent<AnimationComponent>()->SetAnimationName("Walk");
 	GetComponent<AnimationComponent>()->Play();
 	GetComponent<AnimationComponent>()->SetActive(true);
 }
 void Player::Stop(InputActionContext _input)
 {
 	GetComponent<CharacterControllerComponent>()->ClearMoveInput();
-	GetComponent<AnimationComponent>()->Stop();
-	GetComponent<AnimationComponent>()->SetTime(0.0f);
-	GetComponent<AnimationComponent>()->SetActive(false);
+	GetComponent<AnimationComponent>()->StartCrossFadeToBindPose(1.0f);
 }
 void Player::Jump(InputActionContext _input)
 {

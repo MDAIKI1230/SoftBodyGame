@@ -6,7 +6,7 @@
 #include "SoundPlayInfo.h"
 
 #include "MonoBehaviour.h"
-#include "EscapePart.h"
+#include "Base/EscapePart.h"
 #include "Check.h"
 
 class Escape :public MonoBehaviour

@@ -1,40 +1,1396 @@
 {
-    "Version":1,
-    "Objects":
-    [
+    "Version": 2,
+    "Objects": [
         {
-            "ID":"floor",
-            "Type":"DebugBox",
-            "Components":
-            [
+            "ID": 35,
+            "Type": "EmptyObject",
+            "Name": "CharacterControllerDebugStage",
+            "Components": [
                 {
-                    "Name":"Transform",
-                    "Position"   :{ "X": 0 ,"Y": -200 ,"Z": 0 },
-                    "RotationDeg":{ "X": 0 ,"Y":   0  ,"Z": 0 },
-                    "Scale"      :{ "X": 1 ,"Y":   1  ,"Z": 1 }
+                    "Name": "Transform",
+                    "ParentObjectID": 0,
+                    "Position": {
+                        "X": 0.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    },
+                    "RotationDeg": {
+                        "X": 0.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    },
+                    "Scale": {
+                        "X": 1.0,
+                        "Y": 1.0,
+                        "Z": 1.0
+                    }
                 },
                 {
-                    "Name":"BoxCollider",
-                    "Size": { "X": 200 ,"Y": 50 ,"Z": 200 }
+                    "Name": "ModelRenderer",
+                    "ModelPath": "Res/Model/CharacterControllerDebugStage.mv1"
                 }
-            ]
+            ],
+            "Children": []
         },
         {
-            "ID":"ball",
-            "Type":"DebugSphere",
-            "Components":
-            [
+            "ID": 1,
+            "Type": "DebugBox",
+            "Name": "stage_floor",
+            "Components": [
                 {
-                    "Name":"Transform",
-                    "Position"   :{ "X": 0 ,"Y": 0 ,"Z": 0 },
-                    "RotationDeg":{ "X": 0 ,"Y": 0 ,"Z": 0 },
-                    "Scale"      :{ "X": 1 ,"Y": 1 ,"Z": 1 }
+                    "Name": "Transform",
+                    "Position": {
+                        "X": 0.0,
+                        "Y": -185.0,
+                        "Z": 0.0
+                    },
+                    "RotationDeg": {
+                        "X": 0.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    },
+                    "Scale": {
+                        "X": 1,
+                        "Y": 1,
+                        "Z": 1
+                    },
+                    "ParentObjectID": 0
                 },
                 {
-                    "Name":"SphereCollider",
-                    "Radius": 30
+                    "Name": "BoxCollider",
+                    "Size": {
+                        "X": 880.0,
+                        "Y": 20.0,
+                        "Z": 680.0
+                    },
+                    "OffsetPosition": {
+                        "X": 0.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    }
                 }
-            ]
+            ],
+            "Children": []
+        },
+        {
+            "ID": 2,
+            "Type": "DebugBox",
+            "Name": "boundary_left",
+            "Components": [
+                {
+                    "Name": "Transform",
+                    "Position": {
+                        "X": -435.0,
+                        "Y": -130.0,
+                        "Z": 0.0
+                    },
+                    "RotationDeg": {
+                        "X": 0.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    },
+                    "Scale": {
+                        "X": 1,
+                        "Y": 1,
+                        "Z": 1
+                    },
+                    "ParentObjectID": 0
+                },
+                {
+                    "Name": "BoxCollider",
+                    "Size": {
+                        "X": 10.0,
+                        "Y": 90.0,
+                        "Z": 680.0
+                    },
+                    "OffsetPosition": {
+                        "X": 0.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    }
+                }
+            ],
+            "Children": []
+        },
+        {
+            "ID": 3,
+            "Type": "DebugBox",
+            "Name": "boundary_right",
+            "Components": [
+                {
+                    "Name": "Transform",
+                    "Position": {
+                        "X": 435.0,
+                        "Y": -130.0,
+                        "Z": 0.0
+                    },
+                    "RotationDeg": {
+                        "X": 0.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    },
+                    "Scale": {
+                        "X": 1,
+                        "Y": 1,
+                        "Z": 1
+                    },
+                    "ParentObjectID": 0
+                },
+                {
+                    "Name": "BoxCollider",
+                    "Size": {
+                        "X": 10.0,
+                        "Y": 90.0,
+                        "Z": 680.0
+                    },
+                    "OffsetPosition": {
+                        "X": 0.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    }
+                }
+            ],
+            "Children": []
+        },
+        {
+            "ID": 4,
+            "Type": "DebugBox",
+            "Name": "boundary_back",
+            "Components": [
+                {
+                    "Name": "Transform",
+                    "Position": {
+                        "X": 0.0,
+                        "Y": -130.0,
+                        "Z": 335.0
+                    },
+                    "RotationDeg": {
+                        "X": 0.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    },
+                    "Scale": {
+                        "X": 1,
+                        "Y": 1,
+                        "Z": 1
+                    },
+                    "ParentObjectID": 0
+                },
+                {
+                    "Name": "BoxCollider",
+                    "Size": {
+                        "X": 880.0,
+                        "Y": 90.0,
+                        "Z": 10.0
+                    },
+                    "OffsetPosition": {
+                        "X": 0.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    }
+                }
+            ],
+            "Children": []
+        },
+        {
+            "ID": 5,
+            "Type": "DebugBox",
+            "Name": "curb_08",
+            "Components": [
+                {
+                    "Name": "Transform",
+                    "Position": {
+                        "X": -310.0,
+                        "Y": -171.0,
+                        "Z": -255.0
+                    },
+                    "RotationDeg": {
+                        "X": 0.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    },
+                    "Scale": {
+                        "X": 1,
+                        "Y": 1,
+                        "Z": 1
+                    },
+                    "ParentObjectID": 0
+                },
+                {
+                    "Name": "BoxCollider",
+                    "Size": {
+                        "X": 150.0,
+                        "Y": 8.0,
+                        "Z": 30.0
+                    },
+                    "OffsetPosition": {
+                        "X": 0.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    }
+                }
+            ],
+            "Children": []
+        },
+        {
+            "ID": 6,
+            "Type": "DebugBox",
+            "Name": "curb_18",
+            "Components": [
+                {
+                    "Name": "Transform",
+                    "Position": {
+                        "X": -310.0,
+                        "Y": -166.0,
+                        "Z": -205.0
+                    },
+                    "RotationDeg": {
+                        "X": 0.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    },
+                    "Scale": {
+                        "X": 1,
+                        "Y": 1,
+                        "Z": 1
+                    },
+                    "ParentObjectID": 0
+                },
+                {
+                    "Name": "BoxCollider",
+                    "Size": {
+                        "X": 150.0,
+                        "Y": 18.0,
+                        "Z": 30.0
+                    },
+                    "OffsetPosition": {
+                        "X": 0.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    }
+                }
+            ],
+            "Children": []
+        },
+        {
+            "ID": 7,
+            "Type": "DebugBox",
+            "Name": "curb_30",
+            "Components": [
+                {
+                    "Name": "Transform",
+                    "Position": {
+                        "X": -310.0,
+                        "Y": -160.0,
+                        "Z": -145.0
+                    },
+                    "RotationDeg": {
+                        "X": 0.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    },
+                    "Scale": {
+                        "X": 1,
+                        "Y": 1,
+                        "Z": 1
+                    },
+                    "ParentObjectID": 0
+                },
+                {
+                    "Name": "BoxCollider",
+                    "Size": {
+                        "X": 150.0,
+                        "Y": 30.0,
+                        "Z": 30.0
+                    },
+                    "OffsetPosition": {
+                        "X": 0.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    }
+                }
+            ],
+            "Children": []
+        },
+        {
+            "ID": 8,
+            "Type": "DebugBox",
+            "Name": "step_up_15",
+            "Components": [
+                {
+                    "Name": "Transform",
+                    "Position": {
+                        "X": -310.0,
+                        "Y": -167.5,
+                        "Z": -70.0
+                    },
+                    "RotationDeg": {
+                        "X": 0.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    },
+                    "Scale": {
+                        "X": 1,
+                        "Y": 1,
+                        "Z": 1
+                    },
+                    "ParentObjectID": 0
+                },
+                {
+                    "Name": "BoxCollider",
+                    "Size": {
+                        "X": 160.0,
+                        "Y": 15.0,
+                        "Z": 45.0
+                    },
+                    "OffsetPosition": {
+                        "X": 0.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    }
+                }
+            ],
+            "Children": []
+        },
+        {
+            "ID": 9,
+            "Type": "DebugBox",
+            "Name": "step_up_30",
+            "Components": [
+                {
+                    "Name": "Transform",
+                    "Position": {
+                        "X": -310.0,
+                        "Y": -160.0,
+                        "Z": -25.0
+                    },
+                    "RotationDeg": {
+                        "X": 0.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    },
+                    "Scale": {
+                        "X": 1,
+                        "Y": 1,
+                        "Z": 1
+                    },
+                    "ParentObjectID": 0
+                },
+                {
+                    "Name": "BoxCollider",
+                    "Size": {
+                        "X": 160.0,
+                        "Y": 30.0,
+                        "Z": 45.0
+                    },
+                    "OffsetPosition": {
+                        "X": 0.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    }
+                }
+            ],
+            "Children": []
+        },
+        {
+            "ID": 10,
+            "Type": "DebugBox",
+            "Name": "step_up_50",
+            "Components": [
+                {
+                    "Name": "Transform",
+                    "Position": {
+                        "X": -310.0,
+                        "Y": -150.0,
+                        "Z": 20.0
+                    },
+                    "RotationDeg": {
+                        "X": 0.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    },
+                    "Scale": {
+                        "X": 1,
+                        "Y": 1,
+                        "Z": 1
+                    },
+                    "ParentObjectID": 0
+                },
+                {
+                    "Name": "BoxCollider",
+                    "Size": {
+                        "X": 160.0,
+                        "Y": 50.0,
+                        "Z": 45.0
+                    },
+                    "OffsetPosition": {
+                        "X": 0.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    }
+                }
+            ],
+            "Children": []
+        },
+        {
+            "ID": 11,
+            "Type": "DebugBox",
+            "Name": "step_up_75",
+            "Components": [
+                {
+                    "Name": "Transform",
+                    "Position": {
+                        "X": -310.0,
+                        "Y": -137.5,
+                        "Z": 65.0
+                    },
+                    "RotationDeg": {
+                        "X": 0.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    },
+                    "Scale": {
+                        "X": 1,
+                        "Y": 1,
+                        "Z": 1
+                    },
+                    "ParentObjectID": 0
+                },
+                {
+                    "Name": "BoxCollider",
+                    "Size": {
+                        "X": 160.0,
+                        "Y": 75.0,
+                        "Z": 45.0
+                    },
+                    "OffsetPosition": {
+                        "X": 0.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    }
+                }
+            ],
+            "Children": []
+        },
+        {
+            "ID": 12,
+            "Type": "DebugBox",
+            "Name": "step_up_90",
+            "Components": [
+                {
+                    "Name": "Transform",
+                    "Position": {
+                        "X": -310.0,
+                        "Y": -130.0,
+                        "Z": 110.0
+                    },
+                    "RotationDeg": {
+                        "X": 0.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    },
+                    "Scale": {
+                        "X": 1,
+                        "Y": 1,
+                        "Z": 1
+                    },
+                    "ParentObjectID": 0
+                },
+                {
+                    "Name": "BoxCollider",
+                    "Size": {
+                        "X": 160.0,
+                        "Y": 90.0,
+                        "Z": 45.0
+                    },
+                    "OffsetPosition": {
+                        "X": 0.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    }
+                }
+            ],
+            "Children": []
+        },
+        {
+            "ID": 13,
+            "Type": "DebugBox",
+            "Name": "step_top",
+            "Components": [
+                {
+                    "Name": "Transform",
+                    "Position": {
+                        "X": -310.0,
+                        "Y": -130.0,
+                        "Z": 175.0
+                    },
+                    "RotationDeg": {
+                        "X": 0.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    },
+                    "Scale": {
+                        "X": 1,
+                        "Y": 1,
+                        "Z": 1
+                    },
+                    "ParentObjectID": 0
+                },
+                {
+                    "Name": "BoxCollider",
+                    "Size": {
+                        "X": 160.0,
+                        "Y": 90.0,
+                        "Z": 85.0
+                    },
+                    "OffsetPosition": {
+                        "X": 0.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    }
+                }
+            ],
+            "Children": []
+        },
+        {
+            "ID": 14,
+            "Type": "DebugBox",
+            "Name": "step_down_60",
+            "Components": [
+                {
+                    "Name": "Transform",
+                    "Position": {
+                        "X": -310.0,
+                        "Y": -145.0,
+                        "Z": 240.0
+                    },
+                    "RotationDeg": {
+                        "X": 0.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    },
+                    "Scale": {
+                        "X": 1,
+                        "Y": 1,
+                        "Z": 1
+                    },
+                    "ParentObjectID": 0
+                },
+                {
+                    "Name": "BoxCollider",
+                    "Size": {
+                        "X": 160.0,
+                        "Y": 60.0,
+                        "Z": 45.0
+                    },
+                    "OffsetPosition": {
+                        "X": 0.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    }
+                }
+            ],
+            "Children": []
+        },
+        {
+            "ID": 15,
+            "Type": "DebugBox",
+            "Name": "step_down_30",
+            "Components": [
+                {
+                    "Name": "Transform",
+                    "Position": {
+                        "X": -310.0,
+                        "Y": -160.0,
+                        "Z": 285.0
+                    },
+                    "RotationDeg": {
+                        "X": 0.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    },
+                    "Scale": {
+                        "X": 1,
+                        "Y": 1,
+                        "Z": 1
+                    },
+                    "ParentObjectID": 0
+                },
+                {
+                    "Name": "BoxCollider",
+                    "Size": {
+                        "X": 160.0,
+                        "Y": 30.0,
+                        "Z": 45.0
+                    },
+                    "OffsetPosition": {
+                        "X": 0.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    }
+                }
+            ],
+            "Children": []
+        },
+        {
+            "ID": 16,
+            "Type": "DebugBox",
+            "Name": "step_down_12",
+            "Components": [
+                {
+                    "Name": "Transform",
+                    "Position": {
+                        "X": -310.0,
+                        "Y": -169.0,
+                        "Z": 320.0
+                    },
+                    "RotationDeg": {
+                        "X": 0.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    },
+                    "Scale": {
+                        "X": 1,
+                        "Y": 1,
+                        "Z": 1
+                    },
+                    "ParentObjectID": 0
+                },
+                {
+                    "Name": "BoxCollider",
+                    "Size": {
+                        "X": 160.0,
+                        "Y": 12.0,
+                        "Z": 25.0
+                    },
+                    "OffsetPosition": {
+                        "X": 0.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    }
+                }
+            ],
+            "Children": []
+        },
+        {
+            "ID": 17,
+            "Type": "DebugBox",
+            "Name": "ramp_up_15",
+            "Components": [
+                {
+                    "Name": "Transform",
+                    "Position": {
+                        "X": -80.0,
+                        "Y": -154.259,
+                        "Z": -149.181
+                    },
+                    "RotationDeg": {
+                        "X": -15.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    },
+                    "Scale": {
+                        "X": 1,
+                        "Y": 1,
+                        "Z": 1
+                    },
+                    "ParentObjectID": 0
+                },
+                {
+                    "Name": "BoxCollider",
+                    "Size": {
+                        "X": 135.0,
+                        "Y": 16.0,
+                        "Z": 220.0
+                    },
+                    "OffsetPosition": {
+                        "X": 0.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    }
+                }
+            ],
+            "Children": []
+        },
+        {
+            "ID": 18,
+            "Type": "DebugBox",
+            "Name": "ramp_platform_57",
+            "Components": [
+                {
+                    "Name": "Transform",
+                    "Position": {
+                        "X": -80.0,
+                        "Y": -146.53,
+                        "Z": 10.0
+                    },
+                    "RotationDeg": {
+                        "X": 0.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    },
+                    "Scale": {
+                        "X": 1,
+                        "Y": 1,
+                        "Z": 1
+                    },
+                    "ParentObjectID": 0
+                },
+                {
+                    "Name": "BoxCollider",
+                    "Size": {
+                        "X": 135.0,
+                        "Y": 56.94,
+                        "Z": 110.0
+                    },
+                    "OffsetPosition": {
+                        "X": 0.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    }
+                }
+            ],
+            "Children": []
+        },
+        {
+            "ID": 19,
+            "Type": "DebugBox",
+            "Name": "ramp_down_20",
+            "Components": [
+                {
+                    "Name": "Transform",
+                    "Position": {
+                        "X": -80.0,
+                        "Y": -154.049,
+                        "Z": 140.493
+                    },
+                    "RotationDeg": {
+                        "X": 20.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    },
+                    "Scale": {
+                        "X": 1,
+                        "Y": 1,
+                        "Z": 1
+                    },
+                    "ParentObjectID": 0
+                },
+                {
+                    "Name": "BoxCollider",
+                    "Size": {
+                        "X": 135.0,
+                        "Y": 16.0,
+                        "Z": 166.5
+                    },
+                    "OffsetPosition": {
+                        "X": 0.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    }
+                }
+            ],
+            "Children": []
+        },
+        {
+            "ID": 20,
+            "Type": "DebugBox",
+            "Name": "ramp_up_30",
+            "Components": [
+                {
+                    "Name": "Transform",
+                    "Position": {
+                        "X": 120.0,
+                        "Y": -151.928,
+                        "Z": -187.962
+                    },
+                    "RotationDeg": {
+                        "X": -30.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    },
+                    "Scale": {
+                        "X": 1,
+                        "Y": 1,
+                        "Z": 1
+                    },
+                    "ParentObjectID": 0
+                },
+                {
+                    "Name": "BoxCollider",
+                    "Size": {
+                        "X": 120.0,
+                        "Y": 16.0,
+                        "Z": 120.0
+                    },
+                    "OffsetPosition": {
+                        "X": 0.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    }
+                }
+            ],
+            "Children": []
+        },
+        {
+            "ID": 21,
+            "Type": "DebugBox",
+            "Name": "ramp_platform_60",
+            "Components": [
+                {
+                    "Name": "Transform",
+                    "Position": {
+                        "X": 120.0,
+                        "Y": -145.0,
+                        "Z": -95.0
+                    },
+                    "RotationDeg": {
+                        "X": 0.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    },
+                    "Scale": {
+                        "X": 1,
+                        "Y": 1,
+                        "Z": 1
+                    },
+                    "ParentObjectID": 0
+                },
+                {
+                    "Name": "BoxCollider",
+                    "Size": {
+                        "X": 120.0,
+                        "Y": 60.0,
+                        "Z": 90.0
+                    },
+                    "OffsetPosition": {
+                        "X": 0.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    }
+                }
+            ],
+            "Children": []
+        },
+        {
+            "ID": 22,
+            "Type": "DebugBox",
+            "Name": "ramp_up_45",
+            "Components": [
+                {
+                    "Name": "Transform",
+                    "Position": {
+                        "X": 300.0,
+                        "Y": -149.898,
+                        "Z": -212.602
+                    },
+                    "RotationDeg": {
+                        "X": -45.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    },
+                    "Scale": {
+                        "X": 1,
+                        "Y": 1,
+                        "Z": 1
+                    },
+                    "ParentObjectID": 0
+                },
+                {
+                    "Name": "BoxCollider",
+                    "Size": {
+                        "X": 100.0,
+                        "Y": 14.0,
+                        "Z": 85.0
+                    },
+                    "OffsetPosition": {
+                        "X": 0.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    }
+                }
+            ],
+            "Children": []
+        },
+        {
+            "ID": 23,
+            "Type": "DebugBox",
+            "Name": "ramp_platform_45",
+            "Components": [
+                {
+                    "Name": "Transform",
+                    "Position": {
+                        "X": 300.0,
+                        "Y": -144.948,
+                        "Z": -145.0
+                    },
+                    "RotationDeg": {
+                        "X": 0.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    },
+                    "Scale": {
+                        "X": 1,
+                        "Y": 1,
+                        "Z": 1
+                    },
+                    "ParentObjectID": 0
+                },
+                {
+                    "Name": "BoxCollider",
+                    "Size": {
+                        "X": 100.0,
+                        "Y": 60.104,
+                        "Z": 85.0
+                    },
+                    "OffsetPosition": {
+                        "X": 0.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    }
+                }
+            ],
+            "Children": []
+        },
+        {
+            "ID": 24,
+            "Type": "DebugBox",
+            "Name": "narrow_beam",
+            "Components": [
+                {
+                    "Name": "Transform",
+                    "Position": {
+                        "X": 120.0,
+                        "Y": -163.0,
+                        "Z": 90.0
+                    },
+                    "RotationDeg": {
+                        "X": 0.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    },
+                    "Scale": {
+                        "X": 1,
+                        "Y": 1,
+                        "Z": 1
+                    },
+                    "ParentObjectID": 0
+                },
+                {
+                    "Name": "BoxCollider",
+                    "Size": {
+                        "X": 55.0,
+                        "Y": 24.0,
+                        "Z": 170.0
+                    },
+                    "OffsetPosition": {
+                        "X": 0.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    }
+                }
+            ],
+            "Children": []
+        },
+        {
+            "ID": 25,
+            "Type": "DebugBox",
+            "Name": "narrow_turn",
+            "Components": [
+                {
+                    "Name": "Transform",
+                    "Position": {
+                        "X": 172.5,
+                        "Y": -163.0,
+                        "Z": 152.5
+                    },
+                    "RotationDeg": {
+                        "X": 0.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    },
+                    "Scale": {
+                        "X": 1,
+                        "Y": 1,
+                        "Z": 1
+                    },
+                    "ParentObjectID": 0
+                },
+                {
+                    "Name": "BoxCollider",
+                    "Size": {
+                        "X": 105.0,
+                        "Y": 24.0,
+                        "Z": 45.0
+                    },
+                    "OffsetPosition": {
+                        "X": 0.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    }
+                }
+            ],
+            "Children": []
+        },
+        {
+            "ID": 26,
+            "Type": "DebugBox",
+            "Name": "narrow_landing",
+            "Components": [
+                {
+                    "Name": "Transform",
+                    "Position": {
+                        "X": 225.0,
+                        "Y": -163.0,
+                        "Z": 205.0
+                    },
+                    "RotationDeg": {
+                        "X": 0.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    },
+                    "Scale": {
+                        "X": 1,
+                        "Y": 1,
+                        "Z": 1
+                    },
+                    "ParentObjectID": 0
+                },
+                {
+                    "Name": "BoxCollider",
+                    "Size": {
+                        "X": 90.0,
+                        "Y": 24.0,
+                        "Z": 90.0
+                    },
+                    "OffsetPosition": {
+                        "X": 0.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    }
+                }
+            ],
+            "Children": []
+        },
+        {
+            "ID": 27,
+            "Type": "DebugBox",
+            "Name": "corridor_left",
+            "Components": [
+                {
+                    "Name": "Transform",
+                    "Position": {
+                        "X": 250.0,
+                        "Y": -120.0,
+                        "Z": 25.0
+                    },
+                    "RotationDeg": {
+                        "X": 0.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    },
+                    "Scale": {
+                        "X": 1,
+                        "Y": 1,
+                        "Z": 1
+                    },
+                    "ParentObjectID": 0
+                },
+                {
+                    "Name": "BoxCollider",
+                    "Size": {
+                        "X": 12.0,
+                        "Y": 110.0,
+                        "Z": 170.0
+                    },
+                    "OffsetPosition": {
+                        "X": 0.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    }
+                }
+            ],
+            "Children": []
+        },
+        {
+            "ID": 28,
+            "Type": "DebugBox",
+            "Name": "corridor_right",
+            "Components": [
+                {
+                    "Name": "Transform",
+                    "Position": {
+                        "X": 350.0,
+                        "Y": -120.0,
+                        "Z": 25.0
+                    },
+                    "RotationDeg": {
+                        "X": 0.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    },
+                    "Scale": {
+                        "X": 1,
+                        "Y": 1,
+                        "Z": 1
+                    },
+                    "ParentObjectID": 0
+                },
+                {
+                    "Name": "BoxCollider",
+                    "Size": {
+                        "X": 12.0,
+                        "Y": 110.0,
+                        "Z": 170.0
+                    },
+                    "OffsetPosition": {
+                        "X": 0.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    }
+                }
+            ],
+            "Children": []
+        },
+        {
+            "ID": 29,
+            "Type": "DebugBox",
+            "Name": "corridor_ceiling",
+            "Components": [
+                {
+                    "Name": "Transform",
+                    "Position": {
+                        "X": 300.0,
+                        "Y": -37.5,
+                        "Z": 55.0
+                    },
+                    "RotationDeg": {
+                        "X": 0.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    },
+                    "Scale": {
+                        "X": 1,
+                        "Y": 1,
+                        "Z": 1
+                    },
+                    "ParentObjectID": 0
+                },
+                {
+                    "Name": "BoxCollider",
+                    "Size": {
+                        "X": 112.0,
+                        "Y": 15.0,
+                        "Z": 70.0
+                    },
+                    "OffsetPosition": {
+                        "X": 0.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    }
+                }
+            ],
+            "Children": []
+        },
+        {
+            "ID": 30,
+            "Type": "DebugBox",
+            "Name": "corner_wall_cross",
+            "Components": [
+                {
+                    "Name": "Transform",
+                    "Position": {
+                        "X": 300.0,
+                        "Y": -120.0,
+                        "Z": 150.0
+                    },
+                    "RotationDeg": {
+                        "X": 0.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    },
+                    "Scale": {
+                        "X": 1,
+                        "Y": 1,
+                        "Z": 1
+                    },
+                    "ParentObjectID": 0
+                },
+                {
+                    "Name": "BoxCollider",
+                    "Size": {
+                        "X": 180.0,
+                        "Y": 110.0,
+                        "Z": 12.0
+                    },
+                    "OffsetPosition": {
+                        "X": 0.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    }
+                }
+            ],
+            "Children": []
+        },
+        {
+            "ID": 31,
+            "Type": "DebugBox",
+            "Name": "corner_wall_side",
+            "Components": [
+                {
+                    "Name": "Transform",
+                    "Position": {
+                        "X": 385.0,
+                        "Y": -120.0,
+                        "Z": 230.0
+                    },
+                    "RotationDeg": {
+                        "X": 0.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    },
+                    "Scale": {
+                        "X": 1,
+                        "Y": 1,
+                        "Z": 1
+                    },
+                    "ParentObjectID": 0
+                },
+                {
+                    "Name": "BoxCollider",
+                    "Size": {
+                        "X": 12.0,
+                        "Y": 110.0,
+                        "Z": 160.0
+                    },
+                    "OffsetPosition": {
+                        "X": 0.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    }
+                }
+            ],
+            "Children": []
+        },
+        {
+            "ID": 32,
+            "Type": "DebugBox",
+            "Name": "slalom_post_01",
+            "Components": [
+                {
+                    "Name": "Transform",
+                    "Position": {
+                        "X": 205.0,
+                        "Y": -130.0,
+                        "Z": 220.0
+                    },
+                    "RotationDeg": {
+                        "X": 0.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    },
+                    "Scale": {
+                        "X": 1,
+                        "Y": 1,
+                        "Z": 1
+                    },
+                    "ParentObjectID": 0
+                },
+                {
+                    "Name": "BoxCollider",
+                    "Size": {
+                        "X": 25.0,
+                        "Y": 90.0,
+                        "Z": 25.0
+                    },
+                    "OffsetPosition": {
+                        "X": 0.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    }
+                }
+            ],
+            "Children": []
+        },
+        {
+            "ID": 33,
+            "Type": "DebugBox",
+            "Name": "slalom_post_02",
+            "Components": [
+                {
+                    "Name": "Transform",
+                    "Position": {
+                        "X": 280.0,
+                        "Y": -130.0,
+                        "Z": 260.0
+                    },
+                    "RotationDeg": {
+                        "X": 0.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    },
+                    "Scale": {
+                        "X": 1,
+                        "Y": 1,
+                        "Z": 1
+                    },
+                    "ParentObjectID": 0
+                },
+                {
+                    "Name": "BoxCollider",
+                    "Size": {
+                        "X": 25.0,
+                        "Y": 90.0,
+                        "Z": 25.0
+                    },
+                    "OffsetPosition": {
+                        "X": 0.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    }
+                }
+            ],
+            "Children": []
+        },
+        {
+            "ID": 34,
+            "Type": "DebugBox",
+            "Name": "slalom_post_03",
+            "Components": [
+                {
+                    "Name": "Transform",
+                    "Position": {
+                        "X": 350.0,
+                        "Y": -130.0,
+                        "Z": 300.0
+                    },
+                    "RotationDeg": {
+                        "X": 0.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    },
+                    "Scale": {
+                        "X": 1,
+                        "Y": 1,
+                        "Z": 1
+                    },
+                    "ParentObjectID": 0
+                },
+                {
+                    "Name": "BoxCollider",
+                    "Size": {
+                        "X": 25.0,
+                        "Y": 90.0,
+                        "Z": 25.0
+                    },
+                    "OffsetPosition": {
+                        "X": 0.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    }
+                }
+            ],
+            "Children": []
         }
     ]
 }

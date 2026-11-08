@@ -14,7 +14,10 @@ class Player :public MonoBehaviour
 {
 public:
 	// コンストラクタ
+	Player(WorldStorage* _world, EntityID _entityID);
 	Player(WorldStorage* _world, EntityID _entityID, Camera* _camera);
+
+	void Start() override;
 
 	// --- 更新系 ---
 
@@ -50,13 +53,14 @@ private:
 private:
 	static constexpr float HAND_DISTANCE{ 25.0f };
 	static constexpr float HAND_LIMIT_ANGLE_DEG{ 85.0f };
-	static constexpr float HAND_GRAB_WEIGHT{ 0.2f };
+	static constexpr float HAND_GRAB_WEIGHT{ 1.0f };
 	const float HAND_LIMIT_ANGLE_RAD;
 	const Vector3 HAND_SIDE_OFFSET{ 20.0f,0.0f,0.0f };
 	const Vector3 CHARACTER_OFFSET{ 0.0f,50.0f,0.0f };
 	const float CAMERA_ROTATION_OFFSET{ 20.0f };
+	const float ANGULER_VELOCITY{ MathConstants::PI_FLT * 2.0f };
 private:
-	Camera* camera;
+	Camera* camera{ nullptr };
 
 	bool canLeftHandGrab{ false };
 	bool canRightHandGrab{ false };

@@ -1,0 +1,25 @@
+﻿#pragma once
+
+#include <cstdint>
+#include <limits>
+#include <string>
+#include <vector>
+
+#include "FieldMacros.h"
+#include "MDMath.h"
+#include "SceneComponentData.h"
+
+struct BoxColliderComponentData : public SceneComponentData
+{
+public:
+	std::string GetName() override { return "BoxCollider"; }
+public:
+	Vector3 size{ Vector3::ONE };
+	Vector3 offsetPosition{};
+
+	MD_DOCUMENT(
+		BoxColliderComponentData, "BoxCollider",
+		MD_FIELD("Size", size),
+		MD_FIELD("OffsetPosition", offsetPosition)
+	);
+};
