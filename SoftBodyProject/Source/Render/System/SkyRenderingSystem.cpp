@@ -1,5 +1,7 @@
 ﻿#include "BaseConstants.h"
-#include "ServiceLocator.h"
+
+#include "ResourceManager.h"
+#include "Renderer.h"
 
 #include "TransformComponentStorage.h"
 #include "CameraComponentStorage.h"
@@ -8,14 +10,16 @@
 
 void SkyRenderingSystem::Initialize()
 {
-	ServiceLocator::GetResourceManager()->LoadModel("Res/Model/SkyCube/SkyCube.mv1");
-	boxHandle = ServiceLocator::GetResourceManager()->GetModel("SkyCube.mv1");
-	ServiceLocator::GetResourceManager()->LoadVertexShader("Shader/HLSL/Sky/SkyVS.vso");
-	ServiceLocator::GetResourceManager()->LoadPixelShader("Shader/HLSL/Sky/SkyPS.pso");
-	solidSkyVertexShader = ServiceLocator::GetResourceManager()->GetVertexShader("SkyVS.vso");
-	solidSkyPixelShader = ServiceLocator::GetResourceManager()->GetPixelShader("SkyPS.pso");
+	ResourceManager::LoadModel("Res/Model/SkyCube/SkyCube.mv1");
+	boxHandle = ResourceManager::GetModel("SkyCube.mv1");
+	ResourceManager::LoadVertexShader("Shader/Sky/SkyVS.vso");
+	ResourceManager::LoadPixelShader("Shader/Sky/SkyPS.pso");
+	vertex = ResourceManager::GetVertexShader("SkyVS.vso");
+	pixel = ResourceManager::GetPixelShader("SkyPS.pso");
 
-	constantBufferHandle = ServiceLocator::GetGPUConnecter()->CreateConstantBuffer(sizeof(SkySolidConstantBuffer));
+	cbHandle = ResourceManager::CreateConstantBuffer(sizeof(SkySolidConstantBuffer));
+
+	priority = 100;
 }
 
 // 描画
@@ -26,11 +30,14 @@ void SkyRenderingSystem::Draw(WorldStorage* _worldStorage, EventManager* _eventM
 	// Cameraストレージ
 	CameraComponentStorage* cameraStorage{ static_cast<CameraComponentStorage*>(_worldStorage->GetStorage<CameraComponent>()) };
 
-	ServiceLocator::GetGPUConnecter()->BeginVertexShader(solidSkyVertexShader);
-	ServiceLocator::GetGPUConnecter()->BeginPixelShader(solidSkyPixelShader);
-
 	for (auto cameraEntity : cameraStorage->GetEntities())
 	{
+		Material material;
+
+		material.SetVertex(vertex);
+		material.SetPixel(pixel);
+		material.SetConstantBuffer(cbHandle, 4);
+
 		const TransformComponent& trans{ transformStorage->Get(cameraEntity) };
 
 		SkySolidConstantBuffer cbData;
@@ -38,9 +45,9 @@ void SkyRenderingSystem::Draw(WorldStorage* _worldStorage, EventManager* _eventM
 		const CameraComponent& camera{ cameraStorage->Get(cameraEntity) };
 
 		// モデルをカメラの位置に持ってくる。
-		ServiceLocator::GetRenderer()->ModelSetMatrix(boxHandle, trans.GetWorldMatrix());
+		ResourceManager::SetMatrix(boxHandle, trans.GetWorldMatrix());
 
-		cbData.world = Matrix4x4::Identity();
+		cbData.world = Matrix4x4::IDENTITY;
 		cbData.view = MatGenerateFunc::InverseTRS(trans.GetPosition(), trans.GetRotation(), Vector3{ 1.0f,1.0f, 1.0f });
 
 		// Projection行列作成
@@ -58,20 +65,11 @@ void SkyRenderingSystem::Draw(WorldStorage* _worldStorage, EventManager* _eventM
 
 		cbData.solidFlag = static_cast<uint32_t>(camera.GetClearMode());
 
-		ServiceLocator::GetRenderer()->BindCubeTexture(camera.GetSkyTextureHandle(), 0);
+		material.SetCubeTexture(camera.GetSkyTextureHandle(), 0);
 
 		// 定数バッファに値渡して上げる
-		void* pBuffer{ ServiceLocator::GetGPUConnecter()->GetConstantBufferAddress(constantBufferHandle) };
+		ResourceManager::SetConstantBufferValue<SkySolidConstantBuffer>(cbHandle, &cbData);
 
-		memcpy(pBuffer, &cbData, sizeof(SkySolidConstantBuffer));
-
-		ServiceLocator::GetGPUConnecter()->UpdateConstantBuffer(constantBufferHandle, &cbData, sizeof(SkySolidConstantBuffer));
-		
-		ServiceLocator::GetGPUConnecter()->BindConstantBufferPixel(constantBufferHandle, 4);
-		ServiceLocator::GetGPUConnecter()->BindConstantBufferVertex(constantBufferHandle, 4);
-
-		ServiceLocator::GetRenderer()->DrawModel(boxHandle);
+		Renderer::DrawModel(boxHandle, material);
 	}
-
-	ServiceLocator::GetGPUConnecter()->EndGraphicsShader();
 }

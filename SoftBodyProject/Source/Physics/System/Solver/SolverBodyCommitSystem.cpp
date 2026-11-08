@@ -8,10 +8,11 @@ void SolverBodyCommitSystem::Commit(PhysicsTransformStorage* _transformStorage, 
 		// 質量が0ならBodyはないので書かない
 		if (result.inverseMass > 0)
 		{
-			uint32_t transformIndex{ _transformStorage->GetDenseIndex(result.transformID) };
-			_transformStorage->EditPosition(transformIndex) = result.position;
+			PhysicsTransformID transformID{ result.transformID };
+
+			_transformStorage->EditPosition(transformID) = result.position;
 			_bodyStorage->EditRigidBodyVelocity(result.bodyID) = result.velocity;
-			_transformStorage->EditRotation(transformIndex) = result.rotation;
+			_transformStorage->EditRotation(transformID) = result.rotation;
 			_bodyStorage->EditRigidBodyAngularVelocity(result.bodyID) = result.angularVelocity;
 		}
 	}

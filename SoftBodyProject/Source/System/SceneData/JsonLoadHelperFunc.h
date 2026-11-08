@@ -16,6 +16,7 @@ namespace JsonLoadHelperFunc
 	std::unique_ptr<SceneComponentData> CreateTransformData(const rapidjson::Value& _value);
 	std::unique_ptr<SceneComponentData> CreateBoxColliderData(const rapidjson::Value& _value);
 	std::unique_ptr<SceneComponentData> CreateSphereColliderData(const rapidjson::Value& _value);
+	std::unique_ptr<SceneComponentData> CreateRendererData(const rapidjson::Value& _value);
 
 	// ベクトル取得関数
 	bool GetVector3(const rapidjson::Value& _value,Vector3& _output);
@@ -26,5 +27,6 @@ namespace JsonLoadHelperFunc
 		{"Transform",      &CreateTransformData},
 		{"BoxCollider",    &CreateBoxColliderData},
 		{"SphereCollider", &CreateSphereColliderData},
+		{"Renderer",       &CreateRendererData},
 	};
 }

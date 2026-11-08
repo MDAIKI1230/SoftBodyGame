@@ -1,10 +1,13 @@
 ﻿#pragma once
 
+#include "MDMath.h"
+
 #include "RenderingSystem.h"
 
 #include "ModelHandle.h"
-#include "VertexShaderHandle.h"
+#include "ShaderConstantBufferHandle.h"
 #include "PixelShaderHandle.h"
+#include "VertexShaderHandle.h"
 
 class SkyRenderingSystem :public RenderingSystem
 {
@@ -24,7 +27,7 @@ private:
 	};
 
 	ModelHandle boxHandle;
-	ShaderConstantBufferHandle constantBufferHandle;
-	VertexShaderHandle solidSkyVertexShader;
-	PixelShaderHandle solidSkyPixelShader;
+	ShaderConstantBufferHandle cbHandle;
+	VertexShaderHandle vertex;
+	PixelShaderHandle pixel;
 };

@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include <cstdint>
+#include <xhash>
 
 template<class TAG>
 struct GenerationalID
@@ -36,6 +37,17 @@ public:
 	static constexpr Generation INVALID_GENERATION{ 0 };
 	static constexpr Index INVALID_INDEX{ UINT32_MAX };
 private:
-	Index index{ 0 };
-	Generation generation{ 0 };
+	Index index{ INVALID_INDEX };
+	Generation generation{ INVALID_GENERATION };
+};
+
+// MAPなど用のハッシュ値
+template<class TAG>
+struct std::hash<GenerationalID<TAG>>
+{
+	size_t operator()(const GenerationalID<TAG>& id) const noexcept
+	{
+		return std::hash<uint32_t>{}(id.GetIndex())
+			^ (std::hash<uint32_t>{}(id.GetGeneration()) << 1);
+	}
 };

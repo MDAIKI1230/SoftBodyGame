@@ -3,50 +3,66 @@
 void EventSystem::Update(EventManager* _eventManager, ObjectManager* _objectManager)
 {
 	// ゲームオブジェクトの変数(呼び出すため)
-	ObjectBase* object;
+	MonoBehaviour* objectA;
+	MonoBehaviour* objectB;
 	// OnCollisionEnterEventの呼び出し
 	OnCollisionEnterEvent onCollisionEnterEvent;
 	while (_eventManager->Pop(onCollisionEnterEvent))
 	{
-		object = _objectManager->Get(onCollisionEnterEvent.a);
-		if (object != nullptr)
+		// 情報を埋めておく
+		objectA = _objectManager->Get(onCollisionEnterEvent.a);
+		objectB = _objectManager->Get(onCollisionEnterEvent.b);
+
+		onCollisionEnterEvent.infoA.other = objectB;
+		onCollisionEnterEvent.infoB.other = objectA;
+		if (objectA != nullptr)
 		{
-			object->OnCollisionEnter();
+			objectA->OnCollisionEnter(onCollisionEnterEvent.infoA);
 		}
-		object = _objectManager->Get(onCollisionEnterEvent.b);
-		if (object != nullptr)
+		
+		if (objectB != nullptr)
 		{
-			object->OnCollisionEnter();
+			objectB->OnCollisionEnter(onCollisionEnterEvent.infoB);
 		}
 	}
 	// OnCollisionEventの呼び出し
 	OnCollisionEvent onCollisionEvent;
 	while (_eventManager->Pop(onCollisionEvent))
 	{
-		object = _objectManager->Get(onCollisionEvent.a);
-		if (object != nullptr)
+		// 情報を埋めておく
+		objectA = _objectManager->Get(onCollisionEvent.a);
+		objectB = _objectManager->Get(onCollisionEvent.b);
+
+		onCollisionEvent.infoA.other = objectB;
+		onCollisionEvent.infoB.other = objectA;
+		if (objectA != nullptr)
 		{
-			object->OnCollision();
+			objectA->OnCollision(onCollisionEvent.infoA);
 		}
-		object = _objectManager->Get(onCollisionEvent.b);
-		if (object != nullptr)
+
+		if (objectB != nullptr)
 		{
-			object->OnCollision();
+			objectB->OnCollision(onCollisionEvent.infoB);
 		}
 	}
 	// OnCollisionExitEventの呼び出し
 	OnCollisionExitEvent onCollisionExitEvent;
 	while (_eventManager->Pop(onCollisionExitEvent))
 	{
-		object = _objectManager->Get(onCollisionExitEvent.a);
-		if (object != nullptr)
+		// 情報を埋めておく
+		objectA = _objectManager->Get(onCollisionExitEvent.a);
+		objectB = _objectManager->Get(onCollisionExitEvent.b);
+
+		onCollisionExitEvent.infoA.other = objectB;
+		onCollisionExitEvent.infoB.other = objectA;
+		if (objectA != nullptr)
 		{
-			object->OnCollisionExit();
+			objectA->OnCollisionExit(onCollisionExitEvent.infoA);
 		}
-		object = _objectManager->Get(onCollisionExitEvent.b);
-		if (object != nullptr)
+
+		if (objectB != nullptr)
 		{
-			object->OnCollisionExit();
+			objectB->OnCollisionExit(onCollisionExitEvent.infoB);
 		}
 	}
 }

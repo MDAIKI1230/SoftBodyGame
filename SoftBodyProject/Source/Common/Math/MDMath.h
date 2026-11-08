@@ -84,4 +84,15 @@ namespace MDMath
 	};
 
 	ClosestPointsBetweenSegmentAndOBBResult ClosestPointsBetweenSegmentAndOBB(const Vector3& _segmentStart, const Vector3& _segmentEnd, const Vector3& _boxCenter, const Quaternion _boxRot, const Vector3& _boxSize);
+
+	// 度数法を弧度法に変換
+	inline float DegToRad(float _deg)
+	{
+		return _deg * MathConstants::PI_FLT / 180.0f;
+	}
+	// 弧度法を度数法に変換
+	inline float RadToDeg(float _rad)
+	{
+		return _rad * 180.0f / MathConstants::PI_FLT;
+	}
 };

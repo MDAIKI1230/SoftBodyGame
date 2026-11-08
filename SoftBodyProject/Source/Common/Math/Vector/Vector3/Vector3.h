@@ -106,6 +106,12 @@ public:
 	static float DistanceSqr(const Vector3& _from, const Vector3& _to);
 	// 2つのベクトル間の角度(実数のみ)
 	static float Angle(const Vector3& _from, const Vector3& _to);
+	// 2つのベクトル間の角度(実数のみ)(引数正規化済み)
+	static float AngleNormal(const Vector3& _normalFrom, const Vector3& _normalTo);
+	// 2つのベクトル間の符号付角度(実数のみ)
+	static float SignedAngle(const Vector3& _from, const Vector3& _to, const Vector3& _axis);
+	// 2つのベクトル間の符号付角度(実数のみ)(軸が正規化済み)(軸が水平)
+	static float SignedAngleNormal(const Vector3& _from, const Vector3& _to, const Vector3& _normalAxis);
 
 	// 正規化(値の変化有)(実数のみ)
 	Vector3& Normalize();
@@ -121,4 +127,7 @@ public:
 	static float Dot(const Vector3& _vec1, const Vector3& _vec2);
 	// 外積
 	static Vector3 Cross(const Vector3& _vec1, const Vector3& _vec2);
+
+	// 線形補間
+	static Vector3 Lerp(const Vector3& _start, const Vector3& _end, float _t);
 };

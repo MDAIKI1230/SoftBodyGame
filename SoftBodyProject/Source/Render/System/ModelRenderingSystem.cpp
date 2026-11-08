@@ -1,4 +1,5 @@
-﻿#include "ServiceLocator.h"
+﻿#include "Renderer.h"
+#include "ResourceManager.h"
 
 #include "TransformComponentStorage.h"
 #include "RendererComponentStorage.h"
@@ -26,8 +27,8 @@ void ModelRenderingSystem::Draw(WorldStorage* _worldStorage, EventManager* _even
 		// レンダー
 		auto renderer{ rendererStorage->Get(id) };
 		// 行列をセット
-		ServiceLocator::GetRenderer()->ModelSetMatrix(renderer.GetHandle(), trans->GetWorldMatrix());
+		ResourceManager::SetMatrix(renderer.GetHandle(), trans->GetWorldMatrix());
 		// 描画
-		ServiceLocator::GetRenderer()->DrawModel(renderer.GetHandle());
+		Renderer::DrawModel(renderer.GetHandle());
 	}
 }

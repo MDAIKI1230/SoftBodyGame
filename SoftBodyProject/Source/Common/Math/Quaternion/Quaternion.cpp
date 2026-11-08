@@ -1,13 +1,12 @@
-﻿#include <math.h>
+﻿#include <cmath>
+#include <algorithm>
 #include "../Vector/SIMD/SIMDVectorMath.h"
 #include "../Matrix/MatGenerateFunc.h"
+#include "../Constants/MathConstants.h"
 #include "Quaternion.h"
 
 // 単位
-Quaternion Quaternion::Identity()
-{
-	return Quaternion{ 0,0,0,1 };
-}
+const Quaternion Quaternion::IDENTITY{ 0.0f,0.0f,0.0f,1.0f };
 
 // ベクトル回転
 Vector3 Quaternion::Rotate(const Vector3& _vec) const
@@ -45,6 +44,12 @@ Quaternion Quaternion::Normalized(const Quaternion& _rot)
 Quaternion& Quaternion::Normalize(Quaternion& _rot)
 {
 	return  _rot.Normalize();
+}
+
+// 反転
+Quaternion Quaternion::operator-() const
+{
+	return { -x,-y,-z,-w };
 }
 
 // 乗法
@@ -164,10 +169,54 @@ Matrix4x4 Quaternion::ToMatrix() const
 	return MatGenerateFunc::Rotate(*this);
 }
 
+// 軸と角度に分解する関数
+void Quaternion::ToAxisAngle(Vector3& _axis, float& _theta) const
+{
+	// 正規化されてる前提とする
+	Quaternion q{ *this };
+
+
+	if (w < 0.0f)
+	{
+		q = { -q.x,-q.y,-q.z,-q.w };
+	}
+
+	_axis = { q.x, q.y, q.z };
+
+	float len{ _axis.Length() };
+
+	// 回転がほぼねぇため適当な軸を返します。
+	if (len < MathConstants::EPSILON)
+	{
+		_axis = Vector3::UP;
+		_theta = 0.0f;
+		return;
+	}
+
+	_axis /= len;
+	_theta = 2.0f * atan2f(len, q.w);
+}
+
 // 球面補間
 Quaternion Quaternion::Slerp(const Quaternion& _start, const Quaternion _end, float _t)
 {
-	float dot{ SIMDVectorMath::Dot4(_start.simd,_end.simd) };
+	if (_t <= 0.0f) return _start;
+	if (_t >= 1.0f) return _end;
+
+	float dot{ std::clamp(Quaternion::Dot(_start, _end), -1.0f, 1.0f) };
+
+	Quaternion end = _end;
+	if (dot < 0.0f)
+	{
+		end = -end;
+		dot = -dot;
+	}
+
+	if (dot > 0.9995f)
+	{
+		return Quaternion::Lerp(_start, end, _t).Normalized();
+	}
+
 	float theta{ acosf(dot) };
 
 	// (sin((1-_t)θ) / sin(θ)_start + (sin(tθ) / sin(θ))_end
@@ -195,7 +244,7 @@ Quaternion Quaternion::Lerp(const Quaternion& _start, const Quaternion _end, flo
 	return { SIMDVectorMath::Add(
 		SIMDVectorMath::MulScalar(_start.simd,(1 - _t)),// start * ( 1 - t)
 		SIMDVectorMath::MulScalar(_end.simd,_t)         // b * t
-) };
+	) };
 }
 
 // 内積
@@ -276,4 +325,41 @@ Quaternion Quaternion::FromMatrix(Matrix4x4 _mat)
 	}
 
 	return Normalize(q);
+}
+
+// ベクトルからベクトルまでの回転を作る
+Quaternion Quaternion::FromToRotation(const Vector3& _from, const Vector3& _to)
+{
+	Vector3 fromNormal{ _from.Normalized() };
+	Vector3 toNormal{ _to.Normalized() };
+
+	float d{ Vector3::Dot(fromNormal, toNormal) };
+	Vector3 axis{ Vector3::Cross(fromNormal, toNormal) };
+
+	// ほぼ同方向
+	if (d > 1.0f - MathConstants::EPSILON)
+	{
+		return Quaternion::IDENTITY;
+	}
+
+	// ほぼ真逆
+	if (d < -1.0f + MathConstants::EPSILON)
+	{
+		// from と直交する適当な軸を作る
+		axis = Vector3::Cross(_from, Vector3::UP);
+
+		// 平行だったら別軸を使う
+		if (axis.LengthSqr() < MathConstants::EPSILON)
+		{
+			axis = Vector3::Cross(_from, Vector3::RIGHT);
+		}
+
+		axis.Normalize();
+
+		return Quaternion::AngleAxis(MathConstants::PI_FLT, axis);
+	}
+
+	Vector3 cross{ Vector3::Cross(fromNormal,toNormal) };
+
+	return Quaternion{ cross.x, cross.y, cross.z, 1.0f + d }.Normalize();
 }

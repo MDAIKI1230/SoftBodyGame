@@ -2,7 +2,13 @@
 
 class ISystem
 {
+	friend class ApplicationManager;
 public:
+	// コンストラクタ
+	ISystem() = default;
+	// デストラクタ
+	virtual ~ISystem() = default;
+protected:
 	// 初期化
 	virtual int Init() = 0;
 	// ウィンドウモードに変更

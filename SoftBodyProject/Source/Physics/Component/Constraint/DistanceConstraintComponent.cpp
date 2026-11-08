@@ -1,25 +1,19 @@
-﻿#include "PhysicsComponentAPI.h"
+﻿#include "Base/ConstraintComponentBase.inl"
+
+#include "PhysicsComponentAPI.h"
 
 #include "DistanceConstraintComponent.h"
 
+template struct ConstraintComponentBase<DistanceConstraint, false>;
+
 
 DistanceConstraintComponent::DistanceConstraintComponent(EntityID _entity) :
-	EndPointConstraintComponentBase{ PhysicsComponentAPI::CreateDistanceConstraint(_entity, Vector3::ZERO, 0.0f) }
+	ConstraintComponentBase{ PhysicsComponentAPI::Create<DistanceConstraint>(_entity, Vector3::ZERO) }
 {
 }
 
 DistanceConstraintComponent::DistanceConstraintComponent(EntityID _entity, Vector3 _localOffset) :
-	EndPointConstraintComponentBase{ PhysicsComponentAPI::CreateDistanceConstraint(_entity, _localOffset, 0.0f) }
-{
-}
-
-DistanceConstraintComponent::DistanceConstraintComponent(EntityID _entity, float _distance) :
-	EndPointConstraintComponentBase{ PhysicsComponentAPI::CreateDistanceConstraint(_entity, Vector3::ZERO, _distance) }
-{
-}
-
-DistanceConstraintComponent::DistanceConstraintComponent(EntityID _entity, Vector3 _localOffset, float _distance) :
-	EndPointConstraintComponentBase{ PhysicsComponentAPI::CreateDistanceConstraint(_entity, _localOffset, _distance) }
+	ConstraintComponentBase{ PhysicsComponentAPI::Create<DistanceConstraint>(_entity, _localOffset) }
 {
 }
 

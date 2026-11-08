@@ -10,7 +10,7 @@ CharacterControllerID CharacterControllerStorage::Create(EntityID _entity, Physi
 
 	uint32_t denseIndex{ static_cast<uint32_t>(ids.size()) };
 
-	CharacterControllerID id{ CreateID(denseIndex, _entity) };
+	CharacterControllerID id{ CreateID(denseIndex) };
 
 	// --- 操作要求 ---
 
@@ -26,10 +26,12 @@ CharacterControllerID CharacterControllerStorage::Create(EntityID _entity, Physi
 	airAccelerations.emplace_back(500.0f);
 	jumpSpeeds.emplace_back(600.0f);
 	slopeAccelerations.emplace_back(500.0f);
+	movementAngularVelocities.emplace_back(MathConstants::PI_FLT);
 
 	// --- 接地設定 ---
 
 	groundProbeDistances.emplace_back(10.0f);
+	groundSphereRayOffsetRadius.emplace_back(5.0f);
 	minGroundDots.emplace_back(0.70710678f);
 
 	// --- 実行時状態 ---
@@ -46,6 +48,7 @@ CharacterControllerID CharacterControllerStorage::Create(EntityID _entity, Physi
 	transformIDs.emplace_back(_transformID);
 	rigidBodyIDs.emplace_back(_rigidBodyID);
 	capsuleColliderIDs.emplace_back(_capsuleColliderID);
+	ownerEntities.push_back(_entity);
 
 	// MAPに登録
 	entityMap.emplace(_entity, id);
@@ -81,10 +84,12 @@ void CharacterControllerStorage::Destroy(CharacterControllerID _id)
 		airAccelerations[denseIndex] = airAccelerations[lastIndex];
 		jumpSpeeds[denseIndex] = jumpSpeeds[lastIndex];
 		slopeAccelerations[denseIndex] = slopeAccelerations[lastIndex];
+		movementAngularVelocities[denseIndex] = movementAngularVelocities[lastIndex];
 
 		// --- 接地設定 ---
 
 		groundProbeDistances[denseIndex] = groundProbeDistances[lastIndex];
+		groundSphereRayOffsetRadius[denseIndex] = groundSphereRayOffsetRadius[lastIndex];
 		minGroundDots[denseIndex] = minGroundDots[lastIndex];
 
 		// --- 実行時状態 ---
@@ -101,6 +106,7 @@ void CharacterControllerStorage::Destroy(CharacterControllerID _id)
 		transformIDs[denseIndex] = transformIDs[lastIndex];
 		rigidBodyIDs[denseIndex] = rigidBodyIDs[lastIndex];
 		capsuleColliderIDs[denseIndex] = capsuleColliderIDs[lastIndex];
+		ownerEntities[denseIndex] = ownerEntities[lastIndex];
 	}
 
 	// --- 操作要求 ---
@@ -121,6 +127,7 @@ void CharacterControllerStorage::Destroy(CharacterControllerID _id)
 	// --- 接地設定 ---
 
 	groundProbeDistances.pop_back();
+	groundSphereRayOffsetRadius.pop_back();
 	minGroundDots.pop_back();
 
 	// --- 実行時状態 ---

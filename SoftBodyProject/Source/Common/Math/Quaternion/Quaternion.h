@@ -43,7 +43,7 @@ public:
 	}
 
 	// 単位
-	static Quaternion Identity();
+	static const Quaternion IDENTITY;
 
 	// ベクトル回転
 	Vector3 Rotate(const Vector3& _vec) const;
@@ -56,6 +56,9 @@ public:
 	static Quaternion Normalized(const Quaternion& _rot);
 	// 正規化(変化あり)
 	static Quaternion& Normalize(Quaternion& _rot);
+
+	// 反転
+	Quaternion operator-() const;
 
 	// 乗法
 	Quaternion operator*(const Quaternion& _value) const;
@@ -79,6 +82,9 @@ public:
 	static Quaternion Euler(float _pitch, float _yaw, float _roll);
 	// 行列に変換
 	Matrix4x4 ToMatrix() const;
+
+	// 軸と角度に分解する関数
+	void ToAxisAngle(Vector3& _axis, float& _theta) const;
 
 	/// <summary>
 	/// 球面補間
@@ -112,4 +118,12 @@ public:
 
 	// 行列から四元数を作る
 	static Quaternion FromMatrix(Matrix4x4 _mat);
+
+	/// <summary>
+	/// ベクトルからベクトルまでの回転を作る
+	/// </summary>
+	/// <param name="_from">元ベクトル</param>
+	/// <param name="_to">目標ベクトル</param>
+	/// <returns></returns>
+	static Quaternion FromToRotation(const Vector3& _from, const Vector3& _to);
 };

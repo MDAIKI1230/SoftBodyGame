@@ -3,7 +3,7 @@
 #include <vector>
 #include <memory>
 
-#include "ObjectBase.h"
+#include "MonoBehaviour.h"
 
 class ObjectManager
 {
@@ -11,7 +11,7 @@ public:
 	// --- 追加・削除系 ---
 
 	// 追加
-	void Add(std::unique_ptr<ObjectBase> _object);
+	void Add(std::unique_ptr<MonoBehaviour> _object);
 
 	// --- 更新系 ---
 
@@ -19,7 +19,7 @@ public:
 	void FixedUpdate();
 
 	// オブジェクト取得
-	ObjectBase* Get(EntityID _index);
+	MonoBehaviour* Get(EntityID _index);
 
 	// EntityHandle取得
 	EntityID GenerateNewID()
@@ -27,5 +27,5 @@ public:
 		return EntityID{ static_cast<EntityID::Index>(objects.size()),1 };
 	}
 private:
-	std::vector<std::unique_ptr<ObjectBase>> objects{};
+	std::vector<std::unique_ptr<MonoBehaviour>> objects{};
 };

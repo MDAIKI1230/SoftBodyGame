@@ -25,7 +25,7 @@ struct InputActionRuntimeState
 
 struct InputCallbackEntry
 {
-    using InputActionCallbackFunc = void(*)(void*, const InputActionContext&);
+	using InputActionCallbackFunc = void(*)(void*, InputActionContext&);
 
     InputActionCallbackFunc function{ nullptr };
 

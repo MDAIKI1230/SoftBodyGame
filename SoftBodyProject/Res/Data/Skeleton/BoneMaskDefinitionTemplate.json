@@ -1,0 +1,42 @@
+{
+  別種類のJSONを誤って読まないための識別
+  "Format": "BoneMaskDefinition",
+
+  マスクを識別する名前
+  "Name": "RightArm",
+
+  何も指定されていないBoneに適用するWeight
+  Weightは0.0～1.0
+  "DefaultWeight": 0.0,
+
+  適用順
+  DefaultWeight
+    ↓
+  Branches
+    ↓
+  Bones
+
+  RootBone自身と、その子孫Boneすべてに同じWeightを設定
+  "Branches": [
+    {
+      階層指定の根にするモデル内のBone名
+      "RootBoneName": "モデル内の右上腕ボーン名",
+
+      このBone以下に適用するWeight
+      "Weight": 1.0
+    }
+  ],
+
+  特定BoneだけWeightを個別指定
+  Branchesより後に適用されるため、個別上書きとして使える
+  "Bones": [
+    {
+      "BoneName": "モデル内の右肩ボーン名",
+      "Weight": 0.35
+    },
+    {
+      "BoneName": "モデル内の右手ボーン名",
+      "Weight": 1.0
+    }
+  ]
+}

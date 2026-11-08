@@ -89,11 +89,11 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(ProjectDir)Source\;$(ProjectDir)Source\Common;$(ProjectDir)Source\Objects;$(ProjectDir)Source\System;$(ProjectDir)Source\Common\Math;$(ProjectDir)Source\Common\BaseClass;$(ProjectDir)Source\Common\Constants;$(ProjectDir)Source\Common\ECS;$(ProjectDir)Source\Common\Interface;$(ProjectDir)Source\Common\BaseClass\SceneBase;$(ProjectDir)Source\System\Adapter;$(ProjectDir)Source\System\Components;$(ProjectDir)Source\System\ComponentStorages;$(ProjectDir)Source\System\ComponentSystems;$(ProjectDir)Source\System\Scenes;$(ProjectDir)Source\System\Manager;$(ProjectDir)Source\Physics;$(ProjectDir)Source\Physics\Storage;$(ProjectDir)Source\Physics\System;$(ProjectDir)Source\Physics\Struct;$(ProjectDir)Source\Common\BaseClass\ObjectBase;$(ProjectDir)Source\Common\Color;$(ProjectDir)Source\Physics\Constants\;$(ProjectDir)Source\Physics\System\Collision;$(ProjectDir)Source\Physics\System\Update;$(ProjectDir)Source\Physics\System\Sync;$(ProjectDir)Source\Common\Events;$(ProjectDir)Source\Common\Events\Physics;$(ProjectDir)Source\Common\ECS\Struct;$(ProjectDir)Source\Physics\Storage\Collider;$(ProjectDir)Source\Physics\Storage\Component;$(ProjectDir)Source\Physics\Storage\Body;$(ProjectDir)Source\Physics\Storage\Transform;$(ProjectDir)Source\Common\Math\NamericalAnalysis;$(ProjectDir)Source\Physics\Struct\Collision;$(ProjectDir)Source\Physics\Struct\Body;$(ProjectDir)Source\Physics\Struct\Transform;$(ProjectDir)Source\Physics\Struct\Collider;$(ProjectDir)Source\Physics\Struct\Constraint;$(ProjectDir)Source\Physics\Function;$(ProjectDir)Source\System\SceneData\Struct;$(ProjectDir)Source\System\SceneData\Struct\Component;$(ProjectDir)Source\System\SceneData;$(ProjectDir)Source\System\Factory;$(ProjectDir)Source\Physics\Component\Body;$(ProjectDir)Source\Physics\Component\Collider;$(ProjectDir)Source\Physics\Storage\Constraint;$(ProjectDir)Source\Physics\System\Solver;$(ProjectDir)Source\Physics\System\Build;$(ProjectDir)Source\Physics\Component\Constraint;$(ProjectDir)Source\Physics\DebugRender;$(ProjectDir)Source\Physics\Storage\Buffer;$(ProjectDir)Source\Physics\Struct\Command;$(ProjectDir)Source\Physics\Component\Body\Soft;$(ProjectDir)Source\Common\Struct;$(ProjectDir)Source\System\Struct;$(ProjectDir)Source\Physics\Struct\Body\Soft;$(ProjectDir)Source\Physics\Storage\Component\Body;$(ProjectDir)Source\Physics\Storage\Component\Collider;$(ProjectDir)Source\Physics\Storage\Component\Constraint;$(ProjectDir)Source\Physics\Storage\Component\Body\Soft;$(ProjectDir)Source\Common\Macro;$(ProjectDir)Source\Common\ECS\SparseSet;$(ProjectDir)Source\Common\ECS\SparseSet\Table;$(ProjectDir)Source\Common\ECS\Storage;$(ProjectDir)Source\Common\ECS\Event;$(ProjectDir)Source\Common\Struct\Resource;$(ProjectDir)Source\System\Input;$(ProjectDir)Source\Physics\Struct\Ray;$(ProjectDir)Source\Physics\Struct\CharacterController;$(ProjectDir)Source\Physics\Storage\Component\CharacterController;$(ProjectDir)Source\Physics\Component\CharacterController;$(ProjectDir)Source\Physics\Storage\CharacterController;$(ProjectDir)Source\Render\Component;$(ProjectDir)Source\Render\System;$(ProjectDir)Source\Render\Storage</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Source\;$(ProjectDir)Source\Common;$(ProjectDir)Source\Objects;$(ProjectDir)Source\System;$(ProjectDir)Source\Common\Math;$(ProjectDir)Source\Common\BaseClass;$(ProjectDir)Source\Common\Constants;$(ProjectDir)Source\Common\ECS;$(ProjectDir)Source\Common\Interface;$(ProjectDir)Source\Common\BaseClass\SceneBase;$(ProjectDir)Source\System\Adapter;$(ProjectDir)Source\System\Components;$(ProjectDir)Source\System\ComponentStorages;$(ProjectDir)Source\System\ComponentSystems;$(ProjectDir)Source\System\Scenes;$(ProjectDir)Source\System\Manager;$(ProjectDir)Source\Physics;$(ProjectDir)Source\Physics\Storage;$(ProjectDir)Source\Physics\System;$(ProjectDir)Source\Physics\Struct;$(ProjectDir)Source\Common\BaseClass\ObjectBase;$(ProjectDir)Source\Common\Color;$(ProjectDir)Source\Physics\Constants\;$(ProjectDir)Source\Physics\System\Collision;$(ProjectDir)Source\Physics\System\Update;$(ProjectDir)Source\Physics\System\Sync;$(ProjectDir)Source\Common\Events;$(ProjectDir)Source\Common\Events\Physics;$(ProjectDir)Source\Common\ECS\Struct;$(ProjectDir)Source\Physics\Storage\Collider;$(ProjectDir)Source\Physics\Storage\Component;$(ProjectDir)Source\Physics\Storage\Body;$(ProjectDir)Source\Physics\Storage\Transform;$(ProjectDir)Source\Common\Math\NamericalAnalysis;$(ProjectDir)Source\Physics\Struct\Collision;$(ProjectDir)Source\Physics\Struct\Body;$(ProjectDir)Source\Physics\Struct\Transform;$(ProjectDir)Source\Physics\Struct\Collider;$(ProjectDir)Source\Physics\Struct\Constraint;$(ProjectDir)Source\Physics\Function;$(ProjectDir)Source\System\SceneData\Struct;$(ProjectDir)Source\System\SceneData\Struct\Component;$(ProjectDir)Source\System\SceneData;$(ProjectDir)Source\System\Factory;$(ProjectDir)Source\Physics\Component\Body;$(ProjectDir)Source\Physics\Component\Collider;$(ProjectDir)Source\Physics\Storage\Constraint;$(ProjectDir)Source\Physics\System\Solver;$(ProjectDir)Source\Physics\System\Build;$(ProjectDir)Source\Physics\Component\Constraint;$(ProjectDir)Source\Physics\DebugRender;$(ProjectDir)Source\Physics\Storage\Buffer;$(ProjectDir)Source\Physics\Struct\Command;$(ProjectDir)Source\Physics\Component\Body\Soft;$(ProjectDir)Source\Common\Struct;$(ProjectDir)Source\System\Struct;$(ProjectDir)Source\Physics\Struct\Body\Soft;$(ProjectDir)Source\Physics\Storage\Component\Body;$(ProjectDir)Source\Physics\Storage\Component\Collider;$(ProjectDir)Source\Physics\Storage\Component\Constraint;$(ProjectDir)Source\Physics\Storage\Component\Body\Soft;$(ProjectDir)Source\Common\Macro;$(ProjectDir)Source\Common\ECS\SparseSet;$(ProjectDir)Source\Common\ECS\SparseSet\Table;$(ProjectDir)Source\Common\ECS\Storage;$(ProjectDir)Source\Common\ECS\Event;$(ProjectDir)Source\Common\Struct\Resource;$(ProjectDir)Source\System\Input;$(ProjectDir)Source\Physics\Struct\Ray;$(ProjectDir)Source\Physics\Struct\CharacterController;$(ProjectDir)Source\Physics\Storage\Component\CharacterController;$(ProjectDir)Source\Physics\Component\CharacterController;$(ProjectDir)Source\Physics\Storage\CharacterController;$(ProjectDir)Source\Render\Component;$(ProjectDir)Source\Render\System;$(ProjectDir)Source\Render\Storage;$(ProjectDir)Source\Animation;$(ProjectDir)Source\Animation\Component;$(ProjectDir)Source\Animation\Storage;$(ProjectDir)Source\Animation\Struct;$(ProjectDir)Source\Animation\Storage\Component;$(ProjectDir)Source\Render;$(ProjectDir)Source\Physics\Struct\SnapShot;$(ProjectDir)Source\Animation\Struct\Ragdoll;$(ProjectDir)Source\Common\ECS\Storage\Component;$(ProjectDir)Source\Common\ECS\Storage\DataStorage;$(ProjectDir)Source\Animation\Struct\ID;$(ProjectDir)Source\Animation\Struct\Skeleton;$(ProjectDir)Source\Animation\Storage\Skeleton;$(ProjectDir)Source\Animation\System\Sync;$(ProjectDir)Source\Physics\API;$(ProjectDir)Source\Animation\Storage\Ragdoll;$(ProjectDir)Source\Animation\System\Update;$(ProjectDir)Source\Animation\API;$(ProjectDir)Source\Animation\Constants;$(ProjectDir)Source\Physics\Struct\Constraint\Constraint;$(ProjectDir)Source\Physics\Struct\Constraint\EndPoint;$(ProjectDir)Source\Animation\Load\Ragdoll;$(ProjectDir)Source\Animation\Struct\Ragdoll\Active;$(ProjectDir)Source\Animation\Struct\Animation;$(ProjectDir)Source\Animation\Storage\Animation;$(ProjectDir)Source\Animation\Function;$(ProjectDir)Source\Animation\Load\Skeleton;$(ProjectDir)Source\Animation\Struct\IK;$(ProjectDir)Source\Animation\Storage\IK\Feature;$(ProjectDir)Source\Animation\Storage\IK\Solver;$(ProjectDir)Source\Animation\System\Solver;$(ProjectDir)Source\Animation\Load\Ragdoll\Active;$(ProjectDir)Source\Sound</AdditionalIncludeDirectories>
       <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
       <TreatAngleIncludeAsExternal>false</TreatAngleIncludeAsExternal>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <Optimization>MaxSpeed</Optimization>
+      <Optimization>Disabled</Optimization>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
     </ClCompile>
@@ -116,10 +116,11 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(ProjectDir)Source\;$(ProjectDir)Source\Common;$(ProjectDir)Source\Objects;$(ProjectDir)Source\System;$(ProjectDir)Source\Common\Math;$(ProjectDir)Source\Common\BaseClass;$(ProjectDir)Source\Common\Constants;$(ProjectDir)Source\Common\ECS;$(ProjectDir)Source\Common\Interface;$(ProjectDir)Source\Common\BaseClass\SceneBase;$(ProjectDir)Source\System\Adapter;$(ProjectDir)Source\System\Components;$(ProjectDir)Source\System\ComponentStorages;$(ProjectDir)Source\System\ComponentSystems;$(ProjectDir)Source\System\Scenes;$(ProjectDir)Source\System\Manager;$(ProjectDir)Source\Physics;$(ProjectDir)Source\Physics\Storage;$(ProjectDir)Source\Physics\System;$(ProjectDir)Source\Physics\Struct;$(ProjectDir)Source\Common\BaseClass\ObjectBase;$(ProjectDir)Source\Common\Color;$(ProjectDir)Source\Physics\Constants\;$(ProjectDir)Source\Physics\System\Collision;$(ProjectDir)Source\Physics\System\Update;$(ProjectDir)Source\Physics\System\Sync;$(ProjectDir)Source\Common\Events;$(ProjectDir)Source\Common\Events\Physics;$(ProjectDir)Source\Common\ECS\Struct;$(ProjectDir)Source\Physics\Storage\Collider;$(ProjectDir)Source\Physics\Storage\Component;$(ProjectDir)Source\Physics\Storage\Body;$(ProjectDir)Source\Physics\Storage\Transform;$(ProjectDir)Source\Common\Math\NamericalAnalysis;$(ProjectDir)Source\Physics\Struct\Collision;$(ProjectDir)Source\Physics\Struct\Body;$(ProjectDir)Source\Physics\Struct\Transform;$(ProjectDir)Source\Physics\Struct\Collider;$(ProjectDir)Source\Physics\Struct\Constraint;$(ProjectDir)Source\Physics\Function;$(ProjectDir)Source\System\SceneData\Struct;$(ProjectDir)Source\System\SceneData\Struct\Component;$(ProjectDir)Source\System\SceneData;$(ProjectDir)Source\System\Factory;$(ProjectDir)Source\Physics\Component\Body;$(ProjectDir)Source\Physics\Component\Collider;$(ProjectDir)Source\Physics\Storage\Constraint;$(ProjectDir)Source\Physics\System\Solver;$(ProjectDir)Source\Physics\System\Build;$(ProjectDir)Source\Physics\Component\Constraint;$(ProjectDir)Source\Physics\DebugRender;$(ProjectDir)Source\Physics\Storage\Buffer;$(ProjectDir)Source\Physics\Struct\Command;$(ProjectDir)Source\Physics\Component\Body\Soft;$(ProjectDir)Source\Common\Struct;$(ProjectDir)Source\System\Struct;$(ProjectDir)Source\Physics\Struct\Body\Soft;$(ProjectDir)Source\Physics\Storage\Component\Body;$(ProjectDir)Source\Physics\Storage\Component\Collider;$(ProjectDir)Source\Physics\Storage\Component\Constraint;$(ProjectDir)Source\Physics\Storage\Component\Body\Soft;$(ProjectDir)Source\Common\Macro;$(ProjectDir)Source\Common\ECS\SparseSet;$(ProjectDir)Source\Common\ECS\SparseSet\Table;$(ProjectDir)Source\Common\ECS\Storage;$(ProjectDir)Source\Common\ECS\Event;$(ProjectDir)Source\Common\Struct\Resource;$(ProjectDir)Source\System\Input;$(ProjectDir)Source\Physics\Struct\Ray;$(ProjectDir)Source\Physics\Struct\CharacterController;$(ProjectDir)Source\Physics\Storage\Component\CharacterController;$(ProjectDir)Source\Physics\Component\CharacterController;$(ProjectDir)Source\Physics\Storage\CharacterController</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Source\;$(ProjectDir)Source\Common;$(ProjectDir)Source\Objects;$(ProjectDir)Source\System;$(ProjectDir)Source\Common\Math;$(ProjectDir)Source\Common\BaseClass;$(ProjectDir)Source\Common\Constants;$(ProjectDir)Source\Common\ECS;$(ProjectDir)Source\Common\Interface;$(ProjectDir)Source\Common\BaseClass\SceneBase;$(ProjectDir)Source\System\Adapter;$(ProjectDir)Source\System\Components;$(ProjectDir)Source\System\ComponentStorages;$(ProjectDir)Source\System\ComponentSystems;$(ProjectDir)Source\System\Scenes;$(ProjectDir)Source\System\Manager;$(ProjectDir)Source\Physics;$(ProjectDir)Source\Physics\Storage;$(ProjectDir)Source\Physics\System;$(ProjectDir)Source\Physics\Struct;$(ProjectDir)Source\Common\BaseClass\ObjectBase;$(ProjectDir)Source\Common\Color;$(ProjectDir)Source\Physics\Constants\;$(ProjectDir)Source\Physics\System\Collision;$(ProjectDir)Source\Physics\System\Update;$(ProjectDir)Source\Physics\System\Sync;$(ProjectDir)Source\Common\Events;$(ProjectDir)Source\Common\Events\Physics;$(ProjectDir)Source\Common\ECS\Struct;$(ProjectDir)Source\Physics\Storage\Collider;$(ProjectDir)Source\Physics\Storage\Component;$(ProjectDir)Source\Physics\Storage\Body;$(ProjectDir)Source\Physics\Storage\Transform;$(ProjectDir)Source\Common\Math\NamericalAnalysis;$(ProjectDir)Source\Physics\Struct\Collision;$(ProjectDir)Source\Physics\Struct\Body;$(ProjectDir)Source\Physics\Struct\Transform;$(ProjectDir)Source\Physics\Struct\Collider;$(ProjectDir)Source\Physics\Struct\Constraint;$(ProjectDir)Source\Physics\Function;$(ProjectDir)Source\System\SceneData\Struct;$(ProjectDir)Source\System\SceneData\Struct\Component;$(ProjectDir)Source\System\SceneData;$(ProjectDir)Source\System\Factory;$(ProjectDir)Source\Physics\Component\Body;$(ProjectDir)Source\Physics\Component\Collider;$(ProjectDir)Source\Physics\Storage\Constraint;$(ProjectDir)Source\Physics\System\Solver;$(ProjectDir)Source\Physics\System\Build;$(ProjectDir)Source\Physics\Component\Constraint;$(ProjectDir)Source\Physics\DebugRender;$(ProjectDir)Source\Physics\Storage\Buffer;$(ProjectDir)Source\Physics\Struct\Command;$(ProjectDir)Source\Physics\Component\Body\Soft;$(ProjectDir)Source\Common\Struct;$(ProjectDir)Source\System\Struct;$(ProjectDir)Source\Physics\Struct\Body\Soft;$(ProjectDir)Source\Physics\Storage\Component\Body;$(ProjectDir)Source\Physics\Storage\Component\Collider;$(ProjectDir)Source\Physics\Storage\Component\Constraint;$(ProjectDir)Source\Physics\Storage\Component\Body\Soft;$(ProjectDir)Source\Common\Macro;$(ProjectDir)Source\Common\ECS\SparseSet;$(ProjectDir)Source\Common\ECS\SparseSet\Table;$(ProjectDir)Source\Common\ECS\Storage;$(ProjectDir)Source\Common\ECS\Event;$(ProjectDir)Source\Common\Struct\Resource;$(ProjectDir)Source\System\Input;$(ProjectDir)Source\Physics\Struct\Ray;$(ProjectDir)Source\Physics\Struct\CharacterController;$(ProjectDir)Source\Physics\Storage\Component\CharacterController;$(ProjectDir)Source\Physics\Component\CharacterController;$(ProjectDir)Source\Physics\Storage\CharacterController;$(ProjectDir)Source\Render\Component;$(ProjectDir)Source\Render\System;$(ProjectDir)Source\Render\Storage;$(ProjectDir)Source\Animation;$(ProjectDir)Source\Animation\Component;$(ProjectDir)Source\Animation\Storage;$(ProjectDir)Source\Animation\Struct;$(ProjectDir)Source\Animation\Storage\Component;$(ProjectDir)Source\Render;$(ProjectDir)Source\Physics\Struct\SnapShot;$(ProjectDir)Source\Animation\Struct\Ragdoll;$(ProjectDir)Source\Common\ECS\Storage\Component;$(ProjectDir)Source\Common\ECS\Storage\DataStorage;$(ProjectDir)Source\Animation\Struct\ID;$(ProjectDir)Source\Animation\Struct\Skeleton;$(ProjectDir)Source\Animation\Storage\Skeleton;$(ProjectDir)Source\Animation\System\Sync;$(ProjectDir)Source\Physics\API;$(ProjectDir)Source\Animation\Storage\Ragdoll;$(ProjectDir)Source\Animation\System\Update;$(ProjectDir)Source\Animation\API;$(ProjectDir)Source\Animation\Constants;$(ProjectDir)Source\Physics\Struct\Constraint\Constraint;$(ProjectDir)Source\Physics\Struct\Constraint\EndPoint;$(ProjectDir)Source\Animation\Load\Ragdoll;$(ProjectDir)Source\Animation\Struct\Ragdoll\Active;$(ProjectDir)Source\Animation\Struct\Animation;$(ProjectDir)Source\Animation\Storage\Animation;$(ProjectDir)Source\Animation\Function;$(ProjectDir)Source\Animation\Load\Skeleton;$(ProjectDir)Source\Animation\Struct\IK;$(ProjectDir)Source\Animation\Storage\IK\Feature;$(ProjectDir)Source\Animation\Storage\IK\Solver;$(ProjectDir)Source\Animation\System\Solver;$(ProjectDir)Source\Animation\Load\Ragdoll\Active;$(ProjectDir)Source\Sound</AdditionalIncludeDirectories>
       <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
       <TreatAngleIncludeAsExternal>false</TreatAngleIncludeAsExternal>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <Optimization>Disabled</Optimization>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -138,11 +139,11 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(ProjectDir)Source\;$(ProjectDir)Source\Common;$(ProjectDir)Source\Objects;$(ProjectDir)Source\System;$(ProjectDir)Source\Common\Math;$(ProjectDir)Source\Common\BaseClass;$(ProjectDir)Source\Common\Constants;$(ProjectDir)Source\Common\ECS;$(ProjectDir)Source\Common\Interface;$(ProjectDir)Source\Common\BaseClass\SceneBase;$(ProjectDir)Source\System\Adapter;$(ProjectDir)Source\System\Components;$(ProjectDir)Source\System\ComponentStorages;$(ProjectDir)Source\System\ComponentSystems;$(ProjectDir)Source\System\Scenes;$(ProjectDir)Source\System\Manager;$(ProjectDir)Source\Physics;$(ProjectDir)Source\Physics\Storage;$(ProjectDir)Source\Physics\System;$(ProjectDir)Source\Physics\Struct;$(ProjectDir)Source\Common\BaseClass\ObjectBase;$(ProjectDir)Source\Common\Color;$(ProjectDir)Source\Physics\Constants\;$(ProjectDir)Source\Physics\System\Collision;$(ProjectDir)Source\Physics\System\Update;$(ProjectDir)Source\Physics\System\Sync;$(ProjectDir)Source\Common\Events;$(ProjectDir)Source\Common\Events\Physics;$(ProjectDir)Source\Common\ECS\Struct;$(ProjectDir)Source\Physics\Storage\Collider;$(ProjectDir)Source\Physics\Storage\Component;$(ProjectDir)Source\Physics\Storage\Body;$(ProjectDir)Source\Physics\Storage\Transform;$(ProjectDir)Source\Common\Math\NamericalAnalysis;$(ProjectDir)Source\Physics\Struct\Collision;$(ProjectDir)Source\Physics\Struct\Body;$(ProjectDir)Source\Physics\Struct\Transform;$(ProjectDir)Source\Physics\Struct\Collider;$(ProjectDir)Source\Physics\Struct\Constraint;$(ProjectDir)Source\Physics\Function;$(ProjectDir)Source\System\SceneData\Struct;$(ProjectDir)Source\System\SceneData\Struct\Component;$(ProjectDir)Source\System\SceneData;$(ProjectDir)Source\System\Factory;$(ProjectDir)Source\Physics\Component\Body;$(ProjectDir)Source\Physics\Component\Collider;$(ProjectDir)Source\Physics\Storage\Constraint;$(ProjectDir)Source\Physics\System\Solver;$(ProjectDir)Source\Physics\System\Build;$(ProjectDir)Source\Physics\Component\Constraint;$(ProjectDir)Source\Physics\DebugRender;$(ProjectDir)Source\Physics\Storage\Buffer;$(ProjectDir)Source\Physics\Struct\Command;$(ProjectDir)Source\Physics\Component\Body\Soft;$(ProjectDir)Source\Common\Struct;$(ProjectDir)Source\System\Struct;$(ProjectDir)Source\Physics\Struct\Body\Soft;$(ProjectDir)Source\Physics\Storage\Component\Body;$(ProjectDir)Source\Physics\Storage\Component\Collider;$(ProjectDir)Source\Physics\Storage\Component\Constraint;$(ProjectDir)Source\Physics\Storage\Component\Body\Soft;$(ProjectDir)Source\Common\Macro;$(ProjectDir)Source\Common\ECS\SparseSet;$(ProjectDir)Source\Common\ECS\SparseSet\Table;$(ProjectDir)Source\Common\ECS\Storage;$(ProjectDir)Source\Common\ECS\Event;$(ProjectDir)Source\Common\Struct\Resource;$(ProjectDir)Source\System\Input;$(ProjectDir)Source\Physics\Struct\Ray;$(ProjectDir)Source\Physics\Struct\CharacterController;$(ProjectDir)Source\Physics\Storage\Component\CharacterController;$(ProjectDir)Source\Physics\Component\CharacterController;$(ProjectDir)Source\Physics\Storage\CharacterController;$(ProjectDir)Source\Render\Component;$(ProjectDir)Source\Render\System;$(ProjectDir)Source\Render\Storage</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Source\;$(ProjectDir)Source\Common;$(ProjectDir)Source\Objects;$(ProjectDir)Source\System;$(ProjectDir)Source\Common\Math;$(ProjectDir)Source\Common\BaseClass;$(ProjectDir)Source\Common\Constants;$(ProjectDir)Source\Common\ECS;$(ProjectDir)Source\Common\Interface;$(ProjectDir)Source\Common\BaseClass\SceneBase;$(ProjectDir)Source\System\Adapter;$(ProjectDir)Source\System\Components;$(ProjectDir)Source\System\ComponentStorages;$(ProjectDir)Source\System\ComponentSystems;$(ProjectDir)Source\System\Scenes;$(ProjectDir)Source\System\Manager;$(ProjectDir)Source\Physics;$(ProjectDir)Source\Physics\Storage;$(ProjectDir)Source\Physics\System;$(ProjectDir)Source\Physics\Struct;$(ProjectDir)Source\Common\BaseClass\ObjectBase;$(ProjectDir)Source\Common\Color;$(ProjectDir)Source\Physics\Constants\;$(ProjectDir)Source\Physics\System\Collision;$(ProjectDir)Source\Physics\System\Update;$(ProjectDir)Source\Physics\System\Sync;$(ProjectDir)Source\Common\Events;$(ProjectDir)Source\Common\Events\Physics;$(ProjectDir)Source\Common\ECS\Struct;$(ProjectDir)Source\Physics\Storage\Collider;$(ProjectDir)Source\Physics\Storage\Component;$(ProjectDir)Source\Physics\Storage\Body;$(ProjectDir)Source\Physics\Storage\Transform;$(ProjectDir)Source\Common\Math\NamericalAnalysis;$(ProjectDir)Source\Physics\Struct\Collision;$(ProjectDir)Source\Physics\Struct\Body;$(ProjectDir)Source\Physics\Struct\Transform;$(ProjectDir)Source\Physics\Struct\Collider;$(ProjectDir)Source\Physics\Struct\Constraint;$(ProjectDir)Source\Physics\Function;$(ProjectDir)Source\System\SceneData\Struct;$(ProjectDir)Source\System\SceneData\Struct\Component;$(ProjectDir)Source\System\SceneData;$(ProjectDir)Source\System\Factory;$(ProjectDir)Source\Physics\Component\Body;$(ProjectDir)Source\Physics\Component\Collider;$(ProjectDir)Source\Physics\Storage\Constraint;$(ProjectDir)Source\Physics\System\Solver;$(ProjectDir)Source\Physics\System\Build;$(ProjectDir)Source\Physics\Component\Constraint;$(ProjectDir)Source\Physics\DebugRender;$(ProjectDir)Source\Physics\Storage\Buffer;$(ProjectDir)Source\Physics\Struct\Command;$(ProjectDir)Source\Physics\Component\Body\Soft;$(ProjectDir)Source\Common\Struct;$(ProjectDir)Source\System\Struct;$(ProjectDir)Source\Physics\Struct\Body\Soft;$(ProjectDir)Source\Physics\Storage\Component\Body;$(ProjectDir)Source\Physics\Storage\Component\Collider;$(ProjectDir)Source\Physics\Storage\Component\Constraint;$(ProjectDir)Source\Physics\Storage\Component\Body\Soft;$(ProjectDir)Source\Common\Macro;$(ProjectDir)Source\Common\ECS\SparseSet;$(ProjectDir)Source\Common\ECS\SparseSet\Table;$(ProjectDir)Source\Common\ECS\Storage;$(ProjectDir)Source\Common\ECS\Event;$(ProjectDir)Source\Common\Struct\Resource;$(ProjectDir)Source\System\Input;$(ProjectDir)Source\Physics\Struct\Ray;$(ProjectDir)Source\Physics\Struct\CharacterController;$(ProjectDir)Source\Physics\Storage\Component\CharacterController;$(ProjectDir)Source\Physics\Component\CharacterController;$(ProjectDir)Source\Physics\Storage\CharacterController;$(ProjectDir)Source\Render\Component;$(ProjectDir)Source\Render\System;$(ProjectDir)Source\Render\Storage;$(ProjectDir)Source\Animation;$(ProjectDir)Source\Animation\Component;$(ProjectDir)Source\Animation\Storage;$(ProjectDir)Source\Animation\Struct;$(ProjectDir)Source\Animation\Storage\Component;$(ProjectDir)Source\Render;$(ProjectDir)Source\Physics\Struct\SnapShot;$(ProjectDir)Source\Animation\Struct\Ragdoll;$(ProjectDir)Source\Common\ECS\Storage\Component;$(ProjectDir)Source\Common\ECS\Storage\DataStorage;$(ProjectDir)Source\Animation\Struct\ID;$(ProjectDir)Source\Animation\Struct\Skeleton;$(ProjectDir)Source\Animation\Storage\Skeleton;$(ProjectDir)Source\Animation\System\Sync;$(ProjectDir)Source\Physics\API;$(ProjectDir)Source\Animation\Storage\Ragdoll;$(ProjectDir)Source\Animation\System\Update;$(ProjectDir)Source\Animation\API;$(ProjectDir)Source\Animation\Constants;$(ProjectDir)Source\Physics\Struct\Constraint\Constraint;$(ProjectDir)Source\Physics\Struct\Constraint\EndPoint;$(ProjectDir)Source\Animation\Load\Ragdoll;$(ProjectDir)Source\Animation\Struct\Ragdoll\Active;$(ProjectDir)Source\Animation\Struct\Animation;$(ProjectDir)Source\Animation\Storage\Animation;$(ProjectDir)Source\Animation\Function;$(ProjectDir)Source\Animation\Load\Skeleton;$(ProjectDir)Source\Animation\Struct\IK;$(ProjectDir)Source\Animation\Storage\IK\Feature;$(ProjectDir)Source\Animation\Storage\IK\Solver;$(ProjectDir)Source\Animation\System\Solver;$(ProjectDir)Source\Animation\Load\Ragdoll\Active;$(ProjectDir)Source\Sound</AdditionalIncludeDirectories>
       <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
       <TreatAngleIncludeAsExternal>false</TreatAngleIncludeAsExternal>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <Optimization>MaxSpeed</Optimization>
+      <Optimization>Disabled</Optimization>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
     </ClCompile>
@@ -165,10 +166,11 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(ProjectDir)Source\;$(ProjectDir)Source\Common;$(ProjectDir)Source\Objects;$(ProjectDir)Source\System;$(ProjectDir)Source\Common\Math;$(ProjectDir)Source\Common\BaseClass;$(ProjectDir)Source\Common\Constants;$(ProjectDir)Source\Common\ECS;$(ProjectDir)Source\Common\Interface;$(ProjectDir)Source\Common\BaseClass\SceneBase;$(ProjectDir)Source\System\Adapter;$(ProjectDir)Source\System\Components;$(ProjectDir)Source\System\ComponentStorages;$(ProjectDir)Source\System\ComponentSystems;$(ProjectDir)Source\System\Scenes;$(ProjectDir)Source\System\Manager;$(ProjectDir)Source\Physics;$(ProjectDir)Source\Physics\Storage;$(ProjectDir)Source\Physics\System;$(ProjectDir)Source\Physics\Struct;$(ProjectDir)Source\Common\BaseClass\ObjectBase;$(ProjectDir)Source\Common\Color;$(ProjectDir)Source\Physics\Constants\;$(ProjectDir)Source\Physics\System\Collision;$(ProjectDir)Source\Physics\System\Update;$(ProjectDir)Source\Physics\System\Sync;$(ProjectDir)Source\Common\Events;$(ProjectDir)Source\Common\Events\Physics;$(ProjectDir)Source\Common\ECS\Struct;$(ProjectDir)Source\Physics\Storage\Collider;$(ProjectDir)Source\Physics\Storage\Component;$(ProjectDir)Source\Physics\Storage\Body;$(ProjectDir)Source\Physics\Storage\Transform;$(ProjectDir)Source\Common\Math\NamericalAnalysis;$(ProjectDir)Source\Physics\Struct\Collision;$(ProjectDir)Source\Physics\Struct\Body;$(ProjectDir)Source\Physics\Struct\Transform;$(ProjectDir)Source\Physics\Struct\Collider;$(ProjectDir)Source\Physics\Struct\Constraint;$(ProjectDir)Source\Physics\Function;$(ProjectDir)Source\System\SceneData\Struct;$(ProjectDir)Source\System\SceneData\Struct\Component;$(ProjectDir)Source\System\SceneData;$(ProjectDir)Source\System\Factory;$(ProjectDir)Source\Physics\Component\Body;$(ProjectDir)Source\Physics\Component\Collider;$(ProjectDir)Source\Physics\Storage\Constraint;$(ProjectDir)Source\Physics\System\Solver;$(ProjectDir)Source\Physics\System\Build;$(ProjectDir)Source\Physics\Component\Constraint;$(ProjectDir)Source\Physics\DebugRender;$(ProjectDir)Source\Physics\Storage\Buffer;$(ProjectDir)Source\Physics\Struct\Command;$(ProjectDir)Source\Physics\Component\Body\Soft;$(ProjectDir)Source\Common\Struct;$(ProjectDir)Source\System\Struct;$(ProjectDir)Source\Physics\Struct\Body\Soft;$(ProjectDir)Source\Physics\Storage\Component\Body;$(ProjectDir)Source\Physics\Storage\Component\Collider;$(ProjectDir)Source\Physics\Storage\Component\Constraint;$(ProjectDir)Source\Physics\Storage\Component\Body\Soft;$(ProjectDir)Source\Common\Macro;$(ProjectDir)Source\Common\ECS\SparseSet;$(ProjectDir)Source\Common\ECS\SparseSet\Table;$(ProjectDir)Source\Common\ECS\Storage;$(ProjectDir)Source\Common\ECS\Event;$(ProjectDir)Source\Common\Struct\Resource;$(ProjectDir)Source\System\Input;$(ProjectDir)Source\Physics\Struct\Ray;$(ProjectDir)Source\Physics\Struct\CharacterController;$(ProjectDir)Source\Physics\Storage\Component\CharacterController;$(ProjectDir)Source\Physics\Component\CharacterController;$(ProjectDir)Source\Physics\Storage\CharacterController</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Source\;$(ProjectDir)Source\Common;$(ProjectDir)Source\Objects;$(ProjectDir)Source\System;$(ProjectDir)Source\Common\Math;$(ProjectDir)Source\Common\BaseClass;$(ProjectDir)Source\Common\Constants;$(ProjectDir)Source\Common\ECS;$(ProjectDir)Source\Common\Interface;$(ProjectDir)Source\Common\BaseClass\SceneBase;$(ProjectDir)Source\System\Adapter;$(ProjectDir)Source\System\Components;$(ProjectDir)Source\System\ComponentStorages;$(ProjectDir)Source\System\ComponentSystems;$(ProjectDir)Source\System\Scenes;$(ProjectDir)Source\System\Manager;$(ProjectDir)Source\Physics;$(ProjectDir)Source\Physics\Storage;$(ProjectDir)Source\Physics\System;$(ProjectDir)Source\Physics\Struct;$(ProjectDir)Source\Common\BaseClass\ObjectBase;$(ProjectDir)Source\Common\Color;$(ProjectDir)Source\Physics\Constants\;$(ProjectDir)Source\Physics\System\Collision;$(ProjectDir)Source\Physics\System\Update;$(ProjectDir)Source\Physics\System\Sync;$(ProjectDir)Source\Common\Events;$(ProjectDir)Source\Common\Events\Physics;$(ProjectDir)Source\Common\ECS\Struct;$(ProjectDir)Source\Physics\Storage\Collider;$(ProjectDir)Source\Physics\Storage\Component;$(ProjectDir)Source\Physics\Storage\Body;$(ProjectDir)Source\Physics\Storage\Transform;$(ProjectDir)Source\Common\Math\NamericalAnalysis;$(ProjectDir)Source\Physics\Struct\Collision;$(ProjectDir)Source\Physics\Struct\Body;$(ProjectDir)Source\Physics\Struct\Transform;$(ProjectDir)Source\Physics\Struct\Collider;$(ProjectDir)Source\Physics\Struct\Constraint;$(ProjectDir)Source\Physics\Function;$(ProjectDir)Source\System\SceneData\Struct;$(ProjectDir)Source\System\SceneData\Struct\Component;$(ProjectDir)Source\System\SceneData;$(ProjectDir)Source\System\Factory;$(ProjectDir)Source\Physics\Component\Body;$(ProjectDir)Source\Physics\Component\Collider;$(ProjectDir)Source\Physics\Storage\Constraint;$(ProjectDir)Source\Physics\System\Solver;$(ProjectDir)Source\Physics\System\Build;$(ProjectDir)Source\Physics\Component\Constraint;$(ProjectDir)Source\Physics\DebugRender;$(ProjectDir)Source\Physics\Storage\Buffer;$(ProjectDir)Source\Physics\Struct\Command;$(ProjectDir)Source\Physics\Component\Body\Soft;$(ProjectDir)Source\Common\Struct;$(ProjectDir)Source\System\Struct;$(ProjectDir)Source\Physics\Struct\Body\Soft;$(ProjectDir)Source\Physics\Storage\Component\Body;$(ProjectDir)Source\Physics\Storage\Component\Collider;$(ProjectDir)Source\Physics\Storage\Component\Constraint;$(ProjectDir)Source\Physics\Storage\Component\Body\Soft;$(ProjectDir)Source\Common\Macro;$(ProjectDir)Source\Common\ECS\SparseSet;$(ProjectDir)Source\Common\ECS\SparseSet\Table;$(ProjectDir)Source\Common\ECS\Storage;$(ProjectDir)Source\Common\ECS\Event;$(ProjectDir)Source\Common\Struct\Resource;$(ProjectDir)Source\System\Input;$(ProjectDir)Source\Physics\Struct\Ray;$(ProjectDir)Source\Physics\Struct\CharacterController;$(ProjectDir)Source\Physics\Storage\Component\CharacterController;$(ProjectDir)Source\Physics\Component\CharacterController;$(ProjectDir)Source\Physics\Storage\CharacterController;$(ProjectDir)Source\Render\Component;$(ProjectDir)Source\Render\System;$(ProjectDir)Source\Render\Storage;$(ProjectDir)Source\Animation;$(ProjectDir)Source\Animation\Component;$(ProjectDir)Source\Animation\Storage;$(ProjectDir)Source\Animation\Struct;$(ProjectDir)Source\Animation\Storage\Component;$(ProjectDir)Source\Render;$(ProjectDir)Source\Physics\Struct\SnapShot;$(ProjectDir)Source\Animation\Struct\Ragdoll;$(ProjectDir)Source\Common\ECS\Storage\Component;$(ProjectDir)Source\Common\ECS\Storage\DataStorage;$(ProjectDir)Source\Animation\Struct\ID;$(ProjectDir)Source\Animation\Struct\Skeleton;$(ProjectDir)Source\Animation\Storage\Skeleton;$(ProjectDir)Source\Animation\System\Sync;$(ProjectDir)Source\Physics\API;$(ProjectDir)Source\Animation\Storage\Ragdoll;$(ProjectDir)Source\Animation\System\Update;$(ProjectDir)Source\Animation\API;$(ProjectDir)Source\Animation\Constants;$(ProjectDir)Source\Physics\Struct\Constraint\Constraint;$(ProjectDir)Source\Physics\Struct\Constraint\EndPoint;$(ProjectDir)Source\Animation\Load\Ragdoll;$(ProjectDir)Source\Animation\Struct\Ragdoll\Active;$(ProjectDir)Source\Animation\Struct\Animation;$(ProjectDir)Source\Animation\Storage\Animation;$(ProjectDir)Source\Animation\Function;$(ProjectDir)Source\Animation\Load\Skeleton;$(ProjectDir)Source\Animation\Struct\IK;$(ProjectDir)Source\Animation\Storage\IK\Feature;$(ProjectDir)Source\Animation\Storage\IK\Solver;$(ProjectDir)Source\Animation\System\Solver;$(ProjectDir)Source\Animation\Load\Ragdoll\Active;$(ProjectDir)Source\Sound</AdditionalIncludeDirectories>
       <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
       <TreatAngleIncludeAsExternal>false</TreatAngleIncludeAsExternal>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <Optimization>Disabled</Optimization>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -181,8 +183,70 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Animation\AnimationWorld.h" />
+    <ClInclude Include="Source\Animation\API\AnimationComponentAPI.h" />
+    <ClInclude Include="Source\Animation\Component\ActiveRagdollComponent.h" />
+    <ClInclude Include="Source\Animation\Component\AnimationComponent.h" />
+    <ClInclude Include="Source\Animation\Component\HandIKComponent.h" />
+    <ClInclude Include="Source\Animation\Component\RagdollComponent.h" />
+    <ClInclude Include="Source\Animation\Constants\ActiveRagdollConstants.h" />
+    <ClInclude Include="Source\Animation\Constants\RagdollConstants.h" />
+    <ClInclude Include="Source\Animation\Function\PoseMixer.h" />
+    <ClInclude Include="Source\Animation\Load\Ragdoll\Active\ActiveRagdollLoader.h" />
+    <ClInclude Include="Source\Animation\Load\Ragdoll\Active\ActiveRagdollLoaderHelper.h" />
+    <ClInclude Include="Source\Animation\Load\Ragdoll\RagdollLoader.h" />
+    <ClInclude Include="Source\Animation\Load\Ragdoll\RagdollLoaderHelper.h" />
+    <ClInclude Include="Source\Animation\Load\Skeleton\BoneMaskLoader.h" />
+    <ClInclude Include="Source\Animation\Load\Skeleton\BoneMaskLoaderHelper.h" />
+    <ClInclude Include="Source\Animation\Storage\Animation\AnimationStorage.h" />
+    <ClInclude Include="Source\Animation\Storage\Buffer\PoseBuffer.h" />
+    <ClInclude Include="Source\Animation\Storage\Component\ActiveRagdollComponentStorage.h" />
+    <ClInclude Include="Source\Animation\Storage\Component\AnimationComponentStorage.h" />
+    <ClInclude Include="Source\Animation\Storage\Component\HandIKComponentStorage.h" />
+    <ClInclude Include="Source\Animation\Storage\Component\RagdollComponentStorage.h" />
+    <ClInclude Include="Source\Animation\Storage\IK\Feature\FeatureIKStorage.h" />
+    <ClInclude Include="Source\Animation\Storage\IK\Feature\HandIKStorage.h" />
+    <ClInclude Include="Source\Animation\Storage\IK\Solver\SolverIKStorage.h" />
+    <ClInclude Include="Source\Animation\Storage\IK\Solver\TwoBoneIKStorage.h" />
+    <ClInclude Include="Source\Animation\Storage\Ragdoll\ActiveRagdollStorage.h" />
+    <ClInclude Include="Source\Animation\Storage\Ragdoll\RagdollStorage.h" />
+    <ClInclude Include="Source\Animation\Storage\Skeleton\PoseLayerStorage.h" />
+    <ClInclude Include="Source\Animation\Storage\Skeleton\SkeletonInstanceStorage.h" />
+    <ClInclude Include="Source\Animation\Struct\Animation\AnimationID.h" />
+    <ClInclude Include="Source\Animation\Struct\Animation\AnimationInstanceData.h" />
+    <ClInclude Include="Source\Animation\Struct\IK\FeatureIKID.h" />
+    <ClInclude Include="Source\Animation\Struct\IK\HandIK.h" />
+    <ClInclude Include="Source\Animation\Struct\IK\SolverIKID.h" />
+    <ClInclude Include="Source\Animation\Struct\IK\TwoBoneIK.h" />
+    <ClInclude Include="Source\Animation\Struct\Ragdoll\Active\ActiveRagdoll.h" />
+    <ClInclude Include="Source\Animation\Struct\Ragdoll\Active\ActiveRagdollDefinition.h" />
+    <ClInclude Include="Source\Animation\Struct\Ragdoll\Active\ActiveRagdollID.h" />
+    <ClInclude Include="Source\Animation\Struct\Ragdoll\Active\ActiveRagdollSetting.h" />
+    <ClInclude Include="Source\Animation\Struct\Ragdoll\Active\FootGroundInfo.h" />
+    <ClInclude Include="Source\Animation\Struct\Ragdoll\Ragdoll.h" />
+    <ClInclude Include="Source\Animation\Struct\Ragdoll\RagdollBodyDefinition.h" />
+    <ClInclude Include="Source\Animation\Struct\Ragdoll\RagdollBodyLink.h" />
+    <ClInclude Include="Source\Animation\Struct\Ragdoll\RagdollColliderDefinition.h" />
+    <ClInclude Include="Source\Animation\Struct\Ragdoll\RagdollDefinition.h" />
+    <ClInclude Include="Source\Animation\Struct\Ragdoll\RagdollID.h" />
+    <ClInclude Include="Source\Animation\Struct\Ragdoll\RagdollJointAngleLimitDefinition.h" />
+    <ClInclude Include="Source\Animation\Struct\Ragdoll\RagdollJointDefinition.h" />
+    <ClInclude Include="Source\Animation\Struct\Skeleton\BoneMask.h" />
+    <ClInclude Include="Source\Animation\Struct\Skeleton\PoseLayer.h" />
+    <ClInclude Include="Source\Animation\Struct\Skeleton\PoseLayerID.h" />
+    <ClInclude Include="Source\Animation\Struct\Skeleton\PositionTarget.h" />
+    <ClInclude Include="Source\Animation\Struct\Skeleton\SkeletonID.h" />
+    <ClInclude Include="Source\Animation\System\Solver\IKSolverSystem.h" />
+    <ClInclude Include="Source\Animation\System\Sync\AnimationCommitSystem.h" />
+    <ClInclude Include="Source\Animation\System\Sync\AnimationSyncSystem.h" />
+    <ClInclude Include="Source\Animation\System\Update\ActiveRagdollSystem.h" />
+    <ClInclude Include="Source\Animation\System\Update\BaseAnimationSystem.h" />
+    <ClInclude Include="Source\Animation\System\Update\FeatureIKSystem.h" />
+    <ClInclude Include="Source\Animation\System\Update\RagdollSystem.h" />
+    <ClInclude Include="Source\Animation\System\Update\TargetPoseSystem.h" />
     <ClInclude Include="Source\Common\BaseClass\FixedUpdateSystem.h" />
     <ClInclude Include="Source\Common\BaseClass\LateUpdateSystem.h" />
+    <ClInclude Include="Source\Common\BaseClass\MonoBehaviour.h" />
     <ClInclude Include="Source\Common\BaseClass\ObjectBase\ObjectBase.h" />
     <ClInclude Include="Source\Common\BaseClass\RenderingSystem.h" />
     <ClInclude Include="Source\Common\BaseClass\SceneBase\SceneBase.h" />
@@ -207,20 +271,28 @@
     <ClInclude Include="Source\Common\ECS\SparseSet\Table\LinearTable.h" />
     <ClInclude Include="Source\Common\ECS\SparseSet\Table\PageTable.h" />
     <ClInclude Include="Source\Common\ECS\SparseSet\Table\SparseSetTableInterface.h" />
-    <ClInclude Include="Source\Common\ECS\Storage\ComponentIDPool.h" />
-    <ClInclude Include="Source\Common\ECS\Storage\ComponentStorageBase.h" />
-    <ClInclude Include="Source\Common\ECS\Storage\ComponentView.h" />
+    <ClInclude Include="Source\Common\ECS\Storage\Component\ComponentIDPool.h" />
+    <ClInclude Include="Source\Common\ECS\Storage\Component\ComponentStorageBase.h" />
+    <ClInclude Include="Source\Common\ECS\Storage\Component\ComponentView.h" />
+    <ClInclude Include="Source\Common\ECS\Storage\Component\MultiComponentStorageBase.h" />
+    <ClInclude Include="Source\Common\ECS\Storage\Component\UniqueComponentStorageBase.h" />
+    <ClInclude Include="Source\Common\ECS\Storage\DataStorageBase.h" />
+    <ClInclude Include="Source\Common\ECS\Storage\DataStorage\DataStorageBase.h" />
+    <ClInclude Include="Source\Common\ECS\Storage\DataStorage\Slot.h" />
+    <ClInclude Include="Source\Common\ECS\Storage\DataStorage\SlotPool.h" />
     <ClInclude Include="Source\Common\ECS\Storage\HandlePool.h" />
-    <ClInclude Include="Source\Common\ECS\Storage\MultiComponentStorageBase.h" />
     <ClInclude Include="Source\Common\ECS\Storage\ResourceStorage.h" />
-    <ClInclude Include="Source\Common\ECS\Storage\UniqueComponentStorageBase.h" />
     <ClInclude Include="Source\Common\ECS\Storage\WorldStorage.h" />
     <ClInclude Include="Source\Common\ECS\SystemManager.h" />
     <ClInclude Include="Source\Common\Events\Physics\PhysicsEvent.h" />
+    <ClInclude Include="Source\Common\Fade.h" />
     <ClInclude Include="Source\Common\Interface\IGPUConnecter.h" />
     <ClInclude Include="Source\Common\Interface\IInput.h" />
     <ClInclude Include="Source\Common\Interface\IRenderer.h" />
+    <ClInclude Include="Source\Common\Interface\ISound.h" />
     <ClInclude Include="Source\Common\Interface\ISystem.h" />
+    <ClInclude Include="Source\Common\Macro\AssertMacros.h" />
+    <ClInclude Include="Source\Common\Macro\SingletonMacros.h" />
     <ClInclude Include="Source\Common\Macro\StorageAccessorsMacros.h" />
     <ClInclude Include="Source\Common\Math\Constants\MathConstants.h" />
     <ClInclude Include="Source\Common\Math\Matrix\MatGenerateFunc.h" />
@@ -236,22 +308,40 @@
     <ClInclude Include="Source\Common\Math\Vector\Vector3\Vector3.h" />
     <ClInclude Include="Source\Common\Math\Vector\Vector3\Vector3Int.h" />
     <ClInclude Include="Source\Common\Math\Vector\Vector4\Vector4.h" />
+    <ClInclude Include="Source\Common\Struct\AnimationHandle.h" />
     <ClInclude Include="Source\Common\Struct\CubeTextureHandle.h" />
     <ClInclude Include="Source\Common\Struct\GamePadState.h" />
+    <ClInclude Include="Source\Common\Struct\Material.h" />
     <ClInclude Include="Source\Common\Struct\ModelHandle.h" />
     <ClInclude Include="Source\Common\Struct\PixelShaderHandle.h" />
     <ClInclude Include="Source\Common\Struct\ShaderConstantBufferHandle.h" />
     <ClInclude Include="Source\Common\Struct\ComputeShaderHandle.h" />
     <ClInclude Include="Source\Common\Struct\GenerationalID.h" />
     <ClInclude Include="Source\Common\Struct\ShaderBufferHandle.h" />
+    <ClInclude Include="Source\Common\Struct\SkeletonData.h" />
+    <ClInclude Include="Source\Common\Struct\SkeletonHandle.h" />
+    <ClInclude Include="Source\Common\Struct\SoundHandle.h" />
+    <ClInclude Include="Source\Common\Struct\SoundPlayInfo.h" />
     <ClInclude Include="Source\Common\Struct\TextureHandle.h" />
     <ClInclude Include="Source\Common\Struct\VertexShaderHandle.h" />
     <ClInclude Include="Source\Objects\Camera.h" />
-    <ClInclude Include="Source\Objects\DebugBox.h" />
-    <ClInclude Include="Source\Objects\DebugCapsule.h" />
-    <ClInclude Include="Source\Objects\DebugSphere.h" />
+    <ClInclude Include="Source\Objects\Debug\DebugActiveRagdoll.h" />
+    <ClInclude Include="Source\Objects\Debug\DebugBox.h" />
+    <ClInclude Include="Source\Objects\Debug\DebugCapsule.h" />
+    <ClInclude Include="Source\Objects\Debug\DebugRagdoll.h" />
+    <ClInclude Include="Source\Objects\Debug\DebugSphere.h" />
     <ClInclude Include="Source\Objects\EmptyObject.h" />
+    <ClInclude Include="Source\Objects\Escape\Check.h" />
+    <ClInclude Include="Source\Objects\Escape\Escape.h" />
+    <ClInclude Include="Source\Objects\Escape\EscapePart.h" />
+    <ClInclude Include="Source\Objects\Escape\QuitUI.h" />
+    <ClInclude Include="Source\Objects\Escape\ResumeUI.h" />
+    <ClInclude Include="Source\Objects\Escape\TitleUI.h" />
     <ClInclude Include="Source\Objects\Player.h" />
+    <ClInclude Include="Source\Objects\Title\PressToStart.h" />
+    <ClInclude Include="Source\Objects\TutorialBox.h" />
+    <ClInclude Include="Source\Physics\API\PhysicsAPI.h" />
+    <ClInclude Include="Source\Physics\API\PhysicsComponentAPI.h" />
     <ClInclude Include="Source\Physics\Component\Body\RigidBodyComponent.h" />
     <ClInclude Include="Source\Physics\Component\Body\Soft\ClothComponent.h" />
     <ClInclude Include="Source\Physics\Component\Body\Soft\RopeComponent.h" />
@@ -261,26 +351,39 @@
     <ClInclude Include="Source\Physics\Component\Collider\CapsuleColliderComponent.h" />
     <ClInclude Include="Source\Physics\Component\Collider\ColliderComponent.h" />
     <ClInclude Include="Source\Physics\Component\Collider\SphereColliderComponent.h" />
-    <ClInclude Include="Source\Physics\Component\Constraint\EndPointConstraintComponentBase.h" />
+    <ClInclude Include="Source\Physics\Component\Constraint\AngleLimitHingeConstraintComponent.h" />
+    <ClInclude Include="Source\Physics\Component\Constraint\AngleLimitPointConstraintComponent.h" />
+    <ClInclude Include="Source\Physics\Component\Constraint\Base\ConstraintComponentBase.h" />
     <ClInclude Include="Source\Physics\Component\Constraint\DistanceConstraintComponent.h" />
+    <ClInclude Include="Source\Physics\Component\Constraint\HingeConstraintComponent.h" />
+    <ClInclude Include="Source\Physics\Component\Constraint\PointOnLineConstraintComponent.h" />
+    <ClInclude Include="Source\Physics\Component\Constraint\SliderConstraintComponent.h" />
+    <ClInclude Include="Source\Physics\Component\Constraint\LimitedPointOnLineConstraintComponent.h" />
+    <ClInclude Include="Source\Physics\Component\Constraint\LimitedSliderConstraintComponent.h" />
+    <ClInclude Include="Source\Physics\Component\Constraint\LimitedBallJointConstraintComponent.h" />
     <ClInclude Include="Source\Physics\Component\Constraint\PointConstraintComponent.h" />
     <ClInclude Include="Source\Physics\Constants\BodyConstants.h" />
     <ClInclude Include="Source\Physics\Constants\CharacterControllerConstants.h" />
     <ClInclude Include="Source\Physics\Constants\CollisionConstants.h" />
-    <ClInclude Include="Source\Physics\Constants\CommandConstraints.h" />
+    <ClInclude Include="Source\Physics\Constants\CommandConstants.h" />
     <ClInclude Include="Source\Physics\Constants\ConstraintConstants.h" />
+    <ClInclude Include="Source\Physics\Constants\SyncConstants.h" />
     <ClInclude Include="Source\Physics\DebugRender\ColliderDebugRenderingSystem.h" />
     <ClInclude Include="Source\Physics\DebugRender\ConstraintDebugRenderingSystem.h" />
+    <ClInclude Include="Source\Physics\Function\ConstraintFunction.h" />
     <ClInclude Include="Source\Physics\Function\ContactFunction.h" />
     <ClInclude Include="Source\Physics\Function\GJKEPA.h" />
     <ClInclude Include="Source\Physics\Function\ManifoldFunction.h" />
     <ClInclude Include="Source\Physics\Function\RayCastFunction.h" />
+    <ClInclude Include="Source\Physics\Function\RayCastHelper.h" />
+    <ClInclude Include="Source\Physics\Function\SphereCastFunction.h" />
     <ClInclude Include="Source\Physics\PhysicsWorld.h" />
     <ClInclude Include="Source\Physics\Storage\Body\BodyStorage.h" />
     <ClInclude Include="Source\Physics\Storage\Body\Rigid\RigidBodyStorage.h" />
     <ClInclude Include="Source\Physics\Storage\Body\Soft\ClothStorage.h" />
     <ClInclude Include="Source\Physics\Storage\Body\Soft\RopeStorage.h" />
     <ClInclude Include="Source\Physics\Storage\Body\Soft\SoftBodyStorage.h" />
+    <ClInclude Include="Source\Physics\Storage\Buffer\BodySnapshotBuffer.h" />
     <ClInclude Include="Source\Physics\Storage\Buffer\CollisionManifoldBuffer.h" />
     <ClInclude Include="Source\Physics\Storage\Buffer\PhysicsBufferBase.h" />
     <ClInclude Include="Source\Physics\Storage\Buffer\PhysicsCommandBuffer.h" />
@@ -300,13 +403,20 @@
     <ClInclude Include="Source\Physics\Storage\Component\Collider\BoxColliderComponentStorage.h" />
     <ClInclude Include="Source\Physics\Storage\Component\Collider\CapsuleColliderComponentStorage.h" />
     <ClInclude Include="Source\Physics\Storage\Component\Collider\SphereColliderComponentStorage.h" />
+    <ClInclude Include="Source\Physics\Storage\Component\Constraint\AngleLimitHingeConstraintComponentStorage.h" />
+    <ClInclude Include="Source\Physics\Storage\Component\Constraint\AngleLimitPointConstraintComponentStorage.h" />
     <ClInclude Include="Source\Physics\Storage\Component\Constraint\DistanceConstraintComponentStorage.h" />
+    <ClInclude Include="Source\Physics\Storage\Component\Constraint\HingeConstraintComponentStorage.h" />
+    <ClInclude Include="Source\Physics\Storage\Component\Constraint\PointOnLineConstraintComponentStorage.h" />
+    <ClInclude Include="Source\Physics\Storage\Component\Constraint\SliderConstraintComponentStorage.h" />
+    <ClInclude Include="Source\Physics\Storage\Component\Constraint\LimitedPointOnLineConstraintComponentStorage.h" />
+    <ClInclude Include="Source\Physics\Storage\Component\Constraint\LimitedSliderConstraintComponentStorage.h" />
+    <ClInclude Include="Source\Physics\Storage\Component\Constraint\LimitedBallJointConstraintComponentStorage.h" />
     <ClInclude Include="Source\Physics\Storage\Component\Constraint\PointConstraintComponentStorage.h" />
+    <ClInclude Include="Source\Physics\Storage\Constraint\Base\ConstraintStorageBase.h" />
     <ClInclude Include="Source\Physics\Storage\Constraint\ConstraintStorage.h" />
-    <ClInclude Include="Source\Physics\Storage\Constraint\DistanceConstraintStorage.h" />
-    <ClInclude Include="Source\Physics\Storage\Constraint\PointConstraintStorage.h" />
     <ClInclude Include="Source\Physics\Storage\PhysicsStorageBase.h" />
-    <ClInclude Include="Source\Physics\Storage\SlotPool.h" />
+    <ClInclude Include="Source\Physics\Storage\PhysicsSlotPool.h" />
     <ClInclude Include="Source\Physics\Storage\Transform\PhysicsTransformStorage.h" />
     <ClInclude Include="Source\Physics\Struct\Body\BodyID.h" />
     <ClInclude Include="Source\Physics\Struct\Body\BodySlot.h" />
@@ -316,14 +426,16 @@
     <ClInclude Include="Source\Physics\Struct\Body\Soft\SolveGPUMeta.h" />
     <ClInclude Include="Source\Physics\Struct\Body\SolverBody.h" />
     <ClInclude Include="Source\Physics\Struct\CharacterController\CharacterControllerID.h" />
-    <ClInclude Include="Source\Physics\Struct\CharacterController\CharacterControllerSlot.h" />
     <ClInclude Include="Source\Physics\Struct\Collider\AABBBroadPhaseCollider.h" />
     <ClInclude Include="Source\Physics\Struct\Collider\ColliderID.h" />
     <ClInclude Include="Source\Physics\Struct\Collider\ColliderProjection.h" />
     <ClInclude Include="Source\Physics\Struct\Collider\ColliderProjectionData.h" />
     <ClInclude Include="Source\Physics\Struct\Collider\ColliderSlot.h" />
     <ClInclude Include="Source\Physics\Struct\Collider\ColliderTags.h" />
+    <ClInclude Include="Source\Physics\Struct\Collider\CollisionFilter.h" />
+    <ClInclude Include="Source\Physics\Struct\Collision\CollisionInfo.h" />
     <ClInclude Include="Source\Physics\Struct\Collision\CollisionPair.h" />
+    <ClInclude Include="Source\Physics\Struct\Collision\BoxBoxContactInfo.h" />
     <ClInclude Include="Source\Physics\Struct\Collision\ContactInfo.h" />
     <ClInclude Include="Source\Physics\Struct\Collision\Edge.h" />
     <ClInclude Include="Source\Physics\Struct\Collision\MinkowskiVertex.h" />
@@ -332,27 +444,41 @@
     <ClInclude Include="Source\Physics\Struct\Command\BodyUpdate.h" />
     <ClInclude Include="Source\Physics\Struct\Constraint\Constraint.h" />
     <ClInclude Include="Source\Physics\Struct\Constraint\ConstraintID.h" />
+    <ClInclude Include="Source\Physics\Struct\Constraint\ConstraintRowBatch.h" />
     <ClInclude Include="Source\Physics\Struct\Constraint\ConstraintSlot.h" />
-    <ClInclude Include="Source\Physics\Struct\Constraint\ContactConstraint.h" />
-    <ClInclude Include="Source\Physics\Struct\Constraint\DistanceConstraint.h" />
-    <ClInclude Include="Source\Physics\Struct\Constraint\EndPoint.h" />
-    <ClInclude Include="Source\Physics\Struct\Constraint\PointConstraint.h" />
+    <ClInclude Include="Source\Physics\Struct\Constraint\ConstraintTuning.h" />
+    <ClInclude Include="Source\Physics\Struct\Constraint\Constraint\AngleLimitHingeConstraint.h" />
+    <ClInclude Include="Source\Physics\Struct\Constraint\Constraint\AngleLimitPointConstraint.h" />
+    <ClInclude Include="Source\Physics\Struct\Constraint\Constraint\Base\ConstraintBase.h" />
+    <ClInclude Include="Source\Physics\Struct\Constraint\Constraint\Base\ConstraintOneBase.h" />
+    <ClInclude Include="Source\Physics\Struct\Constraint\Constraint\ContactConstraint.h" />
+    <ClInclude Include="Source\Physics\Struct\Constraint\Constraint\DistanceConstraint.h" />
+    <ClInclude Include="Source\Physics\Struct\Constraint\Constraint\JointDriveConstraint.h" />
+    <ClInclude Include="Source\Physics\Struct\Constraint\Constraint\HingeConstraint.h" />
+    <ClInclude Include="Source\Physics\Struct\Constraint\Constraint\LimitedBallJointConstraint.h" />
+    <ClInclude Include="Source\Physics\Struct\Constraint\Constraint\LimitedPointOnLineConstraint.h" />
+    <ClInclude Include="Source\Physics\Struct\Constraint\Constraint\LimitedSliderConstraint.h" />
+    <ClInclude Include="Source\Physics\Struct\Constraint\Constraint\PointConstraint.h" />
+    <ClInclude Include="Source\Physics\Struct\Constraint\Constraint\PointOnLineConstraint.h" />
+    <ClInclude Include="Source\Physics\Struct\Constraint\Constraint\SliderConstraint.h" />
+    <ClInclude Include="Source\Physics\Struct\Constraint\EndPoint\EndPointFrame.h" />
     <ClInclude Include="Source\Physics\Struct\Ray\Ray.h" />
     <ClInclude Include="Source\Physics\Struct\Ray\RayCastHitInfo.h" />
     <ClInclude Include="Source\Physics\Struct\Ray\RayCastQueryHitInfo.h" />
+    <ClInclude Include="Source\Physics\Struct\Ray\SphereRay.h" />
+    <ClInclude Include="Source\Physics\Struct\SnapShot\RigidBodySnapshot.h" />
+    <ClInclude Include="Source\Physics\Struct\SnapShot\RigidBodySnapshotFrame.h" />
     <ClInclude Include="Source\Physics\Struct\Transform\PhysicsTransformID.h" />
-    <ClInclude Include="Source\Physics\Struct\Transform\PhysicsTransformSlot.h" />
-    <ClInclude Include="Source\Physics\System\Build\ConstraintBuildSystem.h" />
+    <ClInclude Include="Source\Physics\System\Build\BodySnapshotBuildSystem.h" />
     <ClInclude Include="Source\Physics\System\Build\SolverBodyBuildSystem.h" />
     <ClInclude Include="Source\Physics\System\Collision\CollisionSystem.h" />
     <ClInclude Include="Source\Physics\System\Collision\NarrowPhasePairBuilder.h" />
-    <ClInclude Include="Source\Physics\System\PhysicsAPI.h" />
-    <ClInclude Include="Source\Physics\System\PhysicsComponentAPI.h" />
+    <ClInclude Include="Source\Physics\System\Collision\Simplex.h" />
     <ClInclude Include="Source\Physics\System\Query\PhysicsQuerySystem.h" />
-    <ClInclude Include="Source\Physics\System\Simplex.h" />
     <ClInclude Include="Source\Physics\System\Solver\CollisionSolverSystem.h" />
     <ClInclude Include="Source\Physics\System\Solver\ConstraintSolverSystem.h" />
     <ClInclude Include="Source\Physics\System\Solver\SolverBodyCommitSystem.h" />
+    <ClInclude Include="Source\Physics\System\Sync\ApplyPhysicsCommandBufferSystem.h" />
     <ClInclude Include="Source\Physics\System\Sync\PhysicsCommitSystem.h" />
     <ClInclude Include="Source\Physics\System\Sync\SynchronizationSystem.h" />
     <ClInclude Include="Source\Physics\System\Update\AABBUpdateSystem.h" />
@@ -361,18 +487,24 @@
     <ClInclude Include="Source\Render\Component\CameraComponent.h" />
     <ClInclude Include="Source\Render\Component\CameraRigComponent.h" />
     <ClInclude Include="Source\Render\Component\RendererComponent.h" />
+    <ClInclude Include="Source\Render\Component\SpriteRendererComponent.h" />
+    <ClInclude Include="Source\Render\Renderer.h" />
     <ClInclude Include="Source\Render\Storage\CameraComponentStorage.h" />
     <ClInclude Include="Source\Render\Storage\CameraRigComponentStorage.h" />
     <ClInclude Include="Source\Render\Storage\RendererComponentStorage.h" />
+    <ClInclude Include="Source\Render\Storage\SpriteRendererComponentStorage.h" />
     <ClInclude Include="Source\Render\System\CameraBindSystem.h" />
     <ClInclude Include="Source\Render\System\CameraRigSystem.h" />
     <ClInclude Include="Source\Render\System\ModelRenderingSystem.h" />
     <ClInclude Include="Source\Render\System\SkyRenderingSystem.h" />
+    <ClInclude Include="Source\Render\System\SpriteRenderingSystem.h" />
+    <ClInclude Include="Source\Sound\SoundPlayer.h" />
     <ClInclude Include="Source\System\Adapter\Dxlib\DxlibConstants.h" />
     <ClInclude Include="Source\System\Adapter\Dxlib\DxlibConvert.h" />
     <ClInclude Include="Source\System\Adapter\Dxlib\DxlibGPUConnecter.h" />
     <ClInclude Include="Source\System\Adapter\Dxlib\DxlibInput.h" />
     <ClInclude Include="Source\System\Adapter\Dxlib\DxlibRenderer.h" />
+    <ClInclude Include="Source\System\Adapter\Dxlib\DxlibSound.h" />
     <ClInclude Include="Source\System\Adapter\Dxlib\DxlibSystem.h" />
     <ClInclude Include="Source\System\Adapter\Dxlib\Struct\DxlibShaderBufferResource.h" />
     <ClInclude Include="Source\System\ComponentStorages\TransformComponentStorage.h" />
@@ -389,7 +521,9 @@
     <ClInclude Include="Source\System\Input\Struct\InputActionRuntimeData.h" />
     <ClInclude Include="Source\System\Input\Struct\InputInteractionEvents.h" />
     <ClInclude Include="Source\System\Input\Struct\InputValue.h" />
+    <ClInclude Include="Source\System\Manager\ApplicationRequest.h" />
     <ClInclude Include="Source\System\Manager\ApplicationManager.h" />
+    <ClInclude Include="Source\System\Manager\GameManager.h" />
     <ClInclude Include="Source\System\Manager\ObjectManager.h" />
     <ClInclude Include="Source\System\Manager\ResourceManager.h" />
     <ClInclude Include="Source\System\Manager\SceneManager.h" />
@@ -403,16 +537,54 @@
     <ClInclude Include="Source\System\SceneData\Struct\SceneFileData.h" />
     <ClInclude Include="Source\System\SceneData\Struct\SceneObjectData.h" />
     <ClInclude Include="Source\System\Scenes\DebugScene.h" />
+    <ClInclude Include="Source\System\Scenes\TitleScene.h" />
+    <ClInclude Include="Source\System\Scenes\TutorialScene.h" />
     <ClInclude Include="Source\System\ServiceLocator.h" />
     <ClInclude Include="Source\System\struct\BackEnd.h" />
     <ClInclude Include="Source\System\struct\ViewPort.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Animation\AnimationWorld.cpp" />
+    <ClCompile Include="Source\Animation\API\AnimationComponentAPI.cpp" />
+    <ClCompile Include="Source\Animation\Component\ActiveRagdollComponent.cpp" />
+    <ClCompile Include="Source\Animation\Component\AnimationComponent.cpp" />
+    <ClCompile Include="Source\Animation\Component\HandIKComponent.cpp" />
+    <ClCompile Include="Source\Animation\Component\RagdollComponent.cpp" />
+    <ClCompile Include="Source\Animation\Function\PoseMixer.cpp" />
+    <ClCompile Include="Source\Animation\Load\Ragdoll\Active\ActiveRagdollLoader.cpp" />
+    <ClCompile Include="Source\Animation\Load\Ragdoll\Active\ActiveRagdollLoaderHelper.cpp" />
+    <ClCompile Include="Source\Animation\Load\Ragdoll\RagdollLoader.cpp" />
+    <ClCompile Include="Source\Animation\Load\Ragdoll\RagdollLoaderHelper.cpp" />
+    <ClCompile Include="Source\Animation\Load\Skeleton\BoneMaskLoader.cpp" />
+    <ClCompile Include="Source\Animation\Load\Skeleton\BoneMaskLoaderHelper.cpp" />
+    <ClCompile Include="Source\Animation\Storage\Animation\AnimationStorage.cpp" />
+    <ClCompile Include="Source\Animation\Storage\Component\ActiveRagdollComponentStorage.cpp" />
+    <ClCompile Include="Source\Animation\Storage\Component\AnimationComponentStorage.cpp" />
+    <ClCompile Include="Source\Animation\Storage\Component\HandIKComponentStorage.cpp" />
+    <ClCompile Include="Source\Animation\Storage\Component\RagdollComponentStorage.cpp" />
+    <ClCompile Include="Source\Animation\Storage\IK\Feature\FeatureIKStorage.cpp" />
+    <ClCompile Include="Source\Animation\Storage\IK\Feature\HandIKStorage.cpp" />
+    <ClCompile Include="Source\Animation\Storage\IK\Solver\SolverIKStorage.cpp" />
+    <ClCompile Include="Source\Animation\Storage\IK\Solver\TwoBoneIKStorage.cpp" />
+    <ClCompile Include="Source\Animation\Storage\Ragdoll\ActiveRagdollStorage.cpp" />
+    <ClCompile Include="Source\Animation\Storage\Ragdoll\RagdollStorage.cpp" />
+    <ClCompile Include="Source\Animation\Storage\Skeleton\PoseLayerStorage.cpp" />
+    <ClCompile Include="Source\Animation\Storage\Skeleton\SkeletonInstanceStorage.cpp" />
+    <ClCompile Include="Source\Animation\System\Solver\IKSolverSystem.cpp" />
+    <ClCompile Include="Source\Animation\System\Sync\AnimationCommitSystem.cpp" />
+    <ClCompile Include="Source\Animation\System\Sync\AnimationSyncSystem.cpp" />
+    <ClCompile Include="Source\Animation\System\Update\ActiveRagdollSystem.cpp" />
+    <ClCompile Include="Source\Animation\System\Update\BaseAnimationSystem.cpp" />
+    <ClCompile Include="Source\Animation\System\Update\FeatureIKSystem.cpp" />
+    <ClCompile Include="Source\Animation\System\Update\RagdollSystem.cpp" />
+    <ClCompile Include="Source\Animation\System\Update\TargetPoseSystem.cpp" />
+    <ClCompile Include="Source\Common\BaseClass\ObjectBase\ObjectBase.cpp" />
     <ClCompile Include="Source\Common\BaseClass\SceneBase\SceneBase.cpp" />
     <ClCompile Include="Source\Common\ECS\Event\EventSystem.cpp" />
     <ClCompile Include="Source\Common\ECS\SparseSet\Table\HashTable.cpp" />
     <ClCompile Include="Source\Common\ECS\SparseSet\Table\LinearTable.cpp" />
     <ClCompile Include="Source\Common\ECS\SystemManager.cpp" />
+    <ClCompile Include="Source\Common\Fade.cpp" />
     <ClCompile Include="Source\Common\Math\GeometryUtility.cpp" />
     <ClCompile Include="Source\Common\Math\Matrix\MatGenerateFunc.cpp" />
     <ClCompile Include="Source\Common\Math\Matrix\Matrix.cpp" />
@@ -426,11 +598,22 @@
     <ClCompile Include="Source\Common\Math\Vector\Vector3\Vector3Int.cpp" />
     <ClCompile Include="Source\Common\Math\Vector\Vector4\Vector4.cpp" />
     <ClCompile Include="Source\Main.cpp" />
-    <ClCompile Include="Source\Objects\DebugBox.cpp" />
-    <ClCompile Include="Source\Objects\DebugCapsule.cpp" />
-    <ClCompile Include="Source\Objects\DebugSphere.cpp" />
+    <ClCompile Include="Source\Objects\Debug\DebugActiveRagdoll.cpp" />
+    <ClCompile Include="Source\Objects\Debug\DebugBox.cpp" />
+    <ClCompile Include="Source\Objects\Debug\DebugCapsule.cpp" />
+    <ClCompile Include="Source\Objects\Debug\DebugRagdoll.cpp" />
+    <ClCompile Include="Source\Objects\Debug\DebugSphere.cpp" />
     <ClCompile Include="Source\Objects\EmptyObject.cpp" />
+    <ClCompile Include="Source\Objects\Escape\Check.cpp" />
+    <ClCompile Include="Source\Objects\Escape\Escape.cpp" />
+    <ClCompile Include="Source\Objects\Escape\QuitUI.cpp" />
+    <ClCompile Include="Source\Objects\Escape\ResumeUI.cpp" />
+    <ClCompile Include="Source\Objects\Escape\TitleUI.cpp" />
     <ClCompile Include="Source\Objects\Player.cpp" />
+    <ClCompile Include="Source\Objects\Title\PressToStart.cpp" />
+    <ClCompile Include="Source\Objects\TutorialBox.cpp" />
+    <ClCompile Include="Source\Physics\API\PhysicsAPI.cpp" />
+    <ClCompile Include="Source\Physics\API\PhysicsComponentAPI.cpp" />
     <ClCompile Include="Source\Physics\Component\Body\RigidBodyComponent.cpp" />
     <ClCompile Include="Source\Physics\Component\Body\Soft\ClothComponent.cpp" />
     <ClCompile Include="Source\Physics\Component\Body\Soft\RopeComponent.cpp" />
@@ -440,18 +623,29 @@
     <ClCompile Include="Source\Physics\Component\Collider\CapsuleColliderComponent.cpp" />
     <ClCompile Include="Source\Physics\Component\Collider\ColliderComponent.cpp" />
     <ClCompile Include="Source\Physics\Component\Collider\SphereColliderComponent.cpp" />
+    <ClCompile Include="Source\Physics\Component\Constraint\AngleLimitHingeConstraintComponent.cpp" />
+    <ClCompile Include="Source\Physics\Component\Constraint\AngleLimitPointConstraintComponent.cpp" />
     <ClCompile Include="Source\Physics\Component\Constraint\DistanceConstraintComponent.cpp" />
-    <ClCompile Include="Source\Physics\Component\Constraint\EndPointConstraintComponentBase.cpp" />
+    <ClCompile Include="Source\Physics\Component\Constraint\HingeConstraintComponent.cpp" />
+    <ClCompile Include="Source\Physics\Component\Constraint\PointOnLineConstraintComponent.cpp" />
+    <ClCompile Include="Source\Physics\Component\Constraint\SliderConstraintComponent.cpp" />
+    <ClCompile Include="Source\Physics\Component\Constraint\LimitedPointOnLineConstraintComponent.cpp" />
+    <ClCompile Include="Source\Physics\Component\Constraint\LimitedSliderConstraintComponent.cpp" />
+    <ClCompile Include="Source\Physics\Component\Constraint\LimitedBallJointConstraintComponent.cpp" />
     <ClCompile Include="Source\Physics\Component\Constraint\PointConstraintComponent.cpp" />
     <ClCompile Include="Source\Physics\DebugRender\ColliderDebugRenderingSystem.cpp" />
     <ClCompile Include="Source\Physics\DebugRender\ConstraintDebugRenderingSystem.cpp" />
+    <ClCompile Include="Source\Physics\Function\ConstraintFunction.cpp" />
     <ClCompile Include="Source\Physics\Function\ContactFunction.cpp" />
     <ClCompile Include="Source\Physics\Function\GJKEPA.cpp" />
     <ClCompile Include="Source\Physics\Function\ManifoldFunction.cpp" />
     <ClCompile Include="Source\Physics\Function\RaycastFunction.cpp" />
+    <ClCompile Include="Source\Physics\Function\RayCastHelper.cpp" />
+    <ClCompile Include="Source\Physics\Function\SphereCastFunction.cpp" />
     <ClCompile Include="Source\Physics\PhysicsWorld.cpp" />
     <ClCompile Include="Source\Physics\Storage\Body\BodyStorage.cpp" />
     <ClCompile Include="Source\Physics\Storage\Body\Rigid\RigidBodyStorage.cpp" />
+    <ClCompile Include="Source\Physics\Storage\Buffer\BodySnapshotBuffer.cpp" />
     <ClCompile Include="Source\Physics\Storage\Buffer\PhysicsCommandBuffer.cpp" />
     <ClCompile Include="Source\Physics\Storage\CharacterController\CharacterControllerStorage.cpp" />
     <ClCompile Include="Source\Physics\Storage\Collider\ColliderStorage.cpp" />
@@ -463,33 +657,45 @@
     <ClCompile Include="Source\Physics\Storage\Component\Collider\BoxColliderComponentStorage.cpp" />
     <ClCompile Include="Source\Physics\Storage\Component\Collider\CapsuleColliderComponentStorage.cpp" />
     <ClCompile Include="Source\Physics\Storage\Component\Collider\SphereColliderComponentStorage.cpp" />
+    <ClCompile Include="Source\Physics\Storage\Component\Constraint\AngleLimitHingeConstraintComponentStorage.cpp" />
+    <ClCompile Include="Source\Physics\Storage\Component\Constraint\AngleLimitPointConstraintComponentStorage.cpp" />
     <ClCompile Include="Source\Physics\Storage\Component\Constraint\DistanceConstraintComponentStorage.cpp" />
+    <ClCompile Include="Source\Physics\Storage\Component\Constraint\HingeConstraintComponentStorage.cpp" />
+    <ClCompile Include="Source\Physics\Storage\Component\Constraint\PointOnLineConstraintComponentStorage.cpp" />
+    <ClCompile Include="Source\Physics\Storage\Component\Constraint\SliderConstraintComponentStorage.cpp" />
+    <ClCompile Include="Source\Physics\Storage\Component\Constraint\LimitedPointOnLineConstraintComponentStorage.cpp" />
+    <ClCompile Include="Source\Physics\Storage\Component\Constraint\LimitedSliderConstraintComponentStorage.cpp" />
+    <ClCompile Include="Source\Physics\Storage\Component\Constraint\LimitedBallJointConstraintComponentStorage.cpp" />
     <ClCompile Include="Source\Physics\Storage\Component\Constraint\PointConstraintComponentStorage.cpp" />
     <ClCompile Include="Source\Physics\Storage\Constraint\ConstraintStorage.cpp" />
     <ClCompile Include="Source\Physics\Storage\Transform\PhysicsTransformStorage.cpp" />
-    <ClCompile Include="Source\Physics\System\Build\ConstraintBuildSystem.cpp" />
+    <ClCompile Include="Source\Physics\Struct\Collision\CollisionFilter.cpp" />
+    <ClCompile Include="Source\Physics\System\Build\BodySnapshotBuildSystem.cpp" />
     <ClCompile Include="Source\Physics\System\Build\SolverBodyBuildSystem.cpp" />
     <ClCompile Include="Source\Physics\System\Collision\CollisionSystem.cpp" />
     <ClCompile Include="Source\Physics\System\Collision\NarrowPhasePairBuilder.cpp" />
-    <ClCompile Include="Source\Physics\System\PhysicsAPI.cpp" />
-    <ClCompile Include="Source\Physics\System\PhysicsComponentAPI.cpp" />
+    <ClCompile Include="Source\Physics\System\Collision\Simplex.cpp" />
     <ClCompile Include="Source\Physics\System\Query\PhysicsQuerySystem.cpp" />
-    <ClCompile Include="Source\Physics\System\Simplex.cpp" />
     <ClCompile Include="Source\Physics\System\Solver\CollisionSolverSystem.cpp" />
     <ClCompile Include="Source\Physics\System\Solver\ConstraintSolverSystem.cpp" />
     <ClCompile Include="Source\Physics\System\Solver\SolverBodyCommitSystem.cpp" />
+    <ClCompile Include="Source\Physics\System\Sync\ApplyPhysicsCommandBufferSystem.cpp" />
     <ClCompile Include="Source\Physics\System\Sync\PhysicsCommitSystem.cpp" />
     <ClCompile Include="Source\Physics\System\Sync\SynchronizationSystem.cpp" />
     <ClCompile Include="Source\Physics\System\Update\AABBUpdateSystem.cpp" />
     <ClCompile Include="Source\Physics\System\Update\CharacterControllerSystem.cpp" />
     <ClCompile Include="Source\Physics\System\Update\RigidBodySystem.cpp" />
+    <ClCompile Include="Source\Render\Renderer.cpp" />
     <ClCompile Include="Source\Render\System\CameraBindSystem.cpp" />
     <ClCompile Include="Source\Render\System\CameraRigSystem.cpp" />
     <ClCompile Include="Source\Render\System\ModelRenderingSystem.cpp" />
     <ClCompile Include="Source\Render\System\SkyRenderingSystem.cpp" />
+    <ClCompile Include="Source\Render\System\SpriteRenderingSystem.cpp" />
+    <ClCompile Include="Source\Sound\SoundPlayer.cpp" />
     <ClCompile Include="Source\System\Adapter\Dxlib\DxlibGPUConnecter.cpp" />
     <ClCompile Include="Source\System\Adapter\Dxlib\DxlibInput.cpp" />
     <ClCompile Include="Source\System\Adapter\Dxlib\DxlibRenderer.cpp" />
+    <ClCompile Include="Source\System\Adapter\Dxlib\DxlibSound.cpp" />
     <ClCompile Include="Source\System\Adapter\Dxlib\DxlibSystem.cpp" />
     <ClCompile Include="Source\System\Factory\BackEndFactory.cpp" />
     <ClCompile Include="Source\System\Factory\ComponentFactory.cpp" />
@@ -499,6 +705,7 @@
     <ClCompile Include="Source\System\Input\InputAssetDataLoadHelper.cpp" />
     <ClCompile Include="Source\System\Input\InputSystem.cpp" />
     <ClCompile Include="Source\System\Manager\ApplicationManager.cpp" />
+    <ClCompile Include="Source\System\Manager\GameManager.cpp" />
     <ClCompile Include="Source\System\Manager\ObjectManager.cpp" />
     <ClCompile Include="Source\System\Manager\ResourceManager.cpp" />
     <ClCompile Include="Source\System\Manager\SceneManager.cpp" />
@@ -506,28 +713,25 @@
     <ClCompile Include="Source\System\SceneData\JsonLoadHelperFunc.cpp" />
     <ClCompile Include="Source\System\SceneData\SceneDataLoader.cpp" />
     <ClCompile Include="Source\System\Scenes\DebugScene.cpp" />
+    <ClCompile Include="Source\System\Scenes\TitleScene.cpp" />
+    <ClCompile Include="Source\System\Scenes\TutorialScene.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="Shader\HLSL\Sky\SkyPS.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='DebugDxlib|x64'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='DebugDxlib|Win32'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='ReleaseDxlib|x64'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='ReleaseDxlib|Win32'">Pixel</ShaderType>
+    <FxCompile Include="Shader\Sky\SkyPS.hlsl">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='DebugDxlib|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='ReleaseDxlib|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='DebugDxlib|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='ReleaseDxlib|x64'">true</ExcludedFromBuild>
     </FxCompile>
-    <FxCompile Include="Shader\HLSL\Sky\SkyVS.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='DebugDxlib|x64'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='DebugDxlib|Win32'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='ReleaseDxlib|x64'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='ReleaseDxlib|Win32'">Vertex</ShaderType>
+    <FxCompile Include="Shader\Sky\SkyVS.hlsl">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='DebugDxlib|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='ReleaseDxlib|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='DebugDxlib|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='ReleaseDxlib|x64'">true</ExcludedFromBuild>
     </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Source\Physics\Component\Constraint\Base\ConstraintComponentBase.inl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -27,4 +27,13 @@ public:
 	float GetRadius() const;
 	// 半径変更
 	void SetRadius(float _radius);
+
+	// オフセット位置取得
+	Vector3 GetOffsetPosition();
+	// オフセット位置変更
+	void SetOffsetPosition(const Vector3& _offset);
+	// オフセット回転取得
+	Quaternion GetOffsetRotation();
+	// オフセット回転変更
+	void SetOffsetRotation(const Quaternion& _offset);
 };

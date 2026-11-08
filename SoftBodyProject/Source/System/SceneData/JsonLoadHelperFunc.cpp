@@ -3,6 +3,7 @@
 #include "TransformComponentData.h"
 #include "BoxColliderComponentData.h"
 #include "SphereColliderComponentData.h"
+#include "RendererComponentData.h"
 
 
 std::unique_ptr<SceneComponentData> JsonLoadHelperFunc::CreateTransformData(const rapidjson::Value& _value)
@@ -26,6 +27,15 @@ std::unique_ptr<SceneComponentData> JsonLoadHelperFunc::CreateBoxColliderData(co
     // データを詰めていく。
     GetVector3(_value["Size"], data->size);
 
+	if (_value.HasMember("OffsetPosition"))
+	{
+		GetVector3(_value["OffsetPosition"], data->offsetPosition);
+	}
+	if (_value.HasMember("OffsetRotationDeg"))
+	{
+		GetVector3(_value["OffsetRotationDeg"], data->offsetRotationDeg);
+	}
+
     return data;
 }
 
@@ -37,7 +47,28 @@ std::unique_ptr<SceneComponentData> JsonLoadHelperFunc::CreateSphereColliderData
     // データを詰めていく。
     data->radius = _value["Radius"].GetFloat();
 
+	if (_value.HasMember("OffsetPosition"))
+	{
+		GetVector3(_value["OffsetPosition"], data->offsetPosition);
+	}
+	if (_value.HasMember("OffsetRotationDeg"))
+	{
+		GetVector3(_value["OffsetRotationDeg"], data->offsetRotationDeg);
+	}
+
     return data;
+}
+
+std::unique_ptr<SceneComponentData> JsonLoadHelperFunc::CreateRendererData(const rapidjson::Value& _value)
+{
+	std::unique_ptr<RendererComponentData> data{ std::make_unique<RendererComponentData>() };
+
+	if (_value.HasMember("ModelPath") && _value["ModelPath"].IsString())
+	{
+		data->modelPath = _value["ModelPath"].GetString();
+	}
+
+	return data;
 }
 
 bool JsonLoadHelperFunc::GetVector3(const rapidjson::Value& _value, Vector3& _output)

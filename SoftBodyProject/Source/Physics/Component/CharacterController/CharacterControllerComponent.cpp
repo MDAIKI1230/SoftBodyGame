@@ -92,6 +92,28 @@ void CharacterControllerComponent::SetColliderRadius(float _radius)
 	PhysicsComponentAPI::SetCharacterControllerColliderRadius(id, _radius);
 }
 
+// オフセット位置取得
+Vector3 CharacterControllerComponent::GetColliderOffset()
+{
+	return PhysicsComponentAPI::GetColliderOffset(id);
+}
+// オフセット位置設定
+void CharacterControllerComponent::SetColliderOffset(const Vector3& _offset)
+{
+	PhysicsComponentAPI::SetColliderOffset(id, _offset);
+}
+
+// コリジョンフィルター取得
+CollisionFilter CharacterControllerComponent::GetCollisionFilter()
+{
+	return PhysicsComponentAPI::GetCharacterControllerCollisionFilter(id);
+}
+// コリジョンフィルタ設定
+void CharacterControllerComponent::SetCollisionFilter(const CollisionFilter& _filter)
+{
+	PhysicsComponentAPI::SetCharacterControllerCollisionFilter(id, _filter);
+}
+
 // --- 移動設定 ---
 
 // 最大移動速度取得
@@ -166,6 +188,28 @@ void CharacterControllerComponent::SetSlopeAcceleration(float _acceleration)
 	PhysicsComponentAPI::SetCharacterControllerSlopeAcceleration(id, _acceleration);
 }
 
+// 移動方向を向く際の最大修正角度取得(弧度法)
+float CharacterControllerComponent::GetMovementAngularVelocityRad()
+{
+	return PhysicsComponentAPI::GetCharacterControllerMovementAngularVelocity(id);
+}
+// 移動方向を向く際の最大修正角度設定(弧度法)
+void CharacterControllerComponent::SetMovementAngularVelocityRad(float _movementAngularVelocity)
+{
+	PhysicsComponentAPI::SetCharacterControllerMovementAngularVelocity(id, _movementAngularVelocity);
+}
+
+// 移動方向を向く際の最大修正角度取得(度数法)
+float CharacterControllerComponent::GetMovementAngularVelocityDeg()
+{
+	return MDMath::DegToRad(PhysicsComponentAPI::GetCharacterControllerMovementAngularVelocity(id));
+}
+// 移動方向を向く際の最大修正角度設定(度数法)
+void CharacterControllerComponent::SetMovementAngularVelocityDeg(float _movementAngularVelocity)
+{
+	PhysicsComponentAPI::SetCharacterControllerMovementAngularVelocity(id, MDMath::DegToRad(_movementAngularVelocity));
+}
+
 // --- 接地設定 ---
 
 // 地面探索距離取得
@@ -178,6 +222,18 @@ float CharacterControllerComponent::GetGroundProbeDistance() const
 void CharacterControllerComponent::SetGroundProbeDistance(float _distance)
 {
 	PhysicsComponentAPI::SetCharacterControllerGroundProbeDistance(id, _distance);
+}
+
+// 接地判定用スフィアキャストの半径オフセット取得
+float CharacterControllerComponent::GetGroundSphereRayOffsetRadius() const
+{
+	return PhysicsComponentAPI::GetCharacterControllerGroundSphereRayOffsetRadius(id);
+}
+
+// 接地判定用スフィアキャストの半径オフセット設定
+void CharacterControllerComponent::SetGroundSphereRayOffsetRadius(float _offsetRadius)
+{
+	PhysicsComponentAPI::SetCharacterControllerGroundSphereRayOffsetRadius(id, _offsetRadius);
 }
 
 // 歩行可能判定の最小法線内積取得

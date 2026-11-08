@@ -53,6 +53,16 @@ public:
 	// カプセル半径設定
 	void SetColliderRadius(float _radius);
 
+	// オフセット位置取得
+	Vector3 GetColliderOffset();
+	// オフセット位置設定
+	void SetColliderOffset(const Vector3& _offset);
+
+	// コリジョンフィルター取得
+	CollisionFilter GetCollisionFilter();
+	// コリジョンフィルタ設定
+	void SetCollisionFilter(const CollisionFilter& _filter);
+
 	// --- 移動設定 ---
 
 	// 最大移動速度取得
@@ -85,12 +95,27 @@ public:
 	// 急斜面での滑り加速度設定
 	void SetSlopeAcceleration(float _acceleration);
 
+	// 移動方向を向く際の最大修正角度取得(弧度法)
+	float GetMovementAngularVelocityRad();
+	// 移動方向を向く際の最大修正角度設定(弧度法)
+	void SetMovementAngularVelocityRad(float _movementAngularVelocity);
+
+	// 移動方向を向く際の最大修正角度取得(度数法)
+	float GetMovementAngularVelocityDeg();
+	// 移動方向を向く際の最大修正角度設定(度数法)
+	void SetMovementAngularVelocityDeg(float _movementAngularVelocity);
+
 	// --- 接地設定 ---
 
 	// 地面探索距離取得
 	float GetGroundProbeDistance() const;
 	// 地面探索距離設定
 	void SetGroundProbeDistance(float _distance);
+
+	// 接地判定用スフィアキャストの半径オフセット取得
+	float GetGroundSphereRayOffsetRadius() const;
+	// 接地判定用スフィアキャストの半径オフセット設定
+	void SetGroundSphereRayOffsetRadius(float _offsetRadius);
 
 	// 歩行可能判定の最小法線内積取得
 	float GetMinGroundDot() const;

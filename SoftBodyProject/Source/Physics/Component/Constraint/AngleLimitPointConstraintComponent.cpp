@@ -1,0 +1,67 @@
+﻿#include "Base/ConstraintComponentBase.inl"
+
+#include "PhysicsComponentAPI.h"
+
+#include "AngleLimitPointConstraintComponent.h"
+
+template struct ConstraintComponentBase<AngleLimitPointConstraint, false>;
+
+// コンストラクタ
+AngleLimitPointConstraintComponent::AngleLimitPointConstraintComponent(EntityID _entity) :
+	ConstraintComponentBase{ PhysicsComponentAPI::Create<AngleLimitPointConstraint>(_entity, Vector3::ZERO, Quaternion::IDENTITY) }
+{
+}
+
+// コンストラクタ
+AngleLimitPointConstraintComponent::AngleLimitPointConstraintComponent(EntityID _entity, const Vector3& _localOffset) :
+	ConstraintComponentBase{ PhysicsComponentAPI::Create<AngleLimitPointConstraint>(_entity, _localOffset, Quaternion::IDENTITY) }
+{
+}
+
+// コンストラクタ
+AngleLimitPointConstraintComponent::AngleLimitPointConstraintComponent(EntityID _entity, const Vector3& _localOffset, const Quaternion& _localRotation) :
+	ConstraintComponentBase{ PhysicsComponentAPI::Create<AngleLimitPointConstraint>(_entity, _localOffset, _localRotation) }
+{
+}
+
+// 最小角度取得
+float AngleLimitPointConstraintComponent::GetAngleMin() const
+{
+	return PhysicsComponentAPI::GetAngleMin(id);
+}
+
+// 最小角度変更
+void AngleLimitPointConstraintComponent::SetAngleMin(float _angleMin)
+{
+	PhysicsComponentAPI::SetAngleMin(id, _angleMin);
+}
+
+// 最大角度取得
+float AngleLimitPointConstraintComponent::GetAngleMax() const
+{
+	return PhysicsComponentAPI::GetAngleMax(id);
+}
+
+// 最大角度変更
+void AngleLimitPointConstraintComponent::SetAngleMax(float _angleMax)
+{
+	PhysicsComponentAPI::SetAngleMax(id, _angleMax);
+}
+
+// 角度範囲変更
+void AngleLimitPointConstraintComponent::SetAngleRange(float _angleMin, float _angleMax)
+{
+	PhysicsComponentAPI::SetAngleRange(id, _angleMin, _angleMax);
+}
+
+// Tuning取得
+ConstraintTuning AngleLimitPointConstraintComponent::GetTuning() const
+{
+	return PhysicsComponentAPI::GetTuning(id);
+}
+
+// Tuning変更
+void AngleLimitPointConstraintComponent::SetTuning(const ConstraintTuning& _tuning)
+{
+	PhysicsComponentAPI::SetTuning(id, _tuning);
+}

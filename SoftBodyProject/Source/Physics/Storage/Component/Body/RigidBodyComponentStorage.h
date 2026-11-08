@@ -1,7 +1,5 @@
 ﻿#pragma once
 
-#include "MDMath.h"
-
 #include "UniqueComponentStorageBase.h"
 
 #include "RigidBodyComponent.h"

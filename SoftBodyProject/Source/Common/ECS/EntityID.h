@@ -7,12 +7,3 @@ struct EntityTag;
 
 using EntityID = GenerationalID<EntityTag>;
 
-template<>
-struct std::hash<EntityID>
-{
-    size_t operator()(EntityID id) const noexcept
-    {
-        return std::hash<size_t>{}(id.GetIndex())
-            ^ (std::hash<size_t>{}(id.GetGeneration()) << 1);
-    }
-};

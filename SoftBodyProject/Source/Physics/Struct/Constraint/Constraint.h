@@ -4,10 +4,18 @@
 
 struct Constraint
 {
+	// 起動フラグ
+	bool isActive{ true };
+
 	// ソルバボディA
 	uint32_t solverBodyAIndex{ 0 };
 	// ソルバボディB
 	uint32_t solverBodyBIndex{ 0 };
+
+	// 解く際の重みA
+	float weightA{ 1.0f };
+	// 解く際の重みB
+	float weightB{ 1.0f };
 
 	// ズレの数値(拘束条件Cの値と考えてOK)
 	float error{ 0.0f };
@@ -17,4 +25,11 @@ struct Constraint
 	// 蓄積したλ
 	float accumulatedLambda{ 0 };
 	float accumulatedFrictionLambda{ 0 };
+
+	// 拘束の違反の許容値(0で固い拘束)
+	float timeStepAdjustedCompliance{ 0.0f };
+	// 加えれる力の最小値
+	float minLambda{ -FLT_MAX };
+	// 加えれる力の最大値
+	float maxLambda{ FLT_MAX };
 };

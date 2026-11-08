@@ -40,6 +40,16 @@ public:
 		_output = *data;
 		return true;
 	}
+	// 取得
+	DATA* Get(HANDLE _handle)
+	{
+		if (!handlePool.IsAlive(_handle))
+		{
+			return nullptr;
+		}
+
+		return resources.TryEdit(_handle);
+	}
 	// 破棄
 	void Remove(HANDLE _handle)
 	{

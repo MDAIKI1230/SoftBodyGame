@@ -30,15 +30,21 @@ void CollisionSystem::BroadPhase(PhysicsTransformStorage* _transformStorage, Col
 	// すべてのコライダーのAABBの各軸の射影を保存する。
 	for (int i{ 0 }; i < count; i++)
 	{
-		uint32_t transformIndex{ _transformStorage->GetDenseIndex(_colliderStorage->GetAABBBroadPhaseCollider(i).transformID)};
+		PhysicsTransformID transformID{ _colliderStorage->GetAABBBroadPhaseCollider(i).transformID };
 
 		ColliderProjectionData data;
 
-		data.min = _colliderStorage->GetAABBBroadPhaseCollider(i).min + _transformStorage->GetPosition(transformIndex);
-		data.max = _colliderStorage->GetAABBBroadPhaseCollider(i).max + _transformStorage->GetPosition(transformIndex);
-
 		// AABBと紐づいたコライダーのID
 		ColliderID colliderID{ _colliderStorage->GetAABBBroadPhaseCollider(i).colliderID };
+
+		Vector3 offset{ _transformStorage->GetRotation(transformID).Rotate(_colliderStorage->GetOffsetPosition(colliderID)) };
+
+		data.min = _colliderStorage->GetAABBBroadPhaseCollider(i).min
+			+ _transformStorage->GetPosition(transformID)
+			+ offset;
+		data.max = _colliderStorage->GetAABBBroadPhaseCollider(i).max
+			+ _transformStorage->GetPosition(transformID)
+			+ offset;
 
 		// コライダーIDのindex
 		size_t colliderIndex{ colliderID.GetIndex()};
@@ -92,8 +98,11 @@ void CollisionSystem::BroadPhase(PhysicsTransformStorage* _transformStorage, Col
 		// 3軸すべてで交差しているなら
 		if (checkPair.second == 3)
 		{
-			// ナローフェーズに行けるペアとして追加
-			broadClearPairs.push_back(checkPair.first);
+			if (CanCollide(checkPair.first.a, checkPair.first.b, _colliderStorage))
+			{
+				// ナローフェーズに行けるペアとして追加
+				broadClearPairs.push_back(checkPair.first);
+			}
 		}
 	}
 }
@@ -293,9 +302,10 @@ void CollisionSystem::Solve<SphereTag, SphereTag, CollisionPair::SphereSpherePai
 {
 	for (auto& pair : pairList)
 	{
-		if (ContactFunction::SphereSphere(pair.a, pair.b, _colliderStorage, _transformStorage, _manifoldBuffer))
+		ContactInfo infoA, infoB;
+		if (ContactFunction::SphereSphere(pair.a, pair.b, infoA, infoB, _colliderStorage, _transformStorage, _manifoldBuffer))
 		{
-			RegisterEvent(pair.a, pair.b, _colliderStorage, _eventManager);
+			RegisterEvent(pair.a, infoA, pair.b, infoB, _colliderStorage, _eventManager);
 		}
 	}
 }
@@ -310,9 +320,10 @@ void CollisionSystem::Solve<SphereTag, BoxTag, CollisionPair::SphereBoxPair>(
 {
 	for (auto& pair : pairList)
 	{
-		if (ContactFunction::SphereBox(pair.a, pair.b, _colliderStorage, _transformStorage, _manifoldBuffer))
+		ContactInfo infoA, infoB;
+		if (ContactFunction::SphereBox(pair.a, pair.b, infoA, infoB, _colliderStorage, _transformStorage, _manifoldBuffer))
 		{
-			RegisterEvent(pair.a, pair.b, _colliderStorage, _eventManager);
+			RegisterEvent(pair.a, infoA, pair.b, infoB, _colliderStorage, _eventManager);
 		}
 	}
 }
@@ -327,9 +338,10 @@ void CollisionSystem::Solve<SphereTag, CapsuleTag, CollisionPair::SphereCapsuleP
 {
 	for (auto& pair : pairList)
 	{
-		if (ContactFunction::SphereCapsule(pair.a, pair.b, _colliderStorage, _transformStorage, _manifoldBuffer))
+		ContactInfo infoA, infoB;
+		if (ContactFunction::SphereCapsule(pair.a, pair.b, infoA, infoB, _colliderStorage, _transformStorage, _manifoldBuffer))
 		{
-			RegisterEvent(pair.a, pair.b, _colliderStorage, _eventManager);
+			RegisterEvent(pair.a, infoA, pair.b, infoB, _colliderStorage, _eventManager);
 		}
 	}
 }
@@ -345,9 +357,10 @@ void CollisionSystem::Solve<BoxTag, SphereTag, CollisionPair::BoxSpherePair>(
 {
 	for (auto& pair : pairList)
 	{
-		if (ContactFunction::SphereBox(pair.b, pair.a, _colliderStorage, _transformStorage, _manifoldBuffer))
+		ContactInfo infoA, infoB;
+		if (ContactFunction::SphereBox(pair.b, pair.a, infoB, infoA, _colliderStorage, _transformStorage, _manifoldBuffer))
 		{
-			RegisterEvent(pair.a, pair.b, _colliderStorage, _eventManager);
+			RegisterEvent(pair.a, infoA, pair.b, infoB, _colliderStorage, _eventManager);
 		}
 	}
 }
@@ -362,9 +375,10 @@ void CollisionSystem::Solve<BoxTag, BoxTag, CollisionPair::BoxBoxPair>(
 {
 	for (auto& pair : pairList)
 	{
-		if (ContactFunction::BoxBox(pair.a, pair.b, _colliderStorage, _transformStorage, _manifoldBuffer))
+		ContactInfo infoA, infoB;
+		if (ContactFunction::BoxBox(pair.a, pair.b, infoA, infoB, _colliderStorage, _transformStorage, _manifoldBuffer))
 		{
-			RegisterEvent(pair.a, pair.b, _colliderStorage, _eventManager);
+			RegisterEvent(pair.a, infoA, pair.b, infoB, _colliderStorage, _eventManager);
 		}
 	}
 }
@@ -379,9 +393,10 @@ void CollisionSystem::Solve<BoxTag, CapsuleTag, CollisionPair::BoxCapsulePair>(
 {
 	for (auto& pair : pairList)
 	{
-		if (ContactFunction::BoxCapsule(pair.a, pair.b, _colliderStorage, _transformStorage, _manifoldBuffer))
+		ContactInfo infoA, infoB;
+		if (ContactFunction::BoxCapsule(pair.a, pair.b, infoA, infoB, _colliderStorage, _transformStorage, _manifoldBuffer))
 		{
-			RegisterEvent(pair.a, pair.b, _colliderStorage, _eventManager);
+			RegisterEvent(pair.a, infoA, pair.b, infoB, _colliderStorage, _eventManager);
 		}
 	}
 }
@@ -397,9 +412,10 @@ void CollisionSystem::Solve<CapsuleTag, SphereTag, CollisionPair::CapsuleSphereP
 {
 	for (auto& pair : pairList)
 	{
-		if (ContactFunction::SphereCapsule(pair.a, pair.b, _colliderStorage, _transformStorage, _manifoldBuffer))
+		ContactInfo infoA, infoB;
+		if (ContactFunction::SphereCapsule(pair.b, pair.a, infoB, infoA, _colliderStorage, _transformStorage, _manifoldBuffer))
 		{
-			RegisterEvent(pair.b, pair.a, _colliderStorage, _eventManager);
+			RegisterEvent(pair.a, infoA, pair.b, infoB, _colliderStorage, _eventManager);
 		}
 	}
 }
@@ -414,9 +430,10 @@ void CollisionSystem::Solve<CapsuleTag, BoxTag, CollisionPair::CapsuleBoxPair>(
 {
 	for (auto& pair : pairList)
 	{
-		if (ContactFunction::BoxCapsule(pair.b, pair.a, _colliderStorage, _transformStorage, _manifoldBuffer))
+		ContactInfo infoA, infoB;
+		if (ContactFunction::BoxCapsule(pair.b, pair.a, infoB, infoA, _colliderStorage, _transformStorage, _manifoldBuffer))
 		{
-			RegisterEvent(pair.b, pair.a, _colliderStorage, _eventManager);
+			RegisterEvent(pair.a, infoA, pair.b, infoB, _colliderStorage, _eventManager);
 		}
 	}
 }
@@ -431,29 +448,58 @@ void CollisionSystem::Solve<CapsuleTag, CapsuleTag, CollisionPair::CapsuleCapsul
 {
 	for (auto& pair : pairList)
 	{
-		if (ContactFunction::CapsuleCapsule(pair.a, pair.b, _colliderStorage, _transformStorage, _manifoldBuffer))
+		ContactInfo infoA, infoB;
+		if (ContactFunction::CapsuleCapsule(pair.a, pair.b, infoA, infoB, _colliderStorage, _transformStorage, _manifoldBuffer))
 		{
-			RegisterEvent(pair.a, pair.b, _colliderStorage, _eventManager);
+			RegisterEvent(pair.a, infoA, pair.b, infoB, _colliderStorage, _eventManager);
 		}
 	}
 }
 
 void CollisionSystem::RegisterEvent(
-	ColliderID _a,
-	ColliderID _b,
+	ColliderID _colliderA, const ContactInfo& _contactInfoA,
+	ColliderID _colliderB, const ContactInfo& _contactInfoB,
 	ColliderStorage* _colliderStorage,
 	EventManager* _eventManager)
 {
+	CollisionPair::Pair pair{ _colliderA, _colliderB };
 	// 今回のペア追加
-	currentFramePair.insert(CollisionPair::Pair{ _a, _b });
+	currentFramePair.insert(pair);
 
+	OnCollisionEvent onCollisionEvent{ _colliderStorage->GetOwnerEntity(_colliderA),_colliderStorage->GetOwnerEntity(_colliderB) };
+
+	CollisionInfo infoA;
+
+	ColliderComponent colliderA{ _colliderA };
+	ColliderComponent colliderB{ _colliderB };
+
+	infoA.otherCollider = colliderB;
+	infoA.selfCollider = colliderA;
+	infoA.selfContact = _contactInfoA;
+	infoA.otherContact = _contactInfoB;
+
+	CollisionInfo infoB;
+
+	infoB.otherCollider = colliderA;
+	infoB.selfCollider = colliderB;
+	infoB.selfContact = _contactInfoB;
+	infoB.otherContact = _contactInfoA;
+
+	onCollisionEvent.infoA = infoA;
+	onCollisionEvent.infoB = infoB;
+	
 	// 当たっているのでとりあえずよべる
-	_eventManager->Push<OnCollisionEvent>({ _colliderStorage->GetOwnerEntity(_a),_colliderStorage->GetOwnerEntity(_b) });
+	_eventManager->Push<OnCollisionEvent>({ onCollisionEvent });
 
 	// 前回のフレーム当たってなくて今回当たってるため衝突開始のイベントを呼ぶ
-	if (!prevFramePair.contains(CollisionPair::Pair{ _a, _b }))
+	if (!prevFramePair.contains(pair))
 	{
-		_eventManager->Push<OnCollisionEnterEvent>({ _colliderStorage->GetOwnerEntity(_a),_colliderStorage->GetOwnerEntity(_b) });
+		OnCollisionEnterEvent onCollisionEnterEvent{ _colliderStorage->GetOwnerEntity(_colliderA),_colliderStorage->GetOwnerEntity(_colliderB) };
+
+		onCollisionEnterEvent.infoA = infoA;
+		onCollisionEnterEvent.infoB = infoB;
+
+		_eventManager->Push<OnCollisionEnterEvent>({ onCollisionEnterEvent });
 	}
 }
 
@@ -467,8 +513,26 @@ void CollisionSystem::RegisterExitEvent(ColliderStorage* _colliderStorage, Event
 		// 前フレーム当たってて今回の衝突ペアにいないから衝突しなくなった
 		if (!currentFramePair.contains(pair))
 		{
+			OnCollisionExitEvent onCollisionExitEvent{ _colliderStorage->GetOwnerEntity(pair.a),_colliderStorage->GetOwnerEntity(pair.b) };
+
+			CollisionInfo infoA;
+
+			ColliderComponent colliderA{ pair.a };
+			ColliderComponent colliderB{ pair.b };
+
+			infoA.otherCollider = colliderB;
+			infoA.selfCollider = colliderA;
+
+			CollisionInfo infoB;
+
+			infoB.otherCollider = colliderA;
+			infoB.selfCollider = colliderB;
+
+			onCollisionExitEvent.infoA = infoA;
+			onCollisionExitEvent.infoB = infoB;
+
 			// イベント呼び出し
-			_eventManager->Push<OnCollisionExitEvent>({ _colliderStorage->GetOwnerEntity(pair.a),_colliderStorage->GetOwnerEntity(pair.b) });
+			_eventManager->Push<OnCollisionExitEvent>({ onCollisionExitEvent });
 
 			erasePair.insert(pair);
 		}
@@ -506,4 +570,20 @@ void CollisionSystem::Swap(std::vector<ColliderProjection>& _projectionValues, i
 
 	projectionDatas[_projectionValues[_a].colliderID.GetIndex()].endpointIndex[_projectionValues[_a].axisType] = _a;
 	projectionDatas[_projectionValues[_b].colliderID.GetIndex()].endpointIndex[_projectionValues[_b].axisType] = _b;
+}
+
+bool CollisionSystem::CanCollide(ColliderID _a, ColliderID _b, ColliderStorage* _colliderStorage)
+{
+	// 同じPhysics BodyのCollider同士
+	if (_colliderStorage->GetTransformID(_a) ==
+		_colliderStorage->GetTransformID(_b))
+	{
+		return false;
+	}
+
+	CollisionFilter& aFilter{ _colliderStorage->EditFilter(_a) };
+	CollisionFilter& bFilter{ _colliderStorage->EditFilter(_b) };
+
+	// 種類単位の判定
+	return aFilter.CanCollide(bFilter);
 }

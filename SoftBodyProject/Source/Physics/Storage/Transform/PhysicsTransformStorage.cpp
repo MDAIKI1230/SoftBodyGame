@@ -21,10 +21,41 @@ PhysicsTransformID PhysicsTransformStorage::GetOrCreateTransform(EntityID _entit
 	worldMatrices.emplace_back();
 	// 親ID
 	parentIDs.emplace_back();
+	// ECSとの関係
+	syncPolicies.push_back(PhysicsTransformSyncPolicy::BIDIRECTIONAL);
+	// 使用エンティティ
+	ownerEntities.push_back(_entity);
 	// ID
-	ids.emplace_back(CreateID(static_cast<uint32_t>(ids.size()), _entity));
+	ids.emplace_back(CreateID(static_cast<uint32_t>(ids.size())));
 	// mapに追加
 	entityMap[_entity] = ids.back();
+	// IDを返してあげる
+	return ids.back();
+}
+
+// 内部用のTransform作成
+PhysicsTransformID PhysicsTransformStorage::CreateInternalTransform(EntityID _entity, const Vector3& _position, const Quaternion& _rotation, const Vector3& _scale)
+{
+	// --- 実際のデータを追加 ---
+
+	// 位置
+	positions.push_back(_position);
+	// 回転
+	rotations.push_back(_rotation);
+	// スケール
+	scales.push_back(_scale);
+	// ローカル行列
+	localMatrices.emplace_back();
+	// ワールド行列
+	worldMatrices.emplace_back();
+	// 親ID
+	parentIDs.emplace_back();
+	// ECSとの関係
+	syncPolicies.push_back(PhysicsTransformSyncPolicy::NONE);
+	// 使用エンティティ
+	ownerEntities.push_back(_entity);
+	// ID
+	ids.emplace_back(CreateID(static_cast<uint32_t>(ids.size())));
 	// IDを返してあげる
 	return ids.back();
 }
@@ -36,6 +67,15 @@ void PhysicsTransformStorage::Destroy(PhysicsTransformID _id)
 	if (ids.empty())
 	{
 		return;
+	}
+
+	// 配列を書き換える前に、所有者との対応を解除する
+	const EntityID ownerEntity{ GetOwnerEntity(_id) };
+	auto it = entityMap.find(ownerEntity);
+
+	if (it != entityMap.end() && it->second == _id)
+	{
+		entityMap.erase(it);
 	}
 
 	size_t last = ids.size() - 1;
@@ -55,6 +95,10 @@ void PhysicsTransformStorage::Destroy(PhysicsTransformID _id)
 		worldMatrices[index] = worldMatrices[last];
 		// 親ID
 		parentIDs[index] = parentIDs[last];
+		// ECSとの関係
+		syncPolicies[index] = syncPolicies[last];
+		// 使用エンティティ
+		ownerEntities[index] = ownerEntities[last];
 		// ID
 		ids[index] = ids[last];
 	}
@@ -64,14 +108,10 @@ void PhysicsTransformStorage::Destroy(PhysicsTransformID _id)
 	scales.pop_back();
 	localMatrices.pop_back();
 	worldMatrices.pop_back();
+	parentIDs.pop_back();
+	syncPolicies.pop_back();
+	ownerEntities.pop_back();
 	ids.pop_back();
-
-	auto it = entityMap.find(GetOwnerEntity(_id));
-
-	if (!entityMap.empty())
-	{
-		entityMap.erase(it);
-	}
 
 	if (!(movedId.GetIndex() == _id.GetIndex() && movedId.GetGeneration() == _id.GetGeneration()))
 	{

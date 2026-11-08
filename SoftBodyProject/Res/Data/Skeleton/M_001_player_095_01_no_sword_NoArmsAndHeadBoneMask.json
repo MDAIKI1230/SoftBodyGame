@@ -1,0 +1,20 @@
+{
+	"Format": "BoneMaskDefinition",
+	"Name": "M_001_player_095_01_no_sword_NoArmsAndHead",
+	"DefaultWeight": 1.0,
+	"Branches": [
+		{
+			"RootBoneName": "D1_1",
+			"Weight": 0.0
+		},
+		{
+			"RootBoneName": "E1_1",
+			"Weight": 0.0
+		},
+		{
+			"RootBoneName": "A1_1",
+			"Weight": 0.0
+		}
+	],
+	"Bones": []
+}

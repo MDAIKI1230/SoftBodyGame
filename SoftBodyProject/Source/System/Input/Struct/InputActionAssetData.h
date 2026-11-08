@@ -78,13 +78,20 @@ enum class InputDeviceType : std::uint8_t
 	GAMEPAD
 };
 
+// すべてのキー
+struct AnyButtonControl
+{
+	InputDeviceType device{ InputDeviceType::INVALID };
+};
+
 // すべての入力系を一意に扱うための奴
 using ResolvedInputControl =
 std::variant<
 	std::monostate,
 	KeyConstants,
 	MouseConstants,
-	GamePadConstants
+	GamePadConstants,
+	AnyButtonControl
 >;
 
 // 発動タイミング情報

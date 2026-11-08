@@ -1,4 +1,4 @@
-﻿#include "ServiceLocator.h"
+﻿#include "Renderer.h"
 
 #include "ColliderDebugRenderingSystem.h"
 
@@ -17,10 +17,10 @@ void ColliderDebugRenderingSystem::RenderSphera(PhysicsTransformStorage* _transf
 	{
 		PhysicsTransformID transID{ _colliderStorage->GetTransformID(id) };
 
-		uint32_t indexTrans{ _transformStorage->GetDenseIndex(transID) };
+		Vector3 offset{ _transformStorage->GetRotation(transID).Rotate(_colliderStorage->GetOffsetPosition(id)) };
 
-		ServiceLocator::GetRenderer()->DrawSphereMesh(
-			_transformStorage->GetPosition(indexTrans),
+		Renderer::DrawSphereMesh(
+			_transformStorage->GetPosition(transID) + offset,
 			_colliderStorage->GetSphereColliderRadius(id),
 			Color{ 0.0f,1.0f, 0.0f });
 	}
@@ -34,10 +34,22 @@ void ColliderDebugRenderingSystem::RenderBox(PhysicsTransformStorage* _transform
 
 		PhysicsTransformID transID{ _colliderStorage->GetTransformID(id) };
 
-		uint32_t indexTrans{ _transformStorage->GetDenseIndex(transID) };
+		Matrix4x4 offset{ MatGenerateFunc::TRS(
+			_colliderStorage->GetBoxColliderOffsetPosition(id),
+			_colliderStorage->GetBoxColliderOffsetRotation(id),
+			Vector3::ONE
+		) };
 
-		ServiceLocator::GetRenderer()->DrawBox(
-			_transformStorage->GetWorldMatrix(indexTrans),
+
+		// 行列の作り直しを一応入れておく(ワールドは親から順に計算とかが難しいからあきらめ)
+		Matrix4x4 trs{ MatGenerateFunc::TRS(
+			_transformStorage->GetPosition(transID),
+			_transformStorage->GetRotation(transID),
+			_transformStorage->GetScale(transID)
+		) };
+
+		Renderer::DrawBox(
+			trs * offset,
 			_colliderStorage->GetBoxColliderScale(id),
 			Color{ 0.0f,1.0f, 0.0f });
 	}
@@ -51,17 +63,16 @@ void ColliderDebugRenderingSystem::RenderCapsule(PhysicsTransformStorage* _trans
 	{
 		PhysicsTransformID transID{ _colliderStorage->GetTransformID(id) };
 
-		uint32_t indexTrans{ _transformStorage->GetDenseIndex(transID) };
-
 		// 軸の半分
-		const Quaternion& rot{ _transformStorage->GetRotation(indexTrans) };
-		const Vector3& pos{ _transformStorage->GetPosition(indexTrans) };
+		const Quaternion& rot{ _transformStorage->GetRotation(transID) * _colliderStorage->GetCapsuleColliderOffsetRotation(id) };
+		Vector3 offset{ _transformStorage->GetRotation(transID).Rotate(_colliderStorage->GetOffsetPosition(id)) };
+		const Vector3& pos{ _transformStorage->GetPosition(transID) + offset };
 		Vector3 axisHalf{ rot.Rotate(Vector3::UP * _colliderStorage->GetCapsuleColliderHeight(id) / 2.0f) };
 
 		// Capsuleの始点終点
 		Vector3 start{ pos + axisHalf };
 		Vector3 end{ pos - axisHalf };
-		ServiceLocator::GetRenderer()->DrawCapsule(
+		Renderer::DrawCapsule(
 			start,
 			end,
 			_colliderStorage->GetCapsuleColliderRadius(id),

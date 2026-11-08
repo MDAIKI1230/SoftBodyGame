@@ -1,12 +1,14 @@
 ﻿#pragma once
 
+#include <limits>
+
 #include "IRenderer.h"
 
-#include "ResourceManager.h"
+#include "ResourceStorage.h"
 
 class DxlibRenderer : public IRenderer
 {
-public:
+private:
 	// カメラ関連
 	// カメラセット
 	void SetCamera(const Matrix4x4& _view, float _near, float _far) override;
@@ -38,6 +40,8 @@ public:
 	void DrawModel(ModelHandle _handle) override;
 	// 画像描画
 	void DrawTexture(TextureHandle _handle, const Vector2& _pos, bool _transFlag) override;
+	// Fade描画
+	void DrawFadeBox(float _alpha) override;
 	// 球描画
 	void DrawSphere(const Vector3& _pos, float _radius, const Color& _color) override;
 	// メッシュ球描画
@@ -48,8 +52,34 @@ public:
 	void DrawLine(const Vector3& _pos1, const Vector3& _pos2, const Color& _color) override;
 	// カプセル描画
 	void DrawCapsule(const Vector3& _pos1, const Vector3& _pos2, float _radius, const Color& _color);
+	// 円錐描画
+	void DrawCone(const Vector3& _topPos, const Vector3& _bottomPos, float _radius, int _division, const Color& _color) override;
 
-private:
+	// --- アニメーション関連 ---
+
+	// モデルのスケルトンデータのロード
+	SkeletonHandle LoadSkeletonData(ModelHandle _handle) override;
+	// モデルのスケルトンデータの取得
+	const SkeletonData* GetSkeletonData(SkeletonHandle _handle) override;
+	// 現在のスケルトンのポーズ情報の取得
+	bool GetCurrentPose(ModelHandle _handle, PoseBuffer& _output) override;
+	// モデルに、ポーズを適応する
+	bool ApplyPose(ModelHandle _handle, const PoseBuffer& _pose) override;
+	// アニメーションの適用
+	AnimationHandle AttachAnimation(ModelHandle _handle, int _animIndex) override;
+	// 適用中のアニメーションの時間を設定する
+	void SetAnimationTime(ModelHandle _model, AnimationHandle _handle, float _timeSeconds) override;
+	// アニメーションの解除
+	void DetachAnimation(ModelHandle _model, AnimationHandle _handle) override;
+	// アニメーション指定時間の姿勢取得
+	bool GetAttachAnimFramePose(ModelHandle _model, AnimationHandle _handle, PoseBuffer& _output) override;
+	// アニメーションの総時間を取得
+	float GetAnimationDuration(ModelHandle _model, AnimationHandle _handle) override;
+	// モデルのアニメーション数を取得
+	int GetAnimationCount(ModelHandle _model) override;
+	// アニメーション番号に対しての名前を取得
+	std::string GetAnimationName(ModelHandle _model, int _animIndex) override;
+
 	// ---読み込み関数---
 
 	// モデルの読み込み
@@ -81,8 +111,21 @@ private:
 	// キューブテクスチャ削除
 	void DeleteCubeTexture(CubeTextureHandle _handle) override;
 
+	// すべてのリソースを削除
+	void DeleteAll() override;
 private:
+	std::string TCHARToUTF8(const wchar_t* text);
+private:
+	static constexpr uint32_t INVALID_BONE{ UINT32_MAX };
+	static constexpr int FBX_ANIMATION_FPS{ 30 };
+
+private:
+	/*
+		ライブラリによるハンドルの型の違いをResourceStorageで受け止める
+	*/
 	ResourceStorage<ModelHandle, int> modelStorage;
 	ResourceStorage<TextureHandle, int> textureStorage;
 	ResourceStorage<CubeTextureHandle, int> cubeTextureStorage;
+	ResourceStorage<SkeletonHandle, SkeletonData> skeletonStorage;
+	ResourceStorage<AnimationHandle, int> animationStorage;
 };

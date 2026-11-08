@@ -1,4 +1,4 @@
-﻿#include "ServiceLocator.h"
+﻿#include "Renderer.h"
 
 #include "CameraComponent.h"
 #include "TransformComponent.h"
@@ -17,6 +17,6 @@ void CameraBindSystem::LateUpdate(WorldStorage* _worldStorage, EventManager* _ev
 	{
 		const TransformComponent& trans{ transformStorage->Get(entity) };
 		const CameraComponent& camera{ cameraStorage->Get(entity) };
-		ServiceLocator::GetRenderer()->SetCamera(MatGenerateFunc::InverseTRS(trans.GetPosition(), trans.GetRotation(), Vector3{ 1.0f,1.0f, 1.0f }), camera.GetNear(), camera.GetFar());
+		Renderer::SetCamera(MatGenerateFunc::InverseTRS(trans.GetPosition(), trans.GetRotation(), Vector3{ 1.0f,1.0f, 1.0f }), camera.GetNear(), camera.GetFar());
 	}
 }

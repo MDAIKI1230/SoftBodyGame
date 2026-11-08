@@ -4,7 +4,7 @@
 
 class DxlibSystem:public ISystem
 {
-public:
+private:
 	// 初期化
 	int Init() override;
 	// ウィンドウモードに変更

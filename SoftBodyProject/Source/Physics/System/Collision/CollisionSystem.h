@@ -121,8 +121,8 @@ private:
 		EventManager* _eventManager);
 
 	void RegisterEvent(
-		ColliderID _colliderA,
-		ColliderID _colliderB,
+		ColliderID _colliderA, const ContactInfo& _contactInfoA,
+		ColliderID _colliderB, const ContactInfo& _contactInfoB,
 		ColliderStorage* _colliderStorage,
 		EventManager* _eventManager);
 
@@ -137,6 +137,8 @@ private:
 	/// <param name="a">スワップするインデックス一つ目</param>
 	/// <param name="b">スワップするインデックス二つ目</param>
 	void Swap(std::vector<ColliderProjection>& _projectionValues, int _a, int _b);
+
+	bool CanCollide(ColliderID _a, ColliderID _b, ColliderStorage* _colliderStorage);
 private:
 	NarrowPhasePairBuilder narrowPhasePairBuilder;
 	// Pairの追加用Dipatchテーブル

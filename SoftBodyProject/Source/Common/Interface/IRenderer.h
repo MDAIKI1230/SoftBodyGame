@@ -4,17 +4,27 @@
 
 #include "MDMath.h"
 #include "Color.h"
-#include "Camera.h"
+#include "SkeletonData.h"
+#include "Buffer/PoseBuffer.h"
 
 #include "ModelHandle.h"
 #include "TextureHandle.h"
 #include "CubeTextureHandle.h"
+#include "SkeletonHandle.h"
+#include "AnimationHandle.h"
 
 class IRenderer
 {
 	friend class ResourceManager;
-
+	friend class Renderer;
+	friend class ApplicationManager;
 public:
+	// コンストラクタ
+	IRenderer() = default;
+	// デストラクタ
+	virtual ~IRenderer() = default;
+
+protected:
 	// カメラ関連
 	// カメラセット
 	virtual void SetCamera(const Matrix4x4& _view, float _near, float _far) = 0;
@@ -46,6 +56,8 @@ public:
 	virtual void DrawModel(ModelHandle _handle) = 0;
 	// 画像描画
 	virtual void DrawTexture(TextureHandle _handle, const Vector2& _pos, bool _transFlag) = 0;
+	// Fade描画
+	virtual void DrawFadeBox(float _alpha) = 0;
 	// 球描画
 	virtual void DrawSphere(const Vector3& _pos, float _radius, const Color& _color) = 0;
 	// メッシュ球描画
@@ -56,11 +68,35 @@ public:
 	virtual void DrawLine(const Vector3& _pos1, const Vector3& _pos2, const Color& _color) = 0;
 	// カプセル描画
 	virtual void DrawCapsule(const Vector3& _pos1, const Vector3& _pos2, float _radius, const Color& _color) = 0;
+	// 円錐描画
+	virtual void DrawCone(const Vector3& _topPos, const Vector3& _bottomPos, float _radius, int _division, const Color& _color) = 0;
 
-	// デストラクタ
-	virtual ~IRenderer() = default;
+	// --- アニメーション関連 ---
 
-private:
+	// モデルのスケルトンデータのロード
+	virtual SkeletonHandle LoadSkeletonData(ModelHandle _handle) = 0;
+	// モデルのスケルトンデータの取得
+	virtual const SkeletonData* GetSkeletonData(SkeletonHandle _handle) = 0;
+	// 現在のスケルトンのポーズ情報の取得
+	virtual bool GetCurrentPose(ModelHandle _handle, PoseBuffer& _output) = 0;
+	// モデルに、ポーズを適用する
+	virtual bool ApplyPose(ModelHandle _handle, const PoseBuffer& _pose) = 0;
+	// アニメーションの適用
+	virtual AnimationHandle AttachAnimation(ModelHandle _handle, int _animIndex) = 0;
+	// 適用中のアニメーションの時間を設定する
+	virtual void SetAnimationTime(ModelHandle _model, AnimationHandle _handle, float _timeSeconds) = 0;
+	// アニメーションの解除
+	virtual void DetachAnimation(ModelHandle _model, AnimationHandle _handle) = 0;
+	// アニメーションの総時間を取得
+	virtual float GetAnimationDuration(ModelHandle _model, AnimationHandle _handle) = 0;
+	// アニメーション指定時間の姿勢取得
+	virtual bool GetAttachAnimFramePose(ModelHandle _model, AnimationHandle _handle, PoseBuffer& _output) = 0;
+	// モデルのアニメーション数を取得
+	virtual int GetAnimationCount(ModelHandle _model) = 0;
+	// アニメーション番号に対しての名前を取得
+	virtual std::string GetAnimationName(ModelHandle _model, int _animIndex) = 0;
+
+
 	// ---読み込み関数---
 
 	// モデルの読み込み
@@ -91,4 +127,7 @@ private:
 	virtual void DeleteTexture(TextureHandle _handle) = 0;
 	// キューブテクスチャ削除
 	virtual void DeleteCubeTexture(CubeTextureHandle _handle) = 0;
+
+	// すべてのリソースを削除
+	virtual void DeleteAll() = 0;
 };

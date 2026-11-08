@@ -29,3 +29,12 @@ void BoxColliderComponent::SetHeight(float _heibht) { PhysicsComponentAPI::SetBo
 float BoxColliderComponent::GetDepth() const { return PhysicsComponentAPI::GetBoxDepth(id); }
 
 void BoxColliderComponent::SetDepth(float _depth) { PhysicsComponentAPI::SetBoxDepth(id, _depth); }
+
+// オフセット位置取得
+Vector3 BoxColliderComponent::GetOffsetPosition() { return PhysicsComponentAPI::GetBoxOffsetPosition(id); }
+// オフセット位置変更
+void BoxColliderComponent::SetOffsetPosition(const Vector3& _offset) { PhysicsComponentAPI::SetBoxOffsetPosition(id, _offset); }
+// オフセット回転取得
+Quaternion BoxColliderComponent::GetOffsetRotation() { return PhysicsComponentAPI::GetBoxOffsetRotation(id); }
+// オフセット回転変更
+void BoxColliderComponent::SetOffsetRotation(const Quaternion& _offset) { PhysicsComponentAPI::SetBoxOffsetRotation(id, _offset); }

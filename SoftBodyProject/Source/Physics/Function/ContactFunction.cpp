@@ -1,29 +1,41 @@
 ﻿#include <algorithm>
 
+#include "ManifoldFunction.h"
+
 #include "ContactFunction.h"
 
 // 球 VS 球
-bool ContactFunction::SphereSphere(ColliderID _colliderA, ColliderID _colliderB, ColliderStorage* _colliderStorage, PhysicsTransformStorage* _transformStorage, CollisionManifoldBuffer* _manifoldBuffer)
+bool ContactFunction::SphereSphere(
+	ColliderID _colliderA, ColliderID _colliderB,
+	ContactInfo& _outputContactA, ContactInfo& _outputContactB,
+	ColliderStorage* _colliderStorage, PhysicsTransformStorage* _transformStorage,
+	CollisionManifoldBuffer* _manifoldBuffer)
 {
 	// Aの情報取得
 	float radiusA{ _colliderStorage->GetSphereColliderRadius(_colliderA) };
-	uint32_t transformIndexA{ _transformStorage->GetDenseIndex(_colliderStorage->GetTransformID(_colliderA)) };
+	PhysicsTransformID transformA{ _colliderStorage->GetTransformID(_colliderA) };
 	// Bの情報取得
 	float radiusB{ _colliderStorage->GetSphereColliderRadius(_colliderB) };
-	uint32_t transformIndexB{ _transformStorage->GetDenseIndex(_colliderStorage->GetTransformID(_colliderB)) };
+	PhysicsTransformID transformB{ _colliderStorage->GetTransformID(_colliderB) };
 
 	// スケールの適応(書く方向で最大を選ぶ)
-	Vector3 scale{ _transformStorage->GetScale(transformIndexA) };
+	Vector3 scale{ _transformStorage->GetScale(transformA) };
 	radiusA *= std::max(std::max(scale.x, scale.y), scale.z);
 
-	scale = _transformStorage->GetScale(transformIndexB);
+	scale = _transformStorage->GetScale(transformB);
 	radiusB *= std::max(std::max(scale.x, scale.y), scale.z);
 
 	// 半径の合計
 	float totalRadius{ radiusA + radiusB };
 
+	// 位置のオフセット計算
+	Vector3 positionA{ _transformStorage->GetPosition(transformA) +
+		_transformStorage->GetRotation(transformA).Rotate(_colliderStorage->GetSphereColliderOffsetPosition(_colliderA)) };
+	Vector3 positionB{ _transformStorage->GetPosition(transformB) +
+		_transformStorage->GetRotation(transformB).Rotate(_colliderStorage->GetSphereColliderOffsetPosition(_colliderB)) };
+
 	// 差
-	Vector3 diff{ _transformStorage->GetPosition(transformIndexB) - _transformStorage->GetPosition(transformIndexA) };
+	Vector3 diff{ positionB - positionA };
 
 	float distSqr{ diff.LengthSqr() };
 	// 判定
@@ -44,15 +56,26 @@ bool ContactFunction::SphereSphere(ColliderID _colliderA, ColliderID _colliderB,
 			manifold.normal = Vector3::UP;
 		}
 
-
 		ContactPoint contactPoint;
 		contactPoint.penetration = totalRadius - std::sqrtf(distSqr);
-		contactPoint.positionLocalA = _transformStorage->GetRotation(transformIndexA).Conjugate().Rotate(manifold.normal * radiusA);
-		contactPoint.positionLocalB = _transformStorage->GetRotation(transformIndexB).Conjugate().Rotate(-manifold.normal * radiusB);
+
+		Vector3 worldPointA{ positionA + manifold.normal * radiusA };
+		Vector3 worldPointB{ positionB - manifold.normal * radiusB };
+
+		contactPoint.positionLocalA =
+			_transformStorage->GetRotation(transformA).Conjugate().Rotate(
+				worldPointA - _transformStorage->GetPosition(transformA));
+
+		contactPoint.positionLocalB =
+			_transformStorage->GetRotation(transformB).Conjugate().Rotate(
+				worldPointB - _transformStorage->GetPosition(transformB));
 
 		manifold.AddPoints(contactPoint);
 
 		_manifoldBuffer->Add(manifold);
+
+		// 法線方向はA→B
+		ManifoldFunction::CreateContactInfo(_outputContactA, _outputContactB, manifold);
 
 		return true;
 	}
@@ -61,17 +84,22 @@ bool ContactFunction::SphereSphere(ColliderID _colliderA, ColliderID _colliderB,
 }
 
 // 球 VS ボックス
-bool ContactFunction::SphereBox(ColliderID _colliderSphere, ColliderID _colliderBox, ColliderStorage* _colliderStorage, PhysicsTransformStorage* _transformStorage, CollisionManifoldBuffer* _manifoldBuffer)
+bool ContactFunction::SphereBox(
+	ColliderID _colliderSphere, ColliderID _colliderBox,
+	ContactInfo& _outputContactSphere, ContactInfo& _outputContactBox,
+	ColliderStorage* _colliderStorage, PhysicsTransformStorage* _transformStorage,
+	CollisionManifoldBuffer* _manifoldBuffer)
 {
 	// Sphereの情報取得
-	float radius{ _colliderStorage->GetSphereColliderRadius(_colliderSphere) };
-	uint32_t transformIndexSphere{ _transformStorage->GetDenseIndex(_colliderStorage->GetTransformID(_colliderSphere)) };
+	PhysicsTransformID transformSphere{ _colliderStorage->GetTransformID(_colliderSphere) };
+	Vector3 scale{ _transformStorage->GetScale(transformSphere) };
+	float radius{ _colliderStorage->GetSphereColliderRadius(_colliderSphere) * std::max(std::max(scale.x, scale.y), scale.z) };
 	// Boxの情報取得
 	Vector3 halfScaleBox{ _colliderStorage->GetBoxColliderScale(_colliderBox) * 0.5f };
-	uint32_t transformIndexBox{ _transformStorage->GetDenseIndex(_colliderStorage->GetTransformID(_colliderBox)) };
-	Quaternion rotBox{ _transformStorage->GetRotation(transformIndexBox) };
+	PhysicsTransformID transformBox{ _colliderStorage->GetTransformID(_colliderBox) };
+	Quaternion rotBox{ _transformStorage->GetRotation(transformBox) * _colliderStorage->GetBoxColliderOffsetRotation(_colliderBox) };
 
-	halfScaleBox = SIMDVectorMath::Mul(halfScaleBox, _transformStorage->GetScale(transformIndexBox));
+	halfScaleBox = SIMDVectorMath::Mul(halfScaleBox, _transformStorage->GetScale(transformBox));
 
 	// 基底ベクトル
 	Vector3 axis[]
@@ -81,8 +109,14 @@ bool ContactFunction::SphereBox(ColliderID _colliderSphere, ColliderID _collider
 		rotBox.Rotate(Vector3::FORWARD)
 	};
 
+	// 位置のオフセット計算
+	Vector3 positionSphere{ _transformStorage->GetPosition(transformSphere) +
+		_transformStorage->GetRotation(transformSphere).Rotate(_colliderStorage->GetSphereColliderOffsetPosition(_colliderSphere)) };
+	Vector3 positionBox{ _transformStorage->GetPosition(transformBox) +
+		_transformStorage->GetRotation(transformBox).Rotate(_colliderStorage->GetBoxColliderOffsetPosition(_colliderBox)) };
+
 	// ローカル座標
-	Vector3 temp{ _transformStorage->GetPosition(transformIndexSphere) - _transformStorage->GetPosition(transformIndexBox) };
+	Vector3 temp{ positionSphere - positionBox };
 	Vector3 localCirclePosition{ Vector3::Dot(axis[0],temp),Vector3::Dot(axis[1],temp),Vector3::Dot(axis[2],temp) };
 
 	// 矩形内にクランプ
@@ -120,15 +154,25 @@ bool ContactFunction::SphereBox(ColliderID _colliderSphere, ColliderID _collider
 		// ワールド座標に変換
 		manifold.normal = axis[0] * normalLocal.x + axis[1] * normalLocal.y + axis[2] * normalLocal.z;
 
-		// クランプしたのをワールドに直すして衝突点にする(BOX)
-		contactPoint.positionLocalA = _transformStorage->GetRotation(transformIndexSphere).Conjugate().Rotate(manifold.normal * radius);
-		// 球は法線から求める
-		contactPoint.positionLocalB = _transformStorage->GetRotation(transformIndexBox).Conjugate().Rotate(axis[0] * latestPoint.x + axis[1] * latestPoint.y + axis[2] * latestPoint.z);
+		// ワールド位置を計算しローカルに直す
+
+		Vector3 worldPointSphere{ positionSphere + manifold.normal * radius };
+		Vector3 worldPointBox{ positionBox + (axis[0] * latestPoint.x + axis[1] * latestPoint.y + axis[2] * latestPoint.z) };
+
+		contactPoint.positionLocalA =
+			_transformStorage->GetRotation(transformSphere).Conjugate().Rotate(
+				worldPointSphere - _transformStorage->GetPosition(transformSphere));
+		contactPoint.positionLocalB =
+			_transformStorage->GetRotation(transformBox).Conjugate().Rotate(
+				worldPointBox - _transformStorage->GetPosition(transformBox));
 
 		// 点追加
 		manifold.AddPoints(contactPoint);
 
 		_manifoldBuffer->Add(manifold);
+
+		// 法線は球→ボックス
+		ManifoldFunction::CreateContactInfo(_outputContactSphere, _outputContactBox, manifold);
 
 		return true;
 	}
@@ -138,23 +182,27 @@ bool ContactFunction::SphereBox(ColliderID _colliderSphere, ColliderID _collider
 	// 4辺との距離
 	float distances[6]
 	{
-	localCirclePosition.x - halfScaleBox.x,  // left
-	halfScaleBox.x - localCirclePosition.x,  // right
-	localCirclePosition.y - halfScaleBox.y,  // bottom
-	halfScaleBox.y - localCirclePosition.y,  // top
-	localCirclePosition.z - halfScaleBox.z,  // front
-	halfScaleBox.z - localCirclePosition.z   // back
+	localCirclePosition.x + halfScaleBox.x, // -X
+    halfScaleBox.x - localCirclePosition.x, // +X
+
+    localCirclePosition.y + halfScaleBox.y, // -Y
+    halfScaleBox.y - localCirclePosition.y, // +Y
+
+    localCirclePosition.z + halfScaleBox.z, // -Z
+    halfScaleBox.z - localCirclePosition.z  // +Z
 	};
 
 	// 対応した法線
 	Vector3 normals[6]
 	{
-	axis[0],  // left
-	-axis[0], // right
-	-axis[1], // bottom
-	axis[1],  // top
-	axis[2],  // front
-	-axis[2]  // back
+		 axis[0], // -X面
+		-axis[0], // +X面
+
+		 axis[1], // -Y面
+		-axis[1], // +Y面
+
+		 axis[2], // -Z面
+		-axis[2]  // +Z面
 	};
 
 	// 最小距離の探索
@@ -171,36 +219,62 @@ bool ContactFunction::SphereBox(ColliderID _colliderSphere, ColliderID _collider
 	manifold.normal = normals[minIndex];
 	ContactPoint contactPoint;
 	// 重なり深さ計算
-	contactPoint.penetration = distances[minIndex];
-	// クランプしたのをワールドに直すして衝突点にする(BOX)
-	contactPoint.positionLocalA = _transformStorage->GetRotation(transformIndexSphere).Conjugate().Rotate(manifold.normal * radius);
-	// 球は法線から求める
-	contactPoint.positionLocalB = _transformStorage->GetRotation(transformIndexBox).Conjugate().Rotate(axis[0] * latestPoint.x + axis[1] * latestPoint.y + axis[2] * latestPoint.z);
+	contactPoint.penetration = distances[minIndex] + radius;
 
+	// ワールド位置を計算しローカルに直す
+
+	Vector3 boxPointLocal{ localCirclePosition };
+
+	switch (minIndex)
+	{
+	case 0: boxPointLocal.x = -halfScaleBox.x; break;
+	case 1: boxPointLocal.x = halfScaleBox.x; break;
+	case 2: boxPointLocal.y = -halfScaleBox.y; break;
+	case 3: boxPointLocal.y = halfScaleBox.y; break;
+	case 4: boxPointLocal.z = -halfScaleBox.z; break;
+	case 5: boxPointLocal.z = halfScaleBox.z; break;
+	}
+
+	Vector3 worldPointSphere{ positionSphere - manifold.normal * radius };
+	Vector3 worldPointBox{ positionBox + (axis[0] * boxPointLocal.x + axis[1] * boxPointLocal.y + axis[2] * boxPointLocal.z) };
+
+	contactPoint.positionLocalA = 
+		_transformStorage->GetRotation(transformSphere).Conjugate().Rotate(
+			worldPointSphere - _transformStorage->GetPosition(transformSphere));
+	contactPoint.positionLocalB =
+		_transformStorage->GetRotation(transformBox).Conjugate().Rotate(
+			worldPointBox - _transformStorage->GetPosition(transformBox));
 	// 点追加
 	manifold.AddPoints(contactPoint);
 
 	_manifoldBuffer->Add(manifold);
 
+	// 法線は球→ボックス
+	ManifoldFunction::CreateContactInfo(_outputContactSphere, _outputContactBox, manifold);
+
 	return true;
 }
 
 // ボックス VS ボックス
-bool ContactFunction::BoxBox(ColliderID _colliderA, ColliderID _colliderB, ColliderStorage* _colliderStorage, PhysicsTransformStorage* _transformStorage, CollisionManifoldBuffer* _manifoldBuffer)
+bool ContactFunction::BoxBox(
+	ColliderID _colliderA, ColliderID _colliderB,
+	ContactInfo& _outputContactA, ContactInfo& _outputContactB,
+	ColliderStorage* _colliderStorage, PhysicsTransformStorage* _transformStorage,
+	CollisionManifoldBuffer* _manifoldBuffer)
 {
 	// Aの情報取得
 	Vector3 halfScaleA{ _colliderStorage->GetBoxColliderScale(_colliderA) * 0.5f };
-	uint32_t transformIndexA{ _transformStorage->GetDenseIndex(_colliderStorage->GetTransformID(_colliderA)) };
-	Quaternion rotA{ _transformStorage->GetRotation(transformIndexA) };
+	PhysicsTransformID transformA{ _colliderStorage->GetTransformID(_colliderA) };
+	Quaternion rotA{ _transformStorage->GetRotation(transformA) * _colliderStorage->GetBoxColliderOffsetRotation(_colliderA) };
 	// Bの情報取得
 	Vector3 halfScaleB{ _colliderStorage->GetBoxColliderScale(_colliderB) * 0.5f };
-	uint32_t transformIndexB{ _transformStorage->GetDenseIndex(_colliderStorage->GetTransformID(_colliderB)) };
-	Quaternion rotB{ _transformStorage->GetRotation(transformIndexB) };
+	PhysicsTransformID transformB{ _colliderStorage->GetTransformID(_colliderB) };
+	Quaternion rotB{ _transformStorage->GetRotation(transformB) * _colliderStorage->GetBoxColliderOffsetRotation(_colliderB) };
 
 	// スケールの適応
-	halfScaleA = SIMDVectorMath::Mul(halfScaleA, _transformStorage->GetScale(transformIndexA));
+	halfScaleA = SIMDVectorMath::Mul(halfScaleA, _transformStorage->GetScale(transformA));
 
-	halfScaleB = SIMDVectorMath::Mul(halfScaleB, _transformStorage->GetScale(transformIndexB));
+	halfScaleB = SIMDVectorMath::Mul(halfScaleB, _transformStorage->GetScale(transformB));
 
 	// 分離軸候補
 	Vector3 candidateAxisA[]
@@ -228,8 +302,14 @@ bool ContactFunction::BoxBox(ColliderID _colliderA, ColliderID _colliderB, Colli
 		halfScaleB.x,halfScaleB.y,halfScaleB.z,
 	};
 
+	// 位置のオフセット計算
+	Vector3 positionA{ _transformStorage->GetPosition(transformA) +
+		_transformStorage->GetRotation(transformA).Rotate(_colliderStorage->GetBoxColliderOffsetPosition(_colliderA)) };
+	Vector3 positionB{ _transformStorage->GetPosition(transformB) +
+		_transformStorage->GetRotation(transformB).Rotate(_colliderStorage->GetBoxColliderOffsetPosition(_colliderB)) };
+
 	// 位置の差
-	Vector3 diff{ _transformStorage->GetPosition(transformIndexB) - _transformStorage->GetPosition(transformIndexA) };
+	Vector3 diff{ positionB - positionA };
 
 	BoxBoxContactInfo info;
 
@@ -277,29 +357,36 @@ bool ContactFunction::BoxBox(ColliderID _colliderA, ColliderID _colliderB, Colli
 	}
 
 	ManifoldFunction::BoxBox(
-		_transformStorage->GetPosition(transformIndexA), _transformStorage->GetRotation(transformIndexA), candidateAxisA, halfsA,
-		_transformStorage->GetPosition(transformIndexB), _transformStorage->GetRotation(transformIndexB), candidateAxisB, halfsB,
+		_transformStorage,
+		transformA, positionA, candidateAxisA, halfsA, _outputContactA,
+		transformB, positionB, candidateAxisB, halfsB, _outputContactB,
 		info, _manifoldBuffer);
 
 	return true;
 }
 
 // カプセル VS カプセル
-bool ContactFunction::CapsuleCapsule(ColliderID _colliderA, ColliderID _colliderB, ColliderStorage* _colliderStorage, PhysicsTransformStorage* _transformStorage, CollisionManifoldBuffer* _manifoldBuffer)
+bool ContactFunction::CapsuleCapsule(
+	ColliderID _colliderA, ColliderID _colliderB,
+	ContactInfo& _outputContactA, ContactInfo& _outputContactB,
+	ColliderStorage* _colliderStorage, PhysicsTransformStorage* _transformStorage,
+	CollisionManifoldBuffer* _manifoldBuffer)
 {
-	const uint32_t denseIndexA{ _transformStorage->GetDenseIndex(_colliderStorage->GetTransformID(_colliderA)) };
-	const uint32_t denseIndexB{ _transformStorage->GetDenseIndex(_colliderStorage->GetTransformID(_colliderB)) };
+	const PhysicsTransformID transformA{ _colliderStorage->GetTransformID(_colliderA) };
+	const PhysicsTransformID transformB{ _colliderStorage->GetTransformID(_colliderB) };
 
 	// 中心座標
 	Vector3 centers[]
 	{
-		_transformStorage->GetPosition(denseIndexA),
-		_transformStorage->GetPosition(denseIndexB)
+		_transformStorage->GetPosition(transformA) +
+		_transformStorage->GetRotation(transformA).Rotate(_colliderStorage->GetCapsuleColliderOffsetPosition(_colliderA)),
+		_transformStorage->GetPosition(transformB) +
+		_transformStorage->GetRotation(transformB).Rotate(_colliderStorage->GetCapsuleColliderOffsetPosition(_colliderB))
 	};
 
 	// 軸の半分
-	Quaternion rotA{ _transformStorage->GetRotation(denseIndexA) };
-	Quaternion rotB{ _transformStorage->GetRotation(denseIndexB) };
+	Quaternion rotA{ _transformStorage->GetRotation(transformA) * _colliderStorage->GetCapsuleColliderOffsetRotation(_colliderA) };
+	Quaternion rotB{ _transformStorage->GetRotation(transformB) * _colliderStorage->GetCapsuleColliderOffsetRotation(_colliderB) };
 	Vector3 halfs[]
 	{
 		rotA.Rotate(Vector3::UP * _colliderStorage->GetCapsuleColliderHeight(_colliderA) / 2.0f),
@@ -361,35 +448,44 @@ bool ContactFunction::CapsuleCapsule(ColliderID _colliderA, ColliderID _collider
 
 	Vector3 worldPointB{ latestPoints.pointB - manifold.normal * radiusB };
 
-	contactPoint.positionLocalA = rotA.Conjugate().Rotate(worldPointA - centers[0]);
+	contactPoint.positionLocalA = _transformStorage->GetRotation(transformA).Conjugate().Rotate(worldPointA - _transformStorage->GetPosition(transformA));
 
-	contactPoint.positionLocalB = rotB.Conjugate().Rotate(worldPointB - centers[1]);
+	contactPoint.positionLocalB = _transformStorage->GetRotation(transformB).Conjugate().Rotate(worldPointB - _transformStorage->GetPosition(transformB));
 
 	// 点追加
 	manifold.AddPoints(contactPoint);
 
 	_manifoldBuffer->Add(manifold);
 
+	// 法線はA→B
+	ManifoldFunction::CreateContactInfo(_outputContactA, _outputContactB, manifold);
+
 	return true;
 }
 
 // ボックス VS カプセル
-bool ContactFunction::BoxCapsule(ColliderID _colliderBox, ColliderID _colliderCapsule, ColliderStorage* _colliderStorage, PhysicsTransformStorage* _transformStorage, CollisionManifoldBuffer* _manifoldBuffer)
+bool ContactFunction::BoxCapsule(
+	ColliderID _colliderBox, ColliderID _colliderCapsule,
+	ContactInfo& _outputContactBox, ContactInfo& _outputContactCapsule,
+	ColliderStorage* _colliderStorage, PhysicsTransformStorage* _transformStorage,
+	CollisionManifoldBuffer* _manifoldBuffer)
 {
 	// TransformのDenseIndex
-	uint32_t denseIndexBox{ _transformStorage->GetDenseIndex(_colliderStorage->GetTransformID(_colliderBox)) };
+	PhysicsTransformID boxTransID{ _colliderStorage->GetTransformID(_colliderBox) };
 
-	uint32_t denseIndexCapsule{ _transformStorage->GetDenseIndex(_colliderStorage->GetTransformID(_colliderCapsule)) };
+	PhysicsTransformID capsuleTransID{ _colliderStorage->GetTransformID(_colliderCapsule) };
 
 	// 中心位置
-	Vector3 boxCenter{ _transformStorage->GetPosition(denseIndexBox) };
+	Vector3 boxCenter{ _transformStorage->GetPosition(boxTransID) +
+		_transformStorage->GetRotation(boxTransID).Rotate(_colliderStorage->GetBoxColliderOffsetPosition(_colliderBox)) };
 
-	Vector3 capsuleCenter{ _transformStorage->GetPosition(denseIndexCapsule) };
+	Vector3 capsuleCenter{ _transformStorage->GetPosition(capsuleTransID) +
+		_transformStorage->GetRotation(capsuleTransID).Rotate(_colliderStorage->GetCapsuleColliderOffsetPosition(_colliderCapsule)) };
 
 	// 回転
-	Quaternion boxRot{ _transformStorage->GetRotation(denseIndexBox) };
+	Quaternion boxRot{ _transformStorage->GetRotation(boxTransID) * _colliderStorage->GetBoxColliderOffsetRotation(_colliderBox) };
 
-	Quaternion capsuleRot{ _transformStorage->GetRotation(denseIndexCapsule) };
+	Quaternion capsuleRot{ _transformStorage->GetRotation(capsuleTransID) * _colliderStorage->GetCapsuleColliderOffsetRotation(_colliderCapsule) };
 
 	Quaternion inverseBoxRot{ boxRot.Conjugate() };
 
@@ -464,9 +560,15 @@ bool ContactFunction::BoxCapsule(ColliderID _colliderBox, ColliderID _colliderCa
 		Vector3 boxContactWorld{ closest.pointOBB };
 
 		// ワールド座標から各Colliderのローカル座標へ変換
-		contactPoint.positionLocalA = inverseCapsuleRot.Rotate(capsuleContactWorld - capsuleCenter);
+		contactPoint.positionLocalA =
+			_transformStorage->GetRotation(capsuleTransID).Conjugate().Rotate(
+			capsuleContactWorld -
+			_transformStorage->GetPosition(capsuleTransID));
 
-		contactPoint.positionLocalB = inverseBoxRot.Rotate(boxContactWorld - boxCenter);
+		contactPoint.positionLocalB =
+			_transformStorage->GetRotation(boxTransID).Conjugate().Rotate(
+				boxContactWorld -
+				_transformStorage->GetPosition(boxTransID));
 	}
 	else
 	{
@@ -627,30 +729,45 @@ bool ContactFunction::BoxCapsule(ColliderID _colliderBox, ColliderID _colliderCa
 
 		Vector3 boxContactWorld{ boxCenter + boxRot.Rotate(boxPointLocal) };
 
-		contactPoint.positionLocalA = inverseCapsuleRot.Rotate(capsuleContactWorld - capsuleCenter);
+		contactPoint.positionLocalA =
+			_transformStorage->GetRotation(capsuleTransID).Conjugate().Rotate(
+				capsuleContactWorld -
+				_transformStorage->GetPosition(capsuleTransID));
 
-		contactPoint.positionLocalB =inverseBoxRot.Rotate(boxContactWorld -boxCenter);
+		contactPoint.positionLocalB =
+			_transformStorage->GetRotation(boxTransID).Conjugate().Rotate(
+				boxContactWorld -
+				_transformStorage->GetPosition(boxTransID));
 	}
 
 	manifold.AddPoints(contactPoint);
 	_manifoldBuffer->Add(manifold);
 
+	// 法線はカプセル→ボックス
+	ManifoldFunction::CreateContactInfo(_outputContactCapsule, _outputContactBox, manifold);
+
 	return true;
 }
 
 // 球 VS カプセル
-bool ContactFunction::SphereCapsule(ColliderID _colliderSphere, ColliderID _colliderCapsule, ColliderStorage* _colliderStorage, PhysicsTransformStorage* _transformStorage, CollisionManifoldBuffer* _manifoldBuffer)
+bool ContactFunction::SphereCapsule(
+	ColliderID _colliderSphere, ColliderID _colliderCapsule,
+	ContactInfo& _outputContactSphere, ContactInfo& _outputContactCapsule,
+	ColliderStorage* _colliderStorage, PhysicsTransformStorage* _transformStorage,
+	CollisionManifoldBuffer* _manifoldBuffer)
 {
-	const uint32_t denseIndexSphere{ _transformStorage->GetDenseIndex(_colliderStorage->GetTransformID(_colliderSphere)) };
-	const uint32_t denseIndexCapsule{ _transformStorage->GetDenseIndex(_colliderStorage->GetTransformID(_colliderCapsule)) };
+	const PhysicsTransformID sphereTransID{ _colliderStorage->GetTransformID(_colliderSphere) };
+	const PhysicsTransformID capsuleTransID{ _colliderStorage->GetTransformID(_colliderCapsule) };
 
 	// 中心座標
-	Vector3 sphereCenter{ _transformStorage->GetPosition(denseIndexSphere) };
-	Vector3 capsuleCenter{ _transformStorage->GetPosition(denseIndexCapsule) };
+	Vector3 sphereCenter{ _transformStorage->GetPosition(sphereTransID) +
+		_transformStorage->GetRotation(sphereTransID).Rotate(_colliderStorage->GetSphereColliderOffsetPosition(_colliderSphere)) };
+	Vector3 capsuleCenter{ _transformStorage->GetPosition(capsuleTransID) +
+		_transformStorage->GetRotation(capsuleTransID).Rotate(_colliderStorage->GetCapsuleColliderOffsetPosition(_colliderCapsule)) };
 
 	// 回転
-	Quaternion sphereRot{ _transformStorage->GetRotation(denseIndexSphere) };
-	Quaternion capsuleRot{ _transformStorage->GetRotation(denseIndexCapsule) };
+	Quaternion sphereRot{ _transformStorage->GetRotation(sphereTransID) * _colliderStorage->GetSphereColliderOffsetRotation(_colliderSphere) };
+	Quaternion capsuleRot{ _transformStorage->GetRotation(capsuleTransID) * _colliderStorage->GetCapsuleColliderOffsetRotation(_colliderCapsule) };
 
 	// 軸の半分
 	Vector3 axisHalf{ capsuleRot.Rotate(Vector3::UP * _colliderStorage->GetCapsuleColliderHeight(_colliderCapsule) / 2.0f) };
@@ -702,13 +819,20 @@ bool ContactFunction::SphereCapsule(ColliderID _colliderSphere, ColliderID _coll
 
 	Vector3 worldPointCapsule{ latestPoint - manifold.normal * capsuleRadius };
 
-	contactPoint.positionLocalA = sphereRot.Conjugate().Rotate(worldPointSphere - sphereCenter);
+	contactPoint.positionLocalA = _transformStorage->GetRotation(sphereTransID).Conjugate().Rotate(
+		worldPointSphere -
+		_transformStorage->GetPosition(sphereTransID));
 
-	contactPoint.positionLocalB = capsuleRot.Conjugate().Rotate(worldPointCapsule - capsuleCenter);
+	contactPoint.positionLocalB = _transformStorage->GetRotation(capsuleTransID).Conjugate().Rotate(
+		worldPointCapsule -
+		_transformStorage->GetPosition(capsuleTransID));
 
 	manifold.AddPoints(contactPoint);
 
 	_manifoldBuffer->Add(manifold);
+
+	// 法線は球→カプセル
+	ManifoldFunction::CreateContactInfo(_outputContactSphere, _outputContactCapsule, manifold);
 
 	return true;
 }

@@ -8,7 +8,13 @@
 
 class IInput
 {
+    friend class InputSystem;
 public:
+    // コンストラクタ
+    IInput() = default;
+    // デストラクタ
+    virtual ~IInput() = default;
+protected:
     // 更新
 	virtual void Update() = 0;
     // 初期化
@@ -29,6 +35,4 @@ public:
     virtual float GetCurrentValue(GamePadAxis1D _axis, std::size_t _gamepadIndex) const = 0;
     // -1(左/下)～1(右/上)
     virtual Vector2 GetCurrentValue(GamePadAxis2D _axis, std::size_t _gamepadIndex) const = 0;
-	// デストラクタ
-	virtual ~IInput() = default;
 };

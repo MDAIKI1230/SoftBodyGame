@@ -13,6 +13,18 @@ public:
 		return duration;
 	}
 
+	// この入力を消費し、後続アクションのコールバックを抑制する
+	void Consume() noexcept
+	{
+		consumed = true;
+	}
+
+	[[nodiscard]]
+	bool IsConsumed() const noexcept
+	{
+		return consumed;
+	}
+
 	template<class T>
 	[[nodiscard]]
 	T ReadValue() const
@@ -47,4 +59,5 @@ private:
 	InputValue previousValue;
 
 	float duration{ 0.0f };
+	bool consumed{ false };
 };

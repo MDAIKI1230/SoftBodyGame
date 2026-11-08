@@ -13,8 +13,14 @@
 class IGPUConnecter
 {
 	friend class ResourceManager;
+	friend class Renderer;
 
 public:
+	// コンストラクタ
+	IGPUConnecter() = default;
+	// 仮想デストラクタ
+	virtual ~IGPUConnecter() = default;
+protected:
 	// 初期化関数
 	virtual void Initialize() = 0;
 
@@ -30,12 +36,22 @@ public:
 
 	// --- 描画系シェーダ関連 ---
 
+	// 頂点シェーダ読み込み
+	virtual VertexShaderHandle LoadVertexShader(const std::string& _filePath) = 0;
+	// ピクセルシェーダ読み込み
+	virtual PixelShaderHandle LoadPixelShader(const std::string& _filePath) = 0;
+
 	// 頂点シェーダスタート
 	virtual void BeginVertexShader(VertexShaderHandle _shader) = 0;
 	// ピクセルシェーダスタート
 	virtual void BeginPixelShader(PixelShaderHandle _shader) = 0;
 	// 描画関連(頂点とピクセル)シェーダ終了
 	virtual void EndGraphicsShader() = 0;
+
+	// 頂点シェーダ破棄
+	virtual void DestroyVertexShader(VertexShaderHandle _shader) = 0;
+	// ピクセルシェーダ破棄
+	virtual void DestroyPixelShader(PixelShaderHandle _shader) = 0;
 
 	// --- バッファ関連 ---
 
@@ -67,17 +83,6 @@ public:
 
 	virtual void ShaderBufferBarrier() = 0;
 
-	// 仮想デストラクタ
-	virtual ~IGPUConnecter() = default;
-
-private:
-	// 頂点シェーダ読み込み
-	virtual VertexShaderHandle LoadVertexShader(const std::string& _filePath) = 0;
-	// ピクセルシェーダ読み込み
-	virtual PixelShaderHandle LoadPixelShader(const std::string& _filePath) = 0;
-
-	// 頂点シェーダ破棄
-	virtual void DestroyVertexShader(VertexShaderHandle _shader) = 0;
-	// ピクセルシェーダ破棄
-	virtual void DestroyPixelShader(PixelShaderHandle _shader) = 0;
+	// すべてのリソースの削除
+	virtual void DeleteAll() = 0;
 };
