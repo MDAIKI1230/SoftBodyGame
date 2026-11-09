@@ -4,6 +4,7 @@
 #include <memory>
 
 #include "DocumentSession.h"
+#include "CollisionSettingDocument.h"
 
 class EditorDocumentService
 {
@@ -16,6 +17,8 @@ public:
 	SceneDocument& GetSceneDocument();
 	CommandHistory& GetSceneCommandHistory();
 
+	CollisionSettingDocument& GetCollisionSetting();
+
 	// ドキュメントを新しく作成
 	std::uint64_t CreateDocument();
 	// 現在のドキュメントを変更
@@ -27,4 +30,5 @@ private:
 	std::uint64_t currentSceneIndex{ 0 };
 	std::vector<std::unique_ptr<DocumentSession>> sessions;
 	std::vector<std::uint64_t> freeIndices;
+	CollisionSettingDocument collisionSetting;
 };

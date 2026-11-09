@@ -7,9 +7,9 @@
 
 #include "FieldMacros.h"
 #include "MDMath.h"
-#include "SceneComponentData.h"
+#include "ColliderComponentData.h"
 
-struct SphereColliderComponentData : public SceneComponentData
+struct SphereColliderComponentData : public ColliderComponentData
 {
 public:
 	std::string GetName() override { return "SphereCollider"; }
@@ -20,6 +20,7 @@ public:
 	MD_DOCUMENT(
 		SphereColliderComponentData, "SphereCollider",
 		MD_FIELD("Radius", radius),
-		MD_FIELD("OffsetPosition", offsetPosition)
+		MD_FIELD("OffsetPosition", offsetPosition),
+		MD_FIELD("Category", category)
 	);
 };

@@ -45,7 +45,7 @@ private:
 	// 画像描画
 	void DrawTexture(TextureHandle _handle, const Vector2& _pos, bool _transFlag) override;
 	// Fade描画
-	void DrawFadeBox(float _alpha) override;
+	void DrawFadeBox(float _alpha, const Color& _color) override;
 	// 球描画
 	void DrawSphere(const Vector3& _pos, float _radius, const Color& _color) override;
 	// メッシュ球描画
@@ -94,6 +94,8 @@ private:
 	void SetRangeAngle(LightHandle _handle, float _range, float _innerAngle, float _outerAngle) override;
 	// ライトのディフューズカラー変更
 	void SetDiffuseColor(LightHandle _handle, const Color& _color) override;
+	// ライトのアンビエントカラー変更
+	void SetAmbientColor(LightHandle _handle, const Color& _color) override;
 	// ライト破棄
 	void DeleteLight(LightHandle _handle) override;
 

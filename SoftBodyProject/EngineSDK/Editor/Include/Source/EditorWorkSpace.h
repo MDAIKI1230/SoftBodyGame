@@ -9,6 +9,7 @@
 #include "Panel/ScenePanel.h"
 #include "Panel/AssetPanel.h"
 #include "Panel/Tool/ModelLoader/ModelPrefabToolPanel.h"
+#include "Panel/CollisionSettingPanel.h"
 
 class EditorWorkSpace
 {
@@ -39,6 +40,7 @@ private:
 	AssetPanel asset;
 
 	ModelPrefabToolPanel modelTool;
+	CollisionSettingPanel collisionSettingPanel;
 
 	std::filesystem::path currentScenePath;
 };

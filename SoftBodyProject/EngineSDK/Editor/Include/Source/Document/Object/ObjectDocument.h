@@ -26,7 +26,7 @@ public:
 	void SetLocalMatrix(const Matrix4x4 _mat);
 
 	// Transformを先頭に描画し、削除要求のComponent IDを返す。
-	std::uint64_t DrawInspector(const SceneDocument& _scene, std::uint64_t& _selectedComponentID);
+	std::uint64_t DrawInspector(const SceneDocument& _scene, const CollisionSettingDocument& _collisionSettings, std::uint64_t& _selectedComponentID);
 	void Draw();
 	void DrawGizmo(const GizmoContext& _context);
 

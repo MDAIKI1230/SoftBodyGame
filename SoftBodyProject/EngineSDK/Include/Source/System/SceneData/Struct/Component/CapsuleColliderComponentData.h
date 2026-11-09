@@ -7,9 +7,9 @@
 
 #include "FieldMacros.h"
 #include "MDMath.h"
-#include "SceneComponentData.h"
+#include "ColliderComponentData.h"
 
-struct CapsuleColliderComponentData : public SceneComponentData
+struct CapsuleColliderComponentData : public ColliderComponentData
 {
 public:
 	std::string GetName() override { return "CapsuleCollider"; }
@@ -22,6 +22,7 @@ public:
 		CapsuleColliderComponentData, "CapsuleCollider",
 		MD_FIELD("Height", height),
 		MD_FIELD("Radius", radius),
-		MD_FIELD("OffsetPosition", offsetPosition)
+		MD_FIELD("OffsetPosition", offsetPosition),
+		MD_FIELD("Category", category)
 	);
 };

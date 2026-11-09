@@ -62,8 +62,8 @@ public:
 	/// <summary>
 	/// Fade描画
 	/// </summary>
-	static void DrawFade(float _alpha)
-	SingletonPublicFunction(void, DrawFade, (float _alpha), (_alpha))
+	static void DrawFade(float _alpha, const Color& _color = Color{})
+	SingletonPublicFunction(void, DrawFade, (float _alpha, const Color& _color), (_alpha, _color))
 	/// <summary>
 	/// 球描画
 	/// </summary>

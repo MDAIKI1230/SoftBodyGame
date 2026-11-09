@@ -38,6 +38,7 @@ namespace MDJson
 	Value ToJson(bool _value, Allocator& _allocator);
 	Value ToJson(const char* _value, Allocator& _allocator);
 	Value ToJson(std::uint64_t _value, Allocator& _allocator);
+	Value ToJson(std::uint8_t _value, Allocator& _allocator);
 	template<class T>
 	Value ToJson(const std::vector<T>& _value, Allocator& _allocator);
 	template<class T>
@@ -58,6 +59,7 @@ namespace MDJson
 	bool FromJson(const Value& _json, std::string& _value);
 	bool FromJson(const Value& _json, std::string_view& _value);
 	bool FromJson(const Value& _json, std::uint64_t& _value);
+	bool FromJson(const Value& _json, std::uint8_t& _value);
 	bool FromJson(const Value& _json, ArrayView& _value);
 	template<class T>
 	bool FromJson(const Value& _json, std::vector<T>& _value);

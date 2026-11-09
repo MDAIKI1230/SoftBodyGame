@@ -19,6 +19,7 @@ public:
 	float radius{ 0.5f };
 	// ローカルY軸を中心軸とし、Transformに対する位置を指定する。
 	Vector3 offsetPosition{};
+	int category{ -1 };
 
 	MD_DOCUMENT(
 		CapsuleColliderComponentDocument,
@@ -34,6 +35,8 @@ public:
 			MD_GUI_SPEED(0.01f)),
 
 		MD_FIELD("OffsetPosition", offsetPosition,
-			MD_GUI_LABEL("Offset Position"))
+			MD_GUI_LABEL("Offset Position")),
+
+		MD_FIELD("Category", category, InspectorFieldDrawFunc::CollisionCategory{})
 	);
 };

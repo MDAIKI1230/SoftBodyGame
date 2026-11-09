@@ -148,6 +148,9 @@ public:
 			InputEnum,
 			(const PropertyTarget& _target, const char* _label, T& _value, const EnumSettings<T, Count>& _settings),
 			(_target, _label, _value, _settings))
+	// 実行時に選択肢を組み立てる整数入力
+	static bool InputEnum(const PropertyTarget& _target, const char* _label, int& _value, std::span<const MDGuiOption::EnumItem<int>> _items)
+		SingletonPublicFunction(bool, InputEnum, (const PropertyTarget& _target, const char* _label, int& _value, std::span<const MDGuiOption::EnumItem<int>> _items), (_target, _label, _value, _items))
 	// ファイルパスの入力
 	static bool InputPath(const PropertyTarget& _target, const char* _label, std::string* _value, const PathSettings& _pathSettings = {}, const TextSettings& _textSettings = {})
 		SingletonPublicFunction(bool, InputPath, (const PropertyTarget& _target, const char* _label, std::string* _value, const PathSettings& _pathSettings, const TextSettings& _textSettings), (_target, _label, _value, _pathSettings, _textSettings))
@@ -243,10 +246,10 @@ private:
 	bool DrawColor4(Vector4& _value, const char* _label, const ColorSettings& _settings);
 
 	// Enumの選択肢と、ビットフラグの複数選択を描画する
-	template<class T, std::size_t Count>
-	bool DrawEnum(T& _value, const char* _label, const EnumSettings<T, Count>& _settings);
-	template<class T, std::size_t Count>
-	std::string MakeEnumPreview(const T& _value, const EnumSettings<T, Count>& _settings);
+	template<class T>
+	bool DrawEnum(T& _value, const char* _label, std::span<const MDGuiOption::EnumItem<T>> _items, bool _flags);
+	template<class T>
+	std::string MakeEnumPreview(const T& _value, std::span<const MDGuiOption::EnumItem<T>> _items, bool _flags);
 	template<class T>
 	static bool IsEnumItemSelected(const T& _value, const T& _item, bool _flags);
 	template<class T>

@@ -1,8 +1,8 @@
 {
     "schemaVersion":  1,
-    "buildId":  "a8f76fb3ca6d0e7012f80e99151420519c58e4a6a44ac4c6da4b65fe6f6f1a01",
+    "buildId":  "9be17728d67a80423a56a05aec60d05da8d94421213480e60237d6549d9e57df",
     "engineRevision":  null,
-    "builtAtUtc":  "2026-11-08T20:05:22.9898761Z",
+    "builtAtUtc":  "2026-11-09T08:51:16.0425542Z",
     "platform":  "x64",
     "configurations":  [
                            "Debug",
@@ -534,18 +534,18 @@
                   },
                   {
                       "path":  "Editor/Include/Source/Document/Component/Base/ComponentDocument.h",
-                      "sha256":  "34556671c3c856bd2a6dfe81935aa7d9902fe08d555c89f5fcfd3fd764e09daa",
-                      "bytes":  1341
+                      "sha256":  "50025d567e667734ef07d705190af19ec58362e0f61f64167d0f55d801afe014",
+                      "bytes":  1445
                   },
                   {
                       "path":  "Editor/Include/Source/Document/Component/Base/ComponentDocument.inl",
-                      "sha256":  "d3e4f9fc9ccf4a05e04f6bcead41ea588cd4404f79ee4e25f7d91cdce25e0b0d",
-                      "bytes":  4992
+                      "sha256":  "0fcfd719916165c61c415cd0806d11eca4b838d8a11888a8fd41b4bbf367d050",
+                      "bytes":  5157
                   },
                   {
                       "path":  "Editor/Include/Source/Document/Component/Base/ComponentDocumentBase.h",
-                      "sha256":  "520a2c4db3fe9c152c1adfcee8fadefce9eaff65c415a49dedaf3e934015009a",
-                      "bytes":  1882
+                      "sha256":  "29bdee4e1023a21c3afc294c1beea3323ff9eef301a203b2e136ce0a66ea6656",
+                      "bytes":  1967
                   },
                   {
                       "path":  "Editor/Include/Source/Document/Component/Body/RigidBodyComponentDocument.h",
@@ -559,18 +559,18 @@
                   },
                   {
                       "path":  "Editor/Include/Source/Document/Component/Collider/BoxColliderComponentDocument.h",
-                      "sha256":  "6d48f07a3b82b3ae845151d3923398aca5bbff1a19de4031ff78850141025c8d",
-                      "bytes":  676
+                      "sha256":  "051fde130a99228dce82946487ec9b065b1c202e94ed4c57d9c468dd529d19dc",
+                      "bytes":  777
                   },
                   {
                       "path":  "Editor/Include/Source/Document/Component/Collider/CapsuleColliderComponentDocument.h",
-                      "sha256":  "539dff22e9b2203bee825392edcd4b258592e3ff78ed9f14506b95ae989f414c",
-                      "bytes":  972
+                      "sha256":  "a8e91477feb1a36d580ebe3efff1c68a1ff7d9d881ae51d573803a3163eae896",
+                      "bytes":  1073
                   },
                   {
                       "path":  "Editor/Include/Source/Document/Component/Collider/SphereColliderComponentDocument.h",
-                      "sha256":  "2096466af994edda2b1fc18e86d714790568cccfba63118e87be23b14716eb78",
-                      "bytes":  655
+                      "sha256":  "061e249c0a0c2c6082e5e4e07a4dac8f38a80bd0d8aff430cf2249e40b979aab",
+                      "bytes":  756
                   },
                   {
                       "path":  "Editor/Include/Source/Document/Component/Constraint/AngleLimitHingeConstraintComponentDocument.h",
@@ -654,8 +654,8 @@
                   },
                   {
                       "path":  "Editor/Include/Source/Document/Component/Renderer/LightComponentDocument.h",
-                      "sha256":  "8569bf4759a2330ca870dc0bcf756caffece9aaef20f76c003497650cff3a496",
-                      "bytes":  2414
+                      "sha256":  "62c833123bb5a8eae7e9955d3c2f533878ff7ee70e630dc5e156f906f96b20af",
+                      "bytes":  2610
                   },
                   {
                       "path":  "Editor/Include/Source/Document/Component/Renderer/ModelRendererComponentDocument.h",
@@ -674,18 +674,18 @@
                   },
                   {
                       "path":  "Editor/Include/Source/Document/Func/InspectorFieldDrawFunc.h",
-                      "sha256":  "0ce1fee5f05fea09536e275a5302d5a3a854b96eea827f4ce1ef8daf0ee08e5d",
-                      "bytes":  4651
+                      "sha256":  "426533d22c8fe198f606e3a11525b8f122842ae4f1aa1ace9be781b2b48ec3b6",
+                      "bytes":  4780
                   },
                   {
                       "path":  "Editor/Include/Source/Document/Func/InspectorFieldDrawFunc.inl",
-                      "sha256":  "4d27fc21815a0c6d3ac49894a03fe26c51882920b21ec6a32477274352b78a9b",
-                      "bytes":  11816
+                      "sha256":  "839f519a1fe7b108a196cd1a8a64c8fdf2419eea98b3f8870bbffd56601a3d45",
+                      "bytes":  12894
                   },
                   {
                       "path":  "Editor/Include/Source/Document/Object/ObjectDocument.h",
-                      "sha256":  "7b88a5b4d925e5d8aae3e8b29fa941d7890900693cf9c42dc2c1c36a64fd3ab1",
-                      "bytes":  2715
+                      "sha256":  "8460efd712a250bdb97e3f394875f61d5b71754e55ba338d5e5772887fd71436",
+                      "bytes":  2767
                   },
                   {
                       "path":  "Editor/Include/Source/Document/Object/ObjectDocument.inl",
@@ -714,8 +714,8 @@
                   },
                   {
                       "path":  "Editor/Include/Source/EditorDocumentService.h",
-                      "sha256":  "e04288e770381940c520797a977e68f55a70c76e79ef34e8fcd4ba0c5cb74a93",
-                      "bytes":  727
+                      "sha256":  "e169644ff85187d25f67e6c7a646e492fa74f8383b37d7a0ad1961c1e27034e5",
+                      "bytes":  860
                   },
                   {
                       "path":  "Editor/Include/Source/EditorGui.h",
@@ -724,8 +724,8 @@
                   },
                   {
                       "path":  "Editor/Include/Source/EditorWorkSpace.h",
-                      "sha256":  "4b15fcf7de37f0fc03a67a3833a83c071c621d9c7a07e74fc9d334aed33ea327",
-                      "bytes":  832
+                      "sha256":  "a00faa8e08db7ac63d51849b1368b5c7be3567cd84420638674aaf90f9965fa8",
+                      "bytes":  919
                   },
                   {
                       "path":  "Editor/Include/Source/IO/ComponentDocumentRegistry.h",
@@ -751,6 +751,11 @@
                       "path":  "Editor/Include/Source/Panel/Base/PanelBase.h",
                       "sha256":  "ba7d8c83c64775590e84e307665245ab0b55759792f049fc6696137261f0d6b5",
                       "bytes":  1478
+                  },
+                  {
+                      "path":  "Editor/Include/Source/Panel/CollisionSettingPanel.h",
+                      "sha256":  "1a19f7ed9760264d7aa8f77b168087533b053fd8dc358903434e871ad1903ab1",
+                      "bytes":  355
                   },
                   {
                       "path":  "Editor/Include/Source/Panel/FileDialogPanel.h",
@@ -869,13 +874,13 @@
                   },
                   {
                       "path":  "Editor/Include/Source/UI/Widgets/CommandHistoryWidgets.h",
-                      "sha256":  "6a4b8e8fbb0396ba68a01572e8156d3800f678f1467a2e4af504f578c39f5166",
-                      "bytes":  18925
+                      "sha256":  "1574fed2a2bb876643a86d89853230318d52eb8ab02dd12155bac09bfa21deb5",
+                      "bytes":  19322
                   },
                   {
                       "path":  "Editor/Include/Source/UI/Widgets/CommandHistoryWidgets.inl",
-                      "sha256":  "cdf69f0a1053371ca718c8c5628954a752df63079bb938ea2055ee9acbad3749",
-                      "bytes":  17181
+                      "sha256":  "3f1a33526d1cc09c323965ef849aed5707291112458c022f57615572b401c05b",
+                      "bytes":  17189
                   },
                   {
                       "path":  "Editor/Tool/GameObjectDocument.targets",
@@ -889,13 +894,13 @@
                   },
                   {
                       "path":  "Engine.props",
-                      "sha256":  "9575582f44582ebdb31db7d58df19320e392e6295c64ba81f5fecf36a2c3e703",
-                      "bytes":  11310
+                      "sha256":  "863017919d8ab5b1ee90e9b9d9f728f1f7935b7586f8145af77072bb0846a6ee",
+                      "bytes":  11370
                   },
                   {
                       "path":  "Engine.targets",
-                      "sha256":  "666fc3291c94431039daccf18cad582d006bf275b0ec921ffd13a7464763b66d",
-                      "bytes":  375
+                      "sha256":  "58a345cf4cc31a323eeb101f8534e8f85442d5b7a9f79569989d35677e7cb354",
+                      "bytes":  452
                   },
                   {
                       "path":  "Include/framework.h",
@@ -1434,8 +1439,8 @@
                   },
                   {
                       "path":  "Include/Source/Common/Fade.h",
-                      "sha256":  "bdb8b7650a786cf7a27928aa3cd4b957b3fc6f234405eb9be76086cb19b43a9b",
-                      "bytes":  297
+                      "sha256":  "72fa9e36cc466da19116e010b7a33c8aa2b7e3073011351f77221357cad0341e",
+                      "bytes":  422
                   },
                   {
                       "path":  "Include/Source/Common/Interface/IGPUConnecter.h",
@@ -1449,8 +1454,8 @@
                   },
                   {
                       "path":  "Include/Source/Common/Interface/IRenderer.h",
-                      "sha256":  "18762501bf747fc91acafbe69626cb044f01cfbc64d7ba8c8893e5499d57be2c",
-                      "bytes":  6111
+                      "sha256":  "42575e14342d4312d1f8092df123c9bfd44ae91980afd0f6e4650c5a68c8f7b3",
+                      "bytes":  6259
                   },
                   {
                       "path":  "Include/Source/Common/Interface/ISound.h",
@@ -1463,9 +1468,24 @@
                       "bytes":  765
                   },
                   {
+                      "path":  "Include/Source/Common/IO/CollisionSetting/CollisionSettingDocument.h",
+                      "sha256":  "8da087e1edf258f08b9b8585dd14b417facf4e90d0e23f5af5e35a84af2a2889",
+                      "bytes":  690
+                  },
+                  {
+                      "path":  "Include/Source/Common/IO/CollisionSetting/CollisionSettingSerializer.h",
+                      "sha256":  "0dc596d5d899c6406cfdf0d12cafcbd3646e349aec4d813e011f3513bfbe387b",
+                      "bytes":  386
+                  },
+                  {
+                      "path":  "Include/Source/Common/IO/CollisionSetting/CollisionTypeDocument.h",
+                      "sha256":  "4d6be6c9127dc7ff9f52818b82d51196b9abcb68640d875d2c75a4f9f615033b",
+                      "bytes":  116
+                  },
+                  {
                       "path":  "Include/Source/Common/IO/Json/MDJson.h",
-                      "sha256":  "cbedea0314b639183719f6d34d135f0b1ef944b3d9dc9e2817b82f8b44f42c94",
-                      "bytes":  2972
+                      "sha256":  "2639a16507fce5cb6419243419d3d3811fe718958004ff15a5c4de2ba75682e7",
+                      "bytes":  3089
                   },
                   {
                       "path":  "Include/Source/Common/IO/Json/MDJson.inl",
@@ -1829,8 +1849,13 @@
                   },
                   {
                       "path":  "Include/Source/Physics/Constants/CollisionConstants.h",
-                      "sha256":  "58618304940e9b4db556b4f3ae9a77048069ca23eb486bad1480e8700d297b60",
-                      "bytes":  535
+                      "sha256":  "e1447d4a424755b67c3b9dacca2b915ec69c5b3f3f961c38a8aa2a669343edc1",
+                      "bytes":  365
+                  },
+                  {
+                      "path":  "Include/Source/Physics/Constants/CollisionTag.h",
+                      "sha256":  "a5b26667fdd67f09199da2d3e07393a08dc407c382db60d82c7c62d94379f224",
+                      "bytes":  145
                   },
                   {
                       "path":  "Include/Source/Physics/Constants/CommandConstants.h",
@@ -2459,8 +2484,8 @@
                   },
                   {
                       "path":  "Include/Source/Render/Component/LightComponent.h",
-                      "sha256":  "4c67b9647e744187e06dce2d104739a7bce3fb777733786a1881515de0bdb12f",
-                      "bytes":  2047
+                      "sha256":  "fb0b37639df732330bce2df416771463c647efbeb3901c9f0b9c7f0251135390",
+                      "bytes":  2403
                   },
                   {
                       "path":  "Include/Source/Render/Component/ModelRendererComponent.h",
@@ -2479,13 +2504,13 @@
                   },
                   {
                       "path":  "Include/Source/Render/LightManager.h",
-                      "sha256":  "fff526bcffe53d8635e021b6991b4431926bc47dafa1bb4b5b5d52b4527604ae",
-                      "bytes":  742
+                      "sha256":  "05c3012dc95906b8b693ef70313bec736898545425e90d946b0b453261b54e4e",
+                      "bytes":  814
                   },
                   {
                       "path":  "Include/Source/Render/Renderer.h",
-                      "sha256":  "813f42906496e192012284dd32bbba161c146120ae20a01c8da0ad43dd6e7cb0",
-                      "bytes":  6798
+                      "sha256":  "ccec41f4b863bd4e7327f98758d4b8e023fa41bcc0c2bd54d5b201d7579e2219",
+                      "bytes":  6858
                   },
                   {
                       "path":  "Include/Source/Render/Storage/CameraComponentStorage.h",
@@ -2579,8 +2604,8 @@
                   },
                   {
                       "path":  "Include/Source/System/Adapter/Dxlib/DxlibRenderer.h",
-                      "sha256":  "41d2e3f4f9d689b2fc6cfd9b6bb3688c60a36ef3c64d7f959ecbfa24ec94e051",
-                      "bytes":  6204
+                      "sha256":  "61250c141daf26da5e3a9889329cfde90ecec99cea10f683c4a4d30cc626ea70",
+                      "bytes":  6349
                   },
                   {
                       "path":  "Include/Source/System/Adapter/Dxlib/DxlibSound.h",
@@ -2774,8 +2799,8 @@
                   },
                   {
                       "path":  "Include/Source/System/SceneData/Struct/Component/BoxColliderComponentData.h",
-                      "sha256":  "0a9ddc0a94c9a9129c4aa5f2b4c00cc6948b8d0f98274560f7ca996e8cb47af2",
-                      "bytes":  498
+                      "sha256":  "5b5389af010f7e7280a3e5de3ba1e5ce98b0a5920f783413b74b942bb29dcb29",
+                      "bytes":  538
                   },
                   {
                       "path":  "Include/Source/System/SceneData/Struct/Component/CameraComponentData.h",
@@ -2784,13 +2809,18 @@
                   },
                   {
                       "path":  "Include/Source/System/SceneData/Struct/Component/CapsuleColliderComponentData.h",
-                      "sha256":  "2532c714c977b3ed9f7e80104d2683076d3181b824645f19dae44edaa9833795",
-                      "bytes":  560
+                      "sha256":  "f24e35700bc8d25756992e36a190592f7e3e912404f88c18f7e0c4c851387e3b",
+                      "bytes":  600
                   },
                   {
                       "path":  "Include/Source/System/SceneData/Struct/Component/CharacterControllerComponentData.h",
                       "sha256":  "23346bd7a2d3e215aa868b1851bebc7649a383f34af1cab36ea69bae08bd58a2",
                       "bytes":  1859
+                  },
+                  {
+                      "path":  "Include/Source/System/SceneData/Struct/Component/ColliderComponentData.h",
+                      "sha256":  "c96fc8d8a3f73bcdc8b0324e1087be989aed32e5448331a72960035f3bb5a5bd",
+                      "bytes":  279
                   },
                   {
                       "path":  "Include/Source/System/SceneData/Struct/Component/ConstraintComponentData.h",
@@ -2804,8 +2834,8 @@
                   },
                   {
                       "path":  "Include/Source/System/SceneData/Struct/Component/LightComponentData.h",
-                      "sha256":  "7e466967fb3fc861b2defeac02ef3fe67f53934aae3ea420729a85f5cedef727",
-                      "bytes":  763
+                      "sha256":  "c85bb6c314e89b96e47f6602c0b99f2cda3e3dea7400a01247d232a3fd163a71",
+                      "bytes":  869
                   },
                   {
                       "path":  "Include/Source/System/SceneData/Struct/Component/RendererComponentData.h",
@@ -2819,8 +2849,8 @@
                   },
                   {
                       "path":  "Include/Source/System/SceneData/Struct/Component/SphereColliderComponentData.h",
-                      "sha256":  "48b549db294aff8f6e6b1494f30ab4d6ac44377995845d6988bbf2ec17bbb359",
-                      "bytes":  506
+                      "sha256":  "9657e19199504bc71e01f90291e4a77d9a0be89d0ad551c87b5e6d197dcfe679",
+                      "bytes":  546
                   },
                   {
                       "path":  "Include/Source/System/SceneData/Struct/Component/TransformComponentData.h",
@@ -2859,63 +2889,73 @@
                   },
                   {
                       "path":  "Lib/x64/Debug/MDEditor.lib",
-                      "sha256":  "6f5d6b002e72a40eac3a9e422f5306a567084873e26c10302f3fc5c6444a3367",
-                      "bytes":  39671196
+                      "sha256":  "c13cae2681fb45f2e477ce568432b985624c6af17f13ebeb4af4d282c595071c",
+                      "bytes":  41764304
                   },
                   {
                       "path":  "Lib/x64/Debug/MDEditor.pdb",
-                      "sha256":  "df4427ae87e8218d943121ac4c95d171003effbcaba978dd2cb3a6e327bfc3af",
-                      "bytes":  16510976
+                      "sha256":  "e6e3eaa4a3f1960d99fbd2c44fb86a3d1e85aeda75b4726a03bf4985b4595905",
+                      "bytes":  17002496
                   },
                   {
                       "path":  "Lib/x64/Debug/MDEngine.lib",
-                      "sha256":  "0f60b27efb09fa3e73269ef019226fa4a93eedc9067940b76397c22b3b0933a3",
-                      "bytes":  73882738
+                      "sha256":  "a39aa664a74e2cd17942ee07a4292ae6c1af9049e864447a15b386a16e20cf75",
+                      "bytes":  75066636
                   },
                   {
                       "path":  "Lib/x64/Debug/MDEngine.pdb",
-                      "sha256":  "d85ce773fc22ca201855932c9461ac9a6b59d188442ae9525d57a7d47a925a23",
-                      "bytes":  19845120
+                      "sha256":  "ca8b88ee4f5605d4dc7ed27b6e2ec3ab0a3dd1bbad8c03adb83f151fecadc587",
+                      "bytes":  20140032
                   },
                   {
                       "path":  "Lib/x64/Editor/MDEditor.lib",
-                      "sha256":  "40a19336e4c428f78e9fc14b87bffbe7f06878eebc6de8fb506f52e7bcfe00cc",
-                      "bytes":  39670468
+                      "sha256":  "b2b4763009315ad9287aa11e20ceef39b497a1650e27605a4113b416e2a40fb5",
+                      "bytes":  41763556
                   },
                   {
                       "path":  "Lib/x64/Editor/MDEditor.pdb",
-                      "sha256":  "84c7f1e0f5f61ab9dc6a214e6fc3c21934282633999bd68f672bf6b9e971ff12",
-                      "bytes":  16510976
+                      "sha256":  "0f69643eda61a6c3059f9f23209d25b546f6629d937fca3080960d6542a10af3",
+                      "bytes":  16994304
                   },
                   {
                       "path":  "Lib/x64/Editor/MDEngine.lib",
-                      "sha256":  "7a3eaedbe3577c6fc919bc206b77d7a00c4d7a2df7385d7fa27472cf3d321c2c",
-                      "bytes":  73883082
+                      "sha256":  "f57cd2a1215d4ac24e7866f2a2441acba9512bc950bb5968367dacbf75562bc1",
+                      "bytes":  75066986
                   },
                   {
                       "path":  "Lib/x64/Editor/MDEngine.pdb",
-                      "sha256":  "87337fa9e9e866cdc5ee7bcb9b15c8913fe7a15c60f86afe296efe467d5bcf3e",
-                      "bytes":  19845120
+                      "sha256":  "79d9bb8e45a78fc78b6be201cd2322a1df6e6f0a4619a2e1ef44dac02d989332",
+                      "bytes":  20140032
                   },
                   {
                       "path":  "Lib/x64/Release/MDEditor.lib",
-                      "sha256":  "3f58da12f8a07bb96c892d3b122eb928fda0d50a52d87e7e0d5e4d4dcaf66547",
-                      "bytes":  34098650
+                      "sha256":  "884b2913d40e0e070cae2573d618de7772f84aa83d5663c9d0c2867537b4bd8c",
+                      "bytes":  35900310
                   },
                   {
                       "path":  "Lib/x64/Release/MDEditor.pdb",
-                      "sha256":  "f4274cdd97879d1da7638a1652f0839a836977b88675929873aa1f9e6a29b36d",
-                      "bytes":  16306176
+                      "sha256":  "9456582960dafd17c004359dfda7b22b68caf49580451f9c083f278f541b6b2e",
+                      "bytes":  16764928
                   },
                   {
                       "path":  "Lib/x64/Release/MDEngine.lib",
-                      "sha256":  "225e4fbf9aa36a0c6469f3e78a76ed608473436abfa115f420b7218114a04c6b",
-                      "bytes":  54488052
+                      "sha256":  "ba6447e2007d5fd16720935138add60bcefd17d20ff99ad9ef52f57fd5d22e8b",
+                      "bytes":  55404908
                   },
                   {
                       "path":  "Lib/x64/Release/MDEngine.pdb",
-                      "sha256":  "cd90dd610cc400bbf6bb462355ce2cf01fff475fac33667c56f6d91c14192ce4",
-                      "bytes":  19206144
+                      "sha256":  "da1d98261f807a34a1420e25ab1a5bfb9e3818964c6cc78485637dd225c223c0",
+                      "bytes":  19484672
+                  },
+                  {
+                      "path":  "Tool/CollisionTags.targets",
+                      "sha256":  "a026e2529ec510a26dd356da3f8634b1ce2f6b12dd8e6bcd4f0afd603c5eb8b1",
+                      "bytes":  1762
+                  },
+                  {
+                      "path":  "Tool/GenerateCollisionTags.ps1",
+                      "sha256":  "15c0a3916f93051d734a6adb3fa181f70195671ff5a5d68d28d0a147edc5fbcd",
+                      "bytes":  2510
                   },
                   {
                       "path":  "Tool/GenerateObjectFactory.ps1",

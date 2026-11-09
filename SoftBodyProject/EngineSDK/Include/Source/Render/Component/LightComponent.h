@@ -27,10 +27,15 @@ public:
 	// ライトの種類の設定
 	void SetType(LightType _type);
 
-	// ライトの色の取得
-	const Color& GetColor() const;
-	// ライトの色の設定
-	void SetColor(const Color& _color);
+	// ライトのディフューズカラーの取得
+	const Color& GetDiffuseColor() const;
+	// ライトのディフューズカラーの設定
+	void SetDiffuseColor(const Color& _color);
+
+	// ライトのアンビエントカラーの取得
+	const Color& GetAmbientColor() const;
+	// ライトのアンビエントカラーの設定
+	void SetAmbientColor(const Color& _color);
 
 	// ライトの有効フラグの取得
 	bool GetEnable() const;
@@ -66,8 +71,10 @@ private:
 	LightHandle handle;
 	// ライトの種類
 	LightType type{ LightType::DIRECTIONAL };
-	// 色
-	Color color{ 1.0f, 1.0f, 1.0f };
+	// ディフューズカラー
+	Color diffuseColor{ 1.0f, 1.0f, 1.0f };
+	// アンビエントカラー
+	Color ambientColor{ 0.0f, 0.0f, 0.0f };
 	// 有効化フラグ
 	bool enable{ true };
 	// 光強度

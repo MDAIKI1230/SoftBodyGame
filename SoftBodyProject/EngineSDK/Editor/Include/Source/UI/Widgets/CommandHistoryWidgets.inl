@@ -24,7 +24,8 @@ bool CommandHistoryWidgets::InputNumberImpl(const PropertyTarget& _target, const
 template<class T, std::size_t Count>
 bool CommandHistoryWidgets::InputEnumImpl(const PropertyTarget& _target, const char* _label, T& _value, const EnumSettings<T, Count>& _settings)
 {
-	return EditProperty(_target, _value, &CommandHistoryWidgets::DrawEnum<T, Count>, _label, _settings);
+	return EditProperty(_target, _value, &CommandHistoryWidgets::DrawEnum<T>, _label,
+		std::span<const MDGuiOption::EnumItem<T>>{ _settings.items }, _settings.flags);
 }
 
 template<class Container, class DrawElement>
@@ -130,23 +131,23 @@ bool CommandHistoryWidgets::DrawNumber(T& _value, const char* _label, const Numb
 	return changed && ValidateNumber(_value, before, _settings);
 }
 
-template<class T, std::size_t Count>
-bool CommandHistoryWidgets::DrawEnum(T& _value, const char* _label, const EnumSettings<T, Count>& _settings)
+template<class T>
+bool CommandHistoryWidgets::DrawEnum(T& _value, const char* _label, std::span<const MDGuiOption::EnumItem<T>> _items, bool _flags)
 {
-	const std::string preview{ MakeEnumPreview(_value, _settings) };
+	const std::string preview{ MakeEnumPreview(_value, _items, _flags) };
 	bool changed{ false };
-	ImGui::BeginDisabled(Count == 0);
+	ImGui::BeginDisabled(_items.empty());
 	if (ImGui::BeginCombo(_label, preview.c_str()))
 	{
-		for (std::size_t index = 0; index < Count; ++index)
+		for (std::size_t index = 0; index < _items.size(); ++index)
 		{
-			const auto& item{ _settings.items[index] };
-			const bool selected{ IsEnumItemSelected(_value, item.value, _settings.flags) };
-			const ImGuiSelectableFlags flags{ _settings.flags ? ImGuiSelectableFlags_NoAutoClosePopups : ImGuiSelectableFlags_None };
+			const auto& item{ _items[index] };
+			const bool selected{ IsEnumItemSelected(_value, item.value, _flags) };
+			const ImGuiSelectableFlags flags{ _flags ? ImGuiSelectableFlags_NoAutoClosePopups : ImGuiSelectableFlags_None };
 			ImGui::PushID(static_cast<int>(index));
 			if (ImGui::Selectable(item.label ? item.label : "<Unnamed>", selected, flags))
 			{
-				changed |= ApplyEnumSelection(_value, item.value, _settings.flags);
+				changed |= ApplyEnumSelection(_value, item.value, _flags);
 			}
 			if (selected)
 			{
@@ -160,24 +161,24 @@ bool CommandHistoryWidgets::DrawEnum(T& _value, const char* _label, const EnumSe
 	return changed;
 }
 
-template<class T, std::size_t Count>
-std::string CommandHistoryWidgets::MakeEnumPreview(const T& _value, const EnumSettings<T, Count>& _settings)
+template<class T>
+std::string CommandHistoryWidgets::MakeEnumPreview(const T& _value, std::span<const MDGuiOption::EnumItem<T>> _items, bool _flags)
 {
-	if constexpr (Count == 0)
+	if (_items.empty())
 	{
 		return "<No options>";
 	}
 	std::string preview;
-	for (const auto& item : _settings.items)
+	for (const auto& item : _items)
 	{
-		if (IsEnumItemSelected(_value, item.value, _settings.flags))
+		if (IsEnumItemSelected(_value, item.value, _flags))
 		{
 			if (!preview.empty())
 			{
 				preview += ", ";
 			}
 			preview += item.label ? item.label : "<Unnamed>";
-			if (!_settings.flags)
+			if (!_flags)
 			{
 				break;
 			}
@@ -189,7 +190,7 @@ std::string CommandHistoryWidgets::MakeEnumPreview(const T& _value, const EnumSe
 	}
 	if constexpr (std::is_enum_v<T> || (std::is_integral_v<T> && !std::is_same_v<T, bool>))
 	{
-		if (_settings.flags && GetEnumBits(_value) == 0)
+		if (_flags && GetEnumBits(_value) == 0)
 		{
 			return "<None>";
 		}

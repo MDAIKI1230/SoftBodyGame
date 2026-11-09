@@ -1,6 +1,7 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildThisFileDirectory)Tool\ObjectFactory.targets" />
   <Import Project="$(MSBuildThisFileDirectory)Tool\SceneFactory.targets" />
+  <Import Project="$(MSBuildThisFileDirectory)Tool\CollisionTags.targets" />
   <Import Project="$(MSBuildThisFileDirectory)Editor\Tool\GameObjectDocument.targets"
           Condition="'$(Configuration)' == 'Editor'" />
 </Project>

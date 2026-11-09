@@ -42,7 +42,7 @@ void Player::Start()
 	CapsuleColliderComponent* collider{ AddComponent<CapsuleColliderComponent>(50.0f, 25.0f) };
 	collider->SetOffsetPosition(Vector3::UP * 50.0f);
 	CollisionFilter testFilter;
-	testFilter.categoryBits = CollisionTag::Type::CARRYABLE;
+	testFilter.categoryBits = 1 << 2;
 	collider->SetFilter(testFilter);
 	GetComponent<TransformComponent>()->SetPosition(Vector3{ 150.0f,200.0f,0.0f });
 
@@ -77,7 +77,7 @@ void Player::Start()
 	anim->SetLoop(true);
 
 	//CollisionFilter ragdollFilter{ active->GetIgnoreFilter() };
-	testFilter.IgnoreCategory(CollisionTag::Type::CARRYABLE);
+	testFilter.IgnoreCategory(1 << 2);
 	camera->GetComponent<CameraRigComponent>()->GetRayFilter(testFilter);
 	// collider->SetFilter(ragdollFilter);
 

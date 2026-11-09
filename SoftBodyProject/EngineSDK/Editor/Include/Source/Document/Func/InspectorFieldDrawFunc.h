@@ -11,9 +11,14 @@
 #include "PropertyTarget.h"
 
 struct SceneDocument;
+struct CollisionSettingDocument;
 
 namespace InspectorFieldDrawFunc
 {
+	struct CollisionCategory
+	{
+	};
+
 	/*
 		一つのFieldを、ラベルと入力欄を含む一行として描画する。
 
@@ -29,7 +34,7 @@ namespace InspectorFieldDrawFunc
 		戻り値は値が変更された場合にtrue。非表示など、変更がなければfalse。
 	*/
 	template<class Document, class Owner, class Value, class... Options>
-	bool DrawField(Document& _document, const SceneDocument& _scene, const PropertyTarget& _target, const MDReflection::FieldDescriptor<Owner, Value, Options...>& _field);
+	bool DrawField(Document& _document, const SceneDocument& _scene, const PropertyTarget& _target, const MDReflection::FieldDescriptor<Owner, Value, Options...>& _field, const CollisionSettingDocument* _collisionSettings = nullptr);
 
 	namespace Detail
 	{

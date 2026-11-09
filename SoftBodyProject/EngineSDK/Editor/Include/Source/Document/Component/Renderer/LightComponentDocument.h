@@ -24,7 +24,8 @@ public:
 
 public:
 	LightType type{ LightType::DIRECTIONAL };
-	Vector3 color{ 1.0f, 1.0f, 1.0f };
+	Vector3 diffuseColor{ 1.0f, 1.0f, 1.0f };
+	Vector3 ambientColor{ 0.0f, 0.0f, 0.0f };
 	bool enabled{ true };
 	float intensity{ 1.0f };
 	float range{ 0.0f };
@@ -41,7 +42,12 @@ public:
 				MD_GUI_ENUM_ITEM("Point", LightType::POINT),
 				MD_GUI_ENUM_ITEM("Spot", LightType::SPOT))),
 
-		MD_FIELD("Color", color, MD_GUI_COLOR()),
+		MD_FIELD("DiffuseColor", diffuseColor,
+			MD_GUI_LABEL("Diffuse Color"),
+			MD_GUI_COLOR()),
+		MD_FIELD("AmbientColor", ambientColor,
+			MD_GUI_LABEL("Ambient Color"),
+			MD_GUI_COLOR()),
 		MD_FIELD("Enabled", enabled),
 
 		MD_FIELD("Intensity", intensity,

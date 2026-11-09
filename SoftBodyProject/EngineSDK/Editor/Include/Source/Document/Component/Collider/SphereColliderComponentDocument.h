@@ -17,6 +17,7 @@ public:
 	float radius{ 1.0f };
 	// Transformに対するローカル位置。
 	Vector3 offsetPosition{};
+	int category{ -1 };
 
 	MD_DOCUMENT(
 		SphereColliderComponentDocument,
@@ -27,6 +28,8 @@ public:
 			MD_GUI_SPEED(0.01f)),
 
 		MD_FIELD("OffsetPosition", offsetPosition,
-			MD_GUI_LABEL("Offset Position"))
+			MD_GUI_LABEL("Offset Position")),
+
+		MD_FIELD("Category", category, InspectorFieldDrawFunc::CollisionCategory{})
 	);
 };

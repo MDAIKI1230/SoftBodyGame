@@ -5,15 +5,18 @@
 #include <cstddef>
 #include <functional>
 #include <utility>
+#include <vector>
 
 #include <imgui.h>
 
+#include "CollisionSettingDocument.h"
 #include "CommandHistoryWidgets.h"
 #include "LoadSettingFunc.h"
 #include "InspectorFieldDrawFunc.h"
 
 namespace InspectorFieldDrawFunc::Detail
 {
+	inline bool DrawCollisionCategory(const PropertyTarget& _target, const char* _label, int& _value, const CollisionSettingDocument& _collisionSettings);
 	inline bool DrawReference(const PropertyTarget& _target, const char* _label, std::uint64_t& _value, const SceneDocument& _document, const ReferenceSettings& _settings);
 	inline void ReserveResetButton();
 	inline void PlaceResetButton();
@@ -42,7 +45,7 @@ namespace InspectorFieldDrawFunc::Detail
 }
 
 template<class Document, class Owner, class Value, class... Options>
-bool InspectorFieldDrawFunc::DrawField(Document& _document, const SceneDocument& _scene, const PropertyTarget& _target, const MDReflection::FieldDescriptor<Owner, Value, Options...>& _field)
+bool InspectorFieldDrawFunc::DrawField(Document& _document, const SceneDocument& _scene, const PropertyTarget& _target, const MDReflection::FieldDescriptor<Owner, Value, Options...>& _field, const CollisionSettingDocument* _collisionSettings)
 {
 	const auto row{ LoadSettingFunc::Load<RowSettings>(_document, _field.guiOptions) };
 	const auto layout{ LoadSettingFunc::Load<LayoutSettings>(_field.guiOptions) };
@@ -60,7 +63,16 @@ bool InspectorFieldDrawFunc::DrawField(Document& _document, const SceneDocument&
 	{
 		Detail::ReserveResetButton();
 	}
-	bool changed{ Detail::DrawValue(_scene, target, row.inputLabel ? row.inputLabel : "##Value", value, _field.guiOptions) };
+	const char* inputLabel{ row.inputLabel ? row.inputLabel : "##Value" };
+	bool changed{ false };
+	if constexpr ((std::same_as<Options, CollisionCategory> || ...))
+	{
+		changed = _collisionSettings && Detail::DrawCollisionCategory(target, inputLabel, value, *_collisionSettings);
+	}
+	else
+	{
+		changed = Detail::DrawValue(_scene, target, inputLabel, value, _field.guiOptions);
+	}
 	if (reset.getValue)
 	{
 		Detail::PlaceResetButton();
@@ -260,6 +272,19 @@ bool InspectorFieldDrawFunc::Detail::DrawCollectionElement(const SceneDocument& 
 	}
 }
 
+
+inline bool InspectorFieldDrawFunc::Detail::DrawCollisionCategory(const PropertyTarget& _target, const char* _label, int& _value, const CollisionSettingDocument& _collisionSettings)
+{
+	const auto bits{ _collisionSettings.GetSortedCategoryBits() };
+	std::vector<MDGuiOption::EnumItem<int>> items;
+	items.reserve(bits.size() + 1);
+	items.push_back({ "<Unspecified>", -1 });
+	for (const auto bit : bits)
+	{
+		items.push_back({ _collisionSettings.types.at(bit).codeName.c_str(), bit });
+	}
+	return CommandHistoryWidgets::InputEnum(_target, _label, _value, items);
+}
 
 inline bool InspectorFieldDrawFunc::Detail::DrawReference(const PropertyTarget& _target, const char* _label, std::uint64_t& _value, const SceneDocument& _document, const ReferenceSettings& _settings)
 {

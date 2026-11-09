@@ -1,0 +1,29 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MDEngineCollisionTagsScript>$(MSBuildThisFileDirectory)GenerateCollisionTags.ps1</MDEngineCollisionTagsScript>
+    <MDEngineCollisionTagsSettings>$(MSBuildProjectDirectory)\Res\Data\Setting\CollisionSetting.json</MDEngineCollisionTagsSettings>
+    <MDEngineBuildCacheRoot Condition="'$(MDEngineBuildCacheRoot)' == ''">$([System.IO.Path]::GetFullPath('$(MSBuildProjectDirectory)\.cache'))</MDEngineBuildCacheRoot>
+    <MDEngineCollisionTagsCacheDir>$(MDEngineBuildCacheRoot)\$(Platform)\$(Configuration)</MDEngineCollisionTagsCacheDir>
+  </PropertyGroup>
+
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(MDEngineCollisionTagsCacheDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
+
+  <ItemGroup>
+    <CustomBuild Include="$(MDEngineCollisionTagsScript)">
+      <AdditionalInputs Condition="Exists('$(MDEngineCollisionTagsSettings)')">$(MDEngineCollisionTagsSettings);%(AdditionalInputs)</AdditionalInputs>
+      <Command>powershell.exe -NoProfile -ExecutionPolicy Bypass -File &quot;$(MDEngineCollisionTagsScript)&quot; -ProjectRoot &quot;$(MSBuildProjectDirectory)&quot; -OutputDirectory &quot;$(MDEngineCollisionTagsCacheDir)&quot; -AllowMissingSettings</Command>
+      <Outputs>$(MDEngineCollisionTagsCacheDir)\CollisionTags.generated.h</Outputs>
+      <Message>Generating collision tags</Message>
+    </CustomBuild>
+  </ItemGroup>
+
+  <Target Name="MDEngineGenerateCollisionTags"
+          AfterTargets="BuildGenerateSources"
+          BeforeTargets="SelectClCompile"
+          DependsOnTargets="CustomBuild"
+          Condition="'$(DesignTimeBuild)' != 'true'" />
+</Project>

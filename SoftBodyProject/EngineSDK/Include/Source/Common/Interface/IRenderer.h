@@ -66,7 +66,7 @@ protected:
 	// 画像描画
 	virtual void DrawTexture(TextureHandle _handle, const Vector2& _pos, bool _transFlag) = 0;
 	// Fade描画
-	virtual void DrawFadeBox(float _alpha) = 0;
+	virtual void DrawFadeBox(float _alpha, const Color& _color) = 0;
 	// 球描画
 	virtual void DrawSphere(const Vector3& _pos, float _radius, const Color& _color) = 0;
 	// メッシュ球描画
@@ -113,6 +113,8 @@ protected:
 	virtual void SetRangeAngle(LightHandle _handle, float _range, float _innerAngle, float _outerAngle) = 0;
 	// ライトのディフューズカラー変更
 	virtual void SetDiffuseColor(LightHandle _handle, const Color& _color) = 0;
+	// ライトのアンビエントカラー変更
+	virtual void SetAmbientColor(LightHandle _handle, const Color& _color) = 0;
 	// ライト破棄
 	virtual void DeleteLight(LightHandle _handle) = 0;
 

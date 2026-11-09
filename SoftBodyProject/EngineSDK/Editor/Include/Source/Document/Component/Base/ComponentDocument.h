@@ -26,13 +26,13 @@ struct ComponentDocument:public ComponentDocumentBase
 
 	bool LoadJson(const MDJson::Value& _json) override;
 
-	bool DrawInspector(const SceneDocument& _scene, bool& _removeRequested, bool _removable = true) override;
+	bool DrawInspector(const SceneDocument& _scene, const CollisionSettingDocument& _collisionSettings, bool& _removeRequested, bool _removable = true) override;
 
 	void* FindFieldAddress(std::string_view _fieldName) override;
 private:
 	// Fieldを順番に描画し、グループの切り替え時にテーブルを区切る。
 	template<std::size_t Index>
-	void DrawInspectorFields(const SceneDocument& _scene, const PropertyTarget& _target, std::string_view& _groupName, bool& _groupOpen, bool& _tableOpen, bool& _changed);
+	void DrawInspectorFields(const SceneDocument& _scene, const CollisionSettingDocument& _collisionSettings, const PropertyTarget& _target, std::string_view& _groupName, bool& _groupOpen, bool& _tableOpen, bool& _changed);
 };
 
 #include "ComponentDocument.inl"

@@ -7,6 +7,7 @@
 #include "GizmoContext.h"
 
 struct SceneDocument;
+struct CollisionSettingDocument;
 
 /*
 	ComponentDocumentをまとめるための部分
@@ -38,7 +39,7 @@ public:
 	virtual MDJson::Value SaveJson(MDJson::Allocator& _allocator) const = 0;
 
 	// 見出しの選択クリックを戻り値、削除要求を引数で返す。
-	virtual bool DrawInspector(const SceneDocument& _scene, bool& _removeRequested, bool _removable = true) = 0;
+	virtual bool DrawInspector(const SceneDocument& _scene, const CollisionSettingDocument& _collisionSettings, bool& _removeRequested, bool _removable = true) = 0;
 
 	// 所有Objectを参照して通常描画を行う。
 	virtual void Draw(const ObjectDocument& _object) {};

@@ -20,5 +20,6 @@ private:
 	static void SetPosition(LightHandle _handle, const Vector3& _pos);
 	static void SetRangeAngle(LightHandle _handle, float _range, float _innerAngle, float _outerAngle);
 	static void SetDiffuseColor(LightHandle _handle, const Color& _color);
+	static void SetAmbientColor(LightHandle _handle, const Color& _color);
 	static void Delete(LightHandle _handle);
 };

@@ -64,7 +64,7 @@ bool ComponentDocument<Derived>::LoadJson(const MDJson::Value& _json)
 }
 
 template<class Derived>
-bool ComponentDocument<Derived>::DrawInspector(const SceneDocument& _scene, bool& _removeRequested, bool _removable)
+bool ComponentDocument<Derived>::DrawInspector(const SceneDocument& _scene, const CollisionSettingDocument& _collisionSettings, bool& _removeRequested, bool _removable)
 {
 	PropertyTarget target;
 	target.objectID = ownerObjectID;
@@ -87,7 +87,7 @@ bool ComponentDocument<Derived>::DrawInspector(const SceneDocument& _scene, bool
 	bool tableOpen{ false };
 
 	bool changed{ false };
-	DrawInspectorFields<0>(_scene, target, groupName, groupOpen, tableOpen, changed);
+	DrawInspectorFields<0>(_scene, _collisionSettings, target, groupName, groupOpen, tableOpen, changed);
 
 	if (tableOpen)
 	{
@@ -126,7 +126,7 @@ void* ComponentDocument<Derived>::FindFieldAddress(std::string_view _fieldName)
 
 template<class Derived>
 template<std::size_t Index>
-void ComponentDocument<Derived>::DrawInspectorFields(const SceneDocument& _scene, const PropertyTarget& _target, std::string_view& _groupName, bool& _groupOpen, bool& _tableOpen, bool& _changed)
+void ComponentDocument<Derived>::DrawInspectorFields(const SceneDocument& _scene, const CollisionSettingDocument& _collisionSettings, const PropertyTarget& _target, std::string_view& _groupName, bool& _groupOpen, bool& _tableOpen, bool& _changed)
 {
 	static constexpr auto info{ Derived::GetDocumentInfo() };
 	if constexpr (Index < std::tuple_size_v<decltype(info.fields)>)
@@ -189,7 +189,7 @@ void ComponentDocument<Derived>::DrawInspectorFields(const SceneDocument& _scene
 
 				if (_tableOpen)
 				{
-					if (InspectorFieldDrawFunc::DrawField(document, _scene, fieldTarget, field))
+					if (InspectorFieldDrawFunc::DrawField(document, _scene, fieldTarget, field, &_collisionSettings))
 					{
 						_changed = true;
 					}
@@ -197,6 +197,6 @@ void ComponentDocument<Derived>::DrawInspectorFields(const SceneDocument& _scene
 			}
 		}
 
-		DrawInspectorFields<Index + 1>(_scene, _target, _groupName, _groupOpen, _tableOpen, _changed);
+		DrawInspectorFields<Index + 1>(_scene, _collisionSettings, _target, _groupName, _groupOpen, _tableOpen, _changed);
 	}
 }
