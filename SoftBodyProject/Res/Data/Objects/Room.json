@@ -1,0 +1,60 @@
+{
+    "ID": 1,
+    "Type": "EmptyObject",
+    "Name": "BedroomFoundation.mv1",
+    "Components": [
+        {
+            "ParentObjectID": 0,
+            "Position": {
+                "X": 0.0,
+                "Y": 0.0,
+                "Z": 0.0
+            },
+            "RotationDeg": {
+                "X": 0.0,
+                "Y": 0.0,
+                "Z": 0.0
+            },
+            "Scale": {
+                "X": 1.0,
+                "Y": 1.0,
+                "Z": 1.0
+            },
+            "Name": "Transform"
+        }
+    ],
+    "Children": [
+        {
+            "ID": 2,
+            "Type": "EmptyObject",
+            "Name": "StageMesh",
+            "Components": [
+                {
+                    "ParentObjectID": 1,
+                    "Position": {
+                        "X": 0.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    },
+                    "RotationDeg": {
+                        "X": -0.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    },
+                    "Scale": {
+                        "X": 1.0,
+                        "Y": 1.0,
+                        "Z": 1.0
+                    },
+                    "Name": "Transform"
+                },
+                {
+                    "ModelPath": "BedroomFoundation.mv1",
+                    "FrameName": "StageMesh",
+                    "Name": "FrameRenderer"
+                }
+            ],
+            "Children": []
+        }
+    ]
+}
