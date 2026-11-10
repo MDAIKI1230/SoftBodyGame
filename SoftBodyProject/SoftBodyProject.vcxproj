@@ -123,6 +123,11 @@
     <ClCompile Include="Source\Objects\Escape\QuitUI.cpp" />
     <ClCompile Include="Source\Objects\Escape\ResumeUI.cpp" />
     <ClCompile Include="Source\Objects\Escape\TitleUI.cpp" />
+    <ClCompile Include="Source\Objects\Gimmick\Fan.cpp" />
+    <ClCompile Include="Source\Objects\Gimmick\GearToy.cpp" />
+    <ClCompile Include="Source\Objects\Gimmick\JackInTheBox.cpp" />
+    <ClCompile Include="Source\Objects\Gimmick\MotorizedDinosaur.cpp" />
+    <ClCompile Include="Source\Objects\Gimmick\ToyCrane.cpp" />
     <ClCompile Include="Source\Objects\Player.cpp" />
     <ClCompile Include="Source\Objects\Title\PressToStart.cpp" />
     <ClCompile Include="Source\Objects\TutorialBox.cpp" />
@@ -140,6 +145,11 @@
     <ClInclude Include="Source\Objects\Escape\QuitUI.h" />
     <ClInclude Include="Source\Objects\Escape\ResumeUI.h" />
     <ClInclude Include="Source\Objects\Escape\TitleUI.h" />
+    <ClInclude Include="Source\Objects\Gimmick\Fan.h" />
+    <ClInclude Include="Source\Objects\Gimmick\GearToy.h" />
+    <ClInclude Include="Source\Objects\Gimmick\JackInTheBox.h" />
+    <ClInclude Include="Source\Objects\Gimmick\MotorizedDinosaur.h" />
+    <ClInclude Include="Source\Objects\Gimmick\ToyCrane.h" />
     <ClInclude Include="Source\Objects\Player.h" />
     <ClInclude Include="Source\Objects\Title\PressToStart.h" />
     <ClInclude Include="Source\Objects\TutorialBox.h" />

@@ -23,6 +23,9 @@
     <Filter Include="ソース ファイル\Objects\Escape">
       <UniqueIdentifier>{f95d4a0e-7d77-4951-9c6c-682e5ba69131}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Objects\Gimmick">
+      <UniqueIdentifier>{d7ea9606-d500-4b79-8677-e3e93dbf3039}</UniqueIdentifier>
+    </Filter>
     <Filter Include="ソース ファイル\Objects\Title">
       <UniqueIdentifier>{dc955389-606e-419a-b03d-ee061a931934}</UniqueIdentifier>
     </Filter>
@@ -45,6 +48,21 @@
     </ClCompile>
     <ClCompile Include="Source\Objects\Escape\TitleUI.cpp">
       <Filter>ソース ファイル\Objects\Escape</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Objects\Gimmick\Fan.cpp">
+      <Filter>ソース ファイル\Objects\Gimmick</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Objects\Gimmick\GearToy.cpp">
+      <Filter>ソース ファイル\Objects\Gimmick</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Objects\Gimmick\JackInTheBox.cpp">
+      <Filter>ソース ファイル\Objects\Gimmick</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Objects\Gimmick\MotorizedDinosaur.cpp">
+      <Filter>ソース ファイル\Objects\Gimmick</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Objects\Gimmick\ToyCrane.cpp">
+      <Filter>ソース ファイル\Objects\Gimmick</Filter>
     </ClCompile>
     <ClCompile Include="Source\Objects\Player.cpp">
       <Filter>ソース ファイル\Objects</Filter>
@@ -92,6 +110,21 @@
     </ClInclude>
     <ClInclude Include="Source\Objects\Escape\TitleUI.h">
       <Filter>ソース ファイル\Objects\Escape</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Objects\Gimmick\Fan.h">
+      <Filter>ソース ファイル\Objects\Gimmick</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Objects\Gimmick\GearToy.h">
+      <Filter>ソース ファイル\Objects\Gimmick</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Objects\Gimmick\JackInTheBox.h">
+      <Filter>ソース ファイル\Objects\Gimmick</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Objects\Gimmick\MotorizedDinosaur.h">
+      <Filter>ソース ファイル\Objects\Gimmick</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Objects\Gimmick\ToyCrane.h">
+      <Filter>ソース ファイル\Objects\Gimmick</Filter>
     </ClInclude>
     <ClInclude Include="Source\Objects\Player.h">
       <Filter>ソース ファイル\Objects</Filter>
