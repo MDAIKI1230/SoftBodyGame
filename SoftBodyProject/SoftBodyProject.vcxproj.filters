@@ -67,6 +67,9 @@
     <ClCompile Include="Source\System\Scenes\Scenes\DebugScene.cpp">
       <Filter>ソース ファイル\System\Scenes</Filter>
     </ClCompile>
+    <ClCompile Include="Source\System\Scenes\Scenes\GameScene.cpp">
+      <Filter>ソース ファイル\System\Scenes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Objects\Title\PressToStart.h">
@@ -111,5 +114,11 @@
     <ClInclude Include="Source\System\Scenes\Scenes\DebugScene.h">
       <Filter>ソース ファイル\System\Scenes</Filter>
     </ClInclude>
+    <ClInclude Include="Source\System\Scenes\Scenes\GameScene.h">
+      <Filter>ソース ファイル\System\Scenes</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="$(MDEngineCollisionTagsScript)" />
   </ItemGroup>
 </Project>

@@ -129,6 +129,7 @@
     <ClCompile Include="Source\System\LoadingScreen\FadeOutLoadingScreen.cpp" />
     <ClCompile Include="Source\System\Manager\GameManager.cpp" />
     <ClCompile Include="Source\System\Scenes\Scenes\DebugScene.cpp" />
+    <ClCompile Include="Source\System\Scenes\Scenes\GameScene.cpp" />
     <ClCompile Include="Source\System\Scenes\Scenes\TitleScene.cpp" />
     <ClCompile Include="Source\System\Scenes\Scenes\TutorialScene.cpp" />
   </ItemGroup>
@@ -145,6 +146,7 @@
     <ClInclude Include="Source\System\LoadingScreen\FadeOutLoadingScreen.h" />
     <ClInclude Include="Source\System\Manager\GameManager.h" />
     <ClInclude Include="Source\System\Scenes\Scenes\DebugScene.h" />
+    <ClInclude Include="Source\System\Scenes\Scenes\GameScene.h" />
     <ClInclude Include="Source\System\Scenes\Scenes\TitleScene.h" />
     <ClInclude Include="Source\System\Scenes\Scenes\TutorialScene.h" />
   </ItemGroup>

@@ -3,6 +3,6 @@
   "WindowHeight": 500,
   "ColorBit": 32,
   "TargetFPS": 60,
-  "InitialScene": "TitleScene",
+  "InitialScene": "GameScene",
   "WindowMode": true
 }

@@ -1,0 +1,688 @@
+{
+    "ID": 1,
+    "Type": "EmptyObject",
+    "Name": "WoodenPlayset",
+    "Components": [
+        {
+            "ParentObjectID": 0,
+            "Position": {
+                "X": 0,
+                "Y": 0,
+                "Z": 0
+            },
+            "RotationDeg": {
+                "X": 0,
+                "Y": 0,
+                "Z": 0
+            },
+            "Scale": {
+                "X": 1,
+                "Y": 1,
+                "Z": 1
+            },
+            "Name": "Transform"
+        },
+        {
+            "Size": {
+                "X": 166.6485,
+                "Y": 12.5392,
+                "Z": 6.2697
+            },
+            "OffsetPosition": {
+                "X": -0.0008,
+                "Y": 180.5104,
+                "Z": -0.0012
+            },
+            "Category": -1,
+            "Name": "BoxCollider"
+        }
+    ],
+    "Children": [
+        {
+            "ID": 2,
+            "Type": "EmptyObject",
+            "Name": "WoodenFrame",
+            "Components": [
+                {
+                    "ParentObjectID": 1,
+                    "Position": {
+                        "X": 0,
+                        "Y": 0,
+                        "Z": 0
+                    },
+                    "RotationDeg": {
+                        "X": 90,
+                        "Y": 0,
+                        "Z": 0
+                    },
+                    "Scale": {
+                        "X": 1,
+                        "Y": 1,
+                        "Z": 1
+                    },
+                    "Name": "Transform"
+                },
+                {
+                    "ModelPath": "Res/Model/Gimmick/WoodenPlayset.mv1",
+                    "FrameName": "P05_PlayGym_Frame_Fixed_Surface",
+                    "Name": "FrameRenderer"
+                }
+            ],
+            "Children": []
+        },
+        {
+            "ID": 3,
+            "Type": "EmptyObject",
+            "Name": "Leg_L_Front",
+            "Components": [
+                {
+                    "ParentObjectID": 1,
+                    "Position": {
+                        "X": -81.51,
+                        "Y": 91.65,
+                        "Z": -39.15
+                    },
+                    "RotationDeg": {
+                        "X": 21.796,
+                        "Y": 0,
+                        "Z": 0
+                    },
+                    "Scale": {
+                        "X": 1,
+                        "Y": 1,
+                        "Z": 1
+                    },
+                    "Name": "Transform"
+                },
+                {
+                    "Size": {
+                        "X": 4.9,
+                        "Y": 197.4127,
+                        "Z": 4.5
+                    },
+                    "OffsetPosition": {
+                        "X": 0,
+                        "Y": 0,
+                        "Z": 0
+                    },
+                    "Category": -1,
+                    "Name": "BoxCollider"
+                }
+            ],
+            "Children": []
+        },
+        {
+            "ID": 4,
+            "Type": "EmptyObject",
+            "Name": "Leg_L_Back",
+            "Components": [
+                {
+                    "ParentObjectID": 1,
+                    "Position": {
+                        "X": -86.79,
+                        "Y": 91.65,
+                        "Z": 39.15
+                    },
+                    "RotationDeg": {
+                        "X": -21.796,
+                        "Y": 0,
+                        "Z": 0
+                    },
+                    "Scale": {
+                        "X": 1,
+                        "Y": 1,
+                        "Z": 1
+                    },
+                    "Name": "Transform"
+                },
+                {
+                    "Size": {
+                        "X": 4.9,
+                        "Y": 197.4127,
+                        "Z": 4.5
+                    },
+                    "OffsetPosition": {
+                        "X": 0,
+                        "Y": 0,
+                        "Z": 0
+                    },
+                    "Category": -1,
+                    "Name": "BoxCollider"
+                }
+            ],
+            "Children": []
+        },
+        {
+            "ID": 5,
+            "Type": "EmptyObject",
+            "Name": "Leg_R_Front",
+            "Components": [
+                {
+                    "ParentObjectID": 1,
+                    "Position": {
+                        "X": 81.51,
+                        "Y": 91.65,
+                        "Z": -39.15
+                    },
+                    "RotationDeg": {
+                        "X": 21.796,
+                        "Y": 0,
+                        "Z": 0
+                    },
+                    "Scale": {
+                        "X": 1,
+                        "Y": 1,
+                        "Z": 1
+                    },
+                    "Name": "Transform"
+                },
+                {
+                    "Size": {
+                        "X": 4.9,
+                        "Y": 197.4127,
+                        "Z": 4.5
+                    },
+                    "OffsetPosition": {
+                        "X": 0,
+                        "Y": 0,
+                        "Z": 0
+                    },
+                    "Category": -1,
+                    "Name": "BoxCollider"
+                }
+            ],
+            "Children": []
+        },
+        {
+            "ID": 6,
+            "Type": "EmptyObject",
+            "Name": "Leg_R_Back",
+            "Components": [
+                {
+                    "ParentObjectID": 1,
+                    "Position": {
+                        "X": 86.79,
+                        "Y": 91.65,
+                        "Z": 39.15
+                    },
+                    "RotationDeg": {
+                        "X": -21.796,
+                        "Y": 0,
+                        "Z": 0
+                    },
+                    "Scale": {
+                        "X": 1,
+                        "Y": 1,
+                        "Z": 1
+                    },
+                    "Name": "Transform"
+                },
+                {
+                    "Size": {
+                        "X": 4.9,
+                        "Y": 197.4127,
+                        "Z": 4.5
+                    },
+                    "OffsetPosition": {
+                        "X": 0,
+                        "Y": 0,
+                        "Z": 0
+                    },
+                    "Category": -1,
+                    "Name": "BoxCollider"
+                }
+            ],
+            "Children": []
+        },
+        {
+            "ID": 7,
+            "Type": "EmptyObject",
+            "Name": "TiltingGrip_01",
+            "Components": [
+                {
+                    "ParentObjectID": 1,
+                    "Position": {
+                        "X": -47.85,
+                        "Y": 124.1,
+                        "Z": 0
+                    },
+                    "RotationDeg": {
+                        "X": 0,
+                        "Y": 0,
+                        "Z": 0
+                    },
+                    "Scale": {
+                        "X": 1,
+                        "Y": 1,
+                        "Z": 1
+                    },
+                    "Name": "Transform"
+                },
+                {
+                    "Size": {
+                        "X": 45.54,
+                        "Y": 3.9,
+                        "Z": 3.96
+                    },
+                    "OffsetPosition": {
+                        "X": 0,
+                        "Y": -5,
+                        "Z": 0
+                    },
+                    "Category": -1,
+                    "Name": "BoxCollider"
+                },
+                {
+                    "Size": {
+                        "X": 3.96,
+                        "Y": 42.14,
+                        "Z": 3.96
+                    },
+                    "OffsetPosition": {
+                        "X": 0,
+                        "Y": 18.02,
+                        "Z": 0
+                    },
+                    "Category": -1,
+                    "Name": "BoxCollider"
+                },
+                {
+                    "Mass": 1.5,
+                    "UseGravity": true,
+                    "Gravity": {
+                        "X": 0,
+                        "Y": -980,
+                        "Z": 0
+                    },
+                    "Velocity": {
+                        "X": 0,
+                        "Y": 0,
+                        "Z": 0
+                    },
+                    "AngularVelocity": {
+                        "X": 0,
+                        "Y": 0,
+                        "Z": 0
+                    },
+                    "FreezePositionX": false,
+                    "FreezePositionY": false,
+                    "FreezePositionZ": false,
+                    "FreezeRotationX": false,
+                    "FreezeRotationY": false,
+                    "FreezeRotationZ": false,
+                    "Name": "RigidBody"
+                },
+                {
+                    "LocalPosition": {
+                        "X": 0,
+                        "Y": 41.89,
+                        "Z": 0
+                    },
+                    "LocalRotationDeg": {
+                        "X": 90,
+                        "Y": 0,
+                        "Z": 0
+                    },
+                    "Weight": 1,
+                    "EndPoints": [
+                        {
+                            "ObjectID": 1,
+                            "LocalPosition": {
+                                "X": -47.85,
+                                "Y": 165.99,
+                                "Z": 0
+                            },
+                            "LocalRotationDeg": {
+                                "X": 90,
+                                "Y": 0,
+                                "Z": 0
+                            },
+                            "Weight": 1
+                        }
+                    ],
+                    "AngleMinDeg": -25,
+                    "AngleMaxDeg": 25,
+                    "PositionCompliance": 0,
+                    "PositionMaxForce": 100000000,
+                    "AngularCompliance": 0,
+                    "AngularMaxForce": 100000000,
+                    "Name": "AngleLimitHingeConstraint"
+                }
+            ],
+            "Children": [
+                {
+                    "ID": 8,
+                    "Type": "EmptyObject",
+                    "Name": "GripMesh_01",
+                    "Components": [
+                        {
+                            "ParentObjectID": 7,
+                            "Position": {
+                                "X": 47.85,
+                                "Y": -124.1,
+                                "Z": 0
+                            },
+                            "RotationDeg": {
+                                "X": 90,
+                                "Y": 0,
+                                "Z": 0
+                            },
+                            "Scale": {
+                                "X": 1,
+                                "Y": 1,
+                                "Z": 1
+                            },
+                            "Name": "Transform"
+                        },
+                        {
+                            "ModelPath": "Res/Model/Gimmick/WoodenPlayset.mv1",
+                            "FrameName": "P05_TiltingGrip_01_Surface",
+                            "Name": "FrameRenderer"
+                        }
+                    ],
+                    "Children": []
+                }
+            ]
+        },
+        {
+            "ID": 9,
+            "Type": "EmptyObject",
+            "Name": "TiltingGrip_02",
+            "Components": [
+                {
+                    "ParentObjectID": 1,
+                    "Position": {
+                        "X": 0,
+                        "Y": 130.05,
+                        "Z": 0
+                    },
+                    "RotationDeg": {
+                        "X": 0,
+                        "Y": 0,
+                        "Z": 0
+                    },
+                    "Scale": {
+                        "X": 1,
+                        "Y": 1,
+                        "Z": 1
+                    },
+                    "Name": "Transform"
+                },
+                {
+                    "Size": {
+                        "X": 45.54,
+                        "Y": 3.9,
+                        "Z": 3.96
+                    },
+                    "OffsetPosition": {
+                        "X": 0,
+                        "Y": -5,
+                        "Z": 0
+                    },
+                    "Category": -1,
+                    "Name": "BoxCollider"
+                },
+                {
+                    "Size": {
+                        "X": 3.96,
+                        "Y": 36.19,
+                        "Z": 3.96
+                    },
+                    "OffsetPosition": {
+                        "X": 0,
+                        "Y": 15.045,
+                        "Z": 0
+                    },
+                    "Category": -1,
+                    "Name": "BoxCollider"
+                },
+                {
+                    "Mass": 1.5,
+                    "UseGravity": true,
+                    "Gravity": {
+                        "X": 0,
+                        "Y": -980,
+                        "Z": 0
+                    },
+                    "Velocity": {
+                        "X": 0,
+                        "Y": 0,
+                        "Z": 0
+                    },
+                    "AngularVelocity": {
+                        "X": 0,
+                        "Y": 0,
+                        "Z": 0
+                    },
+                    "FreezePositionX": false,
+                    "FreezePositionY": false,
+                    "FreezePositionZ": false,
+                    "FreezeRotationX": false,
+                    "FreezeRotationY": false,
+                    "FreezeRotationZ": false,
+                    "Name": "RigidBody"
+                },
+                {
+                    "LocalPosition": {
+                        "X": 0,
+                        "Y": 35.94,
+                        "Z": 0
+                    },
+                    "LocalRotationDeg": {
+                        "X": 90,
+                        "Y": 0,
+                        "Z": 0
+                    },
+                    "Weight": 1,
+                    "EndPoints": [
+                        {
+                            "ObjectID": 1,
+                            "LocalPosition": {
+                                "X": 0,
+                                "Y": 165.99,
+                                "Z": 0
+                            },
+                            "LocalRotationDeg": {
+                                "X": 90,
+                                "Y": 0,
+                                "Z": 0
+                            },
+                            "Weight": 1
+                        }
+                    ],
+                    "AngleMinDeg": -25,
+                    "AngleMaxDeg": 25,
+                    "PositionCompliance": 0,
+                    "PositionMaxForce": 100000000,
+                    "AngularCompliance": 0,
+                    "AngularMaxForce": 100000000,
+                    "Name": "AngleLimitHingeConstraint"
+                }
+            ],
+            "Children": [
+                {
+                    "ID": 10,
+                    "Type": "EmptyObject",
+                    "Name": "GripMesh_02",
+                    "Components": [
+                        {
+                            "ParentObjectID": 9,
+                            "Position": {
+                                "X": 0,
+                                "Y": -130.05,
+                                "Z": 0
+                            },
+                            "RotationDeg": {
+                                "X": 90,
+                                "Y": 0,
+                                "Z": 0
+                            },
+                            "Scale": {
+                                "X": 1,
+                                "Y": 1,
+                                "Z": 1
+                            },
+                            "Name": "Transform"
+                        },
+                        {
+                            "ModelPath": "Res/Model/Gimmick/WoodenPlayset.mv1",
+                            "FrameName": "P05_TiltingGrip_02_Surface",
+                            "Name": "FrameRenderer"
+                        }
+                    ],
+                    "Children": []
+                }
+            ]
+        },
+        {
+            "ID": 11,
+            "Type": "EmptyObject",
+            "Name": "TiltingGrip_03",
+            "Components": [
+                {
+                    "ParentObjectID": 1,
+                    "Position": {
+                        "X": 47.85,
+                        "Y": 121.49,
+                        "Z": 0
+                    },
+                    "RotationDeg": {
+                        "X": 0,
+                        "Y": 0,
+                        "Z": 0
+                    },
+                    "Scale": {
+                        "X": 1,
+                        "Y": 1,
+                        "Z": 1
+                    },
+                    "Name": "Transform"
+                },
+                {
+                    "Size": {
+                        "X": 45.54,
+                        "Y": 3.9,
+                        "Z": 3.96
+                    },
+                    "OffsetPosition": {
+                        "X": 0,
+                        "Y": -5,
+                        "Z": 0
+                    },
+                    "Category": -1,
+                    "Name": "BoxCollider"
+                },
+                {
+                    "Size": {
+                        "X": 3.96,
+                        "Y": 44.75,
+                        "Z": 3.96
+                    },
+                    "OffsetPosition": {
+                        "X": 0,
+                        "Y": 19.325,
+                        "Z": 0
+                    },
+                    "Category": -1,
+                    "Name": "BoxCollider"
+                },
+                {
+                    "Mass": 1.5,
+                    "UseGravity": true,
+                    "Gravity": {
+                        "X": 0,
+                        "Y": -980,
+                        "Z": 0
+                    },
+                    "Velocity": {
+                        "X": 0,
+                        "Y": 0,
+                        "Z": 0
+                    },
+                    "AngularVelocity": {
+                        "X": 0,
+                        "Y": 0,
+                        "Z": 0
+                    },
+                    "FreezePositionX": false,
+                    "FreezePositionY": false,
+                    "FreezePositionZ": false,
+                    "FreezeRotationX": false,
+                    "FreezeRotationY": false,
+                    "FreezeRotationZ": false,
+                    "Name": "RigidBody"
+                },
+                {
+                    "LocalPosition": {
+                        "X": 0,
+                        "Y": 44.5,
+                        "Z": 0
+                    },
+                    "LocalRotationDeg": {
+                        "X": 90,
+                        "Y": 0,
+                        "Z": 0
+                    },
+                    "Weight": 1,
+                    "EndPoints": [
+                        {
+                            "ObjectID": 1,
+                            "LocalPosition": {
+                                "X": 47.85,
+                                "Y": 165.99,
+                                "Z": 0
+                            },
+                            "LocalRotationDeg": {
+                                "X": 90,
+                                "Y": 0,
+                                "Z": 0
+                            },
+                            "Weight": 1
+                        }
+                    ],
+                    "AngleMinDeg": -25,
+                    "AngleMaxDeg": 25,
+                    "PositionCompliance": 0,
+                    "PositionMaxForce": 100000000,
+                    "AngularCompliance": 0,
+                    "AngularMaxForce": 100000000,
+                    "Name": "AngleLimitHingeConstraint"
+                }
+            ],
+            "Children": [
+                {
+                    "ID": 12,
+                    "Type": "EmptyObject",
+                    "Name": "GripMesh_03",
+                    "Components": [
+                        {
+                            "ParentObjectID": 11,
+                            "Position": {
+                                "X": -47.85,
+                                "Y": -121.49,
+                                "Z": 0
+                            },
+                            "RotationDeg": {
+                                "X": 90,
+                                "Y": 0,
+                                "Z": 0
+                            },
+                            "Scale": {
+                                "X": 1,
+                                "Y": 1,
+                                "Z": 1
+                            },
+                            "Name": "Transform"
+                        },
+                        {
+                            "ModelPath": "Res/Model/Gimmick/WoodenPlayset.mv1",
+                            "FrameName": "P05_TiltingGrip_03_Surface",
+                            "Name": "FrameRenderer"
+                        }
+                    ],
+                    "Children": []
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,508 @@
+{
+    "ID": 1,
+    "Type": "EmptyObject",
+    "Name": "ToyCrane",
+    "Components": [
+        {
+            "ParentObjectID": 0,
+            "Position": {
+                "X": 0.0,
+                "Y": 0.0,
+                "Z": 0.0
+            },
+            "RotationDeg": {
+                "X": 0.0,
+                "Y": 0.0,
+                "Z": 0.0
+            },
+            "Scale": {
+                "X": 1.0,
+                "Y": 1.0,
+                "Z": 1.0
+            },
+            "Name": "Transform"
+        },
+        {
+            "Size": {
+                "X": 138.072998046875,
+                "Y": 14.521200180053711,
+                "Z": 7.261300086975098
+            },
+            "OffsetPosition": {
+                "X": 0.0,
+                "Y": 7.2606000900268555,
+                "Z": -0.0012000000569969416
+            },
+            "Category": -1,
+            "Name": "BoxCollider"
+        },
+        {
+            "Size": {
+                "X": 7.260300159454346,
+                "Y": 14.521300315856934,
+                "Z": 148.947998046875
+            },
+            "OffsetPosition": {
+                "X": -0.0010999999940395355,
+                "Y": 7.260700225830078,
+                "Z": 0.0
+            },
+            "Category": -1,
+            "Name": "BoxCollider"
+        },
+        {
+            "Size": {
+                "X": 26.401899337768555,
+                "Y": 6.2692999839782715,
+                "Z": 26.401100158691406
+            },
+            "OffsetPosition": {
+                "X": -0.0010999999940395355,
+                "Y": 12.705400466918945,
+                "Z": -0.0013000000035390258
+            },
+            "Category": -1,
+            "Name": "BoxCollider"
+        },
+        {
+            "Size": {
+                "X": 13.199999809265137,
+                "Y": 86.5,
+                "Z": 10.5600004196167
+            },
+            "OffsetPosition": {
+                "X": 0.0,
+                "Y": 57.75,
+                "Z": 0.0
+            },
+            "Category": -1,
+            "Name": "BoxCollider"
+        }
+    ],
+    "Children": [
+        {
+            "ID": 2,
+            "Type": "EmptyObject",
+            "Name": "CraneBase",
+            "Components": [
+                {
+                    "ParentObjectID": 1,
+                    "Position": {
+                        "X": 0.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    },
+                    "RotationDeg": {
+                        "X": 90.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    },
+                    "Scale": {
+                        "X": 1.0,
+                        "Y": 1.0,
+                        "Z": 1.0
+                    },
+                    "Name": "Transform"
+                },
+                {
+                    "ModelPath": "Res/Model/Gimmick/ToyCrane.mv1",
+                    "FrameName": "P09_Crane_Base_Fixed_Surface",
+                    "Name": "FrameRenderer"
+                }
+            ],
+            "Children": []
+        },
+        {
+            "ID": 3,
+            "Type": "EmptyObject",
+            "Name": "CabAndJib",
+            "Components": [
+                {
+                    "ParentObjectID": 1,
+                    "Position": {
+                        "X": 0.0,
+                        "Y": 106.26000213623047,
+                        "Z": 0.0
+                    },
+                    "RotationDeg": {
+                        "X": 0.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    },
+                    "Scale": {
+                        "X": 1.0,
+                        "Y": 1.0,
+                        "Z": 1.0
+                    },
+                    "Name": "Transform"
+                },
+                {
+                    "Size": {
+                        "X": 37.79999923706055,
+                        "Y": 35.400001525878906,
+                        "Z": 36.13999938964844
+                    },
+                    "OffsetPosition": {
+                        "X": 0.0,
+                        "Y": 18.440000534057617,
+                        "Z": 0.7400000095367432
+                    },
+                    "Category": -1,
+                    "Name": "BoxCollider"
+                },
+                {
+                    "Size": {
+                        "X": 12.539999961853027,
+                        "Y": 4.409999847412109,
+                        "Z": 114.18000030517578
+                    },
+                    "OffsetPosition": {
+                        "X": 0.0,
+                        "Y": 48.94499969482422,
+                        "Z": 17.489999771118164
+                    },
+                    "Category": -1,
+                    "Name": "BoxCollider"
+                },
+                {
+                    "Size": {
+                        "X": 17.15999984741211,
+                        "Y": 14.1899995803833,
+                        "Z": 20.1299991607666
+                    },
+                    "OffsetPosition": {
+                        "X": 0.0,
+                        "Y": 30.03499984741211,
+                        "Z": -31.354999542236328
+                    },
+                    "Category": -1,
+                    "Name": "BoxCollider"
+                },
+                {
+                    "Mass": 5.0,
+                    "UseGravity": false,
+                    "Gravity": {
+                        "X": 0.0,
+                        "Y": -980.0,
+                        "Z": 0.0
+                    },
+                    "Velocity": {
+                        "X": 0.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    },
+                    "AngularVelocity": {
+                        "X": 0.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    },
+                    "FreezePositionX": false,
+                    "FreezePositionY": false,
+                    "FreezePositionZ": false,
+                    "FreezeRotationX": false,
+                    "FreezeRotationY": false,
+                    "FreezeRotationZ": false,
+                    "Name": "RigidBody"
+                },
+                {
+                    "LocalPosition": {
+                        "X": 0.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    },
+                    "LocalRotationDeg": {
+                        "X": 0.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    },
+                    "Weight": 1.0,
+                    "EndPoints": [
+                        {
+                            "ObjectID": 1,
+                            "LocalPosition": {
+                                "X": 0.0,
+                                "Y": 106.26000213623047,
+                                "Z": 0.0
+                            },
+                            "LocalRotationDeg": {
+                                "X": 0.0,
+                                "Y": 0.0,
+                                "Z": 0.0
+                            },
+                            "Weight": 1.0
+                        }
+                    ],
+                    "AngleMinDeg": -60.0,
+                    "AngleMaxDeg": 60.0,
+                    "PositionCompliance": 0.0,
+                    "PositionMaxForce": 100000000.0,
+                    "AngularCompliance": 0.0,
+                    "AngularMaxForce": 100000000.0,
+                    "Name": "AngleLimitHingeConstraint"
+                }
+            ],
+            "Children": [
+                {
+                    "ID": 4,
+                    "Type": "EmptyObject",
+                    "Name": "CabAndJibMesh",
+                    "Components": [
+                        {
+                            "ParentObjectID": 3,
+                            "Position": {
+                                "X": 0.0,
+                                "Y": -106.26000213623047,
+                                "Z": 0.0
+                            },
+                            "RotationDeg": {
+                                "X": 90.0,
+                                "Y": 0.0,
+                                "Z": 0.0
+                            },
+                            "Scale": {
+                                "X": 1.0,
+                                "Y": 1.0,
+                                "Z": 1.0
+                            },
+                            "Name": "Transform"
+                        },
+                        {
+                            "ModelPath": "Res/Model/Gimmick/ToyCrane.mv1",
+                            "FrameName": "P09_Cab_And_Jib_Yaw_Surface",
+                            "Name": "FrameRenderer"
+                        }
+                    ],
+                    "Children": []
+                }
+            ]
+        },
+        {
+            "ID": 5,
+            "Type": "EmptyObject",
+            "Name": "JibCarriage",
+            "Components": [
+                {
+                    "ParentObjectID": 1,
+                    "Position": {
+                        "X": 0.0,
+                        "Y": 145.86000061035156,
+                        "Z": 51.810001373291016
+                    },
+                    "RotationDeg": {
+                        "X": 0.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    },
+                    "Scale": {
+                        "X": 1.0,
+                        "Y": 1.0,
+                        "Z": 1.0
+                    },
+                    "Name": "Transform"
+                },
+                {
+                    "Size": {
+                        "X": 6.599999904632568,
+                        "Y": 7.920000076293945,
+                        "Z": 7.920000076293945
+                    },
+                    "OffsetPosition": {
+                        "X": 0.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    },
+                    "Category": -1,
+                    "Name": "BoxCollider"
+                },
+                {
+                    "Mass": 1.5,
+                    "UseGravity": false,
+                    "Gravity": {
+                        "X": 0.0,
+                        "Y": -980.0,
+                        "Z": 0.0
+                    },
+                    "Velocity": {
+                        "X": 0.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    },
+                    "AngularVelocity": {
+                        "X": 0.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    },
+                    "FreezePositionX": false,
+                    "FreezePositionY": false,
+                    "FreezePositionZ": false,
+                    "FreezeRotationX": false,
+                    "FreezeRotationY": false,
+                    "FreezeRotationZ": false,
+                    "Name": "RigidBody"
+                }
+            ],
+            "Children": [
+                {
+                    "ID": 6,
+                    "Type": "EmptyObject",
+                    "Name": "JibCarriageMesh",
+                    "Components": [
+                        {
+                            "ParentObjectID": 5,
+                            "Position": {
+                                "X": 0.0,
+                                "Y": -145.86000061035156,
+                                "Z": -51.810001373291016
+                            },
+                            "RotationDeg": {
+                                "X": 90.0,
+                                "Y": 0.0,
+                                "Z": 0.0
+                            },
+                            "Scale": {
+                                "X": 1.0,
+                                "Y": 1.0,
+                                "Z": 1.0
+                            },
+                            "Name": "Transform"
+                        },
+                        {
+                            "ModelPath": "Res/Model/Gimmick/ToyCrane.mv1",
+                            "FrameName": "P09_Jib_Carriage_Surface",
+                            "Name": "FrameRenderer"
+                        }
+                    ],
+                    "Children": []
+                }
+            ]
+        },
+        {
+            "ID": 7,
+            "Type": "EmptyObject",
+            "Name": "HoistLoad",
+            "Components": [
+                {
+                    "ParentObjectID": 1,
+                    "Position": {
+                        "X": 0.0,
+                        "Y": 73.58999633789063,
+                        "Z": 55.77000045776367
+                    },
+                    "RotationDeg": {
+                        "X": 0.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    },
+                    "Scale": {
+                        "X": 1.0,
+                        "Y": 1.0,
+                        "Z": 1.0
+                    },
+                    "Name": "Transform"
+                },
+                {
+                    "Size": {
+                        "X": 38.27939987182617,
+                        "Y": 2.310499906539917,
+                        "Z": 31.350000381469727
+                    },
+                    "OffsetPosition": {
+                        "X": -0.0003000000142492354,
+                        "Y": -16.829700469970703,
+                        "Z": 0.0
+                    },
+                    "Category": -1,
+                    "Name": "BoxCollider"
+                },
+                {
+                    "Size": {
+                        "X": 27.720399856567383,
+                        "Y": 3.960700035095215,
+                        "Z": 9.569600105285645
+                    },
+                    "OffsetPosition": {
+                        "X": -0.0003000000142492354,
+                        "Y": -13.859600067138672,
+                        "Z": -0.0003000000142492354
+                    },
+                    "Category": -1,
+                    "Name": "BoxCollider"
+                },
+                {
+                    "Size": {
+                        "X": 27.720399856567383,
+                        "Y": 3.960700035095215,
+                        "Z": 9.569600105285645
+                    },
+                    "OffsetPosition": {
+                        "X": -0.0003000000142492354,
+                        "Y": -9.5693998336792,
+                        "Z": -0.0003000000142492354
+                    },
+                    "Category": -1,
+                    "Name": "BoxCollider"
+                },
+                {
+                    "Mass": 2.0,
+                    "UseGravity": false,
+                    "Gravity": {
+                        "X": 0.0,
+                        "Y": -980.0,
+                        "Z": 0.0
+                    },
+                    "Velocity": {
+                        "X": 0.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    },
+                    "AngularVelocity": {
+                        "X": 0.0,
+                        "Y": 0.0,
+                        "Z": 0.0
+                    },
+                    "FreezePositionX": false,
+                    "FreezePositionY": false,
+                    "FreezePositionZ": false,
+                    "FreezeRotationX": false,
+                    "FreezeRotationY": false,
+                    "FreezeRotationZ": false,
+                    "Name": "RigidBody"
+                }
+            ],
+            "Children": [
+                {
+                    "ID": 8,
+                    "Type": "EmptyObject",
+                    "Name": "HoistLoadMesh",
+                    "Components": [
+                        {
+                            "ParentObjectID": 7,
+                            "Position": {
+                                "X": 0.0,
+                                "Y": -73.58999633789063,
+                                "Z": -55.77000045776367
+                            },
+                            "RotationDeg": {
+                                "X": 90.0,
+                                "Y": 0.0,
+                                "Z": 0.0
+                            },
+                            "Scale": {
+                                "X": 1.0,
+                                "Y": 1.0,
+                                "Z": 1.0
+                            },
+                            "Name": "Transform"
+                        },
+                        {
+                            "ModelPath": "Res/Model/Gimmick/ToyCrane.mv1",
+                            "FrameName": "P09_Hoist_Load_Surface",
+                            "Name": "FrameRenderer"
+                        }
+                    ],
+                    "Children": []
+                }
+            ]
+        }
+    ]
+}

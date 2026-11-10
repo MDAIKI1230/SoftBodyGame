@@ -1,0 +1,298 @@
+{
+    "ID": 1,
+    "Type": "EmptyObject",
+    "Name": "Fan",
+    "Components": [
+        {
+            "ParentObjectID": 0,
+            "Position": {
+                "X": 0,
+                "Y": 0,
+                "Z": 0
+            },
+            "RotationDeg": {
+                "X": 0,
+                "Y": 0,
+                "Z": 0
+            },
+            "Scale": {
+                "X": 1,
+                "Y": 1,
+                "Z": 1
+            },
+            "Name": "Transform"
+        },
+        {
+            "Size": {
+                "X": 102.3,
+                "Y": 10.2321,
+                "Z": 102.3
+            },
+            "OffsetPosition": {
+                "X": 0,
+                "Y": 5.1161,
+                "Z": 1.98
+            },
+            "Category": -1,
+            "Name": "BoxCollider"
+        },
+        {
+            "Size": {
+                "X": 13.8,
+                "Y": 188.75,
+                "Z": 13.86
+            },
+            "OffsetPosition": {
+                "X": 0,
+                "Y": 102.625,
+                "Z": 18.15
+            },
+            "Category": -1,
+            "Name": "BoxCollider"
+        }
+    ],
+    "Children": [
+        {
+            "ID": 2,
+            "Type": "EmptyObject",
+            "Name": "Stand",
+            "Components": [
+                {
+                    "ParentObjectID": 1,
+                    "Position": {
+                        "X": 0,
+                        "Y": 0,
+                        "Z": 0
+                    },
+                    "RotationDeg": {
+                        "X": 90,
+                        "Y": 0,
+                        "Z": 0
+                    },
+                    "Scale": {
+                        "X": 1,
+                        "Y": 1,
+                        "Z": 1
+                    },
+                    "Name": "Transform"
+                },
+                {
+                    "ModelPath": "Res/Model/Gimmick/Fan.mv1",
+                    "FrameName": "P07_Stand_Fixed_Surface",
+                    "Name": "FrameRenderer"
+                }
+            ],
+            "Children": []
+        },
+        {
+            "ID": 3,
+            "Type": "EmptyObject",
+            "Name": "FanHead",
+            "Components": [
+                {
+                    "ParentObjectID": 1,
+                    "Position": {
+                        "X": 0,
+                        "Y": 205.26,
+                        "Z": 18.15
+                    },
+                    "RotationDeg": {
+                        "X": 0,
+                        "Y": 0,
+                        "Z": 0
+                    },
+                    "Scale": {
+                        "X": 1,
+                        "Y": 1,
+                        "Z": 1
+                    },
+                    "Name": "Transform"
+                },
+                {
+                    "Size": {
+                        "X": 116.8,
+                        "Y": 116.82,
+                        "Z": 22.6
+                    },
+                    "OffsetPosition": {
+                        "X": 0,
+                        "Y": 6.93,
+                        "Z": -22.95
+                    },
+                    "Category": -1,
+                    "Name": "BoxCollider"
+                },
+                {
+                    "Size": {
+                        "X": 23.76,
+                        "Y": 23.76,
+                        "Z": 34.09
+                    },
+                    "OffsetPosition": {
+                        "X": 0,
+                        "Y": 6.93,
+                        "Z": 5.395
+                    },
+                    "Category": -1,
+                    "Name": "BoxCollider"
+                },
+                {
+                    "Mass": 3,
+                    "UseGravity": false,
+                    "Gravity": {
+                        "X": 0,
+                        "Y": -980,
+                        "Z": 0
+                    },
+                    "Velocity": {
+                        "X": 0,
+                        "Y": 0,
+                        "Z": 0
+                    },
+                    "AngularVelocity": {
+                        "X": 0,
+                        "Y": 0,
+                        "Z": 0
+                    },
+                    "FreezePositionX": false,
+                    "FreezePositionY": false,
+                    "FreezePositionZ": false,
+                    "FreezeRotationX": false,
+                    "FreezeRotationY": false,
+                    "FreezeRotationZ": false,
+                    "Name": "RigidBody"
+                },
+                {
+                    "LocalPosition": {
+                        "X": 0,
+                        "Y": 0,
+                        "Z": 0
+                    },
+                    "LocalRotationDeg": {
+                        "X": 0,
+                        "Y": 0,
+                        "Z": 0
+                    },
+                    "Weight": 1,
+                    "EndPoints": [
+                        {
+                            "ObjectID": 1,
+                            "LocalPosition": {
+                                "X": 0,
+                                "Y": 205.26,
+                                "Z": 18.15
+                            },
+                            "LocalRotationDeg": {
+                                "X": 0,
+                                "Y": 0,
+                                "Z": 0
+                            },
+                            "Weight": 1
+                        }
+                    ],
+                    "AngleMinDeg": -35,
+                    "AngleMaxDeg": 35,
+                    "PositionCompliance": 0,
+                    "PositionMaxForce": 100000000,
+                    "AngularCompliance": 0,
+                    "AngularMaxForce": 100000000,
+                    "Name": "AngleLimitHingeConstraint"
+                }
+            ],
+            "Children": [
+                {
+                    "ID": 4,
+                    "Type": "EmptyObject",
+                    "Name": "CageAndHousing",
+                    "Components": [
+                        {
+                            "ParentObjectID": 3,
+                            "Position": {
+                                "X": 0,
+                                "Y": -205.26,
+                                "Z": -18.15
+                            },
+                            "RotationDeg": {
+                                "X": 90,
+                                "Y": 0,
+                                "Z": 0
+                            },
+                            "Scale": {
+                                "X": 1,
+                                "Y": 1,
+                                "Z": 1
+                            },
+                            "Name": "Transform"
+                        },
+                        {
+                            "ModelPath": "Res/Model/Gimmick/Fan.mv1",
+                            "FrameName": "P07_Oscillation_Surface",
+                            "Name": "FrameRenderer"
+                        }
+                    ],
+                    "Children": []
+                },
+                {
+                    "ID": 5,
+                    "Type": "EmptyObject",
+                    "Name": "BladeRotor",
+                    "Components": [
+                        {
+                            "ParentObjectID": 3,
+                            "Position": {
+                                "X": 0,
+                                "Y": 6.93,
+                                "Z": -18.15
+                            },
+                            "RotationDeg": {
+                                "X": 0,
+                                "Y": 0,
+                                "Z": 0
+                            },
+                            "Scale": {
+                                "X": 1,
+                                "Y": 1,
+                                "Z": 1
+                            },
+                            "Name": "Transform"
+                        }
+                    ],
+                    "Children": [
+                        {
+                            "ID": 6,
+                            "Type": "EmptyObject",
+                            "Name": "Blades",
+                            "Components": [
+                                {
+                                    "ParentObjectID": 5,
+                                    "Position": {
+                                        "X": 0,
+                                        "Y": -212.19,
+                                        "Z": 0
+                                    },
+                                    "RotationDeg": {
+                                        "X": 90,
+                                        "Y": 0,
+                                        "Z": 0
+                                    },
+                                    "Scale": {
+                                        "X": 1,
+                                        "Y": 1,
+                                        "Z": 1
+                                    },
+                                    "Name": "Transform"
+                                },
+                                {
+                                    "ModelPath": "Res/Model/Gimmick/Fan.mv1",
+                                    "FrameName": "P07_AS_Blade_Rotor_Surface",
+                                    "Name": "FrameRenderer"
+                                }
+                            ],
+                            "Children": []
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

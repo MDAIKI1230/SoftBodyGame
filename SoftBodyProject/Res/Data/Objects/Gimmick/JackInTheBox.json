@@ -1,0 +1,115 @@
+{
+    "ID": 1,
+    "Type": "EmptyObject",
+    "Name": "JackInTheBox",
+    "Components": [
+        {
+            "ParentObjectID": 0,
+            "Position": {
+                "X": 0,
+                "Y": 0,
+                "Z": 0
+            },
+            "RotationDeg": {
+                "X": 0,
+                "Y": 0,
+                "Z": 0
+            },
+            "Scale": {
+                "X": 1,
+                "Y": 1,
+                "Z": 1
+            },
+            "Name": "Transform"
+        },
+        {
+            "ModelPath": "Res/Model/Gimmick/JackInTheBox.mv1",
+            "Name": "ModelRenderer"
+        },
+        {
+            "Size": {
+                "X": 51.02,
+                "Y": 1.5,
+                "Z": 51.02
+            },
+            "OffsetPosition": {
+                "X": 0,
+                "Y": 0.75,
+                "Z": 0
+            },
+            "Category": -1,
+            "Name": "BoxCollider"
+        },
+        {
+            "Size": {
+                "X": 1.6,
+                "Y": 52.5,
+                "Z": 49.4
+            },
+            "OffsetPosition": {
+                "X": -24.7,
+                "Y": 27.75,
+                "Z": 0
+            },
+            "Category": -1,
+            "Name": "BoxCollider"
+        },
+        {
+            "Size": {
+                "X": 47.8,
+                "Y": 52.5,
+                "Z": 1.6
+            },
+            "OffsetPosition": {
+                "X": 0,
+                "Y": 27.75,
+                "Z": -24.7
+            },
+            "Category": -1,
+            "Name": "BoxCollider"
+        },
+        {
+            "Size": {
+                "X": 1.6,
+                "Y": 52.5,
+                "Z": 49.4
+            },
+            "OffsetPosition": {
+                "X": 24.7,
+                "Y": 27.75,
+                "Z": 0
+            },
+            "Category": -1,
+            "Name": "BoxCollider"
+        },
+        {
+            "Size": {
+                "X": 47.8,
+                "Y": 52.5,
+                "Z": 1.6
+            },
+            "OffsetPosition": {
+                "X": 0,
+                "Y": 27.75,
+                "Z": 24.7
+            },
+            "Category": -1,
+            "Name": "BoxCollider"
+        },
+        {
+            "Size": {
+                "X": 10.82,
+                "Y": 6.18,
+                "Z": 3.62
+            },
+            "OffsetPosition": {
+                "X": 30.56,
+                "Y": 32.29,
+                "Z": 0
+            },
+            "Category": -1,
+            "Name": "BoxCollider"
+        }
+    ],
+    "Children": []
+}

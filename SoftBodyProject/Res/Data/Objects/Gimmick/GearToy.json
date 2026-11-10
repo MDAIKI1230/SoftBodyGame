@@ -1,0 +1,1222 @@
+{
+    "ID": 1,
+    "Type": "EmptyObject",
+    "Name": "GearToy",
+    "Components": [
+        {
+            "ParentObjectID": 0,
+            "Position": {
+                "X": 0,
+                "Y": 0,
+                "Z": 0
+            },
+            "RotationDeg": {
+                "X": 0,
+                "Y": 0,
+                "Z": 0
+            },
+            "Scale": {
+                "X": 1,
+                "Y": 1,
+                "Z": 1
+            },
+            "Name": "Transform"
+        },
+        {
+            "Size": {
+                "X": 74.25,
+                "Y": 74.25,
+                "Z": 2.31
+            },
+            "OffsetPosition": {
+                "X": 0,
+                "Y": 37.125,
+                "Z": 7.425
+            },
+            "Category": -1,
+            "Name": "BoxCollider"
+        }
+    ],
+    "Children": [
+        {
+            "ID": 2,
+            "Type": "EmptyObject",
+            "Name": "Board",
+            "Components": [
+                {
+                    "ParentObjectID": 1,
+                    "Position": {
+                        "X": 0,
+                        "Y": 0,
+                        "Z": 0
+                    },
+                    "RotationDeg": {
+                        "X": 90,
+                        "Y": 0,
+                        "Z": 0
+                    },
+                    "Scale": {
+                        "X": 1,
+                        "Y": 1,
+                        "Z": 1
+                    },
+                    "Name": "Transform"
+                },
+                {
+                    "ModelPath": "Res/Model/Gimmick/GearToy.mv1",
+                    "FrameName": "P08_Cog_Puzzle_Board_Fixed_Surface",
+                    "Name": "FrameRenderer"
+                }
+            ],
+            "Children": []
+        },
+        {
+            "ID": 3,
+            "Type": "EmptyObject",
+            "Name": "Gear_01",
+            "Components": [
+                {
+                    "ParentObjectID": 1,
+                    "Position": {
+                        "X": -21.714,
+                        "Y": 37.455,
+                        "Z": 4.785
+                    },
+                    "RotationDeg": {
+                        "X": 0,
+                        "Y": 0,
+                        "Z": 0
+                    },
+                    "Scale": {
+                        "X": 1,
+                        "Y": 1,
+                        "Z": 1
+                    },
+                    "Name": "Transform"
+                },
+                {
+                    "Size": {
+                        "X": 19.089,
+                        "Y": 6.8318,
+                        "Z": 2.6401
+                    },
+                    "OffsetPosition": {
+                        "X": 0,
+                        "Y": 0,
+                        "Z": 0
+                    },
+                    "Category": -1,
+                    "Name": "BoxCollider"
+                },
+                {
+                    "Size": {
+                        "X": 6.8318,
+                        "Y": 19.089,
+                        "Z": 2.6401
+                    },
+                    "OffsetPosition": {
+                        "X": 0,
+                        "Y": 0,
+                        "Z": 0
+                    },
+                    "Category": -1,
+                    "Name": "BoxCollider"
+                },
+                {
+                    "Size": {
+                        "X": 14.0656,
+                        "Y": 14.0656,
+                        "Z": 2.6401
+                    },
+                    "OffsetPosition": {
+                        "X": 0,
+                        "Y": 0,
+                        "Z": 0
+                    },
+                    "Category": -1,
+                    "Name": "BoxCollider"
+                },
+                {
+                    "Mass": 0.5,
+                    "UseGravity": false,
+                    "Gravity": {
+                        "X": 0,
+                        "Y": -980,
+                        "Z": 0
+                    },
+                    "Velocity": {
+                        "X": 0,
+                        "Y": 0,
+                        "Z": 0
+                    },
+                    "AngularVelocity": {
+                        "X": 0,
+                        "Y": 0,
+                        "Z": 0
+                    },
+                    "FreezePositionX": false,
+                    "FreezePositionY": false,
+                    "FreezePositionZ": false,
+                    "FreezeRotationX": false,
+                    "FreezeRotationY": false,
+                    "FreezeRotationZ": false,
+                    "Name": "RigidBody"
+                },
+                {
+                    "LocalPosition": {
+                        "X": 0,
+                        "Y": 0,
+                        "Z": 0
+                    },
+                    "LocalRotationDeg": {
+                        "X": 90,
+                        "Y": 0,
+                        "Z": 0
+                    },
+                    "Weight": 1,
+                    "EndPoints": [
+                        {
+                            "ObjectID": 1,
+                            "LocalPosition": {
+                                "X": -21.714,
+                                "Y": 37.455,
+                                "Z": 4.785
+                            },
+                            "LocalRotationDeg": {
+                                "X": 90,
+                                "Y": 0,
+                                "Z": 0
+                            },
+                            "Weight": 1
+                        }
+                    ],
+                    "PositionCompliance": 0,
+                    "PositionMaxForce": 100000000,
+                    "AngularCompliance": 0,
+                    "AngularMaxForce": 100000000,
+                    "Name": "HingeConstraint"
+                }
+            ],
+            "Children": [
+                {
+                    "ID": 4,
+                    "Type": "EmptyObject",
+                    "Name": "GearMesh_01",
+                    "Components": [
+                        {
+                            "ParentObjectID": 3,
+                            "Position": {
+                                "X": 21.714,
+                                "Y": -37.455,
+                                "Z": -4.785
+                            },
+                            "RotationDeg": {
+                                "X": 90,
+                                "Y": 0,
+                                "Z": 0
+                            },
+                            "Scale": {
+                                "X": 1,
+                                "Y": 1,
+                                "Z": 1
+                            },
+                            "Name": "Transform"
+                        },
+                        {
+                            "ModelPath": "Res/Model/Gimmick/GearToy.mv1",
+                            "FrameName": "P08_Real_Cog_01_Axle_Surface",
+                            "Name": "FrameRenderer"
+                        }
+                    ],
+                    "Children": []
+                }
+            ]
+        },
+        {
+            "ID": 5,
+            "Type": "EmptyObject",
+            "Name": "Gear_02",
+            "Components": [
+                {
+                    "ParentObjectID": 1,
+                    "Position": {
+                        "X": 11.715,
+                        "Y": 56.133,
+                        "Z": 4.785
+                    },
+                    "RotationDeg": {
+                        "X": 0,
+                        "Y": 0,
+                        "Z": 0
+                    },
+                    "Scale": {
+                        "X": 1,
+                        "Y": 1,
+                        "Z": 1
+                    },
+                    "Name": "Transform"
+                },
+                {
+                    "Size": {
+                        "X": 17.9581,
+                        "Y": 6.4271,
+                        "Z": 2.6401
+                    },
+                    "OffsetPosition": {
+                        "X": 0,
+                        "Y": 0,
+                        "Z": 0
+                    },
+                    "Category": -1,
+                    "Name": "BoxCollider"
+                },
+                {
+                    "Size": {
+                        "X": 6.4271,
+                        "Y": 17.9581,
+                        "Z": 2.6401
+                    },
+                    "OffsetPosition": {
+                        "X": 0,
+                        "Y": 0,
+                        "Z": 0
+                    },
+                    "Category": -1,
+                    "Name": "BoxCollider"
+                },
+                {
+                    "Size": {
+                        "X": 13.2323,
+                        "Y": 13.2323,
+                        "Z": 2.6401
+                    },
+                    "OffsetPosition": {
+                        "X": 0,
+                        "Y": 0,
+                        "Z": 0
+                    },
+                    "Category": -1,
+                    "Name": "BoxCollider"
+                },
+                {
+                    "Mass": 0.5,
+                    "UseGravity": false,
+                    "Gravity": {
+                        "X": 0,
+                        "Y": -980,
+                        "Z": 0
+                    },
+                    "Velocity": {
+                        "X": 0,
+                        "Y": 0,
+                        "Z": 0
+                    },
+                    "AngularVelocity": {
+                        "X": 0,
+                        "Y": 0,
+                        "Z": 0
+                    },
+                    "FreezePositionX": false,
+                    "FreezePositionY": false,
+                    "FreezePositionZ": false,
+                    "FreezeRotationX": false,
+                    "FreezeRotationY": false,
+                    "FreezeRotationZ": false,
+                    "Name": "RigidBody"
+                },
+                {
+                    "LocalPosition": {
+                        "X": 0,
+                        "Y": 0,
+                        "Z": 0
+                    },
+                    "LocalRotationDeg": {
+                        "X": 90,
+                        "Y": 0,
+                        "Z": 0
+                    },
+                    "Weight": 1,
+                    "EndPoints": [
+                        {
+                            "ObjectID": 1,
+                            "LocalPosition": {
+                                "X": 11.715,
+                                "Y": 56.133,
+                                "Z": 4.785
+                            },
+                            "LocalRotationDeg": {
+                                "X": 90,
+                                "Y": 0,
+                                "Z": 0
+                            },
+                            "Weight": 1
+                        }
+                    ],
+                    "PositionCompliance": 0,
+                    "PositionMaxForce": 100000000,
+                    "AngularCompliance": 0,
+                    "AngularMaxForce": 100000000,
+                    "Name": "HingeConstraint"
+                }
+            ],
+            "Children": [
+                {
+                    "ID": 6,
+                    "Type": "EmptyObject",
+                    "Name": "GearMesh_02",
+                    "Components": [
+                        {
+                            "ParentObjectID": 5,
+                            "Position": {
+                                "X": -11.715,
+                                "Y": -56.133,
+                                "Z": -4.785
+                            },
+                            "RotationDeg": {
+                                "X": 90,
+                                "Y": 0,
+                                "Z": 0
+                            },
+                            "Scale": {
+                                "X": 1,
+                                "Y": 1,
+                                "Z": 1
+                            },
+                            "Name": "Transform"
+                        },
+                        {
+                            "ModelPath": "Res/Model/Gimmick/GearToy.mv1",
+                            "FrameName": "P08_Real_Cog_02_Axle_Surface",
+                            "Name": "FrameRenderer"
+                        }
+                    ],
+                    "Children": []
+                }
+            ]
+        },
+        {
+            "ID": 7,
+            "Type": "EmptyObject",
+            "Name": "Gear_03",
+            "Components": [
+                {
+                    "ParentObjectID": 1,
+                    "Position": {
+                        "X": 10.956,
+                        "Y": 17.754,
+                        "Z": 4.785
+                    },
+                    "RotationDeg": {
+                        "X": 0,
+                        "Y": 0,
+                        "Z": 0
+                    },
+                    "Scale": {
+                        "X": 1,
+                        "Y": 1,
+                        "Z": 1
+                    },
+                    "Name": "Transform"
+                },
+                {
+                    "Size": {
+                        "X": 19.3605,
+                        "Y": 6.929,
+                        "Z": 2.6401
+                    },
+                    "OffsetPosition": {
+                        "X": 0,
+                        "Y": 0,
+                        "Z": 0
+                    },
+                    "Category": -1,
+                    "Name": "BoxCollider"
+                },
+                {
+                    "Size": {
+                        "X": 6.929,
+                        "Y": 19.3605,
+                        "Z": 2.6401
+                    },
+                    "OffsetPosition": {
+                        "X": 0,
+                        "Y": 0,
+                        "Z": 0
+                    },
+                    "Category": -1,
+                    "Name": "BoxCollider"
+                },
+                {
+                    "Size": {
+                        "X": 14.2656,
+                        "Y": 14.2656,
+                        "Z": 2.6401
+                    },
+                    "OffsetPosition": {
+                        "X": 0,
+                        "Y": 0,
+                        "Z": 0
+                    },
+                    "Category": -1,
+                    "Name": "BoxCollider"
+                },
+                {
+                    "Size": {
+                        "X": 3.9604,
+                        "Y": 3.9602,
+                        "Z": 6.2699
+                    },
+                    "OffsetPosition": {
+                        "X": 7.9198,
+                        "Y": -4.2898,
+                        "Z": -4.62
+                    },
+                    "Category": -1,
+                    "Name": "BoxCollider"
+                },
+                {
+                    "Mass": 0.5,
+                    "UseGravity": false,
+                    "Gravity": {
+                        "X": 0,
+                        "Y": -980,
+                        "Z": 0
+                    },
+                    "Velocity": {
+                        "X": 0,
+                        "Y": 0,
+                        "Z": 0
+                    },
+                    "AngularVelocity": {
+                        "X": 0,
+                        "Y": 0,
+                        "Z": 0
+                    },
+                    "FreezePositionX": false,
+                    "FreezePositionY": false,
+                    "FreezePositionZ": false,
+                    "FreezeRotationX": false,
+                    "FreezeRotationY": false,
+                    "FreezeRotationZ": false,
+                    "Name": "RigidBody"
+                },
+                {
+                    "LocalPosition": {
+                        "X": 0,
+                        "Y": 0,
+                        "Z": 0
+                    },
+                    "LocalRotationDeg": {
+                        "X": 90,
+                        "Y": 0,
+                        "Z": 0
+                    },
+                    "Weight": 1,
+                    "EndPoints": [
+                        {
+                            "ObjectID": 1,
+                            "LocalPosition": {
+                                "X": 10.956,
+                                "Y": 17.754,
+                                "Z": 4.785
+                            },
+                            "LocalRotationDeg": {
+                                "X": 90,
+                                "Y": 0,
+                                "Z": 0
+                            },
+                            "Weight": 1
+                        }
+                    ],
+                    "PositionCompliance": 0,
+                    "PositionMaxForce": 100000000,
+                    "AngularCompliance": 0,
+                    "AngularMaxForce": 100000000,
+                    "Name": "HingeConstraint"
+                }
+            ],
+            "Children": [
+                {
+                    "ID": 8,
+                    "Type": "EmptyObject",
+                    "Name": "GearMesh_03",
+                    "Components": [
+                        {
+                            "ParentObjectID": 7,
+                            "Position": {
+                                "X": -10.956,
+                                "Y": -17.754,
+                                "Z": -4.785
+                            },
+                            "RotationDeg": {
+                                "X": 90,
+                                "Y": 0,
+                                "Z": 0
+                            },
+                            "Scale": {
+                                "X": 1,
+                                "Y": 1,
+                                "Z": 1
+                            },
+                            "Name": "Transform"
+                        },
+                        {
+                            "ModelPath": "Res/Model/Gimmick/GearToy.mv1",
+                            "FrameName": "P08_Real_Cog_03_Axle_Surface",
+                            "Name": "FrameRenderer"
+                        }
+                    ],
+                    "Children": []
+                }
+            ]
+        },
+        {
+            "ID": 9,
+            "Type": "EmptyObject",
+            "Name": "Gear_04",
+            "Components": [
+                {
+                    "ParentObjectID": 1,
+                    "Position": {
+                        "X": -11.154,
+                        "Y": 18.348,
+                        "Z": 4.785
+                    },
+                    "RotationDeg": {
+                        "X": 0,
+                        "Y": 0,
+                        "Z": 0
+                    },
+                    "Scale": {
+                        "X": 1,
+                        "Y": 1,
+                        "Z": 1
+                    },
+                    "Name": "Transform"
+                },
+                {
+                    "Size": {
+                        "X": 14.1647,
+                        "Y": 5.0695,
+                        "Z": 2.6401
+                    },
+                    "OffsetPosition": {
+                        "X": 0,
+                        "Y": 0,
+                        "Z": 0
+                    },
+                    "Category": -1,
+                    "Name": "BoxCollider"
+                },
+                {
+                    "Size": {
+                        "X": 5.0695,
+                        "Y": 14.1647,
+                        "Z": 2.6401
+                    },
+                    "OffsetPosition": {
+                        "X": 0,
+                        "Y": 0,
+                        "Z": 0
+                    },
+                    "Category": -1,
+                    "Name": "BoxCollider"
+                },
+                {
+                    "Size": {
+                        "X": 10.4372,
+                        "Y": 10.4372,
+                        "Z": 2.6401
+                    },
+                    "OffsetPosition": {
+                        "X": 0,
+                        "Y": 0,
+                        "Z": 0
+                    },
+                    "Category": -1,
+                    "Name": "BoxCollider"
+                },
+                {
+                    "Mass": 0.5,
+                    "UseGravity": false,
+                    "Gravity": {
+                        "X": 0,
+                        "Y": -980,
+                        "Z": 0
+                    },
+                    "Velocity": {
+                        "X": 0,
+                        "Y": 0,
+                        "Z": 0
+                    },
+                    "AngularVelocity": {
+                        "X": 0,
+                        "Y": 0,
+                        "Z": 0
+                    },
+                    "FreezePositionX": false,
+                    "FreezePositionY": false,
+                    "FreezePositionZ": false,
+                    "FreezeRotationX": false,
+                    "FreezeRotationY": false,
+                    "FreezeRotationZ": false,
+                    "Name": "RigidBody"
+                },
+                {
+                    "LocalPosition": {
+                        "X": 0,
+                        "Y": 0,
+                        "Z": 0
+                    },
+                    "LocalRotationDeg": {
+                        "X": 90,
+                        "Y": 0,
+                        "Z": 0
+                    },
+                    "Weight": 1,
+                    "EndPoints": [
+                        {
+                            "ObjectID": 1,
+                            "LocalPosition": {
+                                "X": -11.154,
+                                "Y": 18.348,
+                                "Z": 4.785
+                            },
+                            "LocalRotationDeg": {
+                                "X": 90,
+                                "Y": 0,
+                                "Z": 0
+                            },
+                            "Weight": 1
+                        }
+                    ],
+                    "PositionCompliance": 0,
+                    "PositionMaxForce": 100000000,
+                    "AngularCompliance": 0,
+                    "AngularMaxForce": 100000000,
+                    "Name": "HingeConstraint"
+                }
+            ],
+            "Children": [
+                {
+                    "ID": 10,
+                    "Type": "EmptyObject",
+                    "Name": "GearMesh_04",
+                    "Components": [
+                        {
+                            "ParentObjectID": 9,
+                            "Position": {
+                                "X": 11.154,
+                                "Y": -18.348,
+                                "Z": -4.785
+                            },
+                            "RotationDeg": {
+                                "X": 90,
+                                "Y": 0,
+                                "Z": 0
+                            },
+                            "Scale": {
+                                "X": 1,
+                                "Y": 1,
+                                "Z": 1
+                            },
+                            "Name": "Transform"
+                        },
+                        {
+                            "ModelPath": "Res/Model/Gimmick/GearToy.mv1",
+                            "FrameName": "P08_Real_Cog_04_Axle_Surface",
+                            "Name": "FrameRenderer"
+                        }
+                    ],
+                    "Children": []
+                }
+            ]
+        },
+        {
+            "ID": 11,
+            "Type": "EmptyObject",
+            "Name": "Gear_05",
+            "Components": [
+                {
+                    "ParentObjectID": 1,
+                    "Position": {
+                        "X": -10.791,
+                        "Y": 56.133,
+                        "Z": 4.785
+                    },
+                    "RotationDeg": {
+                        "X": 0,
+                        "Y": 0,
+                        "Z": 0
+                    },
+                    "Scale": {
+                        "X": 1,
+                        "Y": 1,
+                        "Z": 1
+                    },
+                    "Name": "Transform"
+                },
+                {
+                    "Size": {
+                        "X": 14.1647,
+                        "Y": 5.0695,
+                        "Z": 2.6401
+                    },
+                    "OffsetPosition": {
+                        "X": 0,
+                        "Y": 0,
+                        "Z": 0
+                    },
+                    "Category": -1,
+                    "Name": "BoxCollider"
+                },
+                {
+                    "Size": {
+                        "X": 5.0695,
+                        "Y": 14.1647,
+                        "Z": 2.6401
+                    },
+                    "OffsetPosition": {
+                        "X": 0,
+                        "Y": 0,
+                        "Z": 0
+                    },
+                    "Category": -1,
+                    "Name": "BoxCollider"
+                },
+                {
+                    "Size": {
+                        "X": 10.4372,
+                        "Y": 10.4372,
+                        "Z": 2.6401
+                    },
+                    "OffsetPosition": {
+                        "X": 0,
+                        "Y": 0,
+                        "Z": 0
+                    },
+                    "Category": -1,
+                    "Name": "BoxCollider"
+                },
+                {
+                    "Mass": 0.5,
+                    "UseGravity": false,
+                    "Gravity": {
+                        "X": 0,
+                        "Y": -980,
+                        "Z": 0
+                    },
+                    "Velocity": {
+                        "X": 0,
+                        "Y": 0,
+                        "Z": 0
+                    },
+                    "AngularVelocity": {
+                        "X": 0,
+                        "Y": 0,
+                        "Z": 0
+                    },
+                    "FreezePositionX": false,
+                    "FreezePositionY": false,
+                    "FreezePositionZ": false,
+                    "FreezeRotationX": false,
+                    "FreezeRotationY": false,
+                    "FreezeRotationZ": false,
+                    "Name": "RigidBody"
+                },
+                {
+                    "LocalPosition": {
+                        "X": 0,
+                        "Y": 0,
+                        "Z": 0
+                    },
+                    "LocalRotationDeg": {
+                        "X": 90,
+                        "Y": 0,
+                        "Z": 0
+                    },
+                    "Weight": 1,
+                    "EndPoints": [
+                        {
+                            "ObjectID": 1,
+                            "LocalPosition": {
+                                "X": -10.791,
+                                "Y": 56.133,
+                                "Z": 4.785
+                            },
+                            "LocalRotationDeg": {
+                                "X": 90,
+                                "Y": 0,
+                                "Z": 0
+                            },
+                            "Weight": 1
+                        }
+                    ],
+                    "PositionCompliance": 0,
+                    "PositionMaxForce": 100000000,
+                    "AngularCompliance": 0,
+                    "AngularMaxForce": 100000000,
+                    "Name": "HingeConstraint"
+                }
+            ],
+            "Children": [
+                {
+                    "ID": 12,
+                    "Type": "EmptyObject",
+                    "Name": "GearMesh_05",
+                    "Components": [
+                        {
+                            "ParentObjectID": 11,
+                            "Position": {
+                                "X": 10.791,
+                                "Y": -56.133,
+                                "Z": -4.785
+                            },
+                            "RotationDeg": {
+                                "X": 90,
+                                "Y": 0,
+                                "Z": 0
+                            },
+                            "Scale": {
+                                "X": 1,
+                                "Y": 1,
+                                "Z": 1
+                            },
+                            "Name": "Transform"
+                        },
+                        {
+                            "ModelPath": "Res/Model/Gimmick/GearToy.mv1",
+                            "FrameName": "P08_Real_Cog_05_Axle_Surface",
+                            "Name": "FrameRenderer"
+                        }
+                    ],
+                    "Children": []
+                }
+            ]
+        },
+        {
+            "ID": 13,
+            "Type": "EmptyObject",
+            "Name": "Gear_06",
+            "Components": [
+                {
+                    "ParentObjectID": 1,
+                    "Position": {
+                        "X": -0.099,
+                        "Y": 37.257,
+                        "Z": 4.785
+                    },
+                    "RotationDeg": {
+                        "X": 0,
+                        "Y": 0,
+                        "Z": 0
+                    },
+                    "Scale": {
+                        "X": 1,
+                        "Y": 1,
+                        "Z": 1
+                    },
+                    "Name": "Transform"
+                },
+                {
+                    "Size": {
+                        "X": 14.7082,
+                        "Y": 5.264,
+                        "Z": 2.6401
+                    },
+                    "OffsetPosition": {
+                        "X": 0,
+                        "Y": 0,
+                        "Z": 0
+                    },
+                    "Category": -1,
+                    "Name": "BoxCollider"
+                },
+                {
+                    "Size": {
+                        "X": 5.264,
+                        "Y": 14.7082,
+                        "Z": 2.6401
+                    },
+                    "OffsetPosition": {
+                        "X": 0,
+                        "Y": 0,
+                        "Z": 0
+                    },
+                    "Category": -1,
+                    "Name": "BoxCollider"
+                },
+                {
+                    "Size": {
+                        "X": 10.8376,
+                        "Y": 10.8376,
+                        "Z": 2.6401
+                    },
+                    "OffsetPosition": {
+                        "X": 0,
+                        "Y": 0,
+                        "Z": 0
+                    },
+                    "Category": -1,
+                    "Name": "BoxCollider"
+                },
+                {
+                    "Mass": 0.5,
+                    "UseGravity": false,
+                    "Gravity": {
+                        "X": 0,
+                        "Y": -980,
+                        "Z": 0
+                    },
+                    "Velocity": {
+                        "X": 0,
+                        "Y": 0,
+                        "Z": 0
+                    },
+                    "AngularVelocity": {
+                        "X": 0,
+                        "Y": 0,
+                        "Z": 0
+                    },
+                    "FreezePositionX": false,
+                    "FreezePositionY": false,
+                    "FreezePositionZ": false,
+                    "FreezeRotationX": false,
+                    "FreezeRotationY": false,
+                    "FreezeRotationZ": false,
+                    "Name": "RigidBody"
+                },
+                {
+                    "LocalPosition": {
+                        "X": 0,
+                        "Y": 0,
+                        "Z": 0
+                    },
+                    "LocalRotationDeg": {
+                        "X": 90,
+                        "Y": 0,
+                        "Z": 0
+                    },
+                    "Weight": 1,
+                    "EndPoints": [
+                        {
+                            "ObjectID": 1,
+                            "LocalPosition": {
+                                "X": -0.099,
+                                "Y": 37.257,
+                                "Z": 4.785
+                            },
+                            "LocalRotationDeg": {
+                                "X": 90,
+                                "Y": 0,
+                                "Z": 0
+                            },
+                            "Weight": 1
+                        }
+                    ],
+                    "PositionCompliance": 0,
+                    "PositionMaxForce": 100000000,
+                    "AngularCompliance": 0,
+                    "AngularMaxForce": 100000000,
+                    "Name": "HingeConstraint"
+                }
+            ],
+            "Children": [
+                {
+                    "ID": 14,
+                    "Type": "EmptyObject",
+                    "Name": "GearMesh_06",
+                    "Components": [
+                        {
+                            "ParentObjectID": 13,
+                            "Position": {
+                                "X": 0.099,
+                                "Y": -37.257,
+                                "Z": -4.785
+                            },
+                            "RotationDeg": {
+                                "X": 90,
+                                "Y": 0,
+                                "Z": 0
+                            },
+                            "Scale": {
+                                "X": 1,
+                                "Y": 1,
+                                "Z": 1
+                            },
+                            "Name": "Transform"
+                        },
+                        {
+                            "ModelPath": "Res/Model/Gimmick/GearToy.mv1",
+                            "FrameName": "P08_Real_Cog_06_Axle_Surface",
+                            "Name": "FrameRenderer"
+                        }
+                    ],
+                    "Children": []
+                }
+            ]
+        },
+        {
+            "ID": 15,
+            "Type": "EmptyObject",
+            "Name": "Gear_07",
+            "Components": [
+                {
+                    "ParentObjectID": 1,
+                    "Position": {
+                        "X": 22.209,
+                        "Y": 37.224,
+                        "Z": 4.785
+                    },
+                    "RotationDeg": {
+                        "X": 0,
+                        "Y": 0,
+                        "Z": 0
+                    },
+                    "Scale": {
+                        "X": 1,
+                        "Y": 1,
+                        "Z": 1
+                    },
+                    "Name": "Transform"
+                },
+                {
+                    "Size": {
+                        "X": 14.4296,
+                        "Y": 5.1643,
+                        "Z": 2.6401
+                    },
+                    "OffsetPosition": {
+                        "X": 0,
+                        "Y": 0,
+                        "Z": 0
+                    },
+                    "Category": -1,
+                    "Name": "BoxCollider"
+                },
+                {
+                    "Size": {
+                        "X": 5.1643,
+                        "Y": 14.4296,
+                        "Z": 2.6401
+                    },
+                    "OffsetPosition": {
+                        "X": 0,
+                        "Y": 0,
+                        "Z": 0
+                    },
+                    "Category": -1,
+                    "Name": "BoxCollider"
+                },
+                {
+                    "Size": {
+                        "X": 10.6324,
+                        "Y": 10.6324,
+                        "Z": 2.6401
+                    },
+                    "OffsetPosition": {
+                        "X": 0,
+                        "Y": 0,
+                        "Z": 0
+                    },
+                    "Category": -1,
+                    "Name": "BoxCollider"
+                },
+                {
+                    "Mass": 0.5,
+                    "UseGravity": false,
+                    "Gravity": {
+                        "X": 0,
+                        "Y": -980,
+                        "Z": 0
+                    },
+                    "Velocity": {
+                        "X": 0,
+                        "Y": 0,
+                        "Z": 0
+                    },
+                    "AngularVelocity": {
+                        "X": 0,
+                        "Y": 0,
+                        "Z": 0
+                    },
+                    "FreezePositionX": false,
+                    "FreezePositionY": false,
+                    "FreezePositionZ": false,
+                    "FreezeRotationX": false,
+                    "FreezeRotationY": false,
+                    "FreezeRotationZ": false,
+                    "Name": "RigidBody"
+                },
+                {
+                    "LocalPosition": {
+                        "X": 0,
+                        "Y": 0,
+                        "Z": 0
+                    },
+                    "LocalRotationDeg": {
+                        "X": 90,
+                        "Y": 0,
+                        "Z": 0
+                    },
+                    "Weight": 1,
+                    "EndPoints": [
+                        {
+                            "ObjectID": 1,
+                            "LocalPosition": {
+                                "X": 22.209,
+                                "Y": 37.224,
+                                "Z": 4.785
+                            },
+                            "LocalRotationDeg": {
+                                "X": 90,
+                                "Y": 0,
+                                "Z": 0
+                            },
+                            "Weight": 1
+                        }
+                    ],
+                    "PositionCompliance": 0,
+                    "PositionMaxForce": 100000000,
+                    "AngularCompliance": 0,
+                    "AngularMaxForce": 100000000,
+                    "Name": "HingeConstraint"
+                }
+            ],
+            "Children": [
+                {
+                    "ID": 16,
+                    "Type": "EmptyObject",
+                    "Name": "GearMesh_07",
+                    "Components": [
+                        {
+                            "ParentObjectID": 15,
+                            "Position": {
+                                "X": -22.209,
+                                "Y": -37.224,
+                                "Z": -4.785
+                            },
+                            "RotationDeg": {
+                                "X": 90,
+                                "Y": 0,
+                                "Z": 0
+                            },
+                            "Scale": {
+                                "X": 1,
+                                "Y": 1,
+                                "Z": 1
+                            },
+                            "Name": "Transform"
+                        },
+                        {
+                            "ModelPath": "Res/Model/Gimmick/GearToy.mv1",
+                            "FrameName": "P08_Real_Cog_07_Axle_Surface",
+                            "Name": "FrameRenderer"
+                        }
+                    ],
+                    "Children": []
+                }
+            ]
+        }
+    ]
+}

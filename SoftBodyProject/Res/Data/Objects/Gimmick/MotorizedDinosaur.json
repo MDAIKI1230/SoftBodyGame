@@ -1,0 +1,350 @@
+{
+    "ID": 1,
+    "Type": "EmptyObject",
+    "Name": "MotorizedDinosaur",
+    "Components": [
+        {
+            "ParentObjectID": 0,
+            "Position": {
+                "X": 0,
+                "Y": 0,
+                "Z": 0
+            },
+            "RotationDeg": {
+                "X": 0,
+                "Y": 0,
+                "Z": 0
+            },
+            "Scale": {
+                "X": 1,
+                "Y": 1,
+                "Z": 1
+            },
+            "Name": "Transform"
+        },
+        {
+            "Size": {
+                "X": 33.16,
+                "Y": 12.32,
+                "Z": 56.47
+            },
+            "OffsetPosition": {
+                "X": -26.32,
+                "Y": 7.81,
+                "Z": -9.365
+            },
+            "Category": -1,
+            "Name": "BoxCollider"
+        },
+        {
+            "Size": {
+                "X": 33.17,
+                "Y": 12.32,
+                "Z": 56.47
+            },
+            "OffsetPosition": {
+                "X": 26.485,
+                "Y": 7.81,
+                "Z": -9.365
+            },
+            "Category": -1,
+            "Name": "BoxCollider"
+        },
+        {
+            "Size": {
+                "X": 12,
+                "Y": 54,
+                "Z": 52
+            },
+            "OffsetPosition": {
+                "X": -25,
+                "Y": 40,
+                "Z": -4
+            },
+            "Category": -1,
+            "Name": "BoxCollider"
+        },
+        {
+            "Size": {
+                "X": 12,
+                "Y": 54,
+                "Z": 52
+            },
+            "OffsetPosition": {
+                "X": 25,
+                "Y": 40,
+                "Z": -4
+            },
+            "Category": -1,
+            "Name": "BoxCollider"
+        },
+        {
+            "Size": {
+                "X": 48,
+                "Y": 50,
+                "Z": 91
+            },
+            "OffsetPosition": {
+                "X": 0,
+                "Y": 78,
+                "Z": 2.5
+            },
+            "Category": -1,
+            "Name": "BoxCollider"
+        },
+        {
+            "Size": {
+                "X": 20,
+                "Y": 22,
+                "Z": 17
+            },
+            "OffsetPosition": {
+                "X": 0,
+                "Y": 85,
+                "Z": -46.5
+            },
+            "Category": -1,
+            "Name": "BoxCollider"
+        },
+        {
+            "Size": {
+                "X": 32,
+                "Y": 42,
+                "Z": 42
+            },
+            "OffsetPosition": {
+                "X": 0,
+                "Y": 78,
+                "Z": -72
+            },
+            "Category": -1,
+            "Name": "BoxCollider"
+        }
+    ],
+    "Children": [
+        {
+            "ID": 2,
+            "Type": "EmptyObject",
+            "Name": "FixedBody",
+            "Components": [
+                {
+                    "ParentObjectID": 1,
+                    "Position": {
+                        "X": 0,
+                        "Y": 0,
+                        "Z": 0
+                    },
+                    "RotationDeg": {
+                        "X": 90,
+                        "Y": 0,
+                        "Z": 0
+                    },
+                    "Scale": {
+                        "X": 1,
+                        "Y": 1,
+                        "Z": 1
+                    },
+                    "Name": "Transform"
+                },
+                {
+                    "ModelPath": "Res/Model/Gimmick/MotorizedDinosaur.mv1",
+                    "FrameName": "P04_Roboraptor_Fixed_Body_Surface",
+                    "Name": "FrameRenderer"
+                }
+            ],
+            "Children": []
+        },
+        {
+            "ID": 3,
+            "Type": "EmptyObject",
+            "Name": "Tail",
+            "Components": [
+                {
+                    "ParentObjectID": 1,
+                    "Position": {
+                        "X": 0,
+                        "Y": 75,
+                        "Z": 102
+                    },
+                    "RotationDeg": {
+                        "X": 0,
+                        "Y": 0,
+                        "Z": 0
+                    },
+                    "Scale": {
+                        "X": 1,
+                        "Y": 1,
+                        "Z": 1
+                    },
+                    "Name": "Transform"
+                },
+                {
+                    "Size": {
+                        "X": 21.78,
+                        "Y": 17.86,
+                        "Z": 24.24
+                    },
+                    "OffsetPosition": {
+                        "X": 0,
+                        "Y": 2.57,
+                        "Z": -38.88
+                    },
+                    "Category": -1,
+                    "Name": "BoxCollider"
+                },
+                {
+                    "Size": {
+                        "X": 17.1601,
+                        "Y": 14.3268,
+                        "Z": 24.0897
+                    },
+                    "OffsetPosition": {
+                        "X": -0.0001,
+                        "Y": 0.2557,
+                        "Z": -14.0559
+                    },
+                    "Category": -1,
+                    "Name": "BoxCollider"
+                },
+                {
+                    "Size": {
+                        "X": 13.1998,
+                        "Y": 11.2213,
+                        "Z": 22.4412
+                    },
+                    "OffsetPosition": {
+                        "X": -0.0002,
+                        "Y": -1.7458,
+                        "Z": 9.8688
+                    },
+                    "Category": -1,
+                    "Name": "BoxCollider"
+                },
+                {
+                    "Size": {
+                        "X": 9.9001,
+                        "Y": 8.3094,
+                        "Z": 19.7992
+                    },
+                    "OffsetPosition": {
+                        "X": -0.0001,
+                        "Y": -3.4446,
+                        "Z": 31.6484
+                    },
+                    "Category": -1,
+                    "Name": "BoxCollider"
+                },
+                {
+                    "Size": {
+                        "X": 6.5997,
+                        "Y": 5.412,
+                        "Z": 29.9644
+                    },
+                    "OffsetPosition": {
+                        "X": -0.0001,
+                        "Y": -4.9449,
+                        "Z": 57.1918
+                    },
+                    "Category": -1,
+                    "Name": "BoxCollider"
+                },
+                {
+                    "Mass": 3,
+                    "UseGravity": false,
+                    "Gravity": {
+                        "X": 0,
+                        "Y": -980,
+                        "Z": 0
+                    },
+                    "Velocity": {
+                        "X": 0,
+                        "Y": 0,
+                        "Z": 0
+                    },
+                    "AngularVelocity": {
+                        "X": 0,
+                        "Y": 0,
+                        "Z": 0
+                    },
+                    "FreezePositionX": false,
+                    "FreezePositionY": false,
+                    "FreezePositionZ": false,
+                    "FreezeRotationX": false,
+                    "FreezeRotationY": false,
+                    "FreezeRotationZ": false,
+                    "Name": "RigidBody"
+                },
+                {
+                    "LocalPosition": {
+                        "X": 0,
+                        "Y": 2.88,
+                        "Z": -58.11
+                    },
+                    "LocalRotationDeg": {
+                        "X": 0,
+                        "Y": 0,
+                        "Z": 0
+                    },
+                    "Weight": 1,
+                    "EndPoints": [
+                        {
+                            "ObjectID": 1,
+                            "LocalPosition": {
+                                "X": 0,
+                                "Y": 77.88,
+                                "Z": 43.89
+                            },
+                            "LocalRotationDeg": {
+                                "X": 0,
+                                "Y": 0,
+                                "Z": 0
+                            },
+                            "Weight": 1
+                        }
+                    ],
+                    "AngleMinDeg": -32,
+                    "AngleMaxDeg": 32,
+                    "PositionCompliance": 0,
+                    "PositionMaxForce": 100000000,
+                    "AngularCompliance": 0,
+                    "AngularMaxForce": 100000000,
+                    "Name": "AngleLimitHingeConstraint"
+                }
+            ],
+            "Children": [
+                {
+                    "ID": 4,
+                    "Type": "EmptyObject",
+                    "Name": "TailMesh",
+                    "Components": [
+                        {
+                            "ParentObjectID": 3,
+                            "Position": {
+                                "X": 0,
+                                "Y": -75,
+                                "Z": -102
+                            },
+                            "RotationDeg": {
+                                "X": 90,
+                                "Y": 0,
+                                "Z": 0
+                            },
+                            "Scale": {
+                                "X": 1,
+                                "Y": 1,
+                                "Z": 1
+                            },
+                            "Name": "Transform"
+                        },
+                        {
+                            "ModelPath": "Res/Model/Gimmick/MotorizedDinosaur.mv1",
+                            "FrameName": "P04_Tail_Sweep_Hinge_Surface",
+                            "Name": "FrameRenderer"
+                        }
+                    ],
+                    "Children": []
+                }
+            ]
+        }
+    ]
+}
